@@ -1,5 +1,8 @@
 <template>
   <q-page class="row">
+    <div class="col-12 pagecol">
+      <q-btn label="Bewertung Dummy" to="/rating" color="primary" />
+    </div>
     <div class="col-12 col-sm-6 pagecol">
       <q-list>
         <q-item-label header>Kunden</q-item-label>
