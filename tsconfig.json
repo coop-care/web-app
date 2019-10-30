@@ -9,8 +9,16 @@
     "moduleResolution": "node",
     "baseUrl": ".",
     "types": [
-      "quasar", "node"
-    ]
+      "quasar",
+      "node"
+    ],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
   },
-  "exclude": ["node_modules"]
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
 }

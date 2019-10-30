@@ -12,6 +12,7 @@ module.exports = function (ctx) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
+      'i18n'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -59,9 +60,12 @@ module.exports = function (ctx) {
         'QList',
         'QItem',
         'QItemSection',
-        'QItemLabel'
+        'QItemLabel',
+        'QStepper',
+        'QStep',
+        'QStepperNavigation'
       ],
-
+        
       directives: [
         'Ripple'
       ],
@@ -118,9 +122,9 @@ module.exports = function (ctx) {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
       manifest: {
-        // name: 'CoopCare1',
-        // short_name: 'CoopCare1',
-        // description: 'A Quasar Framework app',
+        // name: 'CoopCare',
+        // short_name: 'CoopCare',
+        // description: 'Omaha System based open source software for cooperative care teams',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -157,7 +161,7 @@ module.exports = function (ctx) {
 
     // https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
-      // id: 'de.coopcare.coop1',
+      // id: '',
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
     },
 
@@ -186,7 +190,7 @@ module.exports = function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        // appId: 'coop1'
+        // appId: 'coopcare'
       }
     }
   }

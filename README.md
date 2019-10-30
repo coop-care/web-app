@@ -1,6 +1,6 @@
-# CoopCare1 (coop1)
+# CoopCare (coopcare)
 
-A Quasar Framework app
+Omaha System based open source software for cooperative care teams
 
 ## Install the dependencies
 ```bash
