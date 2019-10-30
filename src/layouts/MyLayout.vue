@@ -12,7 +12,15 @@
         />
 
         <q-toolbar-title>
-          <q-btn size="lg" dense no-caps flat label="„CoopCare”" :ripple="false" to="/"/>
+          <q-btn
+            size="lg"
+            dense
+            no-caps
+            flat
+            label="„CoopCare”"
+            :ripple="false"
+            to="/"
+          />
         </q-toolbar-title>
 
         <div>Entwurf</div>
@@ -28,14 +36,26 @@
       <q-list>
         <q-item dense>
           <q-item-section>
-            <q-item-label style="padding-left:0;" header>Kunden</q-item-label>
+            <q-item-label
+              style="padding-left:0;"
+              header
+            >Kunden</q-item-label>
           </q-item-section>
           <q-item-section side>
-            <q-btn icon="add" round outline size="xs"/>
+            <q-btn
+              icon="add"
+              round
+              outline
+              size="xs"
+            />
           </q-item-section>
         </q-item>
 
-        <q-item clickable v-for="name in customers" :key="name">
+        <q-item
+          clickable
+          v-for="name in customers"
+          :key="name"
+        >
           <q-item-section>
             <q-item-label style="padding-left:20px;">{{ name }}</q-item-label>
           </q-item-section>
@@ -56,17 +76,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Vue from "vue";
+import Component from "vue-class-component";
 
 @Component
 export default class MyLayout extends Vue {
-  data () {
-    return {
-      leftDrawerOpen: true,
-      customers: ['Annegret Krause', 'Hans Schmidt']
-    }
-  }
+  leftDrawerOpen = false;
+  customers = ["Annegret Krause", "Hans Schmidt"];
 }
-
 </script>
