@@ -8,6 +8,7 @@
       header-nav
       animated
       flat
+      @before-transition="scrollToTop"
     >
       <q-step
         :name="1"
@@ -42,7 +43,7 @@
         done-color="amber-10"
         active-color="amber-10"
       >
-        {{ terminology.interventionScheme.title }}
+        <intervention />
       </q-step>
 
       <template v-slot:navigation>
@@ -77,13 +78,16 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
+import Intervention from "components/Intervention.vue";
 //@ts-ignore
 import terminology from "../data/terminology_DE.json";
 
 @Component({
   components: {
-    ProblemClassification
+    ProblemClassification,
+    Intervention
   }
 })
 export default class ProblemRecording extends Vue {
@@ -91,6 +95,10 @@ export default class ProblemRecording extends Vue {
 
   get terminology() {
     return terminology;
+  }
+
+  scrollToTop() {
+    scroll.setScrollPosition(window, 0, 200);
   }
 }
 </script>
