@@ -1,6 +1,6 @@
 <template>
   <div class="problem-classification">
-    <div class="row">
+    <div class="row split-layout">
       <div class="col-md-6">
         <h6>1. Das Problem auswählen</h6>
         <q-input
@@ -35,7 +35,6 @@
           node-key="id"
           :filter="problemsFilter"
           :filter-method="filterTerminology"
-          class="problems"
           no-results-label="Keine Probleme, Anzeichen oder Symptome gefunden"
           color="red"
         >
@@ -151,24 +150,9 @@
     padding-left: 12px
     padding-right: 12px
 .problem-classification
-  margin: -2em -20px 0
-  @media screen and (max-width: $breakpoint-sm-max)
-    margin-left: 0
-    margin-right: 0
-  .col-md-6, .summary
-    padding: 2em 20px 0
-    @media screen and (max-width: $breakpoint-sm-max)
-      padding-left: 0
-      padding-right: 0
-  h6
-    margin: 1.5em 0 .5em
-    &:first-child
-      margin-top: 0
   .q-tree > .q-tree__node > .q-tree__node-header
     background-color: #f44336
     color: #fff
-  .q-tree__node--parent > .q-tree__node-collapsible > .q-tree__node-body
-    // padding: 0 0 0 25px !important
   .q-tree__node .q-tree__node .q-tree__node .q-tree__node-header
     padding-top: 0
     padding-bottom: 0
@@ -177,7 +161,6 @@
     button
       @media screen and (max-width: $breakpoint-xs-max)
         font-size: 13px
-
 </style>
 
 <script lang="ts">
@@ -185,7 +168,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 //@ts-ignore
 import terminology from "../data/terminology_DE.json";
-import * as Types from "../data/terminology";
+import Terminology, { TitleAndDescribable } from "../helper/terminology";
 
 @Component
 export default class ProblemClassification extends Vue {
@@ -203,16 +186,16 @@ export default class ProblemClassification extends Vue {
   get problems() {
     let domains = terminology.problemClassificationScheme.domains.map(
       domain => {
-        domain.problems = domain.problems.sort(this.sortByTitle);
+        domain.problems = domain.problems.sort(Terminology.sortByTitle);
         return domain;
       }
     );
-    return this.treeify(domains, "domains");
+    return Terminology.treeify(domains, "domains");
   }
 
   modifier(type: string) {
     let modifiers = terminology.problemClassificationScheme.modifiers as any;
-    let modifier = (modifiers[type] || []) as Types.TitleAndDescribable[];
+    let modifier = (modifiers[type] || []) as TitleAndDescribable[];
 
     return modifier.map((item, index) => {
       return {
@@ -229,47 +212,8 @@ export default class ProblemClassification extends Vue {
     this.$refs.filter.focus();
   }
 
-  filterTerminology(node: Types.TitleAndDescribable, filter: string) {
-    let regex = new RegExp(
-      "(^|\\b)" + filter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
-      "gi"
-    );
-    return (
-      (node.title && node.title.match(regex)) ||
-      (node.description && node.description.match(regex))
-    );
-  }
-
-  treeify(list: any[], key: string): any {
-    let lastIndex = list.length - 1;
-    return list.map((item, index) => {
-      let autoId = ++this.autoId;
-      let result: any = {
-        id: autoId,
-        title: item.title,
-        label: item.title,
-        value: autoId,
-        description: item.description,
-        type: key,
-        header: key,
-        body: key,
-        selectable: key == "problems",
-        isLast: index == lastIndex
-      };
-
-      for (let key in item) {
-        let value = item[key];
-        if (Array.isArray(value)) {
-          result.children = this.treeify(value, key);
-        }
-      }
-
-      return result;
-    });
-  }
-
-  sortByTitle(a: Types.Titleable, b: Types.Titleable): number {
-    return a.title.localeCompare(b.title);
+  filterTerminology(node: TitleAndDescribable, filter: string) {
+    return Terminology.filter(node, filter);
   }
 }
 </script>
