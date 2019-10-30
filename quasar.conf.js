@@ -63,7 +63,9 @@ module.exports = function (ctx) {
         'QItemLabel',
         'QStepper',
         'QStep',
-        'QStepperNavigation'
+        'QStepperNavigation',
+        'QSlider',
+        'QBtnToggle',
       ],
         
       directives: [
