@@ -15,8 +15,9 @@
         prefix="1"
         :done="step > 1"
         :header-nav="step > 1"
+        color="red"
       >
-        {{ terminology.problemClassificationScheme.title }}
+        <problem-classification />
       </q-step>
 
       <q-step
@@ -70,12 +71,16 @@
 
 <script lang="ts">
 import Vue from "vue";
+import Component from "vue-class-component";
+import ProblemClassification from "components/ProblemClassification.vue";
 //@ts-ignore
 import terminology from "../data/terminology_DE.json";
 
-import Component from "vue-class-component";
-
-@Component
+@Component({
+  components: {
+    ProblemClassification
+  }
+})
 export default class ProblemRecording extends Vue {
   step = 1;
 
