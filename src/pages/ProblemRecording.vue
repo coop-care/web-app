@@ -15,7 +15,8 @@
         prefix="1"
         :done="step > 1"
         :header-nav="step > 1"
-        color="red"
+        active-color="red"
+        done-color="red"
       >
         <problem-classification />
       </q-step>
@@ -26,6 +27,8 @@
         prefix="2"
         :done="step > 2"
         :header-nav="step > 2"
+        done-color="teal"
+        active-color="teal"
       >
         {{ terminology.problemRatingScale.title }}
       </q-step>
@@ -36,6 +39,8 @@
         prefix="3"
         icon="add_comment"
         :header-nav="step > 3"
+        done-color="amber-10"
+        active-color="amber-10"
       >
         {{ terminology.interventionScheme.title }}
       </q-step>
