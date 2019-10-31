@@ -3,14 +3,15 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
-          flat
+          v-if="$router.currentRoute.name != 'index'"
+          size="lg"
           dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          icon="menu"
-          aria-label="Menu"
+          no-caps
+          flat
+          icon="chevron_left"
+          :ripple="false"
+          @click="$router.back()"
         />
-
         <q-toolbar-title>
           <q-btn
             size="lg"
@@ -23,51 +24,19 @@
           />
         </q-toolbar-title>
 
-        <div>Entwurf</div>
+        <q-btn
+          size="md"
+          dense
+          no-caps
+          outline
+          label="Feedback"
+          icon="feedback"
+          :ripple="false"
+          type="a"
+          :href="mailto"
+        />
       </q-toolbar>
     </q-header>
-
-    <q-drawer
-      v-model="leftDrawerOpen"
-      show-if-above
-      bordered
-      content-class="bg-grey-2"
-    >
-      <q-list>
-        <q-item dense>
-          <q-item-section>
-            <q-item-label
-              style="padding-left:0;"
-              header
-            >Kunden</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-btn
-              icon="add"
-              round
-              outline
-              size="xs"
-            />
-          </q-item-section>
-        </q-item>
-
-        <q-item
-          clickable
-          v-for="name in customers"
-          :key="name"
-        >
-          <q-item-section>
-            <q-item-label style="padding-left:20px;">{{ name }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-separator spaced />
-
-        <q-item-label header>
-          Einstellungen
-        </q-item-label>
-      </q-list>
-    </q-drawer>
 
     <q-page-container>
       <router-view />
@@ -81,7 +50,16 @@ import Component from "vue-class-component";
 
 @Component
 export default class MyLayout extends Vue {
-  leftDrawerOpen = false;
-  customers = ["Annegret Krause", "Hans Schmidt"];
+  get mailto() {
+    return (
+      "mailto:feedback@cooperativecare.de?subject=CoopCare Feedback&body=" +
+      encodeURIComponent("\n\n\n––––––––––––––––––––\n") +
+      "Einige freiwillige technische Angaben, die uns beim Nachvollziehen des Feedbacks helfen:" +
+      encodeURIComponent("\n\nBrowser: ") +
+      this.$q.platform.userAgent +
+      encodeURIComponent("\nRoute: ") +
+      this.$router.currentRoute.path
+    );
+  }
 }
 </script>

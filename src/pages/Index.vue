@@ -1,42 +1,50 @@
 <template>
   <q-page class="row">
-    <div class="col-12 col-sm-6 pagecol">
-      <q-list>
-        <q-item-label header>Kunden</q-item-label>
-        <q-item clickable>
+    <q-drawer
+      v-model="customerDrawer"
+      content-class="bg-grey-2"
+    >
+      <q-list dense>
+        <q-item>
           <q-item-section>
-            <q-item-label>Emma B.</q-item-label>
+            <q-item-label
+              style="padding-left:0;"
+              header
+            >Kunden</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn
+              icon="add"
+              round
+              size="sm"
+              color="primary"
+            />
           </q-item-section>
         </q-item>
-        <q-item clickable>
+
+        <q-item
+          clickable
+          v-for="name in customers"
+          :key="name"
+        >
           <q-item-section>
-            <q-item-label>Max Mustermann</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable>
-          <q-item-section>
-            <q-item-label>Beate Schönfeld</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable>
-          <q-item-section>
-            <q-item-label>Martina Musterfrau</q-item-label>
+            <q-item-label style="padding-left:20px;">{{ name }}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
-      <q-btn
-        round
-        color="primary"
-        icon="add"
-      />
-    </div>
-    <div class="col-12 col-sm-6 pagecol">
-      <div>Emma B.</div>
+    </q-drawer>
+
+    <div class="col q-pa-xl">
+      <h2 class="q-mt-md">Emma B.</h2>
       <q-list>
         <q-item-label header>Probleme</q-item-label>
-        <q-item clickable>
+        <q-item
+          clickable
+          v-for="problem in problems"
+          v-bind:key="problem"
+        >
           <q-item-section>
-            <q-item-label>Mental health</q-item-label>
+            <q-item-label>{{ problem }}</q-item-label>
           </q-item-section>
           <q-item-section>
             <q-btn
@@ -47,16 +55,6 @@
             />
           </q-item-section>
         </q-item>
-        <q-item clickable>
-          <q-item-section>
-            <q-item-label>Personal care</q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable>
-          <q-item-section>
-            <q-item-label>Medication Regimen</q-item-label>
-          </q-item-section>
-        </q-item>
       </q-list>
       <q-btn
         icon="add"
@@ -64,15 +62,27 @@
         label="Problem aufnehmen"
         to="/problem/new"
         outline
+        class="q-mt-md"
       />
     </div>
   </q-page>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Vue from "vue";
+import Component from "vue-class-component";
 
 @Component
-export default class PageIndex extends Vue {}
+export default class PageIndex extends Vue {
+  customerDrawer = true;
+  customers = [
+    "Annegret Krause",
+    "Hans Schmidt",
+    "Emma B.",
+    "Max Mustermann",
+    "Beate Schönfeld",
+    "Martina Musterfrau"
+  ].sort();
+  problems = ["Psychische Gesundheit", "Körperpflege", "Medikamenteneinnahme"];
+}
 </script>
