@@ -31,7 +31,7 @@
         done-color="teal"
         active-color="teal"
       >
-        {{ terminology.problemRatingScale.title }}
+        <problem-rating />
       </q-step>
 
       <q-step
@@ -80,6 +80,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
+import ProblemRating from "components/ProblemRating.vue";
 import Intervention from "components/Intervention.vue";
 //@ts-ignore
 import terminology from "../data/terminology_DE.json";
@@ -87,6 +88,7 @@ import terminology from "../data/terminology_DE.json";
 @Component({
   components: {
     ProblemClassification,
+    ProblemRating,
     Intervention
   }
 })

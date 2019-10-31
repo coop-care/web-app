@@ -76,7 +76,7 @@
         <h6 class="counter">Kundenspezifische Details</h6>
         <q-input
           v-model="details"
-          label="Notizen"
+          label="Welche konkreten Aktivitäten werden geplant?"
           autogrow
           color="amber-10"
           filled
@@ -124,8 +124,6 @@
     padding-left: 0
   .q-checkbox
     padding: 0 7px 0 13px
-.targets.q-tree > .q-tree__node--child > .q-tree__node-header 
-  // padding-left: 12px
 </style>
 
 <script lang="ts">
@@ -143,9 +141,6 @@ export default class Intervention extends Vue {
   targetsTicked = [[], [], [], []];
   details = "";
 
-  get terminology() {
-    return terminology;
-  }
   get categories() {
     return terminology.interventionScheme.categories;
   }
