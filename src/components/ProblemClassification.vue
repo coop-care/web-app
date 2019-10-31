@@ -2,7 +2,7 @@
   <div class="problem-classification">
     <div class="row split-layout">
       <div class="col-md-6">
-        <h6>1. Das Problem auswählen</h6>
+        <h6 class="counter">Das Problem auswählen</h6>
         <q-input
           ref="filter"
           color="red"
@@ -37,6 +37,7 @@
           :filter-method="filterTerminology"
           no-results-label="Keine Probleme, Anzeichen oder Symptome gefunden"
           color="red"
+          @update:selected="resetSymptoms"
         >
           <template v-slot:header-domains="prop">
             <div class="row items-center text-white">
@@ -76,7 +77,7 @@
       </div>
 
       <div class="col-md-6">
-        <h6>2. Merkmale auswählen</h6>
+        <h6 class="counter">Merkmale auswählen</h6>
         <q-btn-toggle
           v-model="scope"
           spread
@@ -88,7 +89,7 @@
           :options="modifier('scope')"
           class="q-mb-xs"
         />
-        <div class="text-caption q-mb-md q-px-lg">{{ modifier('scope')[scope].description }}</div>
+        <div class="text-weight-light q-mb-md q-px-lg">{{ modifier('scope')[scope].description }}</div>
         <q-btn-toggle
           v-model="severity"
           spread
@@ -100,26 +101,22 @@
           :options="modifier('severity')"
           class="q-mb-xs"
         />
-        <div class="text-caption q-mb-md q-px-lg">{{ modifier('severity')[severity].description }}</div>
+        <div class="text-weight-light q-mb-md q-px-lg">{{ modifier('severity')[severity].description }}</div>
 
-        <h6>3. Anzeichen und Symptome</h6>
+        <h6
+          v-if="showSymptomsSection"
+          class="counter"
+        >Anzeichen und Symptome</h6>
         <q-option-group
+          v-if="showSymptomsSection"
           v-model="symptomsSelected"
-          v-if="problemSelected"
           :options="$refs.tree.getNodeByKey(problemSelected).children"
           color="red"
           type="checkbox"
           keep-color
         />
-        <div v-else>
-          <q-icon
-            name="warning"
-            color="red"
-          />
-          Zuerst das Problem auswählen.
-        </div>
 
-        <h6>4. Kundenspezifische Details</h6>
+        <h6 class="counter">Kundenspezifische Details</h6>
         <q-input
           v-model="details"
           label="Notizen"
@@ -133,8 +130,8 @@
         <div v-if="problemSelected">
           Problem: {{ $refs.tree.getNodeByKey(problemSelected).title }} - {{ modifier('scope')[scope].label }} - {{ modifier('severity')[severity].label }}
         </div>
-        <div v-if="symptomsSelected.length">
-          Symptome: {{ symptomsSelected }}
+        <div v-if="showSymptomsSection && symptomsSelected.length">
+          Symptome: {{ symptomsSelected.map(id => { return $refs.tree.getNodeByKey(id).title }).join("; ") }}
         </div>
         <div v-if="details.length">
           Details: {{ details }}
@@ -192,6 +189,9 @@ export default class ProblemClassification extends Vue {
     );
     return Terminology.treeify(domains, "domains");
   }
+  get showSymptomsSection() {
+    return this.problemSelected && this.severity == 2;
+  }
 
   modifier(type: string) {
     let modifiers = terminology.problemClassificationScheme.modifiers as any;
@@ -214,6 +214,11 @@ export default class ProblemClassification extends Vue {
 
   filterTerminology(node: TitleAndDescribable, filter: string) {
     return Terminology.filter(node, filter);
+  }
+
+  resetSymptoms() {
+    console.log("hello");
+    this.symptomsSelected = [];
   }
 }
 </script>

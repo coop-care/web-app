@@ -5,6 +5,8 @@
 .q-btn-toggle
   border-width: 1px
   border-style: solid
+.q-stepper__step
+  counter-reset: section
 .split-layout
   margin: -2em -20px 0
   @media screen and (max-width: $breakpoint-sm-max)
@@ -15,7 +17,15 @@
     @media screen and (max-width: $breakpoint-sm-max)
       padding-left: 0
       padding-right: 0
+.problem-classification, .outcome, .intervention
   h6
     margin: 1.5em 0 .5em
     &:first-child
       margin-top: 0
+    &.counter:before
+      counter-increment: section
+      content: counter(section) ". "
+.summary
+  padding-left: 30px
+  @media screen and (max-width: $breakpoint-sm-max)
+    padding-left: 0
