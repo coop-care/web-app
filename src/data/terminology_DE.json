@@ -1412,29 +1412,29 @@
       "scope": [
         {
           "title": "Einzelperson",
-          "description": "Eine Person, die allein lebt oder ein Einfamilienmitglied, das ein gesundheitliches Problem hat."
+          "description": "Eine allein lebende Person oder ein einzelnes Familienmitglied, das ein gesundheitliches Problem besitzt."
         },
         {
           "title": "Familie",
-          "description": "Eine soziale Einheit oder eine verwandte Gruppe von Personen, die zusammenleben und ein gesundheitliches Problem haben."
+          "description": "Eine soziale Einheit oder eine Gruppe von verwandten Personen, die zusammenleben und gemeinsam ein gesundheitliches Problem besitzen."
         },
         {
           "title": "Gemeinschaft",
-          "description": "Die Einzelpersonen oder Familien, die eine Gruppe, ein Viertel oder einen anderen geografischen Bezirk umfassen, die ein gesundheitliches Problem haben."
+          "description": "Einzelpersonen oder Familien, die gemeinsam eine Gruppe, eine Nachbarschaft oder einen anderen geografischen Bezirk darstellen, und gemeinschaftlich ein gesundheitliches Problem besitzen."
         }
       ],
       "severity": [
         {
           "title": "Vorsorge",
-          "description": "Kundeninteresse an der Steigerung der Erwartungen an Wissen, Verhalten und Gesundheit und der Entwicklung von mehr Vermögenswerten und Ressourcen, die das Wohlbefinden ohne Risikofaktoren, Anzeichen oder Symptome erhalten oder verbessern."
+          "description": "Kundeninteresse das eigene gesundheitliche Wissen, Verhalten und Prognosen zu verbessern und mit geeigneten Mitteln und Methoden das persönliche Wohlergehen zu erhalten oder vermehren, bei gleichzeitigem Fehlen von Risikofaktoren, Anzeichen oder Symptomen."
         },
         {
           "title": "Potentiell",
-          "description": "Kundenstatus, gekennzeichnet durch das Vorhandensein bestimmter Gesundheitsmuster, Praktiken, Verhaltensweisen oder Risikofaktoren, die eine optimale Gesundheit ausschließen können, und das Fehlen von Anzeichen und Symptomen."
+          "description": "Kundenstatus, bei dem bestimmte gesundheitliche Muster, Praktiken, Verhaltensweisen oder Risikofaktoren vorhanden sind, die eine optimale Gesundheit ausschließen können, bei gleichzeitigem Fehlen von konkreten Anzeichen und Symptomen."
         },
         {
           "title": "Tatsächlich",
-          "description": "Kundenstatus, gekennzeichnet durch ein oder mehrere vorhandene Anzeichen und Symptome, die eine optimale Gesundheit ausschließen können."
+          "description": "Kundenstatus, bei dem ein oder mehrere Anzeichen und Symptome vorhanden sind, die eine optimale Gesundheit ausschließen können."
         }
       ]
     }
@@ -1771,13 +1771,13 @@
     "ratings": [
       {
         "title": "Zustand",
-        "description": "Zustand des Kunden in Bezug auf objektive und subjektive definierende Merkmale.",
+        "description": "Zustand des Kunden in Bezug auf objektive und subjektive Merkmale.",
         "scale": [
           {
             "title": "Extreme Anzeichen oder Symptome"
           },
           {
-            "title": "Schwere Anzeichen oder Symptome"
+            "title": "Schwerwiegende Anzeichen oder Symptome"
           },
           {
             "title": "Mäßige Anzeichen oder Symptome"
@@ -1792,7 +1792,7 @@
       },
       {
         "title": "Wissen",
-        "description": "Fähigkeit des Kunden, Informationen zu speichern und zu interpretieren.",
+        "description": "Fähigkeit des Kunden, sich an gesundheitsbezogenes Wissen zu erinnern und es richtig zu deuten.",
         "scale": [
           {
             "title": "Keine Kenntnisse"
@@ -1813,7 +1813,7 @@
       },
       {
         "title": "Verhalten",
-        "description": "Beobachtbare Reaktionen, Aktionen oder Aktivitäten des Kunden, die dem Anlass oder Zweck entsprechen.",
+        "description": "Beobachtbare Reaktionen, Handlungen oder Aktivitäten des Kunden, die dem Anlass oder Zweck entsprechen.",
         "scale": [
           {
             "title": "Nicht angemessenes Verhalten"
