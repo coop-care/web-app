@@ -8,11 +8,13 @@
       header-nav
       animated
       flat
-      @before-transition="scrollToTop"
+      :contracted="$q.screen.lt.sm"
+      @before-transition="
+      scrollToTop"
     >
       <q-step
         :name="1"
-        :title="terminology.problemClassificationScheme.title"
+        :title="$q.screen.lt.md ? 'Problem' : terminology.problemClassificationScheme.title"
         prefix="1"
         :done="step > 1"
         :header-nav="step > 1"
@@ -24,7 +26,7 @@
 
       <q-step
         :name="2"
-        :title="terminology.problemRatingScale.title"
+        :title="$q.screen.lt.md ? 'Bewertung' : terminology.problemRatingScale.title"
         prefix="2"
         :done="step > 2"
         :header-nav="step > 2"
@@ -36,7 +38,7 @@
 
       <q-step
         :name="3"
-        :title="terminology.interventionScheme.title"
+        :title="$q.screen.lt.md ? 'Interventionen' : terminology.interventionScheme.title"
         prefix="3"
         icon="add_comment"
         :header-nav="step > 3"
@@ -65,9 +67,16 @@
             class="q-ml-sm"
           />
           <q-btn
+            v-if="step < 3"
             @click="$refs.stepper.next()"
             color="primary"
-            :label="step === 3 ? 'Fertig' : 'Weiter'"
+            label="Weiter"
+          />
+          <q-btn
+            v-if="step == 3"
+            to="/"
+            color="primary"
+            label="Fertig"
           />
         </q-stepper-navigation>
       </template>

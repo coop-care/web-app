@@ -39,7 +39,7 @@
     </q-drawer>
 
     <div class="customer-overview q-pa-xl">
-      <h2 class="q-mt-md cursor-pointer">{{ customerSelected }}
+      <h2 class="q-mt-sm q-mb-md q-py-sm cursor-pointer">{{ customerSelected }}
         <q-popup-edit
           v-model="customerSelected"
           @save="updateCustomerName"
@@ -96,7 +96,7 @@ import terminology from "../data/terminology_DE.json";
 
 @Component
 export default class PageIndex extends Vue {
-  customerDrawer = true;
+  customerDrawer = !this.$q.platform.is.mobile;
   customers = [
     "Annegret Krause",
     "Hans Schmidt",
