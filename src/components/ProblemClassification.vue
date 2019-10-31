@@ -119,7 +119,7 @@
         <h6 class="counter">Kundenspezifische Details</h6>
         <q-input
           v-model="details"
-          label="Notizen"
+          label="Was gibt es speziell zu diesem Problem bei diesem Kunden noch ergänzend mitzuteilen?"
           autogrow
           color="red"
           filled
@@ -177,9 +177,6 @@ export default class ProblemClassification extends Vue {
   severity = 2;
   details = "";
 
-  get terminology() {
-    return terminology;
-  }
   get problems() {
     let domains = terminology.problemClassificationScheme.domains.map(
       domain => {
