@@ -67,7 +67,13 @@ module.exports = function(ctx) {
         "QTree",
         "QSeparator",
         "QRadio",
-        "QOptionGroup"
+        "QOptionGroup",
+        "QTabs",
+        "QTab",
+        "QTabPanels",
+        "QTabPanel",
+        "QCard",
+        "QCardSection"
       ],
 
       directives: ["Ripple"],
