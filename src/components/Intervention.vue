@@ -131,7 +131,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 //@ts-ignore
 import terminology from "../data/terminology_DE.json";
-import Terminology, { TitleAndDescribable } from "../helper/terminology";
+import Terminology, { HasTitleDescription } from "../helper/terminology";
 
 @Component
 export default class Intervention extends Vue {
@@ -145,7 +145,8 @@ export default class Intervention extends Vue {
     return terminology.interventionScheme.categories;
   }
   get targets() {
-    let targets = terminology.interventionScheme.targets;
+    let targets = Terminology.makeIds(terminology as any).interventionScheme
+      .targets;
     let other = targets.pop();
     targets = targets.sort(Terminology.sortByTitle);
 
@@ -175,7 +176,7 @@ export default class Intervention extends Vue {
     this.$refs.filter[0].focus();
   }
 
-  filterTerminology(node: TitleAndDescribable, filter: string) {
+  filterTerminology(node: HasTitleDescription, filter: string) {
     return Terminology.filter(node, filter);
   }
 }
