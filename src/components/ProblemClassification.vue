@@ -165,7 +165,10 @@ import Vue from "vue";
 import Component from "vue-class-component";
 //@ts-ignore
 import terminology from "../data/terminology_DE.json";
-import Terminology, { TitleAndDescribable } from "../helper/terminology";
+import Terminology, {
+  HasTitleDescription,
+  Domain
+} from "../helper/terminology";
 
 @Component
 export default class ProblemClassification extends Vue {
@@ -178,21 +181,22 @@ export default class ProblemClassification extends Vue {
   details = "";
 
   get problems() {
-    let domains = terminology.problemClassificationScheme.domains.map(
-      domain => {
-        domain.problems = domain.problems.sort(Terminology.sortByTitle);
-        return domain;
-      }
-    );
+    let domains = Terminology.makeIds(
+      terminology as any
+    ).problemClassificationScheme.domains.map((domain: Domain) => {
+      domain.problems = domain.problems.sort(Terminology.sortByTitle);
+      return domain;
+    });
     return Terminology.treeify(domains, "domains");
   }
+
   get showSymptomsSection() {
     return this.problemSelected && this.severity == 2;
   }
 
   modifier(type: string) {
     let modifiers = terminology.problemClassificationScheme.modifiers as any;
-    let modifier = (modifiers[type] || []) as TitleAndDescribable[];
+    let modifier = (modifiers[type] || []) as HasTitleDescription[];
 
     return modifier.map((item, index) => {
       return {
@@ -209,7 +213,7 @@ export default class ProblemClassification extends Vue {
     this.$refs.filter.focus();
   }
 
-  filterTerminology(node: TitleAndDescribable, filter: string) {
+  filterTerminology(node: HasTitleDescription, filter: string) {
     return Terminology.filter(node, filter);
   }
 

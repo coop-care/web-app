@@ -1,63 +1,69 @@
-export interface Titleable {
+export interface HasTitle {
   title: string;
 }
-export interface Describable {
+export interface HasDescription {
   description: string;
 }
-export interface TitleAndDescribable extends Titleable, Describable {}
+export interface HasCode {
+  code: string;
+  id?: string;
+}
+export interface HasTitleDescription extends HasTitle, HasDescription {}
+export interface HasTitleCode extends HasTitle, HasCode {}
+export interface HasTitleDescriptionCode extends HasTitleDescription, HasCode {}
 
-export interface Terminology extends Titleable {
+export interface Terminology extends HasTitle {
   problemClassificationScheme: ProblemClassificationScheme;
   interventionScheme: InterventionScheme;
   problemRatingScale: ProblemRatingScale;
 }
-export interface ProblemClassificationScheme extends Titleable {
+export interface ProblemClassificationScheme extends HasTitle {
   domains: Domain[];
   modifiers: {
-    scope: TitleAndDescribable[];
-    severity: TitleAndDescribable[];
+    scope: HasTitleDescription[];
+    severity: HasTitleDescription[];
   };
 }
-export interface Domain extends TitleAndDescribable {
+export interface Domain extends HasTitleDescriptionCode {
   problems: Problem[];
 }
-export interface Problem extends TitleAndDescribable {
-  signsAndSymptoms: Titleable;
+export interface Problem extends HasTitleDescriptionCode {
+  signsAndSymptoms: HasTitleCode[];
 }
-export interface InterventionScheme extends Titleable {
-  categories: TitleAndDescribable[];
-  targets: TitleAndDescribable[];
+export interface InterventionScheme extends HasTitle {
+  categories: HasTitleDescriptionCode[];
+  targets: HasTitleDescriptionCode[];
 }
-export interface ProblemRatingScale extends Titleable {
+export interface ProblemRatingScale extends HasTitle {
   ratings: Rating[];
 }
-export interface Rating extends TitleAndDescribable {
-  scale: Titleable[];
+export interface Rating extends HasTitleDescription {
+  scale: HasTitle[];
 }
 
 export default {
-  autoId: 0,
+  makeIds: function(terminology: Terminology) {
+    terminology.problemClassificationScheme.domains.forEach(domain => {
+      domain.id = "D." + domain.code;
+      domain.problems.forEach(problem => {
+        problem.id = "P." + problem.code;
+        problem.signsAndSymptoms.forEach(symptom => {
+          symptom.id = problem.code + "." + symptom.code;
+        });
+      });
+    });
 
-  filter: function(node: TitleAndDescribable, filter: string) {
-    let regex = new RegExp(
-      "(^|\\b)" + filter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
-      "gi"
-    );
-    return (
-      (node.title && node.title.match(regex)) ||
-      (node.description && node.description.match(regex))
-    );
+    return terminology;
   },
 
   treeify: function(list: any[], key: string): any {
     let lastIndex = list.length - 1;
     return list.map((item, index) => {
-      let autoId = ++this.autoId;
       let result: any = {
-        id: autoId,
+        id: item.id || item.code,
         title: item.title,
         label: item.title,
-        value: autoId,
+        value: item.id || item.code,
         description: item.description,
         type: key,
         header: key,
@@ -77,7 +83,18 @@ export default {
     });
   },
 
-  sortByTitle: function(a: Titleable, b: Titleable): number {
+  filter: function(node: HasTitleDescription, filter: string) {
+    let regex = new RegExp(
+      "(^|\\b)" + filter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
+      "gi"
+    );
+    return (
+      (node.title && node.title.match(regex)) ||
+      (node.description && node.description.match(regex))
+    );
+  },
+
+  sortByTitle: function(a: HasTitle, b: HasTitle): number {
     return a.title.localeCompare(b.title);
   }
 };
