@@ -74,7 +74,8 @@ module.exports = function(ctx) {
         "QTabPanel",
         "QCard",
         "QCardSection",
-        "QPopupEdit"
+        "QPopupEdit",
+        "QBtnDropdown"
       ],
 
       directives: ["Ripple"],

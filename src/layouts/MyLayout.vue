@@ -24,11 +24,40 @@
           />
         </q-toolbar-title>
 
+        <q-btn-dropdown
+          :label="$root.$i18n.locale.split('-')[0]"
+          icon="language"
+          dense
+          auto-close
+          flat
+        >
+          <q-list>
+            <q-item
+              clickable
+              v-for="(option, index) in supportedLocales"
+              :key="index"
+              :active="$root.$i18n.locale === option.value"
+              @click="$root.$i18n.locale = option.value"
+            >
+              <q-item-section>
+                <q-item-label>{{ option.label }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
+
+        <q-separator
+          vertical
+          inset
+          spaced
+          dark
+        />
+
         <q-btn
           size="md"
           dense
           no-caps
-          outline
+          flat
           label="Feedback"
           icon="feedback"
           :ripple="false"
@@ -50,6 +79,10 @@ import Component from "vue-class-component";
 
 @Component
 export default class MyLayout extends Vue {
+  supportedLocales = [
+    { label: "English", value: "en-us" },
+    { label: "Deutsch", value: "de-de" }
+  ];
   get mailto() {
     return (
       "mailto:feedback@cooperativecare.de?subject=CoopCare Feedback&body=" +

@@ -1,0 +1,2343 @@
+{
+  "title": "Das Omaha-System",
+  "problemClassificationScheme": {
+    "title": "Problemklassifikationsschema",
+    "domains": [
+      {
+        "title": "Umweltbereich",
+        "description": "Materielle Hilfsmittel und physische Umgebung, sowohl innerhalb, als auch außerhalb des Wohnraums, der Nachbarschaft und der weiteren Gemeinschaft.",
+        "problems": [
+          {
+            "title": "Einkommen",
+            "description": "Geld aus Löhnen, Renten, Zuschüssen, Zinsen, Dividenden oder anderen Quellen, die für Lebens- und Gesundheitsausgaben zur Verfügung stehen.",
+            "signsAndSymptoms": [
+              {
+                "title": "geringes oder kein Einkommen",
+                "code": "01"
+              },
+              {
+                "title": "nicht versicherte medizinische Kosten",
+                "code": "02"
+              },
+              {
+                "title": "Schwierigkeiten bei der Geldverwaltung",
+                "code": "03"
+              },
+              {
+                "title": "in der Lage nur das Nötigste zu kaufen.",
+                "code": "04"
+              },
+              {
+                "title": "Schwierigkeiten beim Kauf von Notwendigkeiten",
+                "code": "05"
+              },
+              {
+                "title": "sonstige",
+                "code": "06"
+              }
+            ],
+            "code": "01"
+          },
+          {
+            "title": "Sanitäranlagen",
+            "description": "Sauberkeit der Umwelt und Vorsichtsmaßnahmen gegen Infektionen und Krankheiten.",
+            "signsAndSymptoms": [
+              {
+                "title": "verschmutzter Wohnbereich",
+                "code": "01"
+              },
+              {
+                "title": "unzureichende Lagerung und Entsorgung von Lebensmitteln",
+                "code": "02"
+              },
+              {
+                "title": "Insekten oder Nager",
+                "code": "03"
+              },
+              {
+                "title": "übler Geruch",
+                "code": "04"
+              },
+              {
+                "title": "unzureichende Wasserversorgung",
+                "code": "05"
+              },
+              {
+                "title": "unzureichende Abwasserentsorgung",
+                "code": "06"
+              },
+              {
+                "title": "unzureichende Möglichkeiten für Wäschereinigung",
+                "code": "07"
+              },
+              {
+                "title": "Allergene",
+                "code": "08"
+              },
+              {
+                "title": "infektiöse oder kontaminierende Stoffe",
+                "code": "09"
+              },
+              {
+                "title": "Vorhandensein von Schimmel",
+                "code": "11"
+              },
+              {
+                "title": "übermäßige Haustiere",
+                "code": "12"
+              },
+              {
+                "title": "sonstige",
+                "code": "10"
+              }
+            ],
+            "code": "02"
+          },
+          {
+            "title": "Wohnsitz",
+            "description": "Wohnbereich.",
+            "signsAndSymptoms": [
+              {
+                "title": "strukturell unsolide",
+                "code": "01"
+              },
+              {
+                "title": "unzureichende Heizung oder Kühlung",
+                "code": "02"
+              },
+              {
+                "title": "steile oder unsichere Treppe",
+                "code": "03"
+              },
+              {
+                "title": "unzureichende oder verhinderte Ausstiege oder Eintritte",
+                "code": "04"
+              },
+              {
+                "title": "überladener Lebensraum",
+                "code": "05"
+              },
+              {
+                "title": "unsichere Lagerung von gefährlichen Gegenständen oder Stoffen",
+                "code": "06"
+              },
+              {
+                "title": "unsichere Matten oder Wurfteppiche",
+                "code": "07"
+              },
+              {
+                "title": "unzureichende Sicherheitsvorrichtungen",
+                "code": "08"
+              },
+              {
+                "title": "Vorhandensein von bleihaltigen Farben",
+                "code": "09"
+              },
+              {
+                "title": "unsichere Geräte oder Ausrüstung",
+                "code": "10"
+              },
+              {
+                "title": "unzureichender oder überbelegter Lebensraum",
+                "code": "11"
+              },
+              {
+                "title": "freiliegende Verkabelung",
+                "code": "14"
+              },
+              {
+                "title": "strukturelle Barrieren",
+                "code": "15"
+              },
+              {
+                "title": "obdachlos",
+                "code": "12"
+              },
+              {
+                "title": "sonstige",
+                "code": "13"
+              }
+            ],
+            "code": "03"
+          },
+          {
+            "title": "Nachbarschaft oder Arbeitsschutz",
+            "description": "Freiheit von Krankheit, Verletzung oder Verlust in der Gemeinschaft des Ortes oder der Beschäftigung.",
+            "signsAndSymptoms": [
+              {
+                "title": "hohe Kriminalitätsrate",
+                "code": "01"
+              },
+              {
+                "title": "hoher Verschmutzungsgrad",
+                "code": "02"
+              },
+              {
+                "title": "unkontrollierte, gefährliche oder infizierte Tiere",
+                "code": "03"
+              },
+              {
+                "title": "unzureichende oder unsichere Spiel- oder Übungsbereiche",
+                "code": "05"
+              },
+              {
+                "title": "unzureichender Raum oder Möglichkeiten zur Förderung der Gesundheit",
+                "code": "07"
+              },
+              {
+                "title": "Drohungen oder Berichte über Gewalt",
+                "code": "08"
+              },
+              {
+                "title": "physische Gefahren",
+                "code": "04"
+              },
+              {
+                "title": "Gefahr durch Fahrzeuge oder Verkehr",
+                "code": "09"
+              },
+              {
+                "title": "chemische Gefahren",
+                "code": "10"
+              },
+              {
+                "title": "Strahlenrisiko",
+                "code": "11"
+              },
+              {
+                "title": "sonstige",
+                "code": "06"
+              }
+            ],
+            "code": "04"
+          }
+        ],
+        "code": "01"
+      },
+      {
+        "title": "Psychosozialer Bereich",
+        "description": "Verhaltensmuster, Emotionen, Kommunikation, Beziehungen und Entwicklung.",
+        "problems": [
+          {
+            "title": "Kommunikation mit den kommunalen Einrichtungen",
+            "description": "Interaktion zwischen dem Einzelnen, der Familie oder Gemeinschaft und Sozialeinrichtungen, Schulen und Unternehmen in Bezug auf Dienstleistungen, Informationen und Waren oder Versorgung.",
+            "signsAndSymptoms": [
+              {
+                "title": "nicht vertraut mit Optionen oder Methoden zur Inanspruchnahme von Dienstleistungen",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeiten beim Verständnis der Rollen oder Regelungen von Dienstleistern",
+                "code": "02"
+              },
+              {
+                "title": "nicht in der Lage, Bedenken an den Anbieter weiterzugeben.",
+                "code": "03"
+              },
+              {
+                "title": "Unzufriedenheit mit den Dienstleistungen",
+                "code": "04"
+              },
+              {
+                "title": "unzureichende oder nicht verfügbare Hilfsmittel",
+                "code": "06"
+              },
+              {
+                "title": "Sprachbarriere",
+                "code": "05"
+              },
+              {
+                "title": "kulturelles Hindernis",
+                "code": "08"
+              },
+              {
+                "title": "Bildungsbarriere",
+                "code": "09"
+              },
+              {
+                "title": "Transportschranke",
+                "code": "10"
+              },
+              {
+                "title": "eingeschränkter Zugang zu Pflege oder Dienstleistungen oder Gütern",
+                "code": "11"
+              },
+              {
+                "title": "nicht nutzbare oder unzureichende Kommunikationsgeräte oder Ausrüstung",
+                "code": "12"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "06"
+          },
+          {
+            "title": "Sozialer Kontakt",
+            "description": "Interaktion zwischen dem Einzelnen oder Familie oder Gemeinschaft und anderen außerhalb des unmittelbaren Wohnbereichs.",
+            "signsAndSymptoms": [
+              {
+                "title": "begrenzter sozialer Kontakt",
+                "code": "01"
+              },
+              {
+                "title": "nutzt Gesundheitsdienstleister für den sozialen Kontakt",
+                "code": "02"
+              },
+              {
+                "title": "minimale äußere Stimulation oder Freizeitaktivitäten",
+                "code": "03"
+              },
+              {
+                "title": "sonstige",
+                "code": "04"
+              }
+            ],
+            "code": "07"
+          },
+          {
+            "title": "Rollenwechsel",
+            "description": "Hinzufügen oder Entfernen einer Reihe von erwarteten Verhaltensmerkmalen.",
+            "signsAndSymptoms": [
+              {
+                "title": "unfreiwillige Rollenverlagerung",
+                "code": "06"
+              },
+              {
+                "title": "übernimmt eine neue Rolle",
+                "code": "03"
+              },
+              {
+                "title": "verliert die vorherige Rolle",
+                "code": "04"
+              },
+              {
+                "title": "sonstige",
+                "code": "05"
+              }
+            ],
+            "code": "08"
+          },
+          {
+            "title": "Zwischenmenschliche Beziehungen",
+            "description": "Verbindungen oder Bindungen zwischen der Person oder Familie oder Gemeinschaft und anderen.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schwierigkeiten beim Aufbau und Erhalt von Beziehungen",
+                "code": "01"
+              },
+              {
+                "title": "minimale gemeinsame Aktivitäten",
+                "code": "02"
+              },
+              {
+                "title": "inkongruente Werte oder Ziele oder Erwartungen oder Einzelpläne",
+                "code": "03"
+              },
+              {
+                "title": "unzureichende zwischenmenschliche Kommunikationsfähigkeiten",
+                "code": "04"
+              },
+              {
+                "title": "verlängerte, unverminderte Spannung",
+                "code": "05"
+              },
+              {
+                "title": "unangemessener Verdacht oder Manipulation oder Kontrolle",
+                "code": "08"
+              },
+              {
+                "title": "körperliche oder emotionale Misshandlungen des Partners",
+                "code": "09"
+              },
+              {
+                "title": "Schwierigkeit Problemlösung ohne Konflikte",
+                "code": "10"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "09"
+          },
+          {
+            "title": "Spiritualität",
+            "description": "Überzeugungen und Praktiken, die Glauben, Religion, Werte, den Geist oder die Seele betreffen.",
+            "signsAndSymptoms": [
+              {
+                "title": "drückt spirituelle Bedenken aus",
+                "code": "01"
+              },
+              {
+                "title": "gestörte spirituelle Rituale",
+                "code": "02"
+              },
+              {
+                "title": "gestörtes spirituelles Vertrauen",
+                "code": "03"
+              },
+              {
+                "title": "widersprüchliche spirituelle Überzeugungen und medizinische oder gesundheitliche Behandlungen",
+                "code": "04"
+              },
+              {
+                "title": "sonstige",
+                "code": "05"
+              }
+            ],
+            "code": "10"
+          },
+          {
+            "title": "Trauer",
+            "description": "Leiden und Bedrängnis im Zusammenhang mit Verlust.",
+            "signsAndSymptoms": [
+              {
+                "title": "erkennt Trauerphasen oder Prozess der Heilung nicht an",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeiten bei der Bewältigung von Trauerreaktionen",
+                "code": "02"
+              },
+              {
+                "title": "Schwierigkeit, Trauerreaktionen auszudrücken",
+                "code": "03"
+              },
+              {
+                "title": "widersprüchliche Phasen der Trauer zwischen Individuen oder Familien",
+                "code": "04"
+              },
+              {
+                "title": "sonstige",
+                "code": "05"
+              }
+            ],
+            "code": "11"
+          },
+          {
+            "title": "Psychische Gesundheit",
+            "description": "Entwicklung und Nutzung von geistigen oder emotionalen Fähigkeiten, um sich an Lebenssituationen anzupassen, mit anderen zu interagieren und Aktivitäten durchzuführen.",
+            "signsAndSymptoms": [
+              {
+                "title": "Traurigkeit oder Hoplosigkeit oder vermindertes Selbstwertgefühl",
+                "code": "01"
+              },
+              {
+                "title": "Besorgnis oder undefinierte Angst",
+                "code": "02"
+              },
+              {
+                "title": "Interessenverlust  oder  Beteiligung an Aktivitäten  oder  Selbsthilfe",
+                "code": "03"
+              },
+              {
+                "title": "eingeschränkt auf verstreute Aufmerksamkeit oder Fokussierung",
+                "code": "13"
+              },
+              {
+                "title": "flache Wirkung",
+                "code": "06"
+              },
+              {
+                "title": "gereizt oder gereizt oder aggressiv",
+                "code": "14"
+              },
+              {
+                "title": "zwecklose  oder  zwanghafte Aktivität",
+                "code": "15"
+              },
+              {
+                "title": "Schwierigkeiten beim Umgang mit Stress",
+                "code": "09"
+              },
+              {
+                "title": "Schwierigkeiten bei der Bewältigung von Wut",
+                "code": "16"
+              },
+              {
+                "title": "somatische Beschwerden oder Müdigkeit",
+                "code": "10"
+              },
+              {
+                "title": "Wahnvorstellungen",
+                "code": "17"
+              },
+              {
+                "title": "Halluzinationen oder Illusionen",
+                "code": "18"
+              },
+              {
+                "title": "drückt selbstmörderische oder mörderische Gedanken aus.",
+                "code": "19"
+              },
+              {
+                "title": "versucht Selbstmord oder Tötungsdelikte",
+                "code": "20"
+              },
+              {
+                "title": "Selbstverstümmelung",
+                "code": "21"
+              },
+              {
+                "title": "Stimmungsschwankungen",
+                "code": "22"
+              },
+              {
+                "title": "Rückblenden",
+                "code": "23"
+              },
+              {
+                "title": "sonstige",
+                "code": "12"
+              }
+            ],
+            "code": "12"
+          },
+          {
+            "title": "Sexualität",
+            "description": "Einstellungen, Gefühle und Verhaltensweisen in Bezug auf Intimität und sexuelle Aktivität.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schwierigkeiten bei der Erkennung von Folgen des Sexualverhaltens",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeit, Intimität auszudrücken",
+                "code": "02"
+              },
+              {
+                "title": "Verwechslung der sexuellen Identität",
+                "code": "03"
+              },
+              {
+                "title": "sexuelle Wertverwirrung",
+                "code": "04"
+              },
+              {
+                "title": "unzufrieden mit sexuellen Beziehungen",
+                "code": "05"
+              },
+              {
+                "title": "unsichere Sexualpraktiken",
+                "code": "07"
+              },
+              {
+                "title": "Sexuelles Ausleben oder provokatives Verhalten oder  Belästigung",
+                "code": "08"
+              },
+              {
+                "title": "sexuelle Täterschaft oder Assault",
+                "code": "09"
+              },
+              {
+                "title": "sonstige",
+                "code": "06"
+              }
+            ],
+            "code": "13"
+          },
+          {
+            "title": "Betreuung und Kindererziehung",
+            "description": "Unterstützung, Pflege, Stimulation und körperliche Betreuung von unterhaltsberechtigten Kindern und Erwachsenen.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schwierigkeiten bei der Bereitstellung von körperlicher Pflege oder Sicherheit",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeiten bei der emotionalen Pflege",
+                "code": "02"
+              },
+              {
+                "title": "Schwierigkeiten bei der Bereitstellung kognitiver Lernerfahrungen und -aktivitäten",
+                "code": "03"
+              },
+              {
+                "title": "Schwierigkeiten bei der Bereitstellung von präventiver und therapeutischer Gesundheitsversorgung",
+                "code": "04"
+              },
+              {
+                "title": "Erwartungen, die mit dem Wachstums- und Entwicklungsstadium nicht übereinstimmen.",
+                "code": "05"
+              },
+              {
+                "title": "Unzufriedenheit oder Schwierigkeit mit Verantwortlichkeiten",
+                "code": "06"
+              },
+              {
+                "title": "Schwierigkeiten beim Dolmetschen oder Reagieren auf mündliche oder nonverbale Kommunikation",
+                "code": "10"
+              },
+              {
+                "title": "nachlässig",
+                "code": "07"
+              },
+              {
+                "title": "missbräuchlich",
+                "code": "08"
+              },
+              {
+                "title": "sonstige",
+                "code": "09"
+              }
+            ],
+            "code": "14"
+          },
+          {
+            "title": "Vernachlässigung",
+            "description": "Kinder oder Erwachsene, denen die minimal akzeptierten Standards für Nahrung, Unterkunft, Kleidung oder Pflege vorenthalten werden.",
+            "signsAndSymptoms": [
+              {
+                "title": "keine angemessene körperliche Versorgung hat",
+                "code": "01"
+              },
+              {
+                "title": "Fehlende emotionale Pflege oder Unterstützung",
+                "code": "02"
+              },
+              {
+                "title": "keine angemessenen Stimulations- oder Kognitionserfahrungen hat.",
+                "code": "03"
+              },
+              {
+                "title": "unpassend allein gelassen",
+                "code": "04"
+              },
+              {
+                "title": "nicht über die erforderliche Aufsicht verfügt",
+                "code": "05"
+              },
+              {
+                "title": "unzureichende oder verzögerte medizinische Versorgung",
+                "code": "06"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "15"
+          },
+          {
+            "title": "Missbrauch",
+            "description": "Kinder oder Erwachsene, die unfallbedingter körperlicher, emotionaler oder sexueller Gewalt oder Verletzung ausgesetzt sind.",
+            "signsAndSymptoms": [
+              {
+                "title": "harte oder übertriebene Disziplin",
+                "code": "01"
+              },
+              {
+                "title": "Falze oder Verbrennungen oder andere Verletzungen",
+                "code": "02"
+              },
+              {
+                "title": "fragwürdige Erklärung der Verletzung",
+                "code": "03"
+              },
+              {
+                "title": "verbal angegriffen",
+                "code": "04"
+              },
+              {
+                "title": "ängstliches oder hypervigilantes Verhalten",
+                "code": "05"
+              },
+              {
+                "title": "gewalttätige Umgebung",
+                "code": "06"
+              },
+              {
+                "title": "konsistente negative Meldungen",
+                "code": "07"
+              },
+              {
+                "title": "sexuell missbraucht",
+                "code": "08"
+              },
+              {
+                "title": "sonstige",
+                "code": "09"
+              }
+            ],
+            "code": "16"
+          },
+          {
+            "title": "Wachstum und Entwicklung",
+            "description": "Progressive körperliche, emotionale und soziale Reifung entlang des Alterskontinuums vom Zögern bis zum Tod.",
+            "signsAndSymptoms": [
+              {
+                "title": "abnormale Ergebnisse von Entwicklungs-Screening-Tests",
+                "code": "01"
+              },
+              {
+                "title": "abnormales Gewicht  oder  Höhe  oder  Kopfumfang in Bezug auf Wachstum  oder  Alterungsstandards",
+                "code": "02"
+              },
+              {
+                "title": "altersbedingtes Verhalten",
+                "code": "03"
+              },
+              {
+                "title": "unzureichende Erreichung von Entwicklungsschritten",
+                "code": "04"
+              },
+              {
+                "title": "sonstige",
+                "code": "05"
+              }
+            ],
+            "code": "17"
+          }
+        ],
+        "code": "02"
+      },
+      {
+        "title": "Physiologischer Bereich",
+        "description": "Funktionen und Prozesse, die das Leben erhalten.",
+        "problems": [
+          {
+            "title": "Gehör",
+            "description": "Wahrnehmung von Geräuschen durch die Ohren.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schwierigkeiten beim Hören normaler Sprachtöne",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeiten beim Hören von Sprache in großen Gruppen",
+                "code": "05"
+              },
+              {
+                "title": "Schwierigkeiten beim Hören von hochfrequenten Geräuschen",
+                "code": "06"
+              },
+              {
+                "title": "Abwesend oder abnormale Reaktion auf Geräusche",
+                "code": "02"
+              },
+              {
+                "title": "abnormale Ergebnisse des Hörscreening-Tests",
+                "code": "03"
+              },
+              {
+                "title": "sonstige",
+                "code": "04"
+              }
+            ],
+            "code": "19"
+          },
+          {
+            "title": "Sehkraft",
+            "description": "Wirken oder die Kraft der Wahrnehmung mit den Augen.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schwierigkeiten bei der Darstellung kleiner Ausdrucke und Kalibrierungen",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeiten beim Sehen entfernter Objekte",
+                "code": "02"
+              },
+              {
+                "title": "Schwierigkeiten beim Sehen von nahen Objekten",
+                "code": "03"
+              },
+              {
+                "title": "absent oder abnormale Reaktion auf visuelle Reize",
+                "code": "04"
+              },
+              {
+                "title": "abnormale Ergebnisse des Sehtests",
+                "code": "05"
+              },
+              {
+                "title": "blinzeln oder blinkend oder reißen oder verschwimmend",
+                "code": "06"
+              },
+              {
+                "title": "Floater oder Blitzlichter",
+                "code": "09"
+              },
+              {
+                "title": "Schwierigkeit, Farben zu unterscheiden",
+                "code": "07"
+              },
+              {
+                "title": "sonstige",
+                "code": "08"
+              }
+            ],
+            "code": "20"
+          },
+          {
+            "title": "Sprechen und Sprache",
+            "description": "Verwendung von artikulierten Stimmlauten, Symbolen, Zeichen oder Gesten zur Kommunikation.",
+            "signsAndSymptoms": [
+              {
+                "title": "Fehlende oder abnormale Fähigkeit zu sprechen oder zu sprechen oder sprechen",
+                "code": "01"
+              },
+              {
+                "title": "Fehlende oder abnormale Fähigkeit zu verstehen",
+                "code": "02"
+              },
+              {
+                "title": "keine alternativen Kommunikationsfähigkeiten oder Gesten hat.",
+                "code": "03"
+              },
+              {
+                "title": "unangemessene Satzstruktur",
+                "code": "04"
+              },
+              {
+                "title": "begrenzte Aussprache oder Klarheit",
+                "code": "05"
+              },
+              {
+                "title": "unangemessene Wortbenutzung",
+                "code": "06"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "21"
+          },
+          {
+            "title": "Mund",
+            "description": "Zustand von Mund und Zahnfleisch sowie Anzahl, Art und Anordnung der Zähne.",
+            "signsAndSymptoms": [
+              {
+                "title": "fehlende oder gebrochene oder fehlgestaltete Zähne",
+                "code": "01"
+              },
+              {
+                "title": "Karies",
+                "code": "02"
+              },
+              {
+                "title": "überschüssiger Zahnstein",
+                "code": "03"
+              },
+              {
+                "title": "Wunde oder geschwollenes oder blutendes Zahnfleisch",
+                "code": "04"
+              },
+              {
+                "title": "Malokklusion",
+                "code": "05"
+              },
+              {
+                "title": "schlecht sitzender oder fehlender Zahnersatz",
+                "code": "06"
+              },
+              {
+                "title": "Empfindlichkeit gegen Hitze oder Kälte",
+                "code": "07"
+              },
+              {
+                "title": "sonstige",
+                "code": "08"
+              }
+            ],
+            "code": "45"
+          },
+          {
+            "title": "Kognition",
+            "description": "Fähigkeit, Informationen zu denken und zu nutzen.",
+            "signsAndSymptoms": [
+              {
+                "title": "vermindertes Urteilsvermögen",
+                "code": "01"
+              },
+              {
+                "title": "desorientiert zu Zeit oder Ort oder Person",
+                "code": "02"
+              },
+              {
+                "title": "begrenzte Erinnerung an die jüngsten Ereignisse",
+                "code": "03"
+              },
+              {
+                "title": "begrenzte Erinnerung an lang zurückliegende Ereignisse",
+                "code": "04"
+              },
+              {
+                "title": "begrenzte Fähigkeiten in der Berechnung und Sequenzierung",
+                "code": "05"
+              },
+              {
+                "title": "begrenzte Konzentration",
+                "code": "06"
+              },
+              {
+                "title": "eingeschränktes Denken oder abstraktes Denken",
+                "code": "07"
+              },
+              {
+                "title": "Impulsivität",
+                "code": "08"
+              },
+              {
+                "title": "Wiederholte Sprache  oder  Verhalten",
+                "code": "09"
+              },
+              {
+                "title": "Wanderungen",
+                "code": "11"
+              },
+              {
+                "title": "sonstige",
+                "code": "10"
+              }
+            ],
+            "code": "23"
+          },
+          {
+            "title": "Schmerzen",
+            "description": "Unangenehme sensorische und emotionale Erfahrungen, die mit tatsächlichen oder potenziellen Gewebeschäden verbunden sind.",
+            "signsAndSymptoms": [
+              {
+                "title": "drückt Unannehmlichkeiten oder Schmerzen aus",
+                "code": "01"
+              },
+              {
+                "title": "erhöhter Puls oder Atmung oder Blutdruck",
+                "code": "02"
+              },
+              {
+                "title": "kompensierte Bewegung oder Bewachung",
+                "code": "03"
+              },
+              {
+                "title": "unruhiges Verhalten",
+                "code": "04"
+              },
+              {
+                "title": "Grimassen im Gesicht",
+                "code": "05"
+              },
+              {
+                "title": "Blässe oder Schweißung",
+                "code": "06"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "24"
+          },
+          {
+            "title": "Wahrnehmung",
+            "description": "Sensibilisierung und Reaktionsfähigkeit auf Reize und die Umgebung.",
+            "signsAndSymptoms": [
+              {
+                "title": "lethargisch",
+                "code": "01"
+              },
+              {
+                "title": "stupor",
+                "code": "02"
+              },
+              {
+                "title": "reaktionslos",
+                "code": "03"
+              },
+              {
+                "title": "komatös",
+                "code": "04"
+              },
+              {
+                "title": "sonstige",
+                "code": "05"
+              }
+            ],
+            "code": "25"
+          },
+          {
+            "title": "Haut",
+            "description": "Natürliche Abdeckung des Körpers.",
+            "signsAndSymptoms": [
+              {
+                "title": "Läsion oder Druckgeschwür",
+                "code": "01"
+              },
+              {
+                "title": "überstürzt",
+                "code": "02"
+              },
+              {
+                "title": "zu trocken",
+                "code": "03"
+              },
+              {
+                "title": "übermäßig ölig",
+                "code": "04"
+              },
+              {
+                "title": "Entzündung",
+                "code": "05"
+              },
+              {
+                "title": "Juckreiz",
+                "code": "06"
+              },
+              {
+                "title": "Entwässerung",
+                "code": "07"
+              },
+              {
+                "title": "Prellungen",
+                "code": "08"
+              },
+              {
+                "title": "Hypertrophie der Nägel",
+                "code": "09"
+              },
+              {
+                "title": "verzögerte Inzisionsheilung",
+                "code": "11"
+              },
+              {
+                "title": "sonstige",
+                "code": "10"
+              }
+            ],
+            "code": "26"
+          },
+          {
+            "title": "Neuro-Muskel-Skelett-Funktion",
+            "description": "Fähigkeit von Nerven, Muskeln und Knochen, bestimmte Bewegungen, Empfindungen oder Regulierungen auszuführen oder zu koordinieren.",
+            "signsAndSymptoms": [
+              {
+                "title": "begrenzter Bewegungsumfang",
+                "code": "01"
+              },
+              {
+                "title": "verminderte Muskelkraft",
+                "code": "02"
+              },
+              {
+                "title": "verminderte Koordination",
+                "code": "03"
+              },
+              {
+                "title": "verminderter Muskeltonus",
+                "code": "04"
+              },
+              {
+                "title": "erhöhter Muskeltonus",
+                "code": "05"
+              },
+              {
+                "title": "vermindertes Gefühl",
+                "code": "06"
+              },
+              {
+                "title": "gesteigertes Gefühl",
+                "code": "07"
+              },
+              {
+                "title": "vermindertes Guthaben",
+                "code": "08"
+              },
+              {
+                "title": "Geh- und Bewegungsstörung",
+                "code": "09"
+              },
+              {
+                "title": "Übertragungsschwierigkeit",
+                "code": "13"
+              },
+              {
+                "title": "Frakturen",
+                "code": "14"
+              },
+              {
+                "title": "Erschütterungen oder Sicherungen",
+                "code": "11"
+              },
+              {
+                "title": "Schwierigkeiten bei der Thermoregulation",
+                "code": "15"
+              },
+              {
+                "title": "sonstige",
+                "code": "12"
+              }
+            ],
+            "code": "27"
+          },
+          {
+            "title": "Atmung",
+            "description": "Ein- und Ausatmen von Luft in den Körper und Austausch von Sauerstoff.",
+            "signsAndSymptoms": [
+              {
+                "title": "abnormale Atemmuster",
+                "code": "01"
+              },
+              {
+                "title": "unfähig, selbstständig zu atmen",
+                "code": "02"
+              },
+              {
+                "title": "Husten",
+                "code": "03"
+              },
+              {
+                "title": "unfähig, selbstständig zu husten oder expektorieren",
+                "code": "04"
+              },
+              {
+                "title": "Zyanose",
+                "code": "05"
+              },
+              {
+                "title": "abnormaler Auswurf",
+                "code": "06"
+              },
+              {
+                "title": "laute Atemzüge",
+                "code": "07"
+              },
+              {
+                "title": "Rhinorrhöe oder Nasenverstopfung",
+                "code": "08"
+              },
+              {
+                "title": "abnormale Atemgeräusche",
+                "code": "09"
+              },
+              {
+                "title": "abnormale Atemlaborergebnisse",
+                "code": "11"
+              },
+              {
+                "title": "sonstige",
+                "code": "10"
+              }
+            ],
+            "code": "28"
+          },
+          {
+            "title": "Kreislauf",
+            "description": "Das Pumpen von Blut in ausreichender Menge und Druck im ganzen Körper.",
+            "signsAndSymptoms": [
+              {
+                "title": "Ödem",
+                "code": "01"
+              },
+              {
+                "title": "Krämpfe oder Schmerzen an den Extremitäten",
+                "code": "02"
+              },
+              {
+                "title": "verminderte Impulse",
+                "code": "03"
+              },
+              {
+                "title": "Verfärbung der Haut",
+                "code": "04"
+              },
+              {
+                "title": "Temperaturänderung im betroffenen Bereich",
+                "code": "05"
+              },
+              {
+                "title": "Krampfadern",
+                "code": "06"
+              },
+              {
+                "title": "synkopale Episoden (Ohnmacht) oder Schwindelgefühl",
+                "code": "07"
+              },
+              {
+                "title": "abnormale Blutdruckmessung",
+                "code": "08"
+              },
+              {
+                "title": "Pulsdefizit",
+                "code": "09"
+              },
+              {
+                "title": "unregelmäßige Herzfrequenz",
+                "code": "10"
+              },
+              {
+                "title": "zu schnelle Herzfrequenz",
+                "code": "11"
+              },
+              {
+                "title": "übermäßig langsame Herzfrequenz",
+                "code": "12"
+              },
+              {
+                "title": "Anginalschmerzen",
+                "code": "13"
+              },
+              {
+                "title": "abnormale Herzgeräusche  oder  -geräusche",
+                "code": "14"
+              },
+              {
+                "title": "abnormale Gerinnung",
+                "code": "16"
+              },
+              {
+                "title": "abnormale kardiale Laborergebnisse",
+                "code": "17"
+              },
+              {
+                "title": "sonstige",
+                "code": "15"
+              }
+            ],
+            "code": "29"
+          },
+          {
+            "title": "Verdauung und Flüssigkeitsaufnahme",
+            "description": "Prozess zur Umwandlung von Lebensmitteln in Formen, die aufgenommen und assimiliert werden können, und zur Aufrechterhaltung des Flüssigkeitsgleichgewichts.",
+            "signsAndSymptoms": [
+              {
+                "title": "Übelkeit oder Verbrechen",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeit  oder  Unfähigkeit zu kauen  oder  zu schlucken  oder  zu verdauen",
+                "code": "02"
+              },
+              {
+                "title": "Verdauungsstörungen",
+                "code": "03"
+              },
+              {
+                "title": "Rückfluss",
+                "code": "04"
+              },
+              {
+                "title": "Anorexie",
+                "code": "05"
+              },
+              {
+                "title": "Anämie",
+                "code": "06"
+              },
+              {
+                "title": "Aszites",
+                "code": "07"
+              },
+              {
+                "title": "Gelbsucht  oder  Lebererweiterung",
+                "code": "08"
+              },
+              {
+                "title": "verminderter Hautturgor",
+                "code": "09"
+              },
+              {
+                "title": "rissige Lippen oder trockener Mund",
+                "code": "10"
+              },
+              {
+                "title": "Elektrolytungleichgewicht",
+                "code": "11"
+              },
+              {
+                "title": "sonstige",
+                "code": "12"
+              }
+            ],
+            "code": "30"
+          },
+          {
+            "title": "Darmfunktion",
+            "description": "Transport von Lebensmitteln durch den Magen-Darm-Trakt zur Beseitigung von Abfällen.",
+            "signsAndSymptoms": [
+              {
+                "title": "abnormale Häufigkeit oder Konsistenz des Stuhls",
+                "code": "01"
+              },
+              {
+                "title": "schmerzhafter Stuhlgang",
+                "code": "02"
+              },
+              {
+                "title": "verminderte Darmgeräusche",
+                "code": "03"
+              },
+              {
+                "title": "Blut im Stuhl",
+                "code": "04"
+              },
+              {
+                "title": "anormale Farbe",
+                "code": "05"
+              },
+              {
+                "title": "Krämpfe oder Bauchbeschwerden",
+                "code": "06"
+              },
+              {
+                "title": "Inkontinenz des Stuhls",
+                "code": "07"
+              },
+              {
+                "title": "sonstige",
+                "code": "08"
+              }
+            ],
+            "code": "31"
+          },
+          {
+            "title": "Harnwegsfunktion",
+            "description": "Produktion und Ausscheidung von Urin.",
+            "signsAndSymptoms": [
+              {
+                "title": "Verbrennung  oder  schmerzhaftes Wasserlassen",
+                "code": "01"
+              },
+              {
+                "title": "Urininkontinenz",
+                "code": "02"
+              },
+              {
+                "title": "Dringlichkeit oder Häufigkeit",
+                "code": "03"
+              },
+              {
+                "title": "Schwierigkeiten bei der Einleitung des Urinierens",
+                "code": "04"
+              },
+              {
+                "title": "Schwierigkeiten beim Entleeren der Blase",
+                "code": "05"
+              },
+              {
+                "title": "abnormale Menge",
+                "code": "06"
+              },
+              {
+                "title": "Hämaturie oder abnormale Farbe",
+                "code": "07"
+              },
+              {
+                "title": "Nykturie",
+                "code": "08"
+              },
+              {
+                "title": "Anormale Laborergebnisse der Harnwege",
+                "code": "09"
+              },
+              {
+                "title": "sonstige",
+                "code": "10"
+              }
+            ],
+            "code": "46"
+          },
+          {
+            "title": "Reproduktionsfunktion",
+            "description": "Zustand der Genitalien und Brüste und die Fähigkeit zur Fortpflanzung.",
+            "signsAndSymptoms": [
+              {
+                "title": "anormale Entladung",
+                "code": "01"
+              },
+              {
+                "title": "abnormes Menstruationsmuster",
+                "code": "02"
+              },
+              {
+                "title": "Schwierigkeiten bei der Bewältigung der Menopause  oder  Andropause",
+                "code": "03"
+              },
+              {
+                "title": "Anomale Knoten oder Schwellung oder Auffälligkeit der Genitalien oder Brüste",
+                "code": "04"
+              },
+              {
+                "title": "Schmerzen während oder nach dem Geschlechtsverkehr",
+                "code": "05"
+              },
+              {
+                "title": "Unfruchtbarkeit",
+                "code": "06"
+              },
+              {
+                "title": "Impotenz",
+                "code": "07"
+              },
+              {
+                "title": "sonstige",
+                "code": "08"
+              }
+            ],
+            "code": "47"
+          },
+          {
+            "title": "Schwangerschaft",
+            "description": "Zeitraum von der Empfängnis bis zur Geburt.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schwierigkeiten bei der Bindung an das ungeborene Baby",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeiten bei der Bewältigung von Körperveränderungen",
+                "code": "02"
+              },
+              {
+                "title": "Schwierigkeiten bei pränataler Bewegung oder Ruhe oder Diät oder Verhalten",
+                "code": "03"
+              },
+              {
+                "title": "befürchtet eine Zustellung",
+                "code": "04"
+              },
+              {
+                "title": "pränatale Komplikationen oder Vorzeitige Wehen",
+                "code": "05"
+              },
+              {
+                "title": "unzureichende soziale Unterstützung",
+                "code": "06"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "48"
+          },
+          {
+            "title": "Wochenbett",
+            "description": "Sechs Wochen nach der Geburt.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schwierigkeiten beim Stillen",
+                "code": "01"
+              },
+              {
+                "title": "Schwierigkeiten bei der Bewältigung von postpartalen Veränderungen",
+                "code": "02"
+              },
+              {
+                "title": "Schwierigkeiten bei postpartaler Bewegung oder Ruhe oder Ernährung oder Verhalten",
+                "code": "03"
+              },
+              {
+                "title": "Abnormale Blutungen oder Vaginalausfluss",
+                "code": "04"
+              },
+              {
+                "title": "postpartale Komplikationen",
+                "code": "05"
+              },
+              {
+                "title": "abnormale depressive Gefühle",
+                "code": "06"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "49"
+          },
+          {
+            "title": "Übertragbarer oder infektiöser Zustand",
+            "description": "Zustand, in dem Organismen eindringen oder infizieren und oberflächliche oder systemische Krankheiten mit dem Potenzial zur Verbreitung oder Übertragung hervorrufen.",
+            "signsAndSymptoms": [
+              {
+                "title": "Infektion",
+                "code": "01"
+              },
+              {
+                "title": "Befall",
+                "code": "02"
+              },
+              {
+                "title": "Fieber",
+                "code": "03"
+              },
+              {
+                "title": "biologische Gefahren",
+                "code": "04"
+              },
+              {
+                "title": "positive screening oder kultur oder laborergebnisse",
+                "code": "05"
+              },
+              {
+                "title": "unzureichende Lieferungen oder Ausrüstungen oder Richtlinien zur Verhinderung der Übertragung",
+                "code": "06"
+              },
+              {
+                "title": "folgt nicht der Infektionskontrolle",
+                "code": "07"
+              },
+              {
+                "title": "unzureichende Immunität",
+                "code": "08"
+              },
+              {
+                "title": "sonstige",
+                "code": "09"
+              }
+            ],
+            "code": "50"
+          }
+        ],
+        "code": "03"
+      },
+      {
+        "title": "Bereich Gesundheitsverhalten",
+        "description": "Aktivitätsmuster, die das Wohlbefinden erhalten oder fördern, die Genesung stärken und das Risiko von Krankheiten verringern.",
+        "problems": [
+          {
+            "title": "Ernährung",
+            "description": "Wählen, konsumieren und verwenden Sie Lebensmittel und Flüssigkeiten für Energie, Wartung, Wachstum und Gesundheit.",
+            "signsAndSymptoms": [
+              {
+                "title": "Übergewicht: Erwachsener BMI 25,0 oder mehr; Kind BMI 95. Perzentil oder mehr",
+                "code": "12"
+              },
+              {
+                "title": "Untergewicht: Erwachsener BMI 18,5 oder weniger; Kind BMI 5. Perzentil oder weniger",
+                "code": "13"
+              },
+              {
+                "title": "Fehlen etablierter Standards für die tägliche Kalorien- oder Flüssigkeitsaufnahme",
+                "code": "03"
+              },
+              {
+                "title": "übertrifft die etablierten Standards für die tägliche Kalorien- oder Flüssigkeitsaufnahme.",
+                "code": "04"
+              },
+              {
+                "title": "unausgewogene Ernährung",
+                "code": "05"
+              },
+              {
+                "title": "unsachgemäßer Fütterungsplan für das Alter",
+                "code": "06"
+              },
+              {
+                "title": "folgt nicht dem empfohlenen Ernährungsplan",
+                "code": "07"
+              },
+              {
+                "title": "unerklärlicher oder progressiver Gewichtsverlust",
+                "code": "08"
+              },
+              {
+                "title": "nicht in der Lage, Lebensmittel zu beschaffen oder zubereiten",
+                "code": "14"
+              },
+              {
+                "title": "Hypoglykämie",
+                "code": "09"
+              },
+              {
+                "title": "Hyperglykämie",
+                "code": "10"
+              },
+              {
+                "title": "sonstige",
+                "code": "11"
+              }
+            ],
+            "code": "35"
+          },
+          {
+            "title": "Schlaf- und Ruhemuster",
+            "description": "Perioden der suspendierten motorischen und sensorischen Aktivität und Perioden der Inaktivität, Ruhe oder geistigen Ruhe.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schlaf oder Ruhemuster stört die Familie",
+                "code": "01"
+              },
+              {
+                "title": "wacht nachts häufig auf",
+                "code": "02"
+              },
+              {
+                "title": "Schlafwandeln",
+                "code": "03"
+              },
+              {
+                "title": "Schlaflosigkeit",
+                "code": "04"
+              },
+              {
+                "title": "Alpträume",
+                "code": "05"
+              },
+              {
+                "title": "unzureichender Schlaf oder Ruhezustand für Alter oder Körperliche Verfassung",
+                "code": "06"
+              },
+              {
+                "title": "Schlafapnoe",
+                "code": "08"
+              },
+              {
+                "title": "Schnarchen",
+                "code": "09"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "36"
+          },
+          {
+            "title": "Körperliche Aktivität",
+            "description": "Zustand oder Qualität der Körperbewegungen im täglichen Leben.",
+            "signsAndSymptoms": [
+              {
+                "title": "sitzender Lebensstil",
+                "code": "01"
+              },
+              {
+                "title": "unzureichende oder inkonsistente Trainingsroutine",
+                "code": "02"
+              },
+              {
+                "title": "unangemessene Art oder Anzahl der Übungen für das Alter oder den körperlichen Zustand",
+                "code": "03"
+              },
+              {
+                "title": "sonstige",
+                "code": "04"
+              }
+            ],
+            "code": "37"
+          },
+          {
+            "title": "Körperpflege",
+            "description": "Management der persönlichen Sauberkeit und Kleidung.",
+            "signsAndSymptoms": [
+              {
+                "title": "Schwierigkeiten beim Waschen von Kleidung",
+                "code": "01"
+              },
+              {
+                "title": "Badeschwierigkeiten",
+                "code": "02"
+              },
+              {
+                "title": "Schwierigkeiten bei Toilettenaktivitäten",
+                "code": "07"
+              },
+              {
+                "title": "Schwierigkeiten beim Anziehen des Unterkörpers",
+                "code": "08"
+              },
+              {
+                "title": "Schwierigkeiten beim Anziehen des Oberkörpers",
+                "code": "09"
+              },
+              {
+                "title": "übler Körpergeruch",
+                "code": "03"
+              },
+              {
+                "title": "Schwierigkeiten beim Shampoonieren oder Kämmen der Haare",
+                "code": "04"
+              },
+              {
+                "title": "Schwierigkeiten bei der Bürstung oder Pflanze oder Mundpflege",
+                "code": "05"
+              },
+              {
+                "title": "Unwilligkeit oder Unfähigkeit oder Vergessenheit, persönliche Pflegeaktivitäten durchzuführen.",
+                "code": "10"
+              },
+              {
+                "title": "sonstige",
+                "code": "06"
+              }
+            ],
+            "code": "38"
+          },
+          {
+            "title": "Psychoaktive Substanzen",
+            "description": "Konsum von Medikamenten, Freizeitdrogen oder anderen Materialien, die Stimmungsschwankungen, psychische oder physische Abhängigkeit oder Erkrankungen verursachen können.",
+            "signsAndSymptoms": [
+              {
+                "title": "Missbrauch von rezeptfreien oder verschreibungspflichtigen Medikamenten",
+                "code": "08"
+              },
+              {
+                "title": "benutzt \"Straße\" - Freizeitdrogen",
+                "code": "09"
+              },
+              {
+                "title": "missbraucht Alkohol",
+                "code": "02"
+              },
+              {
+                "title": "raucht und verwendet Tabakwaren",
+                "code": "03"
+              },
+              {
+                "title": "Schwierigkeiten bei der Durchführung normaler Routinen",
+                "code": "04"
+              },
+              {
+                "title": "Reflexstörungen",
+                "code": "05"
+              },
+              {
+                "title": "Verhaltensänderung",
+                "code": "06"
+              },
+              {
+                "title": "Belastung durch Zigarette oder Zigarrenrauch",
+                "code": "10"
+              },
+              {
+                "title": "kauft oder verkauft illegale Substanzen",
+                "code": "11"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "39"
+          },
+          {
+            "title": "Familienplanung",
+            "description": "Praktiken, die darauf abzielen, die Schwangerschaft im Kontext von Werten, Einstellungen und Überzeugungen zu planen und zu gestalten.",
+            "signsAndSymptoms": [
+              {
+                "title": "unangemessenes oder ungültiges Wissen über Methoden der Familienplanung",
+                "code": "01"
+              },
+              {
+                "title": "unangemessenes oder unzureichendes Wissen über gesundheitliche Praktiken vor der Empfängnis",
+                "code": "05"
+              },
+              {
+                "title": "ungenaue oder inkonsistente Anwendung von Familienplanungsmethoden",
+                "code": "02"
+              },
+              {
+                "title": "unzufrieden mit der derzeitigen Familienplanungsmethode",
+                "code": "03"
+              },
+              {
+                "title": "befürchtet die Reaktionen anderer auf die Wahl der Familienplanung.",
+                "code": "06"
+              },
+              {
+                "title": "Schwierigkeiten bei der Beschaffung von Methoden der Familienplanung",
+                "code": "07"
+              },
+              {
+                "title": "sonstige",
+                "code": "04"
+              }
+            ],
+            "code": "40"
+          },
+          {
+            "title": "Gesundheitsüberwachung",
+            "description": "Verwaltung des Gesundheitsversorgungsplans durch Gesundheitsdienstleister.",
+            "signsAndSymptoms": [
+              {
+                "title": "keine routinemäßige oder präventive Gesundheitsversorgung erhält.",
+                "code": "01"
+              },
+              {
+                "title": "keine Behandlung von Symptomen sucht, die eine Bewertung oder Behandlung erfordern.",
+                "code": "02"
+              },
+              {
+                "title": "nicht wie gewünscht an den Leistungserbringer zurückkehrt.",
+                "code": "03"
+              },
+              {
+                "title": "Unfähigkeit, mehrere Termine  oder  Behandlungspläne zu koordinieren",
+                "code": "04"
+              },
+              {
+                "title": "inkonsistente Quelle der Gesundheitsversorgung",
+                "code": "05"
+              },
+              {
+                "title": "unzureichende Quelle der Gesundheitsversorgung",
+                "code": "08"
+              },
+              {
+                "title": "unzureichender Behandlungsplan",
+                "code": "06"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "41"
+          },
+          {
+            "title": "Medikamenteneinnahme",
+            "description": "Verwendung oder Anwendung von rezeptfreien und verschriebenen oder empfohlenen Medikamenten und Infusionen zur Einhaltung der Richtlinien für therapeutische Wirkung, Sicherheit und Zeitplan.",
+            "signsAndSymptoms": [
+              {
+                "title": "folgt nicht der empfohlenen Dosierung  oder  dem empfohlenen Zeitplan",
+                "code": "01"
+              },
+              {
+                "title": "Nachweis von Nebenwirkungen oder umgekehrten Reaktionen",
+                "code": "02"
+              },
+              {
+                "title": "unzureichendes System zur Medikamenteneinnahme",
+                "code": "03"
+              },
+              {
+                "title": "unsachgemäße Lagerung von Medikamenten",
+                "code": "04"
+              },
+              {
+                "title": "keine angemessenen Nachfüllungen erhält.",
+                "code": "05"
+              },
+              {
+                "title": "keine Impfungen erhält",
+                "code": "06"
+              },
+              {
+                "title": "unzureichende Medikamenteneinnahme",
+                "code": "08"
+              },
+              {
+                "title": "nicht in der Lage, Medikamente ohne Hilfe einzunehmen.",
+                "code": "09"
+              },
+              {
+                "title": "sonstige",
+                "code": "07"
+              }
+            ],
+            "code": "42"
+          }
+        ],
+        "code": "04"
+      }
+    ],
+    "modifiers": {
+      "scope": [
+        {
+          "title": "Einzelperson",
+          "description": "Eine allein lebende Person oder ein einzelnes Familienmitglied, das ein gesundheitliches Problem besitzt."
+        },
+        {
+          "title": "Familie",
+          "description": "Eine soziale Einheit oder eine Gruppe von verwandten Personen, die zusammenleben und gemeinsam ein gesundheitliches Problem besitzen."
+        },
+        {
+          "title": "Gemeinschaft",
+          "description": "Einzelpersonen oder Familien, die gemeinsam eine Gruppe, eine Nachbarschaft oder einen anderen geografischen Bezirk darstellen, und gemeinschaftlich ein gesundheitliches Problem besitzen."
+        }
+      ],
+      "severity": [
+        {
+          "title": "Vorsorge",
+          "description": "Kundeninteresse das eigene gesundheitliche Wissen, Verhalten und Prognosen zu verbessern und mit geeigneten Mitteln und Methoden das persönliche Wohlergehen zu erhalten oder vermehren, bei gleichzeitigem Fehlen von Risikofaktoren, Anzeichen oder Symptomen."
+        },
+        {
+          "title": "Potentiell",
+          "description": "Kundenstatus, bei dem bestimmte gesundheitliche Muster, Praktiken, Verhaltensweisen oder Risikofaktoren vorhanden sind, die eine optimale Gesundheit ausschließen können, bei gleichzeitigem Fehlen von konkreten Anzeichen und Symptomen."
+        },
+        {
+          "title": "Tatsächlich",
+          "description": "Kundenstatus, bei dem ein oder mehrere Anzeichen und Symptome vorhanden sind, die eine optimale Gesundheit ausschließen können."
+        }
+      ]
+    }
+  },
+  "interventionScheme": {
+    "title": "Interventionsschema",
+    "categories": [
+      {
+        "title": "Lehre, Anleitung und Beratung",
+        "description": "Aktivitäten wie die Bereitstellung von Informationen und Materialien, die Ermutigung zur Übernahme von Verantwortung und Handeln zur Selbsthilfe und Problembewältigung, sowie Unterstützung des Einzelnen, der Familie oder der Gemeinschaft Entscheidungen zu treffen und Probleme zu lösen.",
+        "code": "01"
+      },
+      {
+        "title": "Behandlungen und Verfahrensweisen",
+        "description": "Technische Aktivitäten wie Wundversorgung, Probenentnahme, Widerstandsübungen und Medikamentenverschreibung, die Anzeichen und Symptome für den Einzelnen, die Familie oder die Gemeinschaft verhindern, verringern oder lindern sollen.",
+        "code": "02"
+      },
+      {
+        "title": "Fall-Management",
+        "description": "Aktivitäten wie Koordination, Fürsprache und Überweisung, die die Erbringung von Dienstleistungen erleichtern, die Durchsetzungsfähigkeit fördern, den Einzelnen, die Familie oder die Gemeinschaft zur Nutzung geeigneter Hilfsmittel führen und die Kommunikation zwischen allen Gesundheits- und weiteren Dienstleistern verbessern.",
+        "code": "03"
+      },
+      {
+        "title": "Überwachung",
+        "description": "Aktivitäten wie Erkennung, Messung, kritische Analyse und Überwachung um den Status der Person, Familie oder Gemeinschaft in Bezug auf einen bestimmten Zustand oder ein bestimmtes Phänomen wahrzunehmen.",
+        "code": "04"
+      }
+    ],
+    "targets": [
+      {
+        "title": "Anatomie und Physiologie",
+        "description": "Struktur und Funktion des menschlichen Körpers.",
+        "code": "01"
+      },
+      {
+        "title": "Aggressionsbewältigung",
+        "description": "Aktivitäten, die negative Gefühle und Interaktionen, einschließlich Gewalt, verringern oder kontrollieren.",
+        "code": "64"
+      },
+      {
+        "title": "Verhaltensänderung",
+        "description": "Aktivitäten, die Gewohnheiten, Verhaltensweisen oder Handlungsmuster verändern.",
+        "code": "02"
+      },
+      {
+        "title": "Blasenbehandlung",
+        "description": "Aktivitäten, die die Funktion der Harnblase fördern, wie beispielsweise Blasentraining, Katheterwechsel und Katheterspülung.",
+        "code": "03"
+      },
+      {
+        "title": "Emotionale Verbundenheit",
+        "description": "Eine gegenseitige, positive Beziehung zwischen zwei Personen, wie beispielsweise zwischen einem Elternteil oder Betreuer und einem Säugling oder Kind.",
+        "code": "04"
+      },
+      {
+        "title": "Darmbehandlung",
+        "description": "Aktivitäten, die die Darmfunktion fördern, wie beispielsweise Darmtraining und Einläufe.",
+        "code": "05"
+      },
+      {
+        "title": "Herzbehandlung",
+        "description": "Aktivitäten, die die Herz- oder Kreislauffunktion fördern, wie beispielsweise Energieerhaltung und Flüssigkeitshaushalt.",
+        "code": "07"
+      },
+      {
+        "title": "Betreuungs- oder elterliche Kompetenzen",
+        "description": "Aktivitäten wie Füttern, Baden, Erziehung, Förderung und Stimulation für ein abhängiges Kind oder einen abhängigen Erwachsenen.",
+        "code": "08"
+      },
+      {
+        "title": "Gipsbehandlung",
+        "description": "Aktivitäten, die Sauberkeit, Trockenheit, Unterstützung, Ausrichtung und Linderung von Schmerzen, Druck und Einengung eines verletzten Körperteils fördern, das durch einen Gips, eine Schiene oder eine andere Vorrichtung ruhiggestellt wurde.",
+        "code": "09"
+      },
+      {
+        "title": "Kommunikation",
+        "description": "Austausch von verbalen oder nonverbalen Informationen zwischen der Einzelperson, Familie oder Gemeinschaft und anderen.",
+        "code": "10"
+      },
+      {
+        "title": "Kommunale Hilfsdienste",
+        "description": "Unterstützung bei der Koordination von Aufgaben in den Bereichen Gesundheit, Transport, Haushalt und Betreuung von Kindern oder Erwachsenen durch qualifizierte Mitarbeiter unter der Aufsicht von professionellen Gesundheitsdienstleistern.",
+        "code": "65"
+      },
+      {
+        "title": "Koordination der Pflege",
+        "description": "Kommunikation von Informationen zwischen Anbietern oder Organisationen, um eine sichere und effektive Versorgung zu gewährleisten und Doppelarbeit bei Bemühungen oder Dienstleistungen zu vermeiden.",
+        "code": "66"
+      },
+      {
+        "title": "Bewältigungskompetenzen",
+        "description": "Die Fähigkeit, Herausforderungen und Veränderungen wie Krankheit, Behinderung, Einkommensverlust, Geburt eines Kindes oder Tod eines Familienmitglieds effektiv zu bewältigen.",
+        "code": "11"
+      },
+      {
+        "title": "Tagesbetreuung und Ruhepausen",
+        "description": "Einzelpersonen oder Organisationen, die die Betreuung von Kindern oder Erwachsenen übernehmen, während die Eltern oder Erziehungsberechtigten die Schule besuchen, arbeiten oder von den üblichen Pflichten entlastet werden.",
+        "code": "12"
+      },
+      {
+        "title": "Ernährungsmanagement",
+        "description": "Ernährung mit ausgewogenen Lebensmitteln und Flüssigkeiten, die das Leben erhalten, Energie liefern und Wachstum und Gesundheit fördern.",
+        "code": "67"
+      },
+      {
+        "title": "Disziplin",
+        "description": "Pflegemaßnahmen, die angemessenes Verhalten und Selbstkontrolle fördern.",
+        "code": "13"
+      },
+      {
+        "title": "Verbandwechsel und Wundversorgung",
+        "description": "Aktivitäten, die die Wundheilung fördern und Infektionen vorbeugen, wie beispielsweise Beobachten, Messen, Reinigen, Spülen oder Abdecken einer Wunde, Läsion oder eines Schnittes.",
+        "code": "14"
+      },
+      {
+        "title": "Medizinische Gerätschaften",
+        "description": "Nicht wegwerfbare Gegenstände, die während der Pflege verwendet werden, wie spezielle Betten, Gehhilfen und Apnoe-Monitore.",
+        "code": "15"
+      },
+      {
+        "title": "Bildung",
+        "description": "Formelle Programme, die eine allgemeine, technische oder individuelle Ausbildung für Schüler jeden Alters anbieten.",
+        "code": "16"
+      },
+      {
+        "title": "Arbeitsverhältnis",
+        "description": "Berufstätigkeit, die zumindest ein existenzsicherndes Einkommen ermöglicht.",
+        "code": "17"
+      },
+      {
+        "title": "Pflege am Lebensende",
+        "description": "Aktivitäten, die körperliches Wohlbefinden und emotionale Ruhe für Sterbende ermöglichen unter Einbeziehung von Familie, Freunden, spirituellen Anliegen, Ritualen, Schmerzlinderung und Körperpflege.",
+        "code": "68"
+      },
+      {
+        "title": "Umgebung",
+        "description": "Physische Umgebung, Bedingungen oder Einflüsse am Wohnsitz, in der Nachbarschaft oder Kommune.",
+        "code": "18"
+      },
+      {
+        "title": "Übungen",
+        "description": "Therapeutische, körperliche Aktivitäten wie beispielsweise Bewegungsradius trainieren, Isometrie, Dehnen und Gewichtheben.",
+        "code": "19"
+      },
+      {
+        "title": "Betreuung bei Familienplanung",
+        "description": "Aktivitäten, die Unterstützung bieten bei der Berücksichtigung und Anwendung von Methoden zur Vorbereitung einer Schwangerschaft.",
+        "code": "20"
+      },
+      {
+        "title": "Fütterungsmethode",
+        "description": "Bereitstellung von Lebensmitteln oder Flüssigkeiten unter Verwendung von Methoden wie Brust, Muttermilchersatz, Löffel, Schlauch und intravenösen Lösungen.",
+        "code": "21"
+      },
+      {
+        "title": "Finanzen",
+        "description": "Verwaltung von Einnahmen und Ausgaben.",
+        "code": "22"
+      },
+      {
+        "title": "Gehübungen",
+        "description": "Systematische Aktivitäten, die das Gehen mit oder ohne Hilfsmittel fördern.",
+        "code": "24"
+      },
+      {
+        "title": "Erbanlagen",
+        "description": "Diagnose, Beratung und Methoden zur Vorbeugung, Erkennung oder Behandlung von Geburtsfehlern, angeborenen Anomalien oder Erkrankungen.",
+        "code": "69"
+      },
+      {
+        "title": "Wachstums- und Entwicklungsförderung",
+        "description": "Aktivitäten, die die fortschreitende Reifung im Verhältnis zum Alter fördern, wie beispielsweise das Messen von Gewicht, Größe und Kopfumfang und die Erreichung von Meilensteinen der Entwicklung zu stimulieren.",
+        "code": "25"
+      },
+      {
+        "title": "Zuhause",
+        "description": "Wohnort.",
+        "code": "27"
+      },
+      {
+        "title": "Haushaltsführung und Hauswirtschaft",
+        "description": "Management von Aktivitäten wie Putzen, Wäsche waschen und Essenszubereitung im Haushalt oder in der Gesundheitseinrichtung.",
+        "code": "70"
+      },
+      {
+        "title": "Infektionsschutzmaßnahmen",
+        "description": "Aktivitäten, die das Auftreten und die Übertragung ansteckender Krankheiten verringern, wie Händewaschen, Isolation, Probenentnahme, Kontaktnachverfolgung, Meldeverfahren und Umweltkontrolle.",
+        "code": "71"
+      },
+      {
+        "title": "Interaktion",
+        "description": "Gegenseitiges Handeln oder Einfluss unter Menschen wie Eltern-Kind, Eltern-Lehrer und Pflegekraft-Kunde.",
+        "code": "28"
+      },
+      {
+        "title": "Dolmetscher- und Übersetzungsdienste",
+        "description": "Unterstützung bei der mündlichen oder schriftlichen Kommunikation in anderen Sprachen durch qualifizierte Mitarbeiter, die von medizinischen Fachkräften beaufsichtigt werden.",
+        "code": "72"
+      },
+      {
+        "title": "Laborbefunde",
+        "description": "Ergebnisse von Flüssigkeits- und Gewebetests wie Urin- und Blutanalysen.",
+        "code": "29"
+      },
+      {
+        "title": "Rechtssystem",
+        "description": "Behörden, Verhaltensrichtlinien oder Rechtsprechung.",
+        "code": "30"
+      },
+      {
+        "title": "Medizinische oder zahnärztliche Versorgung",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Ärzte, Zahnärzte und deren Mitarbeiter oder Assistenten.",
+        "code": "31"
+      },
+      {
+        "title": "Medikamentenwirkung und Nebenwirkungen",
+        "description": "Positive oder negative Folgen von Medikamenten.",
+        "code": "32"
+      },
+      {
+        "title": "Medikamente verabreichen",
+        "description": "Aktivitäten, die die Anwendung oder Verabreichung von Medikamenten beinhalten und die von Kunden, Eltern, Betreuern oder medizinischen Fachkräften durchgeführt werden.",
+        "code": "33"
+      },
+      {
+        "title": "Medikamente bestellen und koordinieren",
+        "description": "Kommunikation mit denjenigen, die Medikamente verschreiben und ausgeben, und den Unterstützungssystemen der Einzelpersonen, Familien oder Gemeinschaften, um sicherzustellen, dass geeignete Medikamente und Vorräte rechtzeitig beschafft werden.",
+        "code": "73"
+      },
+      {
+        "title": "Medikamente verschreiben",
+        "description": "Eine formalisierte pharmazeutische Bestellung  oder  offizielle Anfrage für Medikamente.",
+        "code": "74"
+      },
+      {
+        "title": "Medikamenten richten",
+        "description": "Akt der Vorbereitung auf die Medikamentenverabreichung durch Befüllen oder Überprüfen eines oralen Medikamentenorganizers, Vorfüllen von Spritzen oder Einsetzen von intravenösen Zugangsgeräten.",
+        "code": "34"
+      },
+      {
+        "title": "Mobilität und Bewegung",
+        "description": "Körperbewegungen, die die Position verändern oder die Teilnahme an Aktivitäten wie beispielsweise Gehen ermöglichen.",
+        "code": "35"
+      },
+      {
+        "title": "Krankenpflege",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Krankenpfleger und deren Personal oder Assistenten.",
+        "code": "75"
+      },
+      {
+        "title": "Ernährungsberatung",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Ernährungsberater oder Ernährungswissenschaftler und deren Personal oder Assistenten.",
+        "code": "38"
+      },
+      {
+        "title": "Ergotherapie",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Ergotherapeuten und deren Personal oder Assistenten.",
+        "code": "76"
+      },
+      {
+        "title": "Stoma-Behandlung",
+        "description": "Aktivitäten zur Steuerung der Ausscheidung von Urin oder Stuhl durch künstliche Öffnungen wie Kolostomie und Ileostomie.",
+        "code": "39"
+      },
+      {
+        "title": "Sonstige soziale Einrichtungen",
+        "description": "Organisationen oder Gruppen, die Waren oder Dienstleistungen anbieten, die nicht speziell in anderen Zielen wie Trainingseinrichtungen, Lebensmittelkammern oder Verteilzentren oder Glaubensgemeinschaften aufgeführt sind.",
+        "code": "40"
+      },
+      {
+        "title": "Unterstützung durch Pflegehilfskräfte",
+        "description": "Unterstützung durch qualifizierte Helfer, Hausgesundheitshelfer und Pflegehelferinnen unter der Aufsicht von medizinischen Fachkräften.",
+        "code": "77"
+      },
+      {
+        "title": "Körperpflege",
+        "description": "Individuelle Pflegeaktivitäten wie Baden, Shampoonieren und Toilettengang.",
+        "code": "41"
+      },
+      {
+        "title": "Physiotherapie",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Physiotherapeuten und deren Personal oder Assistenten.",
+        "code": "78"
+      },
+      {
+        "title": "Positionierung",
+        "description": "Ausrichtung des Körpers zur Förderung von Komfort und Funktion.",
+        "code": "42"
+      },
+      {
+        "title": "Freizeittherapie",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Freizeittherapeuten und deren Personal oder Assistenten.",
+        "code": "79"
+      },
+      {
+        "title": "Entspannungs- und Atemtechniken",
+        "description": "Aktivitäten, die Muskelverspannungen lösen, eine beruhigende Körperreaktion induzieren und Energiequellen wie tiefe Atemübungen, geführte Bilder, Meditation und Massage wieder aufbauen.",
+        "code": "44"
+      },
+      {
+        "title": "Beatmungs-Pflege",
+        "description": "Aktivitäten, die die Atmungs- oder Lungenfunktion fördern, wie beispielsweise Saug- und Zerstäuberbehandlungen.",
+        "code": "80"
+      },
+      {
+        "title": "Atemtherapie",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Atemtherapeuten oder Pneumologen und deren Personal oder Assistenten.",
+        "code": "81"
+      },
+      {
+        "title": "Ruhe und Schlaf",
+        "description": "Periodischer Zustand der Ruhe und unterschiedlicher Bewusstseinsgrade.",
+        "code": "45"
+      },
+      {
+        "title": "Sicherheit",
+        "description": "Freiheit von Gefahren, Verletzungsrisiko und Verlust.",
+        "code": "46"
+      },
+      {
+        "title": "Screening-Verfahren",
+        "description": "Bewertungsstrategien, die verwendet werden, um das Risiko für Krankheiten zu identifizieren, Krankheiten frühzeitig zu diagnostizieren und Veränderungen oder Fortschritte über die Zeit zu überwachen.",
+        "code": "47"
+      },
+      {
+        "title": "Hilfe bei Krankheit und Verletzungen",
+        "description": "Aktivitäten als Reaktion auf Krankheiten oder Unfälle wie Erste Hilfe und Temperaturmessung.",
+        "code": "48"
+      },
+      {
+        "title": "Anzeichen und Symptome – mental oder emotional",
+        "description": "Objektiver oder subjektiver Nachweis von psychischen oder emotionalen Gesundheitsproblemen wie Depressionen, Verwirrung oder Unruhe.",
+        "code": "49"
+      },
+      {
+        "title": "Anzeichen und Symptome – körperlich",
+        "description": "Objektiver oder subjektiver Nachweis von körperlichen Gesundheitsproblemen wie Fieber, plötzlicher Gewichtsabnahme oder Schmerzaussage.",
+        "code": "50"
+      },
+      {
+        "title": "Hautpflege",
+        "description": "Aktivitäten, die die Hautintegrität fördern, wie beispielsweise das Auftragen von Lotion und Massage.",
+        "code": "51"
+      },
+      {
+        "title": "Sozialarbeit und Beratung",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Sozialarbeiter, Berater, Seelsorger und deren Mitarbeiter oder Assistenten.",
+        "code": "52"
+      },
+      {
+        "title": "Probensammlung",
+        "description": "Tätigkeiten zur Gewinnung von Proben von menschlichem und tierischem Gewebe, Flüssigkeiten, Sekreten oder Ausscheidungen wie Blut, Urin, Stuhl, Auswurf und Drainage.",
+        "code": "53"
+      },
+      {
+        "title": "Behandlung durch Logopädie",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Sprach- und Sprachpathologen und deren Mitarbeiter oder Assistenten.",
+        "code": "82"
+      },
+      {
+        "title": "Spirituelle Betreuung",
+        "description": "Aktivitäten, die die persönliche Gelassenheit und den Komfort fördern und spirituelle Anliegen oder Praktiken beinhalten.",
+        "code": "54"
+      },
+      {
+        "title": "Förderung und Versorgung",
+        "description": "Aktivitäten, die eine gesunde körperliche, geistige und emotionale Entwicklung fördern.",
+        "code": "55"
+      },
+      {
+        "title": "Stressbewältigung",
+        "description": "Kognitive, emotionale und körperliche Aktivitäten, die ein gesundes Funktionieren unter schwierigen Lebensbedingungen fördern.",
+        "code": "56"
+      },
+      {
+        "title": "Einstellung des Drogenkonsums",
+        "description": "Aktivitäten, die die Einstellung der Verwendung von schädlichen oder süchtig machenden Materialien fördern.",
+        "code": "83"
+      },
+      {
+        "title": "Zubehör",
+        "description": "Einwegartikel, die während der Pflege verwendet werden, wie Verbandmaterial, Spritzen, Schläuche, Windeln und Babyflaschen.",
+        "code": "58"
+      },
+      {
+        "title": "Selbsthilfegruppe",
+        "description": "Organisierte Informations- und Unterstützungsquellen wie fokussierte Kurse und Organisationen, Telefonberuhigung und zuverlässige Internetseiten, die sich mit einem bestimmten Thema wie Erziehung, Alkoholismus, Fettleibigkeit und Alzheimer befassen.",
+        "code": "59"
+      },
+      {
+        "title": "Unterstützungssystem",
+        "description": "Kreis von Angehörigen, Freunden und Mitarbeitern, die Liebe, Fürsorge und Unterstützung bei der Gesundheitsförderung und dem Umgang mit Krankheiten bieten.",
+        "code": "60"
+      },
+      {
+        "title": "Transport",
+        "description": "Reisemethoden wie Auto, Bus, Taxi, Roller oder Wagen.",
+        "code": "61"
+      },
+      {
+        "title": "Wohlbefinden",
+        "description": "Praktiken, die die körperliche und geistige Gesundheit fördern, wie Bewegung, Ernährung und Impfungen.",
+        "code": "62"
+      },
+      {
+        "title": "Sonstige",
+        "description": "Personen, Orte, Dinge oder Aktivitäten, die in dieser Liste nicht aufgeführt sind.",
+        "code": "63"
+      }
+    ]
+  },
+  "problemRatingScale": {
+    "title": "Problembewertungsskala für Ergebnisse",
+    "ratings": [
+      {
+        "title": "Zustand",
+        "description": "Zustand des Kunden in Bezug auf objektive und subjektive Merkmale.",
+        "scale": [
+          {
+            "title": "Extreme Anzeichen oder Symptome"
+          },
+          {
+            "title": "Schwerwiegende Anzeichen oder Symptome"
+          },
+          {
+            "title": "Mäßige Anzeichen oder Symptome"
+          },
+          {
+            "title": "Minimale Anzeichen oder Symptome"
+          },
+          {
+            "title": "Keine Anzeichen oder Symptome"
+          }
+        ]
+      },
+      {
+        "title": "Wissen",
+        "description": "Fähigkeit des Kunden, sich an gesundheitsbezogenes Wissen zu erinnern und es richtig zu deuten.",
+        "scale": [
+          {
+            "title": "Keine Kenntnisse"
+          },
+          {
+            "title": "Minimale Kenntnisse"
+          },
+          {
+            "title": "Grundkenntnisse"
+          },
+          {
+            "title": "Angemessene Kenntnisse"
+          },
+          {
+            "title": "Überlegenes Wissen"
+          }
+        ]
+      },
+      {
+        "title": "Verhalten",
+        "description": "Beobachtbare Reaktionen, Handlungen oder Aktivitäten des Kunden, die dem Anlass oder Zweck entsprechen.",
+        "scale": [
+          {
+            "title": "Nicht angemessenes Verhalten"
+          },
+          {
+            "title": "Selten angemessenes Verhalten"
+          },
+          {
+            "title": "Inkonsistentes angemessenes Verhalten"
+          },
+          {
+            "title": "In der Regel angemessenes Verhalten"
+          },
+          {
+            "title": "Durchgängig angemessenes Verhalten"
+          }
+        ]
+      }
+    ]
+  }
+}
