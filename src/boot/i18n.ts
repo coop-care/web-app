@@ -1,11 +1,13 @@
 import Vue from "vue";
 import VueI18n from "vue-i18n";
 import messages from "src/i18n";
+import Quasar from "quasar";
 
 Vue.use(VueI18n);
 
 const i18n = new VueI18n({
-  locale: "en-us",
+  // @ts-ignore
+  locale: Quasar.lang.getLocale(),
   fallbackLocale: "en-us",
   messages
 });

@@ -1,7 +1,7 @@
-// This is just an example,
-// so you can safely delete all default props below
-
 export default {
-  failed: 'Action failed',
-  success: 'Action was successful'
-}
+  customers: "Customers",
+  problems: "Problems",
+  recordProblem: "Add a Problem",
+  newRating: "New Rating",
+  newCustomer: "New Customer"
+};

@@ -10,7 +10,7 @@
             <q-item-label
               class="q-pl-none"
               header
-            >Kunden</q-item-label>
+            >{{ $t("customers") }}</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-btn
@@ -52,7 +52,7 @@
         </q-popup-edit>
       </h2>
       <q-list>
-        <q-item-label header>Probleme</q-item-label>
+        <q-item-label header>{{ $t("problems") }}</q-item-label>
         <q-item
           v-for="problem in customerProblems"
           v-bind:key="problem"
@@ -63,7 +63,7 @@
           </div>
           <div class="col">
             <q-btn
-              label="Neue Bewertung"
+              :label="$t('newRating')"
               to="/rating"
               color="primary"
               flat
@@ -74,11 +74,11 @@
       <q-btn
         icon="add"
         color="primary"
-        label="Problem aufnehmen"
+        :label="$t('recordProblem')"
         to="/problem/new"
         outline
         class="q-mt-md"
-      />
+      />{{$i18n.availableLocales}}
     </div>
   </q-page>
 </template>
@@ -92,7 +92,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import terminology from "../data/terminology_DE.json";
 
 @Component
 export default class PageIndex extends Vue {
@@ -108,8 +107,11 @@ export default class PageIndex extends Vue {
   customerSelected = this.customers[0];
   customerProblems: string[] = [];
 
+  get terminology() {
+    return this.$t("terminology");
+  }
   get problems() {
-    return terminology.problemClassificationScheme.domains
+    return this.terminology.problemClassificationScheme.domains
       .map(domain => {
         return domain.problems.map(item => item.title);
       })
@@ -139,7 +141,7 @@ export default class PageIndex extends Vue {
   }
 
   newCustomer() {
-    let customer = "Neuer Kunde";
+    let customer = this.$t("newCustomer");
     this.customers.push(customer);
     this.onCustomerChanged(customer);
   }
