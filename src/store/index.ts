@@ -1,5 +1,6 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from "vue";
+import Vuex from "vuex";
+import { Terminology } from "src/helper/terminology";
 
 // import example from './module-example'
 

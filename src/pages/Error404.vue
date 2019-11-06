@@ -6,19 +6,19 @@
         style="width:30vw;max-width:150px;"
       >
     </p>
-    <p class="text-faded">Sorry, nothing here...<strong>(404)</strong></p>
+    <p class="text-faded">{{ $t("error404") }}<strong>(404)</strong></p>
     <q-btn
       color="secondary"
       style="width:200px;"
       to="/"
-      label="Go back"
+      :label="$t('back')"
     />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Vue from "vue";
+import Component from "vue-class-component";
 
 @Component
 export default class Error404 extends Vue {}

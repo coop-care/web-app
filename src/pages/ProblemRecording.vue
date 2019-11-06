@@ -1,6 +1,5 @@
 <template>
   <q-page class="">
-
     <q-stepper
       v-model="step"
       ref="stepper"
@@ -14,7 +13,7 @@
     >
       <q-step
         :name="1"
-        :title="$q.screen.lt.md ? 'Problem' : terminology.problemClassificationScheme.title"
+        :title="$q.screen.lt.md ? $tc('problem', 1) : terminology.problemClassificationScheme.title"
         prefix="1"
         :done="step > 1"
         :header-nav="step > 1"
@@ -26,7 +25,7 @@
 
       <q-step
         :name="2"
-        :title="$q.screen.lt.md ? 'Bewertung' : terminology.problemRatingScale.title"
+        :title="$q.screen.lt.md ? $tc('rating', 1) : terminology.problemRatingScale.title"
         prefix="2"
         :done="step > 2"
         :header-nav="step > 2"
@@ -38,7 +37,7 @@
 
       <q-step
         :name="3"
-        :title="$q.screen.lt.md ? 'Interventionen' : terminology.interventionScheme.title"
+        :title="$q.screen.lt.md ? $tc('intervention', 2)  : terminology.interventionScheme.title"
         prefix="3"
         icon="add_comment"
         :header-nav="step > 3"
@@ -55,7 +54,7 @@
             flat
             color="primary"
             to="/"
-            label="Abbrechen"
+            :label="$t('cancel')"
             class="q-ml-sm"
           />
           <q-btn
@@ -63,20 +62,20 @@
             flat
             color="primary"
             @click="$refs.stepper.previous()"
-            label="Zurück"
+            :label="$t('back')"
             class="q-ml-sm"
           />
           <q-btn
             v-if="step < 3"
             @click="$refs.stepper.next()"
             color="primary"
-            label="Weiter"
+            :label="$t('continue')"
           />
           <q-btn
             v-if="step == 3"
             to="/"
             color="primary"
-            label="Fertig"
+            :label="$t('save')"
           />
         </q-stepper-navigation>
       </template>
@@ -91,8 +90,6 @@ import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import Intervention from "components/Intervention.vue";
-//@ts-ignore
-import terminology from "../data/terminology_DE.json";
 
 @Component({
   components: {
@@ -105,7 +102,7 @@ export default class ProblemRecording extends Vue {
   step = 1;
 
   get terminology() {
-    return terminology;
+    return this.$t("terminology");
   }
 
   scrollToTop() {

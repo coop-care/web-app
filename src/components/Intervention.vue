@@ -2,7 +2,7 @@
   <div class="intervention">
     <div class="row">
       <div class="col-md-9 col-12">
-        <h6 class="counter">Interventionen auswählen</h6>
+        <h6 class="counter">{{ $t("selectInterventions") }}</h6>
         <q-tabs
           v-model="categorySelected"
           dense
@@ -31,7 +31,7 @@
               color="amber-10"
               filled
               v-model="targetsFilter"
-              label="Ziele finden"
+              :label="$t('findTargets')"
               dense
             >
               <template v-slot:prepend>
@@ -58,7 +58,7 @@
               node-key="id"
               :filter="targetsFilter"
               :filter-method="filterTerminology"
-              no-results-label="Keine Interventions-Ziele gefunden"
+              :no-results-label="$t('noTargetsFound')"
               color="amber-10"
               tick-strategy="strict"
               :ticked.sync="targetsTicked[index]"
@@ -73,10 +73,10 @@
           </q-tab-panel>
         </q-tab-panels>
 
-        <h6 class="counter">Kundenspezifische Details</h6>
+        <h6 class="counter">{{ $t("customerSpecificInterventions") }}</h6>
         <q-input
           v-model="details"
-          label="Welche konkreten Aktivitäten werden geplant?"
+          :label="$t('customerSpecificInterventionsHint')"
           autogrow
           color="amber-10"
           filled
@@ -90,12 +90,12 @@
           class="bg-grey-1"
         >
           <q-card-section>
-            <div class="text-h6">Zusammenfassung</div>
+            <div class="text-h6">{{ $t("summary") }}</div>
           </q-card-section>
 
           <q-card-section>
             <div v-if="interventions.length">
-              Interventionen:
+              {{ $tc("intervention", 2) }}:
               <ul class="q-mt-none">
                 <li
                   v-for="(intervention, index) in interventions"
@@ -104,7 +104,7 @@
               </ul>
             </div>
             <div v-if="details.length">
-              Details:
+              {{ $t("customerSpecificInterventions") }}:
               <p class="q-pl-lg">{{ details }}</p>
             </div>
           </q-card-section>
@@ -129,9 +129,11 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-//@ts-ignore
-import terminology from "../data/terminology_DE.json";
-import Terminology, { HasTitleDescription } from "../helper/terminology";
+import TerminologyData, {
+  HasTitleDescription,
+  Terminology
+} from "../helper/terminology";
+import { QTree, QInput } from "quasar";
 
 @Component
 export default class Intervention extends Vue {
@@ -141,19 +143,21 @@ export default class Intervention extends Vue {
   targetsTicked = [[], [], [], []];
   details = "";
 
+  get terminology() {
+    return (this.$t("terminology") as unknown) as Terminology;
+  }
   get categories() {
-    return terminology.interventionScheme.categories;
+    return this.terminology.interventionScheme.categories;
   }
   get targets() {
-    let targets = Terminology.makeIds(terminology as any).interventionScheme
-      .targets;
+    let targets = this.terminology.interventionScheme.targets;
     let other = targets.pop();
-    targets = targets.sort(Terminology.sortByTitle);
+    targets = targets.sort(TerminologyData.sortByTitle);
 
     if (other) {
       targets.push(other);
     }
-    return Terminology.treeify(targets, "targets");
+    return TerminologyData.treeify(targets, "targets");
   }
   get interventions() {
     return this.targetsTicked
@@ -163,7 +167,7 @@ export default class Intervention extends Vue {
           return (
             categoryTitle +
             ": " +
-            (this.$refs.tree as any)[0].getNodeByKey(targetId).title
+            (this.$refs.tree as QTree[])[0].getNodeByKey(targetId).title
           );
         });
       })
@@ -172,12 +176,11 @@ export default class Intervention extends Vue {
 
   resetTargetsFilter() {
     this.targetsFilter = "";
-    // @ts-ignore
-    this.$refs.filter[0].focus();
+    (this.$refs.filter as QInput[])[0].focus();
   }
 
   filterTerminology(node: HasTitleDescription, filter: string) {
-    return Terminology.filter(node, filter);
+    return TerminologyData.filter(node, filter);
   }
 }
 </script>

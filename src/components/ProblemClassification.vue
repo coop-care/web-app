@@ -2,13 +2,13 @@
   <div class="problem-classification">
     <div class="row split-layout">
       <div class="col-md-6">
-        <h6 class="counter">Das Problem auswählen</h6>
+        <h6 class="counter">{{ $t("selectProblem") }}</h6>
         <q-input
           ref="filter"
           color="red"
           filled
           v-model="problemsFilter"
-          label="Problem finden"
+          :label="$t('selectProblem')"
           dense
         >
           <template v-slot:prepend>
@@ -35,7 +35,7 @@
           node-key="id"
           :filter="problemsFilter"
           :filter-method="filterTerminology"
-          no-results-label="Keine Probleme, Anzeichen oder Symptome gefunden"
+          :no-results-label="$t('noProblemsFound')"
           color="red"
           @update:selected="resetSymptoms"
         >
@@ -68,7 +68,7 @@
             v-slot:body-problems="prop"
             class="symptom-body"
           >
-            <div class="text-weight-light text-black">Symptome:</div>
+            <div class="text-weight-light text-black">{{ $t("signsAndSymptoms") }}:</div>
           </template>
           <template v-slot:header-signsAndSymptoms="prop">
             <div class="text-weight-light">{{ prop.node.title }}</div>
@@ -77,7 +77,7 @@
       </div>
 
       <div class="col-md-6">
-        <h6 class="counter">Merkmale auswählen</h6>
+        <h6 class="counter">{{ $t("selectModfiers") }}</h6>
         <q-btn-toggle
           v-model="scope"
           spread
@@ -106,7 +106,7 @@
         <h6
           v-if="showSymptomsSection"
           class="counter"
-        >Anzeichen und Symptome</h6>
+        >{{ $t("signsAndSymptoms") }}</h6>
         <q-option-group
           v-if="showSymptomsSection"
           v-model="symptomsSelected"
@@ -116,25 +116,37 @@
           keep-color
         />
 
-        <h6 class="counter">Kundenspezifische Details</h6>
+        <h6 class="counter">{{ $t("customerSpecificProblems") }}</h6>
         <q-input
           v-model="details"
-          label="Was gibt es speziell zu diesem Problem bei diesem Kunden noch ergänzend mitzuteilen?"
+          :label="$t('customerSpecificProblemsHint')"
           autogrow
           color="red"
           filled
           class="q-mb-lg"
         />
 
-        <h6 v-if="problemSelected || details.length">Zusammenfassung</h6>
+        <h6 v-if="problemSelected || details.length">{{ $t("summary") }}</h6>
         <div v-if="problemSelected">
-          Problem: {{ $refs.tree.getNodeByKey(problemSelected).title }} - {{ modifier('scope')[scope].label }} - {{ modifier('severity')[severity].label }}
+          {{ $tc("problem", 1) }}:
+          <p class="q-pl-lg">
+            {{ $refs.tree.getNodeByKey(problemSelected).title }} -
+            {{ modifier('scope')[scope].label }} -
+            {{ modifier('severity')[severity].label }}
+          </p>
         </div>
         <div v-if="showSymptomsSection && symptomsSelected.length">
-          Symptome: {{ symptomsSelected.map(id => { return $refs.tree.getNodeByKey(id).title }).join("; ") }}
+          {{ $t("signsAndSymptoms") }}:
+          <ul class="q-mt-none">
+            <li
+              v-for="(symptom, index) in selectedSymptomsNames"
+              v-bind:key="index"
+            >{{ symptom }}</li>
+          </ul>
         </div>
         <div v-if="details.length">
-          Details: {{ details }}
+          {{ $t("customerSpecificProblems") }}:
+          <p class="q-pl-lg">{{ details }}</p>
         </div>
       </div>
     </div>
@@ -163,12 +175,11 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-//@ts-ignore
-import terminology from "../data/terminology_DE.json";
-import Terminology, {
+import TerminologyData, {
   HasTitleDescription,
-  Domain
+  Terminology
 } from "../helper/terminology";
+import { QTree, QInput } from "quasar";
 
 @Component
 export default class ProblemClassification extends Vue {
@@ -180,22 +191,26 @@ export default class ProblemClassification extends Vue {
   severity = 2;
   details = "";
 
+  get terminology() {
+    return (this.$t("terminology") as unknown) as Terminology;
+  }
   get problems() {
-    let domains = Terminology.makeIds(
-      terminology as any
-    ).problemClassificationScheme.domains.map((domain: Domain) => {
-      domain.problems = domain.problems.sort(Terminology.sortByTitle);
-      return domain;
-    });
-    return Terminology.treeify(domains, "domains");
+    let domains = this.terminology.problemClassificationScheme.domains;
+    return TerminologyData.treeify(domains, "domains");
   }
 
   get showSymptomsSection() {
     return this.problemSelected && this.severity == 2;
   }
+  get selectedSymptomsNames() {
+    return this.symptomsSelected.map(id => {
+      return (this.$refs.tree as QTree).getNodeByKey(id).title;
+    });
+  }
 
   modifier(type: string) {
-    let modifiers = terminology.problemClassificationScheme.modifiers as any;
+    let modifiers = this.terminology.problemClassificationScheme
+      .modifiers as any;
     let modifier = (modifiers[type] || []) as HasTitleDescription[];
 
     return modifier.map((item, index) => {
@@ -209,12 +224,11 @@ export default class ProblemClassification extends Vue {
 
   resetProblemsFilter() {
     this.problemsFilter = "";
-    // @ts-ignore
-    this.$refs.filter.focus();
+    (this.$refs.filter as QInput).focus();
   }
 
   filterTerminology(node: HasTitleDescription, filter: string) {
-    return Terminology.filter(node, filter);
+    return TerminologyData.filter(node, filter);
   }
 
   resetSymptoms() {

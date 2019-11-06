@@ -17,8 +17,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import RatingConcept from "components/RatingConcept.vue";
-//@ts-ignore
-import terminology from "../data/terminology_DE.json";
+import { Terminology } from "../helper/terminology";
 
 @Component({
   components: {
@@ -26,8 +25,11 @@ import terminology from "../data/terminology_DE.json";
   }
 })
 export default class ProblemRating extends Vue {
+  get terminology() {
+    return (this.$t("terminology") as unknown) as Terminology;
+  }
   get ratings() {
-    return terminology.problemRatingScale.ratings.map(rating => {
+    return this.terminology.problemRatingScale.ratings.map(rating => {
       return {
         title: rating.title,
         description: rating.description,
