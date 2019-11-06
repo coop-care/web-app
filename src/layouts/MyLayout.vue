@@ -34,13 +34,13 @@
           <q-list>
             <q-item
               clickable
-              v-for="(option, index) in supportedLocales"
+              v-for="(locale, index) in $root.$i18n.availableLocales"
               :key="index"
-              :active="$root.$i18n.locale === option.value"
-              @click="$root.$i18n.locale = option.value"
+              :active="$root.$i18n.locale === locale"
+              @click="$root.$i18n.locale = locale"
             >
               <q-item-section>
-                <q-item-label>{{ option.label }}</q-item-label>
+                <q-item-label>{{ $t(locale) }}</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -58,7 +58,7 @@
           dense
           no-caps
           flat
-          label="Feedback"
+          :label="$t('feedback')"
           icon="feedback"
           :ripple="false"
           type="a"
@@ -79,10 +79,6 @@ import Component from "vue-class-component";
 
 @Component
 export default class MyLayout extends Vue {
-  supportedLocales = [
-    { label: "English", value: "en-us" },
-    { label: "Deutsch", value: "de-de" }
-  ];
   get mailto() {
     return (
       "mailto:feedback@cooperativecare.de?subject=CoopCare Feedback&body=" +

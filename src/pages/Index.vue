@@ -10,7 +10,7 @@
             <q-item-label
               class="q-pl-none"
               header
-            >{{ $t("customers") }}</q-item-label>
+            >{{ $tc("customer", 2) }}</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-btn
@@ -52,14 +52,14 @@
         </q-popup-edit>
       </h2>
       <q-list>
-        <q-item-label header>{{ $t("problems") }}</q-item-label>
+        <q-item-label header>{{ $tc("problem", 2) }}</q-item-label>
         <q-item
-          v-for="problem in customerProblems"
-          v-bind:key="problem"
+          v-for="problemIndex in customerProblems"
+          v-bind:key="problemIndex"
           class="row"
         >
           <div class="col">
-            <q-item-label>{{ problem }}</q-item-label>
+            <q-item-label>{{ problems[problemIndex] }}</q-item-label>
           </div>
           <div class="col">
             <q-btn
@@ -78,7 +78,7 @@
         to="/problem/new"
         outline
         class="q-mt-md"
-      />{{$i18n.availableLocales}}
+      />
     </div>
   </q-page>
 </template>
@@ -92,6 +92,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Terminology } from "../helper/terminology";
 
 @Component
 export default class PageIndex extends Vue {
@@ -105,10 +106,10 @@ export default class PageIndex extends Vue {
     "Martina Musterfrau"
   ].sort();
   customerSelected = this.customers[0];
-  customerProblems: string[] = [];
+  customerProblems: number[] = [];
 
   get terminology() {
-    return this.$t("terminology");
+    return (this.$t("terminology") as unknown) as Terminology;
   }
   get problems() {
     return this.terminology.problemClassificationScheme.domains
@@ -128,20 +129,18 @@ export default class PageIndex extends Vue {
     let min = 1;
     let max = 3;
     let numberOfProblems = Math.floor(Math.random() * (max - min + 1)) + min;
-    let problems: string[] = [];
+    let problems: number[] = [];
     while (problems.length < numberOfProblems) {
-      let problem = this.problems[
-        Math.floor(Math.random() * this.problems.length)
-      ];
-      if (!problems.includes(problem)) {
-        problems.push(problem);
+      let problemIndex = Math.floor(Math.random() * this.problems.length);
+      if (!problems.includes(problemIndex)) {
+        problems.push(problemIndex);
       }
     }
     return problems;
   }
 
   newCustomer() {
-    let customer = this.$t("newCustomer");
+    let customer = this.$t("newCustomer") as string;
     this.customers.push(customer);
     this.onCustomerChanged(customer);
   }
