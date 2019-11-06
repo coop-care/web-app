@@ -19,6 +19,7 @@ export default {
   findProblem: "find problem",
   noProblemsFound: "no problems, signs or symptoms found",
   signsAndSymptoms: "Signs and Symptoms",
+  otherSignsAndSymptoms: "other signs and symptoms",
   selectModfiers: "Select Modifiers",
   customerSpecificProblems: "Customer-specific Details",
   customerSpecificProblemsHint:

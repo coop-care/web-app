@@ -37,7 +37,6 @@
           :filter-method="filterTerminology"
           :no-results-label="$t('noProblemsFound')"
           color="red"
-          @update:selected="resetSymptoms"
         >
           <template v-slot:header-domains="prop">
             <div class="row items-center text-white">
@@ -51,12 +50,13 @@
             <div class="row items-center">
               <!-- <q-icon :name="prop.node.icon" color="red" size="28px" class="q-mr-sm" /> -->
               <q-radio
-                v-model="problemSelected"
+                v-model="selectedProblem"
                 :val="prop.node.id"
                 color="red"
                 keep-color
                 dense
                 class="q-mr-sm col-auto"
+                @input="resetSymptoms"
               />
               <div class="col">
                 <div class="text-weight-bold text-red">{{ prop.node.title }}</div>
@@ -109,11 +109,21 @@
         >{{ $t("signsAndSymptoms") }}</h6>
         <q-option-group
           v-if="showSymptomsSection"
-          v-model="symptomsSelected"
-          :options="$refs.tree.getNodeByKey(problemSelected).children"
+          v-model="selectedSymptoms"
+          :options="symptoms"
           color="red"
           type="checkbox"
           keep-color
+        />
+        <q-input
+          v-if="showSymptomsSection && isOtherSymptomSelected"
+          v-model="otherSymptoms"
+          color="red"
+          autogrow
+          dense
+          filled
+          :label="$t('otherSignsAndSymptoms')"
+          class="q-ml-xl"
         />
 
         <h6 class="counter">{{ $t("customerSpecificProblems") }}</h6>
@@ -126,16 +136,16 @@
           class="q-mb-lg"
         />
 
-        <h6 v-if="problemSelected || details.length">{{ $t("summary") }}</h6>
-        <div v-if="problemSelected">
+        <h6 v-if="selectedProblem || details.length">{{ $t("summary") }}</h6>
+        <div v-if="selectedProblem">
           {{ $tc("problem", 1) }}:
           <p class="q-pl-lg">
-            {{ $refs.tree.getNodeByKey(problemSelected).title }} -
+            {{ $refs.tree.getNodeByKey(selectedProblem).title }} -
             {{ modifier('scope')[scope].label }} -
             {{ modifier('severity')[severity].label }}
           </p>
         </div>
-        <div v-if="showSymptomsSection && symptomsSelected.length">
+        <div v-if="showSymptomsSection && selectedSymptoms.length">
           {{ $t("signsAndSymptoms") }}:
           <ul class="q-mt-none">
             <li
@@ -185,8 +195,9 @@ import { QTree, QInput } from "quasar";
 export default class ProblemClassification extends Vue {
   autoId = 0;
   problemsFilter = "";
-  problemSelected = 0;
-  symptomsSelected = [];
+  selectedProblem = "";
+  selectedSymptoms: string[] = [];
+  otherSymptoms = "";
   scope = 0;
   severity = 2;
   details = "";
@@ -198,14 +209,26 @@ export default class ProblemClassification extends Vue {
     let domains = this.terminology.problemClassificationScheme.domains;
     return TerminologyData.treeify(domains, "domains");
   }
+  get symptoms() {
+    return (this.$refs.tree as QTree).getNodeByKey(this.selectedProblem)
+      .children;
+  }
 
   get showSymptomsSection() {
-    return this.problemSelected && this.severity == 2;
+    return this.selectedProblem && this.severity == 2;
+  }
+  get isOtherSymptomSelected() {
+    let lastSymptom = this.symptoms[this.symptoms.length - 1];
+    return this.selectedSymptoms.includes(lastSymptom.value);
   }
   get selectedSymptomsNames() {
-    return this.symptomsSelected.map(id => {
+    let names = this.selectedSymptoms.map(id => {
       return (this.$refs.tree as QTree).getNodeByKey(id).title;
     });
+    if (this.otherSymptoms && this.isOtherSymptomSelected) {
+      names[names.length - 1] += ": " + this.otherSymptoms;
+    }
+    return names;
   }
 
   modifier(type: string) {
@@ -232,8 +255,8 @@ export default class ProblemClassification extends Vue {
   }
 
   resetSymptoms() {
-    console.log("hello");
-    this.symptomsSelected = [];
+    this.selectedSymptoms = [];
+    this.otherSymptoms = "";
   }
 }
 </script>
