@@ -105,6 +105,12 @@ export default class ProblemRecording extends Vue {
     return this.$t("terminology");
   }
 
+  beforeCreate() {
+    if (!this.$store.getters.getProblemRecordById(this.$route.params)) {
+      this.$router.push({ name: "index" });
+    }
+  }
+
   scrollToTop() {
     scroll.setScrollPosition(window, 0, 200);
   }

@@ -51,12 +51,11 @@
               <!-- <q-icon :name="prop.node.icon" color="red" size="28px" class="q-mr-sm" /> -->
               <q-radio
                 v-model="selectedProblem"
-                :val="prop.node.id"
+                :val="prop.node.value"
                 color="red"
                 keep-color
                 dense
                 class="q-mr-sm col-auto"
-                @input="resetSymptoms"
               />
               <div class="col">
                 <div class="text-weight-bold text-red">{{ prop.node.title }}</div>
@@ -140,7 +139,7 @@
         <div v-if="selectedProblem">
           {{ $tc("problem", 1) }}:
           <p class="q-pl-lg">
-            {{ $refs.tree.getNodeByKey(selectedProblem).title }} -
+            {{ $refs.tree.getNodeByKey("problems." + selectedProblem).title }} -
             {{ modifier('scope')[scope].label }} -
             {{ modifier('severity')[severity].label }}
           </p>
@@ -193,14 +192,48 @@ import { QTree, QInput } from "quasar";
 
 @Component
 export default class ProblemClassification extends Vue {
-  autoId = 0;
   problemsFilter = "";
-  selectedProblem = "";
-  selectedSymptoms: string[] = [];
-  otherSymptoms = "";
-  scope = 0;
-  severity = 2;
-  details = "";
+
+  get selectedProblem() {
+    return this.record.problem.id;
+  }
+  set selectedProblem(value: string) {
+    this.updateProblemRecord("problem.id", value);
+  }
+  get selectedSymptoms() {
+    return this.record.problem.signsAndSymptoms;
+  }
+  set selectedSymptoms(value: string[]) {
+    // preserving order of symptoms is super important because of "other" symptom
+    let symptoms = this.symptoms
+      .map((symptom: any) => symptom.id)
+      .filter((symptom: any) => value.includes(symptom));
+    this.updateProblemRecord("problem.signsAndSymptoms", symptoms);
+  }
+  get otherSymptoms() {
+    return this.record.problem.otherSignsAndSymptoms;
+  }
+  set otherSymptoms(value: string) {
+    this.updateProblemRecord("problem.otherSignsAndSymptoms", value);
+  }
+  get scope() {
+    return this.record.problem.scope;
+  }
+  set scope(value: number) {
+    this.updateProblemRecord("problem.scope", value);
+  }
+  get severity() {
+    return this.record.problem.severity;
+  }
+  set severity(value: number) {
+    this.updateProblemRecord("problem.severity", value);
+  }
+  get details() {
+    return this.record.problem.details;
+  }
+  set details(value: string) {
+    this.updateProblemRecord("problem.details", value);
+  }
 
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
@@ -210,8 +243,14 @@ export default class ProblemClassification extends Vue {
     return TerminologyData.treeify(domains, "domains");
   }
   get symptoms() {
-    return (this.$refs.tree as QTree).getNodeByKey(this.selectedProblem)
-      .children;
+    return (
+      (this.$refs.tree as QTree).getNodeByKey(
+        "problems." + this.selectedProblem
+      ) || {}
+    ).children;
+  }
+  get record() {
+    return this.$store.getters.getProblemRecordById(this.$route.params);
   }
 
   get showSymptomsSection() {
@@ -219,7 +258,7 @@ export default class ProblemClassification extends Vue {
   }
   get isOtherSymptomSelected() {
     let lastSymptom = this.symptoms[this.symptoms.length - 1];
-    return this.selectedSymptoms.includes(lastSymptom.value);
+    return this.selectedSymptoms.includes(lastSymptom.id);
   }
   get selectedSymptomsNames() {
     let names = this.selectedSymptoms.map(id => {
@@ -229,6 +268,14 @@ export default class ProblemClassification extends Vue {
       names[names.length - 1] += ": " + this.otherSymptoms;
     }
     return names;
+  }
+
+  updateProblemRecord(path: string, value: any) {
+    this.$store.commit("updateProblemRecord", {
+      path: path,
+      value: value,
+      ...this.$route.params
+    });
   }
 
   modifier(type: string) {
@@ -252,11 +299,6 @@ export default class ProblemClassification extends Vue {
 
   filterTerminology(node: HasTitleDescription, filter: string) {
     return TerminologyData.filter(node, filter);
-  }
-
-  resetSymptoms() {
-    this.selectedSymptoms = [];
-    this.otherSymptoms = "";
   }
 }
 </script>

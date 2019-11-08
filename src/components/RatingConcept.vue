@@ -8,13 +8,13 @@
       <q-list dense>
         <q-item>
           <q-item-section avatar></q-item-section>
-          <q-item-section>{{ scale[statusNowData-1] }}</q-item-section>
+          <q-item-section>{{ scale[statusObservationData-1] }}</q-item-section>
         </q-item>
         <q-item>
-          <q-item-section avatar>{{ $t('ratingNow') }}</q-item-section>
+          <q-item-section avatar>{{ $t('observation') }}</q-item-section>
           <q-item-section>
             <q-btn-toggle
-              v-model="statusNowData"
+              v-model="statusObservationData"
               spread
               no-caps
               unelevated
@@ -27,13 +27,13 @@
         </q-item>
         <q-item>
           <q-item-section avatar></q-item-section>
-          <q-item-section>{{ scale[statusGoalData-1] }}</q-item-section>
+          <q-item-section>{{ scale[statusExpectationData-1] }}</q-item-section>
         </q-item>
         <q-item>
-          <q-item-section avatar>{{ $t('ratingGoal') }}</q-item-section>
+          <q-item-section avatar>{{ $t('expectation') }}</q-item-section>
           <q-item-section>
             <q-btn-toggle
-              v-model="statusGoalData"
+              v-model="statusExpectationData"
               spread
               no-caps
               unelevated
@@ -80,7 +80,7 @@ export default class RatingConcept extends Vue {
     { label: "4", value: 4 },
     { label: "5", value: 5 }
   ];
-  statusNowData = null;
-  statusGoalData = null;
+  statusObservationData = null;
+  statusExpectationData = null;
 }
 </script>
