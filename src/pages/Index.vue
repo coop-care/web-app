@@ -18,48 +18,49 @@
               round
               size="sm"
               color="primary"
-              @click="newCustomer"
+              @click="addCustomer"
             />
           </q-item-section>
         </q-item>
 
         <q-item
           clickable
-          v-for="(name, index) in customers"
-          :key="index"
+          v-for="customer in sortedCustomers"
+          :key="customer.id"
           v-ripple
-          :active="customerSelected === name"
-          @click="onCustomerChanged(name)"
+          :active="selectedCustomerId == customer.id"
+          @click="selectCustomer(customer)"
         >
           <q-item-section>
-            <q-item-label class="q-pl-md">{{ name }}</q-item-label>
+            <q-item-label class="q-pl-md">{{ customer.name }}</q-item-label>
           </q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
 
-    <div class="customer-overview q-pa-xl">
-      <h2 class="q-mt-sm q-mb-md q-py-sm cursor-pointer">{{ customerSelected }}
-        <q-popup-edit
-          v-model="customerSelected"
-          @save="updateCustomerName"
-        >
-          <q-input
-            v-model="customerSelected"
-            dense
-            autofocus
-          />
-        </q-popup-edit>
-      </h2>
+    <div
+      class="customer-overview q-pa-xl"
+      v-if="selectedCustomer"
+    >
+      <h2
+        ref="customerName"
+        class="q-mt-sm q-mb-md q-py-sm cursor-pointer"
+        contenteditable
+        v-text="selectedCustomer.name"
+        @blur="editCustomer({id: selectedCustomerId, name: $event.target.innerText.trim()})"
+        @paste.prevent="onPasteTarget"
+        @keydown.enter="blurTarget"
+        @keydown.tab="blurTarget"
+      ></h2>
       <q-list>
         <q-item-label header>{{ $tc("problem", 2) }}</q-item-label>
         <q-item
-          v-for="problemIndex in customerProblems"
+          v-for="(problemRecord, problemIndex) in selectedCustomer.problems"
           v-bind:key="problemIndex"
           class="row"
         >
           <div class="col">
-            <q-item-label>{{ problems[problemIndex] }}</q-item-label>
+            <q-item-label>{{ problemTitleForId(problemRecord.problem.id) }}</q-item-label>
           </div>
           <div class="col">
             <q-btn
@@ -75,11 +76,23 @@
         icon="add"
         color="primary"
         :label="$t('recordProblem')"
-        to="/problem/new"
         outline
         class="q-mt-md"
+        @click="addProblem"
       />
     </div>
+    <!-- <div
+      class="customer-overview q-pa-xl"
+      v-if="!customers.length"
+    >
+      Es existieren noch keine Kunden.
+      <q-btn
+        @click="addCustomer"
+        flat
+        no-caps
+        label="Leg den ersten Kunden an."
+      />
+    </div> -->
   </q-page>
 </template>
 
@@ -92,68 +105,110 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { mapMutations } from "vuex";
 import { Terminology } from "../helper/terminology";
 
-@Component
+@Component({
+  methods: {
+    ...mapMutations(["selectCustomer", "editCustomer"])
+  }
+})
 export default class PageIndex extends Vue {
   customerDrawer = !this.$q.platform.is.mobile;
-  customers = [
-    "Annegret Krause",
-    "Hans Schmidt",
-    "Emma B.",
-    "Max Mustermann",
-    "Beate Schönfeld",
-    "Martina Musterfrau"
-  ].sort();
-  customerSelected = this.customers[0];
-  customerProblems: number[] = [];
 
+  get customers() {
+    return this.$store.state.customers;
+  }
+  get selectedCustomerId() {
+    return this.$store.state.selectedCustomerId;
+  }
+  get sortedCustomers() {
+    return this.customers
+      .concat()
+      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+  }
+  get selectedCustomer() {
+    return this.$store.getters.getCustomerById(this.selectedCustomerId);
+  }
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
   }
   get problems() {
     return this.terminology.problemClassificationScheme.domains
       .map(domain => {
-        return domain.problems.map(item => item.title);
+        return domain.problems;
       })
       .reduce((prev, current) => {
         return prev.concat(current);
       }, []);
   }
-
-  mounted() {
-    this.customerProblems = this.randomProblems();
+  get problemTitleForId() {
+    return (id: string) => {
+      return (
+        this.terminology.problemClassificationScheme.domains
+          .map(domain => {
+            return domain.problems.filter(problem => problem.code == id);
+          })
+          .reduce((prev, current) => {
+            return prev.concat(current);
+          }, [])[0] || {}
+      ).title;
+    };
   }
 
-  randomProblems() {
-    let min = 1;
-    let max = 3;
-    let numberOfProblems = Math.floor(Math.random() * (max - min + 1)) + min;
-    let problems: number[] = [];
-    while (problems.length < numberOfProblems) {
-      let problemIndex = Math.floor(Math.random() * this.problems.length);
-      if (!problems.includes(problemIndex)) {
-        problems.push(problemIndex);
+  addCustomer() {
+    this.$store.commit("addCustomer", { name: this.$t("newCustomer") });
+
+    setTimeout(() => {
+      let h2 = this.$refs.customerName as HTMLElement;
+
+      if (!h2) {
+        return;
       }
+
+      h2.focus();
+
+      let range = document.createRange();
+      range.selectNodeContents(h2);
+      let sel = window.getSelection();
+
+      if (sel) {
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }, 1);
+  }
+
+  addProblem() {
+    let params = {
+      customerId: this.selectedCustomerId as string,
+      problemIndex: ""
+    };
+    this.$store.commit("createProblemRecord", params);
+    params.problemIndex = "" + (this.selectedCustomer.problems.length - 1);
+    this.$router.push({ name: "problem", params: params });
+  }
+
+  onPasteTarget(evt: ClipboardEvent) {
+    if (!evt.clipboardData) {
+      return;
     }
-    return problems;
+
+    const text = evt.clipboardData
+      .getData("text/plain")
+      .replace(/[\n\r\t]/g, " ");
+    window.document.execCommand("insertText", false, text);
   }
 
-  newCustomer() {
-    let customer = this.$t("newCustomer") as string;
-    this.customers.push(customer);
-    this.onCustomerChanged(customer);
-  }
+  blurTarget(evt: Event) {
+    if (evt.target) {
+      (evt.target as HTMLElement).blur();
+    }
+    let sel = window.getSelection();
 
-  onCustomerChanged(name: string) {
-    this.customerSelected = name;
-    this.customerProblems = this.randomProblems();
-  }
-
-  updateCustomerName(value: string, oldValue: string) {
-    let index = this.customers.indexOf(oldValue);
-    this.customers[index] = value;
-    this.customers.sort();
+    if (sel) {
+      sel.removeAllRanges();
+    }
   }
 }
 </script>

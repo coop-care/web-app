@@ -44,9 +44,7 @@ export interface Rating extends HasTitleDescription {
 export default {
   makeIds: function(terminology: Terminology) {
     terminology.problemClassificationScheme.domains.forEach(domain => {
-      domain.id = "D." + domain.code;
       domain.problems.forEach(problem => {
-        problem.id = "P." + problem.code;
         problem.signsAndSymptoms.forEach(symptom => {
           symptom.id = problem.code + "." + symptom.code;
         });
@@ -60,7 +58,11 @@ export default {
     let lastIndex = list.length - 1;
     return list.map((item, index) => {
       let result: any = {
-        id: item.id || item.code,
+        id:
+          item.id ||
+          (["domains", "problems"].includes(key)
+            ? key + "." + item.code
+            : item.code),
         title: item.title,
         label: item.title,
         value: item.id || item.code,
