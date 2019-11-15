@@ -8,8 +8,7 @@
       animated
       flat
       :contracted="$q.screen.lt.sm"
-      @before-transition="
-      scrollToTop"
+      @before-transition="scrollToTop"
     >
       <q-step
         :name="1"
@@ -73,6 +72,7 @@
           />
           <q-btn
             v-if="step == 3"
+            @click="$store.commit('saveNewProblemRecord', $route.params)"
             to="/"
             color="primary"
             :label="$t('save')"

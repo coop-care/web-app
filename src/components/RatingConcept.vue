@@ -8,13 +8,13 @@
       <q-list dense>
         <q-item>
           <q-item-section avatar></q-item-section>
-          <q-item-section>{{ scale[statusObservationData-1] }}</q-item-section>
+          <q-item-section>{{ scale[observation-1] }}</q-item-section>
         </q-item>
         <q-item>
           <q-item-section avatar>{{ $t('observation') }}</q-item-section>
           <q-item-section>
             <q-btn-toggle
-              v-model="statusObservationData"
+              v-model="observation"
               spread
               no-caps
               unelevated
@@ -27,13 +27,13 @@
         </q-item>
         <q-item>
           <q-item-section avatar></q-item-section>
-          <q-item-section>{{ scale[statusExpectationData-1] }}</q-item-section>
+          <q-item-section>{{ scale[expectation-1] }}</q-item-section>
         </q-item>
         <q-item>
           <q-item-section avatar>{{ $t('expectation') }}</q-item-section>
           <q-item-section>
             <q-btn-toggle
-              v-model="statusExpectationData"
+              v-model="expectation"
               spread
               no-caps
               unelevated
@@ -68,7 +68,8 @@ import Component from "vue-class-component";
   props: {
     title: String,
     description: String,
-    scale: Array
+    scale: Array,
+    type: String
     // status: Number,
   }
 })
@@ -80,7 +81,37 @@ export default class RatingConcept extends Vue {
     { label: "4", value: 4 },
     { label: "5", value: 5 }
   ];
-  statusObservationData = null;
-  statusExpectationData = null;
+
+  get rating() {
+    let record = this.$store.getters.getProblemRecordById(this.$route.params);
+    let outcome = record.outcomes[record.outcomes.length - 1] || {};
+    return outcome[this.$props.type] || {};
+  }
+  get observation() {
+    return this.rating.observation || 0;
+  }
+  set observation(value: number) {
+    this.updateNewOutcome("observation", value);
+  }
+  get expectation() {
+    return this.rating.expectation || 0;
+  }
+  set expectation(value: number) {
+    this.updateNewOutcome("expectation", value);
+  }
+  get comment() {
+    return this.rating.comment || "";
+  }
+  set comment(value: string) {
+    this.updateNewOutcome("comment", value);
+  }
+
+  updateNewOutcome(path: string, value: any) {
+    this.$store.commit("updateNewOutcome", {
+      path: this.$props.type + "." + path,
+      value: value,
+      ...this.$route.params
+    });
+  }
 }
 </script>

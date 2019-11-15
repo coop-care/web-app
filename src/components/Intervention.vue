@@ -52,8 +52,7 @@
             </q-input>
 
             <q-tree
-              :nodes="targets"
-              ref="tree"
+              :nodes="targets[index]"
               label-key="title"
               node-key="id"
               :filter="targetsFilter"
@@ -61,7 +60,7 @@
               :no-results-label="$t('noTargetsFound')"
               color="amber-10"
               tick-strategy="strict"
-              :ticked.sync="targetsTicked[index]"
+              :ticked.sync="targetsTicked"
             >
               <template v-slot:default-header="prop">
                 <div>
@@ -85,30 +84,11 @@
 
       </div>
       <div class="col-md-3 col-12 summary">
-        <q-card
-          bordered
-          class="bg-grey-1"
-        >
-          <q-card-section>
-            <div class="text-h6">{{ $t("summary") }}</div>
-          </q-card-section>
-
-          <q-card-section>
-            <div v-if="interventions.length">
-              {{ $tc("intervention", 2) }}:
-              <ul class="q-mt-none">
-                <li
-                  v-for="(intervention, index) in interventions"
-                  v-bind:key="index"
-                >{{ intervention }}</li>
-              </ul>
-            </div>
-            <div v-if="details.length">
-              {{ $t("customerSpecificInterventions") }}:
-              <p class="q-pl-lg">{{ details }}</p>
-            </div>
-          </q-card-section>
-        </q-card>
+        <problem-summary
+          :problemRecord="record"
+          :params="$route.params"
+          :isSummary="true"
+        />
       </div>
     </div>
   </div>
@@ -133,19 +113,28 @@ import TerminologyData, {
   HasTitleDescription,
   Terminology
 } from "../helper/terminology";
-import { QTree, QInput } from "quasar";
+import ProblemSummary from "../components/ProblemSummary.vue";
+import { QInput } from "quasar";
 
-@Component
+@Component({
+  components: {
+    ProblemSummary
+  }
+})
 export default class Intervention extends Vue {
-  autoId = 0;
   categorySelected = null;
   targetsFilter = "";
-  targetsTicked = [[], [], [], []];
+  targetsTicked = [];
   details = "";
 
-  get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
+  get interventions() {
+    let interventions = (this.record || {}).interventions || [];
+    return interventions.map((intervention: any) => {
+      return intervention.categoryId + "." + intervention.targetId;
+    });
   }
+  set interventions(value: string[]) {}
+
   get categories() {
     return this.terminology.interventionScheme.categories;
   }
@@ -157,21 +146,19 @@ export default class Intervention extends Vue {
     if (other) {
       targets.push(other);
     }
-    return TerminologyData.treeify(targets, "targets");
+    return this.categories.map(category => {
+      return TerminologyData.treeify(targets, "targets").map((target: any) => {
+        target.id = category.code + "." + target.id;
+        return target;
+      });
+    });
   }
-  get interventions() {
-    return this.targetsTicked
-      .map((category, index) => {
-        let categoryTitle = this.categories[index].title;
-        return category.map(targetId => {
-          return (
-            categoryTitle +
-            ": " +
-            (this.$refs.tree as QTree[])[0].getNodeByKey(targetId).title
-          );
-        });
-      })
-      .reduce((prev, current) => prev.concat(current), []);
+
+  get terminology() {
+    return (this.$t("terminology") as unknown) as Terminology;
+  }
+  get record() {
+    return this.$store.getters.getProblemRecordById(this.$route.params);
   }
 
   resetTargetsFilter() {

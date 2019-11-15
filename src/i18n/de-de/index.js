@@ -31,5 +31,15 @@ export default {
   customerSpecificInterventions: "Kundenspezifische Details",
   customerSpecificInterventionsHint:
     "Welche konkreten Aktivitäten werden geplant?",
+  unspecifiedProblem: "nicht spezifiziertes Problem",
+  highPriorityTitle: "Hohe Priorität",
+  highPriorityDescription:
+    "Das Urteil des Anwenders, dass ein Problem unverzüglich angegangen werden sollte, basierend auf Empfehlungen von Kunden und anderen. Wenn ein Problem als vorrangig eingestuft wird, dokumentiert der Anwender das Problem, bietet Interventionen an und schließt Bewertungen ab.",
+  lowPriorityTitle: "Niedrige Priorität",
+  lowPriorityDescription:
+    "Die Beurteilung des Anwenders, dass ein Problem im Vergleich zu anderen Problemen von untergeordneter Bedeutung ist, basierend auf Empfehlungen von Kunden und anderen. Wenn ein Problem als unwichtig eingestuft wird, dokumentiert der Anwender das Problem, liefert aber keine Interventionen oder vollständige Bewertungen, bis sich die Bedürfnisse des Kunden ändern oder erhöhen.",
+  outcome: "Ergebnis | Ergebnisse",
+  editDraft: "Entwurf bearbeiten",
+  delete: "Löschen",
   error404: "Sorry, hier gibt es nichts..."
 };

@@ -6,7 +6,9 @@
       :title="rating.title"
       :description="rating.description"
       :scale="rating.scale"
+      :type="rating.type"
     />
+    <problem-summary :params="$route.params" :isSummary="true"/>
   </div>
 </template>
 
@@ -17,11 +19,13 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import RatingConcept from "components/RatingConcept.vue";
+import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
 
 @Component({
   components: {
-    RatingConcept
+    RatingConcept,
+    ProblemSummary
   }
 })
 export default class ProblemRating extends Vue {
@@ -29,11 +33,13 @@ export default class ProblemRating extends Vue {
     return (this.$t("terminology") as unknown) as Terminology;
   }
   get ratings() {
-    return this.terminology.problemRatingScale.ratings.map(rating => {
+    let indexToType = ["knowledge", "behaviour", "status"];
+    return this.terminology.problemRatingScale.ratings.map((rating, index) => {
       return {
         title: rating.title,
         description: rating.description,
-        scale: rating.scale.map(item => item.title)
+        scale: rating.scale.map(item => item.title),
+        type: indexToType[index]
       };
     });
   }

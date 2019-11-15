@@ -42,46 +42,28 @@
       class="customer-overview q-pa-xl"
       v-if="selectedCustomer"
     >
-      <h2
+      <content-editable
         ref="customerName"
-        class="q-mt-sm q-mb-md q-py-sm cursor-pointer"
-        contenteditable
+        class="q-mt-sm q-mb-xl q-py-sm text-h2"
         v-text="selectedCustomer.name"
-        @blur="editCustomer({id: selectedCustomerId, name: $event.target.innerText.trim()})"
-        @paste.prevent="onPasteTarget"
-        @keydown.enter="blurTarget"
-        @keydown.tab="blurTarget"
-      ></h2>
-      <q-list>
-        <q-item-label header>{{ $tc("problem", 2) }}</q-item-label>
-        <q-item
+        @change="editCustomer({customerId: selectedCustomerId, name: $event.value})"
+      />
+      <div class="q-gutter-md">
+        <problem-summary
           v-for="(problemRecord, problemIndex) in selectedCustomer.problems"
           v-bind:key="problemIndex"
-          class="row"
-        >
-          <div class="col">
-            <q-item-label>{{ problemTitleForId(problemRecord.problem.id) }}</q-item-label>
-          </div>
-          <div class="col">
-            <q-btn
-              :label="$t('newRating')"
-              to="/rating"
-              color="primary"
-              flat
-            />
-          </div>
-        </q-item>
-      </q-list>
-      <q-btn
-        icon="add"
-        color="primary"
-        :label="$t('recordProblem')"
-        outline
-        class="q-mt-md"
-        @click="addProblem"
-      />
-    </div>
-    <!-- <div
+          :problemRecord="problemRecord"
+          :params="{customerId: selectedCustomerId, problemIndex: problemIndex}"
+        />
+        <q-btn
+          icon="add"
+          color="primary"
+          :label="$t('recordProblem')"
+          outline
+          class="q-mt-md"
+          @click="addProblem"
+        />
+        <!-- <div
       class="customer-overview q-pa-xl"
       v-if="!customers.length"
     >
@@ -93,6 +75,8 @@
         label="Leg den ersten Kunden an."
       />
     </div> -->
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -106,9 +90,15 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { mapMutations } from "vuex";
+import ContentEditable from "../components/ContentEditable.vue";
+import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
 
 @Component({
+  components: {
+    ContentEditable,
+    ProblemSummary
+  },
   methods: {
     ...mapMutations(["selectCustomer", "editCustomer"])
   }
@@ -128,32 +118,14 @@ export default class PageIndex extends Vue {
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
   }
   get selectedCustomer() {
-    return this.$store.getters.getCustomerById(this.selectedCustomerId);
+    return this.$store.getters.getCustomerById({
+      customerId: this.selectedCustomerId,
+      terminology: this.terminology
+    });
   }
+
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
-  }
-  get problems() {
-    return this.terminology.problemClassificationScheme.domains
-      .map(domain => {
-        return domain.problems;
-      })
-      .reduce((prev, current) => {
-        return prev.concat(current);
-      }, []);
-  }
-  get problemTitleForId() {
-    return (id: string) => {
-      return (
-        this.terminology.problemClassificationScheme.domains
-          .map(domain => {
-            return domain.problems.filter(problem => problem.code == id);
-          })
-          .reduce((prev, current) => {
-            return prev.concat(current);
-          }, [])[0] || {}
-      ).title;
-    };
   }
 
   addCustomer() {
@@ -187,28 +159,6 @@ export default class PageIndex extends Vue {
     this.$store.commit("createProblemRecord", params);
     params.problemIndex = "" + (this.selectedCustomer.problems.length - 1);
     this.$router.push({ name: "problem", params: params });
-  }
-
-  onPasteTarget(evt: ClipboardEvent) {
-    if (!evt.clipboardData) {
-      return;
-    }
-
-    const text = evt.clipboardData
-      .getData("text/plain")
-      .replace(/[\n\r\t]/g, " ");
-    window.document.execCommand("insertText", false, text);
-  }
-
-  blurTarget(evt: Event) {
-    if (evt.target) {
-      (evt.target as HTMLElement).blur();
-    }
-    let sel = window.getSelection();
-
-    if (sel) {
-      sel.removeAllRanges();
-    }
   }
 }
 </script>
