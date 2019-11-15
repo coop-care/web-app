@@ -30,5 +30,15 @@ export default {
   noTargetsFound: "no intervention targets found",
   customerSpecificInterventions: "Customer-specific Details",
   customerSpecificInterventionsHint: "What concrete activities are planned?",
+  unspecifiedProblem: "unspecified problem",
+  highPriorityTitle: "High Priority",
+  highPriorityDescription:
+    "Practitioner’s judgment that a problem should be addressed promptly, based on recommendations from clients, referral sources, and others. When a problem is considered high priority, the practitioner documents the problem, provides interventions, and completes ratings.",
+  lowPriorityTitle: "Low Priority",
+  lowPriorityDescription:
+    "Practitioner’s judgment that a problem is of secondary concern as compared to other problems, based on recommendations from clients, referral sources, and others. When a problem is considered low priority, the practitioner documents the problem, but does not provide interventions or complete ratings until the client’s needs change or increase.",
+  outcome: "Outcome | Outcomes",
+  editDraft: "Edit Draft",
+  delete: "Delete",
   error404: "Sorry, nothing here..."
 };

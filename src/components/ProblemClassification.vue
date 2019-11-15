@@ -1,5 +1,8 @@
 <template>
-  <div class="problem-classification">
+  <div
+    class="problem-classification"
+    v-if="record"
+  >
     <div class="row split-layout">
       <div class="col-md-6">
         <h6 class="counter">{{ $t("selectProblem") }}</h6>
@@ -30,7 +33,6 @@
 
         <q-tree
           :nodes="problems"
-          ref="tree"
           label-key="title"
           node-key="id"
           :filter="problemsFilter"
@@ -88,7 +90,7 @@
           :options="modifier('scope')"
           class="q-mb-xs"
         />
-        <div class="text-weight-light q-mb-md q-px-lg">{{ modifier('scope')[scope].description }}</div>
+        <div class="text-weight-light q-mb-md q-px-lg">{{ record.problem.descriptions.scope }}</div>
         <q-btn-toggle
           v-model="severity"
           spread
@@ -100,7 +102,7 @@
           :options="modifier('severity')"
           class="q-mb-xs"
         />
-        <div class="text-weight-light q-mb-md q-px-lg">{{ modifier('severity')[severity].description }}</div>
+        <div class="text-weight-light q-mb-md q-px-lg">{{ record.problem.descriptions.severity }}</div>
 
         <h6
           v-if="showSymptomsSection"
@@ -109,7 +111,7 @@
         <q-option-group
           v-if="showSymptomsSection"
           v-model="selectedSymptoms"
-          :options="symptoms"
+          :options="symptomsForSelectedProblem"
           color="red"
           type="checkbox"
           keep-color
@@ -135,28 +137,11 @@
           class="q-mb-lg"
         />
 
-        <h6 v-if="selectedProblem || details.length">{{ $t("summary") }}</h6>
-        <div v-if="selectedProblem">
-          {{ $tc("problem", 1) }}:
-          <p class="q-pl-lg">
-            {{ $refs.tree.getNodeByKey("problems." + selectedProblem).title }} -
-            {{ modifier('scope')[scope].label }} -
-            {{ modifier('severity')[severity].label }}
-          </p>
-        </div>
-        <div v-if="showSymptomsSection && selectedSymptoms.length">
-          {{ $t("signsAndSymptoms") }}:
-          <ul class="q-mt-none">
-            <li
-              v-for="(symptom, index) in selectedSymptomsNames"
-              v-bind:key="index"
-            >{{ symptom }}</li>
-          </ul>
-        </div>
-        <div v-if="details.length">
-          {{ $t("customerSpecificProblems") }}:
-          <p class="q-pl-lg">{{ details }}</p>
-        </div>
+        <problem-summary
+          :problemRecord="record"
+          :params="$route.params"
+          :isSummary="true"
+        />
       </div>
     </div>
   </div>
@@ -188,9 +173,14 @@ import TerminologyData, {
   HasTitleDescription,
   Terminology
 } from "../helper/terminology";
-import { QTree, QInput } from "quasar";
+import { QInput } from "quasar";
+import ProblemSummary from "../components/ProblemSummary.vue";
 
-@Component
+@Component({
+  components: {
+    ProblemSummary
+  }
+})
 export default class ProblemClassification extends Vue {
   problemsFilter = "";
 
@@ -201,13 +191,17 @@ export default class ProblemClassification extends Vue {
     this.updateProblemRecord("problem.id", value);
   }
   get selectedSymptoms() {
-    return this.record.problem.signsAndSymptoms;
+    return this.record.problem.signsAndSymptoms.map(
+      (symptom: any) => symptom.id
+    );
   }
   set selectedSymptoms(value: string[]) {
     // preserving order of symptoms is super important because of "other" symptom
-    let symptoms = this.symptoms
-      .map((symptom: any) => symptom.id)
-      .filter((symptom: any) => value.includes(symptom));
+    let symptoms = this.symptomsForSelectedProblem
+      .map((symptom: any) => {
+        return { id: symptom.value };
+      })
+      .filter((symptom: any) => value.includes(symptom.id));
     this.updateProblemRecord("problem.signsAndSymptoms", symptoms);
   }
   get otherSymptoms() {
@@ -235,39 +229,35 @@ export default class ProblemClassification extends Vue {
     this.updateProblemRecord("problem.details", value);
   }
 
-  get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
-  }
   get problems() {
     let domains = this.terminology.problemClassificationScheme.domains;
     return TerminologyData.treeify(domains, "domains");
   }
-  get symptoms() {
-    return (
-      (this.$refs.tree as QTree).getNodeByKey(
-        "problems." + this.selectedProblem
-      ) || {}
-    ).children;
+  get symptomsForSelectedProblem() {
+    return this.$store.getters.symptomsForProblemCode({
+      problemCode: this.selectedProblem,
+      terminology: this.terminology
+    });
   }
-  get record() {
-    return this.$store.getters.getProblemRecordById(this.$route.params);
-  }
-
   get showSymptomsSection() {
     return this.selectedProblem && this.severity == 2;
   }
   get isOtherSymptomSelected() {
-    let lastSymptom = this.symptoms[this.symptoms.length - 1];
-    return this.selectedSymptoms.includes(lastSymptom.id);
-  }
-  get selectedSymptomsNames() {
-    let names = this.selectedSymptoms.map(id => {
-      return (this.$refs.tree as QTree).getNodeByKey(id).title;
+    let otherSymptom = this.$store.getters.otherSymptomForProblemCode({
+      problemCode: this.selectedProblem,
+      terminology: this.terminology
     });
-    if (this.otherSymptoms && this.isOtherSymptomSelected) {
-      names[names.length - 1] += ": " + this.otherSymptoms;
-    }
-    return names;
+    return this.selectedSymptoms.includes(otherSymptom.value);
+  }
+
+  get terminology() {
+    return (this.$t("terminology") as unknown) as Terminology;
+  }
+  get record() {
+    return this.$store.getters.getProblemRecordById({
+      terminology: this.terminology,
+      ...this.$route.params
+    });
   }
 
   updateProblemRecord(path: string, value: any) {

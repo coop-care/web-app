@@ -2276,27 +2276,6 @@
     "title": "Problembewertungsskala für Ergebnisse",
     "ratings": [
       {
-        "title": "Zustand",
-        "description": "Zustand des Kunden in Bezug auf objektive und subjektive Merkmale.",
-        "scale": [
-          {
-            "title": "Extreme Anzeichen oder Symptome"
-          },
-          {
-            "title": "Schwerwiegende Anzeichen oder Symptome"
-          },
-          {
-            "title": "Mäßige Anzeichen oder Symptome"
-          },
-          {
-            "title": "Minimale Anzeichen oder Symptome"
-          },
-          {
-            "title": "Keine Anzeichen oder Symptome"
-          }
-        ]
-      },
-      {
         "title": "Wissen",
         "description": "Fähigkeit des Kunden, sich an gesundheitsbezogenes Wissen zu erinnern und es richtig zu deuten.",
         "scale": [
@@ -2335,6 +2314,27 @@
           },
           {
             "title": "Durchgängig angemessenes Verhalten"
+          }
+        ]
+      },
+      {
+        "title": "Zustand",
+        "description": "Zustand des Kunden in Bezug auf objektive und subjektive Merkmale.",
+        "scale": [
+          {
+            "title": "Extreme Anzeichen oder Symptome"
+          },
+          {
+            "title": "Schwerwiegende Anzeichen oder Symptome"
+          },
+          {
+            "title": "Mäßige Anzeichen oder Symptome"
+          },
+          {
+            "title": "Minimale Anzeichen oder Symptome"
+          },
+          {
+            "title": "Keine Anzeichen oder Symptome"
           }
         ]
       }

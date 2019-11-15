@@ -1,15 +1,27 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import Tree from "../helper/tree";
+import TerminologyData, {
+  Terminology,
+  HasTitleCode
+} from "../helper/terminology";
+import sampleData from "../data/sample1";
+import ApexCharts from "apexcharts";
 
 Vue.use(Vuex);
 
-interface Customer {
+export interface Term {
   id: string;
+  title?: string;
+  description?: string;
+}
+export interface Customer extends Term {
   name: string;
   problems: ProblemRecord[];
+  created: Date;
+  left?: Date;
 }
-interface ProblemRecord {
+export interface ProblemRecord {
   assessment: Note[];
   problem: Problem;
   interventions: Intervention[];
@@ -18,33 +30,43 @@ interface ProblemRecord {
   resolved: Date | undefined;
   ratingIntervalInDays: number;
 }
-interface Problem {
-  id: string;
+export interface Problem extends Term {
   scope: number;
   severity: number;
-  signsAndSymptoms: string[];
+  signsAndSymptoms: Term[];
   otherSignsAndSymptoms: string;
   details: string;
+  isHighPriority: boolean;
+  titles?: ProblemTextExtension;
+  descriptions?: ProblemTextExtension;
 }
-interface Intervention {
-  id: string;
+export interface ProblemTextExtension {
+  scope: string;
+  severity: string;
+  priorityKey: string;
+}
+export interface Intervention {
+  category: Term;
+  target: Term;
   details: Note[];
-  started: Date;
+  started: Date | undefined;
   ended: Date | undefined;
 }
-interface Outcome {
-  created: Date;
-  observation: Rating;
-  expectation: Rating;
+export interface Outcome {
+  created: Date | undefined;
+  knowledge: Rating;
+  behaviour: Rating;
+  status: Rating;
   ratedWhoInsteadOfOwner: string;
+}
+export interface Rating {
+  observation: number;
+  expectation: number;
   comment: string;
+  title?: string;
+  description?: string;
 }
-interface Rating {
-  status: number;
-  knowledge: number;
-  behaviour: number;
-}
-interface Note {
+export interface Note {
   text: string;
   created: Date;
 }
@@ -57,26 +79,197 @@ interface Note {
 export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
-      customers: [] as Customer[],
+      customers: sampleData,
       selectedCustomerId: ""
     },
     getters: {
-      getCustomerById: state => (id: string) => {
-        return state.customers.filter(customer => customer.id === id)[0];
+      getCustomerById: state => (payload: any): Customer | undefined => {
+        let customer = state.customers.find(
+          customer => customer.id === payload.customerId
+        );
+
+        if (customer && payload.terminology) {
+          customer.problems = TerminologyData.mergeProblemRecordsAndTerminology(
+            customer.problems,
+            payload.terminology
+          );
+        }
+
+        return customer;
       },
-      getProblemRecordById: state => ({
-        customerId,
-        problemIndex
-      }: {
-        customerId: string;
-        problemIndex: number;
-      }) => {
-        let customer = Store.getters.getCustomerById(customerId);
+      getProblemRecordById: state => (
+        payload: any
+      ): ProblemRecord | undefined => {
+        let customer = Store.getters.getCustomerById(payload) as
+          | Customer
+          | undefined;
         if (!customer) {
           return;
         }
 
-        return customer.problems[problemIndex];
+        let problemRecord = customer.problems[payload.problemIndex];
+
+        if (problemRecord && payload.terminology) {
+          return TerminologyData.mergeProblemRecordsAndTerminology(
+            [problemRecord],
+            payload.terminology
+          )[0];
+        } else {
+          return problemRecord;
+        }
+      },
+      getOutcomeAsChartData: state => (payload: any): any[] => {
+        let problemRecord = Store.getters.getProblemRecordById(
+          payload
+        ) as ProblemRecord;
+
+        if (
+          !problemRecord ||
+          !payload.ratings ||
+          !problemRecord.created ||
+          !problemRecord.outcomes.length
+        ) {
+          return [];
+        }
+
+        return ["knowledge", "behaviour", "status"].map((key, index) => {
+          let series = [
+            {
+              name: payload.ratings[index].title,
+              data: problemRecord.outcomes
+                .filter((outcome: Outcome) => outcome.created)
+                .map((outcome: Outcome) => {
+                  let value = (outcome as any)[key];
+                  return {
+                    x: outcome.created,
+                    y: value.observation,
+                    comment: value.comment
+                  };
+                })
+            },
+            {
+              name: payload.expectation,
+              data: problemRecord.outcomes.map((outcome: any) => {
+                let value = outcome[key];
+                return {
+                  x: outcome.created || new Date(),
+                  y: value.expectation
+                };
+              })
+            }
+          ];
+
+          let group = [
+            "summary",
+            payload.customerId,
+            payload.problemIndex
+          ].join(".");
+          let id = [group, key].join(".");
+
+          let options = {
+            chart: {
+              id: id,
+              group: group,
+              events: {
+                mounted: (chartContext: any, config: any) => {
+                  chartContext.updateOptions({}, true, true, false);
+                  ApexCharts.exec(id, "render", {});
+                },
+                mouseMove: (
+                  event: MouseEvent,
+                  chartContext: any,
+                  config: any
+                ) => {}
+              },
+              toolbar: {
+                show: false
+              },
+              sparkline: {
+                enabled: false
+              },
+              zoom: {
+                enabled: false
+              }
+            },
+            dataLabels: {
+              enabled: false
+            },
+            legend: {
+              show: false
+            },
+            stroke: {
+              curve: "smooth",
+              width: 2
+            },
+            tooltip: {
+              enabled: true,
+              shared: true,
+              fixed: {
+                enabled: false
+              },
+              y: {
+                formatter: (
+                  value: any,
+                  { series, seriesIndex, dataPointIndex, w }: any
+                ) => {
+                  let comment =
+                    w.config.series[seriesIndex].data[dataPointIndex].comment;
+                  if (false) {
+                    return "" + value + ": " + comment;
+                  } else {
+                    return value;
+                  }
+                }
+              }
+            },
+            xaxis: {
+              labels: {
+                show: false
+              },
+              type: "datetime"
+            },
+            yaxis: {
+              min: 1,
+              max: 5,
+              forceNiceScale: true,
+              labels: {
+                minWidth: 1,
+                formatter: (value: number) => value
+              }
+            }
+          };
+
+          return {
+            series: series,
+            options: options,
+            title: payload.ratings[index].title
+          };
+        });
+      },
+
+      symptomsForProblemCode: state => ({
+        problemCode,
+        terminology
+      }: {
+        problemCode: string;
+        terminology: Terminology;
+      }): any[] => {
+        let problemTerminology = TerminologyData.flattenedProblems(
+          terminology
+        ).find(problem => problem.code == problemCode);
+
+        if (!problemTerminology) {
+          return [];
+        }
+        return problemTerminology.signsAndSymptoms.map(symptom => {
+          return { label: symptom.title, value: symptom.code };
+        });
+      },
+      otherSymptomForProblemCode: state => (payload: any) => {
+        let symptoms = Store.getters.symptomsForProblemCode(
+          payload
+        ) as HasTitleCode[];
+        return symptoms[symptoms.length - 1];
       }
     },
     mutations: {
@@ -84,7 +277,12 @@ export default function(/* { ssrContext } */) {
         let id = Math.random()
           .toString(36)
           .substring(2, 10);
-        let customer = { id: id, name: name, problems: [] };
+        let customer = {
+          id: id,
+          name: name,
+          problems: [],
+          created: new Date()
+        };
         state.customers.push(customer);
         state.selectedCustomerId = id;
       },
@@ -92,7 +290,8 @@ export default function(/* { ssrContext } */) {
         state.selectedCustomerId = customer.id;
       },
       editCustomer(state, payload: Customer) {
-        let customer = Store.getters.getCustomerById(payload.id);
+        let customer = Store.getters.getCustomerById(payload) as Customer;
+
         if (!customer) {
           return;
         }
@@ -103,8 +302,9 @@ export default function(/* { ssrContext } */) {
           }
         }
       },
-      createProblemRecord(state, { customerId }: { customerId: number }) {
-        let customer: Customer = Store.getters.getCustomerById(customerId);
+      createProblemRecord(state, payload) {
+        let customer: Customer = Store.getters.getCustomerById(payload);
+
         if (!customer) {
           return;
         }
@@ -117,7 +317,8 @@ export default function(/* { ssrContext } */) {
             severity: 2,
             signsAndSymptoms: [],
             otherSignsAndSymptoms: "",
-            details: ""
+            details: "",
+            isHighPriority: true
           },
           interventions: [],
           outcomes: [],
@@ -128,7 +329,10 @@ export default function(/* { ssrContext } */) {
         customer.problems.push(problemRecord);
       },
       updateProblemRecord(state, payload) {
-        let problemRecord = Store.getters.getProblemRecordById(payload);
+        let problemRecord = Store.getters.getProblemRecordById(
+          payload
+        ) as ProblemRecord;
+
         if (!problemRecord) {
           return;
         }
@@ -140,18 +344,87 @@ export default function(/* { ssrContext } */) {
           problemRecord.problem.otherSignsAndSymptoms = "";
         }
       },
-      addOutcome(state, payload) {
-        let customer = state.customers[payload.customerId];
+      deleteDraftProblemRecord(state, payload) {
+        let customer: Customer = Store.getters.getCustomerById(payload);
+
         if (!customer) {
           return;
         }
 
-        let problem = customer.problems[payload.problemId];
-        if (!problem) {
+        customer.problems = customer.problems.filter(
+          (problemRecord: ProblemRecord, index: number) => {
+            return problemRecord.created || index != payload.problemIndex;
+          }
+        );
+      },
+      updateNewOutcome(state, payload) {
+        let problemRecord = Store.getters.getProblemRecordById(
+          payload
+        ) as ProblemRecord;
+
+        if (!problemRecord) {
           return;
         }
 
-        problem.outcomes.push(payload.outcome);
+        let outcome = problemRecord.outcomes[problemRecord.outcomes.length - 1];
+
+        if (!outcome || outcome.created) {
+          let defaultValue = outcome || {
+            status: {},
+            knowledge: {},
+            behaviour: {}
+          };
+          outcome = {
+            created: undefined,
+            knowledge: {
+              observation: defaultValue.knowledge.observation || 0,
+              expectation: defaultValue.knowledge.expectation || 0,
+              comment: ""
+            },
+            behaviour: {
+              observation: defaultValue.behaviour.observation || 0,
+              expectation: defaultValue.behaviour.expectation || 0,
+              comment: ""
+            },
+            status: {
+              observation: defaultValue.status.observation || 0,
+              expectation: defaultValue.status.expectation || 0,
+              comment: ""
+            },
+            ratedWhoInsteadOfOwner: defaultValue.ratedWhoInsteadOfOwner || ""
+          };
+          problemRecord.outcomes.push(outcome);
+        }
+
+        Tree.deepAssign(outcome, payload.path.split("."), payload.value);
+      },
+      addIntervention(state, payload) {
+        let problemRecord = Store.getters.getProblemRecordById(
+          payload
+        ) as ProblemRecord;
+
+        if (!problemRecord) {
+          return;
+        }
+
+        problemRecord.interventions.push;
+      },
+      removeIntervention(state, payload) {},
+      saveNewProblemRecord(state, payload) {
+        let problemRecord = Store.getters.getProblemRecordById(
+          payload
+        ) as ProblemRecord;
+
+        if (!problemRecord) {
+          return;
+        }
+
+        let now = new Date();
+        problemRecord.created = now;
+        (problemRecord.outcomes[0] || {}).created = now;
+        problemRecord.interventions.forEach(intervention => {
+          intervention.started = now;
+        });
       }
     },
 

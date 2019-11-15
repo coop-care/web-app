@@ -1,7 +1,25 @@
 <template>
   <q-page padding>
-    <div class="text-h5">Bewertung des Problems Mental health von Erika B.</div>
-    <problem-rating />
+    <div class="text-h6">{{$t('newRating')}}</div>
+    <div class="text-subtitle-1">{{ }}</div>
+    <problem-rating
+      :params="$route.params"
+      :isSummary="true"
+    />
+    <div class="flex justify-around q-mt-lg">
+      <q-btn
+        :label="$t('cancel')"
+        @click="$store.commit('updateNewOutcome', {path: 'created', value: new Date(), ...$route.params}); $router.push({name: 'index'})"
+        to="/"
+        flat
+        color="primary"
+      />
+      <q-btn
+        :label="$t('save')"
+        @click="$store.commit('updateNewOutcome', {path: 'created', value: new Date(), ...$route.params}); $router.push({name: 'index'})"
+        color="primary"
+      />
+    </div>
   </q-page>
 </template>
 

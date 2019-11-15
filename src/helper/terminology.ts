@@ -1,3 +1,5 @@
+import * as Store from "../store/index";
+
 export interface HasTitle {
   title: string;
 }
@@ -42,36 +44,21 @@ export interface Rating extends HasTitleDescription {
 }
 
 export default {
-  makeIds: function(terminology: Terminology) {
-    terminology.problemClassificationScheme.domains.forEach(domain => {
-      domain.problems.forEach(problem => {
-        problem.signsAndSymptoms.forEach(symptom => {
-          symptom.id = problem.code + "." + symptom.code;
-        });
-      });
-    });
-
-    return terminology;
-  },
-
   treeify: function(list: any[], key: string): any {
     let lastIndex = list.length - 1;
     return list.map((item, index) => {
       let result: any = {
-        id:
-          item.id ||
-          (["domains", "problems"].includes(key)
-            ? key + "." + item.code
-            : item.code),
+        id: ["domains", "problems"].includes(key)
+          ? key + "." + item.code
+          : item.code,
         title: item.title,
         label: item.title,
-        value: item.id || item.code,
+        value: item.code,
         description: item.description,
         type: key,
         header: key,
         body: key,
-        selectable: key == "problems",
-        isLast: index == lastIndex
+        selectable: key == "problems"
       };
 
       for (let key in item) {
@@ -98,5 +85,100 @@ export default {
 
   sortByTitle: function(a: HasTitle, b: HasTitle): number {
     return a.title.localeCompare(b.title);
+  },
+
+  mergeProblemRecordsAndTerminology: function(
+    problemRecords: Store.ProblemRecord[],
+    terminology: Terminology
+  ): Store.ProblemRecord[] {
+    let problemsTerminology = this.flattenedProblems(terminology);
+    let modifiersTerminology =
+      terminology.problemClassificationScheme.modifiers;
+    let categoriesTerminology = terminology.interventionScheme.categories;
+    let targetsTerminology = terminology.interventionScheme.targets;
+    // let ratingsTerminology = terminology.problemRatingScale.ratings;
+    // let knowledgeTerminology = ratingsTerminology[0];
+    // let behaviourTerminology = ratingsTerminology[1];
+    // let statusTerminology = ratingsTerminology[2];
+
+    return problemRecords.map(record => {
+      let problemTerminology = problemsTerminology.find(
+        problemTerminology => problemTerminology.code == record.problem.id
+      );
+
+      if (problemTerminology) {
+        record.problem.title = problemTerminology.title;
+        record.problem.description = problemTerminology.description;
+
+        record.problem.signsAndSymptoms.map(symptom => {
+          //@ts-ignore
+          let symptomTerminology = problemTerminology.signsAndSymptoms.find(
+            symptomTerminology => symptomTerminology.code == symptom.id
+          );
+
+          if (symptomTerminology) {
+            symptom.title = symptomTerminology.title;
+          }
+          return symptom;
+        });
+      }
+
+      record.problem.titles = {
+        scope: modifiersTerminology.scope[record.problem.scope].title,
+        severity: modifiersTerminology.severity[record.problem.severity].title,
+        priorityKey: record.problem.isHighPriority
+          ? "highPriorityTitle"
+          : "lowPriorityTitle"
+      };
+      record.problem.descriptions = {
+        scope: modifiersTerminology.scope[record.problem.scope].description,
+        severity:
+          modifiersTerminology.severity[record.problem.severity].description,
+        priorityKey: record.problem.isHighPriority
+          ? "highPriorityDescription"
+          : "lowPriorityDescription"
+      };
+
+      record.interventions = record.interventions.map(intervention => {
+        let categoryTerminology = categoriesTerminology.find(
+          categoryTerminology =>
+            categoryTerminology.code == intervention.category.id
+        );
+
+        if (categoryTerminology) {
+          intervention.category.title = categoryTerminology.title;
+          intervention.category.description = categoryTerminology.description;
+        }
+
+        let targetTerminology = targetsTerminology.find(
+          targetTerminology => targetTerminology.code == intervention.target.id
+        );
+
+        if (targetTerminology) {
+          intervention.target.title = targetTerminology.title;
+          intervention.target.description = targetTerminology.description;
+        }
+
+        return intervention;
+      });
+
+      // record.outcomes = record.outcomes.map(outcome => {
+      //   outcome.knowledge.title = knowledgeTerminology.title;
+      //   outcome.knowledge.description = knowledgeTerminology.description;
+      //   outcome.behaviour.title = behaviourTerminology.title;
+      //   outcome.behaviour.description = behaviourTerminology.description;
+      //   outcome.status.title = statusTerminology.title;
+      //   outcome.status.description = statusTerminology.description;
+      //   return outcome;
+      // });
+
+      return record;
+    });
+  },
+
+  flattenedProblems: function(terminology: Terminology): Problem[] {
+    return terminology.problemClassificationScheme.domains
+      .map(domain => domain.problems)
+      .reduce((previous, current) => previous.concat(current), [] as Problem[]);
   }
 };

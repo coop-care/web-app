@@ -2276,27 +2276,6 @@
     "title": "Problem Rating Scale for Outcomes",
     "ratings": [
       {
-        "title": "Status",
-        "description": "Condition of the client in relation to objective and subjective defining characteristics.",
-        "scale": [
-          {
-            "title": "Extreme signs/symptoms"
-          },
-          {
-            "title": "Severe signs/symptoms"
-          },
-          {
-            "title": "Moderate signs/symptoms"
-          },
-          {
-            "title": "Minimal signs/symptoms"
-          },
-          {
-            "title": "No signs/symptoms"
-          }
-        ]
-      },
-      {
         "title": "Knowledge",
         "description": "Ability of the client to remember and interpret information.",
         "scale": [
@@ -2335,6 +2314,27 @@
           },
           {
             "title": "Consistently appropriate behavior"
+          }
+        ]
+      },
+      {
+        "title": "Status",
+        "description": "Condition of the client in relation to objective and subjective defining characteristics.",
+        "scale": [
+          {
+            "title": "Extreme signs/symptoms"
+          },
+          {
+            "title": "Severe signs/symptoms"
+          },
+          {
+            "title": "Moderate signs/symptoms"
+          },
+          {
+            "title": "Minimal signs/symptoms"
+          },
+          {
+            "title": "No signs/symptoms"
           }
         ]
       }
