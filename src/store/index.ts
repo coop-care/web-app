@@ -122,6 +122,12 @@ export default function(/* { ssrContext } */) {
         let problemRecord = Store.getters.getProblemRecordById(
           payload
         ) as ProblemRecord;
+        let outcomes = problemRecord.outcomes;
+
+        if (outcomes.length == 1) {
+          let clone = JSON.parse(JSON.stringify(outcomes[0]));
+          outcomes.push(clone);
+        }
 
         if (
           !problemRecord ||
@@ -231,6 +237,7 @@ export default function(/* { ssrContext } */) {
             yaxis: {
               min: 1,
               max: 5,
+              opposite: true,
               forceNiceScale: true,
               labels: {
                 minWidth: 1,
