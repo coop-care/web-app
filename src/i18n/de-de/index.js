@@ -41,5 +41,8 @@ export default {
   outcome: "Ergebnis | Ergebnisse",
   editDraft: "Entwurf bearbeiten",
   delete: "Löschen",
+  noExistingCustomer: "Es existieren noch keine Kundendaten.",
+  noSelectedCustomer: "Wähle einen Kunden aus der Kundenliste aus.",
+  createFirstCustomer: "Lege den ersten Kunden an",
   error404: "Sorry, hier gibt es nichts..."
 };
