@@ -31,6 +31,10 @@ export default {
   customerSpecificInterventions: "Customer-specific Details",
   customerSpecificInterventionsHint: "What concrete activities are planned?",
   unspecifiedProblem: "unspecified problem",
+  priority: "Priority",
+  lowPriorityReasonHint:
+    "Give the reason why the problem is currently low priority.",
+  showDetailsInput: "Specify further customer-specific details?",
   highPriorityTitle: "High Priority",
   highPriorityDescription:
     "Practitioner’s judgment that a problem should be addressed promptly, based on recommendations from clients, referral sources, and others. When a problem is considered high priority, the practitioner documents the problem, provides interventions, and completes ratings.",

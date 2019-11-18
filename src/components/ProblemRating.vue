@@ -1,6 +1,6 @@
 <template>
   <div class="problem-rating">
-    <rating-concept
+    <rating
       v-for="(rating, index) in ratings"
       v-bind:key="index"
       :title="rating.title"
@@ -8,7 +8,10 @@
       :scale="rating.scale"
       :type="rating.type"
     />
-    <problem-summary :params="$route.params" :isSummary="true"/>
+    <problem-summary
+      :params="$route.params"
+      :isSummary="true"
+    />
   </div>
 </template>
 
@@ -18,13 +21,13 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import RatingConcept from "components/RatingConcept.vue";
+import Rating from "components/Rating.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
 
 @Component({
   components: {
-    RatingConcept,
+    Rating,
     ProblemSummary
   }
 })
