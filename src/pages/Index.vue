@@ -63,19 +63,27 @@
           class="q-mt-md"
           @click="addProblem"
         />
-        <!-- <div
+      </div>
+    </div>
+
+    <div
       class="customer-overview q-pa-xl"
-      v-if="!customers.length"
+      v-else-if="!customers.length"
     >
-      Es existieren noch keine Kunden.
+      <p>{{ $t("noExistingCustomer") }}</p>
       <q-btn
         @click="addCustomer"
-        flat
         no-caps
-        label="Leg den ersten Kunden an."
+        color="primary"
+        :label="$t('createFirstCustomer')"
+        class="q-mt-md"
       />
-    </div> -->
-      </div>
+    </div>
+    <div
+      class="customer-overview q-pa-xl"
+      v-else
+    >
+      <p>{{ $t("noSelectedCustomer") }}</p>
     </div>
   </q-page>
 </template>
@@ -132,7 +140,8 @@ export default class PageIndex extends Vue {
     this.$store.commit("addCustomer", { name: this.$t("newCustomer") });
 
     setTimeout(() => {
-      let h2 = this.$refs.customerName as HTMLElement;
+      // @ts-ignore
+      let h2 = (this.$refs.customerName || {}).$el as HTMLElement;
 
       if (!h2) {
         return;

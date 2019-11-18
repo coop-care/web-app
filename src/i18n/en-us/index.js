@@ -40,5 +40,8 @@ export default {
   outcome: "Outcome | Outcomes",
   editDraft: "Edit Draft",
   delete: "Delete",
+  noExistingCustomer: "There is no customer data yet.",
+  noSelectedCustomer: "Select a customer from the customer list.",
+  createFirstCustomer: "Create your first customer record",
   error404: "Sorry, nothing here..."
 };
