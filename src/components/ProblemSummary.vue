@@ -62,13 +62,13 @@
         </ul>
         <p
           v-if="problem.details"
-          class="q-pl-lg q-mt-sm q-mb-none text-italic"
+          class="q-pl-lg q-my-none text-italic"
         >{{ problem.details }}</p>
       </div>
     </q-card-section>
     <q-card-section v-if="interventions.length">
       <div class="text-subtitle1">{{ $tc("intervention", 2) }}</div>
-      <ul :class="'q-ma-none ' + isSummary ? '' : 'column-2'">
+      <ul :class="'q-ma-none ' + (isSummary ? '' : 'column-2')">
         <li
           v-for="(intervention, index) in interventions"
           v-bind:key="index"
@@ -84,7 +84,7 @@
         </li>
       </ul>
     </q-card-section>
-    <q-card-section v-if="lastOutcome">
+    <q-card-section>
       <div class="text-subtitle1">
         {{ $tc("outcome", 2) }}
         <q-btn
@@ -96,49 +96,50 @@
           class="q-ml-xs"
         />
       </div>
-      <div
-        v-if="isInteractive"
-        class="row"
-      >
+      <div v-if="lastOutcome">
         <div
-          class="col-12 col-sm-4"
-          style=""
-          v-for="(outcome, index) in outcomesForChart"
-          v-bind:key="index"
-          ref="chartRow"
+          v-if="isInteractive"
+          class="row"
         >
-          <div class="text-subtitle2 q-pl-lg">{{ outcome.title }}</div>
-          <apexchart
-            type="area"
-            :options="outcome.options"
-            :series="outcome.series"
-            width="100%"
-            height="160"
-            class="q-pa-none"
-          />
+          <div
+            class="col-12 col-sm-4"
+            style=""
+            v-for="(outcome, index) in outcomesForChart"
+            v-bind:key="index"
+            ref="chartRow"
+          >
+            <div class="text-subtitle2 q-pl-lg">{{ outcome.title }}</div>
+            <apexchart
+              type="area"
+              :options="outcome.options"
+              :series="outcome.series"
+              width="100%"
+              height="160"
+              class="q-pa-none"
+            />
+          </div>
+        </div>
+        <div v-else>
+          <ul class="q-ma-none">
+            <li
+              v-for="(rating, index) in ratings"
+              v-bind:key="index"
+            >
+              {{ terminology.problemRatingScale.ratings[index].title }}:
+              {{ rating.observation }}
+              <span v-if="rating.expectation">/ {{ rating.expectation }}</span>
+              <span
+                v-if="rating.comment"
+                class="text-italic"
+              > ({{ rating.comment }})</span>
+            </li>
+          </ul>
+          <p
+            v-if="lastOutcome.ratedWhoInsteadOfOwner"
+            class="q-pl-lg q-my-none text-italic"
+          >{{lastOutcome.ratedWhoInsteadOfOwner}}</p>
         </div>
       </div>
-      <ul
-        v-else
-        class="q-ma-none"
-      >
-        <li
-          v-for="(rating, index) in ratings"
-          v-bind:key="index"
-        >
-          {{ terminology.problemRatingScale.ratings[index].title }}:
-          {{ rating.observation }}
-          <span v-if="rating.expectation">/ {{ rating.expectation }}</span>
-          <span
-            v-if="rating.comment"
-            class="text-italic"
-          > ({{ rating.comment }})</span>
-        </li>
-        <p
-          v-if="lastOutcome.ratedWhoInsteadOfOwner"
-          class="q-pl-lg q-mt-sm q-mb-none text-italic"
-        >{{lastOutcome.ratedWhoInsteadOfOwner}}</p>
-      </ul>
     </q-card-section>
   </q-card>
 </template>

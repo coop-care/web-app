@@ -2,7 +2,7 @@
   <div class="intervention">
     <div class="row">
       <div class="col-md-9 col-12">
-        <h6 class="counter">{{ $t("selectInterventions") }}</h6>
+        <h6>{{ $t("selectInterventions") }}</h6>
         <q-tabs
           v-model="categorySelected"
           dense
@@ -58,29 +58,32 @@
               :filter="targetsFilter"
               :filter-method="filterTerminology"
               :no-results-label="$t('noTargetsFound')"
-              color="amber-10"
+              control-color="amber-10"
               tick-strategy="strict"
-              :ticked.sync="targetsTicked"
+              :ticked.sync="interventions"
             >
               <template v-slot:default-header="prop">
                 <div>
                   <div class="text-weight-bold text-amber-10">{{ prop.node.title }}</div>
-                  <div class="text-weight-light text-black">{{ prop.node.description }}</div>
+                  <div class="text-weight-light">{{ prop.node.description }}</div>
+                </div>
+              </template>
+              <template v-slot:default-body="prop">
+                <div v-if="interventions.includes(prop.node.id)">
+                  <q-input
+                    :value="details[prop.node.id]"
+                    @input="updateDetails(prop.node.id, $event)"
+                    :label="$t('customerSpecificInterventions')"
+                    autogrow
+                    :autofocus="!details[prop.node.id]"
+                    color="amber-10"
+                  />
+                  <p class="q-my-xs text-caption">{{ $t("customerSpecificInterventionsHint") }}</p>
                 </div>
               </template>
             </q-tree>
           </q-tab-panel>
         </q-tab-panels>
-
-        <h6 class="counter">{{ $t("customerSpecificInterventions") }}</h6>
-        <q-input
-          v-model="details"
-          :label="$t('customerSpecificInterventionsHint')"
-          autogrow
-          color="amber-10"
-          filled
-          class="q-mb-lg"
-        />
 
       </div>
       <div class="col-md-3 col-12 summary">
@@ -104,6 +107,8 @@
     padding-left: 0
   .q-checkbox
     padding: 0 7px 0 13px
+  .q-tree__node-body
+    margin-left: 40px
 </style>
 
 <script lang="ts">
@@ -115,6 +120,8 @@ import TerminologyData, {
 } from "../helper/terminology";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { QInput } from "quasar";
+import * as Store from "../store";
+import { Dictionary } from "vuex";
 
 @Component({
   components: {
@@ -124,16 +131,65 @@ import { QInput } from "quasar";
 export default class Intervention extends Vue {
   categorySelected = null;
   targetsFilter = "";
-  targetsTicked = [];
-  details = "";
 
   get interventions() {
-    let interventions = (this.record || {}).interventions || [];
-    return interventions.map((intervention: any) => {
-      return intervention.categoryId + "." + intervention.targetId;
+    return this.unsavedInterventions.map(intervention => {
+      return intervention.category.id + "." + intervention.target.id;
     });
   }
-  set interventions(value: string[]) {}
+  set interventions(values: string[]) {
+    let existingInterventions = this.unsavedInterventions.filter(
+      intervention => {
+        let key = intervention.category.id + "." + intervention.target.id;
+        return values.includes(key);
+      }
+    );
+    let addedInterventions: Store.Intervention[] = values
+      .map(value => value.split("."))
+      .filter(codes => {
+        return !existingInterventions.find(
+          intervention =>
+            intervention.category.id == codes[0] &&
+            intervention.target.id == codes[1]
+        );
+      })
+      .map(codes => {
+        return {
+          category: {
+            id: codes[0],
+            title: (
+              this.terminology.interventionScheme.categories.find(
+                category => category.code == codes[0]
+              ) || {}
+            ).title
+          },
+          target: {
+            id: codes[1],
+            title: (
+              this.terminology.interventionScheme.targets.find(
+                target => target.code == codes[1]
+              ) || {}
+            ).title
+          },
+          details: [],
+          started: undefined,
+          ended: undefined
+        };
+      });
+    let interventions = this.savedInterventions
+      .concat(existingInterventions)
+      .concat(addedInterventions);
+    this.updateProblemRecord("interventions", interventions);
+  }
+  get details() {
+    let map: Dictionary<string> = {};
+    this.unsavedInterventions.forEach(intervention => {
+      let key = intervention.category.id + "." + intervention.target.id;
+      let text = (intervention.details[0] || {}).text || "";
+      map[key] = text;
+    });
+    return map;
+  }
 
   get categories() {
     return this.terminology.interventionScheme.categories;
@@ -159,6 +215,48 @@ export default class Intervention extends Vue {
   }
   get record() {
     return this.$store.getters.getProblemRecordById(this.$route.params);
+  }
+  get unsavedInterventions() {
+    let interventions: Store.Intervention[] =
+      (this.record || {}).interventions || [];
+    return interventions.filter(intervention => !intervention.started);
+  }
+  get savedInterventions() {
+    let interventions: Store.Intervention[] =
+      (this.record || {}).interventions || [];
+    return interventions.filter(intervention => intervention.started);
+  }
+
+  updateDetails(key: string, value: string) {
+    let unsavedInterventions = this.unsavedInterventions;
+    let codes = key.split(".");
+    let intervention = unsavedInterventions.find(
+      intervention =>
+        intervention.category.id == codes[0] &&
+        intervention.target.id == codes[1]
+    );
+
+    if (!intervention) {
+      return;
+    }
+
+    let note = intervention.details[0] || {};
+    note.text = value;
+    note.created = new Date();
+    intervention.details[0] = note;
+
+    this.updateProblemRecord(
+      "interventions",
+      this.savedInterventions.concat(unsavedInterventions)
+    );
+  }
+
+  updateProblemRecord(path: string, value: any) {
+    this.$store.commit("updateProblemRecord", {
+      path: path,
+      value: value,
+      ...this.$route.params
+    });
   }
 
   resetTargetsFilter() {

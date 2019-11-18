@@ -398,18 +398,6 @@ export default function(/* { ssrContext } */) {
 
         Tree.deepAssign(outcome, payload.path.split("."), payload.value);
       },
-      addIntervention(state, payload) {
-        let problemRecord = Store.getters.getProblemRecordById(
-          payload
-        ) as ProblemRecord;
-
-        if (!problemRecord) {
-          return;
-        }
-
-        problemRecord.interventions.push;
-      },
-      removeIntervention(state, payload) {},
       saveNewProblemRecord(state, payload) {
         let problemRecord = Store.getters.getProblemRecordById(
           payload
