@@ -176,6 +176,7 @@ components:
   schemas:
     Client:
       required:
+        - id
         - name
       properties:
         id:
@@ -183,6 +184,10 @@ components:
         name:
           type: string
     OmahaInterventionCategory:
+      required:
+        - id
+        - title
+        - description
       properties:
         id:
           $ref: '#/components/schemas/CategoryId'
@@ -191,6 +196,10 @@ components:
         description:
           type: string
     OmahaInterventionTarget:
+      required:
+        - id
+        - title
+        - description
       properties:
         id:
           $ref: '#/components/schemas/TargetId'
@@ -199,6 +208,10 @@ components:
         description:
           type: string
     OmahaProblemDomain:
+      required:
+        - id
+        - title
+        - description
       properties:
         id:
           $ref: '#/components/schemas/DomainId'
@@ -207,6 +220,11 @@ components:
         description:
           type: string
     OmahaProblem:
+      required:
+        - id
+        - title
+        - description
+        - domainId
       properties:
         id:
           $ref: '#/components/schemas/ProblemId'
@@ -217,6 +235,11 @@ components:
         domainId:
           $ref: '#/components/schemas/DomainId'
     OmahaSymptom:
+      required:
+        - id
+        - title
+        - domainId
+        - problemId
       properties:
         id:
           $ref: '#/components/schemas/SymptomId'
@@ -227,6 +250,12 @@ components:
         problemId:
           $ref: '#/components/schemas/ProblemId'
     ProblemClassification:
+      required:
+        - problemId
+        - domainModifier
+        - typeModifier
+        - symptoms
+        - comment
       properties:
         problemId:
           $ref: '#/components/schemas/ProblemId'

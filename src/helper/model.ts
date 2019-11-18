@@ -28,7 +28,7 @@ export class OmahaQ implements Omaha {
     }
     get domains() { return this.omaha.domains }
     get problems() { return this.omaha.problems }
-    get symptoms() { return this.omaha.problems }
+    get symptoms() { return this.omaha.symptoms }
     problem(id: string): Api.OmahaProblem {
         return this.omaha.problems.find(el => el.id == id)!;
     }
@@ -49,18 +49,14 @@ export class Problem {
     constructor(apiProblem: Api.ProblemClassification) {
         this.apiProblem = apiProblem;
         // this.omaha = omaha;
-        this.omahaProblem = Problem.omahaq.problem(apiProblem.problemId!);
+        this.omahaProblem = Problem.omahaq.problem(apiProblem.problemId);
     }
 
-    get title(): string { return this.omahaProblem.title! }
-    get domainModifier(): string { return this.apiProblem.domainModifier! }
-    get typeModifier(): string { return this.apiProblem.typeModifier! }
+    get title(): string { return this.omahaProblem.title }
+    get domainModifier(): string { return this.apiProblem.domainModifier }
+    get typeModifier(): string { return this.apiProblem.typeModifier }
     get symptoms(): Api.OmahaSymptom[] {
-        return this.apiProblem.symptoms!.map(id => Problem.omahaq.symptom(id));
+        return this.apiProblem.symptoms.map(id => Problem.omahaq.symptom(id));
     }
 }
-  
-export class Symptom {
-
-}  
   

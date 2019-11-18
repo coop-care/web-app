@@ -8,11 +8,12 @@
             <div>
               {{ problem.title }} ({{ problem.domainModifier }}, {{ problem.typeModifier }})
             </div>
-            <!-- <ul>
+            <ul>
+              <li>ha!</li>
               <li v-for="symptom in problem.symptoms">
                 {{ symptom }}
               </li>
-            </ul> -->
+            </ul>
           </li>
         </ul>
     </div>
