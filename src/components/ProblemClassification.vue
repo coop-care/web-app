@@ -127,15 +127,47 @@
           class="q-ml-xl"
         />
 
-        <h6 class="counter">{{ $t("customerSpecificProblems") }}</h6>
-        <q-input
-          v-model="details"
-          :label="$t('customerSpecificProblemsHint')"
-          autogrow
-          color="red"
-          filled
-          class="q-mb-lg"
+        <h6 class="counter">{{ $t("priority") }}</h6>
+        <q-btn-toggle
+          v-model="priority"
+          spread
+          no-caps
+          unelevated
+          rounded
+          toggle-color="red"
+          text-color="red"
+          :options="priorityOptions"
+          class="q-mb-xs"
         />
+        <div class="text-weight-light q-mb-xl q-px-lg">{{ $t(record.problem.descriptions.priorityKey) }}</div>
+
+        <div>
+          <q-btn
+            v-if="!showDetails && !details && priority"
+            @click="showDetails = true;"
+            :label="$t('showDetailsInput')"
+            flat
+            no-caps
+            size="md"
+            color="red"
+            class="q-mb-lg"
+          />
+          <div
+            v-else
+            class="q-mb-lg"
+          >
+            <q-input
+              v-model="details"
+              :label="$t('customerSpecificProblems')"
+              autogrow
+              :autofocus="showDetails && !details"
+              ref="details"
+              color="red"
+              filled
+            />
+            <p class="q-my-xs text-caption">{{ priority ? $t("customerSpecificProblemsHint") : $t("lowPriorityReasonHint") }}</p>
+          </div>
+        </div>
 
         <problem-summary
           :problemRecord="record"
@@ -175,6 +207,7 @@ import TerminologyData, {
 } from "../helper/terminology";
 import { QInput } from "quasar";
 import ProblemSummary from "../components/ProblemSummary.vue";
+import * as Store from "../store";
 
 @Component({
   components: {
@@ -183,6 +216,7 @@ import ProblemSummary from "../components/ProblemSummary.vue";
 })
 export default class ProblemClassification extends Vue {
   problemsFilter = "";
+  showDetails = false;
 
   get selectedProblem() {
     return this.record.problem.id;
@@ -222,6 +256,12 @@ export default class ProblemClassification extends Vue {
   set severity(value: number) {
     this.updateProblemRecord("problem.severity", value);
   }
+  get priority() {
+    return this.record.problem.isHighPriority;
+  }
+  set priority(value: boolean) {
+    this.updateProblemRecord("problem.isHighPriority", value);
+  }
   get details() {
     return this.record.problem.details;
   }
@@ -249,6 +289,12 @@ export default class ProblemClassification extends Vue {
     });
     return this.selectedSymptoms.includes(otherSymptom.value);
   }
+  get priorityOptions() {
+    return [
+      { label: this.$t("lowPriorityTitle"), value: false },
+      { label: this.$t("highPriorityTitle"), value: true }
+    ];
+  }
 
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
@@ -257,7 +303,7 @@ export default class ProblemClassification extends Vue {
     return this.$store.getters.getProblemRecordById({
       terminology: this.terminology,
       ...this.$route.params
-    });
+    }) as Store.ProblemRecord;
   }
 
   updateProblemRecord(path: string, value: any) {

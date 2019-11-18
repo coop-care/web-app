@@ -1,5 +1,5 @@
 <template>
-  <q-page class="">
+  <q-page>
     <q-stepper
       v-model="step"
       ref="stepper"
@@ -24,6 +24,7 @@
 
       <q-step
         :name="2"
+        v-if="isHighPriority"
         :title="$q.screen.lt.md ? $tc('rating', 1) : terminology.problemRatingScale.title"
         prefix="2"
         :done="step > 2"
@@ -36,6 +37,7 @@
 
       <q-step
         :name="3"
+        v-if="isHighPriority"
         :title="$q.screen.lt.md ? $tc('intervention', 2)  : terminology.interventionScheme.title"
         prefix="3"
         icon="add_comment"
@@ -65,13 +67,13 @@
             class="q-ml-sm"
           />
           <q-btn
-            v-if="step < 3"
+            v-if="step < 3 && isHighPriority"
             @click="$refs.stepper.next()"
             color="primary"
             :label="$t('continue')"
           />
           <q-btn
-            v-if="step == 3"
+            v-if="step == 3 || !isHighPriority"
             @click="$store.commit('saveNewProblemRecord', $route.params)"
             to="/"
             color="primary"
@@ -82,6 +84,11 @@
     </q-stepper>
   </q-page>
 </template>
+
+<style lang="sass">
+.q-stepper__header--standard-labels .q-stepper__tab:first-child
+  justify-content: flex-start !important
+</style>
 
 <script lang="ts">
 import Vue from "vue";
@@ -103,6 +110,12 @@ export default class ProblemRecording extends Vue {
 
   get terminology() {
     return this.$t("terminology");
+  }
+  get record() {
+    return this.$store.getters.getProblemRecordById(this.$route.params);
+  }
+  get isHighPriority() {
+    return this.record.problem.isHighPriority;
   }
 
   beforeCreate() {

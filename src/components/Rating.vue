@@ -73,7 +73,7 @@ import Component from "vue-class-component";
     // status: Number,
   }
 })
-export default class RatingConcept extends Vue {
+export default class Rating extends Vue {
   options = [
     { label: "1", value: 1 },
     { label: "2", value: 2 },
