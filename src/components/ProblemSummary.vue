@@ -3,17 +3,16 @@
     <q-card-section>
       <div v-if="isSummary">
         <div class="text-h6 q-mb-sm">{{ $t("summary") }}</div>
-        <div class="text-subtitle1">{{ problem.title || $t("unspecifiedProblem") }}</div>
+        <div class="text-subtitle1">
+          {{ problem.title || $t("unspecifiedProblem") }}
+        </div>
         <p class="q-pl-lg q-ma-none">
           {{ (problem.titles || {}).scope }},
           {{ (problem.titles || {}).severity }},
           {{ $t((problem.titles || {}).priorityKey) }}
         </p>
       </div>
-      <div
-        v-else
-        class="text-h6"
-      >
+      <div v-else class="text-h6">
         <q-btn
           v-if="isDraft"
           :label="$t('editDraft')"
@@ -49,45 +48,43 @@
       </div>
     </q-card-section>
     <q-card-section v-if="problem.signsAndSymptoms.length || problem.details">
-      <div
-        class="text-subtitle1"
-        v-if="problem.signsAndSymptoms.length"
-      >{{ $t("signsAndSymptoms") }}</div>
+      <div class="text-subtitle1" v-if="problem.signsAndSymptoms.length">
+        {{ $t("signsAndSymptoms") }}
+      </div>
       <div :class="isSummary ? '' : 'column-2'">
-        <ul
-          class="q-ma-none"
-          v-if="problem.signsAndSymptoms"
-        >
+        <ul class="q-ma-none" v-if="problem.signsAndSymptoms">
           <li
             v-for="(symptom, index) in problem.signsAndSymptoms"
             v-bind:key="index"
-          >{{ titleForSymptom(symptom) }}</li>
+          >
+            {{ titleForSymptom(symptom) }}
+          </li>
         </ul>
-        <p
-          v-if="problem.details"
-          class="q-pl-lg q-my-none text-italic"
-        >{{ problem.details }}</p>
+        <p v-if="problem.details" class="q-pl-lg q-my-none text-italic">
+          {{ problem.details }}
+        </p>
       </div>
     </q-card-section>
     <q-card-section v-if="interventions.length">
       <div class="text-subtitle1">{{ $tc("intervention", 2) }}</div>
       <ul :class="'q-ma-none ' + (isSummary ? '' : 'column-2')">
-        <li
-          v-for="(intervention, index) in interventions"
-          v-bind:key="index"
-        >
+        <li v-for="(intervention, index) in interventions" v-bind:key="index">
           {{ intervention.category.title }}: {{ intervention.target.title }}
           <div v-if="intervention.details.length">
             <div
               v-for="(detail, index) in intervention.details"
               v-bind:key="index"
               class="text-italic"
-            >{{ detail.text }}</div>
+            >
+              {{ detail.text }}
+            </div>
           </div>
         </li>
       </ul>
     </q-card-section>
-    <q-card-section v-if="lastOutcome || (isInteractive && problem.isHighPriority)">
+    <q-card-section
+      v-if="lastOutcome || (isInteractive && problem.isHighPriority)"
+    >
       <div class="text-subtitle1">
         {{ $tc("outcome", 2) }}
         <q-btn
@@ -100,10 +97,7 @@
         />
       </div>
       <div v-if="lastOutcome">
-        <div
-          v-if="isInteractive"
-          class="row"
-        >
+        <div v-if="isInteractive" class="row">
           <div
             class="col-12 col-sm-4"
             style=""
@@ -127,28 +121,36 @@
             <li
               v-for="(rating, index) in ratings"
               v-bind:key="index"
+              v-if="rating.observation"
             >
               {{ terminology.problemRatingScale.ratings[index].title }}:
-              {{ rating.observation }}
-              <span v-if="rating.expectation">/ {{ rating.expectation }}</span>
-              <span
-                v-if="rating.comment"
-                class="text-italic"
-              > ({{ rating.comment }})</span>
+              {{
+                terminology.problemRatingScale.ratings[index].scale[
+                  rating.observation - 1
+                ].title
+              }}
+              ({{ rating.observation
+              }}<span v-if="rating.expectation">
+                / {{ rating.expectation }}</span
+              >)
+              <span v-if="rating.comment" class="text-italic">
+                ({{ rating.comment }})</span
+              >
             </li>
           </ul>
           <p
             v-if="lastOutcome.ratedWhoInsteadOfOwner"
             class="q-pl-lg q-my-none text-italic"
-          >{{lastOutcome.ratedWhoInsteadOfOwner}}</p>
+          >
+            {{ lastOutcome.ratedWhoInsteadOfOwner }}
+          </p>
         </div>
       </div>
     </q-card-section>
   </q-card>
 </template>
 
-<style lang="sass">
-</style>
+<style lang="sass"></style>
 
 <script lang="ts">
 import Vue from "vue";
@@ -187,9 +189,9 @@ export default class ProblemSummary extends Vue {
     }
   }
   get ratings() {
-    return ["knowledge", "behaviour", "status"]
-      .map(key => this.lastOutcome[key])
-      .filter(rating => rating.observation);
+    return ["knowledge", "behaviour", "status"].map(
+      key => this.lastOutcome[key]
+    );
   }
   get isDraft() {
     return !this.record.created;
