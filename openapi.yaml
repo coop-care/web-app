@@ -1,0 +1,291 @@
+openapi: 3.0.2
+info:
+  title: CoopCare API
+  version: 0.0.1
+  contact:
+    name: slowtec GmbH
+    url: 'https://slowtec.de'
+servers:
+  - url: 'http://localhost:8888/v0/'
+    description: Test server
+
+paths:
+  /clients:
+    get:
+      description: Get all clients
+      operationId: app.get_clients
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+
+  /client/{clientId}/problems:
+    get:
+      description: Get client's problems
+      operationId: app.get_client_problems
+      parameters:
+        - $ref: '#/components/parameters/clientIdParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProblemClassification'
+    post:
+      description: Create a new problem
+      operationId: app.post_client_problems
+      parameters:
+        - $ref: '#/components/parameters/clientIdParam'
+      requestBody:
+        description: new problem
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProblemClassification'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProblemClassification'
+
+  /client/{clientid}/problem/{problemid}/interventions:
+    get:
+      description: get interventions
+      operationId: app.get_client_problem_interventions
+      parameters:
+        - name: clientid
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: problemid
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+  /client/{clientId}/problem/{problemId}/ratings:
+    get:
+      description: Get problem ratings
+      operationId: app.get_client_problem_ratings
+      parameters:
+        - name: clientId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: problemId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successful response
+  
+  /omaha/intervention_categories:
+    get:
+      description: Get Omaha intervention categories
+      operationId: app.get_omaha_intervention_categories
+      parameters:
+        - $ref: '#/components/parameters/langParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OmahaInterventionCategory'
+  /omaha/intervention_targets:
+    get:
+      description: Get Omaha intervention targets
+      operationId: app.get_omaha_intervention_targets
+      parameters:
+        - $ref: '#/components/parameters/langParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OmahaInterventionTarget'
+  /omaha/problem_domains:
+    get:
+      description: Get Omaha problem domain catalog
+      operationId: app.get_omaha_problem_domains
+      parameters:
+        - $ref: '#/components/parameters/langParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OmahaProblemDomain'
+  /omaha/problems:
+    get:
+      description: Get Omaha problem catalog
+      operationId: app.get_omaha_problems
+      parameters:
+        - $ref: '#/components/parameters/langParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OmahaProblem'
+  /omaha/symptoms:
+    get:
+      description: Get Omaha symptom catalog
+      operationId: app.get_omaha_symptoms
+      parameters:
+        - $ref: '#/components/parameters/langParam'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OmahaSymptom'
+components:
+  schemas:
+    Client:
+      required:
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    OmahaInterventionCategory:
+      properties:
+        id:
+          $ref: '#/components/schemas/CategoryId'
+        title:
+          type: string
+        description:
+          type: string
+    OmahaInterventionTarget:
+      properties:
+        id:
+          $ref: '#/components/schemas/TargetId'
+        title:
+          type: string
+        description:
+          type: string
+    OmahaProblemDomain:
+      properties:
+        id:
+          $ref: '#/components/schemas/DomainId'
+        title:
+          type: string
+        description:
+          type: string
+    OmahaProblem:
+      properties:
+        id:
+          $ref: '#/components/schemas/ProblemId'
+        title:
+          type: string
+        description:
+          type: string
+        domainId:
+          $ref: '#/components/schemas/DomainId'
+    OmahaSymptom:
+      properties:
+        id:
+          $ref: '#/components/schemas/SymptomId'
+        title:
+          type: string
+        domainId:
+          $ref: '#/components/schemas/DomainId'
+        problemId:
+          $ref: '#/components/schemas/ProblemId'
+    ProblemClassification:
+      properties:
+        problemId:
+          $ref: '#/components/schemas/ProblemId'
+        domainModifier:
+          $ref: '#/components/schemas/ProblemDomainModifier'
+        typeModifier:
+          $ref: '#/components/schemas/ProblemTypeModifier'
+        symptoms:
+          type: array
+          items:
+            $ref: '#/components/schemas/SymptomId'
+        comment:
+          type: string
+    ProblemDomainModifier:
+      type: string
+      enum:
+        - individual
+        - family
+        - community
+    ProblemTypeModifier:
+      type: string
+      enum:
+        - health-promotion
+        - potential
+        - actual
+    CategoryId:
+      type: string
+      pattern: 'C\d\d'
+      example: 'C02'
+    TargetId:
+      type: string
+      pattern: 'T\d\d'
+      example: 'T32'
+    DomainId:
+      type: string
+      pattern: 'D\d\d'
+      example: 'D02'
+    ProblemId:
+      type: string
+      pattern: 'D\d\dP\d\d'
+      example: 'D01P01'
+    SymptomId:
+      type: string
+      pattern: 'D\d\dP\d\dS\d\d'
+      example: 'D03P04S02'
+  parameters:
+    langParam:
+      name: lang
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - EN
+          - DE
+    clientIdParam:
+      name: clientId
+      in: path
+      required: true
+      schema:
+        type: integer
+

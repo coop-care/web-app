@@ -1,0 +1,7 @@
+{
+    "npmName": "ts-api-client",
+    "npmVersion": "1.0.0",
+    "snapshot": false,
+    "supportsES6": false,
+    "modelPropertyNaming": "original"
+}

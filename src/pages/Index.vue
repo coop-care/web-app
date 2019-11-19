@@ -101,6 +101,18 @@ import { mapMutations } from "vuex";
 import ContentEditable from "../components/ContentEditable.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
+import * as Api from "ts-api-client";
+
+console.log("hallooo1");
+const service = new Api.DefaultApi();
+service.appGetClients()
+  .then((r) => {
+    console.log("clients:", r)
+  })
+  .catch((e) => {
+    console.log("clienterr:", e)
+  });
+console.log("hallooo2");
 
 @Component({
   components: {
@@ -113,6 +125,7 @@ import { Terminology } from "../helper/terminology";
 })
 export default class PageIndex extends Vue {
   customerDrawer = !this.$q.platform.is.mobile;
+  service = new Api.DefaultApi();
 
   get customers() {
     return this.$store.state.customers;
