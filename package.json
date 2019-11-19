@@ -17,6 +17,7 @@
     "apexcharts": "^3.10.1",
     "quasar": "^1.4.4",
     "vue-apexcharts": "^1.5.1",
+    "lodash": "^4.17.15",
     "ts-api-client": "file:tsfetch",
     "vue-i18n": "^8.0.0"
   },
@@ -24,6 +25,7 @@
     "@quasar/app": "^1.2.4",
     "@quasar/quasar-app-extension-icon-genie": "^1.1.2",
     "@quasar/quasar-app-extension-typescript": "^1.0.0-beta.2",
+    "@types/lodash": "^4.14.149",
     "@types/node": "^12.12.8",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",

@@ -183,6 +183,18 @@ components:
           type: integer
         name:
           type: string
+    Intervention:
+      required:
+        - categoryId
+        - targetId
+        - description
+      properties:
+        categoryId:
+          $ref: '#/components/schemas/CategoryId'
+        targetId:
+          $ref: '#/components/schemas/TargetId'
+        description:
+          type: string
     OmahaInterventionCategory:
       required:
         - id
@@ -255,6 +267,7 @@ components:
         - domainModifier
         - typeModifier
         - symptoms
+        - interventions
         - comment
       properties:
         problemId:
@@ -267,6 +280,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SymptomId'
+        interventions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Intervention'
         comment:
           type: string
     ProblemDomainModifier:

@@ -1,17 +1,32 @@
 <template>
     <div v-if="client">
         <h4>Overview for {{ client.name }}</h4>
-        Problems:
+        <h5>Problems:</h5>
         <ul>
           <li v-for="problem in problems">
-            {{ problem.apiProblem }}
-            <div>
+            <!-- {{ problem.apiProblem }} -->
+            <h6>
               {{ problem.title }} ({{ problem.domainModifier }}, {{ problem.typeModifier }})
-            </div>
+            </h6>
+            <div>Symptoms:</div>
             <ul>
-              <li>ha!</li>
               <li v-for="symptom in problem.symptoms">
-                {{ symptom }}
+                {{ symptom.title }}
+              </li>
+            </ul>
+            <div>Interventions:</div>
+            <!-- <div>{{ categories(problem.interventions) }}</div> -->
+            <ul>
+              <li v-for="(cats, catId) in categories(problem.interventions)">
+                <!-- {{ cats }}  -->
+                {{ $omaha.categoryTitle(catId) }}
+                <ul>
+                  <li v-for="intervention in cats">
+                    <!-- {{ intervention }}  -->
+                    {{ $omaha.targetTitle(intervention.targetId) }}
+                    ({{ intervention.description }})
+                  </li>
+                </ul>
               </li>
             </ul>
           </li>
@@ -29,6 +44,8 @@ import Component from "vue-class-component";
 import { Prop, Watch } from 'vue-property-decorator';
 import * as Api from "ts-api-client";
 import { Problem } from "../helper/model"
+import _ from "lodash";
+import { Intervention } from 'ts-api-client';
 
 // Problem.omahaq = 
 
@@ -56,6 +73,9 @@ export default class DebugOverview extends Vue {
     }
   }
 
+  categories(interventions: Intervention[]) { 
+    return _.groupBy(interventions, i => i.categoryId)
+  }
 
 }
 </script>
