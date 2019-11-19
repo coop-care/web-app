@@ -15,7 +15,8 @@ const routes: RouteConfig[] = [
         name: "outcome",
         path: "/customer/:customerId/problem/:problemIndex/outcome",
         component: () => import("pages/Rating.vue")
-      }
+      },
+      { path: "/overview", component: () => import("pages/Overview.vue") },
     ]
   }
 ];
