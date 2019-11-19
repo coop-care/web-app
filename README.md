@@ -7,6 +7,14 @@ Omaha System based open source software for cooperative care teams
 npm install
 ```
 
+### Generate API-Client
+
+You need `docker` installed!
+
+```bash
+npm run api
+```
+
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
 quasar dev
