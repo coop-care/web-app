@@ -40,7 +40,7 @@ export default class Rating extends Vue {
 
   save() {
     this.$store.commit("updateNewOutcome", {
-      path: "created",
+      path: "createdAt",
       value: new Date(),
       ...this.$route.params
     });

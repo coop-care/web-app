@@ -1,5 +1,8 @@
 <template>
-  <div class="intervention" v-if="record">
+  <div
+    class="intervention"
+    v-if="record"
+  >
     <div class="row q-col-gutter-lg">
       <div class="col-md-9 col-12">
         <h6>{{ $t("selectInterventions") }}</h6>
@@ -16,7 +19,10 @@
             v-bind:key="index"
           />
         </q-tabs>
-        <q-tab-panels v-model="categorySelected" animated>
+        <q-tab-panels
+          v-model="categorySelected"
+          animated
+        >
           <q-tab-panel
             :name="index"
             v-for="(category, index) in categories"
@@ -34,7 +40,10 @@
               dense
             >
               <template v-slot:prepend>
-                <q-icon name="search" color="amber-10" />
+                <q-icon
+                  name="search"
+                  color="amber-10"
+                />
               </template>
               <template v-slot:append>
                 <q-icon
@@ -173,8 +182,8 @@ export default class Intervention extends Vue {
             ).title
           },
           details: [],
-          started: undefined,
-          ended: undefined
+          startedAt: undefined,
+          endedAt: undefined
         };
       });
     let interventions = this.savedInterventions
@@ -220,12 +229,12 @@ export default class Intervention extends Vue {
   get unsavedInterventions() {
     let interventions: Store.Intervention[] =
       (this.record || {}).interventions || [];
-    return interventions.filter(intervention => !intervention.started);
+    return interventions.filter(intervention => !intervention.startedAt);
   }
   get savedInterventions() {
     let interventions: Store.Intervention[] =
       (this.record || {}).interventions || [];
-    return interventions.filter(intervention => intervention.started);
+    return interventions.filter(intervention => intervention.startedAt);
   }
 
   updateDetails(key: string, value: string) {
@@ -243,7 +252,7 @@ export default class Intervention extends Vue {
 
     let note = intervention.details[0] || {};
     note.text = value;
-    note.created = new Date();
+    note.createdAt = new Date();
     intervention.details[0] = note;
 
     this.updateProblemRecord(

@@ -18,16 +18,16 @@ export interface Term {
 export interface Customer extends Term {
   name: string;
   problems: ProblemRecord[];
-  created: Date;
-  left?: Date;
+  createdAt: Date;
+  leftAt?: Date;
 }
 export interface ProblemRecord {
   assessment: Note[];
   problem: Problem;
   interventions: Intervention[];
   outcomes: Outcome[];
-  created: Date | undefined;
-  resolved: Date | undefined;
+  createdAt: Date | undefined;
+  resolvedAt: Date | undefined;
   ratingIntervalInDays: number;
 }
 export interface Problem extends Term {
@@ -49,11 +49,11 @@ export interface Intervention {
   category: Term;
   target: Term;
   details: Note[];
-  started: Date | undefined;
-  ended: Date | undefined;
+  startedAt: Date | undefined;
+  endedAt: Date | undefined;
 }
 export interface Outcome {
-  created: Date | undefined;
+  createdAt: Date | undefined;
   knowledge: Rating;
   behaviour: Rating;
   status: Rating;
@@ -68,7 +68,7 @@ export interface Rating {
 }
 export interface Note {
   text: string;
-  created: Date;
+  createdAt: Date;
 }
 
 /*
@@ -132,7 +132,7 @@ export default function(/* { ssrContext } */) {
         if (
           !problemRecord ||
           !payload.ratings ||
-          !problemRecord.created ||
+          !problemRecord.createdAt ||
           !problemRecord.outcomes.length
         ) {
           return [];
@@ -143,11 +143,11 @@ export default function(/* { ssrContext } */) {
             {
               name: payload.ratings[index].title,
               data: problemRecord.outcomes
-                .filter((outcome: Outcome) => outcome.created)
+                .filter((outcome: Outcome) => outcome.createdAt)
                 .map((outcome: Outcome) => {
                   let value = (outcome as any)[key];
                   return {
-                    x: outcome.created,
+                    x: outcome.createdAt,
                     y: value.observation,
                     comment: value.comment
                   };
@@ -158,7 +158,7 @@ export default function(/* { ssrContext } */) {
               data: problemRecord.outcomes.map((outcome: any) => {
                 let value = outcome[key];
                 return {
-                  x: outcome.created || new Date(),
+                  x: outcome.createdAt || new Date(),
                   y: value.expectation
                 };
               })
@@ -288,7 +288,7 @@ export default function(/* { ssrContext } */) {
           id: id,
           name: name,
           problems: [],
-          created: new Date()
+          createdAt: new Date()
         };
         state.customers.push(customer);
         state.selectedCustomerId = id;
@@ -329,8 +329,8 @@ export default function(/* { ssrContext } */) {
           },
           interventions: [],
           outcomes: [],
-          created: undefined,
-          resolved: undefined,
+          createdAt: undefined,
+          resolvedAt: undefined,
           ratingIntervalInDays: 28
         };
         customer.problems.push(problemRecord);
@@ -360,7 +360,7 @@ export default function(/* { ssrContext } */) {
 
         customer.problems = customer.problems.filter(
           (problemRecord: ProblemRecord, index: number) => {
-            return problemRecord.created || index != payload.problemIndex;
+            return problemRecord.createdAt || index != payload.problemIndex;
           }
         );
       },
@@ -375,14 +375,14 @@ export default function(/* { ssrContext } */) {
 
         let outcome = problemRecord.outcomes[problemRecord.outcomes.length - 1];
 
-        if (!outcome || outcome.created) {
+        if (!outcome || outcome.createdAt) {
           let defaultValue = outcome || {
             status: {},
             knowledge: {},
             behaviour: {}
           };
           outcome = {
-            created: undefined,
+            createdAt: undefined,
             knowledge: {
               observation: defaultValue.knowledge.observation || 0,
               expectation: defaultValue.knowledge.expectation || 0,
@@ -416,10 +416,10 @@ export default function(/* { ssrContext } */) {
         }
 
         let now = new Date();
-        problemRecord.created = now;
-        (problemRecord.outcomes[0] || {}).created = now;
+        problemRecord.createdAt = now;
+        (problemRecord.outcomes[0] || {}).createdAt = now;
         problemRecord.interventions.forEach(intervention => {
-          intervention.started = now;
+          intervention.startedAt = now;
         });
       }
     },

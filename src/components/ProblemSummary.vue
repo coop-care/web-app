@@ -193,7 +193,7 @@ export default class ProblemSummary extends Vue {
     );
   }
   get isDraft() {
-    return !this.record.created;
+    return !this.record.createdAt;
   }
   get isInteractive() {
     return !this.isDraft && !this.$props.isSummary;

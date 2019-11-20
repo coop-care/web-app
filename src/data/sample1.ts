@@ -32,11 +32,11 @@ export default [
             details: [
               {
                 text: "angefangen eine therapeutische Beziehung aufzubauen",
-                created: new Date("2019-06-11")
+                createdAt: new Date("2019-06-11")
               }
             ],
-            started: new Date("2019-06-11"),
-            ended: undefined
+            startedAt: new Date("2019-06-11"),
+            endedAt: undefined
           },
           {
             category: { id: "01" },
@@ -44,11 +44,11 @@ export default [
             details: [
               {
                 text: "Symptome überprüft",
-                created: new Date("2019-06-11")
+                createdAt: new Date("2019-06-11")
               }
             ],
-            started: new Date("2019-06-11"),
-            ended: undefined
+            startedAt: new Date("2019-06-11"),
+            endedAt: undefined
           },
           {
             category: { id: "03" },
@@ -56,11 +56,11 @@ export default [
             details: [
               {
                 text: "Termin zur Einschätzung geplant",
-                created: new Date("2019-06-11")
+                createdAt: new Date("2019-06-11")
               }
             ],
-            started: new Date("2019-06-11"),
-            ended: undefined
+            startedAt: new Date("2019-06-11"),
+            endedAt: undefined
           },
           {
             category: { id: "04" },
@@ -69,11 +69,11 @@ export default [
               {
                 text:
                   "Aktivität, Stimmungsschwankungen, Halluzinationen und Pflegeberichte",
-                created: new Date("2019-06-11")
+                createdAt: new Date("2019-06-11")
               }
             ],
-            started: new Date("2019-06-11"),
-            ended: undefined
+            startedAt: new Date("2019-06-11"),
+            endedAt: undefined
           }
         ],
         outcomes: [
@@ -95,49 +95,49 @@ export default [
               comment: "Unruhe, beschrieb Wahnvorstellungen und Halluzinationen"
             },
             personRatedInPlaceOfOwner: "",
-            created: new Date("2019-06-11")
+            createdAt: new Date("2019-06-11")
           },
           {
             status: { observation: 2, expectation: 4, comment: "" },
             knowledge: { observation: 2, expectation: 4, comment: "" },
             behaviour: { observation: 2, expectation: 4, comment: "" },
             personRatedInPlaceOfOwner: "",
-            created: new Date("2019-07-09")
+            createdAt: new Date("2019-07-09")
           },
           {
             status: { observation: 2, expectation: 4, comment: "" },
             knowledge: { observation: 3, expectation: 4, comment: "" },
             behaviour: { observation: 2, expectation: 4, comment: "" },
             personRatedInPlaceOfOwner: "",
-            created: new Date("2019-08-06")
+            createdAt: new Date("2019-08-06")
           },
           {
             status: { observation: 2, expectation: 4, comment: "" },
             knowledge: { observation: 3, expectation: 4, comment: "" },
             behaviour: { observation: 3, expectation: 4, comment: "" },
             personRatedInPlaceOfOwner: "",
-            created: new Date("2019-09-03")
+            createdAt: new Date("2019-09-03")
           },
           {
             status: { observation: 3, expectation: 4, comment: "" },
             knowledge: { observation: 4, expectation: 4, comment: "" },
             behaviour: { observation: 3, expectation: 4, comment: "" },
             personRatedInPlaceOfOwner: "",
-            created: new Date("2019-10-01")
+            createdAt: new Date("2019-10-01")
           },
           {
             status: { observation: 3, expectation: 4, comment: "" },
             knowledge: { observation: 4, expectation: 4, comment: "" },
             behaviour: { observation: 4, expectation: 4, comment: "" },
             personRatedInPlaceOfOwner: "",
-            created: new Date("2019-10-29")
+            createdAt: new Date("2019-10-29")
           }
         ],
-        created: new Date("2019-06-11"),
-        resolved: undefined,
+        createdAt: new Date("2019-06-11"),
+        resolvedAt: undefined,
         ratingIntervalInDays: 28
       }
     ],
-    created: new Date("2019-06-11")
+    createdAt: new Date("2019-06-11")
   }
 ] as Store.Customer[];
