@@ -1,19 +1,20 @@
 <template>
     <div v-if="client">
         <h4>Overview for {{ client.name }}</h4>
-        <h5>Problems:</h5>
+        <h5>{{ $tc('problem', 2) }}:</h5>
         <div v-for="problem in problems">
-          <!-- {{ problem.apiProblem }} -->
+          <!-- {{ problem }} -->
           <h6>
-            {{ problem.title }} ({{ problem.domainModifier }}, {{ problem.typeModifier }})
+            {{ $omaha.problemTitle(problem.problemId) }}
+            ({{ problem.domainModifier }}, {{ problem.typeModifier }})
           </h6>
-          <div>Symptoms:</div>
+          <div>{{ $tc('signsAndSymptoms', 2) }}:</div>
           <ul>
-            <li v-for="symptom in problem.symptoms">
-              {{ symptom.title }}
+            <li v-for="symptomId in problem.symptoms">
+              {{ $omaha.symptomTitle(symptomId) }}
             </li>
           </ul>
-          <div>Interventions:</div>
+          <div>{{ $tc('intervention', 2) }}:</div>
           <!-- <div>{{ categories(problem.interventions) }}</div> -->
           <ul>
             <li v-for="(cats, catId) in categories(problem.interventions)">
@@ -28,7 +29,7 @@
               </ul>
             </li>
           </ul>
-          <div>Ratings:</div>
+          <div>{{ $tc('rating', 2) }}:</div>
           <ul>
             <li v-for="rating in problem.ratings">
               <div>created: {{ rating.created }}</div>
@@ -48,16 +49,13 @@ import Vue from 'vue'
 import Component from "vue-class-component";
 import { Prop, Watch } from 'vue-property-decorator';
 import * as Api from "ts-api-client";
-import { Problem } from "../helper/model"
 import _ from "lodash";
 import { Intervention } from 'ts-api-client';
-
-// Problem.omahaq = 
+import { OmahaQ, getOmaha } from "../helper/model"
 
 @Component
 export default class DebugOverview extends Vue {
-  // problems: Api.ProblemClassification[] = [];
-  problems: Problem[] = [];
+  problems: Api.ProblemClassification[] = [];
 
   @Prop() client: Api.Client | undefined;
 
@@ -67,7 +65,7 @@ export default class DebugOverview extends Vue {
       this.$api.appGetClientProblems({ clientId: this.client.id! })
         .then((r) => {
           console.log("client problems:", r)
-          this.problems = r.map(apiProblem => this.$omaha.newProblem(apiProblem));
+          this.problems = r;
         })
         .catch((e) => {
           console.log("client problem err:", e)
@@ -76,6 +74,20 @@ export default class DebugOverview extends Vue {
       this.problems = [];
       // this.$api.appGetClients();
     }
+  }
+
+  @Watch('$root.$i18n.locale')
+  lChange(val: string) {
+    console.log("locale changed to:", val);
+    getOmaha(val)
+      .then((r) => {
+        console.log("omaha:", r);
+        Vue.prototype.$omaha = new OmahaQ(r);
+        this.$forceUpdate();
+      })
+      .catch((e) => {
+        console.log("omaha err:", e)
+      });
   }
 
   categories(interventions: Intervention[]) { 

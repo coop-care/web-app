@@ -280,6 +280,10 @@ export default function(/* { ssrContext } */) {
       }
     },
     mutations: {
+      setCustomers(state, customers) {
+        state.customers = customers;
+        state.selectedCustomerId = "";
+      },
       addCustomer(state, { name }) {
         let id = Math.random()
           .toString(36)

@@ -171,5 +171,22 @@ export default class PageIndex extends Vue {
     params.problemIndex = "" + (this.selectedCustomer.problems.length - 1);
     this.$router.push({ name: "problem", params: params });
   }
+
+  beforeMount() {
+    console.log("I'm about to be mounted");
+    
+    this.$api.appGetClients()
+      .then((r) => {
+        console.log("customers:", r)
+
+        // this.$store.commit("setCustomers", r);
+
+      })
+      .catch((e) => {
+        console.log("customers err:", e)
+      });
+
+
+  }
 }
 </script>

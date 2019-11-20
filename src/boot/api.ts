@@ -15,5 +15,5 @@ declare module 'vue/types/vue' {
   }
   
 export default async ({ }) => {
-  Vue.prototype.$omaha = new OmahaQ(await getOmaha());
+  Vue.prototype.$omaha = new OmahaQ(await getOmaha('EN'));
 }
