@@ -3,7 +3,7 @@ import * as Store from "../store/index";
 export default [
   {
     id: "4s62btq9",
-    name: "Emma",
+    name: "Emma Becker",
     problems: [
       {
         assessment: [] as Store.Note[],

@@ -3,6 +3,8 @@
     <q-drawer
       v-model="customerDrawer"
       content-class="bg-grey-2"
+      v-show-if-above
+      behavior="desktop"
     >
       <q-list>
         <q-item>
@@ -29,7 +31,7 @@
           :key="customer.id"
           v-ripple
           :active="selectedCustomerId == customer.id"
-          @click="selectCustomer(customer)"
+          @click="selectCustomer(customer); closeDrawerIfNeeded();"
         >
           <q-item-section>
             <q-item-label class="q-pl-md">{{ customer.name }}</q-item-label>
@@ -136,8 +138,16 @@ export default class PageIndex extends Vue {
     return (this.$t("terminology") as unknown) as Terminology;
   }
 
+  created() {
+    this.$root.$on(
+      "toggleCustomerDrawer",
+      () => (this.customerDrawer = !this.customerDrawer)
+    );
+  }
+
   addCustomer() {
     this.$store.commit("addCustomer", { name: this.$t("newCustomer") });
+    this.closeDrawerIfNeeded();
 
     setTimeout(() => {
       // @ts-ignore
@@ -168,6 +178,12 @@ export default class PageIndex extends Vue {
     this.$store.commit("createProblemRecord", params);
     params.problemIndex = "" + (this.selectedCustomer.problems.length - 1);
     this.$router.push({ name: "problem", params: params });
+  }
+
+  closeDrawerIfNeeded() {
+    if (this.$q.screen.lt.md) {
+      this.customerDrawer = false;
+    }
   }
 }
 </script>

@@ -3,6 +3,15 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
+          v-if="$router.currentRoute.name == 'index' && $q.screen.lt.md"
+          dense
+          no-caps
+          flat
+          icon="menu"
+          aria-label="menu"
+          @click="$root.$emit('toggleCustomerDrawer')"
+        />
+        <q-btn
           v-if="$router.currentRoute.name != 'index'"
           size="lg"
           dense
@@ -21,6 +30,7 @@
             label="„CoopCare”"
             :ripple="false"
             to="/"
+            v-if="$q.screen.gt.xs"
           />
         </q-toolbar-title>
 
