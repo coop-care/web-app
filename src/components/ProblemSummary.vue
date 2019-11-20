@@ -5,7 +5,7 @@
         <div class="text-subtitle2 text-weight-normal">
           {{ customerName }}:
         </div>
-        <div class="text-h6">
+        <div class="text-h6 text-classification">
           {{ problem.title || $t("unspecifiedProblem") }}
         </div>
       </div>
@@ -39,7 +39,7 @@
           class="q-mr-xs q-px-sm"
           style="font-size: 56%"
         />
-        {{ problem.title || $t("unspecifiedProblem") }}
+        <span class="text-classification">{{ problem.title || $t("unspecifiedProblem") }}</span>
         <span class="text-subtitle2 text-weight-light q-ml-xs">
           {{ (problem.titles || {}).scope }},
           {{ (problem.titles || {}).severity }},
@@ -49,7 +49,7 @@
     </q-card-section>
     <q-card-section v-if="problem.signsAndSymptoms.length || problem.details">
       <div
-        class="text-subtitle1"
+        class="text-subtitle1 text-classification"
         v-if="problem.signsAndSymptoms.length"
       >
         {{ $t("signsAndSymptoms") }}
@@ -75,7 +75,7 @@
       </div>
     </q-card-section>
     <q-card-section v-if="interventions.length">
-      <div class="text-subtitle1">{{ $tc("intervention", 2) }}</div>
+      <div class="text-subtitle1 text-intervention">{{ $tc("intervention", 2) }}</div>
       <ul :class="'q-ma-none ' + (isSummary ? '' : 'column-2')">
         <li
           v-for="(intervention, index) in interventions"
@@ -96,7 +96,7 @@
     </q-card-section>
     <q-card-section v-if="lastOutcome || (isInteractive && problem.isHighPriority)">
       <div class="text-subtitle1">
-        {{ $tc("outcome", 2) }}
+        <span class="text-outcome">{{ $tc("outcome", 2) }}</span>
         <q-btn
           v-if="isInteractive"
           :label="$t('newRating')"
