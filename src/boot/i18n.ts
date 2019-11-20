@@ -1,5 +1,6 @@
 import Vue from "vue";
 import VueI18n from "vue-i18n";
+// @ts-ignore
 import messages from "src/i18n";
 import Quasar from "quasar";
 
