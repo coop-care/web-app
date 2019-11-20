@@ -3,7 +3,7 @@
     <q-drawer
       v-model="customerDrawer"
       content-class="bg-grey-2"
-      v-show-if-above
+      show-if-above
     >
       <q-list>
         <q-item>
@@ -40,7 +40,7 @@
     </q-drawer>
 
     <div
-      class="customer-overview q-pa-xl"
+      class="customer-overview q-pt-lg q-px-xl q-pb-xl"
       v-if="selectedCustomer"
     >
       <content-editable
