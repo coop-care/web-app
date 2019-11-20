@@ -57,7 +57,7 @@ export interface Outcome {
   knowledge: Rating;
   behaviour: Rating;
   status: Rating;
-  ratedWhoInsteadOfOwner: string;
+  personRatedInPlaceOfOwner: string;
 }
 export interface Rating {
   observation: number;
@@ -398,7 +398,8 @@ export default function(/* { ssrContext } */) {
               expectation: defaultValue.status.expectation || 0,
               comment: ""
             },
-            ratedWhoInsteadOfOwner: defaultValue.ratedWhoInsteadOfOwner || ""
+            personRatedInPlaceOfOwner:
+              defaultValue.personRatedInPlaceOfOwner || ""
           };
           problemRecord.outcomes.push(outcome);
         }

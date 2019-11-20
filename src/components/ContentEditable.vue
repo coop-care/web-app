@@ -9,6 +9,14 @@
   ></div>
 </template>
 
+<style lang="sass">
+[contenteditable="true"]
+  &:active, &:focus
+    border: none
+    outline: none
+    border-bottom: 1px solid #000
+</style>
+
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";

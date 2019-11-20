@@ -1,6 +1,6 @@
 <template>
-  <div class="intervention">
-    <div class="row">
+  <div class="intervention" v-if="record">
+    <div class="row q-col-gutter-lg">
       <div class="col-md-9 col-12">
         <h6>{{ $t("selectInterventions") }}</h6>
         <q-tabs
@@ -16,16 +16,15 @@
             v-bind:key="index"
           />
         </q-tabs>
-        <q-tab-panels
-          v-model="categorySelected"
-          animated
-        >
+        <q-tab-panels v-model="categorySelected" animated>
           <q-tab-panel
             :name="index"
             v-for="(category, index) in categories"
             v-bind:key="index"
           >
-            <div class="text-weight-light q-mb-md">{{ category.description }}</div>
+            <div class="text-weight-light q-mb-md">
+              {{ category.description }}
+            </div>
             <q-input
               ref="filter"
               color="amber-10"
@@ -35,10 +34,7 @@
               dense
             >
               <template v-slot:prepend>
-                <q-icon
-                  name="search"
-                  color="amber-10"
-                />
+                <q-icon name="search" color="amber-10" />
               </template>
               <template v-slot:append>
                 <q-icon
@@ -64,8 +60,12 @@
             >
               <template v-slot:default-header="prop">
                 <div>
-                  <div class="text-weight-bold text-amber-10">{{ prop.node.title }}</div>
-                  <div class="text-weight-light">{{ prop.node.description }}</div>
+                  <div class="text-weight-bold text-amber-10">
+                    {{ prop.node.title }}
+                  </div>
+                  <div class="text-weight-light">
+                    {{ prop.node.description }}
+                  </div>
                 </div>
               </template>
               <template v-slot:default-body="prop">
@@ -78,13 +78,14 @@
                     :autofocus="!details[prop.node.id]"
                     color="amber-10"
                   />
-                  <p class="q-my-xs text-caption">{{ $t("customerSpecificInterventionsHint") }}</p>
+                  <p class="q-my-xs text-caption">
+                    {{ $t("customerSpecificInterventionsHint") }}
+                  </p>
                 </div>
               </template>
             </q-tree>
           </q-tab-panel>
         </q-tab-panels>
-
       </div>
       <div class="col-md-3 col-12 summary">
         <problem-summary

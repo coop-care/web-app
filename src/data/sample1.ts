@@ -94,42 +94,42 @@ export default [
               expectation: 4,
               comment: "Unruhe, beschrieb Wahnvorstellungen und Halluzinationen"
             },
-            ratedWhoInsteadOfOwner: "",
+            personRatedInPlaceOfOwner: "",
             created: new Date("2019-06-11")
           },
           {
             status: { observation: 2, expectation: 4, comment: "" },
             knowledge: { observation: 2, expectation: 4, comment: "" },
             behaviour: { observation: 2, expectation: 4, comment: "" },
-            ratedWhoInsteadOfOwner: "",
+            personRatedInPlaceOfOwner: "",
             created: new Date("2019-07-09")
           },
           {
             status: { observation: 2, expectation: 4, comment: "" },
             knowledge: { observation: 3, expectation: 4, comment: "" },
             behaviour: { observation: 2, expectation: 4, comment: "" },
-            ratedWhoInsteadOfOwner: "",
+            personRatedInPlaceOfOwner: "",
             created: new Date("2019-08-06")
           },
           {
             status: { observation: 2, expectation: 4, comment: "" },
             knowledge: { observation: 3, expectation: 4, comment: "" },
             behaviour: { observation: 3, expectation: 4, comment: "" },
-            ratedWhoInsteadOfOwner: "",
+            personRatedInPlaceOfOwner: "",
             created: new Date("2019-09-03")
           },
           {
             status: { observation: 3, expectation: 4, comment: "" },
             knowledge: { observation: 4, expectation: 4, comment: "" },
             behaviour: { observation: 3, expectation: 4, comment: "" },
-            ratedWhoInsteadOfOwner: "",
+            personRatedInPlaceOfOwner: "",
             created: new Date("2019-10-01")
           },
           {
             status: { observation: 3, expectation: 4, comment: "" },
             knowledge: { observation: 4, expectation: 4, comment: "" },
             behaviour: { observation: 4, expectation: 4, comment: "" },
-            ratedWhoInsteadOfOwner: "",
+            personRatedInPlaceOfOwner: "",
             created: new Date("2019-10-29")
           }
         ],

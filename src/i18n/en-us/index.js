@@ -32,8 +32,7 @@ export default {
   customerSpecificInterventionsHint: "What concrete activities are planned?",
   unspecifiedProblem: "unspecified problem",
   priority: "Priority",
-  lowPriorityReasonHint:
-    "Give the reason why the problem is currently low priority.",
+  lowPriorityReasonHint: "Why is the problem currently not a priority?",
   showDetailsInput: "Specify further customer-specific details?",
   highPriorityTitle: "High Priority",
   highPriorityDescription:
@@ -47,5 +46,11 @@ export default {
   noExistingCustomer: "There is no customer data yet.",
   noSelectedCustomer: "Select a customer from the customer list.",
   createFirstCustomer: "Create your first customer record",
+  showCommentInput: "Add a comment?",
+  ratingCommentLabel: "Rationale or comment on the rating",
+  showPersonRatedInPlaceOfOwnerInput:
+    "Does any of the ratings relate to a person other than the owner of the problem?",
+  personRatedInPlaceOfOwnerLabel:
+    "To whom does the evaluation for knowledge or behaviour refer?",
   error404: "Sorry, nothing here..."
 };

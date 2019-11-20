@@ -1,9 +1,8 @@
 <template>
-  <q-card>
+  <q-card class="overflow-hidden">
     <q-card-section>
       <div v-if="isSummary">
-        <div class="text-h6 q-mb-sm">{{ $t("summary") }}</div>
-        <div class="text-subtitle1">
+        <div class="text-h6">
           {{ problem.title || $t("unspecifiedProblem") }}
         </div>
         <p class="q-pl-lg q-ma-none">
@@ -139,10 +138,10 @@
             </li>
           </ul>
           <p
-            v-if="lastOutcome.ratedWhoInsteadOfOwner"
+            v-if="lastOutcome.personRatedInPlaceOfOwner"
             class="q-pl-lg q-my-none text-italic"
           >
-            {{ lastOutcome.ratedWhoInsteadOfOwner }}
+            {{ lastOutcome.personRatedInPlaceOfOwner }}
           </p>
         </div>
       </div>

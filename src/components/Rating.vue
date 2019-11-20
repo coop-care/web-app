@@ -1,64 +1,107 @@
 <template>
-  <div class="row">
-    <div class="col-12 pagecol">
+  <div>
+    <div>
       <div class="text-h6">{{ title }}</div>
-      <div>{{ description }}</div>
+      <div class="text-weight-light">{{ description }}</div>
     </div>
-    <div class="col-12 col-sm-6 pagecol">
-      <q-list dense>
-        <q-item>
-          <q-item-section avatar></q-item-section>
-          <q-item-section>{{ scale[observation-1] }}</q-item-section>
-        </q-item>
-        <q-item>
-          <q-item-section avatar>{{ $t('observation') }}</q-item-section>
-          <q-item-section>
-            <q-btn-toggle
-              v-model="observation"
-              spread
-              no-caps
-              unelevated
-              toggle-color="primary"
-              color="grey"
-              text-color="white"
-              :options="options"
-            />
-          </q-item-section>
-        </q-item>
-        <q-item>
-          <q-item-section avatar></q-item-section>
-          <q-item-section>{{ scale[expectation-1] }}</q-item-section>
-        </q-item>
-        <q-item>
-          <q-item-section avatar>{{ $t('expectation') }}</q-item-section>
-          <q-item-section>
-            <q-btn-toggle
-              v-model="expectation"
-              spread
-              no-caps
-              unelevated
-              toggle-color="primary"
-              color="grey"
-              text-color="white"
-              :options="options"
-            />
-          </q-item-section>
-        </q-item>
-      </q-list>
+    <div :class="'row q-col-gutter-' + ($q.screen.lt.sm ? 'xs' : 'xl')">
+      <div class="col-12 col-sm-6">
+        <div class="text-subtitle2 text-center q-my-xs">
+          {{ $t("observation") }}
+        </div>
+        <div class="row">
+          <q-icon
+            name="sentiment_very_dissatisfied"
+            color="negative"
+            size="lg"
+          />
+          <q-btn-toggle
+            v-model="observation"
+            spread
+            no-caps
+            unelevated
+            toggle-color="teal"
+            rounded
+            text-color="teal"
+            :options="options"
+            class="q-mx-sm col"
+          />
+          <q-icon
+            name="sentiment_very_satisfied"
+            color="positive"
+            size="lg"
+          />
+        </div>
+        <div class="text-center text-weight-light q-my-xs">
+          {{ scale[observation - 1] || "&nbsp;" }}
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6">
+        <div class="text-subtitle2 text-center q-my-xs">
+          {{ $t("expectation") }}
+        </div>
+        <div class="row">
+          <q-icon
+            name="sentiment_very_dissatisfied"
+            color="negative"
+            size="lg"
+          />
+          <q-btn-toggle
+            v-model="expectation"
+            spread
+            no-caps
+            unelevated
+            toggle-color="teal"
+            rounded
+            text-color="teal"
+            :options="options"
+            class="q-mx-sm col"
+          />
+          <q-icon
+            name="sentiment_very_satisfied"
+            color="positive"
+            size="lg"
+          />
+        </div>
+        <div class="text-center text-weight-light q-my-xs">
+          {{ scale[expectation - 1] || "&nbsp;" }}
+        </div>
+      </div>
     </div>
-    <div class="col-12 col-sm-6 pagecol">
-      <q-list dense>
-        <q-item
-          v-for="(item, index) in scale"
-          v-bind:key="index"
-        >
-          <q-item-section avatar>{{ index+1 }}</q-item-section>
-          <q-item-section>{{ item }}</q-item-section>
-        </q-item>
-      </q-list>
+    <div>
+      <q-btn
+        v-if="!showComment && !comment"
+        @click="showComment = true"
+        :label="$t('showCommentInput')"
+        flat
+        no-caps
+        size="md"
+        color="teal"
+        dense
+      />
+      <div
+        v-else
+        class="q-mt-xs q-mb-md"
+      >
+        <q-input
+          v-model="comment"
+          :label="$t('ratingCommentLabel')"
+          autogrow
+          :autofocus="showComment && !comment"
+          color="teal"
+          filled
+          dense
+        />
+      </div>
     </div>
   </div>
 </template>
+
+<style lang="sass">
+.q-btn-toggle
+  border-color: $teal
+</style>
 
 <script lang="ts">
 import Vue from "vue";
@@ -69,41 +112,36 @@ import Component from "vue-class-component";
     title: String,
     description: String,
     scale: Array,
-    type: String
-    // status: Number,
+    type: String,
+    rating: Object
   }
 })
 export default class Rating extends Vue {
-  options = [
-    { label: "1", value: 1 },
-    { label: "2", value: 2 },
-    { label: "3", value: 3 },
-    { label: "4", value: 4 },
-    { label: "5", value: 5 }
-  ];
+  showComment = false;
 
-  get rating() {
-    let record = this.$store.getters.getProblemRecordById(this.$route.params);
-    let outcome = record.outcomes[record.outcomes.length - 1] || {};
-    return outcome[this.$props.type] || {};
-  }
   get observation() {
-    return this.rating.observation || 0;
+    return this.$props.rating.observation || 0;
   }
   set observation(value: number) {
     this.updateNewOutcome("observation", value);
   }
   get expectation() {
-    return this.rating.expectation || 0;
+    return this.$props.rating.expectation || 0;
   }
   set expectation(value: number) {
     this.updateNewOutcome("expectation", value);
   }
   get comment() {
-    return this.rating.comment || "";
+    return this.$props.rating.comment || "";
   }
   set comment(value: string) {
     this.updateNewOutcome("comment", value);
+  }
+
+  get options() {
+    return [1, 2, 3, 4, 5].map(value => {
+      return { label: "" + value, value: value };
+    });
   }
 
   updateNewOutcome(path: string, value: any) {

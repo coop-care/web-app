@@ -1,22 +1,10 @@
 // app global css in Sass form
 
-.pagecol
-  padding: 2em
 .q-btn-toggle
   border-width: 1px
   border-style: solid
 .q-stepper__step
   counter-reset: section
-.split-layout
-  margin: -2em -20px 0
-  @media screen and (max-width: $breakpoint-sm-max)
-    margin-left: 0
-    margin-right: 0
-  &> .col-md-6
-    padding: 2em 20px 0
-    @media screen and (max-width: $breakpoint-sm-max)
-      padding-left: 0
-      padding-right: 0
 .problem-classification, .problem-rating, .intervention
   h6
     margin: 1.5em 0 .5em
@@ -25,10 +13,6 @@
     &.counter:before
       counter-increment: section
       content: counter(section) ". "
-.summary
-  padding-left: 30px
-  @media screen and (max-width: $breakpoint-sm-max)
-    padding-left: 0
 .column-2
   column-count: 2
   @media screen and (max-width: $breakpoint-xs-max)

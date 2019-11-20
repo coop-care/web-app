@@ -3,7 +3,7 @@
     class="problem-classification"
     v-if="record"
   >
-    <div class="row split-layout">
+    <div class="row q-col-gutter-lg">
       <div class="col-md-6">
         <h6 class="counter">{{ $t("selectProblem") }}</h6>
         <q-input
@@ -60,8 +60,12 @@
                 class="q-mr-sm col-auto"
               />
               <div class="col">
-                <div class="text-weight-bold text-red">{{ prop.node.title }}</div>
-                <div class="text-weight-light text-black">{{ prop.node.description }}</div>
+                <div class="text-weight-bold text-red">
+                  {{ prop.node.title }}
+                </div>
+                <div class="text-weight-light text-black">
+                  {{ prop.node.description }}
+                </div>
               </div>
             </div>
           </template>
@@ -69,7 +73,9 @@
             v-slot:body-problems="prop"
             class="symptom-body"
           >
-            <div class="text-weight-light text-black">{{ $t("signsAndSymptoms") }}:</div>
+            <div class="text-weight-light text-black">
+              {{ $t("signsAndSymptoms") }}:
+            </div>
           </template>
           <template v-slot:header-signsAndSymptoms="prop">
             <div class="text-weight-light">{{ prop.node.title }}</div>
@@ -90,7 +96,9 @@
           :options="modifier('scope')"
           class="q-mb-xs"
         />
-        <div class="text-weight-light q-mb-md q-px-lg">{{ record.problem.descriptions.scope }}</div>
+        <div class="text-weight-light q-mb-md q-px-lg">
+          {{ record.problem.descriptions.scope }}
+        </div>
         <q-btn-toggle
           v-model="severity"
           spread
@@ -102,12 +110,16 @@
           :options="modifier('severity')"
           class="q-mb-xs"
         />
-        <div class="text-weight-light q-mb-md q-px-lg">{{ record.problem.descriptions.severity }}</div>
+        <div class="text-weight-light q-mb-md q-px-lg">
+          {{ record.problem.descriptions.severity }}
+        </div>
 
         <h6
           v-if="showSymptomsSection"
           class="counter"
-        >{{ $t("signsAndSymptoms") }}</h6>
+        >
+          {{ $t("signsAndSymptoms") }}
+        </h6>
         <q-option-group
           v-if="showSymptomsSection"
           v-model="selectedSymptoms"
@@ -139,15 +151,18 @@
           :options="priorityOptions"
           class="q-mb-xs"
         />
-        <div class="text-weight-light q-mb-xl q-px-lg">{{ $t(record.problem.descriptions.priorityKey) }}</div>
+        <div class="text-weight-light q-mb-xl q-px-lg">
+          {{ $t(record.problem.descriptions.priorityKey) }}
+        </div>
 
         <div>
           <q-btn
             v-if="!showDetails && !details && priority"
-            @click="showDetails = true;"
+            @click="showDetails = true"
             :label="$t('showDetailsInput')"
             flat
             no-caps
+            dense
             size="md"
             color="red"
             class="q-mb-lg"
@@ -161,11 +176,16 @@
               :label="$t('customerSpecificProblems')"
               autogrow
               :autofocus="showDetails && !details"
-              ref="details"
               color="red"
               filled
             />
-            <p class="q-my-xs text-caption">{{ priority ? $t("customerSpecificProblemsHint") : $t("lowPriorityReasonHint") }}</p>
+            <p class="q-my-xs text-caption">
+              {{
+                priority
+                  ? $t("customerSpecificProblemsHint")
+                  : $t("lowPriorityReasonHint")
+              }}
+            </p>
           </div>
         </div>
 
@@ -186,13 +206,13 @@
     padding-right: 12px
 .problem-classification
   .q-tree > .q-tree__node > .q-tree__node-header
-    background-color: #f44336
+    background-color: $red
     color: #fff
   .q-tree__node .q-tree__node .q-tree__node .q-tree__node-header
     padding-top: 0
     padding-bottom: 0
   .q-btn-toggle
-    border-color: #f44336
+    border-color: $red
     button
       @media screen and (max-width: $breakpoint-xs-max)
         font-size: 13px

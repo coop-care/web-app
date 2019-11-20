@@ -33,8 +33,7 @@ export default {
     "Welche konkreten Aktivitäten werden geplant?",
   unspecifiedProblem: "nicht spezifiziertes Problem",
   priority: "Priorität",
-  lowPriorityReasonHint:
-    "Gib den Grund an, warum das Problem aktuell keine Priorität bekommt.",
+  lowPriorityReasonHint: "Warum hat das Problem aktuell keine Priorität?",
   showDetailsInput: "Weitere kundenspezifische Details angeben?",
   highPriorityTitle: "Hohe Priorität",
   highPriorityDescription:
@@ -48,5 +47,11 @@ export default {
   noExistingCustomer: "Es existieren noch keine Kundendaten.",
   noSelectedCustomer: "Wähle einen Kunden aus der Kundenliste aus.",
   createFirstCustomer: "Lege den ersten Kunden an",
+  showCommentInput: "Kommentar hinzufügen?",
+  ratingCommentLabel: "Begründung oder Anmerkung zur Bewertung",
+  showPersonRatedInPlaceOfOwnerInput:
+    "Bezieht sich eine der Bewertungen auf eine andere Person als den Besitzer des Problems?",
+  personRatedInPlaceOfOwnerLabel:
+    "Auf wen bezieht sie die Bewertung für Wissen oder Verhalten?",
   error404: "Sorry, hier gibt es nichts..."
 };

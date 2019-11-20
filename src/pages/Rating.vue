@@ -1,7 +1,8 @@
 <template>
   <q-page padding>
-    <div class="text-h6">{{$t('newRating')}}</div>
-    <div class="text-subtitle-1">{{ }}</div>
+    <div class="text-h5 q-mb-lg">
+      {{ $t("newRating") }}
+    </div>
     <problem-rating
       :params="$route.params"
       :isSummary="true"
@@ -9,14 +10,13 @@
     <div class="flex justify-around q-mt-lg">
       <q-btn
         :label="$t('cancel')"
-        @click="$store.commit('updateNewOutcome', {path: 'created', value: new Date(), ...$route.params}); $router.push({name: 'index'})"
         to="/"
         flat
         color="primary"
       />
       <q-btn
         :label="$t('save')"
-        @click="$store.commit('updateNewOutcome', {path: 'created', value: new Date(), ...$route.params}); $router.push({name: 'index'})"
+        @click="save"
         color="primary"
       />
     </div>
@@ -33,5 +33,18 @@ import ProblemRating from "components/ProblemRating.vue";
     ProblemRating
   }
 })
-export default class Rating extends Vue {}
+export default class Rating extends Vue {
+  get customer() {
+    return this.$store.getters.getCustomerById(this.$route.params);
+  }
+
+  save() {
+    this.$store.commit("updateNewOutcome", {
+      path: "created",
+      value: new Date(),
+      ...this.$route.params
+    });
+    this.$router.push({ name: "index" });
+  }
+}
 </script>
