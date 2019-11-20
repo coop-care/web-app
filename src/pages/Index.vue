@@ -4,7 +4,6 @@
       v-model="customerDrawer"
       content-class="bg-grey-2"
       v-show-if-above
-      behavior="desktop"
     >
       <q-list>
         <q-item>
@@ -114,7 +113,7 @@ import { Terminology } from "../helper/terminology";
   }
 })
 export default class PageIndex extends Vue {
-  customerDrawer = !this.$q.platform.is.mobile;
+  customerDrawer = this.$q.screen.gt.sm;
 
   get customers() {
     return this.$store.state.customers;
