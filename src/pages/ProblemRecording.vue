@@ -16,8 +16,8 @@
         prefix="1"
         :done="step > 1"
         :header-nav="step > 1"
-        active-color="red"
-        done-color="red"
+        active-color="classification"
+        done-color="classification"
       >
         <problem-classification />
       </q-step>
@@ -29,8 +29,8 @@
         prefix="2"
         :done="step > 2"
         :header-nav="step > 2"
-        done-color="teal"
-        active-color="teal"
+        done-color="outcome"
+        active-color="outcome"
       >
         <problem-rating />
       </q-step>
@@ -42,8 +42,8 @@
         prefix="3"
         icon="add_comment"
         :header-nav="step > 3"
-        done-color="amber-10"
-        active-color="amber-10"
+        done-color="intervention"
+        active-color="intervention"
       >
         <intervention />
       </q-step>

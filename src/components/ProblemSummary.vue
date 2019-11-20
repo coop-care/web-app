@@ -22,7 +22,7 @@
           unelevated
           dense
           size="sm"
-          color="red"
+          color="negative"
           class="q-mr-xs q-px-sm"
           style="font-size: 56%"
         />
@@ -35,7 +35,7 @@
           unelevated
           dense
           size="sm"
-          color="red"
+          color="negative"
           class="q-mr-xs q-px-sm"
           style="font-size: 56%"
         />

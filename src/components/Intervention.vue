@@ -10,7 +10,7 @@
           v-model="categorySelected"
           dense
           no-caps
-          class="bg-amber-10 text-white shadow-2 q-mb-sm"
+          class="bg-intervention text-white shadow-2 q-mb-sm"
         >
           <q-tab
             :name="index"
@@ -33,7 +33,7 @@
             </div>
             <q-input
               ref="filter"
-              color="amber-10"
+              color="intervention"
               filled
               v-model="targetsFilter"
               :label="$t('findTargets')"
@@ -42,14 +42,14 @@
               <template v-slot:prepend>
                 <q-icon
                   name="search"
-                  color="amber-10"
+                  color="intervention"
                 />
               </template>
               <template v-slot:append>
                 <q-icon
                   v-if="targetsFilter !== ''"
                   name="clear"
-                  color="amber-10"
+                  color="intervention"
                   class="cursor-pointer"
                   @click="resetTargetsFilter"
                 />
@@ -63,13 +63,13 @@
               :filter="targetsFilter"
               :filter-method="filterTerminology"
               :no-results-label="$t('noTargetsFound')"
-              control-color="amber-10"
+              control-color="intervention"
               tick-strategy="strict"
               :ticked.sync="interventions"
             >
               <template v-slot:default-header="prop">
                 <div>
-                  <div class="text-weight-bold text-amber-10">
+                  <div class="text-weight-bold text-intervention">
                     {{ prop.node.title }}
                   </div>
                   <div class="text-weight-light">
@@ -85,7 +85,7 @@
                     :label="$t('customerSpecificInterventions')"
                     autogrow
                     :autofocus="!details[prop.node.id]"
-                    color="amber-10"
+                    color="intervention"
                   />
                   <p class="q-my-xs text-caption">
                     {{ $t("customerSpecificInterventionsHint") }}

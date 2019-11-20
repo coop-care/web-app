@@ -8,7 +8,7 @@
         <h6 class="counter">{{ $t("selectProblem") }}</h6>
         <q-input
           ref="filter"
-          color="red"
+          color="classification"
           filled
           v-model="problemsFilter"
           :label="$t('selectProblem')"
@@ -17,14 +17,14 @@
           <template v-slot:prepend>
             <q-icon
               name="search"
-              color="red"
+              color="classification"
             />
           </template>
           <template v-slot:append>
             <q-icon
               v-if="problemsFilter !== ''"
               name="clear"
-              color="red"
+              color="classification"
               class="cursor-pointer"
               @click="resetProblemsFilter"
             />
@@ -38,7 +38,7 @@
           :filter="problemsFilter"
           :filter-method="filterTerminology"
           :no-results-label="$t('noProblemsFound')"
-          color="red"
+          color="classification"
         >
           <template v-slot:header-domains="prop">
             <div class="row items-center text-white">
@@ -50,17 +50,17 @@
           </template>
           <template v-slot:header-problems="prop">
             <div class="row items-center">
-              <!-- <q-icon :name="prop.node.icon" color="red" size="28px" class="q-mr-sm" /> -->
+              <!-- <q-icon :name="prop.node.icon" color="classification" size="28px" class="q-mr-sm" /> -->
               <q-radio
                 v-model="selectedProblem"
                 :val="prop.node.value"
-                color="red"
+                color="classification"
                 keep-color
                 dense
                 class="q-mr-sm col-auto"
               />
               <div class="col">
-                <div class="text-weight-bold text-red">
+                <div class="text-weight-bold text-classification">
                   {{ prop.node.title }}
                 </div>
                 <div class="text-weight-light text-black">
@@ -91,8 +91,8 @@
           no-caps
           unelevated
           rounded
-          toggle-color="red"
-          text-color="red"
+          toggle-color="classification"
+          text-color="classification"
           :options="modifier('scope')"
           class="q-mb-xs"
         />
@@ -105,8 +105,8 @@
           no-caps
           unelevated
           rounded
-          toggle-color="red"
-          text-color="red"
+          toggle-color="classification"
+          text-color="classification"
           :options="modifier('severity')"
           class="q-mb-xs"
         />
@@ -124,14 +124,14 @@
           v-if="showSymptomsSection"
           v-model="selectedSymptoms"
           :options="symptomsForSelectedProblem"
-          color="red"
+          color="classification"
           type="checkbox"
           keep-color
         />
         <q-input
           v-if="showSymptomsSection && isOtherSymptomSelected"
           v-model="otherSymptoms"
-          color="red"
+          color="classification"
           autogrow
           dense
           filled
@@ -146,8 +146,8 @@
           no-caps
           unelevated
           rounded
-          toggle-color="red"
-          text-color="red"
+          toggle-color="classification"
+          text-color="classification"
           :options="priorityOptions"
           class="q-mb-xs"
         />
@@ -164,7 +164,7 @@
             no-caps
             dense
             size="md"
-            color="red"
+            color="classification"
             class="q-mb-lg"
           />
           <div
@@ -176,7 +176,7 @@
               :label="$t('customerSpecificProblems')"
               autogrow
               :autofocus="showDetails && !details"
-              color="red"
+              color="classification"
               filled
             />
             <p class="q-my-xs text-caption">
@@ -206,13 +206,13 @@
     padding-right: 12px
 .problem-classification
   .q-tree > .q-tree__node > .q-tree__node-header
-    background-color: $red
+    background-color: $classification
     color: #fff
   .q-tree__node .q-tree__node .q-tree__node .q-tree__node-header
     padding-top: 0
     padding-bottom: 0
   .q-btn-toggle
-    border-color: $red
+    border-color: $classification
     button
       @media screen and (max-width: $breakpoint-xs-max)
         font-size: 13px

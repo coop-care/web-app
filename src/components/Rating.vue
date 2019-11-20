@@ -22,9 +22,9 @@
                 spread
                 no-caps
                 unelevated
-                toggle-color="teal"
+                toggle-color="outcome"
                 rounded
-                text-color="teal"
+                text-color="outcome"
                 :options="options"
                 class="q-mx-sm col"
               />
@@ -56,9 +56,9 @@
                 spread
                 no-caps
                 unelevated
-                toggle-color="teal"
+                toggle-color="outcome"
                 rounded
-                text-color="teal"
+                text-color="outcome"
                 :options="options"
                 class="q-mx-sm col"
               />
@@ -82,7 +82,7 @@
           flat
           no-caps
           size="md"
-          color="teal"
+          color="outcome"
           dense
           class="q-mt-xs"
         />
@@ -92,7 +92,7 @@
             :label="$t('ratingCommentLabel')"
             autogrow
             :autofocus="showComment && !comment"
-            color="teal"
+            color="outcome"
             filled
             dense
           />
@@ -104,7 +104,7 @@
 
 <style lang="sass">
 .q-btn-toggle
-  border-color: $teal
+  border-color: $outcome
 </style>
 
 <script lang="ts">

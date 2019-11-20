@@ -22,7 +22,7 @@
           dense
           no-caps
           size="md"
-          color="teal"
+          color="outcome"
         />
         <div
           v-else
@@ -35,7 +35,7 @@
             :autofocus="
               showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
             "
-            color="teal"
+            color="outcome"
             filled
             dense
           />
