@@ -2,16 +2,17 @@
   <q-card class="overflow-hidden">
     <q-card-section>
       <div v-if="isSummary">
+        <div class="text-subtitle2 text-weight-normal">
+          {{ customerName }}:
+        </div>
         <div class="text-h6">
           {{ problem.title || $t("unspecifiedProblem") }}
         </div>
-        <p class="q-pl-lg q-ma-none">
-          {{ (problem.titles || {}).scope }},
-          {{ (problem.titles || {}).severity }},
-          {{ $t((problem.titles || {}).priorityKey) }}
-        </p>
       </div>
-      <div v-else class="text-h6">
+      <div
+        v-else
+        class="text-h6"
+      >
         <q-btn
           v-if="isDraft"
           :label="$t('editDraft')"
@@ -47,11 +48,17 @@
       </div>
     </q-card-section>
     <q-card-section v-if="problem.signsAndSymptoms.length || problem.details">
-      <div class="text-subtitle1" v-if="problem.signsAndSymptoms.length">
+      <div
+        class="text-subtitle1"
+        v-if="problem.signsAndSymptoms.length"
+      >
         {{ $t("signsAndSymptoms") }}
       </div>
       <div :class="isSummary ? '' : 'column-2'">
-        <ul class="q-ma-none" v-if="problem.signsAndSymptoms">
+        <ul
+          class="q-ma-none"
+          v-if="problem.signsAndSymptoms"
+        >
           <li
             v-for="(symptom, index) in problem.signsAndSymptoms"
             v-bind:key="index"
@@ -59,7 +66,10 @@
             {{ titleForSymptom(symptom) }}
           </li>
         </ul>
-        <p v-if="problem.details" class="q-pl-lg q-my-none text-italic">
+        <p
+          v-if="problem.details"
+          class="q-pl-lg q-my-none text-italic"
+        >
           {{ problem.details }}
         </p>
       </div>
@@ -67,7 +77,10 @@
     <q-card-section v-if="interventions.length">
       <div class="text-subtitle1">{{ $tc("intervention", 2) }}</div>
       <ul :class="'q-ma-none ' + (isSummary ? '' : 'column-2')">
-        <li v-for="(intervention, index) in interventions" v-bind:key="index">
+        <li
+          v-for="(intervention, index) in interventions"
+          v-bind:key="index"
+        >
           {{ intervention.category.title }}: {{ intervention.target.title }}
           <div v-if="intervention.details.length">
             <div
@@ -81,9 +94,7 @@
         </li>
       </ul>
     </q-card-section>
-    <q-card-section
-      v-if="lastOutcome || (isInteractive && problem.isHighPriority)"
-    >
+    <q-card-section v-if="lastOutcome || (isInteractive && problem.isHighPriority)">
       <div class="text-subtitle1">
         {{ $tc("outcome", 2) }}
         <q-btn
@@ -96,7 +107,10 @@
         />
       </div>
       <div v-if="lastOutcome">
-        <div v-if="isInteractive" class="row">
+        <div
+          v-if="isInteractive"
+          class="row"
+        >
           <div
             class="col-12 col-sm-4"
             style=""
@@ -130,11 +144,12 @@
               }}
               ({{ rating.observation
               }}<span v-if="rating.expectation">
-                / {{ rating.expectation }}</span
-              >)
-              <span v-if="rating.comment" class="text-italic">
-                ({{ rating.comment }})</span
+                / {{ rating.expectation }}</span>)
+              <span
+                v-if="rating.comment"
+                class="text-italic"
               >
+                ({{ rating.comment }})</span>
             </li>
           </ul>
           <p
@@ -223,6 +238,9 @@ export default class ProblemSummary extends Vue {
 
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
+  }
+  get customerName() {
+    return this.$store.getters.getCustomerById(this.$props.params).name;
   }
   get record() {
     return (
