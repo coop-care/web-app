@@ -67,6 +67,7 @@ module.exports = {
     // See https://github.com/typescript-eslint/typescript-eslint/issues/493
     "@typescript-eslint/explicit-function-return-type": "off",
 
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-use-v-if-with-v-for": "off"
   }
 };
