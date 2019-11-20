@@ -1,6 +1,9 @@
 <template>
-  <div class="problem-rating row q-col-gutter-lg" v-if="record">
-    <div class="col-12 col-md-9 q-gutter-lg">
+  <div
+    class="problem-rating row q-col-gutter-lg"
+    v-if="record"
+  >
+    <div class="col-12 col-md-9 q-gutter-md">
       <rating
         v-for="(rating, index) in ratings"
         v-bind:key="index"
@@ -21,7 +24,10 @@
           size="md"
           color="teal"
         />
-        <div v-else class="q-mt-xs q-mb-md">
+        <div
+          v-else
+          class="q-mt-xs q-mb-md"
+        >
           <q-input
             v-model="personRatedInPlaceOfOwner"
             :label="$t('personRatedInPlaceOfOwnerLabel')"
@@ -37,7 +43,10 @@
       </div>
     </div>
     <div class="col-12 col-md-3">
-      <problem-summary :params="$route.params" :isSummary="true" />
+      <problem-summary
+        :params="$route.params"
+        :isSummary="true"
+      />
     </div>
   </div>
 </template>

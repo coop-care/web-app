@@ -1,98 +1,102 @@
 <template>
   <div>
-    <div>
+    <div class="q-mb-md">
       <div class="text-h6">{{ title }}</div>
       <div class="text-weight-light">{{ description }}</div>
     </div>
-    <div :class="'row q-col-gutter-' + ($q.screen.lt.sm ? 'xs' : 'xl')">
-      <div class="col-12 col-sm-6">
-        <div class="text-subtitle2 text-center q-my-xs">
-          {{ $t("observation") }}
+    <div :class="'row q-col-gutter-' + ($q.screen.gt.sm ? 'lg' : ($q.screen.gt.xs ? 'md' : 'sm'))">
+      <div class="col-12 col-sm-9 col-md-7">
+        <div class="row q-mb-sm">
+          <div class="col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
+            {{ $t("observation") }}
+          </div>
+          <div class="col-9">
+            <div class="row">
+              <q-icon
+                name="sentiment_very_dissatisfied"
+                color="negative"
+                size="lg"
+              />
+              <q-btn-toggle
+                v-model="observation"
+                spread
+                no-caps
+                unelevated
+                toggle-color="teal"
+                rounded
+                text-color="teal"
+                :options="options"
+                class="q-mx-sm col"
+              />
+              <q-icon
+                name="sentiment_very_satisfied"
+                color="positive"
+                size="lg"
+              />
+            </div>
+            <div class="text-center text-weight-light q-my-xs">
+              {{ scale[observation - 1] || "&nbsp;" }}
+            </div>
+          </div>
         </div>
-        <div class="row">
-          <q-icon
-            name="sentiment_very_dissatisfied"
-            color="negative"
-            size="lg"
-          />
-          <q-btn-toggle
-            v-model="observation"
-            spread
-            no-caps
-            unelevated
-            toggle-color="teal"
-            rounded
-            text-color="teal"
-            :options="options"
-            class="q-mx-sm col"
-          />
-          <q-icon
-            name="sentiment_very_satisfied"
-            color="positive"
-            size="lg"
-          />
-        </div>
-        <div class="text-center text-weight-light q-my-xs">
-          {{ scale[observation - 1] || "&nbsp;" }}
-        </div>
-      </div>
 
-      <div class="col-12 col-sm-6">
-        <div class="text-subtitle2 text-center q-my-xs">
-          {{ $t("expectation") }}
-        </div>
         <div class="row">
-          <q-icon
-            name="sentiment_very_dissatisfied"
-            color="negative"
-            size="lg"
-          />
-          <q-btn-toggle
-            v-model="expectation"
-            spread
-            no-caps
-            unelevated
-            toggle-color="teal"
-            rounded
-            text-color="teal"
-            :options="options"
-            class="q-mx-sm col"
-          />
-          <q-icon
-            name="sentiment_very_satisfied"
-            color="positive"
-            size="lg"
-          />
-        </div>
-        <div class="text-center text-weight-light q-my-xs">
-          {{ scale[expectation - 1] || "&nbsp;" }}
+          <div class="col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
+            {{ $t("expectation") }}
+          </div>
+          <div class="col-9">
+            <div class="row">
+              <q-icon
+                name="sentiment_very_dissatisfied"
+                color="negative"
+                size="lg"
+              />
+              <q-btn-toggle
+                v-model="expectation"
+                spread
+                no-caps
+                unelevated
+                toggle-color="teal"
+                rounded
+                text-color="teal"
+                :options="options"
+                class="q-mx-sm col"
+              />
+              <q-icon
+                name="sentiment_very_satisfied"
+                color="positive"
+                size="lg"
+              />
+            </div>
+            <div class="text-center text-weight-light q-my-xs">
+              {{ scale[expectation - 1] || "&nbsp;" }}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div>
-      <q-btn
-        v-if="!showComment && !comment"
-        @click="showComment = true"
-        :label="$t('showCommentInput')"
-        flat
-        no-caps
-        size="md"
-        color="teal"
-        dense
-      />
-      <div
-        v-else
-        class="q-mt-xs q-mb-md"
-      >
-        <q-input
-          v-model="comment"
-          :label="$t('ratingCommentLabel')"
-          autogrow
-          :autofocus="showComment && !comment"
+      <div class="col-12 col-sm-3 col-md-5">
+        <q-btn
+          v-if="!showComment && !comment"
+          @click="showComment = true"
+          :label="$t('showCommentInput')"
+          flat
+          no-caps
+          size="md"
           color="teal"
-          filled
           dense
+          class="q-mt-xs"
         />
+        <div v-else>
+          <q-input
+            v-model="comment"
+            :label="$t('ratingCommentLabel')"
+            autogrow
+            :autofocus="showComment && !comment"
+            color="teal"
+            filled
+            dense
+          />
+        </div>
       </div>
     </div>
   </div>
