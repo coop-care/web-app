@@ -7,9 +7,9 @@ Vue.use(VueI18n);
 
 const i18n = new VueI18n({
   // @ts-ignore
-  // locale: Quasar.lang.getLocale(),
-  // fallbackLocale: "en-us",
-  // messages
+  locale: Quasar.lang.getLocale(),
+  fallbackLocale: "en-us",
+  messages
 });
 
 // @ts-ignore

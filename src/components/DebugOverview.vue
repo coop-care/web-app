@@ -2,35 +2,40 @@
     <div v-if="client">
         <h4>Overview for {{ client.name }}</h4>
         <h5>Problems:</h5>
-        <ul>
-          <li v-for="problem in problems">
-            <!-- {{ problem.apiProblem }} -->
-            <h6>
-              {{ problem.title }} ({{ problem.domainModifier }}, {{ problem.typeModifier }})
-            </h6>
-            <div>Symptoms:</div>
-            <ul>
-              <li v-for="symptom in problem.symptoms">
-                {{ symptom.title }}
-              </li>
-            </ul>
-            <div>Interventions:</div>
-            <!-- <div>{{ categories(problem.interventions) }}</div> -->
-            <ul>
-              <li v-for="(cats, catId) in categories(problem.interventions)">
-                <!-- {{ cats }}  -->
-                {{ $omaha.categoryTitle(catId) }}
-                <ul>
-                  <li v-for="intervention in cats">
-                    <!-- {{ intervention }}  -->
-                    {{ $omaha.targetTitle(intervention.targetId) }}
-                    ({{ intervention.description }})
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <div v-for="problem in problems">
+          <!-- {{ problem.apiProblem }} -->
+          <h6>
+            {{ problem.title }} ({{ problem.domainModifier }}, {{ problem.typeModifier }})
+          </h6>
+          <div>Symptoms:</div>
+          <ul>
+            <li v-for="symptom in problem.symptoms">
+              {{ symptom.title }}
+            </li>
+          </ul>
+          <div>Interventions:</div>
+          <!-- <div>{{ categories(problem.interventions) }}</div> -->
+          <ul>
+            <li v-for="(cats, catId) in categories(problem.interventions)">
+              <!-- {{ cats }}  -->
+              {{ $omaha.categoryTitle(catId) }}
+              <ul>
+                <li v-for="intervention in cats">
+                  <!-- {{ intervention }}  -->
+                  {{ $omaha.targetTitle(intervention.targetId) }}
+                  ({{ intervention.description }})
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <div>Ratings:</div>
+          <ul>
+            <li v-for="rating in problem.ratings">
+              <div>created: {{ rating.created }}</div>
+              {{ rating }}
+            </li>
+          </ul>
+        </div>
     </div>
     <div v-else>
       <h4>Please select a client</h4>

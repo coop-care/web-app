@@ -284,6 +284,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Intervention'
+        ratings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Rating'
         comment:
           type: string
     ProblemDomainModifier:
@@ -298,6 +302,40 @@ components:
         - health-promotion
         - potential
         - actual
+    Rating:
+      required:
+        - created
+        - currentState
+      properties:
+        created:
+          $ref: '#/components/schemas/Timestamp'
+        currentState:
+          $ref: '#/components/schemas/RatingScale'
+        goalState:
+          $ref: '#/components/schemas/RatingScale'
+        comment:
+          type: string
+    RatingScale:
+      required:
+        - status
+        - knowledge
+        - behaviour
+      properties:
+        status:
+          type: integer
+        knowledge:
+          type: integer
+        behaviour:
+          type: integer
+        statusComment:
+          type: string
+        knowledgeComment:
+          type: string
+        behaviourComment:
+          type: string
+    Timestamp:
+      type: string
+      format: date-time
     CategoryId:
       type: string
       pattern: 'C\d\d'

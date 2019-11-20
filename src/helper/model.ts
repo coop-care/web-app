@@ -79,6 +79,9 @@ export class Problem {
     get interventions(): Api.Intervention[] {
         return this.apiProblem.interventions;
     }
+    get ratings(): Api.Rating[] | undefined {
+        return this.apiProblem.ratings;
+    }
 
 }
   

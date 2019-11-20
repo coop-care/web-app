@@ -160,7 +160,7 @@ export default class Intervention extends Vue {
             title: (
               this.terminology.interventionScheme.categories.find(
                 category => category.code == codes[0]
-              ) || {}
+              )!
             ).title
           },
           target: {
@@ -168,7 +168,7 @@ export default class Intervention extends Vue {
             title: (
               this.terminology.interventionScheme.targets.find(
                 target => target.code == codes[1]
-              ) || {}
+              )!
             ).title
           },
           details: [],
