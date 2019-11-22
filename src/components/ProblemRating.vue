@@ -3,42 +3,44 @@
     class="problem-rating row q-col-gutter-lg"
     v-if="record"
   >
-    <div class="col-12 col-md-9 q-gutter-md">
-      <rating
-        v-for="(rating, index) in ratings"
-        v-bind:key="index"
-        :title="rating.title"
-        :description="rating.description"
-        :scale="rating.scale"
-        :type="rating.type"
-        :rating="outcome[rating.type] || {}"
-      />
-      <div class="q-mt-lg">
-        <q-btn
-          v-if="!showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner"
-          @click="showPersonRatedInPlaceOfOwner = true"
-          :label="$t('showPersonRatedInPlaceOfOwnerInput')"
-          flat
-          dense
-          no-caps
-          size="md"
-          color="outcome"
+    <div class="col-12 col-md-9">
+      <div class="q-gutter-md">
+        <rating
+          v-for="(rating, index) in ratings"
+          v-bind:key="index"
+          :title="rating.title"
+          :description="rating.description"
+          :scale="rating.scale"
+          :type="rating.type"
+          :rating="outcome[rating.type] || {}"
         />
-        <div
-          v-else
-          class="q-mt-xs q-mb-md"
-        >
-          <q-input
-            v-model="personRatedInPlaceOfOwner"
-            :label="$t('personRatedInPlaceOfOwnerLabel')"
-            autogrow
-            :autofocus="
+        <div>
+          <q-btn
+            v-if="!showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner"
+            @click="showPersonRatedInPlaceOfOwner = true"
+            :label="$t('showPersonRatedInPlaceOfOwnerInput')"
+            flat
+            dense
+            no-caps
+            size="md"
+            color="outcome"
+          />
+          <div
+            v-else
+            class="q-mt-xs q-mb-md"
+          >
+            <q-input
+              v-model="personRatedInPlaceOfOwner"
+              :label="$t('personRatedInPlaceOfOwnerLabel')"
+              autogrow
+              :autofocus="
               showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
             "
-            color="outcome"
-            filled
-            dense
-          />
+              color="outcome"
+              filled
+              dense
+            />
+          </div>
         </div>
       </div>
     </div>

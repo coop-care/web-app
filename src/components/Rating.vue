@@ -4,13 +4,13 @@
       <div class="text-h6">{{ title }}</div>
       <div class="text-weight-light">{{ description }}</div>
     </div>
-    <div :class="'row q-col-gutter-' + ($q.screen.gt.sm ? 'lg' : ($q.screen.gt.xs ? 'md' : 'sm'))">
+    <div class="row custom-gutter">
       <div class="col-12 col-sm-9 col-md-7">
-        <div class="row q-mb-sm">
-          <div class="col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
+        <div class="row q-pb-sm q-pa-xxs-none">
+          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
             {{ $t("observation") }}
           </div>
-          <div class="col-9">
+          <div class="col-12-xxs col-9">
             <div class="row">
               <q-icon
                 name="sentiment_very_dissatisfied"
@@ -41,10 +41,10 @@
         </div>
 
         <div class="row">
-          <div class="col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
+          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
             {{ $t("expectation") }}
           </div>
-          <div class="col-9">
+          <div class="col-12-xxs col-9">
             <div class="row">
               <q-icon
                 name="sentiment_very_dissatisfied"
@@ -105,6 +105,33 @@
 <style lang="sass">
 .q-btn-toggle
   border-color: $outcome
+.custom-gutter
+  margin-top: -24px
+  margin-left: -24px
+  @media (max-width: $breakpoint-sm-max)
+    margin-top: -16px
+    margin-left: -16px
+  @media (max-width: $breakpoint-xs-max)
+    margin-top: -8px
+    margin-left: -8px
+  &> *
+    padding-top: 24px
+    padding-left: 24px
+    @media (max-width: $breakpoint-sm-max)
+      padding-top: 16px
+      padding-left: 16px
+    @media (max-width: $breakpoint-xs-max)
+      padding-top: 8px
+      padding-left: 8px
+.row > .col-12-xxs
+  @media (max-width: 400px)
+    width: 100%
+    padding: 0 0 4px
+    &.text-right
+      text-align: center
+.q-pa-xxs-none
+  @media (max-width: 400px)
+    padding: 0
 </style>
 
 <script lang="ts">
