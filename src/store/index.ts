@@ -122,12 +122,6 @@ export default function(/* { ssrContext } */) {
         let problemRecord = Store.getters.getProblemRecordById(
           payload
         ) as ProblemRecord;
-        let outcomes = problemRecord.outcomes;
-
-        if (outcomes.length == 1) {
-          let clone = JSON.parse(JSON.stringify(outcomes[0]));
-          outcomes.push(clone);
-        }
 
         if (
           !problemRecord ||
@@ -138,11 +132,19 @@ export default function(/* { ssrContext } */) {
           return [];
         }
 
+        // clone array because original needs to be preserved
+        let outcomes = problemRecord.outcomes.concat([]);
+
+        if (outcomes.length == 1) {
+          let clone = JSON.parse(JSON.stringify(outcomes[0]));
+          outcomes.push(clone);
+        }
+
         return ["knowledge", "behaviour", "status"].map((key, index) => {
           let series = [
             {
               name: payload.ratings[index].title,
-              data: problemRecord.outcomes
+              data: outcomes
                 .filter((outcome: Outcome) => outcome.createdAt)
                 .map((outcome: Outcome) => {
                   let value = (outcome as any)[key];
@@ -155,7 +157,7 @@ export default function(/* { ssrContext } */) {
             },
             {
               name: payload.expectation,
-              data: problemRecord.outcomes.map((outcome: any) => {
+              data: outcomes.map((outcome: any) => {
                 let value = outcome[key];
                 return {
                   x: outcome.createdAt || new Date(),

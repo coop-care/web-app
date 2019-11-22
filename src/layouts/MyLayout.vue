@@ -27,7 +27,7 @@
             dense
             no-caps
             flat
-            label="„CoopCare”"
+            label=""
             :ripple="false"
             to="/"
             v-if="$q.screen.gt.xs"

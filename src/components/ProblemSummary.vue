@@ -49,7 +49,7 @@
     </q-card-section>
     <q-card-section v-if="problem.signsAndSymptoms.length || problem.details">
       <div
-        class="text-subtitle1 text-classification"
+        class="text-subtitle1 text-weight-bold text-classification"
         v-if="problem.signsAndSymptoms.length"
       >
         {{ $t("signsAndSymptoms") }}
@@ -75,7 +75,7 @@
       </div>
     </q-card-section>
     <q-card-section v-if="interventions.length">
-      <div class="text-subtitle1 text-intervention">{{ $tc("intervention", 2) }}</div>
+      <div class="text-subtitle1 text-weight-bold text-intervention">{{ $tc("intervention", 2) }}</div>
       <ul :class="'q-ma-none ' + (isSummary ? '' : 'column-2')">
         <li
           v-for="(intervention, index) in interventions"
@@ -95,7 +95,7 @@
       </ul>
     </q-card-section>
     <q-card-section v-if="lastOutcome || (isInteractive && problem.isHighPriority)">
-      <div class="text-subtitle1">
+      <div class="text-subtitle1 text-weight-bold">
         <span class="text-outcome">{{ $tc("outcome", 2) }}</span>
         <q-btn
           v-if="isInteractive"
