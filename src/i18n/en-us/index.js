@@ -52,5 +52,9 @@ export default {
     "Does any of the ratings relate to a person other than the owner of the problem?",
   personRatedInPlaceOfOwnerLabel:
     "To whom does the evaluation for knowledge or behaviour refer?",
+  categoryShortTitle01: "Guidance",
+  categoryShortTitle02: "Treatment",
+  categoryShortTitle03: "Case Mgmt.",
+  categoryShortTitle04: "Surveillance",
   error404: "Sorry, nothing here..."
 };

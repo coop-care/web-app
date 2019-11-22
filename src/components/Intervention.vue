@@ -14,7 +14,8 @@
         >
           <q-tab
             :name="index"
-            :label="category.title"
+            :label="$q.screen.gt.xs ? category.title : shortCategoryTitles[index]"
+            :icon="category.icon"
             v-for="(category, index) in categories"
             v-bind:key="index"
           />
@@ -109,8 +110,19 @@
 
 <style lang="sass">
 .intervention
+  .q-tab
+    @media (max-width: 400px)
+      width: 25%
+      padding: 0 4px
   .q-tab__label
     white-space: normal
+    line-height: 1.4em
+    @media (max-width: 500px)
+      font-size: 13px
+    @media (max-width: 450px)
+      font-size: 12px
+    @media (max-width: 400px)
+      font-size: 11px
   .q-tab-panel
     padding: 0
   .q-tree > .q-tree__node--child > .q-tree__node-header
@@ -202,7 +214,24 @@ export default class Intervention extends Vue {
   }
 
   get categories() {
-    return this.terminology.interventionScheme.categories;
+    let icons = [
+      "add_comment",
+      "enhanced_encryption",
+      "event",
+      "remove_red_eye"
+    ];
+    return this.terminology.interventionScheme.categories.map(
+      (category, index) => {
+        //@ts-ignore
+        category.icon = icons[index];
+        return category;
+      }
+    );
+  }
+  get shortCategoryTitles() {
+    return ["01", "02", "03", "04"].map(code =>
+      this.$t("categoryShortTitle" + code)
+    );
   }
   get targets() {
     let targets = this.terminology.interventionScheme.targets;

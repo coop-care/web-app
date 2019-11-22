@@ -53,5 +53,9 @@ export default {
     "Bezieht sich eine der Bewertungen auf eine andere Person als den Besitzer des Problems?",
   personRatedInPlaceOfOwnerLabel:
     "Auf wen bezieht sie die Bewertung für Wissen oder Verhalten?",
+  categoryShortTitle01: "Anleitung",
+  categoryShortTitle02: "Behandlung",
+  categoryShortTitle03: "Fall-Mgmt.",
+  categoryShortTitle04: "Überwachung",
   error404: "Sorry, hier gibt es nichts..."
 };
