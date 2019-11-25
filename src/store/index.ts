@@ -5,6 +5,7 @@ import TerminologyData, {
   Terminology,
   HasTitleCode
 } from "../helper/terminology";
+import { Download } from "../helper/download";
 import sampleData from "../data/sample1";
 import ApexCharts from "apexcharts";
 
@@ -430,6 +431,11 @@ export default function(/* { ssrContext } */) {
     // for dev mode only
     strict: process.env.DEV === "true"
   });
+
+  // @ts-ignore
+  window.download = () => {
+    Download.ts(Store.state.customers, "sample1.ts");
+  };
 
   return Store;
 }
