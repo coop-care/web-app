@@ -36,7 +36,7 @@
           dense
           size="sm"
           color="negative"
-          class="q-mr-xs q-px-sm"
+          class="q-mr-sm q-px-sm"
           style="font-size: 56%"
         />
         <span class="text-classification">{{ problem.title || $t("unspecifiedProblem") }}</span>
@@ -62,6 +62,7 @@
           <li
             v-for="(symptom, index) in problem.signsAndSymptoms"
             v-bind:key="index"
+            class="inline"
           >
             {{ titleForSymptom(symptom) }}
           </li>
@@ -80,6 +81,7 @@
         <li
           v-for="(intervention, index) in interventions"
           v-bind:key="index"
+          class="inline"
         >
           {{ intervention.category.title }}: {{ intervention.target.title }}
           <div v-if="intervention.details.length">
@@ -242,14 +244,33 @@ export default class ProblemSummary extends Vue {
   get customerName() {
     return this.$store.getters.getCustomerById(this.$props.params).name;
   }
+  get language() {
+    console.log("language");
+    return this.$root.$i18n.locale;
+  }
   get record() {
-    return (
-      this.$props.problemRecord ||
-      this.$store.getters.getProblemRecordById({
-        terminology: this.terminology,
-        ...this.$props.params
-      })
-    );
+    return this.$props.problemRecord || this.getRecordFromStore();
+  }
+
+  updateLocale(value: string) {
+    if (this.$props.problemRecord) {
+      this.$props.problemRecord = this.getRecordFromStore();
+    }
+  }
+
+  getRecordFromStore() {
+    return this.$store.getters.getProblemRecordById({
+      terminology: this.terminology,
+      ...this.$props.params
+    });
+  }
+
+  created() {
+    this.$root.$on("didChangeLocale", this.updateLocale);
+  }
+
+  beforeDestroy() {
+    this.$root.$off("didChangeLocale", this.updateLocale);
   }
 
   destroyed() {

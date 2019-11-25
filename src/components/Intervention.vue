@@ -87,6 +87,7 @@
                     autogrow
                     :autofocus="!details[prop.node.id]"
                     color="intervention"
+                    debounce="50"
                   />
                   <p class="q-my-xs text-caption">
                     {{ $t("customerSpecificInterventionsHint") }}

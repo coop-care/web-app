@@ -47,7 +47,7 @@
               v-for="(locale, index) in $root.$i18n.availableLocales"
               :key="index"
               :active="$root.$i18n.locale === locale"
-              @click="$root.$i18n.locale = locale"
+              @click="$root.$i18n.locale = locale; $root.$emit('didChangeLocale', locale);"
             >
               <q-item-section>
                 <q-item-label>{{ $t(locale) }}</q-item-label>
