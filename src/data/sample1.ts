@@ -39,7 +39,8 @@ export default [
           ],
           otherSignsAndSymptoms: "",
           details: "",
-          isHighPriority: true
+          isHighPriority: true,
+          lowPriorityReason: ""
         },
         interventions: [
           {
@@ -99,7 +100,8 @@ export default [
             },
             details: [
               {
-                text: "Aktivität, Stimmungsschwankungen, Halluzinationen und Pflegeberichte",
+                text:
+                  "Aktivität, Stimmungsschwankungen, Halluzinationen und Pflegeberichte",
                 createdAt: new Date("2019-06-11T00:00:00.000Z")
               }
             ],
@@ -117,7 +119,8 @@ export default [
             behaviour: {
               observation: 2,
               expectation: 4,
-              comment: "hörte selten auf zu suchen und zu hetzen, aber aß und schlief"
+              comment:
+                "hörte selten auf zu suchen und zu hetzen, aber aß und schlief"
             },
             status: {
               observation: 2,
@@ -255,7 +258,8 @@ export default [
           ],
           otherSignsAndSymptoms: "",
           details: "",
-          isHighPriority: true
+          isHighPriority: true,
+          lowPriorityReason: ""
         },
         interventions: [
           {
@@ -348,7 +352,8 @@ export default [
           ],
           otherSignsAndSymptoms: "",
           details: "",
-          isHighPriority: true
+          isHighPriority: true,
+          lowPriorityReason: ""
         },
         interventions: [
           {
@@ -360,7 +365,8 @@ export default [
             },
             details: [
               {
-                text: "weniger Koffein trinken, weil es die Wirksamkeit psychotroper Medikamente verringert",
+                text:
+                  "weniger Koffein trinken, weil es die Wirksamkeit psychotroper Medikamente verringert",
                 createdAt: new Date("2019-11-21T21:46:28.059Z")
               }
             ],
@@ -438,12 +444,14 @@ export default [
             knowledge: {
               observation: 3,
               expectation: 4,
-              comment: "kannte Namen von Medikamenten und dass sie genommen werden müssen"
+              comment:
+                "kannte Namen von Medikamenten und dass sie genommen werden müssen"
             },
             behaviour: {
               observation: 2,
               expectation: 4,
-              comment: "hat einige Medikamente ausgelassen; benötigt eine konsistente Verabreichung"
+              comment:
+                "hat einige Medikamente ausgelassen; benötigt eine konsistente Verabreichung"
             },
             status: {
               observation: 2,
@@ -472,8 +480,11 @@ export default [
           severity: 1,
           signsAndSymptoms: [],
           otherSignsAndSymptoms: "",
-          details: "Francis lebt allein und ist im Seniorenalter, gab aber an, dass ihr Unterstützungssystem angemessen ist.",
-          isHighPriority: false
+          details:
+            "Francis lebt allein und ist im Seniorenalter, gab aber an, dass ihr Unterstützungssystem angemessen ist.",
+          isHighPriority: false,
+          lowPriorityReason:
+            "Interventionen anbieten und bewerten, wenn sie nicht in der Lage ist, Medikamente regelmäßig einzunehmen und mehr Unterstützung benötigt."
         },
         interventions: [],
         outcomes: [],
@@ -489,8 +500,11 @@ export default [
           severity: 1,
           signsAndSymptoms: [],
           otherSignsAndSymptoms: "",
-          details: "Francis Urteilsvermögen und Gedächtnis schienen ausreichend, abgesehen von einigen Problemen bei der planmäßigen Einnahme von Medikamenten. \nWerde bei Bedarf mit den Töchtern Kontakt aufnehmen.",
-          isHighPriority: false
+          details:
+            "Francis Urteilsvermögen und Gedächtnis schienen ausreichend, abgesehen von einigen Problemen bei der planmäßigen Einnahme von Medikamenten. \nWerde bei Bedarf mit den Töchtern Kontakt aufnehmen.",
+          isHighPriority: false,
+          lowPriorityReason:
+            "Interventionen anbieten und bewerten, wenn Gedächtnisprobleme bei zukünftigen Besuchen signifikant werden."
         },
         interventions: [],
         outcomes: [],
@@ -523,7 +537,8 @@ export default [
           ],
           otherSignsAndSymptoms: "",
           details: "",
-          isHighPriority: true
+          isHighPriority: true,
+          lowPriorityReason: ""
         },
         interventions: [
           {
@@ -535,7 +550,8 @@ export default [
             },
             details: [
               {
-                text: "Linderung von Ödemen, Erhöhung der Beine, Anstrengung reduzieren, Verbesserung des Schlafes, Planung der Flüssigkeitsaufnahme",
+                text:
+                  "Linderung von Ödemen, Erhöhung der Beine, Anstrengung reduzieren, Verbesserung des Schlafes, Planung der Flüssigkeitsaufnahme",
                 createdAt: new Date("2019-11-25T18:38:53.610Z")
               }
             ],
@@ -567,7 +583,8 @@ export default [
             },
             details: [
               {
-                text: "täglich Körpergewicht messen, Symptomprotokoll, wann sind die Dienstleister zu benachrichtigen",
+                text:
+                  "täglich Körpergewicht messen, Symptomprotokoll, wann sind die Dienstleister zu benachrichtigen",
                 createdAt: new Date("2019-11-25T18:39:53.047Z")
               }
             ],
@@ -618,12 +635,14 @@ export default [
             behaviour: {
               observation: 2,
               expectation: 4,
-              comment: "misst weder ihr Körpergewicht, noch legt sie die Beine hoch oder meldet Anzeichen oder Symptome"
+              comment:
+                "misst weder ihr Körpergewicht, noch legt sie die Beine hoch oder meldet Anzeichen oder Symptome"
             },
             status: {
               observation: 2,
               expectation: 3,
-              comment: "signifikante Müdigkeit, Ödeme in den unteren Extremitäten, erhöhte Herzfrequenz, Dyspnoe"
+              comment:
+                "signifikante Müdigkeit, Ödeme in den unteren Extremitäten, erhöhte Herzfrequenz, Dyspnoe"
             },
             personRatedInPlaceOfOwner: ""
           }
@@ -648,7 +667,8 @@ export default [
           ],
           otherSignsAndSymptoms: "",
           details: "",
-          isHighPriority: true
+          isHighPriority: true,
+          lowPriorityReason: ""
         },
         interventions: [
           {
@@ -676,7 +696,8 @@ export default [
             },
             details: [
               {
-                text: "Benutzung, Vorteile und Möglichkeiten eines Tablettenorganisators",
+                text:
+                  "Benutzung, Vorteile und Möglichkeiten eines Tablettenorganisators",
                 createdAt: new Date("2019-11-25T18:44:24.773Z")
               }
             ],
@@ -706,7 +727,8 @@ export default [
             knowledge: {
               observation: 2,
               expectation: 4,
-              comment: "wusste nicht, welchen Zweck oder welche Nebenwirkungen die Medikamente haben"
+              comment:
+                "wusste nicht, welchen Zweck oder welche Nebenwirkungen die Medikamente haben"
             },
             behaviour: {
               observation: 3,

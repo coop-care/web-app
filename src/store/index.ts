@@ -38,6 +38,7 @@ export interface Problem extends Term {
   otherSignsAndSymptoms: string;
   details: string;
   isHighPriority: boolean;
+  lowPriorityReason: string;
   titles?: ProblemTextExtension;
   descriptions?: ProblemTextExtension;
 }
@@ -328,7 +329,8 @@ export default function(/* { ssrContext } */) {
             signsAndSymptoms: [],
             otherSignsAndSymptoms: "",
             details: "",
-            isHighPriority: true
+            isHighPriority: true,
+            lowPriorityReason: ""
           },
           interventions: [],
           outcomes: [],
