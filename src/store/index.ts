@@ -214,8 +214,8 @@ export default function(/* { ssrContext } */) {
             tooltip: {
               enabled: true,
               shared: true,
-              fixed: {
-                enabled: false
+              custom: () => {
+                return "";
               },
               y: {
                 formatter: (
