@@ -139,6 +139,17 @@
           class="q-ml-xl"
         />
 
+        <q-input
+          v-if="severity < 2"
+          v-model="details"
+          :label="severity == 0 ? $t('customerRequestLabel') : $t('riskFactorLabel')"
+          autogrow
+          :autofocus="!details"
+          color="classification"
+          filled
+          dense
+        />
+
         <h6 class="counter">{{ $t("priority") }}</h6>
         <q-btn-toggle
           v-model="priority"
@@ -151,48 +162,27 @@
           :options="priorityOptions"
           class="q-mb-xs"
         />
-        <div class="text-weight-light q-mb-xl q-px-lg">
+        <div class="text-weight-light q-mb-md q-px-lg">
           {{ $t(record.problem.descriptions.priorityKey) }}
         </div>
-
-        <div>
-          <q-btn
-            v-if="!showDetails && !details && priority"
-            @click="showDetails = true"
-            :label="$t('showDetailsInput')"
-            flat
-            no-caps
-            dense
-            size="md"
-            color="classification"
-            class="q-mb-lg"
-          />
-          <div
-            v-else
-            class="q-mb-lg"
-          >
-            <q-input
-              v-model="details"
-              :label="$t('customerSpecificProblems')"
-              autogrow
-              :autofocus="showDetails && !details"
-              color="classification"
-              filled
-            />
-            <p class="q-my-xs text-caption">
-              {{
-                priority
-                  ? $t("customerSpecificProblemsHint")
-                  : $t("lowPriorityReasonHint")
-              }}
-            </p>
-          </div>
-        </div>
+        <q-input
+          v-if="!priority"
+          v-model="lowPriorityReason"
+          :label="$t('lowPriorityReasonLabel')"
+          autogrow
+          :autofocus="!lowPriorityReason"
+          color="classification"
+          filled
+          dense
+          bottom-slots
+          :hint="$t('lowPriorityReasonHint')"
+        />
 
         <problem-summary
           :problemRecord="record"
           :params="$route.params"
           :isSummary="true"
+          class="q-mt-xl"
         />
       </div>
     </div>
@@ -236,7 +226,6 @@ import * as Store from "../store";
 })
 export default class ProblemClassification extends Vue {
   problemsFilter = "";
-  showDetails = false;
 
   get selectedProblem() {
     return this.record.problem.id;
@@ -287,6 +276,12 @@ export default class ProblemClassification extends Vue {
   }
   set details(value: string) {
     this.updateProblemRecord("problem.details", value);
+  }
+  get lowPriorityReason() {
+    return this.record.problem.lowPriorityReason;
+  }
+  set lowPriorityReason(value: string) {
+    this.updateProblemRecord("problem.lowPriorityReason", value);
   }
 
   get problems() {

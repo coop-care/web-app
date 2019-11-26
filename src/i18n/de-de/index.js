@@ -21,9 +21,8 @@ export default {
   signsAndSymptoms: "Anzeichen und Symptome",
   otherSignsAndSymptoms: "Sonstige Anzeichen und Symptome",
   selectModfiers: "Merkmale auswählen",
-  customerSpecificProblems: "Kundenspezifische Details",
-  customerSpecificProblemsHint:
-    "Was gibt es speziell zu diesem Problem bei diesem Kunden noch ergänzend mitzuteilen?",
+  riskFactorLabel: "Potenzielle Risikofaktoren",
+  customerRequestLabel: "Kundenwünsche zur Gesundheitsvorsorge",
   summary: "Zusammenfassung",
   selectInterventions: "Interventionen auswählen",
   findTargets: "Ziele finden",
@@ -33,8 +32,9 @@ export default {
     "Welche konkreten Aktivitäten werden geplant?",
   unspecifiedProblem: "nicht spezifiziertes Problem",
   priority: "Priorität",
-  lowPriorityReasonHint: "Warum hat das Problem aktuell keine Priorität?",
-  showDetailsInput: "Weitere kundenspezifische Details angeben?",
+  lowPriorityReasonLabel: "Grund für niedrige Priorität",
+  lowPriorityReasonHint:
+    "Warum hat das Problem aktuell niedrige Priorität und bei welchen Veränderungen bekäme es hohe Priorität?",
   highPriorityTitle: "Hohe Priorität",
   highPriorityDescription:
     "Das Problem sollte unverzüglich angegangen werden, basierend auf dem Kundenwunsch und gegebenenfalls anderen Empfehlungen. Wenn ein Problem als vorrangig eingestuft wird, wird das Problem dokumentiert, Interventionen angeboten und die Bewertungen abgeschlossen.",

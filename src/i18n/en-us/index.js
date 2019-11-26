@@ -21,9 +21,8 @@ export default {
   signsAndSymptoms: "Signs and Symptoms",
   otherSignsAndSymptoms: "other signs and symptoms",
   selectModfiers: "Select Modifiers",
-  customerSpecificProblems: "Customer-specific Details",
-  customerSpecificProblemsHint:
-    "What is there to say especially about this problem with this customer?",
+  riskFactorLabel: "potential risk factors",
+  customerRequestLabel: "customer wishes for health promotion",
   summary: "Summary",
   selectInterventions: "Select Interventions",
   findTargets: "find targets",
@@ -32,8 +31,9 @@ export default {
   customerSpecificInterventionsHint: "What concrete activities are planned?",
   unspecifiedProblem: "unspecified problem",
   priority: "Priority",
-  lowPriorityReasonHint: "Why is the problem currently not a priority?",
-  showDetailsInput: "Specify further customer-specific details?",
+  lowPriorityReasonLabel: "Reason for low priority",
+  lowPriorityReasonHint:
+    "Why does the problem currently have a low priority and which changes would give it a high priority?",
   highPriorityTitle: "High Priority",
   highPriorityDescription:
     "Practitioner’s judgment that a problem should be addressed promptly, based on recommendations from clients, referral sources, and others. When a problem is considered high priority, the practitioner documents the problem, provides interventions, and completes ratings.",
