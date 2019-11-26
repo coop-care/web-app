@@ -79,20 +79,17 @@
                 </div>
               </template>
               <template v-slot:default-body="prop">
-                <div v-if="interventions.includes(prop.node.id)">
-                  <q-input
-                    :value="details[prop.node.id]"
-                    @input="updateDetails(prop.node.id, $event)"
-                    :label="$t('customerSpecificInterventions')"
-                    autogrow
-                    :autofocus="!details[prop.node.id]"
-                    color="intervention"
-                    debounce="50"
-                  />
-                  <p class="q-my-xs text-caption">
-                    {{ $t("customerSpecificInterventionsHint") }}
-                  </p>
-                </div>
+                <q-input
+                  v-if="interventions.includes(prop.node.id)"
+                  :value="details[prop.node.id]"
+                  @input="updateDetails(prop.node.id, $event)"
+                  :label="$t('customerSpecificInterventions')"
+                  autogrow
+                  :autofocus="!details[prop.node.id]"
+                  color="intervention"
+                  debounce="50"
+                  :hint="$t('customerSpecificInterventionsHint')"
+                />
               </template>
             </q-tree>
           </q-tab-panel>
