@@ -47,52 +47,43 @@
         </span>
       </div>
     </q-card-section>
-    <q-card-section v-if="problem.signsAndSymptoms.length || problem.details">
-      <div
-        class="text-subtitle1 text-weight-bold text-classification"
-        v-if="problem.signsAndSymptoms.length"
-      >
+    <q-card-section v-if="problem.signsAndSymptoms.length">
+      <div class="text-subtitle1 text-weight-bold text-classification">
         {{ $t("signsAndSymptoms") }}
       </div>
-      <div :class="isSummary ? '' : 'column-2'">
-        <ul
-          class="q-ma-none"
-          v-if="problem.signsAndSymptoms"
+      <ul :class="'q-ma-none ' + (isSummary ? '' : 'column-2')">
+        <li
+          v-for="(symptom, index) in problem.signsAndSymptoms"
+          v-bind:key="index"
+          class="no-column-break"
         >
-          <li
-            v-for="(symptom, index) in problem.signsAndSymptoms"
-            v-bind:key="index"
-            class="inline"
-          >
-            {{ titleForSymptom(symptom) }}
-          </li>
-        </ul>
-        <p
-          v-if="problem.details"
-          class="q-pl-lg q-my-none text-italic"
-        >
-          {{ problem.details }}
-        </p>
-      </div>
+          {{ titleForSymptom(symptom) }}
+        </li>
+      </ul>
+    </q-card-section>
+    <q-card-section v-if="problem.details">
+      <p class="q-pl-lg q-my-none text-italic">
+        {{ problem.details }}
+      </p>
     </q-card-section>
     <q-card-section v-if="interventions.length">
       <div class="text-subtitle1 text-weight-bold text-intervention">{{ $tc("intervention", 2) }}</div>
-      <ul :class="'q-ma-none ' + (isSummary ? '' : 'column-2')">
+      <ul :class="'q-ma-none '">
         <li
           v-for="(intervention, index) in interventions"
           v-bind:key="index"
-          class="inline"
+          class="no-column-break"
         >
           {{ intervention.category.title }}: {{ intervention.target.title }}
-          <div v-if="intervention.details.length">
-            <div
+          <span v-if="intervention.details.length">
+            <span
               v-for="(detail, index) in intervention.details"
               v-bind:key="index"
               class="text-italic"
             >
-              {{ detail.text }}
-            </div>
-          </div>
+              – {{ detail.text }}
+            </span>
+          </span>
         </li>
       </ul>
     </q-card-section>
@@ -252,7 +243,7 @@ export default class ProblemSummary extends Vue {
     return this.$props.problemRecord || this.getRecordFromStore();
   }
 
-  updateLocale(value: string) {
+  updateLocale() {
     if (this.$props.problemRecord) {
       this.$props.problemRecord = this.getRecordFromStore();
     }
