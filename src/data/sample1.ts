@@ -313,7 +313,7 @@ export default [
         ],
         outcomes: [
           {
-            createdAt: new Date("2019-11-21T21:41:51.957Z"),
+            createdAt: new Date("2019-06-11T00:00:00.000Z"),
             knowledge: {
               observation: 2,
               expectation: 3,
@@ -328,6 +328,101 @@ export default [
               observation: 1,
               expectation: 4,
               comment: "Körper und Kleidung unsauber"
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-07-09T00:00:00.000Z"),
+            knowledge: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
+            },
+            behaviour: {
+              observation: 1,
+              expectation: 3,
+              comment: ""
+            },
+            status: {
+              observation: 2,
+              expectation: 4,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-08-06T00:00:00.000Z"),
+            knowledge: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
+            },
+            behaviour: {
+              observation: 1,
+              expectation: 3,
+              comment: ""
+            },
+            status: {
+              observation: 2,
+              expectation: 4,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-09-03T00:00:00.000Z"),
+            knowledge: {
+              observation: 3,
+              expectation: 3,
+              comment: ""
+            },
+            behaviour: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
+            },
+            status: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-10-01T00:00:00.000Z"),
+            knowledge: {
+              observation: 3,
+              expectation: 3,
+              comment: ""
+            },
+            behaviour: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
+            },
+            status: {
+              observation: 2,
+              expectation: 4,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-10-29T00:00:00.000Z"),
+            knowledge: {
+              observation: 3,
+              expectation: 3,
+              comment: ""
+            },
+            behaviour: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
+            },
+            status: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
             },
             personRatedInPlaceOfOwner: ""
           }
@@ -440,7 +535,7 @@ export default [
         ],
         outcomes: [
           {
-            createdAt: new Date("2019-11-21T21:53:44.870Z"),
+            createdAt: new Date("2019-06-11T00:00:00.000Z"),
             knowledge: {
               observation: 3,
               expectation: 4,
@@ -457,6 +552,101 @@ export default [
               observation: 2,
               expectation: 3,
               comment: "Symptome einer psychischen Erkrankung offensichtlich"
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-07-09T00:00:00.000Z"),
+            knowledge: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            behaviour: {
+              observation: 2,
+              expectation: 4,
+              comment: ""
+            },
+            status: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-08-06T00:00:00.000Z"),
+            knowledge: {
+              observation: 4,
+              expectation: 4,
+              comment: "versteht die Benutzung des Medikamentenorganisators"
+            },
+            behaviour: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            status: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-09-03T00:00:00.000Z"),
+            knowledge: {
+              observation: 4,
+              expectation: 4,
+              comment: ""
+            },
+            behaviour: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            status: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-10-01T00:00:00.000Z"),
+            knowledge: {
+              observation: 4,
+              expectation: 4,
+              comment: ""
+            },
+            behaviour: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            status: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-10-29T00:00:00.000Z"),
+            knowledge: {
+              observation: 4,
+              expectation: 4,
+              comment: ""
+            },
+            behaviour: {
+              observation: 4,
+              expectation: 4,
+              comment: ""
+            },
+            status: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
             },
             personRatedInPlaceOfOwner: ""
           }
@@ -626,7 +816,7 @@ export default [
         ],
         outcomes: [
           {
-            createdAt: new Date("2019-11-25T18:41:07.807Z"),
+            createdAt: new Date("2019-08-25T18:41:07.807Z"),
             knowledge: {
               observation: 2,
               expectation: 4,
@@ -643,6 +833,44 @@ export default [
               expectation: 3,
               comment:
                 "signifikante Müdigkeit, Ödeme in den unteren Extremitäten, erhöhte Herzfrequenz, Dyspnoe"
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-09-22T18:41:07.807Z"),
+            knowledge: {
+              observation: 2,
+              expectation: 4,
+              comment: ""
+            },
+            behaviour: {
+              observation: 2,
+              expectation: 4,
+              comment: ""
+            },
+            status: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-10-20T18:41:07.807Z"),
+            knowledge: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            behaviour: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            status: {
+              observation: 2,
+              expectation: 3,
+              comment: ""
             },
             personRatedInPlaceOfOwner: ""
           }
@@ -723,7 +951,7 @@ export default [
         ],
         outcomes: [
           {
-            createdAt: new Date("2019-11-25T18:45:19.054Z"),
+            createdAt: new Date("2019-08-25T18:45:19.054Z"),
             knowledge: {
               observation: 2,
               expectation: 4,
@@ -739,6 +967,44 @@ export default [
               observation: 2,
               expectation: 5,
               comment: "zwei kürzliche Krankenhausaufenthalte"
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-09-22T18:45:19.054Z"),
+            knowledge: {
+              observation: 2,
+              expectation: 4,
+              comment: ""
+            },
+            behaviour: {
+              observation: 4,
+              expectation: 5,
+              comment: ""
+            },
+            status: {
+              observation: 2,
+              expectation: 5,
+              comment: ""
+            },
+            personRatedInPlaceOfOwner: ""
+          },
+          {
+            createdAt: new Date("2019-10-22T18:45:19.054Z"),
+            knowledge: {
+              observation: 3,
+              expectation: 4,
+              comment: ""
+            },
+            behaviour: {
+              observation: 4,
+              expectation: 5,
+              comment: ""
+            },
+            status: {
+              observation: 3,
+              expectation: 5,
+              comment: ""
             },
             personRatedInPlaceOfOwner: ""
           }
