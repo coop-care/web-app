@@ -41,15 +41,28 @@
         />
         <span class="text-classification">{{ problem.title || $t("unspecifiedProblem") }}</span>
         <span class="text-subtitle2 text-weight-light q-ml-xs">
-          {{ (problem.titles || {}).scope }},
-          {{ (problem.titles || {}).severity }},
-          {{ $t((problem.titles || {}).priorityKey) }}
+          {{ $t((problem.titles || {}).priorityKey) }},
+          {{ (problem.titles || {}).scope }}
         </span>
       </div>
     </q-card-section>
-    <q-card-section v-if="problem.signsAndSymptoms.length">
+    <q-card-section v-if="problem.priorityDetails">
+      <p class="q-pl-lg q-my-none">
+        {{ $t((problem.titles || {}).priorityKey) }}:
+        <span class="text-italic">{{ problem.priorityDetails }}</span>
+      </p>
+    </q-card-section>
+    <q-card-section v-if="(problem.severity < 2) && problem.details">
       <div class="text-subtitle1 text-weight-bold text-classification">
-        {{ $t("signsAndSymptoms") }}
+        {{ $t(problem.severity == 0 ? "customerRequestForHealthPromotionTitle" : "potentialRiskFactorsTitle") }}
+      </div>
+      <p class="q-pl-lg q-my-none text-italic">
+        {{ problem.details }}
+      </p>
+    </q-card-section>
+    <q-card-section v-if="(problem.severity == 2) && problem.signsAndSymptoms.length">
+      <div class="text-subtitle1 text-weight-bold text-classification">
+        {{ $t("actualSignsAndSymptomsTitle") }}
       </div>
       <ul :class="'q-ma-none ' + (isSummary ? '' : 'column-2')">
         <li
@@ -62,16 +75,6 @@
           </span>
         </li>
       </ul>
-    </q-card-section>
-    <q-card-section v-if="problem.priorityDetails">
-      <p class="q-pl-lg q-my-none text-italic">
-        {{ problem.priorityDetails }}
-      </p>
-    </q-card-section>
-    <q-card-section v-if="problem.details && (problem.severity != 2)">
-      <p class="q-pl-lg q-my-none text-italic">
-        {{ problem.details }}
-      </p>
     </q-card-section>
     <q-card-section v-if="interventions.length">
       <div class="text-subtitle1 text-weight-bold text-intervention">{{ $tc("intervention", 2) }}</div>

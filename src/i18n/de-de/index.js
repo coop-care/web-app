@@ -58,5 +58,9 @@ export default {
   categoryShortTitle02: "Behandlung",
   categoryShortTitle03: "Fall-Mgmt.",
   categoryShortTitle04: "Überwachung",
+  customerRequestForHealthPromotionTitle:
+    "Kundenwünsche zur Gesundheitsvorsorge",
+  potentialRiskFactorsTitle: "Potentielle Risikofaktoren",
+  actualSignsAndSymptomsTitle: "Tatsächliche Anzeichen und Symptome",
   error404: "Sorry, hier gibt es nichts..."
 };

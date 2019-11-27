@@ -57,5 +57,9 @@ export default {
   categoryShortTitle02: "Treatment",
   categoryShortTitle03: "Case Mgmt.",
   categoryShortTitle04: "Surveillance",
+  customerRequestForHealthPromotionTitle:
+    "Customer Requests for Health Promotion",
+  potentialRiskFactorsTitle: "Potential Risk Factors",
+  actualSignsAndSymptomsTitle: "Actual Signs and Symptoms",
   error404: "Sorry, nothing here..."
 };
