@@ -130,9 +130,10 @@
         />
         <q-input
           v-if="showSymptomsSection && isOtherSymptomSelected"
-          v-model="otherSymptoms"
+          v-model="details"
           color="classification"
           autogrow
+          :autofocus="!details"
           dense
           filled
           :label="$t('otherSignsAndSymptoms')"
@@ -246,12 +247,6 @@ export default class ProblemClassification extends Vue {
       })
       .filter((symptom: any) => value.includes(symptom.id));
     this.updateProblemRecord("problem.signsAndSymptoms", symptoms);
-  }
-  get otherSymptoms() {
-    return this.record.problem.otherSignsAndSymptoms;
-  }
-  set otherSymptoms(value: string) {
-    this.updateProblemRecord("problem.otherSignsAndSymptoms", value);
   }
   get scope() {
     return this.record.problem.scope;

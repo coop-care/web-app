@@ -35,7 +35,6 @@ export interface Problem extends Term {
   scope: number;
   severity: number;
   signsAndSymptoms: Term[];
-  otherSignsAndSymptoms: string;
   details: string;
   isHighPriority: boolean;
   priorityDetails: string;
@@ -327,7 +326,6 @@ export default function(/* { ssrContext } */) {
             scope: 0,
             severity: 2,
             signsAndSymptoms: [],
-            otherSignsAndSymptoms: "",
             details: "",
             isHighPriority: true,
             priorityDetails: ""
@@ -353,7 +351,7 @@ export default function(/* { ssrContext } */) {
 
         if (["problem.id", "problem.severity"].includes(payload.path)) {
           problemRecord.problem.signsAndSymptoms = [];
-          problemRecord.problem.otherSignsAndSymptoms = "";
+          problemRecord.problem.details = "";
         }
       },
       deleteDraftProblemRecord(state, payload) {

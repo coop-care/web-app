@@ -57,7 +57,9 @@
           v-bind:key="index"
           class="no-column-break"
         >
-          {{ titleForSymptom(symptom) }}
+          {{ symptom.title }}<span v-if="(index == problem.signsAndSymptoms.length - 1) && (symptom.title.toLowerCase() == $t('otherSymptom')) && problem.details">:
+            <span class="text-italic">{{ problem.details }}</span>
+          </span>
         </li>
       </ul>
     </q-card-section>
@@ -66,7 +68,7 @@
         {{ problem.priorityDetails }}
       </p>
     </q-card-section>
-    <q-card-section v-if="problem.details">
+    <q-card-section v-if="problem.details && (problem.severity != 2)">
       <p class="q-pl-lg q-my-none text-italic">
         {{ problem.details }}
       </p>
@@ -217,21 +219,6 @@ export default class ProblemSummary extends Vue {
       ratings: this.terminology.problemRatingScale.ratings,
       ...this.$props.params
     });
-  }
-  get titleForSymptom() {
-    return (symptom: Store.Term) => {
-      let otherSymptom = this.$store.getters.otherSymptomForProblemCode({
-        problemCode: this.record.problem.id,
-        terminology: this.terminology
-      });
-      let otherSignsAndSymptomsText = this.record.problem.otherSignsAndSymptoms;
-
-      if (otherSignsAndSymptomsText && otherSymptom.value == symptom.id) {
-        return symptom.title + ": " + otherSignsAndSymptomsText;
-      } else {
-        return symptom.title;
-      }
-    };
   }
 
   get terminology() {

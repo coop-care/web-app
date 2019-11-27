@@ -37,7 +37,6 @@ export default [
               id: "22"
             }
           ],
-          otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
           priorityDetails: ""
@@ -256,7 +255,6 @@ export default [
               id: "10"
             }
           ],
-          otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
           priorityDetails: ""
@@ -445,7 +443,6 @@ export default [
               id: "08"
             }
           ],
-          otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
           priorityDetails: ""
@@ -669,7 +666,6 @@ export default [
           scope: 0,
           severity: 1,
           signsAndSymptoms: [],
-          otherSignsAndSymptoms: "",
           details:
             "Francis lebt allein und ist im Seniorenalter, gab aber an, dass ihr Unterstützungssystem angemessen ist.",
           isHighPriority: false,
@@ -689,7 +685,6 @@ export default [
           scope: 0,
           severity: 1,
           signsAndSymptoms: [],
-          otherSignsAndSymptoms: "",
           details:
             "Francis Urteilsvermögen und Gedächtnis schienen ausreichend, abgesehen von einigen Problemen bei der planmäßigen Einnahme von Medikamenten. \nWerde bei Bedarf mit den Töchtern Kontakt aufnehmen.",
           isHighPriority: false,
@@ -725,7 +720,6 @@ export default [
               id: "17"
             }
           ],
-          otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
           priorityDetails: ""
@@ -893,7 +887,6 @@ export default [
               id: "03"
             }
           ],
-          otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
           priorityDetails: ""

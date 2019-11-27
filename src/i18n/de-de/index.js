@@ -19,6 +19,7 @@ export default {
   findProblem: "Problem finden",
   noProblemsFound: "Keine Probleme, Anzeichen oder Symptome gefunden",
   signsAndSymptoms: "Anzeichen und Symptome",
+  otherSymptom: "sonstige",
   otherSignsAndSymptoms: "Sonstige Anzeichen und Symptome",
   selectModfiers: "Merkmale auswählen",
   riskFactorLabel: "Potenzielle Risikofaktoren",
