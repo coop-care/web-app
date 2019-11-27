@@ -167,10 +167,10 @@
         </div>
         <q-input
           v-if="!priority"
-          v-model="lowPriorityReason"
+          v-model="priorityDetails"
           :label="$t('lowPriorityReasonLabel')"
           autogrow
-          :autofocus="!lowPriorityReason"
+          :autofocus="!priorityDetails"
           color="classification"
           filled
           dense
@@ -277,11 +277,11 @@ export default class ProblemClassification extends Vue {
   set details(value: string) {
     this.updateProblemRecord("problem.details", value);
   }
-  get lowPriorityReason() {
-    return this.record.problem.lowPriorityReason;
+  get priorityDetails() {
+    return this.record.problem.priorityDetails;
   }
-  set lowPriorityReason(value: string) {
-    this.updateProblemRecord("problem.lowPriorityReason", value);
+  set priorityDetails(value: string) {
+    this.updateProblemRecord("problem.priorityDetails", value);
   }
 
   get problems() {

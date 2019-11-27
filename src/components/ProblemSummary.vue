@@ -61,9 +61,9 @@
         </li>
       </ul>
     </q-card-section>
-    <q-card-section v-if="!problem.isHighPriority && problem.lowPriorityReason">
+    <q-card-section v-if="problem.priorityDetails">
       <p class="q-pl-lg q-my-none text-italic">
-        {{ problem.lowPriorityReason }}
+        {{ problem.priorityDetails }}
       </p>
     </q-card-section>
     <q-card-section v-if="problem.details">

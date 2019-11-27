@@ -40,7 +40,7 @@ export default [
           otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
-          lowPriorityReason: ""
+          priorityDetails: ""
         },
         interventions: [
           {
@@ -259,7 +259,7 @@ export default [
           otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
-          lowPriorityReason: ""
+          priorityDetails: ""
         },
         interventions: [
           {
@@ -448,7 +448,7 @@ export default [
           otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
-          lowPriorityReason: ""
+          priorityDetails: ""
         },
         interventions: [
           {
@@ -673,7 +673,7 @@ export default [
           details:
             "Francis lebt allein und ist im Seniorenalter, gab aber an, dass ihr Unterstützungssystem angemessen ist.",
           isHighPriority: false,
-          lowPriorityReason:
+          priorityDetails:
             "Interventionen anbieten und bewerten, wenn sie nicht in der Lage ist, Medikamente regelmäßig einzunehmen und mehr Unterstützung benötigt."
         },
         interventions: [],
@@ -693,7 +693,7 @@ export default [
           details:
             "Francis Urteilsvermögen und Gedächtnis schienen ausreichend, abgesehen von einigen Problemen bei der planmäßigen Einnahme von Medikamenten. \nWerde bei Bedarf mit den Töchtern Kontakt aufnehmen.",
           isHighPriority: false,
-          lowPriorityReason:
+          priorityDetails:
             "Interventionen anbieten und bewerten, wenn Gedächtnisprobleme bei zukünftigen Besuchen signifikant werden."
         },
         interventions: [],
@@ -728,7 +728,7 @@ export default [
           otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
-          lowPriorityReason: ""
+          priorityDetails: ""
         },
         interventions: [
           {
@@ -896,7 +896,7 @@ export default [
           otherSignsAndSymptoms: "",
           details: "",
           isHighPriority: true,
-          lowPriorityReason: ""
+          priorityDetails: ""
         },
         interventions: [
           {
