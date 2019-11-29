@@ -418,10 +418,10 @@
           },
           {
             "title": "Psychische Gesundheit",
-            "description": "Entwicklung und Nutzung von geistigen oder emotionalen Fähigkeiten, um sich an Lebenssituationen anzupassen, mit anderen zu interagieren und Aktivitäten durchzuführen.",
+            "description": "Entwicklung und Einsatz von geistigen oder emotionalen Fähigkeiten, um sich an Lebenssituationen anzupassen, mit anderen zu interagieren und Aktivitäten durchzuführen.",
             "signsAndSymptoms": [
               {
-                "title": "Traurigkeit oder Hoplosigkeit oder vermindertes Selbstwertgefühl",
+                "title": "Traurigkeit, Hoffnungslosigkeit oder vermindertes Selbstwertgefühl",
                 "code": "01"
               },
               {
@@ -429,23 +429,23 @@
                 "code": "02"
               },
               {
-                "title": "Interessenverlust  oder  Beteiligung an Aktivitäten  oder  Selbsthilfe",
+                "title": "Verlust von Interesse, von Beteiligung an Aktivitäten oder von Selbstfürsorge",
                 "code": "03"
               },
               {
-                "title": "eingeschränkt auf verstreute Aufmerksamkeit oder Fokussierung",
+                "title": "eingeschränkt durch Ablenkbarkeit oder zerstreute Fokussierung",
                 "code": "13"
               },
               {
-                "title": "flache Wirkung",
+                "title": "oberflächliche Affekte",
                 "code": "06"
               },
               {
-                "title": "gereizt oder gereizt oder aggressiv",
+                "title": "gereizt, aufgewühlt oder aggressiv",
                 "code": "14"
               },
               {
-                "title": "zwecklose  oder  zwanghafte Aktivität",
+                "title": "planlose oder zwanghafte Aktivität",
                 "code": "15"
               },
               {
@@ -1125,18 +1125,18 @@
           },
           {
             "title": "Kreislauf",
-            "description": "Das Pumpen von Blut in ausreichender Menge und Druck im ganzen Körper.",
+            "description": "Das Pumpen von Blut in ausreichender Menge und Druck durch den ganzen Körper.",
             "signsAndSymptoms": [
               {
                 "title": "Ödem",
                 "code": "01"
               },
               {
-                "title": "Krämpfe oder Schmerzen an den Extremitäten",
+                "title": "Krämpfe oder Schmerzen in den Extremitäten",
                 "code": "02"
               },
               {
-                "title": "verminderte Impulse",
+                "title": "niedriger Puls",
                 "code": "03"
               },
               {
@@ -1144,7 +1144,7 @@
                 "code": "04"
               },
               {
-                "title": "Temperaturänderung im betroffenen Bereich",
+                "title": "Temperaturveränderung im betroffenen Bereich",
                 "code": "05"
               },
               {
@@ -1156,7 +1156,7 @@
                 "code": "07"
               },
               {
-                "title": "abnormale Blutdruckmessung",
+                "title": "abnormale Werte bei Blutdruckmessung",
                 "code": "08"
               },
               {
@@ -1168,7 +1168,7 @@
                 "code": "10"
               },
               {
-                "title": "zu schnelle Herzfrequenz",
+                "title": "übermäßig schnelle Herzfrequenz",
                 "code": "11"
               },
               {
@@ -1180,7 +1180,7 @@
                 "code": "13"
               },
               {
-                "title": "abnormale Herzgeräusche  oder  -geräusche",
+                "title": "abnormale Herztöne oder Herzgeräusche",
                 "code": "14"
               },
               {
@@ -1621,18 +1621,18 @@
           },
           {
             "title": "Körperpflege",
-            "description": "Management der persönlichen Sauberkeit und Kleidung.",
+            "description": "Handhabung der persönlichen Sauberkeit und Kleidung.",
             "signsAndSymptoms": [
               {
                 "title": "Schwierigkeiten beim Waschen von Kleidung",
                 "code": "01"
               },
               {
-                "title": "Badeschwierigkeiten",
+                "title": "Schwierigkeiten beim Baden oder Duschen",
                 "code": "02"
               },
               {
-                "title": "Schwierigkeiten bei Toilettenaktivitäten",
+                "title": "Schwierigkeiten bei Toilettengängen",
                 "code": "07"
               },
               {
@@ -1644,19 +1644,19 @@
                 "code": "09"
               },
               {
-                "title": "übler Körpergeruch",
+                "title": "unangenehmer Körpergeruch",
                 "code": "03"
               },
               {
-                "title": "Schwierigkeiten beim Shampoonieren oder Kämmen der Haare",
+                "title": "Schwierigkeiten beim Waschen oder Kämmen der Haare",
                 "code": "04"
               },
               {
-                "title": "Schwierigkeiten bei der Bürstung oder Pflanze oder Mundpflege",
+                "title": "Schwierigkeiten mit dem Zähneputzen, Zahnseide oder Mundpflege",
                 "code": "05"
               },
               {
-                "title": "Unwilligkeit oder Unfähigkeit oder Vergessenheit, persönliche Pflegeaktivitäten durchzuführen.",
+                "title": "Unwilligkeit, Unfähigkeit oder Vergesslichkeit zur Durchführung der persönlichen Pflegeaktivitäten",
                 "code": "10"
               },
               {
@@ -1789,14 +1789,14 @@
           },
           {
             "title": "Medikamenteneinnahme",
-            "description": "Verwendung oder Anwendung von rezeptfreien und verschriebenen oder empfohlenen Medikamenten und Infusionen zur Einhaltung der Richtlinien für therapeutische Wirkung, Sicherheit und Zeitplan.",
+            "description": "Gebrauch oder Anwendung von rezeptfreien, verschriebenen oder empfohlenen Medikamenten und Infusionen gemäß den Vorgaben zur therapeutischen Wirkung, Sicherheit und Zeitablauf.",
             "signsAndSymptoms": [
               {
                 "title": "folgt nicht der empfohlenen Dosierung  oder  dem empfohlenen Zeitplan",
                 "code": "01"
               },
               {
-                "title": "Nachweis von Nebenwirkungen oder umgekehrten Reaktionen",
+                "title": "Nachweis von Nebenwirkungen oder unerwünschten Reaktionen",
                 "code": "02"
               },
               {
@@ -1808,19 +1808,19 @@
                 "code": "04"
               },
               {
-                "title": "keine angemessenen Nachfüllungen erhält.",
+                "title": "kein angemessener Bezug von Nachschub",
                 "code": "05"
               },
               {
-                "title": "keine Impfungen erhält",
+                "title": "keine Impfungen erhalten",
                 "code": "06"
               },
               {
-                "title": "unzureichende Medikamenteneinnahme",
+                "title": "unangemessene Medikamenteneinnahme",
                 "code": "08"
               },
               {
-                "title": "nicht in der Lage, Medikamente ohne Hilfe einzunehmen.",
+                "title": "nicht in der Lage, Medikamente ohne Hilfe einzunehmen",
                 "code": "09"
               },
               {
@@ -2276,6 +2276,27 @@
     "title": "Problembewertungsskala für Ergebnisse",
     "ratings": [
       {
+        "title": "Zustand",
+        "description": "Zustand des Kunden in Bezug auf objektive und subjektive Merkmale.",
+        "scale": [
+          {
+            "title": "Extreme Anzeichen oder Symptome"
+          },
+          {
+            "title": "Schwerwiegende Anzeichen oder Symptome"
+          },
+          {
+            "title": "Mäßige Anzeichen oder Symptome"
+          },
+          {
+            "title": "Minimale Anzeichen oder Symptome"
+          },
+          {
+            "title": "Keine Anzeichen oder Symptome"
+          }
+        ]
+      },
+      {
         "title": "Wissen",
         "description": "Fähigkeit des Kunden, sich an gesundheitsbezogenes Wissen zu erinnern und es richtig zu deuten.",
         "scale": [
@@ -2314,27 +2335,6 @@
           },
           {
             "title": "Durchgängig angemessenes Verhalten"
-          }
-        ]
-      },
-      {
-        "title": "Zustand",
-        "description": "Zustand des Kunden in Bezug auf objektive und subjektive Merkmale.",
-        "scale": [
-          {
-            "title": "Extreme Anzeichen oder Symptome"
-          },
-          {
-            "title": "Schwerwiegende Anzeichen oder Symptome"
-          },
-          {
-            "title": "Mäßige Anzeichen oder Symptome"
-          },
-          {
-            "title": "Minimale Anzeichen oder Symptome"
-          },
-          {
-            "title": "Keine Anzeichen oder Symptome"
           }
         ]
       }
