@@ -51,10 +51,10 @@
       />
       <div class="q-gutter-md">
         <problem-summary
-          v-for="(problemRecord, problemIndex) in selectedCustomer.problems"
-          v-bind:key="problemIndex"
+          v-for="problemRecord in selectedCustomerProblems"
+          v-bind:key="problemRecord.id"
           :problemRecord="problemRecord"
-          :params="{customerId: selectedCustomerId, problemIndex: problemIndex}"
+          :params="{customerId: selectedCustomerId, problemId: problemRecord.id}"
         />
         <q-btn
           icon="add"
@@ -102,6 +102,7 @@ import { mapMutations } from "vuex";
 import ContentEditable from "../components/ContentEditable.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
+import * as Store from "../store";
 
 @Component({
   components: {
@@ -131,6 +132,13 @@ export default class PageIndex extends Vue {
       customerId: this.selectedCustomerId,
       terminology: this.terminology
     });
+  }
+  get selectedCustomerProblems() {
+    return this.selectedCustomer.problems.concat().sort(
+      (first: Store.ProblemRecord, second: Store.ProblemRecord) =>
+        //@ts-ignore
+        second.problem.isHighPriority - first.problem.isHighPriority
+    );
   }
 
   get terminology() {
@@ -172,10 +180,12 @@ export default class PageIndex extends Vue {
   addProblem() {
     let params = {
       customerId: this.selectedCustomerId as string,
-      problemIndex: ""
+      problemId: ""
     };
     this.$store.commit("createProblemRecord", params);
-    params.problemIndex = "" + (this.selectedCustomer.problems.length - 1);
+    params.problemId = this.selectedCustomer.problems[
+      this.selectedCustomer.problems.length - 1
+    ].id;
     this.$router.push({ name: "problem", params: params });
   }
 

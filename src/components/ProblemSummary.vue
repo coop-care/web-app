@@ -265,7 +265,7 @@ export default class ProblemSummary extends Vue {
     // @ts-ignore
     let Apex = window.Apex;
     let params = this.$props.params;
-    let group = ["summary", params.customerId, params.problemIndex].join(".");
+    let group = ["summary", params.customerId, params.problemId].join(".");
     let zombieChartIndices = Apex._chartInstances
       .map((chart: any, index: number) => {
         if (chart.group == group) {

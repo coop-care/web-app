@@ -23,6 +23,7 @@ export interface Customer extends Term {
   leftAt?: Date;
 }
 export interface ProblemRecord {
+  id: string;
   assessment: Note[];
   problem: Problem;
   interventions: Intervention[];
@@ -108,7 +109,9 @@ export default function(/* { ssrContext } */) {
           return;
         }
 
-        let problemRecord = customer.problems[payload.problemIndex];
+        let problemRecord = customer.problems.find(
+          problemRecord => problemRecord.id === payload.problemId
+        );
 
         if (problemRecord && payload.terminology) {
           return TerminologyData.mergeProblemRecordsAndTerminology(
@@ -168,11 +171,9 @@ export default function(/* { ssrContext } */) {
             }
           ];
 
-          let group = [
-            "summary",
-            payload.customerId,
-            payload.problemIndex
-          ].join(".");
+          let group = ["summary", payload.customerId, payload.problemId].join(
+            "."
+          );
           let id = [group, key].join(".");
 
           let options = {
@@ -284,9 +285,7 @@ export default function(/* { ssrContext } */) {
     },
     mutations: {
       addCustomer(state, { name }) {
-        let id = Math.random()
-          .toString(36)
-          .substring(2, 10);
+        let id = generateId();
         let customer = {
           id: id,
           name: name,
@@ -320,6 +319,7 @@ export default function(/* { ssrContext } */) {
         }
 
         let problemRecord: ProblemRecord = {
+          id: generateId(),
           assessment: [],
           problem: {
             id: "",
@@ -362,8 +362,10 @@ export default function(/* { ssrContext } */) {
         }
 
         customer.problems = customer.problems.filter(
-          (problemRecord: ProblemRecord, index: number) => {
-            return problemRecord.createdAt || index != payload.problemIndex;
+          (problemRecord: ProblemRecord) => {
+            return (
+              problemRecord.createdAt || problemRecord.id != payload.problemId
+            );
           }
         );
       },
@@ -431,6 +433,12 @@ export default function(/* { ssrContext } */) {
     // for dev mode only
     strict: process.env.DEV === "true"
   });
+
+  function generateId() {
+    return Math.random()
+      .toString(36)
+      .substring(2, 10);
+  }
 
   // @ts-ignore
   window.download = () => {

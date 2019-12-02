@@ -8,12 +8,12 @@ const routes: RouteConfig[] = [
       { name: "index", path: "", component: () => import("pages/Index.vue") },
       {
         name: "problem",
-        path: "/customer/:customerId/problem/:problemIndex",
+        path: "/customer/:customerId/problem/:problemId",
         component: () => import("pages/ProblemRecording.vue")
       },
       {
         name: "outcome",
-        path: "/customer/:customerId/problem/:problemIndex/outcome",
+        path: "/customer/:customerId/problem/:problemId/outcome",
         component: () => import("pages/Rating.vue")
       }
     ]
