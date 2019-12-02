@@ -20,6 +20,7 @@
               size="sm"
               color="primary"
               @click="addCustomer"
+              :title="$t('newCustomer')"
             />
           </q-item-section>
         </q-item>
@@ -50,12 +51,6 @@
         @change="editCustomer({customerId: selectedCustomerId, name: $event.value})"
       />
       <div class="q-gutter-md">
-        <problem-summary
-          v-for="problemRecord in selectedCustomerProblems"
-          v-bind:key="problemRecord.id"
-          :problemRecord="problemRecord"
-          :params="{customerId: selectedCustomerId, problemId: problemRecord.id}"
-        />
         <q-btn
           icon="add"
           color="primary"
@@ -63,6 +58,13 @@
           outline
           class="q-mt-md"
           @click="addProblem"
+          dense
+        />
+        <problem-summary
+          v-for="problemRecord in selectedCustomerProblems"
+          v-bind:key="problemRecord.id"
+          :problemRecord="problemRecord"
+          :params="{customerId: selectedCustomerId, problemId: problemRecord.id}"
         />
       </div>
     </div>
@@ -136,6 +138,9 @@ export default class PageIndex extends Vue {
   get selectedCustomerProblems() {
     return this.selectedCustomer.problems.concat().sort(
       (first: Store.ProblemRecord, second: Store.ProblemRecord) =>
+        // sort order: draft first, then high priority followed by low priority
+        //@ts-ignore
+        !second.createdAt - !first.createdAt ||
         //@ts-ignore
         second.problem.isHighPriority - first.problem.isHighPriority
     );
