@@ -128,7 +128,7 @@
               :series="outcome.series"
               width="100%"
               height="160"
-              class="q-pa-none"
+              class="q-pa-none unselectable"
             />
           </div>
         </div>
