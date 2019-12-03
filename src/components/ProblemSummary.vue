@@ -2,17 +2,12 @@
   <q-card class="overflow-hidden">
     <q-card-section>
       <div v-if="isSummary">
-        <div class="text-subtitle2 text-weight-normal">
-          {{ customerName }}:
-        </div>
+        <div class="text-subtitle2 text-weight-normal">{{ customerName }}:</div>
         <div class="text-h6 text-classification">
           {{ problem.title || $t("unspecifiedProblem") }}
         </div>
       </div>
-      <div
-        v-else
-        class="text-h6"
-      >
+      <div v-else class="text-h6">
         <q-btn
           v-if="isDraft"
           :label="$t('editDraft')"
@@ -39,7 +34,9 @@
           class="q-mr-sm q-px-sm"
           style="font-size: 56%"
         />
-        <span class="text-classification">{{ problem.title || $t("unspecifiedProblem") }}</span>
+        <span class="text-classification">{{
+          problem.title || $t("unspecifiedProblem")
+        }}</span>
         <span class="text-subtitle2 text-weight-light q-ml-xs">
           {{ $t((problem.titles || {}).priorityKey) }},
           {{ (problem.titles || {}).scope }}
@@ -52,15 +49,23 @@
         <span class="text-italic">{{ problem.priorityDetails }}</span>
       </p>
     </q-card-section>
-    <q-card-section v-if="(problem.severity < 2) && problem.details">
+    <q-card-section v-if="problem.severity < 2 && problem.details">
       <div class="text-subtitle1 text-weight-bold text-classification">
-        {{ $t(problem.severity == 0 ? "customerRequestForHealthPromotionTitle" : "potentialRiskFactorsTitle") }}
+        {{
+          $t(
+            problem.severity == 0
+              ? "customerRequestForHealthPromotionTitle"
+              : "potentialRiskFactorsTitle"
+          )
+        }}
       </div>
       <p class="q-pl-lg q-my-none text-italic">
         {{ problem.details }}
       </p>
     </q-card-section>
-    <q-card-section v-if="(problem.severity == 2) && problem.signsAndSymptoms.length">
+    <q-card-section
+      v-if="problem.severity == 2 && problem.signsAndSymptoms.length"
+    >
       <div class="text-subtitle1 text-weight-bold text-classification">
         {{ $t("actualSignsAndSymptomsTitle") }}
       </div>
@@ -70,14 +75,23 @@
           v-bind:key="index"
           class="no-column-break"
         >
-          {{ symptom.title }}<span v-if="(index == problem.signsAndSymptoms.length - 1) && (symptom.title.toLowerCase() == $t('otherSymptom')) && problem.details">:
+          {{ symptom.title
+          }}<span
+            v-if="
+              index == problem.signsAndSymptoms.length - 1 &&
+                symptom.title.toLowerCase() == $t('otherSymptom') &&
+                problem.details
+            "
+            >:
             <span class="text-italic">{{ problem.details }}</span>
           </span>
         </li>
       </ul>
     </q-card-section>
     <q-card-section v-if="interventions.length">
-      <div class="text-subtitle1 text-weight-bold text-intervention">{{ $tc("intervention", 2) }}</div>
+      <div class="text-subtitle1 text-weight-bold text-intervention">
+        {{ $tc("intervention", 2) }}
+      </div>
       <ul :class="'q-ma-none '">
         <li
           v-for="(intervention, index) in interventions"
@@ -97,7 +111,9 @@
         </li>
       </ul>
     </q-card-section>
-    <q-card-section v-if="lastOutcome || (isInteractive && problem.isHighPriority)">
+    <q-card-section
+      v-if="lastOutcome || (isInteractive && problem.isHighPriority)"
+    >
       <div class="text-subtitle1 text-weight-bold">
         <span class="text-outcome">{{ $tc("outcome", 2) }}</span>
         <q-btn
@@ -110,10 +126,7 @@
         />
       </div>
       <div v-if="lastOutcome">
-        <div
-          v-if="isInteractive"
-          class="row"
-        >
+        <div v-if="isInteractive" class="row q-col-gutter-md">
           <div
             class="col-12 col-sm-4"
             style=""
@@ -121,7 +134,6 @@
             v-bind:key="index"
             ref="chartRow"
           >
-            <div class="text-subtitle2 q-pl-lg">{{ outcome.title }}</div>
             <apexchart
               type="area"
               :options="outcome.options"
@@ -130,6 +142,8 @@
               height="160"
               class="q-pa-none unselectable"
             />
+            <div class="text-subtitle2">{{ outcome.title }}</div>
+            <div class="text-weight-light">{{ outcome.subtitle }}</div>
           </div>
         </div>
         <div v-else>
@@ -147,12 +161,11 @@
               }}
               ({{ rating.observation
               }}<span v-if="rating.expectation">
-                / {{ rating.expectation }}</span>)
-              <span
-                v-if="rating.comment"
-                class="text-italic"
+                / {{ rating.expectation }}</span
+              >)
+              <span v-if="rating.comment" class="text-italic">
+                ({{ rating.comment }})</span
               >
-                ({{ rating.comment }})</span>
             </li>
           </ul>
           <p
@@ -220,6 +233,7 @@ export default class ProblemSummary extends Vue {
     return this.$store.getters.getOutcomeAsChartData({
       expectation: this.$t("expectation"),
       ratings: this.terminology.problemRatingScale.ratings,
+      locale: this.$root.$i18n.locale,
       ...this.$props.params
     });
   }

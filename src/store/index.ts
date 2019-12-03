@@ -8,6 +8,10 @@ import TerminologyData, {
 import { Download } from "../helper/download";
 import sampleData from "../data/sample1";
 import ApexCharts from "apexcharts";
+import { colors } from "quasar";
+import { format } from "timeago.js";
+
+const { getBrand, setBrand } = colors;
 
 Vue.use(Vuex);
 
@@ -176,7 +180,7 @@ export default function(/* { ssrContext } */) {
           );
           let id = [group, key].join(".");
 
-          let options = {
+          let options: any = {
             chart: {
               id: id,
               group: group,
@@ -250,10 +254,91 @@ export default function(/* { ssrContext } */) {
             }
           };
 
+          options = {
+            chart: {
+              id: id,
+              group: group,
+              sparkline: {
+                enabled: true
+              },
+              events: {
+                mounted: (chartContext: any, config: any) => {
+                  chartContext.updateOptions({}, true, true, false);
+                  ApexCharts.exec(id, "render", {});
+                }
+              }
+            },
+            colors: [getBrand("outcome"), getBrand("outcome")],
+            grid: {
+              show: true,
+              padding: {
+                top: 5,
+                left: 5,
+                right: 5,
+                bottom: 5
+              }
+            },
+            fill: {
+              colors: [getBrand("outcome"), "#ffffff"],
+              opacity: 0,
+              type: ["gradient", "solid"],
+              gradient: {
+                shadeIntensity: 1
+              }
+            },
+            stroke: {
+              curve: "smooth",
+              width: 3,
+              dashArray: [0, 5]
+            },
+            tooltip: {
+              custom: () => {
+                return "";
+              }
+            },
+            xaxis: {
+              type: "datetime",
+              axisTicks: {
+                show: false
+              },
+              tooltip: {
+                enabled: true,
+                offsetY: -35
+              }
+            },
+            yaxis: {
+              min: 1,
+              max: 5,
+              forceNiceScale: true,
+              labels: {
+                minWidth: 1
+              }
+            }
+          };
+
+          let lastObservation = series[0].data[series[0].data.length - 1];
+          let lastExpectation =
+            ((series[1] || {}).data || [])[series[1].data.length - 1] || {};
+          let lastObservationTitle =
+            payload.ratings[index].scale[lastObservation.y - 1].title;
+          let lastExpectationText = lastExpectation.y
+            ? " / " + lastExpectation.y
+            : "";
+          let timeago = format(lastObservation.x, payload.locale);
+          let title =
+            payload.ratings[index].title +
+            " " +
+            lastObservation.y +
+            lastExpectationText;
+          let subtitle = lastObservationTitle;
+
           return {
             series: series,
             options: options,
-            title: payload.ratings[index].title
+            title: title,
+            subtitle: subtitle,
+            //@ts-ignore
+            comment: lastObservation.comment
           };
         });
       },
@@ -439,6 +524,10 @@ export default function(/* { ssrContext } */) {
       .toString(36)
       .substring(2, 10);
   }
+
+  setBrand("classification", "#f44336");
+  setBrand("outcome", "#009688");
+  setBrand("intervention", "#ff6f00");
 
   // @ts-ignore
   window.download = () => {
