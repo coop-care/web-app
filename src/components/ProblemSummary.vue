@@ -231,7 +231,6 @@ export default class ProblemSummary extends Vue {
     return this.$store.getters.getCustomerById(this.$props.params).name;
   }
   get language() {
-    console.log("language");
     return this.$root.$i18n.locale;
   }
   get record() {
