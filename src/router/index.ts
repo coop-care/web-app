@@ -3,6 +3,8 @@ import VueRouter from 'vue-router';
 
 import routes from './routes';
 
+import { stitch } from '../boot/stitch';
+
 Vue.use(VueRouter);
 
 /*
@@ -21,6 +23,18 @@ export default function (/* { store, ssrContext } */) {
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE,
   });
+
+  Router.beforeEach((to, from, next) => {
+    // console.log("before each. to:", to.name, "from:", from.name);
+    if (stitch.auth.isLoggedIn) {
+      next()
+    } else {
+      if (to.name === 'login') { next() }
+      else if (to.name === 'register') { next() }
+      else if (to.name === 'confirm') { next() }
+      else { next({ name: 'login'}) }
+    }
+  })
 
   return Router;
 }

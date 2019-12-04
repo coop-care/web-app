@@ -34,6 +34,26 @@
           />
         </q-toolbar-title>
 
+        <q-btn-dropdown v-if="$stitch.auth.isLoggedIn"
+          :label="username"
+        >
+          <q-list>
+            <q-item clickable @click="logout">
+              <q-item-label>
+                Logout
+              </q-item-label>
+            </q-item>
+            <!-- <q-item-label>
+              <div v-for="(val, key) in $stitch.auth.user.profile">
+                {{ key }}: {{ val }}
+              </div>
+            </q-item-label> -->
+          </q-list>
+        </q-btn-dropdown>
+        <q-toolbar-title v-else>
+          Not logged in
+        </q-toolbar-title>
+
         <q-btn-dropdown
           :label="$root.$i18n.locale.split('-')[0]"
           icon="language"
@@ -99,6 +119,21 @@ export default class MyLayout extends Vue {
       encodeURIComponent("\nRoute: ") +
       this.$router.currentRoute.path
     );
+  }
+
+  get username() {
+    let name = undefined;
+    const user = this.$stitch.auth.user;
+    if (user) {
+      name = user.profile.email;
+    }
+    return name;
+  }
+
+  logout() {
+    // console.log('logging out...');
+    this.$stitch.auth.logout()
+      .then(() => this.$router.push({ name: 'login' }));
   }
 }
 </script>

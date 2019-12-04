@@ -75,7 +75,9 @@ module.exports = function(ctx) {
         "QCard",
         "QCardSection",
         "QPopupEdit",
-        "QBtnDropdown"
+        "QBtnDropdown",
+        "QForm",
+        "QCardActions"
       ],
 
       directives: ["Ripple"],
