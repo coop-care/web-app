@@ -303,7 +303,10 @@ export default function(/* { ssrContext } */) {
               },
               tooltip: {
                 enabled: true,
-                offsetY: -35
+                offsetY: -35,
+                formatter: function(val: number, opts: any) {
+                  return format(val, payload.locale);
+                }
               }
             },
             yaxis: {
@@ -324,7 +327,6 @@ export default function(/* { ssrContext } */) {
           let lastExpectationText = lastExpectation.y
             ? " / " + lastExpectation.y
             : "";
-          let timeago = format(lastObservation.x, payload.locale);
           let title =
             payload.ratings[index].title +
             " " +
