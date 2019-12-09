@@ -38,11 +38,19 @@
           </q-item-section>
         </q-item>
       </q-list>
+      <q-btn label="Insert samples in DB" @click="addSampleToDB" color="primary" />
+      <q-btn label="Clear DB" @click="clearDB" color="primary" />
     </q-drawer>
 
     <div
+      class="customer-overview q-pa-xl"
+      v-if="loading"
+    >
+      <p>loading...</p>
+    </div>
+    <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
-      v-if="selectedCustomer"
+      v-else-if="selectedCustomer"
     >
       <content-editable
         ref="customerName"
@@ -105,6 +113,11 @@ import ContentEditable from "../components/ContentEditable.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
 import * as Store from "../store";
+import {
+  Stitch,
+  RemoteMongoClient,
+} from "mongodb-stitch-browser-sdk";
+import api from "../helper/api";
 
 @Component({
   components: {
@@ -112,14 +125,19 @@ import * as Store from "../store";
     ProblemSummary
   },
   methods: {
-    ...mapMutations(["selectCustomer", "editCustomer"])
+    ...mapMutations([
+      // "selectCustomer", 
+      "editCustomer",
+    ])
   }
 })
 export default class PageIndex extends Vue {
   customerDrawer = this.$q.screen.gt.sm;
+  loading = false;
+  priv_customers: any[] = [];
 
   get customers() {
-    return this.$store.state.customers;
+    return this.priv_customers;
   }
   get selectedCustomerId() {
     return this.$store.state.selectedCustomerId;
@@ -130,7 +148,7 @@ export default class PageIndex extends Vue {
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
   }
   get selectedCustomer() {
-    return this.$store.getters.getCustomerById({
+    return this.$store.getters.getCustomer({
       customerId: this.selectedCustomerId,
       terminology: this.terminology
     });
@@ -155,6 +173,7 @@ export default class PageIndex extends Vue {
       "toggleCustomerDrawer",
       () => (this.customerDrawer = !this.customerDrawer)
     );
+    this.fetchCustomersFromDB();
   }
 
   addCustomer() {
@@ -199,5 +218,75 @@ export default class PageIndex extends Vue {
       this.customerDrawer = false;
     }
   }
+
+  addSampleToDB() {
+    const mongodb = this.$stitch.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
+    const clients = mongodb.db("openomaha").collection("clients");
+    // @ts-ignore
+    const user_id = this.$stitch.auth.user.id;
+    // @ts-ignore
+    const mappedSamples = this.$store.state.customers.map(client => {
+      return {
+        _id: client.id,
+        user_id: user_id,
+        name: client.name,
+        problems: client.problems,
+        createdAt: client.createdAt,
+      }
+    });
+    clients.insertMany(mappedSamples)
+      .then(result => {
+        console.log("Successfully inserted", result);
+        this.fetchCustomersFromDB();
+      })
+      .catch(err => console.error(`Failed to insert documents: ${err}`))
+    ;
+  }
+
+  fetchCustomersFromDB() {
+    this.loading = true;
+    api.client_collection().find({ }, { }).toArray()
+      .then(result => {
+        // console.log("Success:", result);
+        this.priv_customers = result;
+        this.loading = false;
+      })
+      .catch(err => {
+        console.error(`Failed: ${err}`);
+        this.loading = false;
+      })
+    ;
+  }
+
+  selectCustomer(customer: any) {
+    // console.log(customer);
+    this.selectCustomerFromDB(customer._id);
+  }
+
+  selectCustomerFromDB(id: string) {
+    this.loading = true;
+    api.client_collection().find({ _id: id }, { }).toArray()
+      .then(resultA => {
+        const result = resultA[0];
+        // console.log("Success:", result);
+        this.$store.commit("setCustomer", result);
+        this.loading = false;
+      })
+      .catch(err => {
+        console.error(`Failed: ${err}`);
+        this.loading = false;
+      })
+    ;
+  }
+
+  clearDB() {
+    api.client_collection().deleteMany({ })
+      .then(result => {
+        console.log(`Deleted ${result.deletedCount} item(s).`);
+        this.fetchCustomersFromDB();
+      })
+      .catch(err => console.error(`Delete failed with error: ${err}`))
+  }
+
 }
 </script>

@@ -82,13 +82,29 @@ export interface Note {
  * directly export the Store instantiation
  */
 
+const selcust: Customer | null = null;
+
 export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
       customers: sampleData,
-      selectedCustomerId: ""
+      selectedCustomerId: "",
+      selectedCustomer: selcust,
     },
     getters: {
+      getCustomer: state => (payload: any): Customer | undefined => {
+        let customer = state.selectedCustomer;
+
+        if (customer && payload.terminology) {
+          customer.problems = TerminologyData.mergeProblemRecordsAndTerminology(
+            customer.problems,
+            payload.terminology
+          );
+        }
+        
+        if (customer) return customer
+        else return undefined;
+      },
       getCustomerById: state => (payload: any): Customer | undefined => {
         let customer = state.customers.find(
           customer => customer.id === payload.customerId
@@ -106,7 +122,7 @@ export default function(/* { ssrContext } */) {
       getProblemRecordById: state => (
         payload: any
       ): ProblemRecord | undefined => {
-        let customer = Store.getters.getCustomerById(payload) as
+        let customer = Store.getters.getCustomer(payload) as
           | Customer
           | undefined;
         if (!customer) {
@@ -385,8 +401,13 @@ export default function(/* { ssrContext } */) {
       selectCustomer(state, customer: Customer) {
         state.selectedCustomerId = customer.id;
       },
+      setCustomer(state, customer: Customer) {
+        state.selectedCustomer = customer;
+        // @ts-ignore
+        state.selectedCustomerId = customer._id;
+      },
       editCustomer(state, payload: Customer) {
-        let customer = Store.getters.getCustomerById(payload) as Customer;
+        let customer = Store.getters.getCustomer(payload) as Customer;
 
         if (!customer) {
           return;
@@ -399,7 +420,7 @@ export default function(/* { ssrContext } */) {
         }
       },
       createProblemRecord(state, payload) {
-        let customer: Customer = Store.getters.getCustomerById(payload);
+        let customer: Customer = Store.getters.getCustomer(payload);
 
         if (!customer) {
           return;
@@ -442,7 +463,7 @@ export default function(/* { ssrContext } */) {
         }
       },
       deleteDraftProblemRecord(state, payload) {
-        let customer: Customer = Store.getters.getCustomerById(payload);
+        let customer: Customer = Store.getters.getCustomer(payload);
 
         if (!customer) {
           return;

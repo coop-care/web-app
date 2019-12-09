@@ -130,6 +130,11 @@ export default class MyLayout extends Vue {
     return name;
   }
 
+  created() {
+    // console.log(this.$root.$i18n.availableLocales);
+    this.$root.$i18n.locale = "en-us";
+  }
+
   logout() {
     // console.log('logging out...');
     this.$stitch.auth.logout()
