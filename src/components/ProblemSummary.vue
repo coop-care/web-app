@@ -242,7 +242,7 @@ export default class ProblemSummary extends Vue {
     return (this.$t("terminology") as unknown) as Terminology;
   }
   get customerName() {
-    return this.$store.getters.getCustomerById(this.$props.params).name;
+    return this.$store.getters.getCustomer(this.$props.params).name;
   }
   get language() {
     return this.$root.$i18n.locale;
@@ -279,6 +279,7 @@ export default class ProblemSummary extends Vue {
     let Apex = window.Apex;
     let params = this.$props.params;
     let group = ["summary", params.customerId, params.problemId].join(".");
+    if (!Apex._chartInstances) return;  // I get an error that this is undefined
     let zombieChartIndices = Apex._chartInstances
       .map((chart: any, index: number) => {
         if (chart.group == group) {

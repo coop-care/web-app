@@ -2,7 +2,7 @@ import * as Store from "../store/index";
 
 export default [
   {
-    id: "4s62btq9",
+    // _id: "4s62btq9",
     name: "Emma Becker",
     problems: [
       {
@@ -659,7 +659,7 @@ export default [
     createdAt: new Date("2019-06-11T00:00:00.000Z")
   },
   {
-    id: "s4fvng9p",
+    // _id: "s4fvng9p",
     name: "Francis Richter",
     problems: [
       {

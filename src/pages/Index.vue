@@ -19,7 +19,7 @@
               round
               size="sm"
               color="primary"
-              @click="addCustomer"
+              @click="addingCustomer = true"
               :title="$t('newCustomer')"
             />
           </q-item-section>
@@ -30,7 +30,8 @@
           v-for="customer in sortedCustomers"
           :key="customer.id"
           v-ripple
-          :active="selectedCustomerId == customer.id"
+          :active="isSelected(customer)"
+          active-class="text-intervention"
           @click="selectCustomer(customer); closeDrawerIfNeeded();"
         >
           <q-item-section>
@@ -47,6 +48,15 @@
       v-if="loading"
     >
       <p>loading...</p>
+    </div>
+    <div
+      class="customer-overview q-pt-lg q-px-xl q-pb-xl"
+      v-else-if="addingCustomer"
+    >
+      <new-customer
+        @save="addCustomer"
+        @cancel="addingCustomer = false"
+      />
     </div>
     <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
@@ -83,7 +93,7 @@
     >
       <p>{{ $t("noExistingCustomer") }}</p>
       <q-btn
-        @click="addCustomer"
+        @click="addingCustomer = true"
         no-caps
         color="primary"
         :label="$t('createFirstCustomer')"
@@ -110,6 +120,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { mapMutations } from "vuex";
 import ContentEditable from "../components/ContentEditable.vue";
+import NewCustomer from "../components/NewCustomer.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
 import * as Store from "../store";
@@ -118,29 +129,32 @@ import {
   RemoteMongoClient,
 } from "mongodb-stitch-browser-sdk";
 import api from "../helper/api";
+import sampleData from "../data/sample1";
 
 @Component({
   components: {
     ContentEditable,
+    NewCustomer,
     ProblemSummary
   },
-  methods: {
-    ...mapMutations([
-      // "selectCustomer", 
-      "editCustomer",
-    ])
-  }
+  // methods: {
+  //   ...mapMutations([
+  //     // "selectCustomer", 
+  //     // "editCustomer",
+  //   ])
+  // }
 })
 export default class PageIndex extends Vue {
   customerDrawer = this.$q.screen.gt.sm;
   loading = false;
-  priv_customers: any[] = [];
+  addingCustomer = false;
+  customers: any[] = [];
 
-  get customers() {
-    return this.priv_customers;
-  }
   get selectedCustomerId() {
-    return this.$store.state.selectedCustomerId;
+    if (this.$store.state.selectedCustomer) {
+      return this.$store.state.selectedCustomer._id;
+    }
+    return "";
   }
   get sortedCustomers() {
     return this.customers
@@ -176,29 +190,44 @@ export default class PageIndex extends Vue {
     this.fetchCustomersFromDB();
   }
 
-  addCustomer() {
-    this.$store.commit("addCustomer", { name: this.$t("newCustomer") });
-    this.closeDrawerIfNeeded();
+  isSelected(customer: any) {
+    if (this.selectedCustomer) {
+      if (this.selectedCustomer._id.equals(customer._id)) return true;
+    }
+    return false;
+  }
 
-    setTimeout(() => {
-      // @ts-ignore
-      let h2 = (this.$refs.customerName || {}).$el as HTMLElement;
+  addCustomer(name: string) {
+    let customer = {
+      user_id: api.userId(),
+      name: name,
+      problems: [],
+      createdAt: new Date()
+    };
+    api.createCustomer(customer)
+      .then(console.log)
+      .catch(console.log);
+    
+    this.fetchCustomersFromDB();
+    this.$store.commit("setCustomer", customer);
+    this.addingCustomer = false;
+  }
 
-      if (!h2) {
-        return;
+  editCustomer(payload: any) {
+    let customer = this.$store.getters.getCustomer(payload);
+    console.log(customer);
+    if (!customer) {
+      return;
+    }
+    for (let [key, value] of Object.entries(payload)) {
+      if (["name"].includes(key)) {
+        customer[key] = value;
       }
-
-      h2.focus();
-
-      let range = document.createRange();
-      range.selectNodeContents(h2);
-      let sel = window.getSelection();
-
-      if (sel) {
-        sel.removeAllRanges();
-        sel.addRange(range);
-      }
-    }, 1);
+    }
+    this.$store.commit("setCustomer", customer);
+    api.saveCustomer(customer)
+      .then(() => this.fetchCustomersFromDB())
+      .catch(err => console.error(`Failed to save customer: ${err}`))
   }
 
   addProblem() {
@@ -220,23 +249,11 @@ export default class PageIndex extends Vue {
   }
 
   addSampleToDB() {
-    const mongodb = this.$stitch.getServiceClient(RemoteMongoClient.factory, "mongodb-atlas");
-    const clients = mongodb.db("openomaha").collection("clients");
-    // @ts-ignore
-    const user_id = this.$stitch.auth.user.id;
-    // @ts-ignore
-    const mappedSamples = this.$store.state.customers.map(client => {
-      return {
-        _id: client.id,
-        user_id: user_id,
-        name: client.name,
-        problems: client.problems,
-        createdAt: client.createdAt,
-      }
-    });
-    clients.insertMany(mappedSamples)
+    const samples = sampleData;
+    samples.forEach(customer => { customer.user_id = api.userId() });
+    api.clientCollection().insertMany(samples)
       .then(result => {
-        console.log("Successfully inserted", result);
+        // console.log("Successfully inserted", result);
         this.fetchCustomersFromDB();
       })
       .catch(err => console.error(`Failed to insert documents: ${err}`))
@@ -245,10 +262,10 @@ export default class PageIndex extends Vue {
 
   fetchCustomersFromDB() {
     this.loading = true;
-    api.client_collection().find({ }, { }).toArray()
+    api.getAllCustomers()
       .then(result => {
         // console.log("Success:", result);
-        this.priv_customers = result;
+        this.customers = result;
         this.loading = false;
       })
       .catch(err => {
@@ -260,16 +277,18 @@ export default class PageIndex extends Vue {
 
   selectCustomer(customer: any) {
     // console.log(customer);
-    this.selectCustomerFromDB(customer._id);
+    const current = this.selectedCustomer;
+    if (current)
+      api.saveCustomer(current)
+        .catch(err => console.error(`Save current customer failed with error: ${err}`));
+    this.loadCustomerFromDB(customer._id);
   }
 
-  selectCustomerFromDB(id: string) {
+  loadCustomerFromDB(id: string) {
     this.loading = true;
-    api.client_collection().find({ _id: id }, { }).toArray()
-      .then(resultA => {
-        const result = resultA[0];
-        // console.log("Success:", result);
-        this.$store.commit("setCustomer", result);
+    api.getCustomerById(id)
+      .then(customer => {
+        this.$store.commit("setCustomer", customer);
         this.loading = false;
       })
       .catch(err => {
@@ -280,10 +299,11 @@ export default class PageIndex extends Vue {
   }
 
   clearDB() {
-    api.client_collection().deleteMany({ })
+    api.deleteAllCustomers()
       .then(result => {
         console.log(`Deleted ${result.deletedCount} item(s).`);
         this.fetchCustomersFromDB();
+        this.$store.commit("setCustomer", null);
       })
       .catch(err => console.error(`Delete failed with error: ${err}`))
   }

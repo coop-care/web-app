@@ -1,0 +1,16 @@
+{
+    "id": "5dee551276591ae1e3cddaa3",
+    "database": "openomaha",
+    "collection": "sample_clients",
+    "roles": [
+        {
+            "name": "default",
+            "apply_when": {},
+            "write": true,
+            "insert": true,
+            "delete": true,
+            "additional_fields": {}
+        }
+    ],
+    "schema": {}
+}

@@ -6,7 +6,7 @@ import TerminologyData, {
   HasTitleCode
 } from "../helper/terminology";
 import { Download } from "../helper/download";
-import sampleData from "../data/sample1";
+// import sampleData from "../data/sample1";
 import ApexCharts from "apexcharts";
 import { colors } from "quasar";
 import { format } from "timeago.js";
@@ -20,7 +20,9 @@ export interface Term {
   title?: string;
   description?: string;
 }
-export interface Customer extends Term {
+export interface Customer {
+  _id?: string;
+  user_id?: string;
   name: string;
   problems: ProblemRecord[];
   createdAt: Date;
@@ -87,8 +89,8 @@ const selcust: Customer | null = null;
 export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
-      customers: sampleData,
-      selectedCustomerId: "",
+      // customers: sampleData,
+      // selectedCustomerId: "",
       selectedCustomer: selcust,
     },
     getters: {
@@ -105,20 +107,20 @@ export default function(/* { ssrContext } */) {
         if (customer) return customer
         else return undefined;
       },
-      getCustomerById: state => (payload: any): Customer | undefined => {
-        let customer = state.customers.find(
-          customer => customer.id === payload.customerId
-        );
+      // getCustomerById: state => (payload: any): Customer | undefined => {
+      //   let customer = state.customers.find(
+      //     customer => customer._id === payload.customerId
+      //   );
 
-        if (customer && payload.terminology) {
-          customer.problems = TerminologyData.mergeProblemRecordsAndTerminology(
-            customer.problems,
-            payload.terminology
-          );
-        }
+      //   if (customer && payload.terminology) {
+      //     customer.problems = TerminologyData.mergeProblemRecordsAndTerminology(
+      //       customer.problems,
+      //       payload.terminology
+      //     );
+      //   }
 
-        return customer;
-      },
+      //   return customer;
+      // },
       getProblemRecordById: state => (
         payload: any
       ): ProblemRecord | undefined => {
@@ -387,37 +389,8 @@ export default function(/* { ssrContext } */) {
       }
     },
     mutations: {
-      addCustomer(state, { name }) {
-        let id = generateId();
-        let customer = {
-          id: id,
-          name: name,
-          problems: [],
-          createdAt: new Date()
-        };
-        state.customers.push(customer);
-        state.selectedCustomerId = id;
-      },
-      selectCustomer(state, customer: Customer) {
-        state.selectedCustomerId = customer.id;
-      },
       setCustomer(state, customer: Customer) {
         state.selectedCustomer = customer;
-        // @ts-ignore
-        state.selectedCustomerId = customer._id;
-      },
-      editCustomer(state, payload: Customer) {
-        let customer = Store.getters.getCustomer(payload) as Customer;
-
-        if (!customer) {
-          return;
-        }
-
-        for (let [key, value] of Object.entries(payload)) {
-          if (["name"].includes(key)) {
-            (customer as any)[key] = value;
-          }
-        }
       },
       createProblemRecord(state, payload) {
         let customer: Customer = Store.getters.getCustomer(payload);
@@ -553,9 +526,9 @@ export default function(/* { ssrContext } */) {
   setBrand("intervention", "#ff6f00");
 
   // @ts-ignore
-  window.download = () => {
-    Download.ts(Store.state.customers, "sample1.ts");
-  };
+  // window.download = () => {
+  //   Download.ts(Store.state.customers, "sample1.ts");
+  // };
 
   return Store;
 }

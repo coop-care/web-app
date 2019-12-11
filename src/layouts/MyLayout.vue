@@ -35,7 +35,8 @@
         </q-toolbar-title>
 
         <q-btn-dropdown v-if="$stitch.auth.isLoggedIn"
-          :label="username"
+          :label="username()"
+          no-caps
         >
           <q-list>
             <q-item clickable @click="logout">
@@ -121,7 +122,7 @@ export default class MyLayout extends Vue {
     );
   }
 
-  get username() {
+  username() {
     let name = undefined;
     const user = this.$stitch.auth.user;
     if (user) {
@@ -137,6 +138,7 @@ export default class MyLayout extends Vue {
 
   logout() {
     // console.log('logging out...');
+    this.$store.commit("setCustomer", null);
     this.$stitch.auth.logout()
       .then(() => this.$router.push({ name: 'login' }));
   }

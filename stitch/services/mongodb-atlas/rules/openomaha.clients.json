@@ -1,0 +1,25 @@
+{
+    "id": "5dee470ca96a577ca5c50b4d",
+    "database": "openomaha",
+    "collection": "clients",
+    "roles": [
+        {
+            "name": "owner",
+            "apply_when": {
+                "user_id": "%%user.id"
+            },
+            "read": true,
+            "write": true,
+            "insert": true,
+            "delete": true,
+            "additional_fields": {}
+        }
+    ],
+    "schema": {
+        "properties": {
+            "test": {
+                "bsonType": "string"
+            }
+        }
+    }
+}

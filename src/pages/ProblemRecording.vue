@@ -74,7 +74,7 @@
           />
           <q-btn
             v-if="step == 3 || !isHighPriority"
-            @click="$store.commit('saveNewProblemRecord', $route.params)"
+            @click="saveProblem"
             to="/"
             color="primary"
             :label="$t('save')"
@@ -97,6 +97,7 @@ import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import Intervention from "components/Intervention.vue";
+import api from "../helper/api";
 
 @Component({
   components: {
@@ -126,6 +127,11 @@ export default class ProblemRecording extends Vue {
 
   scrollToTop() {
     scroll.setScrollPosition(window, 0, 200);
+  }
+
+  saveProblem() {
+    this.$store.commit('saveNewProblemRecord', this.$route.params);
+    api.saveCustomer(this.$store.state.selectedCustomer);
   }
 }
 </script>
