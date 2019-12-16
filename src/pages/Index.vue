@@ -39,8 +39,6 @@
           </q-item-section>
         </q-item>
       </q-list>
-      <q-btn label="Insert samples in DB" @click="addSampleToDB" color="primary" />
-      <q-btn label="Clear DB" @click="clearDB" color="primary" />
     </q-drawer>
 
     <div
@@ -128,8 +126,7 @@ import {
   Stitch,
   RemoteMongoClient,
 } from "mongodb-stitch-browser-sdk";
-import api from "../helper/api";
-import sampleData from "../data/sample1";
+import { ProblemRecord } from "../helper/coreTypes";
 
 @Component({
   components: {
@@ -146,10 +143,15 @@ import sampleData from "../data/sample1";
 })
 export default class PageIndex extends Vue {
   customerDrawer = this.$q.screen.gt.sm;
-  loading = false;
+  // loading = false;
   addingCustomer = false;
-  customers: any[] = [];
+  // customers: any[] = [];
 
+  get loading() {
+    return this.$store.state.isLoadingCustomerList
+      || this.$store.state.isLoadingCustomer;
+  }
+  get customers() { return this.$store.state.customers; }
   get selectedCustomerId() {
     if (this.$store.state.selectedCustomer) {
       return this.$store.state.selectedCustomer._id;
@@ -169,7 +171,7 @@ export default class PageIndex extends Vue {
   }
   get selectedCustomerProblems() {
     return this.selectedCustomer.problems.concat().sort(
-      (first: Store.ProblemRecord, second: Store.ProblemRecord) =>
+      (first: ProblemRecord, second: ProblemRecord) =>
         // sort order: draft first, then high priority followed by low priority
         //@ts-ignore
         !second.createdAt - !first.createdAt ||
@@ -187,7 +189,7 @@ export default class PageIndex extends Vue {
       "toggleCustomerDrawer",
       () => (this.customerDrawer = !this.customerDrawer)
     );
-    this.fetchCustomersFromDB();
+    this.$store.dispatch('fetchCustomersFromDB');
   }
 
   isSelected(customer: any) {
@@ -199,16 +201,16 @@ export default class PageIndex extends Vue {
 
   addCustomer(name: string) {
     let customer = {
-      user_id: api.userId(),
+      user_id: this.$stitchApi.userId(),
       name: name,
       problems: [],
       createdAt: new Date()
     };
-    api.createCustomer(customer)
+    this.$stitchApi.createCustomer(customer)
       .then(console.log)
       .catch(console.log);
-    
-    this.fetchCustomersFromDB();
+
+    this.$store.dispatch('fetchCustomersFromDB');
     this.$store.commit("setCustomer", customer);
     this.addingCustomer = false;
   }
@@ -225,8 +227,8 @@ export default class PageIndex extends Vue {
       }
     }
     this.$store.commit("setCustomer", customer);
-    api.saveCustomer(customer)
-      .then(() => this.fetchCustomersFromDB())
+    this.$stitchApi.saveCustomer(customer)
+      .then(() => this.$store.dispatch('fetchCustomersFromDB'))
       .catch(err => console.error(`Failed to save customer: ${err}`))
   }
 
@@ -248,64 +250,27 @@ export default class PageIndex extends Vue {
     }
   }
 
-  addSampleToDB() {
-    const samples = sampleData;
-    samples.forEach(customer => { customer.user_id = api.userId() });
-    api.clientCollection().insertMany(samples)
-      .then(result => {
-        // console.log("Successfully inserted", result);
-        this.fetchCustomersFromDB();
-      })
-      .catch(err => console.error(`Failed to insert documents: ${err}`))
-    ;
-  }
-
-  fetchCustomersFromDB() {
-    this.loading = true;
-    api.getAllCustomers()
-      .then(result => {
-        // console.log("Success:", result);
-        this.customers = result;
-        this.loading = false;
-      })
-      .catch(err => {
-        console.error(`Failed: ${err}`);
-        this.loading = false;
-      })
-    ;
-  }
-
   selectCustomer(customer: any) {
     // console.log(customer);
     const current = this.selectedCustomer;
     if (current)
-      api.saveCustomer(current)
+      this.$stitchApi.saveCustomer(current)
         .catch(err => console.error(`Save current customer failed with error: ${err}`));
     this.loadCustomerFromDB(customer._id);
   }
 
   loadCustomerFromDB(id: string) {
-    this.loading = true;
-    api.getCustomerById(id)
+    this.$store.commit('isLoadingCustomer', true);
+    this.$stitchApi.getCustomerById(id)
       .then(customer => {
         this.$store.commit("setCustomer", customer);
-        this.loading = false;
+        this.$store.commit('isLoadingCustomer', false);
       })
       .catch(err => {
         console.error(`Failed: ${err}`);
-        this.loading = false;
+        this.$store.commit('isLoadingCustomer', false);
       })
     ;
-  }
-
-  clearDB() {
-    api.deleteAllCustomers()
-      .then(result => {
-        console.log(`Deleted ${result.deletedCount} item(s).`);
-        this.fetchCustomersFromDB();
-        this.$store.commit("setCustomer", null);
-      })
-      .catch(err => console.error(`Delete failed with error: ${err}`))
   }
 
 }

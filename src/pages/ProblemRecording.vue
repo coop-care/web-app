@@ -97,7 +97,6 @@ import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import Intervention from "components/Intervention.vue";
-import api from "../helper/api";
 
 @Component({
   components: {
@@ -131,7 +130,7 @@ export default class ProblemRecording extends Vue {
 
   saveProblem() {
     this.$store.commit('saveNewProblemRecord', this.$route.params);
-    api.saveCustomer(this.$store.state.selectedCustomer);
+    this.$stitchApi.saveCustomer(this.$store.state.selectedCustomer);
   }
 }
 </script>

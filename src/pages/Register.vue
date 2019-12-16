@@ -62,7 +62,7 @@ export default class PageLogin extends Vue {
   get isSuccess() { return this.state === State.Success }
 
   doRegister() {
-    const epclient = this.$stitch.auth
+    const epclient = this.$stitchApi.stitch.auth
       .getProviderClient(UserPasswordAuthProviderClient.factory);
     epclient.registerWithEmail(this.email, this.password)
       .then(() => this.state = State.Success)

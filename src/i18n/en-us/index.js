@@ -61,5 +61,10 @@ export default {
     "Customer Requests for Health Promotion",
   potentialRiskFactorsTitle: "Potential Risk Factors",
   actualSignsAndSymptomsTitle: "Actual Signs and Symptoms",
-  error404: "Sorry, nothing here..."
+  error404: "Sorry, nothing here...",
+  notRegistered: "Not registered? Create an account",
+  email: "E-mail",
+  password: "Password",
+  login: "Login",
+  welcome: "Welcome",
 };

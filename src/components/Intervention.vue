@@ -140,8 +140,8 @@ import TerminologyData, {
 } from "../helper/terminology";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { QInput } from "quasar";
-import * as Store from "../store";
 import { Dictionary } from "vuex";
+import * as Core from "../helper/coreTypes";
 
 @Component({
   components: {
@@ -164,7 +164,7 @@ export default class Intervention extends Vue {
         return values.includes(key);
       }
     );
-    let addedInterventions: Store.Intervention[] = values
+    let addedInterventions: Core.Intervention[] = values
       .map(value => value.split("."))
       .filter(codes => {
         return !existingInterventions.find(
@@ -254,12 +254,12 @@ export default class Intervention extends Vue {
     return this.$store.getters.getProblemRecordById(this.$route.params);
   }
   get unsavedInterventions() {
-    let interventions: Store.Intervention[] =
+    let interventions: Core.Intervention[] =
       (this.record || {}).interventions || [];
     return interventions.filter(intervention => !intervention.startedAt);
   }
   get savedInterventions() {
-    let interventions: Store.Intervention[] =
+    let interventions: Core.Intervention[] =
       (this.record || {}).interventions || [];
     return interventions.filter(intervention => intervention.startedAt);
   }

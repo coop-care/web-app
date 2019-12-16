@@ -62,5 +62,10 @@ export default {
     "Kundenwünsche zur Gesundheitsvorsorge",
   potentialRiskFactorsTitle: "Potentielle Risikofaktoren",
   actualSignsAndSymptomsTitle: "Tatsächliche Anzeichen und Symptome",
-  error404: "Sorry, hier gibt es nichts..."
+  error404: "Sorry, hier gibt es nichts...",
+  notRegistered: "Nicht registriert? Erstelle ein Konto",
+  email: "E-Mail",
+  password: "Passwort",
+  login: "Einloggen",
+  welcome: "Willkommen",
 };

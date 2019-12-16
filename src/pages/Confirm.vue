@@ -45,7 +45,7 @@ export default class PageConfirm extends Vue {
     // console.log(this.$route);
     const token = String(this.$route.query.token);
     const tokenId = String(this.$route.query.tokenId);
-    const epclient = this.$stitch.auth
+    const epclient = this.$stitchApi.stitch.auth
       .getProviderClient(UserPasswordAuthProviderClient.factory);
     epclient.confirmUser(token, tokenId)
       .then(() => this.state = State.Confirmed)

@@ -1,4 +1,4 @@
-import * as Store from "../store/index";
+import * as Core from "../helper/coreTypes";
 
 export interface HasTitle {
   title: string;
@@ -88,9 +88,9 @@ export default {
   },
 
   mergeProblemRecordsAndTerminology: function(
-    problemRecords: Store.ProblemRecord[],
+    problemRecords: Core.ProblemRecord[],
     terminology: Terminology
-  ): Store.ProblemRecord[] {
+  ): Core.ProblemRecord[] {
     let problemsTerminology = this.flattenedProblems(terminology);
     let modifiersTerminology =
       terminology.problemClassificationScheme.modifiers;

@@ -1,4 +1,4 @@
-import * as Store from "../store/index";
+import * as Core from "../helper/coreTypes";
 
 export default [
   {
@@ -7,7 +7,7 @@ export default [
     problems: [
       {
         id: "6rrgzeui",
-        assessment: [] as Store.Note[],
+        assessment: [] as Core.Note[],
         problem: {
           id: "12",
           scope: 0,
@@ -232,7 +232,7 @@ export default [
       },
       {
         id: "32v3yacn",
-        assessment: [] as Store.Note[],
+        assessment: [] as Core.Note[],
         problem: {
           id: "38",
           scope: 0,
@@ -433,7 +433,7 @@ export default [
       },
       {
         id: "26nppfzo",
-        assessment: [] as Store.Note[],
+        assessment: [] as Core.Note[],
         problem: {
           id: "42",
           scope: 0,
@@ -664,7 +664,7 @@ export default [
     problems: [
       {
         id: "l8192zj5",
-        assessment: [] as Store.Note[],
+        assessment: [] as Core.Note[],
         problem: {
           id: "07",
           scope: 0,
@@ -684,7 +684,7 @@ export default [
       },
       {
         id: "f6mzr2gz",
-        assessment: [] as Store.Note[],
+        assessment: [] as Core.Note[],
         problem: {
           id: "23",
           scope: 0,
@@ -704,7 +704,7 @@ export default [
       },
       {
         id: "gq5eclb3",
-        assessment: [] as Store.Note[],
+        assessment: [] as Core.Note[],
         problem: {
           id: "29",
           scope: 0,
@@ -881,7 +881,7 @@ export default [
       },
       {
         id: "cecvl9zs",
-        assessment: [] as Store.Note[],
+        assessment: [] as Core.Note[],
         problem: {
           id: "42",
           scope: 0,
@@ -1016,4 +1016,4 @@ export default [
     ],
     createdAt: new Date("2019-11-25T18:12:32.060Z")
   }
-] as Store.Customer[];
+] as Core.Customer[];

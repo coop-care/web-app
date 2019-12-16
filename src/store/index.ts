@@ -6,78 +6,16 @@ import TerminologyData, {
   HasTitleCode
 } from "../helper/terminology";
 import { Download } from "../helper/download";
-// import sampleData from "../data/sample1";
+import sampleData from "../data/sample1";
 import ApexCharts from "apexcharts";
 import { colors } from "quasar";
 import { format } from "timeago.js";
+import { Customer, ProblemRecord, Outcome, CoreCustomer } from "../helper/coreTypes";
+import { stitchApi } from "../boot/stitch";
 
 const { getBrand, setBrand } = colors;
 
 Vue.use(Vuex);
-
-export interface Term {
-  id: string;
-  title?: string;
-  description?: string;
-}
-export interface Customer {
-  _id?: string;
-  user_id?: string;
-  name: string;
-  problems: ProblemRecord[];
-  createdAt: Date;
-  leftAt?: Date;
-}
-export interface ProblemRecord {
-  id: string;
-  assessment: Note[];
-  problem: Problem;
-  interventions: Intervention[];
-  outcomes: Outcome[];
-  createdAt: Date | undefined;
-  resolvedAt: Date | undefined;
-  ratingIntervalInDays: number;
-}
-export interface Problem extends Term {
-  scope: number;
-  severity: number;
-  signsAndSymptoms: Term[];
-  details: string;
-  isHighPriority: boolean;
-  priorityDetails: string;
-  titles?: ProblemTextExtension;
-  descriptions?: ProblemTextExtension;
-}
-export interface ProblemTextExtension {
-  scope: string;
-  severity: string;
-  priorityKey: string;
-}
-export interface Intervention {
-  category: Term;
-  target: Term;
-  details: Note[];
-  startedAt: Date | undefined;
-  endedAt: Date | undefined;
-}
-export interface Outcome {
-  createdAt: Date | undefined;
-  knowledge: Rating;
-  behaviour: Rating;
-  status: Rating;
-  personRatedInPlaceOfOwner: string;
-}
-export interface Rating {
-  observation: number;
-  expectation: number;
-  comment: string;
-  title?: string;
-  description?: string;
-}
-export interface Note {
-  text: string;
-  createdAt: Date;
-}
 
 /*
  * If not building with SSR mode, you can
@@ -85,13 +23,17 @@ export interface Note {
  */
 
 const selcust: Customer | null = null;
+const custs: CoreCustomer[] = [];
 
 export default function(/* { ssrContext } */) {
   const Store = new Vuex.Store({
     state: {
       // customers: sampleData,
       // selectedCustomerId: "",
+      customers: custs,
       selectedCustomer: selcust,
+      isLoadingCustomer: false,
+      isLoadingCustomerList: false,
     },
     getters: {
       getCustomer: state => (payload: any): Customer | undefined => {
@@ -507,7 +449,52 @@ export default function(/* { ssrContext } */) {
         problemRecord.interventions.forEach(intervention => {
           intervention.startedAt = now;
         });
+      },
+      customers(state, customers: CoreCustomer[]) {
+        state.customers = customers;
+      },
+      isLoadingCustomer(state, isLoading: boolean) {
+        state.isLoadingCustomer = isLoading;
+      },
+      isLoadingCustomerList(state, isLoading: boolean) {
+        state.isLoadingCustomerList = isLoading;
       }
+    },
+    actions: {
+      fetchCustomersFromDB({ commit }) {
+        commit('isLoadingCustomerList', true);
+        stitchApi.getAllCustomers()
+          .then(customers => {
+            // console.log("Success:", result);
+            commit('customers', customers);
+            commit('isLoadingCustomerList', false);
+          })
+          .catch(err => {
+            console.error(`Failed: ${err}`);
+            commit('isLoadingCustomerList', false);
+          })
+        ;
+      },
+      addSamplesToDB({ dispatch }) {
+        const samples = sampleData;
+        samples.forEach(customer => { customer.user_id = stitchApi.userId() });
+        stitchApi.customers.insertMany(samples)
+          .then(result => {
+            // console.log("Successfully inserted", result);
+            dispatch('fetchCustomersFromDB');
+          })
+          .catch(err => console.error(`Failed to insert documents: ${err}`))
+        ;
+      },
+      clearDB({ commit, dispatch }) {
+        stitchApi.deleteAllCustomers()
+          .then(result => {
+            console.log(`Deleted ${result.deletedCount} item(s).`);
+            dispatch('fetchCustomersFromDB');
+            commit("setCustomer", null);
+          })
+          .catch(err => console.error(`Delete failed with error: ${err}`))
+      }    
     },
 
     // enable strict mode (adds overhead!)

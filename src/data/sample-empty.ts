@@ -1,3 +1,3 @@
-import * as Store from "../store/index";
+import * as Core from "../helper/coreTypes";
 
-export default [] as Store.Customer[];
+export default [] as Core.Customer[];

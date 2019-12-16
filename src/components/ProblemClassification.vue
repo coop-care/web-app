@@ -218,7 +218,7 @@ import TerminologyData, {
 } from "../helper/terminology";
 import { QInput } from "quasar";
 import ProblemSummary from "../components/ProblemSummary.vue";
-import * as Store from "../store";
+import * as Core from "../helper/coreTypes";
 
 @Component({
   components: {
@@ -313,7 +313,7 @@ export default class ProblemClassification extends Vue {
     return this.$store.getters.getProblemRecordById({
       terminology: this.terminology,
       ...this.$route.params
-    }) as Store.ProblemRecord;
+    }) as Core.ProblemRecord;
   }
 
   updateProblemRecord(path: string, value: any) {

@@ -5,24 +5,24 @@
         <p class="text-red q-my-md">Error: {{ errorMsg }}</p>
       </div>
       <div class="row">
-        <h5 class="text-h5 q-my-md">Welcome to Open Omaha</h5>
+        <h5 class="text-h5 q-my-md">{{ $t('welcome') }}!</h5>
       </div>
       <div class="row">
         <q-card square bordered class="bg-grey-4 q-pa-lg shadow-1">
           <q-card-section>
             <q-form class="q-gutter-md">
-              <q-input square filled clearable v-model="email" type="email" label="email" />
-              <q-input square filled clearable v-model="password" type="password" label="password" />
+              <q-input square filled clearable v-model="email" type="email" :label="$t('email')" />
+              <q-input square filled clearable v-model="password" type="password" :label="$t('password')" />
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
             <q-btn unelevated color="primary" size="lg" class="full-width"
-              label="Login" @click="doLogin"
+              :label="$t('login')" @click="doLogin"
             />
           </q-card-actions>
           <q-card-section class="text-center q-pa-none">
             <router-link :to="{ name: 'register' }">
-              Not reigistered? Created an Account
+              {{ $t('notRegistered') }}
             </router-link>
           </q-card-section>
         </q-card>
@@ -54,7 +54,7 @@ export default class PageLogin extends Vue {
   doLogin() {
     // console.log('logging in...', this.email, this.password);
     const credential = new UserPasswordCredential(this.email, this.password);
-    this.$stitch.auth
+    this.$stitchApi.stitch.auth
       .loginWithCredential(credential)
       .then((user) => {
         // console.log(`Logged in as user with id: ${user.id}`);
