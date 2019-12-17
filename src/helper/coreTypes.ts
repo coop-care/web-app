@@ -1,17 +1,23 @@
+import { ObjectID } from 'bson';
+
+export interface CoreCustomer {
+    _id: ObjectID;
+    name: string;
+}
+export interface UnsavedCustomer {
+    user_id: string;
+    name: string;
+    problems: ProblemRecord[];
+    createdAt: Date;
+    leftAt?: Date;
+}
+export interface Customer extends UnsavedCustomer {
+    _id: ObjectID;
+}
 export interface Term {
     id: string;
     title?: string;
     description?: string;
-}
-export interface CoreCustomer {
-    _id?: string;
-    name: string;
-}
-export interface Customer extends CoreCustomer {
-    user_id?: string;
-    problems: ProblemRecord[];
-    createdAt: Date;
-    leftAt?: Date;
 }
 export interface ProblemRecord {
     id: string;

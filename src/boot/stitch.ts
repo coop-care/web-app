@@ -5,7 +5,8 @@ import {
     RemoteMongoClient,
     RemoteMongoCollection,
 } from 'mongodb-stitch-browser-sdk';
-import { Customer } from '../helper/coreTypes';
+import { CoreCustomer, UnsavedCustomer, Customer } from '../helper/coreTypes';
+import { ObjectID } from 'bson';
 
 declare module 'vue/types/vue' {
     // 3. Declare augmentation for Vue
@@ -29,16 +30,17 @@ class StitchApi {
         }
         return "";
     }
-    createCustomer(customer: Customer) {
-        return this.customers.insertOne(customer);
+    createCustomer(customer: UnsavedCustomer) {
+        return this.customers.insertOne(customer as Customer);
     }
     deleteAllCustomers() {
         return this.customers.deleteMany({ });
     }
-    getAllCustomers() {
+    getAllCustomers(): Promise<CoreCustomer[]> {
         return this.customers.find({ }, { projection: { name: 1 } }).toArray();
     }
-    getCustomerById(id: string) {
+    getCustomerById(id: ObjectID) {
+        // console.log("getCustomerById:", id);
         return this.customers.find({ _id: id }, { }).first();
     }
     saveCustomer(customer: Customer) {

@@ -121,12 +121,14 @@ import ContentEditable from "../components/ContentEditable.vue";
 import NewCustomer from "../components/NewCustomer.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
-import * as Store from "../store";
+import { store } from "../store";
 import {
   Stitch,
   RemoteMongoClient,
 } from "mongodb-stitch-browser-sdk";
-import { ProblemRecord } from "../helper/coreTypes";
+import { CoreCustomer, ProblemRecord } from "../helper/coreTypes";
+import { ObjectID } from 'bson';
+
 
 @Component({
   components: {
@@ -148,13 +150,13 @@ export default class PageIndex extends Vue {
   // customers: any[] = [];
 
   get loading() {
-    return this.$store.state.isLoadingCustomerList
-      || this.$store.state.isLoadingCustomer;
+    return store.state.isLoadingCustomerList
+      || store.state.isLoadingCustomer;
   }
-  get customers() { return this.$store.state.customers; }
+  get customers() { return store.state.customers; }
   get selectedCustomerId() {
-    if (this.$store.state.selectedCustomer) {
-      return this.$store.state.selectedCustomer._id;
+    if (store.state.selectedCustomer) {
+      return store.state.selectedCustomer._id;
     }
     return "";
   }
@@ -164,13 +166,15 @@ export default class PageIndex extends Vue {
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
   }
   get selectedCustomer() {
-    return this.$store.getters.getCustomer({
+    return store.getters.getCustomer({
       customerId: this.selectedCustomerId,
       terminology: this.terminology
     });
   }
   get selectedCustomerProblems() {
-    return this.selectedCustomer.problems.concat().sort(
+    const customer = this.selectedCustomer;
+    const problems = customer ? customer.problems : [];
+    return problems.concat().sort(
       (first: ProblemRecord, second: ProblemRecord) =>
         // sort order: draft first, then high priority followed by low priority
         //@ts-ignore
@@ -189,13 +193,13 @@ export default class PageIndex extends Vue {
       "toggleCustomerDrawer",
       () => (this.customerDrawer = !this.customerDrawer)
     );
-    this.$store.dispatch('fetchCustomersFromDB');
+    store.dispatch.fetchCustomersFromDB();
   }
 
-  isSelected(customer: any) {
-    if (this.selectedCustomer) {
-      if (this.selectedCustomer._id.equals(customer._id)) return true;
-    }
+  isSelected(customer: CoreCustomer) {
+    const id = this.selectedCustomer && this.selectedCustomer._id;
+    // if (id && id === customer._id) return true; 
+    if (id && customer._id && id.equals(customer._id)) return true;
     return false;
   }
 
@@ -207,39 +211,49 @@ export default class PageIndex extends Vue {
       createdAt: new Date()
     };
     this.$stitchApi.createCustomer(customer)
-      .then(console.log)
-      .catch(console.log);
-
-    this.$store.dispatch('fetchCustomersFromDB');
-    this.$store.commit("setCustomer", customer);
+      .then((res) => {
+        store.dispatch.fetchCustomersFromDB()
+          .then(() => {
+            this.selectCustomerById(res.insertedId)
+          })
+      })
+      .catch(console.log)
+    ;
+    // store.commit.setCustomer(customer);
     this.addingCustomer = false;
   }
 
   editCustomer(payload: any) {
-    let customer = this.$store.getters.getCustomer(payload);
+    let customer = store.getters.getCustomer(payload);
     console.log(customer);
     if (!customer) {
       return;
     }
     for (let [key, value] of Object.entries(payload)) {
       if (["name"].includes(key)) {
-        customer[key] = value;
+        (customer as any)[key] = value;
       }
     }
-    this.$store.commit("setCustomer", customer);
+    store.commit.setCustomer(customer);
     this.$stitchApi.saveCustomer(customer)
-      .then(() => this.$store.dispatch('fetchCustomersFromDB'))
+      .then(() => store.dispatch.fetchCustomersFromDB())
       .catch(err => console.error(`Failed to save customer: ${err}`))
+    ;
   }
 
   addProblem() {
+    const customer = this.selectedCustomer;
+    if (!customer) {
+      console.error("no customer selected: this should not happen.");
+      return;
+    }
     let params = {
       customerId: this.selectedCustomerId as string,
       problemId: ""
     };
-    this.$store.commit("createProblemRecord", params);
-    params.problemId = this.selectedCustomer.problems[
-      this.selectedCustomer.problems.length - 1
+    store.commit.createProblemRecord(params);
+    params.problemId = customer.problems[
+      customer.problems.length - 1
     ].id;
     this.$router.push({ name: "problem", params: params });
   }
@@ -250,25 +264,34 @@ export default class PageIndex extends Vue {
     }
   }
 
-  selectCustomer(customer: any) {
-    // console.log(customer);
-    const current = this.selectedCustomer;
-    if (current)
-      this.$stitchApi.saveCustomer(current)
-        .catch(err => console.error(`Save current customer failed with error: ${err}`));
-    this.loadCustomerFromDB(customer._id);
+  selectCustomer(customer: CoreCustomer) {
+    this.selectCustomerById(customer._id)
   }
 
-  loadCustomerFromDB(id: string) {
-    this.$store.commit('isLoadingCustomer', true);
+  selectCustomerById(id: ObjectID) {
+    // console.log("selectCustomerById:", id);
+    const current = this.selectedCustomer;
+    if (current) {
+      this.$stitchApi.saveCustomer(current)
+        .then(() => this.loadCustomerFromDB(id))
+        .catch(err => console.error(`Save current customer failed with error: ${err}`))
+      ;
+    } else {
+      this.loadCustomerFromDB(id);
+    }
+  }
+
+  loadCustomerFromDB(id: ObjectID) {
+    // console.log("loadCustomerFromDB:", id);
+    store.commit.isLoadingCustomer(true);
     this.$stitchApi.getCustomerById(id)
       .then(customer => {
-        this.$store.commit("setCustomer", customer);
-        this.$store.commit('isLoadingCustomer', false);
+        store.commit.setCustomer(customer);
+        store.commit.isLoadingCustomer(false);
       })
       .catch(err => {
         console.error(`Failed: ${err}`);
-        this.$store.commit('isLoadingCustomer', false);
+        store.commit.isLoadingCustomer(false);
       })
     ;
   }

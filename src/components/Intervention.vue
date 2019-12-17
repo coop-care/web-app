@@ -140,7 +140,6 @@ import TerminologyData, {
 } from "../helper/terminology";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { QInput } from "quasar";
-import { Dictionary } from "vuex";
 import * as Core from "../helper/coreTypes";
 
 @Component({
@@ -202,7 +201,7 @@ export default class Intervention extends Vue {
     this.updateProblemRecord("interventions", interventions);
   }
   get details() {
-    let map: Dictionary<string> = {};
+    let map: any = {};
     this.unsavedInterventions.forEach(intervention => {
       let key = intervention.category.id + "." + intervention.target.id;
       let text = (intervention.details[0] || {}).text || "";
