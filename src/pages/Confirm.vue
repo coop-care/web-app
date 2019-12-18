@@ -3,20 +3,20 @@
     <div class="column">
       <div v-if="isPending" class="row">
         <h5 class="text-h5 q-my-md">
-          Confirmation in progress...
+          {{ $t('confirmationInProgress') }}
         </h5>
       </div>
       <div v-else-if="isConfirmed" class="row">
         <h5 class="text-h5 q-my-md">
           Your email has been confirmed.
           <router-link :to="{ name: 'login' }">
-              Go to login
-            </router-link>
+            {{ $t('goToLogin') }}
+          </router-link>
         </h5>
       </div>
       <div v-else class="row">
         <h5 class="text-h5 q-my-md">
-          An error has occured.<br>
+          An error has occured:<br>
           {{ errorMsg }}
         </h5>
       </div>

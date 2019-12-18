@@ -22,7 +22,7 @@
           </q-card-actions>
           <q-card-section class="text-center q-pa-none">
             <router-link :to="{ name: 'register' }">
-              {{ $t('notRegistered') }}
+              {{ $t('notRegistered') }} {{ $t('createAccount') }}
             </router-link>
           </q-card-section>
         </q-card>

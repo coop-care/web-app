@@ -2,19 +2,19 @@
   <q-page class="window-height window-width row justify-center items-center">
     <div v-if="isForm" class="column">
       <div class="row">
-        <h5 class="text-h5 q-my-md">Create an account</h5>
+        <h5 class="text-h5 q-my-md">{{ $t('createAccount') }}</h5>
       </div>
       <div class="row">
         <q-card square bordered class="bg-grey-4 q-pa-lg shadow-1">
           <q-card-section>
             <q-form class="q-gutter-md">
-              <q-input square filled clearable v-model="email" type="email" label="email" />
-              <q-input square filled clearable v-model="password" type="password" label="password" />
+              <q-input square filled clearable v-model="email" type="email" :label="$t('email')" />
+              <q-input square filled clearable v-model="password" type="password" :label="$t('password')" />
             </q-form>
           </q-card-section>
           <q-card-actions class="q-px-md">
             <q-btn unelevated color="primary" size="lg" class="full-width"
-              label="Create" @click="doRegister"
+              :label="$t('create')" @click="doRegister"
             />
           </q-card-actions>
         </q-card>
@@ -23,12 +23,12 @@
     <div v-else class="column">
       <div v-if="isSuccess" class="row">
         <h5 class="text-h5 q-my-md">
-          Successfully sent confirmation mail. Check your inbox!
+          {{ $t('confirmationMessage') }}
         </h5>
       </div>
       <div v-else class="row">
         <h5 class="text-h5 q-my-md">
-          An error has occured.<br>
+          An error has occured:<br>
           {{ errorMsg }}
         </h5>
       </div>
