@@ -247,6 +247,11 @@ export default createGetters<StoreState>()({
             };
 
             let lastObservation = series[0].data[series[0].data.length - 1];
+
+            if (lastObservation.y == 0) {
+                return;
+            }
+
             let lastExpectation =
                 ((series[1] || {}).data || [])[series[1].data.length - 1] || {};
             let lastObservationTitle =

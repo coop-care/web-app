@@ -131,6 +131,7 @@
             class="col-12 col-sm-4"
             style=""
             v-for="(outcome, index) in outcomesForChart"
+            v-if="outcome"
             v-bind:key="index"
             ref="chartRow"
           >
