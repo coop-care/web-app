@@ -187,7 +187,6 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import VueApexCharts from "vue-apexcharts";
 import { Terminology } from "../helper/terminology";
-import * as Store from "../store/index";
 
 Vue.use(VueApexCharts);
 
@@ -276,11 +275,11 @@ export default class ProblemSummary extends Vue {
     // sometimes chart instances are not removed from Apex store, especially after intensive window resizing,
     // which causes duplicate entries and therefore errors when the charts are drawn again for the same components
     // @ts-ignore
-    let Apex = window.Apex;
-    let params = this.$props.params;
-    let group = ["summary", params.customerId, params.problemId].join(".");
-    if (!Apex._chartInstances) return;  // I get an error that this is undefined
-    let zombieChartIndices = Apex._chartInstances
+    const Apex = window.Apex;
+    const params = this.$props.params;
+    const group = ["summary", params.customerId, params.problemId].join(".");
+    if (!Apex._chartInstances) return; // I get an error that this is undefined
+    const zombieChartIndices = Apex._chartInstances
       .map((chart: any, index: number) => {
         if (chart.group == group) {
           return index;

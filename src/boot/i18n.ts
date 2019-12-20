@@ -6,9 +6,33 @@ import Quasar from "quasar";
 
 Vue.use(VueI18n);
 
+function matchLocale(
+  locale: string,
+  availableLocales: string[],
+  fallbackLocale: string
+) {
+  let resultingLocale = locale;
+
+  if (!availableLocales.includes(resultingLocale)) {
+    let shortLocale = locale.split("-")[0];
+    resultingLocale = shortLocale;
+
+    if (!availableLocales.includes(resultingLocale)) {
+      let shortToCompleteLocaleMap: { [key: string]: string } = {};
+
+      resultingLocale =
+        availableLocales.find(locale => {
+          return shortLocale == locale.split("-")[0];
+        }) || fallbackLocale;
+    }
+  }
+
+  return resultingLocale;
+}
+
 const i18n = new VueI18n({
   // @ts-ignore
-  locale: Quasar.lang.getLocale(),
+  locale: matchLocale(Quasar.lang.getLocale(), Object.keys(messages), "en-us"),
   fallbackLocale: "en-us",
   messages
 });

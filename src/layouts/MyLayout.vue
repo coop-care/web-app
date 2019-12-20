@@ -34,29 +34,43 @@
           />
         </q-toolbar-title>
 
-
-        <q-btn-dropdown v-if="isLoggedIn()"
+        <q-btn-dropdown
+          v-if="isLoggedIn()"
           :label="username()"
           no-caps
           flat
           dense
         >
           <q-list>
-            <q-item clickable @click="logout">
+            <q-item
+              clickable
+              @click="logout"
+            >
               <q-item-label>Logout</q-item-label>
             </q-item>
             <q-separator />
-            <q-item clickable @click="addSamplesToDB">
+            <q-item
+              clickable
+              @click="addSamplesToDB"
+            >
               <q-item-label>Insert samples in DB</q-item-label>
             </q-item>
-            <q-item clickable @click="clearDB">
+            <q-item
+              clickable
+              @click="clearDB"
+            >
               <q-item-label>Clear DB</q-item-label>
             </q-item>
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator v-if="isLoggedIn()"
-          vertical inset spaced dark />
+        <q-separator
+          v-if="isLoggedIn()"
+          vertical
+          inset
+          spaced
+          dark
+        />
 
         <q-btn-dropdown
           :label="$root.$i18n.locale.split('-')[0]"
@@ -80,7 +94,12 @@
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator vertical inset spaced dark />
+        <q-separator
+          vertical
+          inset
+          spaced
+          dark
+        />
 
         <q-btn
           size="md"
@@ -120,7 +139,9 @@ export default class MyLayout extends Vue {
     );
   }
 
-  isLoggedIn() { return this.$stitchApi.stitch.auth.isLoggedIn; }
+  isLoggedIn() {
+    return this.$stitchApi.stitch.auth.isLoggedIn;
+  }
 
   username() {
     let name = undefined;
@@ -131,24 +152,20 @@ export default class MyLayout extends Vue {
     return name;
   }
 
-  created() {
-    // console.log(this.$root.$i18n.availableLocales);
-    this.$root.$i18n.locale = "en-us";
-  }
-
   logout() {
     // console.log('logging out...');
     this.$store.commit("setCustomer", null);
-    this.$stitchApi.stitch.auth.logout()
-      .then(() => this.$router.push({ name: 'login' }));
+    this.$stitchApi.stitch.auth
+      .logout()
+      .then(() => this.$router.push({ name: "login" }));
   }
 
   addSamplesToDB() {
-    this.$store.dispatch('addSamplesToDB');
+    this.$store.dispatch("addSamplesToDB");
   }
 
   clearDB() {
-    this.$store.dispatch('clearDB');
+    this.$store.dispatch("clearDB");
   }
 }
 </script>
