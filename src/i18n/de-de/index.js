@@ -68,9 +68,16 @@ export default {
   create: "Erstellen",
   email: "E-Mail",
   password: "Passwort",
-  login: "Einloggen",
+  login: "Anmelden",
   welcome: "Willkommen",
-  confirmationMessage: "Bestätigungsmail wurde versandt. Überprüfen Sie Ihren Posteingang und klicken Sie den Bestätigungslink!",
+  confirmationMessage:
+    "Die Bestätigungsmail wurde versandt. Überprüfe bitte Deinen Posteingang und klick auf den Bestätigungslink!",
   goToLogin: "Zum Einloggen",
   confirmationInProgress: "Bestätigung in Arbeit...",
+  loading: "Lädt…",
+  accountWelcomeMessage: "Hallo! Du bist angemeldet als:",
+  logout: "Abmelden",
+  databaseTestSettings: "Datenbank-Test-Einstellungen",
+  databaseInsertSamples: "Beispiel-Kunden anlegen",
+  databaseClearAll: "Alle Kunden löschen"
 };

@@ -72,4 +72,10 @@ export default {
   confirmationMessage: "Successfully sent confirmation mail. Check your inbox!",
   goToLogin: "Go to login",
   confirmationInProgress: "Confirmation in progress...",
+  loading: "Loading…",
+  accountWelcomeMessage: "Hello! You are logged in as:",
+  logout: "Logout",
+  databaseTestSettings: "Database Test Settings",
+  databaseInsertSamples: "Insert sample customers",
+  databaseClearAll: "Delete all customers"
 };

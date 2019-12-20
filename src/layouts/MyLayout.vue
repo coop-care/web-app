@@ -12,7 +12,7 @@
           @click="$root.$emit('toggleCustomerDrawer')"
         />
         <q-btn
-          v-if="$router.currentRoute.name != 'index'"
+          v-if="!['index', 'login'].includes($router.currentRoute.name)"
           size="lg"
           dense
           no-caps
@@ -31,46 +31,42 @@
             :ripple="false"
             to="/"
             v-if="$q.screen.gt.xs"
+            class="hidden"
           />
         </q-toolbar-title>
 
         <q-btn-dropdown
           v-if="isLoggedIn()"
-          :label="username()"
+          icon="account_circle"
           no-caps
           flat
           dense
+          class="hide-arrow"
         >
           <q-list>
-            <q-item
-              clickable
-              @click="logout"
+            <q-item-label header
+              ><div>{{ $t("accountWelcomeMessage") }}</div>
+              <div class="q-mt-xs text-bold">
+                {{ username() }}
+              </div></q-item-label
             >
-              <q-item-label>Logout</q-item-label>
+            <q-item clickable @click="logout">
+              <q-item-section>{{ $t("logout") }}</q-item-section>
             </q-item>
+
             <q-separator />
-            <q-item
-              clickable
-              @click="addSamplesToDB"
-            >
-              <q-item-label>Insert samples in DB</q-item-label>
+
+            <q-item-label header>{{ $t("databaseTestSettings") }}</q-item-label>
+            <q-item clickable @click="addSamplesToDB">
+              <q-item-section>{{ $t("databaseInsertSamples") }}</q-item-section>
             </q-item>
-            <q-item
-              clickable
-              @click="clearDB"
-            >
-              <q-item-label>Clear DB</q-item-label>
+            <q-item clickable @click="clearDB">
+              <q-item-section>{{ $t("databaseClearAll") }}</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator
-          v-if="isLoggedIn()"
-          vertical
-          inset
-          spaced
-          dark
-        />
+        <q-separator v-if="isLoggedIn()" vertical inset spaced dark />
 
         <q-btn-dropdown
           :label="$root.$i18n.locale.split('-')[0]"
@@ -78,6 +74,7 @@
           dense
           auto-close
           flat
+          class="hide-arrow"
         >
           <q-list>
             <q-item
@@ -85,7 +82,10 @@
               v-for="(locale, index) in $root.$i18n.availableLocales"
               :key="index"
               :active="$root.$i18n.locale === locale"
-              @click="$root.$i18n.locale = locale; $root.$emit('didChangeLocale', locale);"
+              @click="
+                $root.$i18n.locale = locale;
+                $root.$emit('didChangeLocale', locale);
+              "
             >
               <q-item-section>
                 <q-item-label>{{ $t(locale) }}</q-item-label>
@@ -94,12 +94,7 @@
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator
-          vertical
-          inset
-          spaced
-          dark
-        />
+        <q-separator vertical inset spaced dark />
 
         <q-btn
           size="md"
@@ -120,6 +115,12 @@
     </q-page-container>
   </q-layout>
 </template>
+
+<style lang="sass">
+.q-btn-dropdown.hide-arrow
+  .q-btn-dropdown__arrow
+    display: none
+</style>
 
 <script lang="ts">
 import Vue from "vue";

@@ -31,8 +31,8 @@ function matchLocale(
 }
 
 const i18n = new VueI18n({
-    // @ts-ignore
     locale: matchLocale(
+        // @ts-ignore
         Quasar.lang.getLocale(),
         Object.keys(messages),
         "en-us"

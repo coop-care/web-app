@@ -45,7 +45,7 @@
       class="customer-overview q-pa-xl"
       v-if="loading"
     >
-      <p>loading...</p>
+      <p>{{ $t("loading") }}</p>
     </div>
     <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
