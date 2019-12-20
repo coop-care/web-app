@@ -16,7 +16,7 @@
                 "code": "01"
               },
               {
-                "title": "nicht versicherte medizinische Kosten",
+                "title": "nicht versicherte medizinische Ausgaben",
                 "code": "02"
               },
               {
@@ -24,11 +24,11 @@
                 "code": "03"
               },
               {
-                "title": "in der Lage nur das Nötigste zu kaufen.",
+                "title": "in der Lage nur das Lebensnotwendige zu kaufen",
                 "code": "04"
               },
               {
-                "title": "Schwierigkeiten beim Kauf von Notwendigkeiten",
+                "title": "Schwierigkeiten das Lebensnotwendige zu kaufen",
                 "code": "05"
               },
               {
@@ -39,23 +39,23 @@
             "code": "01"
           },
           {
-            "title": "Sanitäranlagen",
-            "description": "Sauberkeit der Umwelt und Vorsichtsmaßnahmen gegen Infektionen und Krankheiten.",
+            "title": "Hygiene",
+            "description": "Sauberes Umfeld und Vorsichtsmaßnahmen gegen Infektionen und Krankheiten.",
             "signsAndSymptoms": [
               {
                 "title": "verschmutzter Wohnbereich",
                 "code": "01"
               },
               {
-                "title": "unzureichende Lagerung und Entsorgung von Lebensmitteln",
+                "title": "unzureichende Lagerung oder Entsorgung von Lebensmitteln",
                 "code": "02"
               },
               {
-                "title": "Insekten oder Nager",
+                "title": "Insekten oder Nagetiere",
                 "code": "03"
               },
               {
-                "title": "übler Geruch",
+                "title": "unangenehmer Geruch",
                 "code": "04"
               },
               {
@@ -75,15 +75,15 @@
                 "code": "08"
               },
               {
-                "title": "infektiöse oder kontaminierende Stoffe",
+                "title": "infektiöse oder giftige Stoffe",
                 "code": "09"
               },
               {
-                "title": "Vorhandensein von Schimmel",
+                "title": "Schimmelbefall",
                 "code": "11"
               },
               {
-                "title": "übermäßige Haustiere",
+                "title": "übermäßig viele Haustiere",
                 "code": "12"
               },
               {
@@ -94,7 +94,7 @@
             "code": "02"
           },
           {
-            "title": "Wohnsitz",
+            "title": "Wohnung",
             "description": "Wohnbereich.",
             "signsAndSymptoms": [
               {
@@ -106,15 +106,15 @@
                 "code": "02"
               },
               {
-                "title": "steile oder unsichere Treppe",
+                "title": "steile oder unsichere Treppen",
                 "code": "03"
               },
               {
-                "title": "unzureichende oder verhinderte Ausstiege oder Eintritte",
+                "title": "unzureichende oder versperrte Ein- und Ausgänge",
                 "code": "04"
               },
               {
-                "title": "überladener Lebensraum",
+                "title": "vollgestopfter Wohnraum",
                 "code": "05"
               },
               {
@@ -122,7 +122,7 @@
                 "code": "06"
               },
               {
-                "title": "unsichere Matten oder Wurfteppiche",
+                "title": "unsichere Matten oder Teppichläufer",
                 "code": "07"
               },
               {
@@ -130,15 +130,15 @@
                 "code": "08"
               },
               {
-                "title": "Vorhandensein von bleihaltigen Farben",
+                "title": "Vorhandensein von bleihaltiger Farbe",
                 "code": "09"
               },
               {
-                "title": "unsichere Geräte oder Ausrüstung",
+                "title": "unsichere Geräte oder Einrichtung",
                 "code": "10"
               },
               {
-                "title": "unzureichender oder überbelegter Lebensraum",
+                "title": "unzureichender oder überbelegter Wohnraum",
                 "code": "11"
               },
               {
@@ -146,7 +146,7 @@
                 "code": "14"
               },
               {
-                "title": "strukturelle Barrieren",
+                "title": "bauliche Barrieren",
                 "code": "15"
               },
               {
@@ -161,15 +161,15 @@
             "code": "03"
           },
           {
-            "title": "Nachbarschaft oder Arbeitsschutz",
-            "description": "Freiheit von Krankheit, Verletzung oder Verlust in der Gemeinschaft des Ortes oder der Beschäftigung.",
+            "title": "Sichere Nachbarschaft und Arbeitsschutz",
+            "description": "Freiheit von Krankheit, Verletzung oder Schaden im Wohnquartier oder am Arbeitsplatz.",
             "signsAndSymptoms": [
               {
                 "title": "hohe Kriminalitätsrate",
                 "code": "01"
               },
               {
-                "title": "hoher Verschmutzungsgrad",
+                "title": "hohe Schadstoffbelastung",
                 "code": "02"
               },
               {
@@ -185,19 +185,19 @@
                 "code": "07"
               },
               {
-                "title": "Drohungen oder Berichte über Gewalt",
+                "title": "Bedrohungen oder Berichte von Gewalt",
                 "code": "08"
               },
               {
-                "title": "physische Gefahren",
+                "title": "physikalische Gefahren (Hitze, Kollisionen, Stürze, Lärm)",
                 "code": "04"
               },
               {
-                "title": "Gefahr durch Fahrzeuge oder Verkehr",
+                "title": "Gefährdung durch Verkehr oder Fahrzeuge",
                 "code": "09"
               },
               {
-                "title": "chemische Gefahren",
+                "title": "chemische Gefahren (Gifte, Ätzendes, leicht Entzündliches, Explosives)",
                 "code": "10"
               },
               {
@@ -216,22 +216,22 @@
       },
       {
         "title": "Psychosozialer Bereich",
-        "description": "Verhaltensmuster, Emotionen, Kommunikation, Beziehungen und Entwicklung.",
+        "description": "Verhaltensmuster, Gefühle, Kommunikation, Beziehungen und Entwicklung.",
         "problems": [
           {
             "title": "Kommunikation mit den kommunalen Einrichtungen",
-            "description": "Interaktion zwischen dem Einzelnen, der Familie oder Gemeinschaft und Sozialeinrichtungen, Schulen und Unternehmen in Bezug auf Dienstleistungen, Informationen und Waren oder Versorgung.",
+            "description": "Interaktion zwischen dem Einzelnen, der Familie oder Gemeinschaft und sozialen Einrichtungen, Schulen und Unternehmen in Bezug auf Dienstleistungen, Informationen, Güter oder Versorgung.",
             "signsAndSymptoms": [
               {
-                "title": "nicht vertraut mit Optionen oder Methoden zur Inanspruchnahme von Dienstleistungen",
+                "title": "nicht vertraut mit Möglichkeiten oder Abläufen zur Inanspruchnahme von Dienstleistungen",
                 "code": "01"
               },
               {
-                "title": "Schwierigkeiten beim Verständnis der Rollen oder Regelungen von Dienstleistern",
+                "title": "Schwierigkeiten beim Verständnis von Rollen oder Vorschriften der Dienstleister",
                 "code": "02"
               },
               {
-                "title": "nicht in der Lage, Bedenken an den Anbieter weiterzugeben.",
+                "title": "nicht in der Lage, dem Anbieter Anliegen oder Bedenken mitzuteilen",
                 "code": "03"
               },
               {
@@ -247,7 +247,7 @@
                 "code": "05"
               },
               {
-                "title": "kulturelles Hindernis",
+                "title": "kulturelle Barriere",
                 "code": "08"
               },
               {
@@ -255,15 +255,15 @@
                 "code": "09"
               },
               {
-                "title": "Transportschranke",
+                "title": "Verkehrsbarriere",
                 "code": "10"
               },
               {
-                "title": "eingeschränkter Zugang zu Pflege oder Dienstleistungen oder Gütern",
+                "title": "eingeschränkter Zugang zu Pflege, Dienstleistungen oder Gütern",
                 "code": "11"
               },
               {
-                "title": "nicht nutzbare oder unzureichende Kommunikationsgeräte oder Ausrüstung",
+                "title": "nicht nutzbare oder unzureichende Kommunikationsmittel",
                 "code": "12"
               },
               {
@@ -275,7 +275,7 @@
           },
           {
             "title": "Sozialer Kontakt",
-            "description": "Interaktion zwischen dem Einzelnen oder Familie oder Gemeinschaft und anderen außerhalb des unmittelbaren Wohnbereichs.",
+            "description": "Interaktion zwischen dem Einzelnen, der Familie oder Gemeinschaft und anderen außerhalb des unmittelbaren Wohnbereichs.",
             "signsAndSymptoms": [
               {
                 "title": "begrenzter sozialer Kontakt",
@@ -286,7 +286,7 @@
                 "code": "02"
               },
               {
-                "title": "minimale äußere Stimulation oder Freizeitaktivitäten",
+                "title": "minimale äußere Anreize oder Freizeitaktivitäten",
                 "code": "03"
               },
               {
@@ -301,7 +301,7 @@
             "description": "Hinzufügen oder Entfernen einer Reihe von erwarteten Verhaltensmerkmalen.",
             "signsAndSymptoms": [
               {
-                "title": "unfreiwillige Rollenverlagerung",
+                "title": "unfreiwilliger Rollentausch",
                 "code": "06"
               },
               {
@@ -309,7 +309,7 @@
                 "code": "03"
               },
               {
-                "title": "verliert die vorherige Rolle",
+                "title": "verliert eine vorherige Rolle",
                 "code": "04"
               },
               {
@@ -321,10 +321,10 @@
           },
           {
             "title": "Zwischenmenschliche Beziehungen",
-            "description": "Verbindungen oder Bindungen zwischen der Person oder Familie oder Gemeinschaft und anderen.",
+            "description": "Verbindungen zwischen der Einzelperson, der Familie oder Gemeinschaft und anderen.",
             "signsAndSymptoms": [
               {
-                "title": "Schwierigkeiten beim Aufbau und Erhalt von Beziehungen",
+                "title": "Schwierigkeiten beim Aufbau oder Erhalt von Beziehungen",
                 "code": "01"
               },
               {
@@ -332,7 +332,7 @@
                 "code": "02"
               },
               {
-                "title": "inkongruente Werte oder Ziele oder Erwartungen oder Einzelpläne",
+                "title": "nicht übereinstimmende Werte, Ziele, Erwartungen oder Pläne",
                 "code": "03"
               },
               {
@@ -340,19 +340,19 @@
                 "code": "04"
               },
               {
-                "title": "verlängerte, unverminderte Spannung",
+                "title": "anhaltende, unverminderte Spannung",
                 "code": "05"
               },
               {
-                "title": "unangemessener Verdacht oder Manipulation oder Kontrolle",
+                "title": "unangemessene Verdächtigung, Manipulation oder Kontrolle",
                 "code": "08"
               },
               {
-                "title": "körperliche oder emotionale Misshandlungen des Partners",
+                "title": "körperliche oder emotionale Misshandlungen gegenüber dem Partner",
                 "code": "09"
               },
               {
-                "title": "Schwierigkeit Problemlösung ohne Konflikte",
+                "title": "Schwierigkeit, ein Problem ohne Streit zu lösen",
                 "code": "10"
               },
               {
@@ -364,10 +364,10 @@
           },
           {
             "title": "Spiritualität",
-            "description": "Überzeugungen und Praktiken, die Glauben, Religion, Werte, den Geist oder die Seele betreffen.",
+            "description": "Überzeugungen und Praktiken, die Glauben, Religion, Werte, Geist oder Seele betreffen.",
             "signsAndSymptoms": [
               {
-                "title": "drückt spirituelle Bedenken aus",
+                "title": "drückt spirituelle Anliegen oder Sorgen aus",
                 "code": "01"
               },
               {
@@ -379,7 +379,7 @@
                 "code": "03"
               },
               {
-                "title": "widersprüchliche spirituelle Überzeugungen und medizinische oder gesundheitliche Behandlungen",
+                "title": "medizinische oder gesundheitliche Behandlungen widersprechen den spirituellen Überzeugungen",
                 "code": "04"
               },
               {
@@ -394,19 +394,19 @@
             "description": "Leiden und Bedrängnis im Zusammenhang mit Verlust.",
             "signsAndSymptoms": [
               {
-                "title": "erkennt Trauerphasen oder Prozess der Heilung nicht an",
+                "title": "erkennt Trauerphasen oder Prozess der Heilung nicht",
                 "code": "01"
               },
               {
-                "title": "Schwierigkeiten bei der Bewältigung von Trauerreaktionen",
+                "title": "Schwierigkeiten beim Umgang mit Trauerreaktionen",
                 "code": "02"
               },
               {
-                "title": "Schwierigkeit, Trauerreaktionen auszudrücken",
+                "title": "Schwierigkeit, Trauer auszudrücken",
                 "code": "03"
               },
               {
-                "title": "widersprüchliche Phasen der Trauer zwischen Individuen oder Familien",
+                "title": "Konflikte durch unterschiedliche Trauerphasen zwischen Einzelpersonen oder Familien",
                 "code": "04"
               },
               {
@@ -433,11 +433,11 @@
                 "code": "03"
               },
               {
-                "title": "eingeschränkt durch Ablenkbarkeit oder zerstreute Fokussierung",
+                "title": "eingeschränkte bis zerstreute Aufmerksamkeit oder Konzentration",
                 "code": "13"
               },
               {
-                "title": "oberflächliche Affekte",
+                "title": "zeigt kaum Gefühlsregungen, emotionale Stumpfheit",
                 "code": "06"
               },
               {
@@ -445,7 +445,7 @@
                 "code": "14"
               },
               {
-                "title": "planlose oder zwanghafte Aktivität",
+                "title": "Zwangshandlungen",
                 "code": "15"
               },
               {
@@ -465,15 +465,15 @@
                 "code": "17"
               },
               {
-                "title": "Halluzinationen oder Illusionen",
+                "title": "Halluzinationen oder Einbildung",
                 "code": "18"
               },
               {
-                "title": "drückt selbstmörderische oder mörderische Gedanken aus.",
+                "title": "drückt suizidale oder mörderische Gedanken aus",
                 "code": "19"
               },
               {
-                "title": "versucht Selbstmord oder Tötungsdelikte",
+                "title": "versuchter Selbstmord oder Mord",
                 "code": "20"
               },
               {
@@ -497,10 +497,10 @@
           },
           {
             "title": "Sexualität",
-            "description": "Einstellungen, Gefühle und Verhaltensweisen in Bezug auf Intimität und sexuelle Aktivität.",
+            "description": "Einstellungen, Gefühle und Verhaltensweisen in Bezug auf Intimität und sexuelle Aktivitäten.",
             "signsAndSymptoms": [
               {
-                "title": "Schwierigkeiten bei der Erkennung von Folgen des Sexualverhaltens",
+                "title": "Schwierigkeiten die Folgen des Sexualverhaltens zu erkennen",
                 "code": "01"
               },
               {
@@ -508,11 +508,11 @@
                 "code": "02"
               },
               {
-                "title": "Verwechslung der sexuellen Identität",
+                "title": "Unsicherheit bezüglich der geschlechtlichen Identität",
                 "code": "03"
               },
               {
-                "title": "sexuelle Wertverwirrung",
+                "title": "Unsicherheit bezüglich sexueller Werte",
                 "code": "04"
               },
               {
@@ -524,11 +524,11 @@
                 "code": "07"
               },
               {
-                "title": "Sexuelles Ausleben oder provokatives Verhalten oder  Belästigung",
+                "title": "Sexuell provokatives Verhalten oder Belästigung",
                 "code": "08"
               },
               {
-                "title": "sexuelle Täterschaft oder Assault",
+                "title": "Sexualvergehen oder sexuelle Übergriffe",
                 "code": "09"
               },
               {
@@ -540,42 +540,42 @@
           },
           {
             "title": "Betreuung und Kindererziehung",
-            "description": "Unterstützung, Pflege, Stimulation und körperliche Betreuung von unterhaltsberechtigten Kindern und Erwachsenen.",
+            "description": "Anbieten von Unterstützung, Fürsorge, Lernanreizen und körperlicher Versorgung für abhängige Kinder oder Erwachsene.",
             "signsAndSymptoms": [
               {
-                "title": "Schwierigkeiten bei der Bereitstellung von körperlicher Pflege oder Sicherheit",
+                "title": "Schwierigkeiten körperliche Versorgung oder Sicherheit zu gewährleisten",
                 "code": "01"
               },
               {
-                "title": "Schwierigkeiten bei der emotionalen Pflege",
+                "title": "Schwierigkeiten emotionale Fürsorge zu gewährleisten",
                 "code": "02"
               },
               {
-                "title": "Schwierigkeiten bei der Bereitstellung kognitiver Lernerfahrungen und -aktivitäten",
+                "title": "Schwierigkeiten kognitive Lernerfahrungen und -aktivitäten anzubieten",
                 "code": "03"
               },
               {
-                "title": "Schwierigkeiten bei der Bereitstellung von präventiver und therapeutischer Gesundheitsversorgung",
+                "title": "Schwierigkeiten präventive und therapeutischer Gesundheitsversorgung zu gewährleisten",
                 "code": "04"
               },
               {
-                "title": "Erwartungen, die mit dem Wachstums- und Entwicklungsstadium nicht übereinstimmen.",
+                "title": "Erwartungen, die mit dem Wachstums- und Entwicklungsstadium nicht übereinstimmen",
                 "code": "05"
               },
               {
-                "title": "Unzufriedenheit oder Schwierigkeit mit Verantwortlichkeiten",
+                "title": "Unzufriedenheit oder Schwierigkeiten mit Verantwortung",
                 "code": "06"
               },
               {
-                "title": "Schwierigkeiten beim Dolmetschen oder Reagieren auf mündliche oder nonverbale Kommunikation",
+                "title": "Schwierigkeiten beim Interpretieren oder Antworten auf verbale oder nonverbale Kommunikation",
                 "code": "10"
               },
               {
-                "title": "nachlässig",
+                "title": "vernachlässigendes Verhalten",
                 "code": "07"
               },
               {
-                "title": "missbräuchlich",
+                "title": "missbräuchliches Verhalten",
                 "code": "08"
               },
               {
@@ -587,30 +587,30 @@
           },
           {
             "title": "Vernachlässigung",
-            "description": "Kinder oder Erwachsene, denen die minimal akzeptierten Standards für Nahrung, Unterkunft, Kleidung oder Pflege vorenthalten werden.",
+            "description": "Kind oder Erwachsener, dem die minimal akzeptierten Standards für Nahrung, Unterkunft, Kleidung oder Fürsorge vorenthalten werden.",
             "signsAndSymptoms": [
               {
-                "title": "keine angemessene körperliche Versorgung hat",
+                "title": "Mangel an angemessener körperlicher Versorgung",
                 "code": "01"
               },
               {
-                "title": "Fehlende emotionale Pflege oder Unterstützung",
+                "title": "Fehlende emotionale Fürsorge oder Unterstützung",
                 "code": "02"
               },
               {
-                "title": "keine angemessenen Stimulations- oder Kognitionserfahrungen hat.",
+                "title": "Fehlen geeigneter kognitiver Lernerfahrungen und -anreize",
                 "code": "03"
               },
               {
-                "title": "unpassend allein gelassen",
+                "title": "unangebracht allein gelassen",
                 "code": "04"
               },
               {
-                "title": "nicht über die erforderliche Aufsicht verfügt",
+                "title": "Fehlen der notwendigen Aufsicht",
                 "code": "05"
               },
               {
-                "title": "unzureichende oder verzögerte medizinische Versorgung",
+                "title": "unzureichende oder verspätete medizinische Versorgung",
                 "code": "06"
               },
               {
@@ -622,14 +622,14 @@
           },
           {
             "title": "Missbrauch",
-            "description": "Kinder oder Erwachsene, die unfallbedingter körperlicher, emotionaler oder sexueller Gewalt oder Verletzung ausgesetzt sind.",
+            "description": "Kind oder Erwachsener, der nicht-unfallbedingter körperlicher, emotionaler oder sexueller Gewalt oder Verletzung ausgesetzt ist.",
             "signsAndSymptoms": [
               {
                 "title": "harte oder übertriebene Disziplin",
                 "code": "01"
               },
               {
-                "title": "Falze oder Verbrennungen oder andere Verletzungen",
+                "title": "Prellungen, Hämatome, Verbrennungen oder andere Verletzungen",
                 "code": "02"
               },
               {
@@ -637,11 +637,11 @@
                 "code": "03"
               },
               {
-                "title": "verbal angegriffen",
+                "title": "wird verbal angegriffen",
                 "code": "04"
               },
               {
-                "title": "ängstliches oder hypervigilantes Verhalten",
+                "title": "ängstliches oder übervorsichtiges Verhalten",
                 "code": "05"
               },
               {
@@ -649,7 +649,7 @@
                 "code": "06"
               },
               {
-                "title": "konsistente negative Meldungen",
+                "title": "erhält beständig negative Botschaften",
                 "code": "07"
               },
               {
@@ -665,22 +665,22 @@
           },
           {
             "title": "Wachstum und Entwicklung",
-            "description": "Progressive körperliche, emotionale und soziale Reifung entlang des Alterskontinuums vom Zögern bis zum Tod.",
+            "description": "Fortschreitende, dem Alter entsprechende körperliche, emotionale und soziale Reifung von der Geburt bis zum Tod.",
             "signsAndSymptoms": [
               {
-                "title": "abnormale Ergebnisse von Entwicklungs-Screening-Tests",
+                "title": "anormale Ergebnisse bei Entwicklungstests",
                 "code": "01"
               },
               {
-                "title": "abnormales Gewicht  oder  Höhe  oder  Kopfumfang in Bezug auf Wachstum  oder  Alterungsstandards",
+                "title": "ungewöhnliches Gewicht, Körpergröße oder Kopfumfang im Verhältnis zur Wachstums- oder Altersnorm",
                 "code": "02"
               },
               {
-                "title": "altersbedingtes Verhalten",
+                "title": "dem Alter unangemessenes Verhalten",
                 "code": "03"
               },
               {
-                "title": "unzureichende Erreichung von Entwicklungsschritten",
+                "title": "unzureichende Erfolge oder Beibehaltung bei entwicklungsbezogenen Aufgaben",
                 "code": "04"
               },
               {
@@ -710,15 +710,15 @@
                 "code": "05"
               },
               {
-                "title": "Schwierigkeiten beim Hören von hochfrequenten Geräuschen",
+                "title": "Schwierigkeiten beim Hören von Tönen höherer Frequenz",
                 "code": "06"
               },
               {
-                "title": "Abwesend oder abnormale Reaktion auf Geräusche",
+                "title": "fehlende oder anormale Reaktion auf Geräusche",
                 "code": "02"
               },
               {
-                "title": "abnormale Ergebnisse des Hörscreening-Tests",
+                "title": "anormale Ergebnisse beim Hörtest",
                 "code": "03"
               },
               {
@@ -730,10 +730,10 @@
           },
           {
             "title": "Sehkraft",
-            "description": "Wirken oder die Kraft der Wahrnehmung mit den Augen.",
+            "description": "Wahrnehmung mit den Augen.",
             "signsAndSymptoms": [
               {
-                "title": "Schwierigkeiten bei der Darstellung kleiner Ausdrucke und Kalibrierungen",
+                "title": "Schwierigkeiten beim Erkennen von kleiner Schrift",
                 "code": "01"
               },
               {
@@ -745,23 +745,23 @@
                 "code": "03"
               },
               {
-                "title": "absent oder abnormale Reaktion auf visuelle Reize",
+                "title": "fehlende oder anormale Reaktion auf visuelle Reize",
                 "code": "04"
               },
               {
-                "title": "abnormale Ergebnisse des Sehtests",
+                "title": "anormale Ergebnisse beim Sehtest",
                 "code": "05"
               },
               {
-                "title": "blinzeln oder blinkend oder reißen oder verschwimmend",
+                "title": "schielen, blinzeln, tränen oder verschwimmend",
                 "code": "06"
               },
               {
-                "title": "Floater oder Blitzlichter",
+                "title": "Glaskörpertrübungen, Mouches volantes oder Blitzlichter",
                 "code": "09"
               },
               {
-                "title": "Schwierigkeit, Farben zu unterscheiden",
+                "title": "Schwierigkeiten, Farben zu unterscheiden",
                 "code": "07"
               },
               {
@@ -773,30 +773,30 @@
           },
           {
             "title": "Sprechen und Sprache",
-            "description": "Verwendung von artikulierten Stimmlauten, Symbolen, Zeichen oder Gesten zur Kommunikation.",
+            "description": "Gebrauch von artikulierten Stimmlauten, Symbolen, Zeichen oder Gesten zur Kommunikation.",
             "signsAndSymptoms": [
               {
-                "title": "Fehlende oder abnormale Fähigkeit zu sprechen oder zu sprechen oder sprechen",
+                "title": "Fehlende oder anormale Fähigkeit zu reden oder auszusprechen",
                 "code": "01"
               },
               {
-                "title": "Fehlende oder abnormale Fähigkeit zu verstehen",
+                "title": "Fehlende oder anormale Fähigkeit zu verstehen",
                 "code": "02"
               },
               {
-                "title": "keine alternativen Kommunikationsfähigkeiten oder Gesten hat.",
+                "title": "Mangel an alternativen Kommunikationsfähigkeiten oder Gesten",
                 "code": "03"
               },
               {
-                "title": "unangemessene Satzstruktur",
+                "title": "unpassende Satzstruktur",
                 "code": "04"
               },
               {
-                "title": "begrenzte Aussprache oder Klarheit",
+                "title": "eingeschränkte Ausdrucksweise oder Deutlichkeit",
                 "code": "05"
               },
               {
-                "title": "unangemessene Wortbenutzung",
+                "title": "unpassender Wortgebrauch",
                 "code": "06"
               },
               {
@@ -807,11 +807,11 @@
             "code": "21"
           },
           {
-            "title": "Mund",
+            "title": "Mundhygiene",
             "description": "Zustand von Mund und Zahnfleisch sowie Anzahl, Art und Anordnung der Zähne.",
             "signsAndSymptoms": [
               {
-                "title": "fehlende oder gebrochene oder fehlgestaltete Zähne",
+                "title": "fehlende, kaputte oder deformierte Zähne",
                 "code": "01"
               },
               {
@@ -819,19 +819,19 @@
                 "code": "02"
               },
               {
-                "title": "überschüssiger Zahnstein",
+                "title": "übermäßig viel Zahnstein",
                 "code": "03"
               },
               {
-                "title": "Wunde oder geschwollenes oder blutendes Zahnfleisch",
+                "title": "schmerzendes, geschwollenes oder blutendes Zahnfleisch",
                 "code": "04"
               },
               {
-                "title": "Malokklusion",
+                "title": "Zahnfehlstellung",
                 "code": "05"
               },
               {
-                "title": "schlecht sitzender oder fehlender Zahnersatz",
+                "title": "schlecht sitzende oder fehlende Zahnprothese",
                 "code": "06"
               },
               {
@@ -847,18 +847,18 @@
           },
           {
             "title": "Kognition",
-            "description": "Fähigkeit, Informationen zu denken und zu nutzen.",
+            "description": "Fähigkeit zu denken und Informationen zu verarbeiten.",
             "signsAndSymptoms": [
               {
                 "title": "vermindertes Urteilsvermögen",
                 "code": "01"
               },
               {
-                "title": "desorientiert zu Zeit oder Ort oder Person",
+                "title": "desorientiert in Bezug auf Zeit, Ort oder Personen",
                 "code": "02"
               },
               {
-                "title": "begrenzte Erinnerung an die jüngsten Ereignisse",
+                "title": "begrenzte Erinnerung an kürzliche Ereignisse",
                 "code": "03"
               },
               {
@@ -866,15 +866,15 @@
                 "code": "04"
               },
               {
-                "title": "begrenzte Fähigkeiten in der Berechnung und Sequenzierung",
+                "title": "begrenzte Fähigkeiten im Rechnen und Zählen",
                 "code": "05"
               },
               {
-                "title": "begrenzte Konzentration",
+                "title": "eingeschränkte Konzentration",
                 "code": "06"
               },
               {
-                "title": "eingeschränktes Denken oder abstraktes Denken",
+                "title": "eingeschränktes logisches oder abstraktes Denken",
                 "code": "07"
               },
               {
@@ -882,11 +882,11 @@
                 "code": "08"
               },
               {
-                "title": "Wiederholte Sprache  oder  Verhalten",
+                "title": "Wiederholendes Reden oder Verhalten",
                 "code": "09"
               },
               {
-                "title": "Wanderungen",
+                "title": "Abschweifen",
                 "code": "11"
               },
               {
@@ -897,7 +897,7 @@
             "code": "23"
           },
           {
-            "title": "Schmerzen",
+            "title": "Schmerz",
             "description": "Unangenehme sensorische und emotionale Erfahrungen, die mit tatsächlichen oder potenziellen Gewebeschäden verbunden sind.",
             "signsAndSymptoms": [
               {
@@ -905,23 +905,23 @@
                 "code": "01"
               },
               {
-                "title": "erhöhter Puls oder Atmung oder Blutdruck",
+                "title": "erhöhter Puls, Atmung oder Blutdruck",
                 "code": "02"
               },
               {
-                "title": "kompensierte Bewegung oder Bewachung",
+                "title": "ausgleichende Bewegungen oder Schonung",
                 "code": "03"
               },
               {
-                "title": "unruhiges Verhalten",
+                "title": "ruheloses Verhalten",
                 "code": "04"
               },
               {
-                "title": "Grimassen im Gesicht",
+                "title": "zieht Grimassen",
                 "code": "05"
               },
               {
-                "title": "Blässe oder Schweißung",
+                "title": "Blässe oder Schwitzen",
                 "code": "06"
               },
               {
@@ -932,15 +932,15 @@
             "code": "24"
           },
           {
-            "title": "Wahrnehmung",
-            "description": "Sensibilisierung und Reaktionsfähigkeit auf Reize und die Umgebung.",
+            "title": "Bewusstsein",
+            "description": "Wahrnehmung und Reaktionsfähigkeit auf Reize und die Umgebung.",
             "signsAndSymptoms": [
               {
                 "title": "lethargisch",
                 "code": "01"
               },
               {
-                "title": "stupor",
+                "title": "Stupor",
                 "code": "02"
               },
               {
@@ -960,22 +960,22 @@
           },
           {
             "title": "Haut",
-            "description": "Natürliche Abdeckung des Körpers.",
+            "description": "Natürliche Hülle des Körpers.",
             "signsAndSymptoms": [
               {
-                "title": "Läsion oder Druckgeschwür",
+                "title": "Läsion, Druckgeschwür oder Dekubitus",
                 "code": "01"
               },
               {
-                "title": "überstürzt",
+                "title": "Hautausschlag oder Effloreszenz",
                 "code": "02"
               },
               {
-                "title": "zu trocken",
+                "title": "extrem trocken",
                 "code": "03"
               },
               {
-                "title": "übermäßig ölig",
+                "title": "extrem fettig",
                 "code": "04"
               },
               {
@@ -987,11 +987,11 @@
                 "code": "06"
               },
               {
-                "title": "Entwässerung",
+                "title": "Wunddrainage",
                 "code": "07"
               },
               {
-                "title": "Prellungen",
+                "title": "Prellung oder Hämatom",
                 "code": "08"
               },
               {
@@ -999,7 +999,7 @@
                 "code": "09"
               },
               {
-                "title": "verzögerte Inzisionsheilung",
+                "title": "verzögerte Narbenheilung",
                 "code": "11"
               },
               {
@@ -1010,11 +1010,11 @@
             "code": "26"
           },
           {
-            "title": "Neuro-Muskel-Skelett-Funktion",
-            "description": "Fähigkeit von Nerven, Muskeln und Knochen, bestimmte Bewegungen, Empfindungen oder Regulierungen auszuführen oder zu koordinieren.",
+            "title": "Neuromuskeläre- und Skelett-Funktion",
+            "description": "Fähigkeit von Nerven, Muskeln und Knochen, gezielte Bewegungen, Empfindungen oder Steuerungen auszuführen oder zu koordinieren.",
             "signsAndSymptoms": [
               {
-                "title": "begrenzter Bewegungsumfang",
+                "title": "eingeschränkte Bewegungsfreiheit",
                 "code": "01"
               },
               {
@@ -1034,35 +1034,35 @@
                 "code": "05"
               },
               {
-                "title": "vermindertes Gefühl",
+                "title": "verminderte Sinnesempfindung",
                 "code": "06"
               },
               {
-                "title": "gesteigertes Gefühl",
+                "title": "gesteigerte Sinnesempfindung",
                 "code": "07"
               },
               {
-                "title": "vermindertes Guthaben",
+                "title": "vermindertes Gleichgewicht",
                 "code": "08"
               },
               {
-                "title": "Geh- und Bewegungsstörung",
+                "title": "Störung des Gangs",
                 "code": "09"
               },
               {
-                "title": "Übertragungsschwierigkeit",
+                "title": "Schwierigkeiten bei Transfer oder Umlagerung",
                 "code": "13"
               },
               {
-                "title": "Frakturen",
+                "title": "Brüche oder Frakturen",
                 "code": "14"
               },
               {
-                "title": "Erschütterungen oder Sicherungen",
+                "title": "Anfall, Krämpfe, Zittern oder Tremor",
                 "code": "11"
               },
               {
-                "title": "Schwierigkeiten bei der Thermoregulation",
+                "title": "Probleme mit der Thermoregulation",
                 "code": "15"
               },
               {
@@ -1074,14 +1074,14 @@
           },
           {
             "title": "Atmung",
-            "description": "Ein- und Ausatmen von Luft in den Körper und Austausch von Sauerstoff.",
+            "description": "Ein- und Ausatmen von Luft in den Körper und Sauerstoffaustausch.",
             "signsAndSymptoms": [
               {
-                "title": "abnormale Atemmuster",
+                "title": "anormale Atemmuster",
                 "code": "01"
               },
               {
-                "title": "unfähig, selbstständig zu atmen",
+                "title": "nicht in der Lage selbstständig zu atmen",
                 "code": "02"
               },
               {
@@ -1089,7 +1089,7 @@
                 "code": "03"
               },
               {
-                "title": "unfähig, selbstständig zu husten oder expektorieren",
+                "title": "nicht in der Lage selbstständig zu husten oder abzuhusten",
                 "code": "04"
               },
               {
@@ -1097,7 +1097,7 @@
                 "code": "05"
               },
               {
-                "title": "abnormaler Auswurf",
+                "title": "anormaler Auswurf oder Sputum",
                 "code": "06"
               },
               {
@@ -1105,15 +1105,15 @@
                 "code": "07"
               },
               {
-                "title": "Rhinorrhöe oder Nasenverstopfung",
+                "title": "Rhinitis, laufende oder verstopfte Nase",
                 "code": "08"
               },
               {
-                "title": "abnormale Atemgeräusche",
+                "title": "anormale Atemgeräusche",
                 "code": "09"
               },
               {
-                "title": "abnormale Atemlaborergebnisse",
+                "title": "anormale Ergebnisse beim Atemtest",
                 "code": "11"
               },
               {
@@ -1156,7 +1156,7 @@
                 "code": "07"
               },
               {
-                "title": "abnormale Werte bei Blutdruckmessung",
+                "title": "anormale Werte bei Blutdruckmessung",
                 "code": "08"
               },
               {
@@ -1180,15 +1180,15 @@
                 "code": "13"
               },
               {
-                "title": "abnormale Herztöne oder Herzgeräusche",
+                "title": "anormale Herztöne oder Herzgeräusche",
                 "code": "14"
               },
               {
-                "title": "abnormale Gerinnung",
+                "title": "anormale Gerinnung",
                 "code": "16"
               },
               {
-                "title": "abnormale kardiale Laborergebnisse",
+                "title": "anormale kardiale Laborergebnisse",
                 "code": "17"
               },
               {
@@ -1200,22 +1200,22 @@
           },
           {
             "title": "Verdauung und Flüssigkeitsaufnahme",
-            "description": "Prozess zur Umwandlung von Lebensmitteln in Formen, die aufgenommen und assimiliert werden können, und zur Aufrechterhaltung des Flüssigkeitsgleichgewichts.",
+            "description": "Prozess zur Umwandlung von Lebensmitteln in Formen, die aufgenommen und verarbeitet werden können, und zur Aufrechterhaltung des Flüssigkeitsgleichgewichts.",
             "signsAndSymptoms": [
               {
-                "title": "Übelkeit oder Verbrechen",
+                "title": "Übelkeit oder Brechreiz",
                 "code": "01"
               },
               {
-                "title": "Schwierigkeit  oder  Unfähigkeit zu kauen  oder  zu schlucken  oder  zu verdauen",
+                "title": "Schwierigkeiten oder Unvermögen zu kauen, zu schlucken oder zu verdauen",
                 "code": "02"
               },
               {
-                "title": "Verdauungsstörungen",
+                "title": "Magenverstimmung oder Verdauungsstörung",
                 "code": "03"
               },
               {
-                "title": "Rückfluss",
+                "title": "Reflux oder Rückfluss",
                 "code": "04"
               },
               {
@@ -1231,11 +1231,11 @@
                 "code": "07"
               },
               {
-                "title": "Gelbsucht  oder  Lebererweiterung",
+                "title": "Ikterus (Gelbsucht) oder Lebervergrößerung",
                 "code": "08"
               },
               {
-                "title": "verminderter Hautturgor",
+                "title": "verminderte Hautspannung oder Dehydratation",
                 "code": "09"
               },
               {
@@ -1255,10 +1255,10 @@
           },
           {
             "title": "Darmfunktion",
-            "description": "Transport von Lebensmitteln durch den Magen-Darm-Trakt zur Beseitigung von Abfällen.",
+            "description": "Transport von Nahrung durch den Magen-Darm-Trakt zur Ausscheidung von Abfällen.",
             "signsAndSymptoms": [
               {
-                "title": "abnormale Häufigkeit oder Konsistenz des Stuhls",
+                "title": "anormale Häufigkeit oder Konsistenz des Stuhls",
                 "code": "01"
               },
               {
@@ -1278,11 +1278,11 @@
                 "code": "05"
               },
               {
-                "title": "Krämpfe oder Bauchbeschwerden",
+                "title": "Krämpfe oder Bauchschmerzen",
                 "code": "06"
               },
               {
-                "title": "Inkontinenz des Stuhls",
+                "title": "Stuhlinkontinenz",
                 "code": "07"
               },
               {
@@ -1293,43 +1293,43 @@
             "code": "31"
           },
           {
-            "title": "Harnwegsfunktion",
+            "title": "Harnfunktion",
             "description": "Produktion und Ausscheidung von Urin.",
             "signsAndSymptoms": [
               {
-                "title": "Verbrennung  oder  schmerzhaftes Wasserlassen",
+                "title": "Brennendes oder schmerzhaftes Wasserlassen",
                 "code": "01"
               },
               {
-                "title": "Urininkontinenz",
+                "title": "Harninkontinenz",
                 "code": "02"
               },
               {
-                "title": "Dringlichkeit oder Häufigkeit",
+                "title": "Harndrang oder -häufigkeit",
                 "code": "03"
               },
               {
-                "title": "Schwierigkeiten bei der Einleitung des Urinierens",
+                "title": "Schwierigkeiten mit dem Urinieren zu beginnen",
                 "code": "04"
               },
               {
-                "title": "Schwierigkeiten beim Entleeren der Blase",
+                "title": "Schwierigkeiten die Blase zu entleeren",
                 "code": "05"
               },
               {
-                "title": "abnormale Menge",
+                "title": "anormale Menge",
                 "code": "06"
               },
               {
-                "title": "Hämaturie oder abnormale Farbe",
+                "title": "Hämaturie (Blut im Urin) oder anormale Farbe",
                 "code": "07"
               },
               {
-                "title": "Nykturie",
+                "title": "Nykturie (Unterbrechung des Nachtschlafs wegen Harndrang)",
                 "code": "08"
               },
               {
-                "title": "Anormale Laborergebnisse der Harnwege",
+                "title": "Anormale Ergebnisse beim Urintest",
                 "code": "09"
               },
               {
@@ -1344,11 +1344,11 @@
             "description": "Zustand der Genitalien und Brüste und die Fähigkeit zur Fortpflanzung.",
             "signsAndSymptoms": [
               {
-                "title": "anormale Entladung",
+                "title": "anormaler Ausfluss",
                 "code": "01"
               },
               {
-                "title": "abnormes Menstruationsmuster",
+                "title": "anormales Menstruationsmuster",
                 "code": "02"
               },
               {
@@ -1356,7 +1356,7 @@
                 "code": "03"
               },
               {
-                "title": "Anomale Knoten oder Schwellung oder Auffälligkeit der Genitalien oder Brüste",
+                "title": "Anomale Knoten, Schwellung oder Spannung an Genitalien oder Brüsten",
                 "code": "04"
               },
               {
@@ -1383,23 +1383,23 @@
             "description": "Zeitraum von der Empfängnis bis zur Geburt.",
             "signsAndSymptoms": [
               {
-                "title": "Schwierigkeiten bei der Bindung an das ungeborene Baby",
+                "title": "Schwierigkeiten eine Bindung zum ungeborenen Baby aufzubauen",
                 "code": "01"
               },
               {
-                "title": "Schwierigkeiten bei der Bewältigung von Körperveränderungen",
+                "title": "Schwierigkeiten beim Umgang von Körperveränderungen",
                 "code": "02"
               },
               {
-                "title": "Schwierigkeiten bei pränataler Bewegung oder Ruhe oder Diät oder Verhalten",
+                "title": "Schwierigkeiten mit pränatalen Übungen, Ruhe, Ernährung oder Verhalten",
                 "code": "03"
               },
               {
-                "title": "befürchtet eine Zustellung",
+                "title": "Ängste bezüglich der Entbindung",
                 "code": "04"
               },
               {
-                "title": "pränatale Komplikationen oder Vorzeitige Wehen",
+                "title": "pränatale Komplikationen oder vorzeitige Wehen",
                 "code": "05"
               },
               {
@@ -1415,22 +1415,22 @@
           },
           {
             "title": "Wochenbett",
-            "description": "Sechs Wochen nach der Geburt.",
+            "description": "Der Zeitraum sechs Wochen nach der Geburt.",
             "signsAndSymptoms": [
               {
                 "title": "Schwierigkeiten beim Stillen",
                 "code": "01"
               },
               {
-                "title": "Schwierigkeiten bei der Bewältigung von postpartalen Veränderungen",
+                "title": "Schwierigkeiten beim Umgang mit postpartalen Veränderungen",
                 "code": "02"
               },
               {
-                "title": "Schwierigkeiten bei postpartaler Bewegung oder Ruhe oder Ernährung oder Verhalten",
+                "title": "Schwierigkeiten mit postpartalen Übungen, Ruhe, Ernährung oder Verhalten",
                 "code": "03"
               },
               {
-                "title": "Abnormale Blutungen oder Vaginalausfluss",
+                "title": "Anormale Blutung oder Vaginalausfluss",
                 "code": "04"
               },
               {
@@ -1438,7 +1438,7 @@
                 "code": "05"
               },
               {
-                "title": "abnormale depressive Gefühle",
+                "title": "anormale depressive Gefühle",
                 "code": "06"
               },
               {
@@ -1449,15 +1449,15 @@
             "code": "49"
           },
           {
-            "title": "Übertragbarer oder infektiöser Zustand",
-            "description": "Zustand, in dem Organismen eindringen oder infizieren und oberflächliche oder systemische Krankheiten mit dem Potenzial zur Verbreitung oder Übertragung hervorrufen.",
+            "title": "Übertragbare oder infektiöse Erkrankung",
+            "description": "Zustand, bei dem Organismen den Körper befallen und oberflächliche oder systemische Erkrankungen hervorrufen mit dem Risiko der Ausbreitung oder Übertragung.",
             "signsAndSymptoms": [
               {
                 "title": "Infektion",
                 "code": "01"
               },
               {
-                "title": "Befall",
+                "title": "Infestation (Befall) durch Parasiten",
                 "code": "02"
               },
               {
@@ -1469,15 +1469,15 @@
                 "code": "04"
               },
               {
-                "title": "positive screening oder kultur oder laborergebnisse",
+                "title": "positiver Befund oder Laborergebnisse",
                 "code": "05"
               },
               {
-                "title": "unzureichende Lieferungen oder Ausrüstungen oder Richtlinien zur Verhinderung der Übertragung",
+                "title": "unzureichender Vorrat, Ausrüstung oder Konzepte zur Verhinderung der Übertragung",
                 "code": "06"
               },
               {
-                "title": "folgt nicht der Infektionskontrolle",
+                "title": "befolgt nicht die Richtlinien zur Eindämmung von Infektionskrankheiten",
                 "code": "07"
               },
               {

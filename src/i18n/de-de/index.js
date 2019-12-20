@@ -26,8 +26,8 @@ export default {
   customerRequestLabel: "Kundenwünsche zur Gesundheitsvorsorge",
   summary: "Zusammenfassung",
   selectInterventions: "Interventionen auswählen",
-  findTargets: "Ziele finden",
-  noTargetsFound: "Keine Interventions-Ziele gefunden",
+  findTargets: "Pflege-Maßnahmen finden",
+  noTargetsFound: "Keine Pflege-Maßnahmen gefunden",
   customerSpecificInterventions: "Kundenspezifische Details",
   customerSpecificInterventionsHint:
     "Welche konkreten Aktivitäten werden geplant?",

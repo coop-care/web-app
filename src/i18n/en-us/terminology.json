@@ -136,7 +136,7 @@
                 "code": "09"
               },
               {
-                "title": "unsafe appliances/equiptment",
+                "title": "unsafe appliances/equipment",
                 "code": "10"
               },
               {
@@ -265,7 +265,7 @@
                 "code": "11"
               },
               {
-                "title": "unable to use/has inadequate communication devices/equiptment",
+                "title": "unable to use/has inadequate communication devices/equipment",
                 "code": "12"
               },
               {
@@ -604,7 +604,7 @@
                 "code": "03"
               },
               {
-                "title": "inappropiately left alone",
+                "title": "inappropriately left alone",
                 "code": "04"
               },
               {
@@ -666,7 +666,7 @@
           },
           {
             "title": "Growth & development",
-            "description": "Progressive physical, emotional, and social maturation along the age continuum from bith to death.",
+            "description": "Progressive physical, emotional, and social maturation along the age continuum from birth to death.",
             "code": "17",
             "signsAndSymptoms": [
               {
@@ -674,7 +674,7 @@
                 "code": "01"
               },
               {
-                "title": "abnormal weight/height/head circumference in relation growth/aging standards",
+                "title": "abnormal weight/height/head circumference in relation to growth/aging standards",
                 "code": "02"
               },
               {
