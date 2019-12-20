@@ -3,20 +3,16 @@ import { store, StoreState, generateId } from ".";
 import { Customer, ProblemRecord, CoreCustomer } from "../helper/coreTypes";
 import Tree from "../helper/tree";
 
-
 export default createMutations<StoreState>()({
-
     setCustomer(state, customer: Customer | null | undefined) {
-        if (customer) 
-            state.selectedCustomer = customer;
-        else
-            state.selectedCustomer = null;
+        if (customer) state.selectedCustomer = customer;
+        else state.selectedCustomer = null;
     },
 
     createProblemRecord(state, payload) {
         let customer: Customer | undefined = store.getters.getCustomer(payload);
         if (!customer) {
-          return;
+            return;
         }
         let problemRecord: ProblemRecord = {
             id: generateId(),
@@ -58,7 +54,10 @@ export default createMutations<StoreState>()({
         }
         customer.problems = customer.problems.filter(
             (problemRecord: ProblemRecord) => {
-                return ( problemRecord.createdAt || problemRecord.id != payload.problemId );
+                return (
+                    problemRecord.createdAt ||
+                    problemRecord.id != payload.problemId
+                );
             }
         );
     },
@@ -66,7 +65,9 @@ export default createMutations<StoreState>()({
     updateNewOutcome(state, payload) {
         let problemRecord = store.getters.getProblemRecordById(payload);
 
-        if (!problemRecord) { return; }
+        if (!problemRecord) {
+            return;
+        }
 
         let outcome = problemRecord.outcomes[problemRecord.outcomes.length - 1];
 
@@ -79,22 +80,22 @@ export default createMutations<StoreState>()({
             outcome = {
                 createdAt: undefined,
                 knowledge: {
-                observation: defaultValue.knowledge.observation || 0,
-                expectation: defaultValue.knowledge.expectation || 0,
-                comment: ""
+                    observation: defaultValue.knowledge.observation || 0,
+                    expectation: defaultValue.knowledge.expectation || 0,
+                    comment: ""
                 },
                 behaviour: {
-                observation: defaultValue.behaviour.observation || 0,
-                expectation: defaultValue.behaviour.expectation || 0,
-                comment: ""
+                    observation: defaultValue.behaviour.observation || 0,
+                    expectation: defaultValue.behaviour.expectation || 0,
+                    comment: ""
                 },
                 status: {
-                observation: defaultValue.status.observation || 0,
-                expectation: defaultValue.status.expectation || 0,
-                comment: ""
+                    observation: defaultValue.status.observation || 0,
+                    expectation: defaultValue.status.expectation || 0,
+                    comment: ""
                 },
                 personRatedInPlaceOfOwner:
-                defaultValue.personRatedInPlaceOfOwner || ""
+                    defaultValue.personRatedInPlaceOfOwner || ""
             };
             problemRecord.outcomes.push(outcome);
         }
@@ -103,9 +104,11 @@ export default createMutations<StoreState>()({
 
     saveNewProblemRecord(state, payload) {
         let problemRecord = store.getters.getProblemRecordById(payload);
-        
-        if (!problemRecord) { return; }
-        
+
+        if (!problemRecord) {
+            return;
+        }
+
         let now = new Date();
         problemRecord.createdAt = now;
         (problemRecord.outcomes[0] || {}).createdAt = now;
@@ -124,6 +127,5 @@ export default createMutations<StoreState>()({
 
     isLoadingCustomerList(state, isLoading: boolean) {
         state.isLoadingCustomerList = isLoading;
-    },
-  
-})
+    }
+});

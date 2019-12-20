@@ -1,6 +1,11 @@
 import { createGetters } from "direct-vuex";
 import { store, StoreState } from ".";
-import { Customer, ProblemRecord, Outcome, CoreCustomer } from "../helper/coreTypes";
+import {
+    Customer,
+    ProblemRecord,
+    Outcome,
+    CoreCustomer
+} from "../helper/coreTypes";
 import TerminologyData, {
     Terminology,
     HasTitleCode
@@ -9,11 +14,9 @@ import { format } from "timeago.js";
 import { colors } from "quasar";
 import ApexCharts from "apexcharts";
 
-
 const { getBrand } = colors;
 
 export default createGetters<StoreState>()({
-
     getCustomer: state => (payload: any): Customer | undefined => {
         let customer = state.selectedCustomer;
 
@@ -23,12 +26,14 @@ export default createGetters<StoreState>()({
                 payload.terminology
             );
         }
-        
-        if (customer) return customer
+
+        if (customer) return customer;
         else return undefined;
     },
 
-    getProblemRecordById: state => (payload: any): ProblemRecord | undefined => {
+    getProblemRecordById: state => (
+        payload: any
+    ): ProblemRecord | undefined => {
         let customer = store.getters.getCustomer(payload);
         if (!customer) {
             return;
@@ -71,27 +76,27 @@ export default createGetters<StoreState>()({
         return ["knowledge", "behaviour", "status"].map((key, index) => {
             let series = [
                 {
-                name: payload.ratings[index].title,
-                data: outcomes
-                    .filter((outcome: Outcome) => outcome.createdAt)
-                    .map((outcome: Outcome) => {
-                    let value = (outcome as any)[key];
-                    return {
-                        x: outcome.createdAt,
-                        y: value.observation,
-                        comment: value.comment
-                    };
-                    })
+                    name: payload.ratings[index].title,
+                    data: outcomes
+                        .filter((outcome: Outcome) => outcome.createdAt)
+                        .map((outcome: Outcome) => {
+                            let value = (outcome as any)[key];
+                            return {
+                                x: outcome.createdAt,
+                                y: value.observation,
+                                comment: value.comment
+                            };
+                        })
                 },
                 {
-                name: payload.expectation,
-                data: outcomes.map((outcome: any) => {
-                    let value = outcome[key];
-                    return {
-                    x: outcome.createdAt || new Date(),
-                    y: value.expectation
-                    };
-                })
+                    name: payload.expectation,
+                    data: outcomes.map((outcome: any) => {
+                        let value = outcome[key];
+                        return {
+                            x: outcome.createdAt || new Date(),
+                            y: value.expectation
+                        };
+                    })
                 }
             ];
 
@@ -102,140 +107,142 @@ export default createGetters<StoreState>()({
 
             let options: any = {
                 chart: {
-                id: id,
-                group: group,
-                events: {
-                    mounted: (chartContext: any, config: any) => {
-                    chartContext.updateOptions({}, true, true, false);
-                    ApexCharts.exec(id, "render", {});
+                    id: id,
+                    group: group,
+                    events: {
+                        mounted: (chartContext: any, config: any) => {
+                            chartContext.updateOptions({}, true, true, false);
+                            ApexCharts.exec(id, "render", {});
+                        },
+                        mouseMove: (
+                            event: MouseEvent,
+                            chartContext: any,
+                            config: any
+                        ) => {}
                     },
-                    mouseMove: (
-                    event: MouseEvent,
-                    chartContext: any,
-                    config: any
-                    ) => {}
-                },
-                toolbar: {
-                    show: false
-                },
-                sparkline: {
-                    enabled: false
-                },
-                zoom: {
-                    enabled: false
-                }
+                    toolbar: {
+                        show: false
+                    },
+                    sparkline: {
+                        enabled: false
+                    },
+                    zoom: {
+                        enabled: false
+                    }
                 },
                 dataLabels: {
-                enabled: false
+                    enabled: false
                 },
                 legend: {
-                show: false
-                },
-                stroke: {
-                curve: "smooth",
-                width: 2
-                },
-                tooltip: {
-                enabled: true,
-                shared: true,
-                custom: () => {
-                    return "";
-                },
-                y: {
-                    formatter: (
-                    value: any,
-                    { series, seriesIndex, dataPointIndex, w }: any
-                    ) => {
-                    let comment =
-                        w.config.series[seriesIndex].data[dataPointIndex].comment;
-                    if (false) {
-                        return "" + value + ": " + comment;
-                    } else {
-                        return value;
-                    }
-                    }
-                }
-                },
-                xaxis: {
-                labels: {
                     show: false
                 },
-                type: "datetime"
+                stroke: {
+                    curve: "smooth",
+                    width: 2
+                },
+                tooltip: {
+                    enabled: true,
+                    shared: true,
+                    custom: () => {
+                        return "";
+                    },
+                    y: {
+                        formatter: (
+                            value: any,
+                            { series, seriesIndex, dataPointIndex, w }: any
+                        ) => {
+                            let comment =
+                                w.config.series[seriesIndex].data[
+                                    dataPointIndex
+                                ].comment;
+                            if (false) {
+                                return "" + value + ": " + comment;
+                            } else {
+                                return value;
+                            }
+                        }
+                    }
+                },
+                xaxis: {
+                    labels: {
+                        show: false
+                    },
+                    type: "datetime"
                 },
                 yaxis: {
-                min: 1,
-                max: 5,
-                opposite: true,
-                forceNiceScale: true,
-                labels: {
-                    minWidth: 1,
-                    formatter: (value: number) => value
-                }
+                    min: 1,
+                    max: 5,
+                    opposite: true,
+                    forceNiceScale: true,
+                    labels: {
+                        minWidth: 1,
+                        formatter: (value: number) => value
+                    }
                 }
             };
 
             options = {
                 chart: {
-                id: id,
-                group: group,
-                sparkline: {
-                    enabled: true
-                },
-                events: {
-                    mounted: (chartContext: any, config: any) => {
-                    chartContext.updateOptions({}, true, true, false);
-                    ApexCharts.exec(id, "render", {});
+                    id: id,
+                    group: group,
+                    sparkline: {
+                        enabled: true
+                    },
+                    events: {
+                        mounted: (chartContext: any, config: any) => {
+                            chartContext.updateOptions({}, true, true, false);
+                            ApexCharts.exec(id, "render", {});
+                        }
                     }
-                }
                 },
                 colors: [getBrand("outcome"), getBrand("outcome")],
                 grid: {
-                show: true,
-                padding: {
-                    top: 5,
-                    left: 5,
-                    right: 5,
-                    bottom: 5
-                }
+                    show: true,
+                    padding: {
+                        top: 5,
+                        left: 5,
+                        right: 5,
+                        bottom: 5
+                    }
                 },
                 fill: {
-                colors: [getBrand("outcome"), "#ffffff"],
-                opacity: 0,
-                type: ["gradient", "solid"],
-                gradient: {
-                    shadeIntensity: 1
-                }
+                    colors: [getBrand("outcome"), "#ffffff"],
+                    opacity: 0,
+                    type: ["gradient", "solid"],
+                    gradient: {
+                        shadeIntensity: 1
+                    }
                 },
                 stroke: {
-                curve: "smooth",
-                width: 3,
-                dashArray: [0, 5]
+                    curve: "smooth",
+                    width: 3,
+                    dashArray: [0, 5]
                 },
                 tooltip: {
-                custom: () => {
-                    return "";
-                }
+                    custom: () => {
+                        return "";
+                    }
                 },
                 xaxis: {
-                type: "datetime",
-                axisTicks: {
-                    show: false
-                },
-                tooltip: {
-                    enabled: true,
-                    offsetY: -35,
-                    formatter: function(val: number, opts: any) {
-                    return format(val, payload.locale);
+                    type: "datetime",
+                    axisTicks: {
+                        show: false
+                    },
+                    tooltip: {
+                        enabled: true,
+                        offsetY: -35,
+                        formatter: function(val: number, opts: any) {
+                            return format(val, payload.locale);
+                        }
                     }
-                }
                 },
                 yaxis: {
-                min: 1,
-                max: 5,
-                forceNiceScale: true,
-                labels: {
-                    minWidth: 1
-                }
+                    min: 1,
+                    max: 5,
+                    forceNiceScale: true,
+                    labels: {
+                        minWidth: 1
+                    }
                 }
             };
 
@@ -273,22 +280,21 @@ export default createGetters<StoreState>()({
         terminology: Terminology;
     }): any[] => {
         let problemTerminology = TerminologyData.flattenedProblems(
-        terminology
+            terminology
         ).find(problem => problem.code == problemCode);
 
         if (!problemTerminology) {
-        return [];
+            return [];
         }
         return problemTerminology.signsAndSymptoms.map(symptom => {
-        return { label: symptom.title, value: symptom.code };
+            return { label: symptom.title, value: symptom.code };
         });
     },
 
     otherSymptomForProblemCode: state => (payload: any) => {
         let symptoms = store.getters.symptomsForProblemCode(
-        payload
+            payload
         ) as HasTitleCode[];
         return symptoms[symptoms.length - 1];
-    },
-
-})
+    }
+});

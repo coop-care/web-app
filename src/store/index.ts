@@ -4,9 +4,9 @@ import { Download } from "../helper/download";
 import { colors } from "quasar";
 import { Customer, CoreCustomer } from "../helper/coreTypes";
 import { createDirectStore } from "direct-vuex";
-import getters from './getters';
-import mutations from './mutations';
-import actions from './actions';
+import getters from "./getters";
+import mutations from "./mutations";
+import actions from "./actions";
 
 const { setBrand } = colors;
 
@@ -26,7 +26,7 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
         customers: [],
         selectedCustomer: null,
         isLoadingCustomer: false,
-        isLoadingCustomerList: false,
+        isLoadingCustomerList: false
     } as StoreState,
     getters,
     mutations,
@@ -52,21 +52,20 @@ window.download = () => {
     Download.ts(store.state.customers, "sample1.ts");
 };
 
-
 // Export the original Vuex store because of quasar
-export default store.original
+export default store.original;
 
 // the typesafe, direct store
-export { store }
+export { store };
 
 // The following exports will be used to enable types in the
 // implementation of actions.
-export { rootActionContext, moduleActionContext }
+export { rootActionContext, moduleActionContext };
 
 // The following lines enable types in the injected store '$store'.
-export type AppStore = typeof store
+export type AppStore = typeof store;
 declare module "vuex" {
     interface Store<S> {
-        direct: AppStore
+        direct: AppStore;
     }
 }

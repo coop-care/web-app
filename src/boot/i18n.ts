@@ -7,40 +7,44 @@ import Quasar from "quasar";
 Vue.use(VueI18n);
 
 function matchLocale(
-  locale: string,
-  availableLocales: string[],
-  fallbackLocale: string
+    locale: string,
+    availableLocales: string[],
+    fallbackLocale: string
 ) {
-  let resultingLocale = locale;
-
-  if (!availableLocales.includes(resultingLocale)) {
-    let shortLocale = locale.split("-")[0];
-    resultingLocale = shortLocale;
+    let resultingLocale = locale;
 
     if (!availableLocales.includes(resultingLocale)) {
-      let shortToCompleteLocaleMap: { [key: string]: string } = {};
+        let shortLocale = locale.split("-")[0];
+        resultingLocale = shortLocale;
 
-      resultingLocale =
-        availableLocales.find(locale => {
-          return shortLocale == locale.split("-")[0];
-        }) || fallbackLocale;
+        if (!availableLocales.includes(resultingLocale)) {
+            let shortToCompleteLocaleMap: { [key: string]: string } = {};
+
+            resultingLocale =
+                availableLocales.find(locale => {
+                    return shortLocale == locale.split("-")[0];
+                }) || fallbackLocale;
+        }
     }
-  }
 
-  return resultingLocale;
+    return resultingLocale;
 }
 
 const i18n = new VueI18n({
-  // @ts-ignore
-  locale: matchLocale(Quasar.lang.getLocale(), Object.keys(messages), "en-us"),
-  fallbackLocale: "en-us",
-  messages
+    // @ts-ignore
+    locale: matchLocale(
+        Quasar.lang.getLocale(),
+        Object.keys(messages),
+        "en-us"
+    ),
+    fallbackLocale: "en-us",
+    messages
 });
 
 // @ts-ignore
 export default ({ app }) => {
-  // Set i18n instance on app
-  app.i18n = i18n;
+    // Set i18n instance on app
+    app.i18n = i18n;
 };
 
 export { i18n };
