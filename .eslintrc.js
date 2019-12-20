@@ -34,7 +34,8 @@ module.exports = {
   parserOptions: {
     parser: "@typescript-eslint/parser",
     sourceType: "module",
-    project: "./tsconfig.json"
+    project: "./tsconfig.json",
+    extraFileExtensions: [".vue"]
   },
 
   env: {
@@ -62,6 +63,7 @@ module.exports = {
     // Custom
     "vue/component-name-in-template-casing": ["error", "kebab-case"],
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
     "vue/no-use-v-if-with-v-for": "off",
 
     // Correct typescript linting until at least 2.0.0 major release
