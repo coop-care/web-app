@@ -1,6 +1,6 @@
 # CoopCare (coopcare)
 
-Omaha System based open source software for cooperative care teams
+Omaha System based open source software for cooperative care teams.
 
 ## Install the dependencies
 ```bash
@@ -23,4 +23,5 @@ quasar build
 ```
 
 ### Customize the configuration
+
 See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
