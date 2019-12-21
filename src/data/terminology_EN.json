@@ -1,0 +1,1837 @@
+{
+  "title": "The Omaha System",
+  "problemClassificationScheme": {
+    "title": "Problem Classification Scheme",
+    "domains": [
+      {
+        "title": "Environmental Domain",
+        "description": "Material resources and physical surroundings both inside and outside the living area, neighborhood, and broader community.",
+        "problems": [
+          {
+            "title": "Income",
+            "description": "Money from wages, pensions, subsidies, interest, dividends, or other sources available for living and health care expenses.",
+            "signsAndSymptoms": [
+              {
+                "title": "low/no income"
+              },
+              {
+                "title": "uninsured medical expenses"
+              },
+              {
+                "title": "difficulty with money management"
+              },
+              {
+                "title": "able to buy only necessities"
+              },
+              {
+                "title": "difficulty buying necessities"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Sanitation",
+            "description": "Environmental cleanliness and precautions against infection and disease.",
+            "signsAndSymptoms": [
+              {
+                "title": "soiled living area"
+              },
+              {
+                "title": "inadequate food storage/disposal"
+              },
+              {
+                "title": "insects/rodents"
+              },
+              {
+                "title": "foul odor"
+              },
+              {
+                "title": "inadequate water supply"
+              },
+              {
+                "title": "inadequate sewage disposal"
+              },
+              {
+                "title": "inadequate laundry facilities"
+              },
+              {
+                "title": "allergens"
+              },
+              {
+                "title": "infectious/contaminating agents"
+              },
+              {
+                "title": "presence of mold"
+              },
+              {
+                "title": "excessive pets"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Residence",
+            "description": "Living area.",
+            "signsAndSymptoms": [
+              {
+                "title": "structurally unsound"
+              },
+              {
+                "title": "inadequate heating/cooling"
+              },
+              {
+                "title": "steep/unsafe stairs"
+              },
+              {
+                "title": "inadequate/obstructed exits/entries"
+              },
+              {
+                "title": "cluttered living space"
+              },
+              {
+                "title": "unsafe storage of dangerous objects/substances"
+              },
+              {
+                "title": "unsafe mats/throw rugs"
+              },
+              {
+                "title": "inadequate safety devices"
+              },
+              {
+                "title": "presence of lead-based paint"
+              },
+              {
+                "title": "unsafe appliances/equiptment"
+              },
+              {
+                "title": "inadequate/crowded living space"
+              },
+              {
+                "title": "exposed wiring"
+              },
+              {
+                "title": "structural barriers"
+              },
+              {
+                "title": "homeless"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Neighborhood/workplace safety",
+            "description": "Freedom from illness, injury, or loss in the community of place or employment.",
+            "signsAndSymptoms": [
+              {
+                "title": "high crime rate"
+              },
+              {
+                "title": "high pollution level"
+              },
+              {
+                "title": "uncontrolled/dangerous/infected animals"
+              },
+              {
+                "title": "inadequate/unsafe play/exercise areas"
+              },
+              {
+                "title": "inadequate space/resources to foster health"
+              },
+              {
+                "title": "threats/reports of violence"
+              },
+              {
+                "title": "physical hazards"
+              },
+              {
+                "title": "vehicle/traffic hazards"
+              },
+              {
+                "title": "chemical hazards"
+              },
+              {
+                "title": "radiological hazards"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Psychosocial Domain",
+        "description": "Patterns of behavior, emotion, communication, relationships, and development.",
+        "problems": [
+          {
+            "title": "Communication with community resources",
+            "description": "Interaction between the individual/family/community and social service organizations, schools, and businesses in regard to services, information, and goods/supplies.",
+            "signsAndSymptoms": [
+              {
+                "title": "unfamiliar with options/procedures for obtaining services"
+              },
+              {
+                "title": "difficulty understanding roles/regulations of service providers"
+              },
+              {
+                "title": "unable to communicate concerns to provider"
+              },
+              {
+                "title": "dissatisfaction with services"
+              },
+              {
+                "title": "inadequate/unavailable resources"
+              },
+              {
+                "title": "language barrier"
+              },
+              {
+                "title": "cultural barrier"
+              },
+              {
+                "title": "educational barrier"
+              },
+              {
+                "title": "transportation barrier"
+              },
+              {
+                "title": "limited access to care/services/goods"
+              },
+              {
+                "title": "unable to use/has inadequate communication devices/equiptment"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Social contact",
+            "description": "Interaction between the individual/family/community and others outside the immediate living area.",
+            "signsAndSymptoms": [
+              {
+                "title": "limited social contact"
+              },
+              {
+                "title": "uses health care provider for social contact"
+              },
+              {
+                "title": "minimal outside stimulation/leisure time activities"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Role change",
+            "description": "Additions to or removal of a set of expected behavioral characteristics.",
+            "signsAndSymptoms": [
+              {
+                "title": "involuntary role reversal"
+              },
+              {
+                "title": "assumes new role"
+              },
+              {
+                "title": "loses previous role"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Interpersonal relationship",
+            "description": "Associations or bonds between the individual/family/community and others.",
+            "signsAndSymptoms": [
+              {
+                "title": "difficulty establishing/maintaining relationships"
+              },
+              {
+                "title": "minimal shared activities"
+              },
+              {
+                "title": "incongruent values/goals/expectations/schedules"
+              },
+              {
+                "title": "inadequate interpersonal communication skills"
+              },
+              {
+                "title": "prolonged, unrelieved tension"
+              },
+              {
+                "title": "inappropriate suspicion/manipulation/control"
+              },
+              {
+                "title": "physically/emotionally abusive to partner"
+              },
+              {
+                "title": "difficulty problem solving without conflict"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Spirituality",
+            "description": "Beliefs and practices that involve faith, religion, values, the spirit, and/or the soul.",
+            "signsAndSymptoms": [
+              {
+                "title": "expresses spiritual concerns"
+              },
+              {
+                "title": "disrupted spiritual rituals"
+              },
+              {
+                "title": "disrupted spiritual trust"
+              },
+              {
+                "title": "conflicting spiritual beliefs and medical/health care regimen"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Grief",
+            "description": "Suffering and distress associated with loss.",
+            "signsAndSymptoms": [
+              {
+                "title": "fails to recognize stages of grief/process of healing"
+              },
+              {
+                "title": "difficulty coping with grief responses"
+              },
+              {
+                "title": "difficulty expressing grief responses"
+              },
+              {
+                "title": "conflicting stages of grief among individuals/families"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Mental health",
+            "description": "Development and use of mental/emotional abilities to adjust to life situations, interact with others, and engage in activities",
+            "signsAndSymptoms": [
+              {
+                "title": "sadness/hopelessness/decreased self-esteem"
+              },
+              {
+                "title": "apprehension/undefined fear"
+              },
+              {
+                "title": "loss of interest/involvement in activities/self-care"
+              },
+              {
+                "title": "narrowed to scattered attention/focus"
+              },
+              {
+                "title": "flat affect"
+              },
+              {
+                "title": "irritable/agitated/aggressive"
+              },
+              {
+                "title": "purposeless/compulsive activity"
+              },
+              {
+                "title": "difficulty managing stress"
+              },
+              {
+                "title": "difficulty managing anger"
+              },
+              {
+                "title": "somatic complaints/fatigue"
+              },
+              {
+                "title": "delusions"
+              },
+              {
+                "title": "hallucinations/illusions"
+              },
+              {
+                "title": "expresses suicidal/homicidal thoughts"
+              },
+              {
+                "title": "attempts suicide/homicide"
+              },
+              {
+                "title": "self-mutilation"
+              },
+              {
+                "title": "mood swings"
+              },
+              {
+                "title": "flash-backs"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Sexuality",
+            "description": "Attitudes, feelings, and behaviors related to intimacy and sexual activity.",
+            "signsAndSymptoms": [
+              {
+                "title": "difficulty recognizing consequences of sexual behavior"
+              },
+              {
+                "title": "difficulty expressing intimacy"
+              },
+              {
+                "title": "sexual identity confusion"
+              },
+              {
+                "title": "sexual value confusion"
+              },
+              {
+                "title": "dissatisfied with sexual relationships"
+              },
+              {
+                "title": "unsafe sexual practices"
+              },
+              {
+                "title": "sexual acting out/provocative behaviors/harassment"
+              },
+              {
+                "title": "sexual perpetration/assault"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Caretaking/parenting",
+            "description": "Providing support, nurturance, stimulation, and physical care for dependent child or adult.",
+            "signsAndSymptoms": [
+              {
+                "title": "difficulty providing physical care/safety"
+              },
+              {
+                "title": "difficulty providing emotional nurturance"
+              },
+              {
+                "title": "difficulty providing cognitive learning experiences and activities"
+              },
+              {
+                "title": "difficulty providing preventive and therapeutic health care"
+              },
+              {
+                "title": "expectations incongruent with stage of growth and development"
+              },
+              {
+                "title": "dissatisfaction/difficulty with responsibilities"
+              },
+              {
+                "title": "difficulty interpreting or responding to verbal/nonverbal communication"
+              },
+              {
+                "title": "neglectful"
+              },
+              {
+                "title": "abusive"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Neglect",
+            "description": "Child or adult deprived of minimally accepted standards of food, shelter, clothing, or care.",
+            "signsAndSymptoms": [
+              {
+                "title": "lacks adequate physical care"
+              },
+              {
+                "title": "lacks emotional nurturance/support"
+              },
+              {
+                "title": "lacks appropriate stimulation/cognitive experiences"
+              },
+              {
+                "title": "inappropiately left alone"
+              },
+              {
+                "title": "lacks necessary supervision"
+              },
+              {
+                "title": "inadequate/delayed medical care"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Abuse",
+            "description": "Child or adult subjected to nonaccidental physical, emotional, or sexual violence or injury.",
+            "signsAndSymptoms": [
+              {
+                "title": "harsh/excessive discipline"
+              },
+              {
+                "title": "welts/burns/other injuries"
+              },
+              {
+                "title": "questionable explanation of injury"
+              },
+              {
+                "title": "attacked verbally"
+              },
+              {
+                "title": "fearful/hypervigilant behavior"
+              },
+              {
+                "title": "violent environment"
+              },
+              {
+                "title": "consistent negative messages"
+              },
+              {
+                "title": "assaulted sexually"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Growth & development",
+            "description": "Progressive physical, emotional, and social maturation along the age continuum from bith to death.",
+            "signsAndSymptoms": [
+              {
+                "title": "abnormal results of developmental screening tests"
+              },
+              {
+                "title": "abnormal weight/height/head circumference in relation growth/aging standards"
+              },
+              {
+                "title": "age-inappropriate behavior"
+              },
+              {
+                "title": "inadequate achieve"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Physiological Domain",
+        "description": "Functions and processes that maintain life.",
+        "problems": [
+          {
+            "title": "Hearing",
+            "description": "Perception of sound by the ears.",
+            "signsAndSymptoms": [
+              {
+                "title": "difficulty hearing normal speech tones"
+              },
+              {
+                "title": "difficulty hearing speech in large group settings"
+              },
+              {
+                "title": "difficulty hearing high frequency sounds"
+              },
+              {
+                "title": "absent/abnormal response to sound"
+              },
+              {
+                "title": "abnormal results of hearing screening test"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Vision",
+            "description": "Act or power of sensing with the eyes.",
+            "signsAndSymptoms": [
+              {
+                "title": "difficulty seeing small print/calibrations"
+              },
+              {
+                "title": "difficulty seeing distant objects"
+              },
+              {
+                "title": "difficulty seeing close objects"
+              },
+              {
+                "title": "absent/abnormal response to visual stimuli"
+              },
+              {
+                "title": "abnormal results of vision screening test"
+              },
+              {
+                "title": "squinting/blinking/tearing/blurring"
+              },
+              {
+                "title": "floaters/flashes"
+              },
+              {
+                "title": "difficulty differentiating colors"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Speech & language",
+            "description": "Use of articulated vocal sounds, symbols, signs, or gestures for communication.",
+            "signsAndSymptoms": [
+              {
+                "title": "absent/abnormal ability to speak/vocalize"
+              },
+              {
+                "title": "absent/abnormal ability to understand"
+              },
+              {
+                "title": "lacks alternative communication skills/gestures"
+              },
+              {
+                "title": "inappropriate sentence structure"
+              },
+              {
+                "title": "limited enunciation/clarity"
+              },
+              {
+                "title": "inappropriate word usage"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Oral health",
+            "description": "Condition of the mouth and gums and the number, type, and arrangement of the teeth.",
+            "signsAndSymptoms": [
+              {
+                "title": "missing/broken/malformed teeth"
+              },
+              {
+                "title": "caries"
+              },
+              {
+                "title": "excess tartar"
+              },
+              {
+                "title": "sore/swollen/bleeding gums"
+              },
+              {
+                "title": "malocclusion"
+              },
+              {
+                "title": "ill-fitting/missing dentures"
+              },
+              {
+                "title": "sensitivity to hot or cold"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Cognition",
+            "description": "Ability to think and use information.",
+            "signsAndSymptoms": [
+              {
+                "title": "diminished judgment"
+              },
+              {
+                "title": "disoriented to time/place/person"
+              },
+              {
+                "title": "limited recall of recent events"
+              },
+              {
+                "title": "limited recall of long past events"
+              },
+              {
+                "title": "limited calculating/sequencing skills"
+              },
+              {
+                "title": "limited concentration"
+              },
+              {
+                "title": "limited reasoning/abstract thinking"
+              },
+              {
+                "title": "impulsiveness"
+              },
+              {
+                "title": "repetitious language/behavior"
+              },
+              {
+                "title": "wanders"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Pain",
+            "description": "Unpleasant sensory and emotional experience associated with actual or potential tissue damage.",
+            "signsAndSymptoms": [
+              {
+                "title": "expresses discomfort/pain"
+              },
+              {
+                "title": "elevated pulse/respirations/blood pressure"
+              },
+              {
+                "title": "compensated movement/guarding"
+              },
+              {
+                "title": "restless behavior"
+              },
+              {
+                "title": "facial grimaces"
+              },
+              {
+                "title": "pallor/perspiration"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Consciousness",
+            "description": "Awareness of and responsiveness to stimuli and the surroundings.",
+            "signsAndSymptoms": [
+              {
+                "title": "lethargic"
+              },
+              {
+                "title": "stuporous"
+              },
+              {
+                "title": "unresponsive"
+              },
+              {
+                "title": "comatose"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Skin",
+            "description": "Natural covering of the body.",
+            "signsAndSymptoms": [
+              {
+                "title": "lesion/pressure ulcer"
+              },
+              {
+                "title": "rash"
+              },
+              {
+                "title": "excessively dry"
+              },
+              {
+                "title": "excessively oily"
+              },
+              {
+                "title": "inflammation"
+              },
+              {
+                "title": "pruritus"
+              },
+              {
+                "title": "drainage"
+              },
+              {
+                "title": "bruising"
+              },
+              {
+                "title": "hypertrophy of nails"
+              },
+              {
+                "title": "delayed incisional healing"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Neuro-musculo-skeletal function",
+            "description": "Ability of nerves, muscles, and bones to perform or coordinate specific movement, sensation, or regulation.",
+            "signsAndSymptoms": [
+              {
+                "title": "limited range of motion"
+              },
+              {
+                "title": "decreased muscle strength"
+              },
+              {
+                "title": "decreased coordination"
+              },
+              {
+                "title": "decreased muscle tone"
+              },
+              {
+                "title": "increased muscle tone"
+              },
+              {
+                "title": "decreased sensation"
+              },
+              {
+                "title": "increased sensation"
+              },
+              {
+                "title": "decreased balance"
+              },
+              {
+                "title": "gait/ambulation disturbance"
+              },
+              {
+                "title": "difficulty transferring"
+              },
+              {
+                "title": "fractures"
+              },
+              {
+                "title": "tremors/seizures"
+              },
+              {
+                "title": "difficulty with thermoregulation"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Respiration",
+            "description": "Inhaling and exhaling air into the body and exchanging oxygen.",
+            "signsAndSymptoms": [
+              {
+                "title": "abnormal breath patterns"
+              },
+              {
+                "title": "unable to breathe independently"
+              },
+              {
+                "title": "cough"
+              },
+              {
+                "title": "unable to cough/expectorate independently"
+              },
+              {
+                "title": "cyanosis"
+              },
+              {
+                "title": "abnormal sputum"
+              },
+              {
+                "title": "noisy respirations"
+              },
+              {
+                "title": "rhinorrhea/nasal congestion"
+              },
+              {
+                "title": "abnormal breath sounds"
+              },
+              {
+                "title": "abnormal respiratory laboratory results"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Circulation",
+            "description": "Pumping blood in adequate amounts and pressure throughout the body.",
+            "signsAndSymptoms": [
+              {
+                "title": "edema"
+              },
+              {
+                "title": "cramping/pain of extremities"
+              },
+              {
+                "title": "decreased pulses"
+              },
+              {
+                "title": "discoloration of skin"
+              },
+              {
+                "title": "temperature change in affected area"
+              },
+              {
+                "title": "varicosities"
+              },
+              {
+                "title": "syncopal episodes (fainting)/dizziness"
+              },
+              {
+                "title": "abnormal blood pressure reading"
+              },
+              {
+                "title": "pulse deficit"
+              },
+              {
+                "title": "irregular heart rate"
+              },
+              {
+                "title": "excessively rapid heart rate"
+              },
+              {
+                "title": "excessively slow heart rate"
+              },
+              {
+                "title": "anginal pain"
+              },
+              {
+                "title": "abnormal heart sounds/murmurs"
+              },
+              {
+                "title": "abnormal clotting"
+              },
+              {
+                "title": "abnormal cardiac laboratory results"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Digestion-hydration",
+            "description": "Process of converting food into forms that can be absorbed and assimilated, and maintaining fluid balance.",
+            "signsAndSymptoms": [
+              {
+                "title": "nausea/vomiting"
+              },
+              {
+                "title": "difficulty/inability to chew/swallow/digest"
+              },
+              {
+                "title": "indigestion"
+              },
+              {
+                "title": "reflux"
+              },
+              {
+                "title": "anorexia"
+              },
+              {
+                "title": "anemia"
+              },
+              {
+                "title": "ascites"
+              },
+              {
+                "title": "jaundice/liver enlargement"
+              },
+              {
+                "title": "decreased skin turgor"
+              },
+              {
+                "title": "cracked lips/dry mouth"
+              },
+              {
+                "title": "electrolyte imbalance"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Bowel function",
+            "description": "Transporting food through the gastrointestinal tract to eliminate wastes.",
+            "signsAndSymptoms": [
+              {
+                "title": "abnormal frequency/consistency of stool"
+              },
+              {
+                "title": "painful defecation"
+              },
+              {
+                "title": "decreased bowel sounds"
+              },
+              {
+                "title": "blood in stools"
+              },
+              {
+                "title": "abnormal color"
+              },
+              {
+                "title": "cramping/abdominal discomfort"
+              },
+              {
+                "title": "incontinent of stool"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Urinary function",
+            "description": "Production and excretion of urine.",
+            "signsAndSymptoms": [
+              {
+                "title": "burning/painful urination"
+              },
+              {
+                "title": "incontinent of urine"
+              },
+              {
+                "title": "urgency/frequency"
+              },
+              {
+                "title": "difficulty initiating urination"
+              },
+              {
+                "title": "difficulty emptying bladder"
+              },
+              {
+                "title": "abnormal amount"
+              },
+              {
+                "title": "hematuria/abnormal color"
+              },
+              {
+                "title": "nocturia"
+              },
+              {
+                "title": "abnormal urinary laboratory results"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Reproductive function",
+            "description": "Condition of the genital organs and breasts and the ability to reproduce.",
+            "signsAndSymptoms": [
+              {
+                "title": "abnormal discharge"
+              },
+              {
+                "title": "abnormal menstrual pattern"
+              },
+              {
+                "title": "difficulty managing menopause/andropause"
+              },
+              {
+                "title": "abnormal lumps/swelling/tenderness of genital organs or breasts"
+              },
+              {
+                "title": "pain during or after sexual intercourse"
+              },
+              {
+                "title": "infertility"
+              },
+              {
+                "title": "impotency"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Pregnancy",
+            "description": "Period from conception to childbirth.",
+            "signsAndSymptoms": [
+              {
+                "title": "difficulty bonding with unborn baby"
+              },
+              {
+                "title": "difficulty coping with body changes"
+              },
+              {
+                "title": "difficulty with prenatal exercise/rest/diet/behaviors"
+              },
+              {
+                "title": "fears delivery procedure"
+              },
+              {
+                "title": "prenatal complications/preterm labor"
+              },
+              {
+                "title": "inadequate social support"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Postpartum",
+            "description": "Six-week period following childbirth.",
+            "signsAndSymptoms": [
+              {
+                "title": "difficulty breast-feeding"
+              },
+              {
+                "title": "difficulty coping with postpartum changes"
+              },
+              {
+                "title": "difficulty with postpartum exercise/rest/diet/behaviors"
+              },
+              {
+                "title": "abnormal bleeding/vaginal discharge"
+              },
+              {
+                "title": "postpartum complications"
+              },
+              {
+                "title": "abnormal depressed feelings"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Communicable/infectious condition",
+            "description": "State in which organisms invade/infest and produce superficial or systemic illness with the potential for spreading or transmission.",
+            "signsAndSymptoms": [
+              {
+                "title": "infection"
+              },
+              {
+                "title": "infestation"
+              },
+              {
+                "title": "fever"
+              },
+              {
+                "title": "biological hazards"
+              },
+              {
+                "title": "positive screening/culture/laboratory results"
+              },
+              {
+                "title": "inadequate supplies/equipment/policies to prevent transmission"
+              },
+              {
+                "title": "does not follow infection control regimen"
+              },
+              {
+                "title": "inadequate immunity"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Health-related Behaviors Domain",
+        "description": "Patterns of activity that maintain or promote wellness, promote recovery, and decrease the risk of disease.",
+        "problems": [
+          {
+            "title": "Nutrition",
+            "description": "Select, consume, and use food and fluids for energy, maintenance, growth, and health.",
+            "signsAndSymptoms": [
+              {
+                "title": "overweight: adult BMI 25.0 or more; child BMI 95th percentile or more"
+              },
+              {
+                "title": "underweight: adult BMI 18.5 or less; child BMI 5th percentile or less"
+              },
+              {
+                "title": "lacks established standards for daily caloric/fluid intake"
+              },
+              {
+                "title": "exceeds established standards for daily caloric/fluid intake"
+              },
+              {
+                "title": "unbalanced diet"
+              },
+              {
+                "title": "improper feeding schedule for age"
+              },
+              {
+                "title": "does not follow recommended nutrition plan"
+              },
+              {
+                "title": "unexplained/progressive weight loss"
+              },
+              {
+                "title": "unable to obtain/prepare food"
+              },
+              {
+                "title": "hypoglycemia"
+              },
+              {
+                "title": "hyperglycemia"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Sleep & rest patterns",
+            "description": "Periods of suspended motor and sensory activity and periods of inactivity, repose, or mental calm.",
+            "signsAndSymptoms": [
+              {
+                "title": "sleep/rest pattern disrupts family"
+              },
+              {
+                "title": "frequently wakes during night"
+              },
+              {
+                "title": "sleepwalking"
+              },
+              {
+                "title": "insomnia"
+              },
+              {
+                "title": "nightmares"
+              },
+              {
+                "title": "insufficient sleep/rest for age/physical condition"
+              },
+              {
+                "title": "sleep apnea"
+              },
+              {
+                "title": "snoring"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Physical activity",
+            "description": "State or quality of body movements during daily living.",
+            "signsAndSymptoms": [
+              {
+                "title": "sedentary life style"
+              },
+              {
+                "title": "inadequate/inconsistent exercise routine"
+              },
+              {
+                "title": "inappropriate type/amount of exercise for age/physical condition"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Personal care",
+            "description": "Management of personal cleanliness and dressing.",
+            "signsAndSymptoms": [
+              {
+                "title": "difficulty laundering clothing"
+              },
+              {
+                "title": "difficulty with bathing"
+              },
+              {
+                "title": "difficulty with toileting activities"
+              },
+              {
+                "title": "difficulty dressing lower body"
+              },
+              {
+                "title": "difficulty dressing upper body"
+              },
+              {
+                "title": "foul body odor"
+              },
+              {
+                "title": "difficulty shampooing/combing hair "
+              },
+              {
+                "title": "difficulty brushing/flossing/mouth care"
+              },
+              {
+                "title": "unwilling/unable/forgets to complete personal care activities"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Substance use",
+            "description": "Consumption of medicines, recreational drugs, or other materials likely to cause mood changes and/or psychological/physical dependence, illness, and disease.",
+            "signsAndSymptoms": [
+              {
+                "title": "abuses over-the-counter/prescription medications"
+              },
+              {
+                "title": "uses 'street' - recreatinal drugs"
+              },
+              {
+                "title": "abuses alcohol"
+              },
+              {
+                "title": "smokes/uses tobacco products"
+              },
+              {
+                "title": "difficulty performing normal routines"
+              },
+              {
+                "title": "reflex disturbances"
+              },
+              {
+                "title": "behavior change"
+              },
+              {
+                "title": "exposure to cigarette/cigar smoke"
+              },
+              {
+                "title": "buys/sells illegal substances"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Family planning",
+            "description": "Practices designed to plan and space pregnancy within the context of values, attitudes, and beliefs.",
+            "signsAndSymptoms": [
+              {
+                "title": "inappropriate/insufficient knowledge about family planning methods"
+              },
+              {
+                "title": "inappropriate/insufficient knowledge about preconception health practices"
+              },
+              {
+                "title": "inaccurate/inconsistent use of family planning methods"
+              },
+              {
+                "title": "dissatisfied with present family planning method"
+              },
+              {
+                "title": "fears others' reactions regarding family planning choices"
+              },
+              {
+                "title": "difficulty obtaining family planning methods"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Health care supervision",
+            "description": "Management of the health care treatment plan by health care providers.",
+            "signsAndSymptoms": [
+              {
+                "title": "fails to obtain routine/preventive health care"
+              },
+              {
+                "title": "fails to seek care for symptoms requiring evaluation/treatment"
+              },
+              {
+                "title": "fails to return as requested to health care provider"
+              },
+              {
+                "title": "inability to coordinate multiple appointments/treatment plans"
+              },
+              {
+                "title": "inconsistent source of health care"
+              },
+              {
+                "title": "inadequate source of health care"
+              },
+              {
+                "title": "inadequate treatment plan"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          },
+          {
+            "title": "Medication regimen",
+            "description": "Use or application of over-the-counter and prescribed/recommended medications and infusions to meet guidelines for therapeutic action, safety, and schedule.",
+            "signsAndSymptoms": [
+              {
+                "title": "does not follow recommended dosage/schedule"
+              },
+              {
+                "title": "evidence of side effects/adverse reactions"
+              },
+              {
+                "title": "inadequate system for taking medication"
+              },
+              {
+                "title": "improper storage of medication"
+              },
+              {
+                "title": "fails to obtain refills appropriately"
+              },
+              {
+                "title": "fails to obtain immunizations"
+              },
+              {
+                "title": "inadequate medication regimen"
+              },
+              {
+                "title": "unable to take medications without help"
+              },
+              {
+                "title": "other"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "modifiers": {
+      "scope": [
+        {
+          "title": "Individual",
+          "description": "A person who lives alone or a single-family member who experiences a health-related problem."
+        },
+        {
+          "title": "Family",
+          "description": "A social unit or related group of individuals who live together and experience a health-related problem."
+        },
+        {
+          "title": "Community",
+          "description": "The individuals and/or families who comprise a group, neighborhood, or other geographic district that experience a health-related problem."
+        }
+      ],
+      "severity": [
+        {
+          "title": "Health Promotion",
+          "description": "Client interest in increasing knowledge, behavior, and health expectations and developing more assets and resources that maintain or enhance well-being in the absence of risk factors, signs, or symptoms."
+        },
+        {
+          "title": "Potential",
+          "description": "Client status characterized by the presence of certain health patterns, practices, behaviors, or risk factors that may preclude optimal health and the absence of signs and symptoms."
+        },
+        {
+          "title": "Actual",
+          "description": "Client status characterized by one or more existing signs and symptoms that may preclude optimal health."
+        }
+      ]
+    }
+  },
+  "interventionScheme": {
+    "title": "Intervention Scheme",
+    "categories": [
+      {
+        "title": "Teaching, Guidance, and Counseling",
+        "description": "Activities designed to provide information and materials, encourage action and responsibility for self-care and coping, and assist the individual, family, or community to make decisions and solve problems."
+      },
+      {
+        "title": "Treatments and Procedures",
+        "description": "Technical activities such as wound care, specimen collection, resistive exercises, and medication prescriptions that are designed to prevent, decrease, or alleviate signs and symptoms for the individual, family, or community."
+      },
+      {
+        "title": "Case Management",
+        "description": "Activities such as coordination, advocacy, and referral that facilitate service delivery, promote assertiveness, guide the individual, family, or community toward use of appropriate resources, and improve communication among health and human service providers."
+      },
+      {
+        "title": "Surveillance",
+        "description": "Activities such as detection, measurement, critical analysis, and monitoring intended to identify the individual, family, or community's status in relation to a given condition or phenomenon."
+      }
+    ],
+    "targets": [
+      {
+        "title": "anatomy/physiology",
+        "description": "Structure and function of the human body."
+      },
+      {
+        "title": "anger management",
+        "description": "Activities that decrease or control negative feelings and interactions, including violence."
+      },
+      {
+        "title": "behavior modification",
+        "description": "Activities that change habits, conduct, or patterns of action."
+      },
+      {
+        "title": "bladder care",
+        "description": "Activities that promote urinary bladder function such as bladder retraining, catheter changes, and catheter irrigation."
+      },
+      {
+        "title": "bonding/attachment",
+        "description": "A mutual, positive relationship between two people such as a parent/caregiver and an infant/child."
+      },
+      {
+        "title": "bowel care",
+        "description": "Activities that promote bowel function such as bowel training and enemas."
+      },
+      {
+        "title": "cardiac care",
+        "description": "Activities that promote cardiac or circulatory function such as energy conservation and fluid balance."
+      },
+      {
+        "title": "caretaking/parenting skills",
+        "description": "Activities such as feeding, bathing, discipline, nurturing, and stimulation provided to a dependent child or adult."
+      },
+      {
+        "title": "cast care",
+        "description": "Activities that promote cleanliness, dryness, support, alignment, and relief of pain, pressure, and constriction of an injured body part immobilized by a cast, splint, or other device."
+      },
+      {
+        "title": "communication",
+        "description": "Exchange of verbal or nonverbal information between the individual/family/community and others."
+      },
+      {
+        "title": "community outreach worker services",
+        "description": "Assistance with managing health care, transportation, household, and child/adult care responsibilities provided by qualified employees under the supervision of professional health care providers."
+      },
+      {
+        "title": "continuity of care",
+        "description": "Communication of information among providers/organizations to provide safe and effective care and decrease duplication of efforts/services."
+      },
+      {
+        "title": "coping skills",
+        "description": "Ability to effectively manage challenges and changes such as illness, disability, loss of income, birth of a child, or death of a family member."
+      },
+      {
+        "title": "day care/respite",
+        "description": "Individuals or organizations that provide child/adult supervision while the parent/usual caregiver attends school, works, or has relief from usual responsibilities."
+      },
+      {
+        "title": "dietary management",
+        "description": "Nourishment with balanced food and fluids that sustain life, provide energy, and promote growth and health."
+      },
+      {
+        "title": "discipline",
+        "description": "Nurturing practices that promote appropriate behavior, conduct, and self-control."
+      },
+      {
+        "title": "dressing change/wound care",
+        "description": "Activities that promote wound healing and prevent infection such as observing, measuring, cleansing, irrigating, and/or covering a wound, lesion, or incision."
+      },
+      {
+        "title": "durable medical equipment ",
+        "description": "Nondisposable items used while providing care such as special beds, walkers, and apnea monitors."
+      },
+      {
+        "title": "education",
+        "description": "Formal programs that offer general, technical, or individualized studies for students of all ages."
+      },
+      {
+        "title": "employment",
+        "description": "Occupation that provides income."
+      },
+      {
+        "title": "end-of-life care",
+        "description": "Activities that provide physical comfort and emotional calm for those who are dying by involving/including family, friends, spiritual concerns, rituals, pain control, and physical care."
+      },
+      {
+        "title": "environment",
+        "description": "Physical surroundings, conditions, or influences in the residence, neighborhood, and/or community"
+      },
+      {
+        "title": "exercises",
+        "description": "Therapeutic physical activities such as active/passive range of motion, isometrics, stretching, and weight lifting."
+      },
+      {
+        "title": "family planning care ",
+        "description": "Activities that support consideration and use of methods to prepare for and space pregnancy."
+      },
+      {
+        "title": "feeding procedures",
+        "description": "Provision of food or fluids using methods such as breast, formula, spoon, tube, and intravenous solutions."
+      },
+      {
+        "title": "finances",
+        "description": "Management of income and expenses."
+      },
+      {
+        "title": "gait training",
+        "description": "Systematic activities that promote walking with or without assistive devices."
+      },
+      {
+        "title": "genetics",
+        "description": "Diagnosis, consultation, and procedures intended to prevent, identify, or treat birth defects, congenital anomalies, or conditions."
+      },
+      {
+        "title": "growth/development care",
+        "description": "Activities that promote progressive maturation in relation to age such as measuring weight, height, and head circumference and stimulating achievement of developmental milestones."
+      },
+      {
+        "title": "home",
+        "description": "Place of residence."
+      },
+      {
+        "title": "homemaking/housekeeping",
+        "description": "Management of activities such as cleaning, laundry, and food preparation in the home or the health care facility."
+      },
+      {
+        "title": "infection precautions",
+        "description": "Activities that decrease the incidence and transmission of contagious disease such as hand washing, isolation, specimen collection, contact follow—up, reporting procedures, and environmental control."
+      },
+      {
+        "title": "interaction",
+        "description": "Reciprocal action or influence among people including parent-child, parent-teacher, and nurse-client."
+      },
+      {
+        "title": "interpreter/translator services",
+        "description": "Assistance with verbal or written communication in other languages provided by qualified employees who are under the supervision of professional health care practitioners."
+      },
+      {
+        "title": "laboratory findings",
+        "description": "Results of fluid and tissue tests such as urine and blood analysis."
+      },
+      {
+        "title": "legal system",
+        "description": "Authority, rules of conduct, or administration of the law."
+      },
+      {
+        "title": "medical/dental care",
+        "description": "Assessment/diagnosis and treatment provided by physicians, dentists, and their staff or assistants."
+      },
+      {
+        "title": "medication action/side effects",
+        "description": "Positive and/or negative consequences of medications."
+      },
+      {
+        "title": "medication administration",
+        "description": "Activities that involve applying or giving medications and that are completed by clients, parents/caregivers, or health care practitioners."
+      },
+      {
+        "title": "medication coordination/ordering",
+        "description": "Communication with those who prescribe and dispense medications and the individual/family/community support systems to ensure that appropriate medications and supplies are obtained in a timely manner."
+      },
+      {
+        "title": "medication prescription",
+        "description": "A formalized pharmaceutical order/official request for medications."
+      },
+      {
+        "title": "medication set-up",
+        "description": "Act of preparing for medication administration by filling/checking an oral medication organizer, prefilling syringes, or inserting intravenous access devices."
+      },
+      {
+        "title": "mobility/transfers",
+        "description": "Body movements that change position or allow participation in activities such as walking."
+      },
+      {
+        "title": "nursing care",
+        "description": "Assessment/diagnosis and treatment provided by nurses and their staff or assistants."
+      },
+      {
+        "title": "nutritionist care",
+        "description": "Assessment/diagnosis and treatment provided by nutritionists/registered dieticians and their staff or assistants."
+      },
+      {
+        "title": "occupational therapy care",
+        "description": "Assessment/diagnosis and treatment provided by occupational therapists and their staff or assistants."
+      },
+      {
+        "title": "ostomy care",
+        "description": "Activities to manage elimination of urine or stool through artificial openings such as a colostomy and ileostomy."
+      },
+      {
+        "title": "other community resources",
+        "description": "Organizations or groups that offer goods or services not specifically identified in other targets such as exercise facilities, food pantries/distribution centers, or faith communities."
+      },
+      {
+        "title": "paraprofessional/aide care",
+        "description": "Assistance provided by qualified aides, home health aides, and nursing assistants under the supervision of professional health care practitioners."
+      },
+      {
+        "title": "personal hygiene",
+        "description": "Individual grooming activities such as bathing, shampooing, and toileting."
+      },
+      {
+        "title": "physical therapy care",
+        "description": "Assessment/diagnosis and treatment provided by physical therapists and their staff or assistants."
+      },
+      {
+        "title": "positioning",
+        "description": "Alignment of the body to promote comfort and function."
+      },
+      {
+        "title": "recreational therapy care",
+        "description": "Assessment/diagnosis and treatment provided by recreational therapists and their staff or assistants."
+      },
+      {
+        "title": "relaxation/breathing techniques",
+        "description": "Activities that relieve muscle tension, induce a quieting body response, and rebuild energy resources such as deep breathing exercises, guided imagery, meditation, and massage."
+      },
+      {
+        "title": "respiratory care",
+        "description": "Activities that promote respiratory or pulmonary function such as suctioning and nebulizer treatments."
+      },
+      {
+        "title": "respiratory therapy care",
+        "description": "Assessment/diagnosis and treatment provided by respiratory therapists and staff or assistants."
+      },
+      {
+        "title": "rest/sleep",
+        "description": "Periodic state of quiet and varying degrees of consciousness."
+      },
+      {
+        "title": "safety",
+        "description": "Freedom from risk, the occurrence of injury, or loss."
+      },
+      {
+        "title": "screening procedures",
+        "description": "Evaluation strategies used to identify risk for conditions, diagnose disease early, and monitor change/progression over time."
+      },
+      {
+        "title": "sickness/injury care",
+        "description": "Activities in response to illness or accidents such as first aid and temperature taking."
+      },
+      {
+        "title": "signs/symptoms-mental/emotional",
+        "description": "Objective or subjective evidence of mental/emotional health problems such as depression, confusion, or agitation."
+      },
+      {
+        "title": "signs/symptoms-physical",
+        "description": "Objective or subjective evidence of physical health problems such as fever, sudden weight loss, or statement of pain."
+      },
+      {
+        "title": "skin care",
+        "description": "Activities that promote skin integrity such as application of lotion and massage."
+      },
+      {
+        "title": "social work/counseling care",
+        "description": "Assessment/diagnosis and treatment provided by social workers, counselors, and their staff or assistants."
+      },
+      {
+        "title": "specimen collection",
+        "description": "Activities designed to obtain samples of human and animal tissue, fluids, secretions, or excreta such as blood, urine, stool, sputum, and drainage."
+      },
+      {
+        "title": "speech and language pathology care",
+        "description": "Assessment/diagnosis and treatment provided by speech and language pathologists and their staff or assistants."
+      },
+      {
+        "title": "spiritual care",
+        "description": "Activities that promote personal serenity and comfort and involve spiritual concerns/practices."
+      },
+      {
+        "title": "stimulation/nurturance",
+        "description": "Activities that promote healthy physical, intellectual, and emotional development."
+      },
+      {
+        "title": "stress management",
+        "description": "Cognitive, emotional, and physical activities that promote healthy functioning during difficult life circumstances."
+      },
+      {
+        "title": "substance use cessation",
+        "description": "Activities that promote discontinuing use of harmful/addicting materials."
+      },
+      {
+        "title": "supplies",
+        "description": "Disposable items used while providing care such as dressings, syringes, tubing, diapers, and baby bottles."
+      },
+      {
+        "title": "support group",
+        "description": "Organized sources of information and assistance such as focused classes and organizations, telephone reassurance, and reliable Internet sites that address a specific topic such as parenting, alcoholism, obesity, and Alzheimer's disease."
+      },
+      {
+        "title": "support system",
+        "description": "Circle of family, friends, and associates that provide love, care, and assistance to promote health and manage illness."
+      },
+      {
+        "title": "transportation",
+        "description": "Methods of travel such as a car, bus, taxi, scooter, or cart."
+      },
+      {
+        "title": "wellness",
+        "description": "Practices that promote physical and mental health such as exercise, nutrition, and immunizations."
+      },
+      {
+        "title": "other",
+        "description": "Persons, places, things, or activities not identified in this list."
+      }
+    ]
+  },
+  "problemRatingScale": {
+    "title": "Problem Rating Scale for Outcomes",
+    "ratings": [
+      {
+        "title": "Status",
+        "description": "Condition of the client in relation to objective and subjective defining characteristics.",
+        "scale": [
+          {
+            "title": "Extreme signs/symptoms"
+          },
+          {
+            "title": "Severe signs/symptoms"
+          },
+          {
+            "title": "Moderate signs/symptoms"
+          },
+          {
+            "title": "Minimal signs/symptoms"
+          },
+          {
+            "title": "No signs/symptoms"
+          }
+        ]
+      },
+      {
+        "title": "Knowledge",
+        "description": "Ability of the client to remember and interpret information.",
+        "scale": [
+          {
+            "title": "No knowledge"
+          },
+          {
+            "title": "Minimal knowledge"
+          },
+          {
+            "title": "Basic knowledge"
+          },
+          {
+            "title": "Adequate knowledge"
+          },
+          {
+            "title": "Superior knowledge"
+          }
+        ]
+      },
+      {
+        "title": "Behavior",
+        "description": "Observable responses, actions, or activities of the client fitting the occasion or purpose.",
+        "scale": [
+          {
+            "title": "Not appropriate behavior"
+          },
+          {
+            "title": "Rarely appropriate behavior"
+          },
+          {
+            "title": "Inconsistently appropriate behavior"
+          },
+          {
+            "title": "Usually appropriate behavior"
+          },
+          {
+            "title": "Consistently appropriate behavior"
+          }
+        ]
+      }
+    ]
+  }
+}

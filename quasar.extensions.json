@@ -1,0 +1,29 @@
+{
+  "@quasar/typescript": {
+    "webpack": "plugin",
+    "rename": true,
+    "vscode": true,
+    "prettier": false
+  },
+  "@quasar/icon-genie": {
+    "minify_dev": "pngquant",
+    "minify_build": "optipng",
+    "cordova": {
+      "background_color": "#ffffff",
+      "splashscreen_type": "pure"
+    },
+    "build_always": false,
+    "__internal": {
+      "dev": {
+        "spa": {
+          "iconHash": "1ff9fb554109270c1b5836c0c6a54c2d"
+        }
+      },
+      "build": {
+        "spa": {
+          "iconHash": "1ff9fb554109270c1b5836c0c6a54c2d"
+        }
+      }
+    }
+  }
+}
