@@ -1496,26 +1496,26 @@
       },
       {
         "title": "Bereich Gesundheitsverhalten",
-        "description": "Aktivitätsmuster, die das Wohlbefinden erhalten oder fördern, die Genesung stärken und das Risiko von Krankheiten verringern.",
+        "description": "Aktivitäten, die das Wohlbefinden erhalten oder fördern, die Genesung stärken und das Risiko von Krankheiten verringern.",
         "problems": [
           {
             "title": "Ernährung",
-            "description": "Wählen, konsumieren und verwenden Sie Lebensmittel und Flüssigkeiten für Energie, Wartung, Wachstum und Gesundheit.",
+            "description": "Auswahl und Konsum von Lebensmitteln und Flüssigkeiten zur körperlichen Energiezufuhr, Aufrechterhaltung, Wachstum und Gesundheit.",
             "signsAndSymptoms": [
               {
-                "title": "Übergewicht: Erwachsener BMI 25,0 oder mehr; Kind BMI 95. Perzentil oder mehr",
+                "title": "Übergewicht: Erwachsener BMI von 25,0 oder mehr; Kind BMI 95. Altersperzentil oder mehr",
                 "code": "12"
               },
               {
-                "title": "Untergewicht: Erwachsener BMI 18,5 oder weniger; Kind BMI 5. Perzentil oder weniger",
+                "title": "Untergewicht: Erwachsener BMI von 18,5 oder weniger; Kind BMI 5. Altersperzentil oder weniger",
                 "code": "13"
               },
               {
-                "title": "Fehlen etablierter Standards für die tägliche Kalorien- oder Flüssigkeitsaufnahme",
+                "title": "unterschreitet die gängigen Normen für die tägliche Kalorien- oder Flüssigkeitsaufnahme",
                 "code": "03"
               },
               {
-                "title": "übertrifft die etablierten Standards für die tägliche Kalorien- oder Flüssigkeitsaufnahme.",
+                "title": "übertrifft die gängigen Normen für die tägliche Kalorien- oder Flüssigkeitsaufnahme",
                 "code": "04"
               },
               {
@@ -1523,7 +1523,7 @@
                 "code": "05"
               },
               {
-                "title": "unsachgemäßer Fütterungsplan für das Alter",
+                "title": "ungeeigneter Essensrhythmus für das Alter",
                 "code": "06"
               },
               {
@@ -1531,19 +1531,19 @@
                 "code": "07"
               },
               {
-                "title": "unerklärlicher oder progressiver Gewichtsverlust",
+                "title": "unerklärlicher oder fortschreitender Gewichtsverlust",
                 "code": "08"
               },
               {
-                "title": "nicht in der Lage, Lebensmittel zu beschaffen oder zubereiten",
+                "title": "nicht in der Lage, Lebensmittel zu beschaffen oder zuzubereiten",
                 "code": "14"
               },
               {
-                "title": "Hypoglykämie",
+                "title": "Hypoglykämie (Unterzuckerung)",
                 "code": "09"
               },
               {
-                "title": "Hyperglykämie",
+                "title": "Hyperglykämie (Überzucker)",
                 "code": "10"
               },
               {
@@ -1554,11 +1554,11 @@
             "code": "35"
           },
           {
-            "title": "Schlaf- und Ruhemuster",
-            "description": "Perioden der suspendierten motorischen und sensorischen Aktivität und Perioden der Inaktivität, Ruhe oder geistigen Ruhe.",
+            "title": "Schlaf- und Ruhezeiten",
+            "description": "Zeiträume ohne motorische und sensorische Aktivität und Zeiträume der Inaktivität, Erholung oder geistigen Ruhe.",
             "signsAndSymptoms": [
               {
-                "title": "Schlaf oder Ruhemuster stört die Familie",
+                "title": "Schlaf- oder Ruhezeiten stören die Familie",
                 "code": "01"
               },
               {
@@ -1570,15 +1570,15 @@
                 "code": "03"
               },
               {
-                "title": "Schlaflosigkeit",
+                "title": "Schlafstörung",
                 "code": "04"
               },
               {
-                "title": "Alpträume",
+                "title": "Albträume",
                 "code": "05"
               },
               {
-                "title": "unzureichender Schlaf oder Ruhezustand für Alter oder Körperliche Verfassung",
+                "title": "unzureichender Schlaf oder Ruhe für das Alter oder die körperliche Verfassung",
                 "code": "06"
               },
               {
@@ -1598,18 +1598,18 @@
           },
           {
             "title": "Körperliche Aktivität",
-            "description": "Zustand oder Qualität der Körperbewegungen im täglichen Leben.",
+            "description": "Zustand oder Qualität der Körperbewegung im täglichen Leben.",
             "signsAndSymptoms": [
               {
-                "title": "sitzender Lebensstil",
+                "title": "bewegungsarme Lebensweise",
                 "code": "01"
               },
               {
-                "title": "unzureichende oder inkonsistente Trainingsroutine",
+                "title": "unzureichende oder inkonsistente Körpertrainings-Routine",
                 "code": "02"
               },
               {
-                "title": "unangemessene Art oder Anzahl der Übungen für das Alter oder den körperlichen Zustand",
+                "title": "unangemessene Art oder Menge von Übungen für das Alter oder die körperliche Verfassung",
                 "code": "03"
               },
               {
@@ -1624,7 +1624,7 @@
             "description": "Handhabung der persönlichen Sauberkeit und Kleidung.",
             "signsAndSymptoms": [
               {
-                "title": "Schwierigkeiten beim Waschen von Kleidung",
+                "title": "Schwierigkeiten beim Wäsche waschen",
                 "code": "01"
               },
               {
@@ -1668,14 +1668,14 @@
           },
           {
             "title": "Psychoaktive Substanzen",
-            "description": "Konsum von Medikamenten, Freizeitdrogen oder anderen Materialien, die Stimmungsschwankungen, psychische oder physische Abhängigkeit oder Erkrankungen verursachen können.",
+            "description": "Konsum von Medikamenten, Straßendrogen oder anderen Stoffen, die Stimmungsveränderungen, psychische oder physische Abhängigkeit oder Erkrankungen verursachen können.",
             "signsAndSymptoms": [
               {
                 "title": "Missbrauch von rezeptfreien oder verschreibungspflichtigen Medikamenten",
                 "code": "08"
               },
               {
-                "title": "benutzt \"Straße\" - Freizeitdrogen",
+                "title": "konsumiert Straßendrogen",
                 "code": "09"
               },
               {
@@ -1683,7 +1683,7 @@
                 "code": "02"
               },
               {
-                "title": "raucht und verwendet Tabakwaren",
+                "title": "raucht oder konsumiert Tabakwaren",
                 "code": "03"
               },
               {
@@ -1699,7 +1699,7 @@
                 "code": "06"
               },
               {
-                "title": "Belastung durch Zigarette oder Zigarrenrauch",
+                "title": "ist Tabakrauch ausgesetzt",
                 "code": "10"
               },
               {
@@ -1715,14 +1715,14 @@
           },
           {
             "title": "Familienplanung",
-            "description": "Praktiken, die darauf abzielen, die Schwangerschaft im Kontext von Werten, Einstellungen und Überzeugungen zu planen und zu gestalten.",
+            "description": "Handlungen, die darauf abzielen, die Schwangerschaft zu planen und zu gestalten entsprechend der jeweiligen Werte, Einstellungen und Überzeugungen.",
             "signsAndSymptoms": [
               {
-                "title": "unangemessenes oder ungültiges Wissen über Methoden der Familienplanung",
+                "title": "unangemessenes oder unzureichendes Wissen über Methoden der Familienplanung",
                 "code": "01"
               },
               {
-                "title": "unangemessenes oder unzureichendes Wissen über gesundheitliche Praktiken vor der Empfängnis",
+                "title": "unangemessenes oder unzureichendes Wissen über gesundheitliche Praktiken vor der Schwangerschaft",
                 "code": "05"
               },
               {
@@ -1734,11 +1734,11 @@
                 "code": "03"
               },
               {
-                "title": "befürchtet die Reaktionen anderer auf die Wahl der Familienplanung.",
+                "title": "befürchtet die Reaktionen anderer auf die Entscheidungen zur Familienplanung",
                 "code": "06"
               },
               {
-                "title": "Schwierigkeiten bei der Beschaffung von Methoden der Familienplanung",
+                "title": "Schwierigkeiten beim Einholen von Familienplanungsmethoden",
                 "code": "07"
               },
               {
@@ -1749,31 +1749,31 @@
             "code": "40"
           },
           {
-            "title": "Gesundheitsüberwachung",
-            "description": "Verwaltung des Gesundheitsversorgungsplans durch Gesundheitsdienstleister.",
+            "title": "Überwachung der Gesundheitsversorgung",
+            "description": "Verwaltung des Behandlungsplans durch Gesundheitsdienstleister.",
             "signsAndSymptoms": [
               {
-                "title": "keine routinemäßige oder präventive Gesundheitsversorgung erhält.",
+                "title": "erhält keine routinemäßige oder präventive Gesundheitsversorgung",
                 "code": "01"
               },
               {
-                "title": "keine Behandlung von Symptomen sucht, die eine Bewertung oder Behandlung erfordern.",
+                "title": "sucht keine Hilfe bei Symptomen, die eine Begutachtung oder Behandlung erfordern",
                 "code": "02"
               },
               {
-                "title": "nicht wie gewünscht an den Leistungserbringer zurückkehrt.",
+                "title": "nicht wie gewünscht zum Gesundheitsdienstleister zurückgekehrt",
                 "code": "03"
               },
               {
-                "title": "Unfähigkeit, mehrere Termine  oder  Behandlungspläne zu koordinieren",
+                "title": "Unfähigkeit mehrere Termine oder Behandlungspläne zu koordinieren",
                 "code": "04"
               },
               {
-                "title": "inkonsistente Quelle der Gesundheitsversorgung",
+                "title": "inkonsistente Bezugsquelle von Gesundheitsversorgung",
                 "code": "05"
               },
               {
-                "title": "unzureichende Quelle der Gesundheitsversorgung",
+                "title": "unzureichende Bezugsquelle von Gesundheitsversorgung",
                 "code": "08"
               },
               {
@@ -1788,7 +1788,7 @@
             "code": "41"
           },
           {
-            "title": "Medikamenteneinnahme",
+            "title": "Medikation",
             "description": "Gebrauch oder Anwendung von rezeptfreien, verschriebenen oder empfohlenen Medikamenten und Infusionen gemäß den Vorgaben zur therapeutischen Wirkung, Sicherheit und Zeitablauf.",
             "signsAndSymptoms": [
               {
@@ -1816,7 +1816,7 @@
                 "code": "06"
               },
               {
-                "title": "unangemessene Medikamenteneinnahme",
+                "title": "unangemessene medikamentöse Behandlung",
                 "code": "08"
               },
               {
