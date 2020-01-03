@@ -68,6 +68,15 @@ export default createMutations<StoreState>()({
         problemRecord.resolvedAt = new Date();
     },
 
+    dismissProblemRecord(state, payload) {
+        let problemRecord = store.getters.getProblemRecordById(payload);
+        if (!problemRecord) {
+            return;
+        }
+
+        problemRecord.resolvedAt = new Date();
+    },
+
     deleteDraftProblemRecord(state, payload) {
         let customer = store.getters.getCustomer(payload);
         if (!customer) {
