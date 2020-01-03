@@ -8,6 +8,51 @@
         </div>
       </div>
       <div v-else class="text-h6">
+        <span class="text-classification q-mr-md">{{
+          problem.title || $t("unspecifiedProblem")
+        }}</span>
+        <span class="text-subtitle2 text-weight-light q-mr-sm">
+          <q-chip
+            size="12px"
+            dense
+            color="transparent"
+            :icon="scopeIcon"
+            text-color="classification"
+            :label="(problem.titles || {}).scope"
+            class="text-weight-medium"
+          />
+          <q-chip
+            size="12px"
+            dense
+            color="transparent"
+            :icon="priorityIcon"
+            text-color="classification"
+            :label="$t((problem.titles || {}).priorityKey)"
+            class="text-weight-medium"
+          />
+        </span>
+        <q-btn
+          v-if="!isDraft && !problem.isHighPriority"
+          :title="$t('prioritizeProblem')"
+          icon="fas fa-arrow-up"
+          @click="prioritizeProblemRecord"
+          round
+          outline
+          size="sm"
+          color="primary"
+          class="q-mr-xs"
+        />
+        <q-btn
+          v-if="!isDraft"
+          :title="$t('problemDismissal')"
+          icon="done_outline"
+          @click="$store.commit('dismissProblemRecord', params)"
+          round
+          outline
+          size="sm"
+          color="primary"
+          class="q-mr-xs"
+        />
         <q-btn
           v-if="isDraft"
           :label="$t('editDraft')"
@@ -16,31 +61,22 @@
           rounded
           unelevated
           dense
-          size="sm"
+          size="md"
           color="negative"
-          class="q-mr-xs q-px-sm"
-          style="font-size: 56%"
+          class="q-mr-xs q-px-xs"
         />
         <q-btn
           v-if="isDraft"
-          :label="$t('delete')"
-          icon="close"
+          icon="delete_forever"
+          :title="$t('delete')"
           @click="$store.commit('deleteDraftProblemRecord', params)"
-          rounded
-          unelevated
           dense
-          size="sm"
+          round
+          unelevated
+          size="md"
           color="negative"
-          class="q-mr-sm q-px-sm"
-          style="font-size: 56%"
+          class="q-mr-sm"
         />
-        <span class="text-classification">{{
-          problem.title || $t("unspecifiedProblem")
-        }}</span>
-        <span class="text-subtitle2 text-weight-light q-ml-xs">
-          {{ $t((problem.titles || {}).priorityKey) }},
-          {{ (problem.titles || {}).scope }}
-        </span>
       </div>
     </q-card-section>
     <q-card-section v-if="problem.priorityDetails">
@@ -114,15 +150,17 @@
     <q-card-section
       v-if="lastOutcome || (isInteractive && problem.isHighPriority)"
     >
-      <div class="text-subtitle1 text-weight-bold">
-        <span class="text-outcome">{{ $tc("outcome", 2) }}</span>
+      <div class="text-subtitle1 text-weight-bold q-mb-sm">
+        <span class="text-outcome q-mr-md">{{ $tc("outcome", 2) }}</span>
         <q-btn
           v-if="isInteractive"
-          :label="$t('newRating')"
+          :title="$t('newRating')"
+          icon="add"
           :to="{ name: 'outcome', params: params }"
+          round
+          outline
+          size="sm"
           color="primary"
-          flat
-          class="q-ml-xs"
         />
       </div>
       <div v-if="lastOutcome">
@@ -229,6 +267,25 @@ export default class ProblemSummary extends Vue {
   get isInteractive() {
     return !this.isDraft && !this.$props.isSummary;
   }
+  get scopeIcon() {
+    const scope = this.problem.scope;
+    if (scope == 0) {
+      return "fas fa-user";
+    } else if (scope == 1) {
+      return "fas fa-user-friends";
+    } else if (scope == 2) {
+      return "fas fa-users";
+    } else {
+      return "";
+    }
+  }
+  get priorityIcon() {
+    if (this.problem.isHighPriority) {
+      return "fas fa-arrow-up";
+    } else {
+      return "fas fa-arrow-down";
+    }
+  }
   get outcomesForChart() {
     return this.$store.getters.getOutcomeAsChartData({
       expectation: this.$t("expectation"),
@@ -249,6 +306,16 @@ export default class ProblemSummary extends Vue {
   }
   get record() {
     return this.$props.problemRecord || this.getRecordFromStore();
+  }
+
+  prioritizeProblemRecord() {
+    this.$store.commit("prioritizeProblemRecord", this.$props.params);
+    this.$router.push({
+      name: "problem",
+      params: this.$store.getters.getRouteParamsForLatestProblem(
+        this.$props.params
+      )
+    });
   }
 
   updateLocale() {

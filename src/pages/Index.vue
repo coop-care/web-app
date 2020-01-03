@@ -70,11 +70,12 @@
         <q-btn
           icon="add"
           color="primary"
-          :label="$t('recordProblem')"
+          :label="$t('problemAdmission')"
+          rounded
           outline
           class="q-mt-md"
           @click="addProblem"
-          dense
+          size="12px"
         />
         <problem-summary
           v-for="problemRecord in selectedCustomerProblems"
@@ -174,7 +175,9 @@ export default class PageIndex extends Vue {
   get selectedCustomerProblems() {
     const customer = this.selectedCustomer;
     const problems = customer ? customer.problems : [];
-    return problems.concat().sort(
+    return problems.concat().filter((problem: ProblemRecord) => {
+      return !problem.resolvedAt;
+    }).sort(
       (first: ProblemRecord, second: ProblemRecord) =>
         // sort order: draft first, then high priority followed by low priority
         //@ts-ignore
@@ -247,15 +250,11 @@ export default class PageIndex extends Vue {
       console.error("no customer selected: this should not happen.");
       return;
     }
-    let params = {
-      customerId: this.selectedCustomerId as string,
-      problemId: ""
+    const params = {
+      customerId: this.selectedCustomerId
     };
     store.commit.createProblemRecord(params);
-    params.problemId = customer.problems[
-      customer.problems.length - 1
-    ].id;
-    this.$router.push({ name: "problem", params: params });
+    this.$router.push({ name: "problem", params: store.getters.getRouteParamsForLatestProblem(params) });
   }
 
   closeDrawerIfNeeded() {

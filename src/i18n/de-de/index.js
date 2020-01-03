@@ -8,9 +8,9 @@ export default {
   customer: "Kunde | Kunden",
   newCustomer: "Neuer Kunde",
   problem: "Problem | Probleme",
-  recordProblem: "Problem aufnehmen",
+  problemAdmission: "Problem aufnehmen",
   rating: "Bewertung | Bewertungen",
-  newRating: "Neue Bewertung",
+  newRating: "Zwischenbewertung",
   intervention: "Intervention | Interventionen",
   feedback: "Feedback",
   observation: "Beobachtung",
@@ -43,7 +43,7 @@ export default {
   lowPriorityDescription:
     "Das Problem ist im Vergleich zu anderen Problemen von untergeordneter Bedeutung, basierend auf dem Kundenwunsch und gegebenenfalls anderen Empfehlungen. Wenn ein Problem als unwichtig eingestuft wird, wird das Problem dokumentiert, aber keine Interventionen geplant oder Bewertungen vorgenommen, bis sich die Bedürfnisse des Kunden ändern oder erhöhen.",
   outcome: "Ergebnis | Ergebnisse",
-  editDraft: "Entwurf bearbeiten",
+  editDraft: "Entwurf",
   delete: "Löschen",
   noExistingCustomer: "Es existieren noch keine Kundendaten.",
   noSelectedCustomer: "Wähle einen Kunden aus der Kundenliste aus.",
@@ -79,5 +79,7 @@ export default {
   logout: "Abmelden",
   databaseTestSettings: "Datenbank-Test-Einstellungen",
   databaseInsertSamples: "Beispiel-Kunden anlegen",
-  databaseClearAll: "Alle Kunden löschen"
+  databaseClearAll: "Alle Kunden löschen",
+  prioritizeProblem: "Priorisieren",
+  problemDismissal: "Problem abschließen"
 };

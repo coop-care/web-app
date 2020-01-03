@@ -8,9 +8,9 @@ export default {
   customer: "Customer | Customers",
   newCustomer: "New Customer",
   problem: "Problem | Problems",
-  recordProblem: "Add a Problem",
+  problemAdmission: "problem admission",
   rating: "Rating | Ratings",
-  newRating: "New Rating",
+  newRating: "Interim rating",
   intervention: "Intervention | Interventions",
   feedback: "Feedback",
   observation: "Observation",
@@ -42,7 +42,7 @@ export default {
   lowPriorityDescription:
     "Practitioner’s judgment that a problem is of secondary concern as compared to other problems, based on recommendations from clients, referral sources, and others. When a problem is considered low priority, the practitioner documents the problem, but does not provide interventions or complete ratings until the client’s needs change or increase.",
   outcome: "Outcome | Outcomes",
-  editDraft: "Edit Draft",
+  editDraft: "Edit draft",
   delete: "Delete",
   noExistingCustomer: "There is no customer data yet.",
   noSelectedCustomer: "Select a customer from the customer list.",
@@ -77,5 +77,7 @@ export default {
   logout: "Logout",
   databaseTestSettings: "Database Test Settings",
   databaseInsertSamples: "Insert sample customers",
-  databaseClearAll: "Delete all customers"
+  databaseClearAll: "Delete all customers",
+  prioritizeProblem: "Prioritize",
+  problemDismissal: "Problem dismissal"
 };

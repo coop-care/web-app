@@ -277,6 +277,18 @@ export default createGetters<StoreState>()({
         });
     },
 
+    getRouteParamsForLatestProblem: state => (payload: any): any => {
+        let customer = store.getters.getCustomer(payload);
+        if (!customer) {
+            return {};
+        }
+
+        return {
+            customerId: customer._id,
+            problemId: customer.problems[customer.problems.length - 1].id
+        };
+    },
+
     symptomsForProblemCode: state => ({
         problemCode,
         terminology

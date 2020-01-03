@@ -47,6 +47,27 @@ export default createMutations<StoreState>()({
         }
     },
 
+    prioritizeProblemRecord(state, payload) {
+        let problemRecord = store.getters.getProblemRecordById(payload);
+        if (!problemRecord) {
+            return;
+        }
+
+        let customer: Customer | undefined = store.getters.getCustomer(payload);
+        if (!customer) {
+            return;
+        }
+
+        let newProblemRecord = JSON.parse(JSON.stringify(problemRecord));
+        newProblemRecord.id = generateId();
+        newProblemRecord.createdAt = undefined;
+        newProblemRecord.problem.isHighPriority = true;
+        newProblemRecord.problem.priorityDetails = "";
+        customer.problems.push(newProblemRecord);
+
+        problemRecord.resolvedAt = new Date();
+    },
+
     deleteDraftProblemRecord(state, payload) {
         let customer = store.getters.getCustomer(payload);
         if (!customer) {
