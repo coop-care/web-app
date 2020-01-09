@@ -69,12 +69,15 @@ export default createMutations<StoreState>()({
     },
 
     dismissProblemRecord(state, payload) {
-        let problemRecord = store.getters.getProblemRecordById(payload);
-        if (!problemRecord) {
+        let customer = store.getters.getCustomer(payload);
+        let problemRecord = customer?.findProblemRecord(payload.problemId);
+        if (!customer || !problemRecord || problemRecord.resolvedAt) {
             return;
         }
 
         problemRecord.resolvedAt = new Date();
+        // trigger change detection on array
+        customer.problems = customer.problems.concat([]);
     },
 
     deleteDraftProblemRecord(state, payload) {
