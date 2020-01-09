@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="problem-rating row q-col-gutter-lg"
-    v-if="record"
-  >
+  <div class="problem-rating row q-col-gutter-lg" v-if="record">
     <div class="col-12 col-md-9">
       <div class="q-gutter-md">
         <rating
@@ -25,17 +22,14 @@
             size="md"
             color="outcome"
           />
-          <div
-            v-else
-            class="q-mt-xs q-mb-md"
-          >
+          <div v-else class="q-mt-xs q-mb-md">
             <q-input
               v-model="personRatedInPlaceOfOwner"
               :label="$t('personRatedInPlaceOfOwnerLabel')"
               autogrow
               :autofocus="
-              showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
-            "
+                showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
+              "
               color="outcome"
               filled
               dense
@@ -45,10 +39,7 @@
       </div>
     </div>
     <div class="col-12 col-md-3">
-      <problem-summary
-        :params="$route.params"
-        :isSummary="true"
-      />
+      <problem-summary :params="$route.params" :isSummary="true" />
     </div>
   </div>
 </template>
@@ -61,6 +52,9 @@ import Component from "vue-class-component";
 import Rating from "components/Rating.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology } from "../helper/terminology";
+import { Outcome } from "../models/outcome";
+
+const nameof = (name: keyof Outcome) => name;
 
 @Component({
   components: {
@@ -75,9 +69,10 @@ export default class ProblemRating extends Vue {
     return this.outcome.personRatedInPlaceOfOwner || "";
   }
   set personRatedInPlaceOfOwner(value: string) {
-    this.$store.commit("updateNewOutcome", {
-      path: "personRatedInPlaceOfOwner",
-      value: value,
+    const changes: any = {};
+    changes[nameof("personRatedInPlaceOfOwner")] = value;
+    this.$store.direct.commit.updateNewOutcome({
+      changes: changes,
       ...this.$route.params
     });
   }
@@ -92,7 +87,7 @@ export default class ProblemRating extends Vue {
     return this.record.outcomes[this.record.outcomes.length - 1] || {};
   }
   get ratings() {
-    let indexToType = ["knowledge", "behaviour", "status"];
+    const indexToType = ["knowledge", "behaviour", "status"];
     return this.terminology.problemRatingScale.ratings.map((rating, index) => {
       return {
         title: rating.title,

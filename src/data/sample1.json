@@ -1,0 +1,828 @@
+[
+  {
+    "name": "Emma Becker",
+    "problems": [
+      {
+        "id": "6rrgzeui",
+        "assessment": [],
+        "problem": {
+          "code": "12",
+          "scopeCode": 0,
+          "severityCode": 2,
+          "signsAndSymptomsCodes": [
+            "03",
+            "13",
+            "14",
+            "15",
+            "09",
+            "17",
+            "18",
+            "22"
+          ],
+          "details": "",
+          "isHighPriority": true,
+          "priorityDetails": ""
+        },
+        "interventions": [
+          {
+            "categoryCode": "01",
+            "targetCode": "28",
+            "details": [
+              {
+                "text": "angefangen eine therapeutische Beziehung aufzubauen",
+                "createdAt": "2019-06-11T00:00:00.000Z"
+              }
+            ],
+            "startedAt": "2019-06-11T00:00:00.000Z"
+          },
+          {
+            "categoryCode": "01",
+            "targetCode": "49",
+            "details": [
+              {
+                "text": "Symptome überprüft",
+                "createdAt": "2019-06-11T00:00:00.000Z"
+              }
+            ],
+            "startedAt": "2019-06-11T00:00:00.000Z"
+          },
+          {
+            "categoryCode": "03",
+            "targetCode": "31",
+            "details": [
+              {
+                "text": "Termin zur Einschätzung geplant",
+                "createdAt": "2019-06-11T00:00:00.000Z"
+              }
+            ],
+            "startedAt": "2019-06-11T00:00:00.000Z"
+          },
+          {
+            "categoryCode": "04",
+            "targetCode": "49",
+            "details": [
+              {
+                "text": "Aktivität, Stimmungsschwankungen, Halluzinationen und Pflegeberichte",
+                "createdAt": "2019-06-11T00:00:00.000Z"
+              }
+            ],
+            "startedAt": "2019-06-11T00:00:00.000Z"
+          }
+        ],
+        "outcomes": [
+          {
+            "knowledge": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": "anhaltende Symptome störten Realitätswahrnehmung"
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": "hörte selten auf zu suchen und zu hetzen, aber aß und schlief"
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": "Unruhe, beschrieb Wahnvorstellungen und Halluzinationen"
+            },
+            "personRatedInPlaceOfOwner": "",
+            "createdAt": "2019-06-11T00:00:00.000Z"
+          },
+          {
+            "status": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "knowledge": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": "",
+            "createdAt": "2019-07-09T00:00:00.000Z"
+          },
+          {
+            "status": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "knowledge": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": "",
+            "createdAt": "2019-08-06T00:00:00.000Z"
+          },
+          {
+            "status": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "knowledge": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": "",
+            "createdAt": "2019-09-03T00:00:00.000Z"
+          },
+          {
+            "status": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "knowledge": {
+              "observation": 4,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": "",
+            "createdAt": "2019-10-01T00:00:00.000Z"
+          },
+          {
+            "status": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "knowledge": {
+              "observation": 4,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 4,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": "",
+            "createdAt": "2019-10-29T00:00:00.000Z"
+          }
+        ],
+        "createdAt": "2019-06-11T00:00:00.000Z",
+        "ratingIntervalInDays": 28
+      },
+      {
+        "id": "32v3yacn",
+        "assessment": [],
+        "problem": {
+          "code": "38",
+          "scopeCode": 0,
+          "severityCode": 2,
+          "signsAndSymptomsCodes": ["01", "02", "03", "04", "05", "10"],
+          "details": "",
+          "isHighPriority": true,
+          "priorityDetails": ""
+        },
+        "interventions": [
+          {
+            "categoryCode": "01",
+            "targetCode": "41",
+            "details": [
+              {
+                "text": "was sie tun kann und was nicht",
+                "createdAt": "2019-11-21T21:40:18.274Z"
+              }
+            ],
+            "startedAt": "2019-11-21T21:41:51.957Z"
+          },
+          {
+            "categoryCode": "03",
+            "targetCode": "77",
+            "details": [
+              {
+                "text": "Vermittlung von Hilfe bei Dusche, Umziehen und Wäsche",
+                "createdAt": "2019-11-21T21:41:14.572Z"
+              }
+            ],
+            "startedAt": "2019-11-21T21:41:51.957Z"
+          },
+          {
+            "categoryCode": "04",
+            "targetCode": "41",
+            "details": [
+              {
+                "text": "Sauberkeit, Angemessenheit der Hilfeleistung",
+                "createdAt": "2019-11-21T21:41:42.763Z"
+              }
+            ],
+            "startedAt": "2019-11-21T21:41:51.957Z"
+          }
+        ],
+        "outcomes": [
+          {
+            "createdAt": "2019-06-11T00:00:00.000Z",
+            "knowledge": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": "erkannte Bedarf an Körperhygiene"
+            },
+            "behaviour": {
+              "observation": 1,
+              "expectation": 3,
+              "comment": "kann die Körperpflege nicht starten oder beenden"
+            },
+            "status": {
+              "observation": 1,
+              "expectation": 4,
+              "comment": "Körper und Kleidung unsauber"
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-07-09T00:00:00.000Z",
+            "knowledge": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 1,
+              "expectation": 3,
+              "comment": ""
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-08-06T00:00:00.000Z",
+            "knowledge": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 1,
+              "expectation": 3,
+              "comment": ""
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-09-03T00:00:00.000Z",
+            "knowledge": {
+              "observation": 3,
+              "expectation": 3,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "status": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-10-01T00:00:00.000Z",
+            "knowledge": {
+              "observation": 3,
+              "expectation": 3,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-10-29T00:00:00.000Z",
+            "knowledge": {
+              "observation": 3,
+              "expectation": 3,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "status": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          }
+        ],
+        "createdAt": "2019-11-21T21:41:51.957Z",
+        "ratingIntervalInDays": 28
+      },
+      {
+        "id": "26nppfzo",
+        "assessment": [],
+        "problem": {
+          "code": "42",
+          "scopeCode": 0,
+          "severityCode": 2,
+          "signsAndSymptomsCodes": ["03", "08"],
+          "details": "",
+          "isHighPriority": true,
+          "priorityDetails": ""
+        },
+        "interventions": [
+          {
+            "categoryCode": "01",
+            "targetCode": "32",
+            "details": [
+              {
+                "text": "weniger Koffein trinken, weil es die Wirksamkeit psychotroper Medikamente verringert",
+                "createdAt": "2019-11-21T21:46:28.059Z"
+              }
+            ],
+            "startedAt": "2019-11-21T21:53:44.870Z"
+          },
+          {
+            "categoryCode": "01",
+            "targetCode": "33",
+            "details": [
+              {
+                "text": "muss alle Dosen wie geplant einnehmen",
+                "createdAt": "2019-11-21T21:47:35.850Z"
+              }
+            ],
+            "startedAt": "2019-11-21T21:53:44.870Z"
+          },
+          {
+            "categoryCode": "03",
+            "targetCode": "31",
+            "details": [
+              {
+                "text": "Terminplanung zur Überprüfung von Medikamenten",
+                "createdAt": "2019-11-21T21:48:38.586Z"
+              }
+            ],
+            "startedAt": "2019-11-21T21:53:44.870Z"
+          },
+          {
+            "categoryCode": "03",
+            "targetCode": "77",
+            "details": [
+              {
+                "text": "Psychiatriefachkraft wird Emma helfen",
+                "createdAt": "2019-11-21T21:49:35.282Z"
+              }
+            ],
+            "startedAt": "2019-11-21T21:53:44.870Z"
+          },
+          {
+            "categoryCode": "04",
+            "targetCode": "33",
+            "details": [
+              {
+                "text": "Berichte von Kundin, Psychiater und Verwaltung",
+                "createdAt": "2019-11-21T21:53:14.345Z"
+              }
+            ],
+            "startedAt": "2019-11-21T21:53:44.870Z"
+          }
+        ],
+        "outcomes": [
+          {
+            "createdAt": "2019-06-11T00:00:00.000Z",
+            "knowledge": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": "kannte Namen von Medikamenten und dass sie genommen werden müssen"
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": "hat einige Medikamente ausgelassen; benötigt eine konsistente Verabreichung"
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": "Symptome einer psychischen Erkrankung offensichtlich"
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-07-09T00:00:00.000Z",
+            "knowledge": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-08-06T00:00:00.000Z",
+            "knowledge": {
+              "observation": 4,
+              "expectation": 4,
+              "comment": "versteht die Benutzung des Medikamentenorganisators"
+            },
+            "behaviour": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-09-03T00:00:00.000Z",
+            "knowledge": {
+              "observation": 4,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "status": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-10-01T00:00:00.000Z",
+            "knowledge": {
+              "observation": 4,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "status": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-10-29T00:00:00.000Z",
+            "knowledge": {
+              "observation": 4,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 4,
+              "expectation": 4,
+              "comment": ""
+            },
+            "status": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          }
+        ],
+        "createdAt": "2019-11-21T21:53:44.870Z",
+        "ratingIntervalInDays": 28
+      }
+    ],
+    "createdAt": "2019-06-11T00:00:00.000Z"
+  },
+  {
+    "name": "Francis Richter",
+    "problems": [
+      {
+        "id": "l8192zj5",
+        "assessment": [],
+        "problem": {
+          "code": "07",
+          "scopeCode": 0,
+          "severityCode": 1,
+          "signsAndSymptomsCodes": [],
+          "details": "Francis lebt allein und ist im Seniorenalter, gab aber an, dass ihr Unterstützungssystem angemessen ist.",
+          "isHighPriority": false,
+          "priorityDetails": "Interventionen anbieten und bewerten, wenn sie nicht in der Lage ist, Medikamente regelmäßig einzunehmen und mehr Unterstützung benötigt."
+        },
+        "interventions": [],
+        "outcomes": [],
+        "createdAt": "2019-11-25T18:33:51.943Z",
+        "ratingIntervalInDays": 28
+      },
+      {
+        "id": "f6mzr2gz",
+        "assessment": [],
+        "problem": {
+          "code": "23",
+          "scopeCode": 0,
+          "severityCode": 1,
+          "signsAndSymptomsCodes": [],
+          "details": "Francis Urteilsvermögen und Gedächtnis schienen ausreichend, abgesehen von einigen Problemen bei der planmäßigen Einnahme von Medikamenten. \nWerde bei Bedarf mit den Töchtern Kontakt aufnehmen.",
+          "isHighPriority": false,
+          "priorityDetails": "Interventionen anbieten und bewerten, wenn Gedächtnisprobleme bei zukünftigen Besuchen signifikant werden."
+        },
+        "interventions": [],
+        "outcomes": [],
+        "createdAt": "2019-11-25T18:34:55.223Z",
+        "ratingIntervalInDays": 28
+      },
+      {
+        "id": "gq5eclb3",
+        "assessment": [],
+        "problem": {
+          "code": "29",
+          "scopeCode": 0,
+          "severityCode": 2,
+          "signsAndSymptomsCodes": ["01", "08", "10", "11", "17"],
+          "details": "",
+          "isHighPriority": true,
+          "priorityDetails": ""
+        },
+        "interventions": [
+          {
+            "categoryCode": "01",
+            "targetCode": "07",
+            "details": [
+              {
+                "text": "Linderung von Ödemen, Erhöhung der Beine, Anstrengung reduzieren, Verbesserung des Schlafes, Planung der Flüssigkeitsaufnahme",
+                "createdAt": "2019-11-25T18:38:53.610Z"
+              }
+            ],
+            "startedAt": "2019-11-25T18:41:07.807Z"
+          },
+          {
+            "categoryCode": "01",
+            "targetCode": "67",
+            "details": [
+              {
+                "text": "einige eisenreiche Lebensmittel essen",
+                "createdAt": "2019-11-25T18:39:19.966Z"
+              }
+            ],
+            "startedAt": "2019-11-25T18:41:07.807Z"
+          },
+          {
+            "categoryCode": "01",
+            "targetCode": "50",
+            "details": [
+              {
+                "text": "täglich Körpergewicht messen, Symptomprotokoll, wann sind die Dienstleister zu benachrichtigen",
+                "createdAt": "2019-11-25T18:39:53.047Z"
+              }
+            ],
+            "startedAt": "2019-11-25T18:41:07.807Z"
+          },
+          {
+            "categoryCode": "03",
+            "targetCode": "67",
+            "details": [
+              {
+                "text": "arrangierte Essen auf Rädern ab dem nächsten Tag",
+                "createdAt": "2019-11-25T18:40:18.774Z"
+              }
+            ],
+            "startedAt": "2019-11-25T18:41:07.807Z"
+          },
+          {
+            "categoryCode": "04",
+            "targetCode": "50",
+            "details": [
+              {
+                "text": "Vitalwerte, Veränderungen in Schweregrad und Status",
+                "createdAt": "2019-11-25T18:40:38.599Z"
+              }
+            ],
+            "startedAt": "2019-11-25T18:41:07.807Z"
+          }
+        ],
+        "outcomes": [
+          {
+            "createdAt": "2019-08-25T18:41:07.807Z",
+            "knowledge": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": "hat eine Verschlechterung des Zustands nicht erkannt"
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": "misst weder ihr Körpergewicht, noch legt sie die Beine hoch oder meldet Anzeichen oder Symptome"
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": "signifikante Müdigkeit, Ödeme in den unteren Extremitäten, erhöhte Herzfrequenz, Dyspnoe"
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-09-22T18:41:07.807Z",
+            "knowledge": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-10-20T18:41:07.807Z",
+            "knowledge": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 3,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          }
+        ],
+        "createdAt": "2019-11-25T18:41:07.807Z",
+        "ratingIntervalInDays": 28
+      },
+      {
+        "id": "cecvl9zs",
+        "assessment": [],
+        "problem": {
+          "code": "42",
+          "scopeCode": 0,
+          "severityCode": 2,
+          "signsAndSymptomsCodes": ["01", "03"],
+          "details": "",
+          "isHighPriority": true,
+          "priorityDetails": ""
+        },
+        "interventions": [
+          {
+            "categoryCode": "01",
+            "targetCode": "32",
+            "details": [
+              {
+                "text": "Zweck, was ist zu erwarten oder zu berichten",
+                "createdAt": "2019-11-25T18:44:14.309Z"
+              }
+            ],
+            "startedAt": "2019-11-25T18:45:19.054Z"
+          },
+          {
+            "categoryCode": "01",
+            "targetCode": "34",
+            "details": [
+              {
+                "text": "Benutzung, Vorteile und Möglichkeiten eines Tablettenorganisators",
+                "createdAt": "2019-11-25T18:44:24.773Z"
+              }
+            ],
+            "startedAt": "2019-11-25T18:45:19.054Z"
+          },
+          {
+            "categoryCode": "04",
+            "targetCode": "32",
+            "details": [
+              {
+                "text": "wie vorgeschrieben einnehmen, Notizen machen",
+                "createdAt": "2019-11-25T18:44:55.134Z"
+              }
+            ],
+            "startedAt": "2019-11-25T18:45:19.054Z"
+          }
+        ],
+        "outcomes": [
+          {
+            "createdAt": "2019-08-25T18:45:19.054Z",
+            "knowledge": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": "wusste nicht, welchen Zweck oder welche Nebenwirkungen die Medikamente haben"
+            },
+            "behaviour": {
+              "observation": 3,
+              "expectation": 5,
+              "comment": "stimmte zu, dass sie ein Erinnerungssystem braucht"
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 5,
+              "comment": "zwei kürzliche Krankenhausaufenthalte"
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-09-22T18:45:19.054Z",
+            "knowledge": {
+              "observation": 2,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 4,
+              "expectation": 5,
+              "comment": ""
+            },
+            "status": {
+              "observation": 2,
+              "expectation": 5,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          },
+          {
+            "createdAt": "2019-10-22T18:45:19.054Z",
+            "knowledge": {
+              "observation": 3,
+              "expectation": 4,
+              "comment": ""
+            },
+            "behaviour": {
+              "observation": 4,
+              "expectation": 5,
+              "comment": ""
+            },
+            "status": {
+              "observation": 3,
+              "expectation": 5,
+              "comment": ""
+            },
+            "personRatedInPlaceOfOwner": ""
+          }
+        ],
+        "createdAt": "2019-11-25T18:45:19.054Z",
+        "ratingIntervalInDays": 28
+      }
+    ],
+    "createdAt": "2019-11-25T18:12:32.060Z"
+  }
+]

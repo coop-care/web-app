@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="intervention"
-    v-if="record"
-  >
+  <div class="intervention" v-if="record">
     <div class="row q-col-gutter-lg">
       <div class="col-md-9 col-12">
         <h6>{{ $t("selectInterventions") }}</h6>
@@ -14,16 +11,15 @@
         >
           <q-tab
             :name="index"
-            :label="$q.screen.gt.xs ? category.title : shortCategoryTitles[index]"
+            :label="
+              $q.screen.gt.xs ? category.title : shortCategoryTitles[index]
+            "
             :icon="category.icon"
             v-for="(category, index) in categories"
             v-bind:key="index"
           />
         </q-tabs>
-        <q-tab-panels
-          v-model="categorySelected"
-          animated
-        >
+        <q-tab-panels v-model="categorySelected" animated>
           <q-tab-panel
             :name="index"
             v-for="(category, index) in categories"
@@ -41,10 +37,7 @@
               dense
             >
               <template v-slot:prepend>
-                <q-icon
-                  name="search"
-                  color="intervention"
-                />
+                <q-icon name="search" color="intervention" />
               </template>
               <template v-slot:append>
                 <q-icon
@@ -134,13 +127,20 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import TerminologyData, {
+import {
   HasTitleDescription,
-  Terminology
+  Terminology,
+  sortByTitle,
+  filterTerminology,
+  treeifyTerminology
 } from "../helper/terminology";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { QInput } from "quasar";
-import * as Core from "../helper/coreTypes";
+import { ProblemRecord } from "../models/problemRecord";
+import { Intervention as InterventionModel } from "../models/intervention";
+import { Note } from "../models/note";
+
+const nameof = (name: keyof ProblemRecord) => name;
 
 @Component({
   components: {
@@ -152,66 +152,37 @@ export default class Intervention extends Vue {
   targetsFilter = "";
 
   get interventions() {
-    return this.unsavedInterventions.map(intervention => {
-      return intervention.category.id + "." + intervention.target.id;
-    });
+    return this.unsavedInterventions.map(intervention => intervention.code);
   }
   set interventions(values: string[]) {
-    let existingInterventions = this.unsavedInterventions.filter(
-      intervention => {
-        let key = intervention.category.id + "." + intervention.target.id;
-        return values.includes(key);
-      }
+    const existingInterventions = this.unsavedInterventions.filter(
+      intervention => values.includes(intervention.code)
     );
-    let addedInterventions: Core.Intervention[] = values
-      .map(value => value.split("."))
-      .filter(codes => {
+    const addedInterventions: InterventionModel[] = values
+      .filter(code => {
         return !existingInterventions.find(
-          intervention =>
-            intervention.category.id == codes[0] &&
-            intervention.target.id == codes[1]
+          intervention => intervention.code == code
         );
       })
-      .map(codes => {
-        return {
-          category: {
-            id: codes[0],
-            title: (
-              this.terminology.interventionScheme.categories.find(
-                category => category.code == codes[0]
-              ) || {}
-            ).title
-          },
-          target: {
-            id: codes[1],
-            title: (
-              this.terminology.interventionScheme.targets.find(
-                target => target.code == codes[1]
-              ) || {}
-            ).title
-          },
-          details: [],
-          startedAt: undefined,
-          endedAt: undefined
-        };
+      .map(code => {
+        return InterventionModel.fromCode(code);
       });
-    let interventions = this.savedInterventions
+    const interventions = this.savedInterventions
       .concat(existingInterventions)
       .concat(addedInterventions);
-    this.updateProblemRecord("interventions", interventions);
+    this.updateProblemRecord(interventions);
   }
   get details() {
-    let map: any = {};
+    const map: any = {};
     this.unsavedInterventions.forEach(intervention => {
-      let key = intervention.category.id + "." + intervention.target.id;
-      let text = (intervention.details[0] || {}).text || "";
-      map[key] = text;
+      const text = (intervention.details[0] || {}).text || "";
+      map[intervention.code] = text;
     });
     return map;
   }
 
   get categories() {
-    let icons = [
+    const icons = [
       "add_comment",
       "enhanced_encryption",
       "event",
@@ -232,14 +203,14 @@ export default class Intervention extends Vue {
   }
   get targets() {
     let targets = this.terminology.interventionScheme.targets;
-    let other = targets.pop();
-    targets = targets.sort(TerminologyData.sortByTitle);
+    const other = targets.pop();
+    targets = targets.sort(sortByTitle);
 
     if (other) {
       targets.push(other);
     }
     return this.categories.map(category => {
-      return TerminologyData.treeify(targets, "targets").map((target: any) => {
+      return treeifyTerminology(targets, "targets").map((target: any) => {
         target.id = category.code + "." + target.id;
         return target;
       });
@@ -253,45 +224,42 @@ export default class Intervention extends Vue {
     return this.$store.getters.getProblemRecordById(this.$route.params);
   }
   get unsavedInterventions() {
-    let interventions: Core.Intervention[] =
+    const interventions: InterventionModel[] =
       (this.record || {}).interventions || [];
     return interventions.filter(intervention => !intervention.startedAt);
   }
   get savedInterventions() {
-    let interventions: Core.Intervention[] =
+    const interventions: InterventionModel[] =
       (this.record || {}).interventions || [];
     return interventions.filter(intervention => intervention.startedAt);
   }
 
   updateDetails(key: string, value: string) {
-    let unsavedInterventions = this.unsavedInterventions;
-    let codes = key.split(".");
-    let intervention = unsavedInterventions.find(
-      intervention =>
-        intervention.category.id == codes[0] &&
-        intervention.target.id == codes[1]
+    const unsavedInterventions = this.unsavedInterventions;
+    const intervention = unsavedInterventions.find(
+      intervention => intervention.code == key
     );
 
     if (!intervention) {
       return;
     }
 
-    let note = intervention.details[0] || {};
+    const note = intervention.details[0] || new Note();
     note.text = value;
     note.createdAt = new Date();
     intervention.details[0] = note;
 
     this.updateProblemRecord(
-      "interventions",
       this.savedInterventions.concat(unsavedInterventions)
     );
   }
 
-  updateProblemRecord(path: string, value: any) {
-    this.$store.commit("updateProblemRecord", {
-      path: path,
-      value: value,
-      ...this.$route.params
+  updateProblemRecord(interventions: InterventionModel[]) {
+    const changes: any = {};
+    changes[nameof("interventions")] = interventions;
+    this.$store.direct.commit.updateObject({
+      target: this.record,
+      changes: changes
     });
   }
 
@@ -301,7 +269,7 @@ export default class Intervention extends Vue {
   }
 
   filterTerminology(node: HasTitleDescription, filter: string) {
-    return TerminologyData.filter(node, filter);
+    return filterTerminology(node, filter);
   }
 }
 </script>

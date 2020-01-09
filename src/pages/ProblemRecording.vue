@@ -12,7 +12,11 @@
     >
       <q-step
         :name="1"
-        :title="$q.screen.lt.md ? $tc('problem', 1) : terminology.problemClassificationScheme.title"
+        :title="
+          $q.screen.lt.md
+            ? $tc('problem', 1)
+            : terminology.problemClassificationScheme.title
+        "
         prefix="1"
         :done="step > 1"
         :header-nav="step > 1"
@@ -25,7 +29,11 @@
       <q-step
         :name="2"
         v-if="isHighPriority"
-        :title="$q.screen.lt.md ? $tc('rating', 1) : terminology.problemRatingScale.title"
+        :title="
+          $q.screen.lt.md
+            ? $tc('rating', 1)
+            : terminology.problemRatingScale.title
+        "
         prefix="2"
         :done="step > 2"
         :header-nav="step > 2"
@@ -38,7 +46,11 @@
       <q-step
         :name="3"
         v-if="isHighPriority"
-        :title="$q.screen.lt.md ? $tc('intervention', 2)  : terminology.interventionScheme.title"
+        :title="
+          $q.screen.lt.md
+            ? $tc('intervention', 2)
+            : terminology.interventionScheme.title
+        "
         prefix="3"
         icon="add_comment"
         :header-nav="step > 3"
@@ -129,7 +141,7 @@ export default class ProblemRecording extends Vue {
   }
 
   saveProblem() {
-    this.$store.commit('saveNewProblemRecord', this.$route.params);
+    this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
     this.$stitchApi.saveCustomer(this.$store.state.selectedCustomer);
   }
 }

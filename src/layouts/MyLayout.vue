@@ -155,7 +155,7 @@ export default class MyLayout extends Vue {
 
   logout() {
     // console.log('logging out...');
-    this.$store.commit("setCustomer", null);
+    this.$store.direct.commit.setCustomer(undefined);
     this.$stitchApi.stitch.auth
       .logout()
       .then(() => this.$router.push({ name: "login" }));

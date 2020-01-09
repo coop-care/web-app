@@ -1,7 +1,8 @@
 import { createActions } from "direct-vuex";
 import { stitchApi } from "../boot/stitch";
-import sampleData from "../data/sample1";
+import sampleData from "../data/sample1.json";
 import { rootActionContext } from ".";
+import { Customer } from "../models/customer";
 
 export default createActions({
     fetchCustomersFromDB(context) {
@@ -11,7 +12,7 @@ export default createActions({
             .getAllCustomers()
             .then(customers => {
                 // console.log("Success:", result);
-                commit.customers(customers);
+                commit.setCustomers((customers as unknown) as Customer[]);
                 commit.isLoadingCustomerList(false);
             })
             .catch(err => {
@@ -22,7 +23,7 @@ export default createActions({
 
     addSamplesToDB(context) {
         const { dispatch } = rootActionContext(context);
-        const samples = sampleData;
+        const samples = Customer.fromObject(sampleData) as Customer[];
         samples.forEach(customer => {
             customer.user_id = stitchApi.userId();
         });
@@ -42,7 +43,7 @@ export default createActions({
             .then(result => {
                 console.log(`Deleted ${result.deletedCount} item(s).`);
                 dispatch.fetchCustomersFromDB();
-                commit.setCustomer(null);
+                commit.setCustomer(undefined);
             })
             .catch(err => console.error(`Delete failed with error: ${err}`));
     }

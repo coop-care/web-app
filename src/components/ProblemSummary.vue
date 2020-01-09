@@ -4,13 +4,11 @@
       <div v-if="isSummary">
         <div class="text-subtitle2 text-weight-normal">{{ customerName }}:</div>
         <div class="text-h6 text-classification">
-          {{ problem.title || $t("unspecifiedProblem") }}
+          {{ $t(problem.title) }}
         </div>
       </div>
       <div v-else class="text-h6">
-        <span class="text-classification q-mr-md">{{
-          problem.title || $t("unspecifiedProblem")
-        }}</span>
+        <span class="text-classification q-mr-md">{{ $t(problem.title) }}</span>
         <span class="text-subtitle2 text-weight-light q-mr-sm">
           <q-chip
             size="12px"
@@ -18,7 +16,7 @@
             color="transparent"
             :icon="scopeIcon"
             text-color="classification"
-            :label="(problem.titles || {}).scope"
+            :label="$t(problem.scope.title)"
             class="text-weight-medium"
           />
           <q-chip
@@ -27,7 +25,7 @@
             color="transparent"
             :icon="priorityIcon"
             text-color="classification"
-            :label="$t((problem.titles || {}).priorityKey)"
+            :label="$t(problem.priority.title)"
             class="text-weight-medium"
           />
         </span>
@@ -46,7 +44,7 @@
           v-if="!isDraft"
           :title="$t('problemDismissal')"
           icon="done_outline"
-          @click="$store.commit('dismissProblemRecord', params)"
+          @click="$store.direct.commit.dismissProblemRecord(params)"
           round
           outline
           size="sm"
@@ -69,7 +67,7 @@
           v-if="isDraft"
           icon="delete_forever"
           :title="$t('delete')"
-          @click="$store.commit('deleteDraftProblemRecord', params)"
+          @click="$store.direct.commit.deleteDraftProblemRecord(params)"
           dense
           round
           unelevated
@@ -81,15 +79,15 @@
     </q-card-section>
     <q-card-section v-if="problem.priorityDetails">
       <p class="q-pl-lg q-my-none">
-        {{ $t((problem.titles || {}).priorityKey) }}:
+        {{ $t(problem.priority.title) }}:
         <span class="text-italic">{{ problem.priorityDetails }}</span>
       </p>
     </q-card-section>
-    <q-card-section v-if="problem.severity < 2 && problem.details">
+    <q-card-section v-if="problem.severityCode < 2 && problem.details">
       <div class="text-subtitle1 text-weight-bold text-classification">
         {{
           $t(
-            problem.severity == 0
+            problem.severityCode == 0
               ? "customerRequestForHealthPromotionTitle"
               : "potentialRiskFactorsTitle"
           )
@@ -100,7 +98,7 @@
       </p>
     </q-card-section>
     <q-card-section
-      v-if="problem.severity == 2 && problem.signsAndSymptoms.length"
+      v-if="problem.severityCode == 2 && problem.signsAndSymptomsCodes.length"
     >
       <div class="text-subtitle1 text-weight-bold text-classification">
         {{ $t("actualSignsAndSymptomsTitle") }}
@@ -111,11 +109,11 @@
           v-bind:key="index"
           class="no-column-break"
         >
-          {{ symptom.title
+          {{ $t(symptom.title)
           }}<span
             v-if="
-              index == problem.signsAndSymptoms.length - 1 &&
-                symptom.title.toLowerCase() == $t('otherSymptom') &&
+              index == problem.signsAndSymptomsCodes.length - 1 &&
+                $t(symptom.title).toLowerCase() == $t('otherSymptom') &&
                 problem.details
             "
             >:
@@ -134,7 +132,8 @@
           v-bind:key="index"
           class="no-column-break"
         >
-          {{ intervention.category.title }}: {{ intervention.target.title }}
+          {{ $t(intervention.category.title) }}:
+          {{ $t(intervention.target.title) }}
           <span v-if="intervention.details.length">
             <span
               v-for="(detail, index) in intervention.details"
@@ -150,7 +149,11 @@
     <q-card-section
       v-if="lastOutcome || (isInteractive && problem.isHighPriority)"
     >
-      <div class="text-subtitle1 text-weight-bold q-mb-sm">
+      <div
+        :class="
+          'text-subtitle1 text-weight-bold ' + (isInteractive ? 'q-mb-sm' : '')
+        "
+      >
         <span class="text-outcome q-mr-md">{{ $tc("outcome", 2) }}</span>
         <q-btn
           v-if="isInteractive"
@@ -243,9 +246,6 @@ export default class ProblemSummary extends Vue {
   get problem() {
     return this.record.problem;
   }
-  get signsAndSymptoms() {
-    return this.problem.signsAndSymptoms;
-  }
   get interventions() {
     return this.record.interventions;
   }
@@ -268,12 +268,12 @@ export default class ProblemSummary extends Vue {
     return !this.isDraft && !this.$props.isSummary;
   }
   get scopeIcon() {
-    const scope = this.problem.scope;
-    if (scope == 0) {
+    const code = this.problem.scopeCode;
+    if (code == 0) {
       return "fas fa-user";
-    } else if (scope == 1) {
+    } else if (code == 1) {
       return "fas fa-user-friends";
-    } else if (scope == 2) {
+    } else if (code == 2) {
       return "fas fa-users";
     } else {
       return "";
@@ -309,7 +309,7 @@ export default class ProblemSummary extends Vue {
   }
 
   prioritizeProblemRecord() {
-    this.$store.commit("prioritizeProblemRecord", this.$props.params);
+    this.$store.direct.commit.prioritizeProblemRecord(this.$props.params);
     this.$router.push({
       name: "problem",
       params: this.$store.getters.getRouteParamsForLatestProblem(
@@ -325,10 +325,7 @@ export default class ProblemSummary extends Vue {
   }
 
   getRecordFromStore() {
-    return this.$store.getters.getProblemRecordById({
-      terminology: this.terminology,
-      ...this.$props.params
-    });
+    return this.$store.getters.getProblemRecordById(this.$props.params);
   }
 
   created() {

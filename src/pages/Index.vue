@@ -1,17 +1,12 @@
 <template>
   <q-page>
-    <q-drawer
-      v-model="customerDrawer"
-      content-class="bg-grey-2"
-      show-if-above
-    >
+    <q-drawer v-model="customerDrawer" content-class="bg-grey-2" show-if-above>
       <q-list>
         <q-item>
           <q-item-section>
-            <q-item-label
-              class="q-pl-none"
-              header
-            >{{ $tc("customer", 2) }}</q-item-label>
+            <q-item-label class="q-pl-none" header>{{
+              $tc("customer", 2)
+            }}</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-btn
@@ -27,12 +22,15 @@
 
         <q-item
           clickable
-          v-for="customer in sortedCustomers"
-          :key="customer.id"
+          v-for="(customer, index) in sortedCustomers"
+          :key="index"
           v-ripple
           :active="isSelected(customer)"
           active-class="text-intervention"
-          @click="selectCustomer(customer); closeDrawerIfNeeded();"
+          @click="
+            selectCustomer(customer);
+            closeDrawerIfNeeded();
+          "
         >
           <q-item-section>
             <q-item-label class="q-pl-md">{{ customer.name }}</q-item-label>
@@ -41,20 +39,14 @@
       </q-list>
     </q-drawer>
 
-    <div
-      class="customer-overview q-pa-xl"
-      v-if="loading"
-    >
+    <div class="customer-overview q-pa-xl" v-if="loading">
       <p>{{ $t("loading") }}</p>
     </div>
     <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
       v-else-if="addingCustomer"
     >
-      <new-customer
-        @save="addCustomer"
-        @cancel="addingCustomer = false"
-      />
+      <new-customer @save="addCustomer" @cancel="addingCustomer = false" />
     </div>
     <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
@@ -64,7 +56,9 @@
         ref="customerName"
         class="q-mt-sm q-mb-xl q-py-sm text-h2"
         v-text="selectedCustomer.name"
-        @change="editCustomer({customerId: selectedCustomerId, name: $event.value})"
+        @change="
+          editCustomer({ customerId: selectedCustomerId, name: $event.value })
+        "
       />
       <div class="q-gutter-md">
         <q-btn
@@ -81,15 +75,15 @@
           v-for="problemRecord in selectedCustomerProblems"
           v-bind:key="problemRecord.id"
           :problemRecord="problemRecord"
-          :params="{customerId: selectedCustomerId, problemId: problemRecord.id}"
+          :params="{
+            customerId: selectedCustomerId,
+            problemId: problemRecord.id
+          }"
         />
       </div>
     </div>
 
-    <div
-      class="customer-overview q-pa-xl"
-      v-else-if="!customers.length"
-    >
+    <div class="customer-overview q-pa-xl" v-else-if="!customers.length">
       <p>{{ $t("noExistingCustomer") }}</p>
       <q-btn
         @click="addingCustomer = true"
@@ -99,10 +93,7 @@
         class="q-mt-md"
       />
     </div>
-    <div
-      class="customer-overview q-pa-xl"
-      v-else
-    >
+    <div class="customer-overview q-pa-xl" v-else>
       <p>{{ $t("noSelectedCustomer") }}</p>
     </div>
   </q-page>
@@ -117,47 +108,36 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { mapMutations } from "vuex";
 import ContentEditable from "../components/ContentEditable.vue";
 import NewCustomer from "../components/NewCustomer.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
-import { Terminology } from "../helper/terminology";
-import { store } from "../store";
-import {
-  Stitch,
-  RemoteMongoClient,
-} from "mongodb-stitch-browser-sdk";
-import { CoreCustomer, ProblemRecord } from "../helper/coreTypes";
-import { ObjectID } from 'bson';
-
+import { Customer } from "../models/customer";
+import { ProblemRecord } from "../models/problemRecord";
+import { ObjectID } from "bson";
 
 @Component({
   components: {
     ContentEditable,
     NewCustomer,
     ProblemSummary
-  },
-  // methods: {
-  //   ...mapMutations([
-  //     // "selectCustomer", 
-  //     // "editCustomer",
-  //   ])
-  // }
+  }
 })
 export default class PageIndex extends Vue {
   customerDrawer = this.$q.screen.gt.sm;
-  // loading = false;
   addingCustomer = false;
-  // customers: any[] = [];
 
   get loading() {
-    return store.state.isLoadingCustomerList
-      || store.state.isLoadingCustomer;
+    return (
+      this.$store.direct.state.isLoadingCustomerList ||
+      this.$store.direct.state.isLoadingCustomer
+    );
   }
-  get customers() { return store.state.customers; }
+  get customers() {
+    return this.$store.direct.state.customers;
+  }
   get selectedCustomerId() {
-    if (store.state.selectedCustomer) {
-      return store.state.selectedCustomer._id;
+    if (this.$store.direct.state.selectedCustomer) {
+      return this.$store.direct.state.selectedCustomer._id;
     }
     return "";
   }
@@ -167,81 +147,70 @@ export default class PageIndex extends Vue {
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
   }
   get selectedCustomer() {
-    return store.getters.getCustomer({
-      customerId: this.selectedCustomerId,
-      terminology: this.terminology
+    return this.$store.direct.getters.getCustomer({
+      customerId: this.selectedCustomerId
     });
   }
   get selectedCustomerProblems() {
     const customer = this.selectedCustomer;
     const problems = customer ? customer.problems : [];
-    return problems.concat().filter((problem: ProblemRecord) => {
-      return !problem.resolvedAt;
-    }).sort(
-      (first: ProblemRecord, second: ProblemRecord) =>
-        // sort order: draft first, then high priority followed by low priority
-        //@ts-ignore
-        !second.createdAt - !first.createdAt ||
-        //@ts-ignore
-        second.problem.isHighPriority - first.problem.isHighPriority
-    );
-  }
-
-  get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
+    console.log(123);
+    return problems
+      .concat()
+      .filter((problem: ProblemRecord) => {
+        return !problem.resolvedAt;
+      })
+      .sort(
+        (first: ProblemRecord, second: ProblemRecord) =>
+          // sort order: draft first, then high priority followed by low priority
+          //@ts-ignore
+          !second.createdAt - !first.createdAt ||
+          //@ts-ignore
+          second.problem.isHighPriority - first.problem.isHighPriority
+      );
   }
 
   created() {
-    this.$root.$on(
-      "toggleCustomerDrawer",
-      () => (this.customerDrawer = !this.customerDrawer)
-    );
-    store.dispatch.fetchCustomersFromDB();
+    this.$root.$on("toggleCustomerDrawer", () => {
+      this.customerDrawer = !this.customerDrawer;
+    });
+    this.$store.direct.dispatch.fetchCustomersFromDB();
   }
 
-  isSelected(customer: CoreCustomer) {
-    const id = this.selectedCustomer && this.selectedCustomer._id;
-    // if (id && id === customer._id) return true; 
-    if (id && customer._id && id.equals(customer._id)) return true;
-    return false;
+  isSelected(customer: Customer) {
+    const selectedId = this.selectedCustomer && this.selectedCustomer._id;
+    return !!selectedId && customer._id && selectedId.equals(customer._id);
   }
 
   addCustomer(name: string) {
-    let customer = {
-      user_id: this.$stitchApi.userId(),
-      name: name,
-      problems: [],
-      createdAt: new Date()
-    };
-    this.$stitchApi.createCustomer(customer)
-      .then((res) => {
-        store.dispatch.fetchCustomersFromDB()
-          .then(() => {
-            this.selectCustomerById(res.insertedId)
-          })
+    const customer = new Customer(this.$stitchApi.userId(), name);
+    this.$stitchApi
+      .createCustomer(customer)
+      .then(res => {
+        this.$store.direct.dispatch.fetchCustomersFromDB().then(() => {
+          this.selectCustomerById(res.insertedId);
+        });
       })
-      .catch(console.log)
-    ;
-    // store.commit.setCustomer(customer);
+      .catch(console.log);
     this.addingCustomer = false;
   }
 
   editCustomer(payload: any) {
-    let customer = store.getters.getCustomer(payload);
-    console.log(customer);
+    const customer = this.$store.direct.getters.getCustomer(payload);
     if (!customer) {
       return;
     }
-    for (let [key, value] of Object.entries(payload)) {
+
+    for (const [key, value] of Object.entries(payload)) {
       if (["name"].includes(key)) {
         (customer as any)[key] = value;
       }
     }
-    store.commit.setCustomer(customer);
-    this.$stitchApi.saveCustomer(customer)
-      .then(() => store.dispatch.fetchCustomersFromDB())
-      .catch(err => console.error(`Failed to save customer: ${err}`))
-    ;
+    this.$store.direct.commit.setCustomer(customer);
+    this.$stitchApi
+      .saveCustomer(customer)
+      .then(() => this.$store.direct.dispatch.fetchCustomersFromDB())
+      .catch(err => console.error(`Failed to save customer: ${err}`));
   }
 
   addProblem() {
@@ -250,11 +219,15 @@ export default class PageIndex extends Vue {
       console.error("no customer selected: this should not happen.");
       return;
     }
+
     const params = {
       customerId: this.selectedCustomerId
     };
-    store.commit.createProblemRecord(params);
-    this.$router.push({ name: "problem", params: store.getters.getRouteParamsForLatestProblem(params) });
+    this.$store.direct.commit.createProblemRecord(params);
+    this.$router.push({
+      name: "problem",
+      params: this.$store.direct.getters.getRouteParamsForLatestProblem(params)
+    });
   }
 
   closeDrawerIfNeeded() {
@@ -263,18 +236,23 @@ export default class PageIndex extends Vue {
     }
   }
 
-  selectCustomer(customer: CoreCustomer) {
-    this.selectCustomerById(customer._id)
+  selectCustomer(customer: Customer) {
+    if (customer._id) {
+      this.selectCustomerById(customer._id);
+    }
   }
 
   selectCustomerById(id: ObjectID) {
+    this.$store.direct.commit.isLoadingCustomer(true);
     // console.log("selectCustomerById:", id);
     const current = this.selectedCustomer;
     if (current) {
-      this.$stitchApi.saveCustomer(current)
+      this.$stitchApi
+        .saveCustomer(current)
         .then(() => this.loadCustomerFromDB(id))
-        .catch(err => console.error(`Save current customer failed with error: ${err}`))
-      ;
+        .catch(err =>
+          console.error(`Save current customer failed with error: ${err}`)
+        );
     } else {
       this.loadCustomerFromDB(id);
     }
@@ -282,18 +260,17 @@ export default class PageIndex extends Vue {
 
   loadCustomerFromDB(id: ObjectID) {
     // console.log("loadCustomerFromDB:", id);
-    store.commit.isLoadingCustomer(true);
-    this.$stitchApi.getCustomerById(id)
+    this.$store.direct.commit.isLoadingCustomer(true);
+    this.$stitchApi
+      .getCustomerById(id)
       .then(customer => {
-        store.commit.setCustomer(customer);
-        store.commit.isLoadingCustomer(false);
+        this.$store.direct.commit.setCustomer(customer);
+        this.$store.direct.commit.isLoadingCustomer(false);
       })
       .catch(err => {
         console.error(`Failed: ${err}`);
-        store.commit.isLoadingCustomer(false);
-      })
-    ;
+        this.$store.direct.commit.isLoadingCustomer(false);
+      });
   }
-
 }
 </script>

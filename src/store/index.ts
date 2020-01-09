@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { Download } from "../helper/download";
 import { colors } from "quasar";
-import { Customer, CoreCustomer } from "../helper/coreTypes";
+import { Customer } from "../models/customer";
 import { createDirectStore } from "direct-vuex";
 import getters from "./getters";
 import mutations from "./mutations";
@@ -13,8 +13,8 @@ const { setBrand } = colors;
 Vue.use(Vuex);
 
 export interface StoreState {
-    customers: CoreCustomer[];
-    selectedCustomer: Customer | null;
+    customers: Customer[];
+    selectedCustomer: Customer | undefined;
     isLoadingCustomer: boolean;
     isLoadingCustomerList: boolean;
 }
@@ -24,7 +24,7 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
         // customers: sampleData,
         // selectedCustomerId: "",
         customers: [],
-        selectedCustomer: null,
+        selectedCustomer: undefined,
         isLoadingCustomer: false,
         isLoadingCustomerList: false
     } as StoreState,
@@ -34,14 +34,8 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV === "true"
+    strict: (process.env.DEV as unknown) === true || process.env.DEV === "true"
 });
-
-export function generateId() {
-    return Math.random()
-        .toString(36)
-        .substring(2, 10);
-}
 
 setBrand("classification", "#f44336");
 setBrand("outcome", "#009688");
@@ -49,7 +43,7 @@ setBrand("intervention", "#ff6f00");
 
 // @ts-ignore
 window.download = () => {
-    Download.ts(store.state.customers, "sample1.ts");
+    Download.json(store.state.selectedCustomer || {}, "sample1.json");
 };
 
 // Export the original Vuex store because of quasar

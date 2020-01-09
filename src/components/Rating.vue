@@ -7,7 +7,9 @@
     <div class="row custom-gutter">
       <div class="col-12 col-sm-9 col-md-7">
         <div class="row q-pb-sm q-pa-xxs-none">
-          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
+          <div
+            class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm"
+          >
             {{ $t("observation") }}
           </div>
           <div class="col-12-xxs col-9">
@@ -41,7 +43,9 @@
         </div>
 
         <div class="row">
-          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
+          <div
+            class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm"
+          >
             {{ $t("expectation") }}
           </div>
           <div class="col-12-xxs col-9">
@@ -137,6 +141,9 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Rating as RatingModel } from "../models/rating";
+
+const nameof = (name: keyof RatingModel) => name;
 
 @Component({
   props: {
@@ -154,19 +161,19 @@ export default class Rating extends Vue {
     return this.$props.rating.observation || 0;
   }
   set observation(value: number) {
-    this.updateNewOutcome("observation", value);
+    this.updateNewOutcome(nameof("observation"), value);
   }
   get expectation() {
     return this.$props.rating.expectation || 0;
   }
   set expectation(value: number) {
-    this.updateNewOutcome("expectation", value);
+    this.updateNewOutcome(nameof("expectation"), value);
   }
   get comment() {
     return this.$props.rating.comment || "";
   }
   set comment(value: string) {
-    this.updateNewOutcome("comment", value);
+    this.updateNewOutcome(nameof("comment"), value);
   }
 
   get options() {
@@ -175,10 +182,12 @@ export default class Rating extends Vue {
     });
   }
 
-  updateNewOutcome(path: string, value: any) {
-    this.$store.commit("updateNewOutcome", {
-      path: this.$props.type + "." + path,
-      value: value,
+  updateNewOutcome(key: string, value: any) {
+    const changes: any = {};
+    changes[key] = value;
+    this.$store.direct.commit.updateNewOutcome({
+      ratingType: this.$props.type,
+      changes: changes,
       ...this.$route.params
     });
   }

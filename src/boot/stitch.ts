@@ -5,7 +5,7 @@ import {
     RemoteMongoClient,
     RemoteMongoCollection
 } from "mongodb-stitch-browser-sdk";
-import { CoreCustomer, UnsavedCustomer, Customer } from "../helper/coreTypes";
+import { Customer } from "../models/customer";
 import { ObjectID } from "bson";
 
 declare module "vue/types/vue" {
@@ -33,18 +33,28 @@ class StitchApi {
         }
         return "";
     }
-    createCustomer(customer: UnsavedCustomer) {
-        return this.customers.insertOne(customer as Customer);
+    createCustomer(customer: Customer) {
+        return this.customers.insertOne(customer);
     }
     deleteAllCustomers() {
         return this.customers.deleteMany({});
     }
-    getAllCustomers(): Promise<CoreCustomer[]> {
-        return this.customers.find({}, { projection: { name: 1 } }).toArray();
+    getAllCustomers(): Promise<Customer[]> {
+        return this.customers
+            .find({}, { projection: { name: 1 } })
+            .toArray()
+            .then(data => {
+                return Customer.fromObject(data) as Customer[];
+            });
     }
     getCustomerById(id: ObjectID) {
         // console.log("getCustomerById:", id);
-        return this.customers.find({ _id: id }, {}).first();
+        return this.customers
+            .find({ _id: id }, {})
+            .first()
+            .then(data => {
+                return Customer.fromObject(data) as Customer;
+            });
     }
     saveCustomer(customer: Customer) {
         customer.user_id = this.userId();

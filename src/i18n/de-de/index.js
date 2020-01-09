@@ -36,12 +36,16 @@ export default {
   lowPriorityReasonLabel: "Grund für niedrige Priorität",
   lowPriorityReasonHint:
     "Warum hat das Problem aktuell niedrige Priorität und bei welchen Veränderungen bekäme es hohe Priorität?",
-  highPriorityTitle: "Hohe Priorität",
-  highPriorityDescription:
-    "Das Problem sollte unverzüglich angegangen werden, basierend auf dem Kundenwunsch und gegebenenfalls anderen Empfehlungen. Wenn ein Problem als vorrangig eingestuft wird, wird das Problem dokumentiert, Interventionen angeboten und die Bewertungen abgeschlossen.",
-  lowPriorityTitle: "Niedrige Priorität",
-  lowPriorityDescription:
-    "Das Problem ist im Vergleich zu anderen Problemen von untergeordneter Bedeutung, basierend auf dem Kundenwunsch und gegebenenfalls anderen Empfehlungen. Wenn ein Problem als unwichtig eingestuft wird, wird das Problem dokumentiert, aber keine Interventionen geplant oder Bewertungen vorgenommen, bis sich die Bedürfnisse des Kunden ändern oder erhöhen.",
+  highPriority: {
+    title: "Hohe Priorität",
+    description:
+      "Das Problem sollte unverzüglich angegangen werden, basierend auf dem Kundenwunsch und gegebenenfalls anderen Empfehlungen. Wenn ein Problem als vorrangig eingestuft wird, wird das Problem dokumentiert, Interventionen angeboten und die Bewertungen abgeschlossen."
+  },
+  lowPriority: {
+    title: "Niedrige Priorität",
+    description:
+      "Das Problem ist im Vergleich zu anderen Problemen von untergeordneter Bedeutung, basierend auf dem Kundenwunsch und gegebenenfalls anderen Empfehlungen. Wenn ein Problem als unwichtig eingestuft wird, wird das Problem dokumentiert, aber keine Interventionen geplant oder Bewertungen vorgenommen, bis sich die Bedürfnisse des Kunden ändern oder erhöhen."
+  },
   outcome: "Ergebnis | Ergebnisse",
   editDraft: "Entwurf",
   delete: "Löschen",

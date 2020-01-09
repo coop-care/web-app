@@ -1,15 +1,8 @@
 import { createGetters } from "direct-vuex";
 import { store, StoreState } from ".";
-import {
-    Customer,
-    ProblemRecord,
-    Outcome,
-    CoreCustomer
-} from "../helper/coreTypes";
-import TerminologyData, {
-    Terminology,
-    HasTitleCode
-} from "../helper/terminology";
+import { Customer } from "../models/customer";
+import { ProblemRecord } from "../models/problemRecord";
+import { Outcome } from "../models/outcome";
 import { format } from "timeago.js";
 import { colors } from "quasar";
 import ApexCharts from "apexcharts";
@@ -18,39 +11,15 @@ const { getBrand } = colors;
 
 export default createGetters<StoreState>()({
     getCustomer: state => (payload: any): Customer | undefined => {
-        let customer = state.selectedCustomer;
-
-        if (customer && payload.terminology) {
-            customer.problems = TerminologyData.mergeProblemRecordsAndTerminology(
-                customer.problems,
-                payload.terminology
-            );
-        }
-
-        if (customer) return customer;
-        else return undefined;
+        return state.selectedCustomer;
     },
 
     getProblemRecordById: state => (
         payload: any
     ): ProblemRecord | undefined => {
-        let customer = store.getters.getCustomer(payload);
-        if (!customer) {
-            return;
-        }
-
-        let problemRecord = customer.problems.find(
-            problemRecord => problemRecord.id === payload.problemId
-        );
-
-        if (problemRecord && payload.terminology) {
-            return TerminologyData.mergeProblemRecordsAndTerminology(
-                [problemRecord],
-                payload.terminology
-            )[0];
-        } else {
-            return problemRecord;
-        }
+        return store.getters
+            .getCustomer(payload)
+            ?.findProblemRecord(payload.problemId);
     },
 
     getOutcomeAsChartData: state => (payload: any): any[] => {
@@ -66,10 +35,15 @@ export default createGetters<StoreState>()({
         }
 
         // clone array because original needs to be preserved
-        let outcomes = problemRecord.outcomes.concat([]);
+        let outcomes = problemRecord.outcomes
+            .concat([])
+            .filter(outcome => outcome.createdAt);
 
         if (outcomes.length == 1) {
-            let clone = JSON.parse(JSON.stringify(outcomes[0]));
+            const clone = outcomes[0].clone();
+            clone.createdAt = new Date(
+                (clone.createdAt?.getTime() || 0) + 1000
+            );
             outcomes.push(clone);
         }
 
@@ -77,16 +51,14 @@ export default createGetters<StoreState>()({
             let series = [
                 {
                     name: payload.ratings[index].title,
-                    data: outcomes
-                        .filter((outcome: Outcome) => outcome.createdAt)
-                        .map((outcome: Outcome) => {
-                            let value = (outcome as any)[key];
-                            return {
-                                x: outcome.createdAt,
-                                y: value.observation,
-                                comment: value.comment
-                            };
-                        })
+                    data: outcomes.map((outcome: Outcome) => {
+                        let value = (outcome as any)[key];
+                        return {
+                            x: outcome.createdAt,
+                            y: value.observation,
+                            comment: value.comment
+                        };
+                    })
                 },
                 {
                     name: payload.expectation,
@@ -287,31 +259,5 @@ export default createGetters<StoreState>()({
             customerId: customer._id,
             problemId: customer.problems[customer.problems.length - 1].id
         };
-    },
-
-    symptomsForProblemCode: state => ({
-        problemCode,
-        terminology
-    }: {
-        problemCode: string;
-        terminology: Terminology;
-    }): any[] => {
-        let problemTerminology = TerminologyData.flattenedProblems(
-            terminology
-        ).find(problem => problem.code == problemCode);
-
-        if (!problemTerminology) {
-            return [];
-        }
-        return problemTerminology.signsAndSymptoms.map(symptom => {
-            return { label: symptom.title, value: symptom.code };
-        });
-    },
-
-    otherSymptomForProblemCode: state => (payload: any) => {
-        let symptoms = store.getters.symptomsForProblemCode(
-            payload
-        ) as HasTitleCode[];
-        return symptoms[symptoms.length - 1];
     }
 });
