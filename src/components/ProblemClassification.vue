@@ -8,7 +8,7 @@
           color="classification"
           filled
           v-model="problemsFilter"
-          :label="$t('selectProblem')"
+          :label="$t('findProblem')"
           dense
         >
           <template v-slot:prepend>
@@ -141,7 +141,7 @@
           dense
         />
 
-        <h6 class="counter">{{ $t("priority") }}</h6>
+        <h6 class="counter">{{ $t("priorityTitle") }}</h6>
         <q-btn-toggle
           v-model="priority"
           spread

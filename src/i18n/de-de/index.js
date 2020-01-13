@@ -15,8 +15,8 @@ export default {
   feedback: "Feedback",
   observation: "Beobachtung",
   expectation: "Erwartung",
-  selectProblem: "Das Problem auswählen",
-  findProblem: "Problem finden",
+  selectProblem: "Das Bedürfnis oder Problem auswählen",
+  findProblem: "Bedürfnis oder Problem finden",
   noProblemsFound: "Keine Probleme, Anzeichen oder Symptome gefunden",
   signsAndSymptoms: "Anzeichen und Symptome",
   otherSymptom: "sonstige",
@@ -32,7 +32,7 @@ export default {
   customerSpecificInterventionsHint:
     "Welche konkreten Aktivitäten werden geplant?",
   unspecifiedProblem: "nicht spezifiziertes Problem",
-  priority: "Priorität",
+  priorityTitle: "Priorität festlegen",
   lowPriorityReasonLabel: "Grund für niedrige Priorität",
   lowPriorityReasonHint:
     "Warum hat das Problem aktuell niedrige Priorität und bei welchen Veränderungen bekäme es hohe Priorität?",
@@ -85,5 +85,8 @@ export default {
   databaseInsertSamples: "Beispiel-Kunden anlegen",
   databaseClearAll: "Alle Kunden löschen",
   prioritizeProblem: "Priorisieren",
-  problemDismissal: "Problem abschließen"
+  problemDismissal: "Problem abschließen",
+  stateProblemStep: "Problem benennen",
+  admissionRatingStep: "Aufnahmebewertung vornehmen",
+  planInterveneStep: "Planen und Intervenieren"
 };

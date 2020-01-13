@@ -12,11 +12,7 @@
     >
       <q-step
         :name="1"
-        :title="
-          $q.screen.lt.md
-            ? $tc('problem', 1)
-            : terminology.problemClassificationScheme.title
-        "
+        :title="$t('stateProblemStep')"
         prefix="1"
         :done="step > 1"
         :header-nav="step > 1"
@@ -29,11 +25,7 @@
       <q-step
         :name="2"
         v-if="isHighPriority"
-        :title="
-          $q.screen.lt.md
-            ? $tc('rating', 1)
-            : terminology.problemRatingScale.title
-        "
+        :title="$q.screen.lt.md ? $tc('rating', 1) : $t('admissionRatingStep')"
         prefix="2"
         :done="step > 2"
         :header-nav="step > 2"
@@ -46,11 +38,7 @@
       <q-step
         :name="3"
         v-if="isHighPriority"
-        :title="
-          $q.screen.lt.md
-            ? $tc('intervention', 2)
-            : terminology.interventionScheme.title
-        "
+        :title="$t('planInterveneStep')"
         prefix="3"
         icon="add_comment"
         :header-nav="step > 3"
