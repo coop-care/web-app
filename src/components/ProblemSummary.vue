@@ -14,7 +14,7 @@
             size="12px"
             dense
             color="transparent"
-            :icon="scopeIcon"
+            :icon="problem.scopeIcon(terminology)"
             text-color="classification"
             :label="$t(problem.scope.title)"
             class="text-weight-medium"
@@ -23,7 +23,7 @@
             size="12px"
             dense
             color="transparent"
-            :icon="priorityIcon"
+            :icon="problem.priorityIcon(terminology)"
             text-color="classification"
             :label="$t(problem.priority.title)"
             class="text-weight-medium"
@@ -266,25 +266,6 @@ export default class ProblemSummary extends Vue {
   }
   get isInteractive() {
     return !this.isDraft && !this.$props.isSummary;
-  }
-  get scopeIcon() {
-    const code = this.problem.scopeCode;
-    if (code == 0) {
-      return "fas fa-user";
-    } else if (code == 1) {
-      return "fas fa-user-friends";
-    } else if (code == 2) {
-      return "fas fa-users";
-    } else {
-      return "";
-    }
-  }
-  get priorityIcon() {
-    if (this.problem.isHighPriority) {
-      return "fas fa-arrow-up";
-    } else {
-      return "fas fa-arrow-down";
-    }
   }
   get outcomesForChart() {
     return this.$store.getters.getOutcomeAsChartData({

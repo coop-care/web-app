@@ -290,8 +290,16 @@ export default class ProblemClassification extends Vue {
   }
   get priorityOptions() {
     return [
-      { label: this.$t("lowPriority.title"), value: false },
-      { label: this.$t("highPriority.title"), value: true }
+      {
+        label: this.$t("lowPriority.title"),
+        value: false,
+        icon: this.terminology.icons.priority[0]
+      },
+      { 
+        label: this.$t("highPriority.title"), 
+        value: true, 
+        icon: this.terminology.icons.priority[1] 
+      }
     ];
   }
 
@@ -333,7 +341,8 @@ export default class ProblemClassification extends Vue {
       return {
         label: item.title,
         value: index,
-        description: item.description
+        description: item.description,
+        icon: (this.terminology.icons as any)[type][index]
       };
     });
   }

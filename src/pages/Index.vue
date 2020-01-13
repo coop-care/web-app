@@ -26,7 +26,7 @@
           :key="index"
           v-ripple
           :active="isSelected(customer)"
-          active-class="text-intervention"
+          active-class="text-primary"
           @click="
             selectCustomer(customer);
             closeDrawerIfNeeded();
@@ -154,7 +154,6 @@ export default class PageIndex extends Vue {
   get selectedCustomerProblems() {
     const customer = this.selectedCustomer;
     const problems = customer ? customer.problems : [];
-    console.log(123);
     return problems
       .concat()
       .filter((problem: ProblemRecord) => {

@@ -45,6 +45,11 @@ export interface TerminologyWithMaps extends Terminology {
     symptomByCode: { [key: string]: HasTitleCode };
     categoryByCode: { [key: string]: HasTitleDescriptionCode };
     targetByCode: { [key: string]: HasTitleDescriptionCode };
+    icons: {
+        severity: string[];
+        scope: string[];
+        priority: string[];
+    };
 }
 
 export function treeifyTerminology(
@@ -102,7 +107,12 @@ export function makeTerminologyWithMaps(terminology: Terminology) {
         problemByCode: {},
         symptomByCode: {},
         categoryByCode: {},
-        targetByCode: {}
+        targetByCode: {},
+        icons: {
+            severity: [],
+            scope: [],
+            priority: []
+        }
     };
 
     flattenedProblems(terminology).forEach(problem => {
@@ -120,6 +130,14 @@ export function makeTerminologyWithMaps(terminology: Terminology) {
     terminology.interventionScheme.targets.forEach(target => {
         result.targetByCode[target.code] = target;
     });
+
+    result.icons.severity = [
+        "fas fa-grin-wink",
+        "fas fa-smile",
+        "fas fa-frown-open"
+    ];
+    result.icons.scope = ["fas fa-user", "fas fa-user-friends", "fas fa-users"];
+    result.icons.priority = ["fas fa-arrow-down", "fas fa-arrow-up"];
 
     return result;
 }
