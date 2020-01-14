@@ -86,5 +86,6 @@ export default {
   problemDismissal: "Problem dismissal",
   stateProblemStep: "State problem",
   admissionRatingStep: "Identify admission rating",
-  planInterveneStep: "Plan and intervene"
+  planInterveneStep: "Plan and intervene",
+  moreActions: "More actions…"
 };

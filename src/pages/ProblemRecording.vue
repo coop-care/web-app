@@ -54,22 +54,25 @@
             v-if="step == 1"
             flat
             color="primary"
+            rounded
             to="/"
             :label="$t('cancel')"
-            class="q-ml-sm"
+            class="shadow-1 q-ml-sm"
           />
           <q-btn
             v-if="step > 1"
             flat
             color="primary"
+            rounded
             @click="$refs.stepper.previous()"
             :label="$t('back')"
-            class="q-ml-sm"
+            class="shadow-1 q-ml-sm"
           />
           <q-btn
             v-if="step < 3 && isHighPriority"
             @click="$refs.stepper.next()"
             color="primary"
+            rounded
             :label="$t('continue')"
           />
           <q-btn
@@ -77,6 +80,7 @@
             @click="saveProblem"
             to="/"
             color="primary"
+            rounded
             :label="$t('save')"
           />
         </q-stepper-navigation>

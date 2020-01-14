@@ -29,28 +29,42 @@
             class="text-weight-medium"
           />
         </span>
-        <q-btn
-          v-if="!isDraft && !problem.isHighPriority"
-          :title="$t('prioritizeProblem')"
-          icon="fas fa-arrow-up"
-          @click="prioritizeProblemRecord"
-          round
-          outline
-          size="sm"
-          color="primary"
-          class="q-mr-xs"
-        />
-        <q-btn
+        <q-btn-dropdown
           v-if="!isDraft"
-          :title="$t('problemDismissal')"
-          icon="done_outline"
-          @click="$store.direct.commit.dismissProblemRecord(params)"
-          round
-          outline
-          size="sm"
           color="primary"
-          class="q-mr-xs"
-        />
+          rounded
+          outline
+          size="14px"
+          dense
+          class="more-button shadow-1 q-mr-xs"
+          auto-close
+          content-class="action-menu text-primary"
+          :title="$t('moreActions')"
+        >
+          <q-list>
+            <q-item
+              v-if="!problem.isHighPriority"
+              clickable
+              v-ripple
+              @click="prioritizeProblemRecord"
+            >
+              <q-item-section avatar>
+                <q-icon name="fas fa-arrow-up" />
+              </q-item-section>
+              <q-item-section>{{ $t("prioritizeProblem") }}</q-item-section>
+            </q-item>
+            <q-item
+              clickable
+              v-ripple
+              @click="$store.direct.commit.dismissProblemRecord(params)"
+            >
+              <q-item-section avatar>
+                <q-icon name="fas fa-check" />
+              </q-item-section>
+              <q-item-section>{{ $t("problemDismissal") }}</q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
         <q-btn
           v-if="isDraft"
           :label="$t('editDraft')"
@@ -61,7 +75,7 @@
           dense
           size="md"
           color="negative"
-          class="q-mr-xs q-px-xs"
+          class="shadow-1 q-mr-xs q-px-xs"
         />
         <q-btn
           v-if="isDraft"
@@ -71,9 +85,9 @@
           dense
           round
           unelevated
-          size="md"
+          size="13.5px"
           color="negative"
-          class="q-mr-sm"
+          class="shadow-1 q-mr-sm"
         />
       </div>
     </q-card-section>
@@ -162,8 +176,9 @@
           :to="{ name: 'outcome', params: params }"
           round
           outline
-          size="sm"
+          size="10.5px"
           color="primary"
+          class="shadow-1"
         />
       </div>
       <div v-if="lastOutcome">

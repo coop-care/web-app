@@ -12,10 +12,12 @@
             <q-btn
               icon="add"
               round
-              size="sm"
+              outline
+              size="10.5px"
               color="primary"
               @click="addingCustomer = true"
               :title="$t('newCustomer')"
+              class="shadow-1"
             />
           </q-item-section>
         </q-item>
@@ -67,9 +69,9 @@
           :label="$t('problemAdmission')"
           rounded
           outline
-          class="q-mt-md"
+          class="shadow-1 q-mt-md"
           @click="addProblem"
-          size="12px"
+          size="12.5px"
         />
         <problem-summary
           v-for="problemRecord in selectedCustomerProblems"
@@ -89,6 +91,7 @@
         @click="addingCustomer = true"
         no-caps
         color="primary"
+        rounded
         :label="$t('createFirstCustomer')"
         class="q-mt-md"
       />

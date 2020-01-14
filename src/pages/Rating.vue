@@ -5,8 +5,15 @@
     </div>
     <problem-rating :params="$route.params" :isSummary="true" />
     <div class="flex justify-around q-mt-lg">
-      <q-btn :label="$t('cancel')" to="/" flat color="primary" />
-      <q-btn :label="$t('save')" @click="save" color="primary" />
+      <q-btn
+        :label="$t('cancel')"
+        to="/"
+        color="primary"
+        rounded
+        flat
+        class="shadow-1"
+      />
+      <q-btn :label="$t('save')" @click="save" color="primary" rounded />
     </div>
   </q-page>
 </template>

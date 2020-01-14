@@ -88,5 +88,6 @@ export default {
   problemDismissal: "Problem abschließen",
   stateProblemStep: "Problem benennen",
   admissionRatingStep: "Aufnahmebewertung vornehmen",
-  planInterveneStep: "Planen und Intervenieren"
+  planInterveneStep: "Planen und Intervenieren",
+  moreActions: "Weitere Aktionen…"
 };
