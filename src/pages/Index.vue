@@ -1,54 +1,25 @@
 <template>
   <q-page>
-    <q-drawer v-model="customerDrawer" content-class="bg-grey-2" show-if-above>
-      <q-list>
-        <q-item>
-          <q-item-section>
-            <q-item-label class="q-pl-none" header>{{
-              $tc("customer", 2)
-            }}</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-btn
-              icon="add"
-              round
-              outline
-              size="10.5px"
-              color="primary"
-              @click="addingCustomer = true"
-              :title="$t('newCustomer')"
-              class="shadow-1"
-            />
-          </q-item-section>
-        </q-item>
+    <customer-drawer
+      ref="customerDrawer"
+      @willAddCustomer="addingCustomer = true"
+      @didSelectCustomer="addingCustomer = false"
+    />
 
-        <q-item
-          clickable
-          v-for="(customer, index) in sortedCustomers"
-          :key="index"
-          v-ripple
-          :active="isSelected(customer)"
-          active-class="text-primary"
-          @click="
-            selectCustomer(customer);
-            closeDrawerIfNeeded();
-          "
-        >
-          <q-item-section>
-            <q-item-label class="q-pl-md">{{ customer.name }}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-drawer>
-
-    <div class="customer-overview q-pa-xl" v-if="loading">
+    <div
+      class="customer-overview q-pa-xl"
+      v-if="loading"
+    >
       <p>{{ $t("loading") }}</p>
     </div>
     <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
       v-else-if="addingCustomer"
     >
-      <new-customer @save="addCustomer" @cancel="addingCustomer = false" />
+      <new-customer
+        @save="addCustomer"
+        @cancel="addingCustomer = false"
+      />
     </div>
     <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
