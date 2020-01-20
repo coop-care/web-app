@@ -89,5 +89,6 @@ export default {
   stateProblemStep: "Problem benennen",
   admissionRatingStep: "Aufnahmebewertung vornehmen",
   planInterveneStep: "Planen und Intervenieren",
-  moreActions: "Weitere Aktionen…"
+  moreActions: "Weitere Aktionen…",
+  customerDismissal: "Pflege beenden und Kundendaten archivieren"
 };

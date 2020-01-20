@@ -29,42 +29,7 @@
             class="text-weight-medium"
           />
         </span>
-        <q-btn-dropdown
-          v-if="!isDraft"
-          color="primary"
-          rounded
-          outline
-          size="14px"
-          dense
-          class="more-button shadow-1 q-mr-xs"
-          auto-close
-          content-class="action-menu text-primary"
-          :title="$t('moreActions')"
-        >
-          <q-list>
-            <q-item
-              v-if="!problem.isHighPriority"
-              clickable
-              v-ripple
-              @click="prioritizeProblemRecord"
-            >
-              <q-item-section avatar>
-                <q-icon name="fas fa-arrow-up" />
-              </q-item-section>
-              <q-item-section>{{ $t("prioritizeProblem") }}</q-item-section>
-            </q-item>
-            <q-item
-              clickable
-              v-ripple
-              @click="$store.direct.commit.dismissProblemRecord(params)"
-            >
-              <q-item-section avatar>
-                <q-icon name="fas fa-check" />
-              </q-item-section>
-              <q-item-section>{{ $t("problemDismissal") }}</q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
+        <action-menu v-if="!isDraft" :items="actionMenuItems" class="q-mr-xs" />
         <q-btn
           v-if="isDraft"
           :label="$t('editDraft')"
@@ -242,6 +207,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import ActionMenu from "../components/ActionMenu.vue";
 import VueApexCharts from "vue-apexcharts";
 import { Terminology } from "../helper/terminology";
 
@@ -254,7 +220,8 @@ Vue.use(VueApexCharts);
     isSummary: Boolean
   },
   components: {
-    apexchart: VueApexCharts
+    apexchart: VueApexCharts,
+    ActionMenu
   }
 })
 export default class ProblemSummary extends Vue {
@@ -290,6 +257,24 @@ export default class ProblemSummary extends Vue {
       ...this.$props.params
     });
   }
+  get actionMenuItems() {
+    return [
+      {
+        condition: !this.problem.isHighPriority,
+        name: this.$t("prioritizeProblem"),
+        icon: "fas fa-arrow-up",
+        action: this.prioritizeProblemRecord
+      },
+      {
+        name: this.$t("problemDismissal"),
+        icon: "fas fa-check",
+        action: () => {
+          this.$store.direct.commit.dismissProblemRecord(this.$props.params);
+          this.$store.direct.dispatch.saveCustomer(this.$props.params);
+        }
+      }
+    ];
+  }
 
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
@@ -312,6 +297,7 @@ export default class ProblemSummary extends Vue {
         this.$props.params
       )
     });
+    this.$store.direct.dispatch.saveCustomer(this.$props.params);
   }
 
   updateLocale() {

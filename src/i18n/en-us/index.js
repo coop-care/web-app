@@ -87,5 +87,6 @@ export default {
   stateProblemStep: "State problem",
   admissionRatingStep: "Identify admission rating",
   planInterveneStep: "Plan and intervene",
-  moreActions: "More actions…"
+  moreActions: "More actions…",
+  customerDismissal: "Dismiss customer care and archive customer data"
 };
