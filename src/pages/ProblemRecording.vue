@@ -77,7 +77,7 @@
           />
           <q-btn
             v-if="step == 3 || !isHighPriority"
-            @click="saveProblem"
+            @click="saveProblemRecord"
             to="/"
             color="primary"
             rounded
@@ -115,6 +115,9 @@ export default class ProblemRecording extends Vue {
   get terminology() {
     return this.$t("terminology");
   }
+  get customer() {
+    return this.$store.getters.getCustomer(this.$route.params);
+  }
   get record() {
     return this.$store.getters.getProblemRecordById(this.$route.params);
   }
@@ -132,9 +135,9 @@ export default class ProblemRecording extends Vue {
     scroll.setScrollPosition(window, 0, 200);
   }
 
-  saveProblem() {
+  saveProblemRecord() {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
-    this.$stitchApi.saveCustomer(this.$store.state.selectedCustomer);
+    this.$stitchApi.saveCustomer(this.customer);
   }
 }
 </script>

@@ -85,7 +85,10 @@
       </div>
     </div>
 
-    <div class="customer-overview q-pa-xl" v-else-if="!customers.length">
+    <div
+      class="customer-overview q-pa-xl"
+      v-else-if="!customers.length"
+    >
       <p>{{ $t("noExistingCustomer") }}</p>
       <q-btn
         @click="addingCustomer = true"
@@ -96,7 +99,10 @@
         class="q-mt-md"
       />
     </div>
-    <div class="customer-overview q-pa-xl" v-else>
+    <div
+      class="customer-overview q-pa-xl"
+      v-else
+    >
       <p>{{ $t("noSelectedCustomer") }}</p>
     </div>
   </q-page>
@@ -111,22 +117,27 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import CustomerDrawer from "../components/CustomerDrawer.vue";
 import ContentEditable from "../components/ContentEditable.vue";
 import NewCustomer from "../components/NewCustomer.vue";
+import ActionMenu from "../components/ActionMenu.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Customer } from "../models/customer";
 import { ProblemRecord } from "../models/problemRecord";
 import { ObjectID } from "bson";
 
+const nameof = (name: keyof Customer) => name;
+
 @Component({
   components: {
     ContentEditable,
     NewCustomer,
-    ProblemSummary
+    ProblemSummary,
+    ActionMenu,
+    CustomerDrawer
   }
 })
 export default class PageIndex extends Vue {
-  customerDrawer = this.$q.screen.gt.sm;
   addingCustomer = false;
 
   get loading() {
@@ -138,21 +149,13 @@ export default class PageIndex extends Vue {
   get customers() {
     return this.$store.direct.state.customers;
   }
-  get selectedCustomerId() {
-    if (this.$store.direct.state.selectedCustomer) {
-      return this.$store.direct.state.selectedCustomer._id;
-    }
-    return "";
-  }
-  get sortedCustomers() {
-    return this.customers
-      .concat()
-      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+  get customerActionItems() {
   }
   get selectedCustomer() {
-    return this.$store.direct.getters.getCustomer({
-      customerId: this.selectedCustomerId
-    });
+    return this.$store.direct.state.selectedCustomer;
+  }
+  get selectedCustomerId() {
+    return (this.selectedCustomer || {})._id;
   }
   get selectedCustomerProblems() {
     const customer = this.selectedCustomer;
@@ -173,15 +176,7 @@ export default class PageIndex extends Vue {
   }
 
   created() {
-    this.$root.$on("toggleCustomerDrawer", () => {
-      this.customerDrawer = !this.customerDrawer;
-    });
     this.$store.direct.dispatch.fetchCustomersFromDB();
-  }
-
-  isSelected(customer: Customer) {
-    const selectedId = this.selectedCustomer && this.selectedCustomer._id;
-    return !!selectedId && customer._id && selectedId.equals(customer._id);
   }
 
   addCustomer(name: string) {
@@ -190,28 +185,32 @@ export default class PageIndex extends Vue {
       .createCustomer(customer)
       .then(res => {
         this.$store.direct.dispatch.fetchCustomersFromDB().then(() => {
-          this.selectCustomerById(res.insertedId);
+          (this.$refs.customerDrawer as CustomerDrawer).selectCustomerById(
+            res.insertedId
+          );
         });
       })
       .catch(console.log);
     this.addingCustomer = false;
   }
 
-  editCustomer(payload: any) {
-    const customer = this.$store.direct.getters.getCustomer(payload);
+  changeCustomerName(customerId: ObjectID | undefined, name: string) {
+    const customer = this.$store.direct.getters.getCustomer({
+      customerId: customerId
+    });
     if (!customer) {
       return;
     }
 
-    for (const [key, value] of Object.entries(payload)) {
-      if (["name"].includes(key)) {
-        (customer as any)[key] = value;
-      }
-    }
-    this.$store.direct.commit.setCustomer(customer);
-    this.$stitchApi
-      .saveCustomer(customer)
-      .then(() => this.$store.direct.dispatch.fetchCustomersFromDB())
+    const changes: any = {};
+    changes[nameof("name")] = name;
+    this.$store.direct.commit.updateObject({
+      target: customer,
+      changes: changes
+    });
+
+    this.$store.direct.dispatch
+      .saveCustomer({ customerId: this.selectedCustomerId })
       .catch(err => console.error(`Failed to save customer: ${err}`));
   }
 
@@ -230,49 +229,6 @@ export default class PageIndex extends Vue {
       name: "problem",
       params: this.$store.direct.getters.getRouteParamsForLatestProblem(params)
     });
-  }
-
-  closeDrawerIfNeeded() {
-    if (this.$q.screen.lt.md) {
-      this.customerDrawer = false;
-    }
-  }
-
-  selectCustomer(customer: Customer) {
-    if (customer._id) {
-      this.selectCustomerById(customer._id);
-    }
-  }
-
-  selectCustomerById(id: ObjectID) {
-    this.$store.direct.commit.isLoadingCustomer(true);
-    // console.log("selectCustomerById:", id);
-    const current = this.selectedCustomer;
-    if (current) {
-      this.$stitchApi
-        .saveCustomer(current)
-        .then(() => this.loadCustomerFromDB(id))
-        .catch(err =>
-          console.error(`Save current customer failed with error: ${err}`)
-        );
-    } else {
-      this.loadCustomerFromDB(id);
-    }
-  }
-
-  loadCustomerFromDB(id: ObjectID) {
-    // console.log("loadCustomerFromDB:", id);
-    this.$store.direct.commit.isLoadingCustomer(true);
-    this.$stitchApi
-      .getCustomerById(id)
-      .then(customer => {
-        this.$store.direct.commit.setCustomer(customer);
-        this.$store.direct.commit.isLoadingCustomer(false);
-      })
-      .catch(err => {
-        console.error(`Failed: ${err}`);
-        this.$store.direct.commit.isLoadingCustomer(false);
-      });
   }
 }
 </script>

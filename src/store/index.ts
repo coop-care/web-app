@@ -21,8 +21,6 @@ export interface StoreState {
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
-        // customers: sampleData,
-        // selectedCustomerId: "",
         customers: [],
         selectedCustomer: undefined,
         isLoadingCustomer: false,

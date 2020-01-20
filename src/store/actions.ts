@@ -8,17 +8,36 @@ export default createActions({
     fetchCustomersFromDB(context) {
         const { commit } = rootActionContext(context);
         commit.isLoadingCustomerList(true);
-        stitchApi
-            .getAllCustomers()
-            .then(customers => {
-                // console.log("Success:", result);
-                commit.setCustomers((customers as unknown) as Customer[]);
-                commit.isLoadingCustomerList(false);
-            })
-            .catch(err => {
-                console.error(`Failed: ${err}`);
-                commit.isLoadingCustomerList(false);
-            });
+        return new Promise((resolve, reject) => {
+            stitchApi
+                .getAllCustomers()
+                .then(customers => {
+                    // console.log("Success:", result);
+                    commit.setCustomers((customers as unknown) as Customer[]);
+                    commit.isLoadingCustomerList(false);
+                    resolve();
+                })
+                .catch(err => {
+                    console.error(`Failed: ${err}`);
+                    commit.isLoadingCustomerList(false);
+                    reject();
+                });
+        });
+    },
+
+    saveCustomer(context, payload) {
+        const { getters } = rootActionContext(context);
+        const customer = getters.getCustomer(payload);
+
+        if (customer) {
+            stitchApi
+                .saveCustomer(customer)
+                .catch(err =>
+                    console.error(
+                        `Save current customer failed with error: ${err}`
+                    )
+                );
+        }
     },
 
     addSamplesToDB(context) {
@@ -43,7 +62,7 @@ export default createActions({
             .then(result => {
                 console.log(`Deleted ${result.deletedCount} item(s).`);
                 dispatch.fetchCustomersFromDB();
-                commit.setCustomer(undefined);
+                commit.setSelectedCustomer(undefined);
             })
             .catch(err => console.error(`Delete failed with error: ${err}`));
     }

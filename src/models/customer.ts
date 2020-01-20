@@ -29,4 +29,8 @@ export class Customer {
     findProblemRecord(id: string) {
         return this.problems.find(problem => problem.id == id);
     }
+
+    equals(customer: Customer) {
+        return this._id?.equals(customer._id || "") || false;
+    }
 }
