@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Type } from "class-transformer";
 
 export class Note {
-    text: string = "";
+    text = "";
     @Type(() => Date)
     createdAt = new Date();
 }
