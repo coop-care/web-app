@@ -127,7 +127,7 @@ export default class ProblemRecording extends Vue {
 
   beforeCreate() {
     if (!this.$store.getters.getProblemRecordById(this.$route.params)) {
-      this.$router.push({ name: "index" });
+      this.$router.push({ name: "customer" });
     }
   }
 

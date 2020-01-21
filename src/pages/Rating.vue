@@ -51,7 +51,7 @@ export default class Rating extends Vue {
       changes: changes,
       ...this.$route.params
     });
-    this.$router.push({ name: "index" });
+    this.$router.push({ name: "customer" });
   }
 }
 </script>
