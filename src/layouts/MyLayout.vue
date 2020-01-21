@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
-          v-if="$router.currentRoute.name == 'index' && $q.screen.lt.md"
+          v-if="$router.currentRoute.name == 'customer' && $q.screen.lt.md"
           dense
           no-caps
           flat
@@ -12,7 +12,7 @@
           @click="$root.$emit('toggleCustomerDrawer')"
         />
         <q-btn
-          v-if="!['index', 'login'].includes($router.currentRoute.name)"
+          v-if="!['customer', 'login'].includes($router.currentRoute.name)"
           size="lg"
           dense
           no-caps
@@ -97,7 +97,7 @@
             <q-item
               clickable
               v-for="(locale, index) in $root.$i18n.availableLocales"
-              :key="customer"
+              :key="index"
               :active="$root.$i18n.locale === locale"
               @click="
                 $root.$i18n.locale = locale;
