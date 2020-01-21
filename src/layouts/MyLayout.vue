@@ -97,7 +97,7 @@
             <q-item
               clickable
               v-for="(locale, index) in $root.$i18n.availableLocales"
-              :key="index"
+              :key="customer"
               :active="$root.$i18n.locale === locale"
               @click="
                 $root.$i18n.locale = locale;
