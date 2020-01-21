@@ -11,9 +11,19 @@ const { getBrand } = colors;
 
 export default createGetters<StoreState>()({
     getCustomer: state => (payload: any): Customer | undefined => {
-        return state.customers.find(
-            customer => customer._id?.equals(payload.customerId) || false
-        );
+        if (payload.customerId) {
+            return state.customers.find(
+                customer => customer._id?.equals(payload.customerId) || false
+            );
+        } else {
+            return;
+        }
+    },
+
+    getSelectedCustomer: state => (): Customer | undefined => {
+        return store.getters.getCustomer({
+            customerId: state.selectedCustomerId
+        });
     },
 
     getProblemRecordById: state => (

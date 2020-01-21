@@ -7,18 +7,17 @@ import { Rating } from "src/models/rating";
 
 export default createMutations<StoreState>()({
     setSelectedCustomer(state, customer: Customer | undefined) {
-        state.selectedCustomer = customer;
+        state.selectedCustomerId = customer?._id;
+    },
 
-        // replace customer object in customer array to prevent bugs caused by duplicate objects
-        if (customer) {
-            state.customers = state.customers.map(current => {
-                if (current.equals(customer)) {
-                    return customer;
-                } else {
-                    return current;
-                }
-            });
-        }
+    replaceCustomerInList(state, customer: Customer) {
+        state.customers = state.customers.map(current => {
+            if (current.equals(customer)) {
+                return customer;
+            } else {
+                return current;
+            }
+        });
     },
 
     setCustomers(state, customers: Customer[]) {
@@ -31,6 +30,14 @@ export default createMutations<StoreState>()({
 
     isLoadingCustomerList(state, isLoading: boolean) {
         state.isLoadingCustomerList = isLoading;
+    },
+
+    archiveCustomer(state, customer: Customer) {
+        customer.leftAt = new Date();
+    },
+
+    unarchiveCustomer(state, customer: Customer) {
+        customer.leftAt = undefined;
     },
 
     createProblemRecord(state, payload) {

@@ -29,9 +29,9 @@
             class="text-weight-medium"
           />
         </span>
-        <action-menu v-if="!isDraft" :items="actionMenuItems" class="q-mr-xs" />
+        <action-menu v-if="isInteractive" :items="actionMenuItems" class="q-mr-xs" />
         <q-btn
-          v-if="isDraft"
+          v-if="isDraft && !isDisabled"
           :label="$t('editDraft')"
           icon="edit"
           :to="{ name: 'problem', params: params }"
@@ -43,7 +43,7 @@
           class="shadow-1 q-mr-xs q-px-xs"
         />
         <q-btn
-          v-if="isDraft"
+          v-if="isDraft && !isDisabled"
           icon="delete_forever"
           :title="$t('delete')"
           @click="$store.direct.commit.deleteDraftProblemRecord(params)"
@@ -126,11 +126,11 @@
       </ul>
     </q-card-section>
     <q-card-section
-      v-if="lastOutcome || (isInteractive && problem.isHighPriority)"
+      v-if="lastOutcome || (!isSummary && problem.isHighPriority)"
     >
       <div
         :class="
-          'text-subtitle1 text-weight-bold ' + (isInteractive ? 'q-mb-sm' : '')
+          'text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
         "
       >
         <span class="text-outcome q-mr-md">{{ $tc("outcome", 2) }}</span>
@@ -147,7 +147,7 @@
         />
       </div>
       <div v-if="lastOutcome">
-        <div v-if="isInteractive" class="row q-col-gutter-md">
+        <div v-if="!isSummary" class="row q-col-gutter-md">
           <div
             class="col-12 col-sm-4"
             style=""
@@ -217,7 +217,8 @@ Vue.use(VueApexCharts);
   props: {
     params: Object,
     problemRecord: Object,
-    isSummary: Boolean
+    isSummary: Boolean,
+    isDisabled: Boolean
   },
   components: {
     apexchart: VueApexCharts,
@@ -247,7 +248,7 @@ export default class ProblemSummary extends Vue {
     return !this.record.createdAt;
   }
   get isInteractive() {
-    return !this.isDraft && !this.$props.isSummary;
+    return !this.isDraft && !this.$props.isSummary && !this.$props.isDisabled;
   }
   get outcomesForChart() {
     return this.$store.getters.getOutcomeAsChartData({

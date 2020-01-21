@@ -88,5 +88,8 @@ export default {
   admissionRatingStep: "Identify admission rating",
   planInterveneStep: "Plan and intervene",
   moreActions: "More actions…",
-  customerDismissal: "Dismiss customer care and archive customer data"
+  customerDismissal: "Dismiss customer care and archive customer data",
+  deleteCustomer: "Permanently delete customer data",
+  customerReadmission: "Customer care readmission",
+  customerArchive: "Archive"
 };

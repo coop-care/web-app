@@ -90,5 +90,8 @@ export default {
   admissionRatingStep: "Aufnahmebewertung vornehmen",
   planInterveneStep: "Planen und Intervenieren",
   moreActions: "Weitere Aktionen…",
-  customerDismissal: "Pflege beenden und Kundendaten archivieren"
+  customerDismissal: "Pflege beenden und Kundendaten archivieren",
+  deleteCustomer: "Kundendaten permanent löschen",
+  customerReadmission: "Pflege des Kunden wieder aufnehmen",
+  customerArchive: "Archiv"
 };

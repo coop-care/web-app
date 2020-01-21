@@ -21,9 +21,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component({
-  components: {}
-})
+@Component
 export default class ContentEditable extends Vue {
   onPaste(evt: ClipboardEvent) {
     if (!evt.clipboardData) {
@@ -40,7 +38,7 @@ export default class ContentEditable extends Vue {
     if (evt.target) {
       (evt.target as HTMLElement).blur();
     }
-    let sel = window.getSelection();
+    const sel = window.getSelection();
 
     if (sel) {
       sel.removeAllRanges();
@@ -48,12 +46,12 @@ export default class ContentEditable extends Vue {
   }
 
   change(evt: Event) {
-    let target = evt.target as HTMLElement;
+    const target = evt.target as HTMLElement;
     if (!target) {
       return;
     }
 
-    let text = target.innerText.trim();
+    const text = target.innerText.trim();
     target.innerText = text;
     this.$emit("change", { value: text });
   }

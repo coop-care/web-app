@@ -26,18 +26,26 @@ export default createActions({
     },
 
     saveCustomer(context, payload) {
-        const { getters } = rootActionContext(context);
-        const customer = getters.getCustomer(payload);
+        const customer =
+            payload.customer ||
+            rootActionContext(context).getters.getCustomer(payload);
 
         if (customer) {
-            stitchApi
-                .saveCustomer(customer)
-                .catch(err =>
-                    console.error(
-                        `Save current customer failed with error: ${err}`
-                    )
-                );
+            stitchApi.saveCustomer(customer).catch(console.error);
         }
+    },
+
+    deleteCustomer(context, customer: Customer) {
+        const { commit, dispatch } = rootActionContext(context);
+        stitchApi
+            .deleteCustomer(customer)
+            .then(res => {
+                commit.setSelectedCustomer(undefined);
+                return dispatch.fetchCustomersFromDB();
+            })
+            .catch(err =>
+                console.error(`Save current customer failed with error: ${err}`)
+            );
     },
 
     addSamplesToDB(context) {
@@ -60,7 +68,6 @@ export default createActions({
         stitchApi
             .deleteAllCustomers()
             .then(result => {
-                console.log(`Deleted ${result.deletedCount} item(s).`);
                 dispatch.fetchCustomersFromDB();
                 commit.setSelectedCustomer(undefined);
             })

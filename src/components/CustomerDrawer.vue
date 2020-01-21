@@ -30,8 +30,36 @@
 
       <q-item
         clickable
-        v-for="(customer, index) in sortedCustomers"
-        :key="index"
+        v-for="(customer, index) in activeCustomers"
+        :key="'active' + index"
+        v-ripple
+        :active="isSelected(customer)"
+        active-class="text-primary"
+        @click="
+            selectCustomerById(customer._id);
+            closeDrawerIfNeeded();
+          "
+      >
+        <q-item-section>
+          <q-item-label class="q-pl-md">{{ customer.name }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item v-if="archivedCustomers.length">
+        <q-item-section>
+          <q-item-label
+            class="q-pl-none"
+            header
+          >{{
+              $t("customerArchive")
+            }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item
+        clickable
+        v-for="(customer, index) in archivedCustomers"
+        :key="'archived' + index"
         v-ripple
         :active="isSelected(customer)"
         active-class="text-primary"
@@ -59,14 +87,19 @@ export default class CustomerDrawer extends Vue {
   isVisible = this.$q.screen.gt.sm;
 
   get selectedCustomer() {
-    return this.$store.direct.state.selectedCustomer;
+    return this.$store.direct.getters.getSelectedCustomer();
   }
   get customers() {
     return this.$store.direct.state.customers;
   }
-  get sortedCustomers() {
+  get activeCustomers() {
     return this.customers
-      .concat()
+      .filter(customer => !customer.leftAt)
+      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+  }
+  get archivedCustomers() {
+    return this.customers
+      .filter(customer => !!customer.leftAt)
       .sort((a: any, b: any) => a.name.localeCompare(b.name));
   }
 
@@ -81,7 +114,7 @@ export default class CustomerDrawer extends Vue {
   }
 
   isSelected(customer: Customer) {
-    return this.selectedCustomer?.equals(customer) || false;
+    return this.selectedCustomer == customer;
   }
 
   selectCustomerById(id: ObjectID | undefined) {
@@ -90,9 +123,9 @@ export default class CustomerDrawer extends Vue {
     }
 
     this.$emit("didSelectCustomer");
-    this.$store.direct.commit.isLoadingCustomer(true);
     const current = this.selectedCustomer;
     if (current) {
+      this.$store.direct.commit.isLoadingCustomer(true);
       this.$stitchApi
         .saveCustomer(current)
         .then(() => this.loadCustomerFromDB(id))
@@ -109,6 +142,7 @@ export default class CustomerDrawer extends Vue {
     this.$stitchApi
       .getCustomerById(id)
       .then(customer => {
+        this.$store.direct.commit.replaceCustomerInList(customer);
         this.$store.direct.commit.setSelectedCustomer(customer);
         this.$store.direct.commit.isLoadingCustomer(false);
       })

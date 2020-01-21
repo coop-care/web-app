@@ -25,16 +25,24 @@
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
       v-else-if="selectedCustomer"
     >
-      <content-editable
-        ref="customerName"
-        class="q-mt-sm q-mb-xl q-py-sm text-h2"
-        v-text="selectedCustomer.name"
-        @change="
-          editCustomer({ customerId: selectedCustomerId, name: $event.value })
-        "
-      />
+      <div class="row">
+        <content-editable
+          ref="customerName"
+          class="col q-mt-sm q-mb-xl q-py-sm text-h2"
+          v-text="selectedCustomer.name"
+          :contenteditable="!isDisabled"
+          @change="
+            changeCustomerName(selectedCustomerId, $event.value)
+          "
+        />
+        <action-menu
+          :items="customerActionItems"
+          class="on-right q-mt-sm"
+        />
+      </div>
       <div class="q-gutter-md">
         <q-btn
+          v-if="!isDisabled"
           icon="add"
           color="primary"
           :label="$t('problemAdmission')"
@@ -52,6 +60,7 @@
             customerId: selectedCustomerId,
             problemId: problemRecord.id
           }"
+          :isDisabled="isDisabled"
         />
       </div>
     </div>
@@ -121,12 +130,40 @@ export default class PageIndex extends Vue {
     return this.$store.direct.state.customers;
   }
   get customerActionItems() {
+    const customer = this.selectedCustomer;
+    if (!customer) {
+      return [];
+    }
+
+    return [
+      {
+        name: this.$t("customerDismissal"),
+        icon: "fas fa-archive",
+        action: this.archiveCustomer,
+        condition: !customer.leftAt
+      },
+      {
+        name: this.$t("customerReadmission"),
+        icon: "fas fa-folder-open",
+        action: this.unarchiveCustomer,
+        condition: !!customer.leftAt
+      },
+      {
+        name: this.$t("deleteCustomer"),
+        icon: "delete_forever",
+        action: this.deleteCustomer,
+        condition:
+          !!customer.leftAt ||
+          (!customer.problems.length && !customer.masterDataHistory.length),
+        isDestructive: true
+      }
+    ];
   }
   get selectedCustomer() {
-    return this.$store.direct.state.selectedCustomer;
+    return this.$store.direct.getters.getSelectedCustomer();
   }
   get selectedCustomerId() {
-    return (this.selectedCustomer || {})._id;
+    return this.$store.direct.state.selectedCustomerId;
   }
   get selectedCustomerProblems() {
     const customer = this.selectedCustomer;
@@ -145,6 +182,9 @@ export default class PageIndex extends Vue {
           second.problem.isHighPriority - first.problem.isHighPriority
       );
   }
+  get isDisabled() {
+    return !!this.selectedCustomer?.leftAt;
+  }
 
   created() {
     this.$store.direct.dispatch.fetchCustomersFromDB();
@@ -161,28 +201,51 @@ export default class PageIndex extends Vue {
           );
         });
       })
-      .catch(console.log);
+      .catch(console.error);
     this.addingCustomer = false;
   }
 
   changeCustomerName(customerId: ObjectID | undefined, name: string) {
-    const customer = this.$store.direct.getters.getCustomer({
-      customerId: customerId
+    this.updateCustomer(customer => {
+      const changes: any = {};
+      changes[nameof("name")] = name;
+      this.$store.direct.commit.updateObject({
+        target: customer,
+        changes: changes
+      });
     });
-    if (!customer) {
-      return;
+  }
+
+  archiveCustomer() {
+    this.updateCustomer(customer =>
+      this.$store.direct.commit.archiveCustomer(customer)
+    );
+  }
+
+  unarchiveCustomer() {
+    this.updateCustomer(customer =>
+      this.$store.direct.commit.unarchiveCustomer(customer)
+    );
+  }
+
+  updateCustomer(mutate: (customer: Customer) => void) {
+    setTimeout(() => {
+      const customer = this.selectedCustomer;
+      if (!customer) {
+        return;
+      }
+
+      mutate(customer);
+      this.$store.direct.dispatch.saveCustomer({
+        customer: this.selectedCustomer
+      });
+    }, 0);
+  }
+
+  deleteCustomer() {
+    if (this.selectedCustomer) {
+      this.$store.direct.dispatch.deleteCustomer(this.selectedCustomer);
     }
-
-    const changes: any = {};
-    changes[nameof("name")] = name;
-    this.$store.direct.commit.updateObject({
-      target: customer,
-      changes: changes
-    });
-
-    this.$store.direct.dispatch
-      .saveCustomer({ customerId: this.selectedCustomerId })
-      .catch(err => console.error(`Failed to save customer: ${err}`));
   }
 
   addProblem() {

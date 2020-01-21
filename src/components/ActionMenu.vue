@@ -18,6 +18,7 @@
         clickable
         v-ripple
         @click="item.action"
+        :class="item.isDestructive ? 'text-negative' : ''"
       >
         <q-item-section avatar>
           <q-icon :name="item.icon" />
