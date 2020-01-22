@@ -6,8 +6,18 @@ import { Outcome } from "../models/outcome";
 import { Rating } from "src/models/rating";
 
 export default createMutations<StoreState>()({
-    setCustomer(state, customer: Customer | undefined) {
-        state.selectedCustomer = customer;
+    setSelectedCustomer(state, customer: Customer | undefined) {
+        state.selectedCustomerId = customer?._id;
+    },
+
+    replaceCustomerInList(state, customer: Customer) {
+        state.customers = state.customers.map(current => {
+            if (current.equals(customer)) {
+                return customer;
+            } else {
+                return current;
+            }
+        });
     },
 
     setCustomers(state, customers: Customer[]) {
@@ -22,6 +32,14 @@ export default createMutations<StoreState>()({
         state.isLoadingCustomerList = isLoading;
     },
 
+    archiveCustomer(state, customer: Customer) {
+        customer.leftAt = new Date();
+    },
+
+    unarchiveCustomer(state, customer: Customer) {
+        customer.leftAt = undefined;
+    },
+
     createProblemRecord(state, payload) {
         store.getters.getCustomer(payload)?.problems.push(new ProblemRecord());
     },
@@ -34,8 +52,8 @@ export default createMutations<StoreState>()({
     },
 
     prioritizeProblemRecord(state, payload) {
-        let customer = store.getters.getCustomer(payload);
-        let problemRecord = customer?.findProblemRecord(payload.problemId);
+        const customer = store.getters.getCustomer(payload);
+        const problemRecord = customer?.findProblemRecord(payload.problemId);
         if (!problemRecord) {
             return;
         }
@@ -45,8 +63,8 @@ export default createMutations<StoreState>()({
     },
 
     dismissProblemRecord(state, payload) {
-        let customer = store.getters.getCustomer(payload);
-        let problemRecord = customer?.findProblemRecord(payload.problemId);
+        const customer = store.getters.getCustomer(payload);
+        const problemRecord = customer?.findProblemRecord(payload.problemId);
         if (!customer || !problemRecord || problemRecord.resolvedAt) {
             return;
         }
@@ -57,7 +75,7 @@ export default createMutations<StoreState>()({
     },
 
     deleteDraftProblemRecord(state, payload) {
-        let customer = store.getters.getCustomer(payload);
+        const customer = store.getters.getCustomer(payload);
         if (!customer) {
             return;
         }
@@ -72,7 +90,7 @@ export default createMutations<StoreState>()({
     },
 
     updateNewOutcome(state, payload) {
-        let problemRecord = store.getters.getProblemRecordById(payload);
+        const problemRecord = store.getters.getProblemRecordById(payload);
         if (!problemRecord) {
             return;
         }
@@ -87,12 +105,12 @@ export default createMutations<StoreState>()({
     },
 
     saveNewProblemRecord(state, payload) {
-        let problemRecord = store.getters.getProblemRecordById(payload);
+        const problemRecord = store.getters.getProblemRecordById(payload);
         if (!problemRecord) {
             return;
         }
 
-        let now = new Date();
+        const now = new Date();
         problemRecord.createdAt = now;
         (problemRecord.outcomes[0] || {}).createdAt = now;
         problemRecord.interventions.forEach(intervention => {

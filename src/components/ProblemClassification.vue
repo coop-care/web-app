@@ -8,7 +8,7 @@
           color="classification"
           filled
           v-model="problemsFilter"
-          :label="$t('selectProblem')"
+          :label="$t('findProblem')"
           dense
         >
           <template v-slot:prepend>
@@ -141,7 +141,7 @@
           dense
         />
 
-        <h6 class="counter">{{ $t("priority") }}</h6>
+        <h6 class="counter">{{ $t("priorityTitle") }}</h6>
         <q-btn-toggle
           v-model="priority"
           spread
@@ -290,8 +290,16 @@ export default class ProblemClassification extends Vue {
   }
   get priorityOptions() {
     return [
-      { label: this.$t("lowPriority.title"), value: false },
-      { label: this.$t("highPriority.title"), value: true }
+      {
+        label: this.$t("lowPriority.title"),
+        value: false,
+        icon: this.terminology.icons.priority[0]
+      },
+      { 
+        label: this.$t("highPriority.title"), 
+        value: true, 
+        icon: this.terminology.icons.priority[1] 
+      }
     ];
   }
 
@@ -333,7 +341,8 @@ export default class ProblemClassification extends Vue {
       return {
         label: item.title,
         value: index,
-        description: item.description
+        description: item.description,
+        icon: (this.terminology.icons as any)[type][index]
       };
     });
   }

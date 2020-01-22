@@ -15,8 +15,8 @@ export default {
   feedback: "Feedback",
   observation: "Observation",
   expectation: "Expectation",
-  selectProblem: "Select the Problem",
-  findProblem: "find problem",
+  selectProblem: "Select the Need or Problem",
+  findProblem: "Find need or problem",
   noProblemsFound: "no problems, signs or symptoms found",
   signsAndSymptoms: "Signs and Symptoms",
   otherSymptom: "other",
@@ -31,7 +31,7 @@ export default {
   customerSpecificInterventions: "Customer-specific Details",
   customerSpecificInterventionsHint: "What concrete activities are planned?",
   unspecifiedProblem: "unspecified problem",
-  priority: "Priority",
+  priorityTitle: "Define Priority",
   lowPriorityReasonLabel: "Reason for low priority",
   lowPriorityReasonHint:
     "Why does the problem currently have a low priority and which changes would give it a high priority?",
@@ -83,5 +83,13 @@ export default {
   databaseInsertSamples: "Insert sample customers",
   databaseClearAll: "Delete all customers",
   prioritizeProblem: "Prioritize",
-  problemDismissal: "Problem dismissal"
+  problemDismissal: "Problem dismissal",
+  stateProblemStep: "State problem",
+  admissionRatingStep: "Identify admission rating",
+  planInterveneStep: "Plan and intervene",
+  moreActions: "More actions…",
+  customerDismissal: "Dismiss customer care and archive customer data",
+  deleteCustomer: "Permanently delete customer data",
+  customerReadmission: "Customer care readmission",
+  customerArchive: "Archive"
 };

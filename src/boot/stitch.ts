@@ -36,16 +36,23 @@ class StitchApi {
     createCustomer(customer: Customer) {
         return this.customers.insertOne(customer);
     }
+    deleteCustomer(customer: Customer) {
+        return this.customers.deleteOne(customer);
+    }
     deleteAllCustomers() {
         return this.customers.deleteMany({});
     }
     getAllCustomers(): Promise<Customer[]> {
-        return this.customers
-            .find({}, { projection: { name: 1 } })
-            .toArray()
-            .then(data => {
-                return Customer.fromObject(data) as Customer[];
-            });
+        return (
+            this.customers
+                // limiting the fetched properties to name and leftAt causes bugs
+                // where details of selected customer cannot be displayed in customer view
+                .find({}, {})
+                .toArray()
+                .then(data => {
+                    return Customer.fromObject(data) as Customer[];
+                })
+        );
     }
     getCustomerById(id: ObjectID) {
         // console.log("getCustomerById:", id);

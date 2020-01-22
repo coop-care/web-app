@@ -12,11 +12,7 @@
     >
       <q-step
         :name="1"
-        :title="
-          $q.screen.lt.md
-            ? $tc('problem', 1)
-            : terminology.problemClassificationScheme.title
-        "
+        :title="$t('stateProblemStep')"
         prefix="1"
         :done="step > 1"
         :header-nav="step > 1"
@@ -29,11 +25,7 @@
       <q-step
         :name="2"
         v-if="isHighPriority"
-        :title="
-          $q.screen.lt.md
-            ? $tc('rating', 1)
-            : terminology.problemRatingScale.title
-        "
+        :title="$q.screen.lt.md ? $tc('rating', 1) : $t('admissionRatingStep')"
         prefix="2"
         :done="step > 2"
         :header-nav="step > 2"
@@ -46,11 +38,7 @@
       <q-step
         :name="3"
         v-if="isHighPriority"
-        :title="
-          $q.screen.lt.md
-            ? $tc('intervention', 2)
-            : terminology.interventionScheme.title
-        "
+        :title="$t('planInterveneStep')"
         prefix="3"
         icon="add_comment"
         :header-nav="step > 3"
@@ -66,29 +54,33 @@
             v-if="step == 1"
             flat
             color="primary"
+            rounded
             to="/"
             :label="$t('cancel')"
-            class="q-ml-sm"
+            class="shadow-1 q-ml-sm"
           />
           <q-btn
             v-if="step > 1"
             flat
             color="primary"
+            rounded
             @click="$refs.stepper.previous()"
             :label="$t('back')"
-            class="q-ml-sm"
+            class="shadow-1 q-ml-sm"
           />
           <q-btn
             v-if="step < 3 && isHighPriority"
             @click="$refs.stepper.next()"
             color="primary"
+            rounded
             :label="$t('continue')"
           />
           <q-btn
             v-if="step == 3 || !isHighPriority"
-            @click="saveProblem"
+            @click="saveProblemRecord"
             to="/"
             color="primary"
+            rounded
             :label="$t('save')"
           />
         </q-stepper-navigation>
@@ -123,6 +115,9 @@ export default class ProblemRecording extends Vue {
   get terminology() {
     return this.$t("terminology");
   }
+  get customer() {
+    return this.$store.getters.getCustomer(this.$route.params);
+  }
   get record() {
     return this.$store.getters.getProblemRecordById(this.$route.params);
   }
@@ -132,7 +127,7 @@ export default class ProblemRecording extends Vue {
 
   beforeCreate() {
     if (!this.$store.getters.getProblemRecordById(this.$route.params)) {
-      this.$router.push({ name: "index" });
+      this.$router.push({ name: "customer" });
     }
   }
 
@@ -140,9 +135,9 @@ export default class ProblemRecording extends Vue {
     scroll.setScrollPosition(window, 0, 200);
   }
 
-  saveProblem() {
+  saveProblemRecord() {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
-    this.$stitchApi.saveCustomer(this.$store.state.selectedCustomer);
+    this.$stitchApi.saveCustomer(this.customer);
   }
 }
 </script>

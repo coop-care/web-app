@@ -11,7 +11,19 @@ const { getBrand } = colors;
 
 export default createGetters<StoreState>()({
     getCustomer: state => (payload: any): Customer | undefined => {
-        return state.selectedCustomer;
+        if (payload.customerId) {
+            return state.customers.find(
+                customer => customer._id?.equals(payload.customerId) || false
+            );
+        } else {
+            return;
+        }
+    },
+
+    getSelectedCustomer: state => (): Customer | undefined => {
+        return store.getters.getCustomer({
+            customerId: state.selectedCustomerId
+        });
     },
 
     getProblemRecordById: state => (
@@ -23,7 +35,7 @@ export default createGetters<StoreState>()({
     },
 
     getOutcomeAsChartData: state => (payload: any): any[] => {
-        let problemRecord = store.getters.getProblemRecordById(payload);
+        const problemRecord = store.getters.getProblemRecordById(payload);
 
         if (
             !problemRecord ||
@@ -35,7 +47,7 @@ export default createGetters<StoreState>()({
         }
 
         // clone array because original needs to be preserved
-        let outcomes = problemRecord.outcomes
+        const outcomes = problemRecord.outcomes
             .concat([])
             .filter(outcome => outcome.createdAt);
 
@@ -48,11 +60,11 @@ export default createGetters<StoreState>()({
         }
 
         return ["knowledge", "behaviour", "status"].map((key, index) => {
-            let series = [
+            const series = [
                 {
                     name: payload.ratings[index].title,
                     data: outcomes.map((outcome: Outcome) => {
-                        let value = (outcome as any)[key];
+                        const value = (outcome as any)[key];
                         return {
                             x: outcome.createdAt,
                             y: value.observation,
@@ -63,7 +75,7 @@ export default createGetters<StoreState>()({
                 {
                     name: payload.expectation,
                     data: outcomes.map((outcome: any) => {
-                        let value = outcome[key];
+                        const value = outcome[key];
                         return {
                             x: outcome.createdAt || new Date(),
                             y: value.expectation
@@ -72,10 +84,12 @@ export default createGetters<StoreState>()({
                 }
             ];
 
-            let group = ["summary", payload.customerId, payload.problemId].join(
-                "."
-            );
-            let id = [group, key].join(".");
+            const group = [
+                "summary",
+                payload.customerId,
+                payload.problemId
+            ].join(".");
+            const id = [group, key].join(".");
 
             let options: any = {
                 chart: {
@@ -123,7 +137,7 @@ export default createGetters<StoreState>()({
                             value: any,
                             { series, seriesIndex, dataPointIndex, w }: any
                         ) => {
-                            let comment =
+                            const comment =
                                 w.config.series[seriesIndex].data[
                                     dataPointIndex
                                 ].comment;
@@ -218,25 +232,25 @@ export default createGetters<StoreState>()({
                 }
             };
 
-            let lastObservation = series[0].data[series[0].data.length - 1];
+            const lastObservation = series[0].data[series[0].data.length - 1];
 
             if (lastObservation.y == 0) {
                 return;
             }
 
-            let lastExpectation =
+            const lastExpectation =
                 ((series[1] || {}).data || [])[series[1].data.length - 1] || {};
-            let lastObservationTitle =
+            const lastObservationTitle =
                 payload.ratings[index].scale[lastObservation.y - 1].title;
-            let lastExpectationText = lastExpectation.y
+            const lastExpectationText = lastExpectation.y
                 ? " / " + lastExpectation.y
                 : "";
-            let title =
+            const title =
                 payload.ratings[index].title +
                 " " +
                 lastObservation.y +
                 lastExpectationText;
-            let subtitle = lastObservationTitle;
+            const subtitle = lastObservationTitle;
 
             return {
                 series: series,
@@ -250,7 +264,7 @@ export default createGetters<StoreState>()({
     },
 
     getRouteParamsForLatestProblem: state => (payload: any): any => {
-        let customer = store.getters.getCustomer(payload);
+        const customer = store.getters.getCustomer(payload);
         if (!customer) {
             return {};
         }

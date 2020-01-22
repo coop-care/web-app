@@ -14,7 +14,7 @@
             size="12px"
             dense
             color="transparent"
-            :icon="scopeIcon"
+            :icon="problem.scopeIcon(terminology)"
             text-color="classification"
             :label="$t(problem.scope.title)"
             class="text-weight-medium"
@@ -23,36 +23,15 @@
             size="12px"
             dense
             color="transparent"
-            :icon="priorityIcon"
+            :icon="problem.priorityIcon(terminology)"
             text-color="classification"
             :label="$t(problem.priority.title)"
             class="text-weight-medium"
           />
         </span>
+        <action-menu v-if="isInteractive" :items="actionMenuItems" class="q-mr-xs" />
         <q-btn
-          v-if="!isDraft && !problem.isHighPriority"
-          :title="$t('prioritizeProblem')"
-          icon="fas fa-arrow-up"
-          @click="prioritizeProblemRecord"
-          round
-          outline
-          size="sm"
-          color="primary"
-          class="q-mr-xs"
-        />
-        <q-btn
-          v-if="!isDraft"
-          :title="$t('problemDismissal')"
-          icon="done_outline"
-          @click="$store.direct.commit.dismissProblemRecord(params)"
-          round
-          outline
-          size="sm"
-          color="primary"
-          class="q-mr-xs"
-        />
-        <q-btn
-          v-if="isDraft"
+          v-if="isDraft && !isDisabled"
           :label="$t('editDraft')"
           icon="edit"
           :to="{ name: 'problem', params: params }"
@@ -61,19 +40,19 @@
           dense
           size="md"
           color="negative"
-          class="q-mr-xs q-px-xs"
+          class="shadow-1 q-mr-xs q-px-xs"
         />
         <q-btn
-          v-if="isDraft"
+          v-if="isDraft && !isDisabled"
           icon="delete_forever"
           :title="$t('delete')"
           @click="$store.direct.commit.deleteDraftProblemRecord(params)"
           dense
           round
           unelevated
-          size="md"
+          size="13.5px"
           color="negative"
-          class="q-mr-sm"
+          class="shadow-1 q-mr-sm"
         />
       </div>
     </q-card-section>
@@ -147,11 +126,11 @@
       </ul>
     </q-card-section>
     <q-card-section
-      v-if="lastOutcome || (isInteractive && problem.isHighPriority)"
+      v-if="lastOutcome || (!isSummary && problem.isHighPriority)"
     >
       <div
         :class="
-          'text-subtitle1 text-weight-bold ' + (isInteractive ? 'q-mb-sm' : '')
+          'text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
         "
       >
         <span class="text-outcome q-mr-md">{{ $tc("outcome", 2) }}</span>
@@ -162,12 +141,13 @@
           :to="{ name: 'outcome', params: params }"
           round
           outline
-          size="sm"
+          size="10.5px"
           color="primary"
+          class="shadow-1"
         />
       </div>
       <div v-if="lastOutcome">
-        <div v-if="isInteractive" class="row q-col-gutter-md">
+        <div v-if="!isSummary" class="row q-col-gutter-md">
           <div
             class="col-12 col-sm-4"
             style=""
@@ -227,6 +207,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import ActionMenu from "../components/ActionMenu.vue";
 import VueApexCharts from "vue-apexcharts";
 import { Terminology } from "../helper/terminology";
 
@@ -236,10 +217,12 @@ Vue.use(VueApexCharts);
   props: {
     params: Object,
     problemRecord: Object,
-    isSummary: Boolean
+    isSummary: Boolean,
+    isDisabled: Boolean
   },
   components: {
-    apexchart: VueApexCharts
+    apexchart: VueApexCharts,
+    ActionMenu
   }
 })
 export default class ProblemSummary extends Vue {
@@ -265,26 +248,7 @@ export default class ProblemSummary extends Vue {
     return !this.record.createdAt;
   }
   get isInteractive() {
-    return !this.isDraft && !this.$props.isSummary;
-  }
-  get scopeIcon() {
-    const code = this.problem.scopeCode;
-    if (code == 0) {
-      return "fas fa-user";
-    } else if (code == 1) {
-      return "fas fa-user-friends";
-    } else if (code == 2) {
-      return "fas fa-users";
-    } else {
-      return "";
-    }
-  }
-  get priorityIcon() {
-    if (this.problem.isHighPriority) {
-      return "fas fa-arrow-up";
-    } else {
-      return "fas fa-arrow-down";
-    }
+    return !this.isDraft && !this.$props.isSummary && !this.$props.isDisabled;
   }
   get outcomesForChart() {
     return this.$store.getters.getOutcomeAsChartData({
@@ -293,6 +257,24 @@ export default class ProblemSummary extends Vue {
       locale: this.$root.$i18n.locale,
       ...this.$props.params
     });
+  }
+  get actionMenuItems() {
+    return [
+      {
+        condition: !this.problem.isHighPriority,
+        name: this.$t("prioritizeProblem"),
+        icon: "fas fa-arrow-up",
+        action: this.prioritizeProblemRecord
+      },
+      {
+        name: this.$t("problemDismissal"),
+        icon: "fas fa-check",
+        action: () => {
+          this.$store.direct.commit.dismissProblemRecord(this.$props.params);
+          this.$store.direct.dispatch.saveCustomer(this.$props.params);
+        }
+      }
+    ];
   }
 
   get terminology() {
@@ -316,6 +298,7 @@ export default class ProblemSummary extends Vue {
         this.$props.params
       )
     });
+    this.$store.direct.dispatch.saveCustomer(this.$props.params);
   }
 
   updateLocale() {

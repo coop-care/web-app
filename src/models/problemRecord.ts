@@ -17,9 +17,10 @@ export class ProblemRecord extends Base {
     @Type(() => Outcome)
     outcomes: Outcome[] = [];
     @Type(() => Date)
-    createdAt: Date | undefined;
+    // optional properties need an initial value because Vue does not detect the addition or removal of a property
+    createdAt?: Date = undefined;
     @Type(() => Date)
-    resolvedAt: Date | undefined;
+    resolvedAt?: Date = undefined;
     ratingIntervalInDays = 28;
 
     get editableOutcome() {
@@ -41,13 +42,13 @@ export class ProblemRecord extends Base {
     }
 
     clone() {
-        let clone = super.clone();
+        const clone = super.clone();
         clone.id = this.generateId();
         return clone;
     }
 
     prioritizedClone() {
-        let clone = this.clone();
+        const clone = this.clone();
         clone.createdAt = undefined;
         clone.problem.isHighPriority = true;
         clone.problem.priorityDetails = "";

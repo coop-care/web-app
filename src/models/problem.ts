@@ -1,4 +1,5 @@
 import { Term } from "./term";
+import { TerminologyWithMaps } from "../helper/terminology";
 
 export class Problem {
     code = "";
@@ -43,5 +44,15 @@ export class Problem {
                 "terminology.symptomByCode." + this.code + "_" + code
             );
         });
+    }
+
+    scopeIcon(terminology: TerminologyWithMaps) {
+        return terminology.icons.scope[this.scopeCode];
+    }
+    severityIcon(terminology: TerminologyWithMaps) {
+        return terminology.icons.severity[this.severityCode];
+    }
+    priorityIcon(terminology: TerminologyWithMaps) {
+        return terminology.icons.priority[this.isHighPriority ? 1 : 0];
     }
 }

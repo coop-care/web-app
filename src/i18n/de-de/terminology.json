@@ -1852,15 +1852,15 @@
       "severity": [
         {
           "title": "Vorsorge",
-          "description": "Kundeninteresse das eigene gesundheitliche Wissen, Verhalten und Prognosen zu verbessern und mit geeigneten Mitteln und Methoden das persönliche Wohlergehen zu erhalten oder vermehren, bei gleichzeitigem Fehlen von Risikofaktoren, Anzeichen oder Symptomen."
+          "description": "Vorbeugender Kundenwunsch das eigene gesundheitliche Wissen, Verhalten und Prognosen zu verbessern und mit geeigneten Mitteln das persönliche Wohlergehen zu erhalten oder zu steigern, ohne dass konkrete Risikofaktoren, Anzeichen oder Symptome vorliegen."
         },
         {
           "title": "Potentiell",
-          "description": "Kundenstatus, bei dem bestimmte gesundheitliche Muster, Praktiken, Verhaltensweisen oder Risikofaktoren vorhanden sind, die eine optimale Gesundheit ausschließen können, bei gleichzeitigem Fehlen von konkreten Anzeichen und Symptomen."
+          "description": "Beim Kunden sind bestimmte gesundheitliche Muster, Verhaltensweisen oder Risikofaktoren vorhanden, die eine optimale Gesundheit ausschließen können, ohne dass bereits erkennbare Anzeichen und Symptomen vorliegen."
         },
         {
           "title": "Tatsächlich",
-          "description": "Kundenstatus, bei dem ein oder mehrere Anzeichen und Symptome vorhanden sind, die eine optimale Gesundheit ausschließen können."
+          "description": "Beim Kunden sind ein oder mehrere Anzeichen und Symptome vorhanden, die eine optimale Gesundheit verhindern."
         }
       ]
     }
@@ -1921,8 +1921,8 @@
         "code": "05"
       },
       {
-        "title": "Herzbehandlung",
-        "description": "Aktivitäten, die die Herz- oder Kreislauffunktion fördern, wie beispielsweise Energieerhaltung und Flüssigkeitshaushalt.",
+        "title": "Herzpflege",
+        "description": "Aktivitäten, die die Herz- oder Kreislauffunktion fördern, wie beispielsweise Anstrengungen reduzieren und Flüssigkeitshaushalt.",
         "code": "07"
       },
       {
@@ -2087,7 +2087,7 @@
       },
       {
         "title": "Medikamente bestellen und koordinieren",
-        "description": "Kommunikation mit denjenigen, die Medikamente verschreiben und ausgeben, und den Unterstützungssystemen der Einzelpersonen, Familien oder Gemeinschaften, um sicherzustellen, dass geeignete Medikamente und Vorräte rechtzeitig beschafft werden.",
+        "description": "Kommunikation mit denjenigen, die Medikamente verschreiben und ausgeben, und den Unterstützungssystemen der Einzelperson, Familie oder Gemeinschaft, um sicherzustellen, dass geeignete Medikamente und Vorräte rechtzeitig beschafft werden.",
         "code": "73"
       },
       {
@@ -2097,7 +2097,7 @@
       },
       {
         "title": "Medikamenten richten",
-        "description": "Akt der Vorbereitung auf die Medikamentenverabreichung durch Befüllen oder Überprüfen eines oralen Medikamentenorganizers, Vorfüllen von Spritzen oder Einsetzen von intravenösen Zugangsgeräten.",
+        "description": "Vorbereitung der Medikamentenverabreichung durch Befüllen oder Überprüfen eines Medikamentenorganizers, Vorfüllen von Spritzen oder Einsetzen von intravenösen Zugangsgeräten.",
         "code": "34"
       },
       {
@@ -2127,12 +2127,12 @@
       },
       {
         "title": "Sonstige soziale Einrichtungen",
-        "description": "Organisationen oder Gruppen, die Waren oder Dienstleistungen anbieten, die nicht speziell in anderen Zielen wie Trainingseinrichtungen, Lebensmittelkammern oder Verteilzentren oder Glaubensgemeinschaften aufgeführt sind.",
+        "description": "Organisationen oder Gruppen, die Güter oder Dienstleistungen anbieten, die nicht ausdrücklich bei anderen Maßnahmen aufgeführt sind wie beispielsweise Trainingseinrichtungen, Suppenküchen und Tafeln oder Glaubensgemeinschaften.",
         "code": "40"
       },
       {
         "title": "Unterstützung durch Pflegehilfskräfte",
-        "description": "Unterstützung durch qualifizierte Helfer, Hausgesundheitshelfer und Pflegehelferinnen unter der Aufsicht von medizinischen Fachkräften.",
+        "description": "Unterstützung durch sachkundige Helfer, Pflegeassistenten oder Pflegehilfskräfte zu Hause unter der Aufsicht von medizinischen Fachkräften.",
         "code": "77"
       },
       {
@@ -2146,8 +2146,8 @@
         "code": "78"
       },
       {
-        "title": "Positionierung",
-        "description": "Ausrichtung des Körpers zur Förderung von Komfort und Funktion.",
+        "title": "Lagerung",
+        "description": "Position und Ausrichtung des Körpers zur Förderung von Komfort und Vitalfunktionen.",
         "code": "42"
       },
       {
@@ -2157,7 +2157,7 @@
       },
       {
         "title": "Entspannungs- und Atemtechniken",
-        "description": "Aktivitäten, die Muskelverspannungen lösen, eine beruhigende Körperreaktion induzieren und Energiequellen wie tiefe Atemübungen, geführte Bilder, Meditation und Massage wieder aufbauen.",
+        "description": "Aktivitäten, die Muskelverspannungen lösen, eine beruhigende Körperreaktion herbeiführen und Kraftquellen wieder aufbauen etwa durch Atemübungen, geführte Imagination, Meditation und Massage.",
         "code": "44"
       },
       {
@@ -2191,18 +2191,18 @@
         "code": "48"
       },
       {
-        "title": "Anzeichen und Symptome – mental oder emotional",
+        "title": "Anzeichen und Symptome – geistig und emotional",
         "description": "Objektiver oder subjektiver Nachweis von psychischen oder emotionalen Gesundheitsproblemen wie Depressionen, Verwirrung oder Unruhe.",
         "code": "49"
       },
       {
         "title": "Anzeichen und Symptome – körperlich",
-        "description": "Objektiver oder subjektiver Nachweis von körperlichen Gesundheitsproblemen wie Fieber, plötzlicher Gewichtsabnahme oder Schmerzaussage.",
+        "description": "Objektiver oder subjektiver Nachweis von körperlichen Gesundheitsproblemen wie Fieber, plötzlicher Gewichtsabnahme oder Schmerzäußerung.",
         "code": "50"
       },
       {
         "title": "Hautpflege",
-        "description": "Aktivitäten, die die Hautintegrität fördern, wie beispielsweise das Auftragen von Lotion und Massage.",
+        "description": "Aktivitäten, die die Unversehrtheit der Haut fördern, wie beispielsweise das Auftragen von Lotion und Massage.",
         "code": "51"
       },
       {
@@ -2212,17 +2212,17 @@
       },
       {
         "title": "Probensammlung",
-        "description": "Tätigkeiten zur Gewinnung von Proben von menschlichem und tierischem Gewebe, Flüssigkeiten, Sekreten oder Ausscheidungen wie Blut, Urin, Stuhl, Auswurf und Drainage.",
+        "description": "Tätigkeiten um Proben von menschlichem oder tierischem Gewebe, Flüssigkeiten, Sekreten oder Ausscheidungen wie Blut, Urin, Stuhl, Sputum und Drainage zu bekommen.",
         "code": "53"
       },
       {
-        "title": "Behandlung durch Logopädie",
-        "description": "Beurteilung oder Diagnose und Behandlung durch Sprach- und Sprachpathologen und deren Mitarbeiter oder Assistenten.",
+        "title": "Logopädie-Behandlung",
+        "description": "Beurteilung oder Diagnose und Behandlung durch Logopäden und deren Mitarbeiter oder Assistenten.",
         "code": "82"
       },
       {
-        "title": "Spirituelle Betreuung",
-        "description": "Aktivitäten, die die persönliche Gelassenheit und den Komfort fördern und spirituelle Anliegen oder Praktiken beinhalten.",
+        "title": "Seelsorge und Spiritual Care",
+        "description": "Aktivitäten, die mittels spiritueller Anliegen oder Praktiken die persönliche Gelassenheit und Ermutigung fördern.",
         "code": "54"
       },
       {
@@ -2237,7 +2237,7 @@
       },
       {
         "title": "Einstellung des Drogenkonsums",
-        "description": "Aktivitäten, die die Einstellung der Verwendung von schädlichen oder süchtig machenden Materialien fördern.",
+        "description": "Aktivitäten, die helfen den Konsum von schädlichen oder süchtig machenden Stoffen zu beenden.",
         "code": "83"
       },
       {
@@ -2247,17 +2247,17 @@
       },
       {
         "title": "Selbsthilfegruppe",
-        "description": "Organisierte Informations- und Unterstützungsquellen wie fokussierte Kurse und Organisationen, Telefonberuhigung und zuverlässige Internetseiten, die sich mit einem bestimmten Thema wie Erziehung, Alkoholismus, Fettleibigkeit und Alzheimer befassen.",
+        "description": "Organisierte Informations- und Unterstützungsangebote wie Fokusgruppen und Organisationen, Telefonseelsorge und zuverlässige Internetseiten, die sich mit einem bestimmten Thema wie Erziehung, Alkoholismus, Fettleibigkeit und Alzheimer befassen.",
         "code": "59"
       },
       {
         "title": "Unterstützungssystem",
-        "description": "Kreis von Angehörigen, Freunden und Mitarbeitern, die Liebe, Fürsorge und Unterstützung bei der Gesundheitsförderung und dem Umgang mit Krankheiten bieten.",
+        "description": "Kreis von Angehörigen, Freunden und Kollegen, die Liebe, Fürsorge und Unterstützung bei der Gesundheitsförderung und dem Umgang mit Krankheiten bieten.",
         "code": "60"
       },
       {
         "title": "Transport",
-        "description": "Reisemethoden wie Auto, Bus, Taxi, Roller oder Wagen.",
+        "description": "Fortbewegungsarten wie Auto, Bus, Taxi, Roller oder Elektromobil.",
         "code": "61"
       },
       {

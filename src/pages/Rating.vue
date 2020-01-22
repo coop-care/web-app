@@ -3,10 +3,25 @@
     <div class="text-h5 q-mb-lg">
       {{ $t("newRating") }}
     </div>
-    <problem-rating :params="$route.params" :isSummary="true" />
+    <problem-rating
+      :params="$route.params"
+      :isSummary="true"
+    />
     <div class="flex justify-around q-mt-lg">
-      <q-btn :label="$t('cancel')" to="/" flat color="primary" />
-      <q-btn :label="$t('save')" @click="save" color="primary" />
+      <q-btn
+        :label="$t('cancel')"
+        to="/"
+        color="primary"
+        rounded
+        flat
+        class="shadow-1"
+      />
+      <q-btn
+        :label="$t('save')"
+        @click="save"
+        color="primary"
+        rounded
+      />
     </div>
   </q-page>
 </template>
@@ -26,7 +41,7 @@ const nameof = (name: keyof Outcome) => name;
 })
 export default class Rating extends Vue {
   get customer() {
-    return this.$store.getters.getCustomerById(this.$route.params);
+    return this.$store.direct.getters.getCustomer(this.$route.params);
   }
 
   save() {
@@ -36,7 +51,7 @@ export default class Rating extends Vue {
       changes: changes,
       ...this.$route.params
     });
-    this.$router.push({ name: "index" });
+    this.$router.push({ name: "customer" });
   }
 }
 </script>

@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
-          v-if="$router.currentRoute.name == 'index' && $q.screen.lt.md"
+          v-if="$router.currentRoute.name == 'customer' && $q.screen.lt.md"
           dense
           no-caps
           flat
@@ -12,7 +12,7 @@
           @click="$root.$emit('toggleCustomerDrawer')"
         />
         <q-btn
-          v-if="!['index', 'login'].includes($router.currentRoute.name)"
+          v-if="!['customer', 'login'].includes($router.currentRoute.name)"
           size="lg"
           dense
           no-caps
@@ -41,32 +41,49 @@
           no-caps
           flat
           dense
+          auto-close
           class="hide-arrow"
         >
           <q-list>
-            <q-item-label header
-              ><div>{{ $t("accountWelcomeMessage") }}</div>
+            <q-item-label header>
+              <div>{{ $t("accountWelcomeMessage") }}</div>
               <div class="q-mt-xs text-bold">
                 {{ username() }}
-              </div></q-item-label
+              </div>
+            </q-item-label>
+            <q-item
+              clickable
+              v-ripple
+              @click="logout"
             >
-            <q-item clickable @click="logout">
               <q-item-section>{{ $t("logout") }}</q-item-section>
             </q-item>
 
             <q-separator />
 
             <q-item-label header>{{ $t("databaseTestSettings") }}</q-item-label>
-            <q-item clickable @click="addSamplesToDB">
+            <q-item
+              clickable
+              @click="addSamplesToDB"
+            >
               <q-item-section>{{ $t("databaseInsertSamples") }}</q-item-section>
             </q-item>
-            <q-item clickable @click="clearDB">
+            <q-item
+              clickable
+              @click="clearDB"
+            >
               <q-item-section>{{ $t("databaseClearAll") }}</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator v-if="isLoggedIn()" vertical inset spaced dark />
+        <q-separator
+          v-if="isLoggedIn()"
+          vertical
+          inset
+          spaced
+          dark
+        />
 
         <q-btn-dropdown
           :label="$root.$i18n.locale.split('-')[0]"
@@ -94,7 +111,12 @@
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator vertical inset spaced dark />
+        <q-separator
+          vertical
+          inset
+          spaced
+          dark
+        />
 
         <q-btn
           size="md"
@@ -155,7 +177,7 @@ export default class MyLayout extends Vue {
 
   logout() {
     // console.log('logging out...');
-    this.$store.direct.commit.setCustomer(undefined);
+    this.$store.direct.commit.setSelectedCustomer(undefined);
     this.$stitchApi.stitch.auth
       .logout()
       .then(() => this.$router.push({ name: "login" }));

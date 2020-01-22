@@ -8,17 +8,44 @@ export default createActions({
     fetchCustomersFromDB(context) {
         const { commit } = rootActionContext(context);
         commit.isLoadingCustomerList(true);
+        return new Promise((resolve, reject) => {
+            stitchApi
+                .getAllCustomers()
+                .then(customers => {
+                    // console.log("Success:", result);
+                    commit.setCustomers((customers as unknown) as Customer[]);
+                    commit.isLoadingCustomerList(false);
+                    resolve();
+                })
+                .catch(err => {
+                    console.error(`Failed: ${err}`);
+                    commit.isLoadingCustomerList(false);
+                    reject();
+                });
+        });
+    },
+
+    saveCustomer(context, payload) {
+        const customer =
+            payload.customer ||
+            rootActionContext(context).getters.getCustomer(payload);
+
+        if (customer) {
+            stitchApi.saveCustomer(customer).catch(console.error);
+        }
+    },
+
+    deleteCustomer(context, customer: Customer) {
+        const { commit, dispatch } = rootActionContext(context);
         stitchApi
-            .getAllCustomers()
-            .then(customers => {
-                // console.log("Success:", result);
-                commit.setCustomers((customers as unknown) as Customer[]);
-                commit.isLoadingCustomerList(false);
+            .deleteCustomer(customer)
+            .then(res => {
+                commit.setSelectedCustomer(undefined);
+                return dispatch.fetchCustomersFromDB();
             })
-            .catch(err => {
-                console.error(`Failed: ${err}`);
-                commit.isLoadingCustomerList(false);
-            });
+            .catch(err =>
+                console.error(`Save current customer failed with error: ${err}`)
+            );
     },
 
     addSamplesToDB(context) {
@@ -41,9 +68,8 @@ export default createActions({
         stitchApi
             .deleteAllCustomers()
             .then(result => {
-                console.log(`Deleted ${result.deletedCount} item(s).`);
                 dispatch.fetchCustomersFromDB();
-                commit.setCustomer(undefined);
+                commit.setSelectedCustomer(undefined);
             })
             .catch(err => console.error(`Delete failed with error: ${err}`));
     }

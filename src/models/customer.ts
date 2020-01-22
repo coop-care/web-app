@@ -5,7 +5,8 @@ import { MasterData } from "./masterData";
 import { ProblemRecord } from "./problemRecord";
 
 export class Customer {
-    _id?: ObjectID;
+    // optional properties need an initial value because Vue does not detect the addition or removal of a property
+    _id?: ObjectID = undefined;
     user_id = "";
     name = "";
     @Type(() => MasterData)
@@ -15,7 +16,7 @@ export class Customer {
     @Type(() => Date)
     createdAt = new Date();
     @Type(() => Date)
-    leftAt?: Date;
+    leftAt?: Date = undefined;
 
     static fromObject(object: unknown): Customer | Customer[] {
         return plainToClass(Customer, object);
@@ -28,5 +29,9 @@ export class Customer {
 
     findProblemRecord(id: string) {
         return this.problems.find(problem => problem.id == id);
+    }
+
+    equals(customer: Customer) {
+        return this._id?.equals(customer._id || "") || false;
     }
 }
