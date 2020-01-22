@@ -220,12 +220,16 @@ export default class PageIndex extends Vue {
     this.updateCustomer(customer =>
       this.$store.direct.commit.archiveCustomer(customer)
     );
+    (this.$refs
+      .customerDrawer as CustomerDrawer).archivedCustomersExpansionState = true;
   }
 
   unarchiveCustomer() {
     this.updateCustomer(customer =>
       this.$store.direct.commit.unarchiveCustomer(customer)
     );
+    (this.$refs
+      .customerDrawer as CustomerDrawer).activeCustomersExpansionState = true;
   }
 
   updateCustomer(mutate: (customer: Customer) => void) {

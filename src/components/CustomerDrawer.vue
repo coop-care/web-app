@@ -1,80 +1,83 @@
 <template>
   <q-drawer
     v-model="isVisible"
-    content-class="bg-grey-2"
+    content-class="bg-grey-2 customer-drawer"
     show-if-above
   >
     <q-list>
-      <q-item>
-        <q-item-section>
-          <q-item-label
-            class="q-pl-none"
-            header
-          >{{
+      <q-expansion-item
+        switch-toggle-side
+        v-model="activeCustomersExpansionState"
+        expand-separator
+        header-class="q-pt-md text-subtitle1"
+      >
+        <template v-slot:header>
+          <q-item-section>
+            <q-item-label class="q-pl-none">{{
               $tc("customer", 2)
             }}</q-item-label>
-        </q-item-section>
-        <q-item-section side>
-          <q-btn
-            icon="add"
-            round
-            outline
-            size="10.5px"
-            color="primary"
-            @click="$emit('willAddCustomer')"
-            :title="$t('newCustomer')"
-            class="shadow-1"
-          />
-        </q-item-section>
-      </q-item>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn
+              icon="add"
+              round
+              outline
+              size="10.5px"
+              color="primary"
+              @click.stop="addCustomer"
+              :title="$t('newCustomer')"
+              class="shadow-1"
+            />
+          </q-item-section>
+        </template>
 
-      <q-item
-        clickable
-        v-for="(customer, index) in activeCustomers"
-        :key="'active' + index"
-        v-ripple
-        :active="isSelected(customer)"
-        active-class="text-primary"
-        @click="
-            selectCustomerById(customer._id);
-            closeDrawerIfNeeded();
-          "
+        <q-item
+          clickable
+          v-for="(customer, index) in activeCustomers"
+          :key="'active' + index"
+          v-ripple
+          :active="isSelected(customer)"
+          active-class="text-primary"
+          @click="selectCustomer(customer)"
+          class="q-pl-xl"
+        >
+          <q-item-section>
+            <q-item-label class="q-pl-sm">{{ customer.name }}</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-expansion-item>
+
+      <q-expansion-item
+        v-if="archivedCustomers.length"
+        v-model="archivedCustomersExpansionState"
+        switch-toggle-side
+        :label="$t('customerArchive')"
+        header-class="text-subtitle1"
       >
-        <q-item-section>
-          <q-item-label class="q-pl-md">{{ customer.name }}</q-item-label>
-        </q-item-section>
-      </q-item>
 
-      <q-item v-if="archivedCustomers.length">
-        <q-item-section>
-          <q-item-label
-            class="q-pl-none"
-            header
-          >{{
-              $t("customerArchive")
-            }}</q-item-label>
-        </q-item-section>
-      </q-item>
-
-      <q-item
-        clickable
-        v-for="(customer, index) in archivedCustomers"
-        :key="'archived' + index"
-        v-ripple
-        :active="isSelected(customer)"
-        active-class="text-primary"
-        @click="
-            selectCustomerById(customer._id);
-            closeDrawerIfNeeded();
-          "
-      >
-        <q-item-section>
-          <q-item-label class="q-pl-md">{{ customer.name }}</q-item-label>
-        </q-item-section>
-      </q-item>
+        <q-item
+          clickable
+          v-for="(customer, index) in archivedCustomers"
+          :key="'archived' + index"
+          v-ripple
+          :active="isSelected(customer)"
+          active-class="text-primary"
+          @click="selectCustomer(customer)"
+          class="q-pl-xl"
+        >
+          <q-item-section>
+            <q-item-label class="q-pl-sm">{{ customer.name }}</q-item-label>
+          </q-item-section>
+        </q-item>
+      </q-expansion-item>
     </q-list>
   </q-drawer>
 </template>
+
+<style lang="sass">
+.customer-drawer .q-item__section--avatar
+  min-width: inherit
+</style>
 
 <script lang="ts">
 import Vue from "vue";
@@ -85,6 +88,8 @@ import { Customer } from "../models/customer";
 @Component
 export default class CustomerDrawer extends Vue {
   isVisible = this.$q.screen.gt.sm;
+  activeCustomersExpansionState = true;
+  archivedCustomersExpansionState = false;
 
   get selectedCustomer() {
     return this.$store.direct.getters.getSelectedCustomer();
@@ -115,6 +120,16 @@ export default class CustomerDrawer extends Vue {
 
   isSelected(customer: Customer) {
     return this.selectedCustomer == customer;
+  }
+
+  addCustomer() {
+    this.$emit("willAddCustomer");
+    this.closeDrawerIfNeeded();
+  }
+
+  selectCustomer(customer: Customer) {
+    this.selectCustomerById(customer._id);
+    this.closeDrawerIfNeeded();
   }
 
   selectCustomerById(id: ObjectID | undefined) {
