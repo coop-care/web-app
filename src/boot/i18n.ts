@@ -14,12 +14,10 @@ function matchLocale(
     let resultingLocale = locale;
 
     if (!availableLocales.includes(resultingLocale)) {
-        let shortLocale = locale.split("-")[0];
+        const shortLocale = locale.split("-")[0];
         resultingLocale = shortLocale;
 
         if (!availableLocales.includes(resultingLocale)) {
-            let shortToCompleteLocaleMap: { [key: string]: string } = {};
-
             resultingLocale =
                 availableLocales.find(locale => {
                     return shortLocale == locale.split("-")[0];

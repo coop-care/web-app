@@ -26,15 +26,13 @@ export default createGetters<StoreState>()({
         });
     },
 
-    getProblemRecordById: state => (
-        payload: any
-    ): ProblemRecord | undefined => {
+    getProblemRecordById: () => (payload: any): ProblemRecord | undefined => {
         return store.getters
             .getCustomer(payload)
             ?.findProblemRecord(payload.problemId);
     },
 
-    getOutcomeAsChartData: state => (payload: any): any[] => {
+    getOutcomeAsChartData: () => (payload: any): any[] => {
         const problemRecord = store.getters.getProblemRecordById(payload);
 
         if (
@@ -96,15 +94,11 @@ export default createGetters<StoreState>()({
                     id: id,
                     group: group,
                     events: {
-                        mounted: (chartContext: any, config: any) => {
+                        mounted: (chartContext: any) => {
                             chartContext.updateOptions({}, true, true, false);
                             ApexCharts.exec(id, "render", {});
                         },
-                        mouseMove: (
-                            event: MouseEvent,
-                            chartContext: any,
-                            config: any
-                        ) => {}
+                        mouseMove: () => {}
                     },
                     toolbar: {
                         show: false
@@ -135,7 +129,7 @@ export default createGetters<StoreState>()({
                     y: {
                         formatter: (
                             value: any,
-                            { series, seriesIndex, dataPointIndex, w }: any
+                            { seriesIndex, dataPointIndex, w }: any
                         ) => {
                             const comment =
                                 w.config.series[seriesIndex].data[
@@ -175,7 +169,7 @@ export default createGetters<StoreState>()({
                         enabled: true
                     },
                     events: {
-                        mounted: (chartContext: any, config: any) => {
+                        mounted: (chartContext: any) => {
                             chartContext.updateOptions({}, true, true, false);
                             ApexCharts.exec(id, "render", {});
                         }
@@ -217,7 +211,7 @@ export default createGetters<StoreState>()({
                     tooltip: {
                         enabled: true,
                         offsetY: -35,
-                        formatter: function(val: number, opts: any) {
+                        formatter: function(val: number) {
                             return format(val, payload.locale);
                         }
                     }
@@ -263,7 +257,7 @@ export default createGetters<StoreState>()({
         });
     },
 
-    getRouteParamsForLatestProblem: state => (payload: any): any => {
+    getRouteParamsForLatestProblem: () => (payload: any): any => {
         const customer = store.getters.getCustomer(payload);
         if (!customer) {
             return {};

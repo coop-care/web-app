@@ -59,7 +59,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { StitchUser, UserPasswordCredential } from "mongodb-stitch-browser-sdk";
+import { UserPasswordCredential } from "mongodb-stitch-browser-sdk";
 
 @Component
 export default class PageLogin extends Vue {
@@ -73,7 +73,7 @@ export default class PageLogin extends Vue {
     const credential = new UserPasswordCredential(this.email, this.password);
     this.$stitchApi.stitch.auth
       .loginWithCredential(credential)
-      .then(user => {
+      .then(() => {
         // console.log(`Logged in as user with id: ${user.id}`);
         this.$router.push({ name: "customer" });
       })

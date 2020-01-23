@@ -1,5 +1,8 @@
 <template>
-  <div class="problem-classification" v-if="record">
+  <div
+    class="problem-classification"
+    v-if="record"
+  >
     <div class="row q-col-gutter-lg">
       <div class="col-md-6">
         <h6 class="counter">{{ $t("selectProblem") }}</h6>
@@ -12,7 +15,10 @@
           dense
         >
           <template v-slot:prepend>
-            <q-icon name="search" color="classification" />
+            <q-icon
+              name="search"
+              color="classification"
+            />
           </template>
           <template v-slot:append>
             <q-icon
@@ -63,7 +69,7 @@
               </div>
             </div>
           </template>
-          <template v-slot:body-problems="prop" class="symptom-body">
+          <template v-slot:body-problems="prop">
             <div class="text-weight-light text-black">
               {{ $t("signsAndSymptoms") }}:
             </div>
@@ -105,7 +111,10 @@
           {{ $t(problem.severity.description) }}
         </div>
 
-        <h6 v-if="showSymptomsSection" class="counter">
+        <h6
+          v-if="showSymptomsSection"
+          class="counter"
+        >
           {{ $t("signsAndSymptoms") }}
         </h6>
         <q-option-group
@@ -295,10 +304,10 @@ export default class ProblemClassification extends Vue {
         value: false,
         icon: this.terminology.icons.priority[0]
       },
-      { 
-        label: this.$t("highPriority.title"), 
-        value: true, 
-        icon: this.terminology.icons.priority[1] 
+      {
+        label: this.$t("highPriority.title"),
+        value: true,
+        icon: this.terminology.icons.priority[1]
       }
     ];
   }
@@ -322,7 +331,7 @@ export default class ProblemClassification extends Vue {
     if (["code", "severityCode"].includes(key)) {
       changes[nameof("signsAndSymptomsCodes")] = [];
       changes[nameof("details")] = "";
-    } else if ((key == "isHighPriority") && !!value) {
+    } else if (key == "isHighPriority" && !!value) {
       changes[nameof("priorityDetails")] = "";
     }
 

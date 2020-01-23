@@ -39,7 +39,7 @@ export default createActions({
         const { commit, dispatch } = rootActionContext(context);
         stitchApi
             .deleteCustomer(customer)
-            .then(res => {
+            .then(() => {
                 commit.setSelectedCustomer(undefined);
                 return dispatch.fetchCustomersFromDB();
             })
@@ -56,7 +56,7 @@ export default createActions({
         });
         stitchApi.customers
             .insertMany(samples)
-            .then(result => {
+            .then(() => {
                 // console.log("Successfully inserted", result);
                 dispatch.fetchCustomersFromDB();
             })
@@ -67,7 +67,7 @@ export default createActions({
         const { commit, dispatch } = rootActionContext(context);
         stitchApi
             .deleteAllCustomers()
-            .then(result => {
+            .then(() => {
                 dispatch.fetchCustomersFromDB();
                 commit.setSelectedCustomer(undefined);
             })

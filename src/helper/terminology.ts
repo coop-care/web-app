@@ -56,9 +56,8 @@ export function treeifyTerminology(
     list: HasTitleDescriptionCode[],
     key: string
 ): any {
-    let lastIndex = list.length - 1;
-    return list.map((item, index) => {
-        let result: any = {
+    return list.map(item => {
+        const result: any = {
             id: ["domains", "problems"].includes(key)
                 ? key + "." + item.code
                 : item.code,
@@ -72,8 +71,8 @@ export function treeifyTerminology(
             selectable: key == "problems"
         };
 
-        for (let key in item) {
-            let value = (item as any)[key];
+        for (const key in item) {
+            const value = (item as any)[key];
             if (Array.isArray(value)) {
                 result.children = treeifyTerminology(value, key);
             }
@@ -84,7 +83,7 @@ export function treeifyTerminology(
 }
 
 export function filterTerminology(node: HasTitleDescription, filter: string) {
-    let regex = new RegExp(
+    const regex = new RegExp(
         "(^|\\b)" + filter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
         "gi"
     );
@@ -98,8 +97,17 @@ export function sortByTitle(a: HasTitle, b: HasTitle): number {
     return a.title.localeCompare(b.title);
 }
 
+export function flattenedProblems(terminology: Terminology): Problem[] {
+    return terminology.problemClassificationScheme.domains
+        .map(domain => domain.problems)
+        .reduce(
+            (previous, current) => previous.concat(current),
+            [] as Problem[]
+        );
+}
+
 export function makeTerminologyWithMaps(terminology: Terminology) {
-    let result: TerminologyWithMaps = {
+    const result: TerminologyWithMaps = {
         title: terminology.title,
         problemClassificationScheme: terminology.problemClassificationScheme,
         interventionScheme: terminology.interventionScheme,
@@ -119,7 +127,7 @@ export function makeTerminologyWithMaps(terminology: Terminology) {
         result.problemByCode[problem.code] = problem;
 
         problem.signsAndSymptoms.forEach(symptom => {
-            let code = problem.code + "_" + symptom.code;
+            const code = problem.code + "_" + symptom.code;
             result.symptomByCode[code] = symptom;
         });
     });
@@ -140,13 +148,4 @@ export function makeTerminologyWithMaps(terminology: Terminology) {
     result.icons.priority = ["fas fa-arrow-down", "fas fa-arrow-up"];
 
     return result;
-}
-
-export function flattenedProblems(terminology: Terminology): Problem[] {
-    return terminology.problemClassificationScheme.domains
-        .map(domain => domain.problems)
-        .reduce(
-            (previous, current) => previous.concat(current),
-            [] as Problem[]
-        );
 }

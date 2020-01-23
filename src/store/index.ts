@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { ObjectID } from "bson";
-import { Download } from "../helper/download";
+import { downloadJSON } from "../helper/download";
 import { colors } from "quasar";
 import { Customer } from "../models/customer";
 import { createDirectStore } from "direct-vuex";
@@ -41,9 +41,8 @@ setBrand("outcome", "#009688");
 setBrand("intervention", "#ff6f00");
 
 // @ts-ignore
-window.download = () => {
-    Download.json(store.state.customers || [], "sample1.json");
-};
+window.download = () =>
+    downloadJSON(store.state.customers || [], "sample1.json");
 
 // Export the original Vuex store because of quasar
 export default store.original;
