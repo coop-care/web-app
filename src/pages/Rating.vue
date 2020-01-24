@@ -3,10 +3,7 @@
     <div class="text-h5 q-mb-lg">
       {{ $t("newRating") }}
     </div>
-    <problem-rating
-      :params="$route.params"
-      :isSummary="true"
-    />
+    <problem-rating :params="$route.params" :isSummary="true" />
     <div class="flex justify-around q-mt-lg">
       <q-btn
         :label="$t('cancel')"
@@ -16,12 +13,7 @@
         flat
         class="shadow-1"
       />
-      <q-btn
-        :label="$t('save')"
-        @click="save"
-        color="primary"
-        rounded
-      />
+      <q-btn :label="$t('save')" @click="save" color="primary" rounded />
     </div>
   </q-page>
 </template>
@@ -51,7 +43,9 @@ export default class Rating extends Vue {
       changes: changes,
       ...this.$route.params
     });
-    this.$router.push({ name: "customer" });
+    this.$store.direct.dispatch
+      .saveCustomer(this.$route.params)
+      .then(() => this.$router.push({ name: "customer" }));
   }
 }
 </script>

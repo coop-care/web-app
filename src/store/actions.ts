@@ -26,13 +26,23 @@ export default createActions({
     },
 
     saveCustomer(context, payload) {
-        const customer =
-            payload.customer ||
-            rootActionContext(context).getters.getCustomer(payload);
+        return new Promise((resolve, reject) => {
+            const customer =
+                payload.customer ||
+                rootActionContext(context).getters.getCustomer(payload);
 
-        if (customer) {
-            stitchApi.saveCustomer(customer).catch(console.error);
-        }
+            if (customer) {
+                stitchApi
+                    .saveCustomer(customer)
+                    .then(resolve)
+                    .catch(error => {
+                        console.error(error);
+                        reject();
+                    });
+            } else {
+                reject();
+            }
+        });
     },
 
     deleteCustomer(context, customer: Customer) {
