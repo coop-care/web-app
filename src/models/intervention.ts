@@ -9,9 +9,9 @@ export class Intervention {
     @Type(() => Note)
     details: Note[] = [];
     @Type(() => Date)
-    startedAt: Date | undefined;
+    startedAt?: Date = undefined;
     @Type(() => Date)
-    endedAt: Date | undefined;
+    endedAt?: Date = undefined;
 
     static fromCode(code: string) {
         const codes = code.split(".");

@@ -5,7 +5,7 @@ import { Rating } from "./rating";
 
 export class Outcome extends Base {
     @Type(() => Date)
-    createdAt: Date | undefined;
+    createdAt?: Date = undefined;
     @Type(() => Rating)
     knowledge = new Rating();
     @Type(() => Rating)
