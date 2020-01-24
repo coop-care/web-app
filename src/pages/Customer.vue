@@ -6,20 +6,14 @@
       @didSelectCustomer="addingCustomer = false"
     />
 
-    <div
-      class="customer-overview q-pa-xl"
-      v-if="loading"
-    >
+    <div class="customer-overview q-pa-xl" v-if="loading">
       <p>{{ $t("loading") }}</p>
     </div>
     <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
       v-else-if="addingCustomer"
     >
-      <new-customer
-        @save="addCustomer"
-        @cancel="addingCustomer = false"
-      />
+      <new-customer @save="addCustomer" @cancel="addingCustomer = false" />
     </div>
     <div
       class="customer-overview q-pt-lg q-px-xl q-pb-xl"
@@ -31,14 +25,11 @@
           class="col q-mt-sm q-mb-xl q-py-sm text-h2"
           v-text="selectedCustomer.name"
           :contenteditable="!isDisabled"
-          @change="
-            changeCustomerName(selectedCustomerId, $event.value)
-          "
+          @change="changeCustomerName(selectedCustomerId, $event.value)"
         />
-        <action-menu
-          :items="customerActionItems"
-          class="on-right q-mt-sm"
-        />
+        <div>
+          <action-menu :items="customerActionItems" class="on-right q-mt-sm" />
+        </div>
       </div>
       <div class="q-gutter-md">
         <q-btn
@@ -65,10 +56,7 @@
       </div>
     </div>
 
-    <div
-      class="customer-overview q-pa-xl"
-      v-else-if="!customers.length"
-    >
+    <div class="customer-overview q-pa-xl" v-else-if="!customers.length">
       <p>{{ $t("noExistingCustomer") }}</p>
       <q-btn
         @click="addingCustomer = true"
@@ -79,10 +67,7 @@
         class="q-mt-md"
       />
     </div>
-    <div
-      class="customer-overview q-pa-xl"
-      v-else
-    >
+    <div class="customer-overview q-pa-xl" v-else>
       <p>{{ $t("noSelectedCustomer") }}</p>
     </div>
   </q-page>
