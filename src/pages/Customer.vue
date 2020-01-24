@@ -43,6 +43,17 @@
           @click="addProblem"
           size="12.5px"
         />
+        <q-btn
+          v-if="$te('problemCodesByDiagnosis')"
+          icon="playlist_add"
+          color="primary"
+          :label="$t('problemAdmissionByDiagnosis')"
+          rounded
+          outline
+          class="shadow-1 q-mt-md"
+          @click="addProblemsByDiagnosis"
+          size="12.5px"
+        />
         <problem-summary
           v-for="problemRecord in selectedCustomerProblems"
           v-bind:key="problemRecord.id"
@@ -251,6 +262,15 @@ export default class PageIndex extends Vue {
     this.$router.push({
       name: "problem",
       params: this.$store.direct.getters.getRouteParamsForLatestProblem(params)
+    });
+  }
+
+  addProblemsByDiagnosis() {
+    this.$router.push({
+      name: "problemsByDiagnosis",
+      params: {
+        customerId: this.selectedCustomerId
+      } as any
     });
   }
 }

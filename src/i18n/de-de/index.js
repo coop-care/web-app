@@ -93,5 +93,6 @@ export default {
   customerDismissal: "Pflege beenden und Kundendaten archivieren",
   deleteCustomer: "Kundendaten permanent löschen",
   customerReadmission: "Pflege des Kunden wieder aufnehmen",
-  customerArchive: "Archiv"
+  customerArchive: "Archiv",
+  problemAdmissionByDiagnosis: "Probleme nach Diagnose"
 };

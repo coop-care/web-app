@@ -91,5 +91,6 @@ export default {
   customerDismissal: "Dismiss customer care and archive customer data",
   deleteCustomer: "Permanently delete customer data",
   customerReadmission: "Customer care readmission",
-  customerArchive: "Archive"
+  customerArchive: "Archive",
+  problemAdmissionByDiagnosis: "Problems by diagnosis"
 };
