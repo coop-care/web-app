@@ -46,7 +46,7 @@
           v-if="isDraft && !isDisabled"
           icon="delete_forever"
           :title="$t('delete')"
-          @click="$store.direct.commit.deleteDraftProblemRecord(params)"
+          @click="deleteDraft"
           dense
           round
           unelevated
@@ -309,6 +309,11 @@ export default class ProblemSummary extends Vue {
 
   getRecordFromStore() {
     return this.$store.getters.getProblemRecordById(this.$props.params);
+  }
+
+  deleteDraft() {
+    this.$store.direct.commit.deleteDraftProblemRecord(this.$props.params);
+    this.$store.direct.dispatch.saveCustomer(this.$props.params);
   }
 
   created() {

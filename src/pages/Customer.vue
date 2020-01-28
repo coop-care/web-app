@@ -172,7 +172,12 @@ export default class PageIndex extends Vue {
   }
 
   created() {
-    this.$store.direct.dispatch.fetchCustomersFromDB();
+    if (this.selectedCustomer) {
+      this.$store.direct.commit.isLoadingCustomerList(true);
+    }
+    this.$store.direct.dispatch
+      .saveCustomer({ customer: this.selectedCustomer, resolveOnError: true })
+      .then(() => this.$store.direct.dispatch.fetchCustomersFromDB());
   }
 
   addCustomer(name: string) {
