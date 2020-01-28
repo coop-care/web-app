@@ -37,10 +37,18 @@ export default createActions({
                     .then(resolve)
                     .catch(error => {
                         console.error(error);
-                        reject();
+                        if (payload.resolveOnError) {
+                            resolve();
+                        } else {
+                            reject(error);
+                        }
                     });
             } else {
-                reject();
+                if (payload.resolveOnError) {
+                    resolve();
+                } else {
+                    reject("customer not found");
+                }
             }
         });
     },

@@ -78,7 +78,6 @@
           <q-btn
             v-if="step == 3 || !isHighPriority"
             @click="saveProblemRecord"
-            to="/"
             color="primary"
             rounded
             :label="$t('save')"
@@ -137,7 +136,9 @@ export default class ProblemRecording extends Vue {
 
   saveProblemRecord() {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
-    this.$stitchApi.saveCustomer(this.customer);
+    this.$store.direct.dispatch
+      .saveCustomer(this.$route.params)
+      .then(() => this.$router.push({ name: "customer" }));
   }
 }
 </script>

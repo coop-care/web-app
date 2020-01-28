@@ -241,7 +241,7 @@ export default createGetters<StoreState>()({
                 : "";
             const title =
                 payload.ratings[index].title +
-                " " +
+                ": " +
                 lastObservation.y +
                 lastExpectationText;
             const subtitle = lastObservationTitle;

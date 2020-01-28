@@ -54,7 +54,6 @@
         :label="$t('customerArchive')"
         header-class="text-subtitle1"
       >
-
         <q-item
           clickable
           v-for="(customer, index) in archivedCustomers"
@@ -138,18 +137,12 @@ export default class CustomerDrawer extends Vue {
     }
 
     this.$emit("didSelectCustomer");
-    const current = this.selectedCustomer;
-    if (current) {
+    if (this.selectedCustomer) {
       this.$store.direct.commit.isLoadingCustomer(true);
-      this.$stitchApi
-        .saveCustomer(current)
-        .then(() => this.loadCustomerFromDB(id))
-        .catch(err =>
-          console.error(`Save current customer failed with error: ${err}`)
-        );
-    } else {
-      this.loadCustomerFromDB(id);
     }
+    this.$store.direct.dispatch
+      .saveCustomer({ customer: this.selectedCustomer, resolveOnError: true })
+      .then(() => this.loadCustomerFromDB(id));
   }
 
   loadCustomerFromDB(id: ObjectID) {
