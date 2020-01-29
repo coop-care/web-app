@@ -141,7 +141,7 @@
           v-if="severity < 2"
           v-model="details"
           :label="
-            severity == 0 ? $t('customerRequestLabel') : $t('riskFactorLabel')
+            severity == 0 ? $t('clientRequestLabel') : $t('riskFactorLabel')
           "
           autogrow
           :autofocus="!details"

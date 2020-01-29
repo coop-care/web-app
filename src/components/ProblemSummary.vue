@@ -29,7 +29,11 @@
             class="text-weight-medium"
           />
         </span>
-        <action-menu v-if="isInteractive" :items="actionMenuItems" class="q-mr-xs" />
+        <action-menu
+          v-if="isInteractive"
+          :items="actionMenuItems"
+          class="q-mr-xs"
+        />
         <q-btn
           v-if="isDraft && !isDisabled"
           :label="$t('editDraft')"
@@ -67,7 +71,7 @@
         {{
           $t(
             problem.severityCode == 0
-              ? "customerRequestForHealthPromotionTitle"
+              ? "clientRequestForHealthPromotionTitle"
               : "potentialRiskFactorsTitle"
           )
         }}

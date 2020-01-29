@@ -57,18 +57,18 @@
     </div>
 
     <div class="customer-overview q-pa-xl" v-else-if="!customers.length">
-      <p>{{ $t("noExistingCustomer") }}</p>
+      <p>{{ $t("noExistingClient") }}</p>
       <q-btn
         @click="addingCustomer = true"
         no-caps
         color="primary"
         rounded
-        :label="$t('createFirstCustomer')"
+        :label="$t('createFirstClient')"
         class="q-mt-md"
       />
     </div>
     <div class="customer-overview q-pa-xl" v-else>
-      <p>{{ $t("noSelectedCustomer") }}</p>
+      <p>{{ $t("noSelectedClient") }}</p>
     </div>
   </q-page>
 </template>
@@ -122,19 +122,19 @@ export default class PageIndex extends Vue {
 
     return [
       {
-        name: this.$t("customerDismissal"),
+        name: this.$t("clientDismissal"),
         icon: "fas fa-archive",
         action: this.archiveCustomer,
         condition: !customer.leftAt
       },
       {
-        name: this.$t("customerReadmission"),
+        name: this.$t("clientReadmission"),
         icon: "fas fa-folder-open",
         action: this.unarchiveCustomer,
         condition: !!customer.leftAt
       },
       {
-        name: this.$t("deleteCustomer"),
+        name: this.$t("deleteClient"),
         icon: "delete_forever",
         action: this.deleteCustomer,
         condition:

@@ -14,7 +14,7 @@
         <template v-slot:header>
           <q-item-section>
             <q-item-label class="q-pl-none">{{
-              $tc("customer", 2)
+              $tc("client", 2)
             }}</q-item-label>
           </q-item-section>
           <q-item-section side>
@@ -25,7 +25,7 @@
               size="10.5px"
               color="primary"
               @click.stop="addCustomer"
-              :title="$t('newCustomer')"
+              :title="$t('newClient')"
               class="shadow-1"
             />
           </q-item-section>
@@ -51,7 +51,7 @@
         v-if="archivedCustomers.length"
         v-model="archivedCustomersExpansionState"
         switch-toggle-side
-        :label="$t('customerArchive')"
+        :label="$t('clientArchive')"
         header-class="text-subtitle1"
       >
         <q-item

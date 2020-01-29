@@ -2,7 +2,7 @@
   <div>
     <q-input
       v-model="name"
-      :label="$t('newCustomer')"
+      :label="$t('newClient')"
       class="q-mb-md"
       autofocus
       @keyup.enter="$emit('save', name)"
