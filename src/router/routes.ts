@@ -6,7 +6,7 @@ const routes: RouteConfig[] = [
         component: () => import("layouts/MyLayout.vue"),
         children: [
             {
-                name: "customer",
+                name: "client",
                 path: "",
                 component: () => import("pages/Customer.vue")
             },
@@ -27,12 +27,12 @@ const routes: RouteConfig[] = [
             },
             {
                 name: "problem",
-                path: "/customer/:customerId/problem/:problemId",
+                path: "/client/:customerId/problem/:problemId",
                 component: () => import("pages/ProblemRecording.vue")
             },
             {
                 name: "outcome",
-                path: "/customer/:customerId/problem/:problemId/outcome",
+                path: "/client/:customerId/problem/:problemId/outcome",
                 component: () => import("pages/Rating.vue")
             }
         ]

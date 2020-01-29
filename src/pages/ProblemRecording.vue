@@ -126,7 +126,7 @@ export default class ProblemRecording extends Vue {
 
   beforeCreate() {
     if (!this.$store.getters.getProblemRecordById(this.$route.params)) {
-      this.$router.push({ name: "customer" });
+      this.$router.push({ name: "client" });
     }
   }
 
@@ -138,7 +138,7 @@ export default class ProblemRecording extends Vue {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
     this.$store.direct.dispatch
       .saveCustomer(this.$route.params)
-      .then(() => this.$router.push({ name: "customer" }));
+      .then(() => this.$router.push({ name: "client" }));
   }
 }
 </script>

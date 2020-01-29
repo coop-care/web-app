@@ -45,7 +45,7 @@ export default class Rating extends Vue {
     });
     this.$store.direct.dispatch
       .saveCustomer(this.$route.params)
-      .then(() => this.$router.push({ name: "customer" }));
+      .then(() => this.$router.push({ name: "client" }));
   }
 }
 </script>
