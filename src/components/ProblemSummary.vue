@@ -2,7 +2,7 @@
   <q-card class="overflow-hidden">
     <q-card-section>
       <div v-if="isSummary">
-        <div class="text-subtitle2 text-weight-normal">{{ customerName }}:</div>
+        <div class="text-subtitle2 text-weight-normal">{{ clientName }}:</div>
         <div class="text-h6 text-classification">
           {{ $t(problem.title) }}
         </div>
@@ -29,9 +29,13 @@
             class="text-weight-medium"
           />
         </span>
-        <action-menu v-if="isInteractive" :items="actionMenuItems" class="q-mr-xs" />
+        <action-menu
+          v-if="isInteractive"
+          :items="actionMenuItems"
+          class="q-mr-xs"
+        />
         <q-btn
-          v-if="isDraft && !isDisabled"
+          v-if="isDraft"
           :label="$t('editDraft')"
           icon="edit"
           :to="{ name: 'problem', params: params }"
@@ -41,6 +45,7 @@
           size="md"
           color="negative"
           class="shadow-1 q-mr-xs q-px-xs"
+          :disable="isDisabled"
         />
         <q-btn
           v-if="isDraft && !isDisabled"
@@ -67,7 +72,7 @@
         {{
           $t(
             problem.severityCode == 0
-              ? "customerRequestForHealthPromotionTitle"
+              ? "clientRequestForHealthPromotionTitle"
               : "potentialRiskFactorsTitle"
           )
         }}
@@ -125,9 +130,7 @@
         </li>
       </ul>
     </q-card-section>
-    <q-card-section
-      v-if="lastOutcome || (!isSummary && problem.isHighPriority)"
-    >
+    <q-card-section v-if="!!lastOutcome && problem.isHighPriority">
       <div
         :class="
           'text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
@@ -146,8 +149,8 @@
           class="shadow-1"
         />
       </div>
-      <div v-if="lastOutcome">
-        <div v-if="!isSummary" class="row q-col-gutter-md">
+      <div>
+        <div v-if="!isSummary && !isDraft" class="row q-col-gutter-md">
           <div
             class="col-12 col-sm-4"
             style=""
@@ -236,7 +239,7 @@ export default class ProblemSummary extends Vue {
     if (this.record.outcomes.length) {
       return this.record.outcomes[this.record.outcomes.length - 1];
     } else {
-      return null;
+      return undefined;
     }
   }
   get ratings() {
@@ -271,7 +274,7 @@ export default class ProblemSummary extends Vue {
         icon: "fas fa-check",
         action: () => {
           this.$store.direct.commit.dismissProblemRecord(this.$props.params);
-          this.$store.direct.dispatch.saveCustomer(this.$props.params);
+          this.$store.direct.dispatch.saveClient(this.$props.params);
         }
       }
     ];
@@ -280,8 +283,8 @@ export default class ProblemSummary extends Vue {
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
   }
-  get customerName() {
-    return this.$store.getters.getCustomer(this.$props.params).name;
+  get clientName() {
+    return this.$store.getters.getClient(this.$props.params).name;
   }
   get language() {
     return this.$root.$i18n.locale;
@@ -298,7 +301,7 @@ export default class ProblemSummary extends Vue {
         this.$props.params
       )
     });
-    this.$store.direct.dispatch.saveCustomer(this.$props.params);
+    this.$store.direct.dispatch.saveClient(this.$props.params);
   }
 
   updateLocale() {
@@ -313,7 +316,7 @@ export default class ProblemSummary extends Vue {
 
   deleteDraft() {
     this.$store.direct.commit.deleteDraftProblemRecord(this.$props.params);
-    this.$store.direct.dispatch.saveCustomer(this.$props.params);
+    this.$store.direct.dispatch.saveClient(this.$props.params);
   }
 
   created() {
@@ -330,7 +333,7 @@ export default class ProblemSummary extends Vue {
     // @ts-ignore
     const Apex = window.Apex;
     const params = this.$props.params;
-    const group = ["summary", params.customerId, params.problemId].join(".");
+    const group = ["summary", params.clientId, params.problemId].join(".");
     if (!Apex._chartInstances) return; // I get an error that this is undefined
     const zombieChartIndices = Apex._chartInstances
       .map((chart: any, index: number) => {

@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import { ObjectID } from "bson";
 import { downloadJSON } from "../helper/download";
 import { colors } from "quasar";
-import { Customer } from "../models/customer";
+import { Client } from "../models/client";
 import { createDirectStore } from "direct-vuex";
 import getters from "./getters";
 import mutations from "./mutations";
@@ -14,18 +14,18 @@ const { setBrand } = colors;
 Vue.use(Vuex);
 
 export interface StoreState {
-    customers: Customer[];
-    selectedCustomerId: ObjectID | undefined;
-    isLoadingCustomer: boolean;
-    isLoadingCustomerList: boolean;
+    clients: Client[];
+    selectedClientId: ObjectID | undefined;
+    isLoadingClient: boolean;
+    isLoadingClientList: boolean;
 }
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
-        customers: [],
-        selectedCustomerId: undefined,
-        isLoadingCustomer: false,
-        isLoadingCustomerList: false
+        clients: [],
+        selectedClientId: undefined,
+        isLoadingClient: false,
+        isLoadingClientList: false
     } as StoreState,
     getters,
     mutations,
@@ -42,7 +42,7 @@ setBrand("intervention", "#ff6f00");
 
 // @ts-ignore
 window.download = () =>
-    downloadJSON(store.state.customers || [], "sample1.json");
+    downloadJSON(store.state.clients || [], "sample1.json");
 
 // Export the original Vuex store because of quasar
 export default store.original;
