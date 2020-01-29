@@ -3,16 +3,16 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
-          v-if="$router.currentRoute.name == 'customer' && $q.screen.lt.md"
+          v-if="$router.currentRoute.name == 'client' && $q.screen.lt.md"
           dense
           no-caps
           flat
           icon="menu"
           aria-label="menu"
-          @click="$root.$emit('toggleCustomerDrawer')"
+          @click="$root.$emit('toggleClientDrawer')"
         />
         <q-btn
-          v-if="!['customer', 'login'].includes($router.currentRoute.name)"
+          v-if="!['client', 'login'].includes($router.currentRoute.name)"
           size="lg"
           dense
           no-caps
@@ -51,39 +51,23 @@
                 {{ username() }}
               </div>
             </q-item-label>
-            <q-item
-              clickable
-              v-ripple
-              @click="logout"
-            >
+            <q-item clickable v-ripple @click="logout">
               <q-item-section>{{ $t("logout") }}</q-item-section>
             </q-item>
 
             <q-separator />
 
             <q-item-label header>{{ $t("databaseTestSettings") }}</q-item-label>
-            <q-item
-              clickable
-              @click="addSamplesToDB"
-            >
+            <q-item clickable @click="addSamplesToDB">
               <q-item-section>{{ $t("databaseInsertSamples") }}</q-item-section>
             </q-item>
-            <q-item
-              clickable
-              @click="clearDB"
-            >
+            <q-item clickable @click="clearDB">
               <q-item-section>{{ $t("databaseClearAll") }}</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator
-          v-if="isLoggedIn()"
-          vertical
-          inset
-          spaced
-          dark
-        />
+        <q-separator v-if="isLoggedIn()" vertical inset spaced dark />
 
         <q-btn-dropdown
           :label="$root.$i18n.locale.split('-')[0]"
@@ -111,12 +95,7 @@
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator
-          vertical
-          inset
-          spaced
-          dark
-        />
+        <q-separator vertical inset spaced dark />
 
         <q-btn
           size="md"
@@ -177,7 +156,7 @@ export default class MyLayout extends Vue {
 
   logout() {
     // console.log('logging out...');
-    this.$store.direct.commit.setSelectedCustomer(undefined);
+    this.$store.direct.commit.setSelectedClient(undefined);
     this.$stitchApi.stitch.auth
       .logout()
       .then(() => this.$router.push({ name: "login" }));

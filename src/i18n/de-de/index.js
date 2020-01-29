@@ -5,8 +5,8 @@ export default {
   back: "Zurück",
   continue: "Weiter",
   save: "Speichern",
-  customer: "Kunde | Kunden",
-  newCustomer: "Neuer Kunde",
+  client: "Kunde | Kunden",
+  newClient: "Neuer Kunde",
   problem: "Problem | Probleme",
   problemAdmission: "Problem aufnehmen",
   rating: "Bewertung | Bewertungen",
@@ -23,13 +23,13 @@ export default {
   otherSignsAndSymptoms: "Sonstige Anzeichen und Symptome",
   selectModfiers: "Merkmale auswählen",
   riskFactorLabel: "Potenzielle Risikofaktoren",
-  customerRequestLabel: "Kundenwünsche zur Gesundheitsvorsorge",
+  clientRequestLabel: "Kundenwünsche zur Gesundheitsvorsorge",
   summary: "Zusammenfassung",
   selectInterventions: "Interventionen auswählen",
   findTargets: "Pflege-Maßnahmen finden",
   noTargetsFound: "Keine Pflege-Maßnahmen gefunden",
-  customerSpecificInterventions: "Kundenspezifische Details",
-  customerSpecificInterventionsHint:
+  clientSpecificInterventions: "Kundenspezifische Details",
+  clientSpecificInterventionsHint:
     "Welche konkreten Aktivitäten werden geplant?",
   unspecifiedProblem: "nicht spezifiziertes Problem",
   priorityTitle: "Priorität festlegen",
@@ -49,9 +49,9 @@ export default {
   outcome: "Ergebnis | Ergebnisse",
   editDraft: "Entwurf",
   delete: "Löschen",
-  noExistingCustomer: "Es existieren noch keine Kundendaten.",
-  noSelectedCustomer: "Wähle einen Kunden aus der Kundenliste aus.",
-  createFirstCustomer: "Lege den ersten Kunden an",
+  noExistingClient: "Es existieren noch keine Kundendaten.",
+  noSelectedClient: "Wähle einen Kunden aus der Kundenliste aus.",
+  createFirstClient: "Lege den ersten Kunden an",
   showCommentInput: "Kommentar hinzufügen?",
   ratingCommentLabel: "Begründung oder Anmerkung zur Bewertung",
   showPersonRatedInPlaceOfOwnerInput:
@@ -62,8 +62,7 @@ export default {
   categoryShortTitle02: "Behandlung",
   categoryShortTitle03: "Fall-Mgmt.",
   categoryShortTitle04: "Überwachung",
-  customerRequestForHealthPromotionTitle:
-    "Kundenwünsche zur Gesundheitsvorsorge",
+  clientRequestForHealthPromotionTitle: "Kundenwünsche zur Gesundheitsvorsorge",
   potentialRiskFactorsTitle: "Potentielle Risikofaktoren",
   actualSignsAndSymptomsTitle: "Tatsächliche Anzeichen und Symptome",
   error404: "Sorry, hier gibt es nichts...",
@@ -90,8 +89,8 @@ export default {
   admissionRatingStep: "Aufnahmebewertung vornehmen",
   planInterveneStep: "Planen und Intervenieren",
   moreActions: "Weitere Aktionen…",
-  customerDismissal: "Pflege beenden und Kundendaten archivieren",
-  deleteCustomer: "Kundendaten permanent löschen",
-  customerReadmission: "Pflege des Kunden wieder aufnehmen",
-  customerArchive: "Archiv"
+  clientDismissal: "Pflege beenden und Kundendaten archivieren",
+  deleteClient: "Kundendaten permanent löschen",
+  clientReadmission: "Pflege des Kunden wieder aufnehmen",
+  clientArchive: "Archiv"
 };

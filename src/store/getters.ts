@@ -1,6 +1,6 @@
 import { createGetters } from "direct-vuex";
 import { store, StoreState } from ".";
-import { Customer } from "../models/customer";
+import { Client } from "../models/client";
 import { ProblemRecord } from "../models/problemRecord";
 import { Outcome } from "../models/outcome";
 import { format } from "timeago.js";
@@ -10,25 +10,25 @@ import ApexCharts from "apexcharts";
 const { getBrand } = colors;
 
 export default createGetters<StoreState>()({
-    getCustomer: state => (payload: any): Customer | undefined => {
-        if (payload.customerId) {
-            return state.customers.find(
-                customer => customer._id?.equals(payload.customerId) || false
+    getClient: state => (payload: any): Client | undefined => {
+        if (payload.clientId) {
+            return state.clients.find(
+                client => client._id?.equals(payload.clientId) || false
             );
         } else {
             return;
         }
     },
 
-    getSelectedCustomer: state => (): Customer | undefined => {
-        return store.getters.getCustomer({
-            customerId: state.selectedCustomerId
+    getSelectedClient: state => (): Client | undefined => {
+        return store.getters.getClient({
+            clientId: state.selectedClientId
         });
     },
 
     getProblemRecordById: () => (payload: any): ProblemRecord | undefined => {
         return store.getters
-            .getCustomer(payload)
+            .getClient(payload)
             ?.findProblemRecord(payload.problemId);
     },
 
@@ -84,7 +84,7 @@ export default createGetters<StoreState>()({
 
             const group = [
                 "summary",
-                payload.customerId,
+                payload.clientId,
                 payload.problemId
             ].join(".");
             const id = [group, key].join(".");
@@ -258,14 +258,14 @@ export default createGetters<StoreState>()({
     },
 
     getRouteParamsForLatestProblem: () => (payload: any): any => {
-        const customer = store.getters.getCustomer(payload);
-        if (!customer) {
+        const client = store.getters.getClient(payload);
+        if (!client) {
             return {};
         }
 
         return {
-            customerId: customer._id,
-            problemId: customer.problems[customer.problems.length - 1].id
+            clientId: client._id,
+            problemId: client.problems[client.problems.length - 1].id
         };
     }
 });

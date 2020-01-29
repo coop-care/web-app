@@ -1,47 +1,47 @@
 import { createMutations } from "direct-vuex";
 import { store, StoreState } from ".";
-import { Customer } from "../models/customer";
+import { Client } from "../models/client";
 import { ProblemRecord } from "../models/problemRecord";
 import { Outcome } from "../models/outcome";
 import { Rating } from "src/models/rating";
 
 export default createMutations<StoreState>()({
-    setSelectedCustomer(state, customer: Customer | undefined) {
-        state.selectedCustomerId = customer?._id;
+    setSelectedClient(state, client: Client | undefined) {
+        state.selectedClientId = client?._id;
     },
 
-    replaceCustomerInList(state, customer: Customer) {
-        state.customers = state.customers.map(current => {
-            if (current.equals(customer)) {
-                return customer;
+    replaceClientInList(state, client: Client) {
+        state.clients = state.clients.map(current => {
+            if (current.equals(client)) {
+                return client;
             } else {
                 return current;
             }
         });
     },
 
-    setCustomers(state, customers: Customer[]) {
-        state.customers = customers;
+    setClients(state, clients: Client[]) {
+        state.clients = clients;
     },
 
-    isLoadingCustomer(state, isLoading: boolean) {
-        state.isLoadingCustomer = isLoading;
+    isLoadingClient(state, isLoading: boolean) {
+        state.isLoadingClient = isLoading;
     },
 
-    isLoadingCustomerList(state, isLoading: boolean) {
-        state.isLoadingCustomerList = isLoading;
+    isLoadingClientList(state, isLoading: boolean) {
+        state.isLoadingClientList = isLoading;
     },
 
-    archiveCustomer(state, customer: Customer) {
-        customer.leftAt = new Date();
+    archiveClient(state, client: Client) {
+        client.leftAt = new Date();
     },
 
-    unarchiveCustomer(state, customer: Customer) {
-        customer.leftAt = undefined;
+    unarchiveClient(state, client: Client) {
+        client.leftAt = undefined;
     },
 
     createProblemRecord(state, payload) {
-        store.getters.getCustomer(payload)?.problems.push(new ProblemRecord());
+        store.getters.getClient(payload)?.problems.push(new ProblemRecord());
     },
 
     updateObject(
@@ -52,34 +52,34 @@ export default createMutations<StoreState>()({
     },
 
     prioritizeProblemRecord(state, payload) {
-        const customer = store.getters.getCustomer(payload);
-        const problemRecord = customer?.findProblemRecord(payload.problemId);
+        const client = store.getters.getClient(payload);
+        const problemRecord = client?.findProblemRecord(payload.problemId);
         if (!problemRecord) {
             return;
         }
 
-        customer?.problems.push(problemRecord.prioritizedClone());
+        client?.problems.push(problemRecord.prioritizedClone());
         problemRecord.resolvedAt = new Date();
     },
 
     dismissProblemRecord(state, payload) {
-        const customer = store.getters.getCustomer(payload);
-        const problemRecord = customer?.findProblemRecord(payload.problemId);
-        if (!customer || !problemRecord || problemRecord.resolvedAt) {
+        const client = store.getters.getClient(payload);
+        const problemRecord = client?.findProblemRecord(payload.problemId);
+        if (!client || !problemRecord || problemRecord.resolvedAt) {
             return;
         }
 
         problemRecord.resolvedAt = new Date();
         // trigger change detection on array
-        customer.problems = customer.problems.concat([]);
+        client.problems = client.problems.concat([]);
     },
 
     deleteDraftProblemRecord(state, payload) {
-        const customer = store.getters.getCustomer(payload);
-        if (!customer) {
+        const client = store.getters.getClient(payload);
+        if (!client) {
             return;
         }
-        customer.problems = customer.problems.filter(
+        client.problems = client.problems.filter(
             (problemRecord: ProblemRecord) => {
                 return (
                     problemRecord.createdAt ||

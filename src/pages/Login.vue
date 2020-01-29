@@ -7,10 +7,7 @@
             <div class="text-h5 text-center">{{ $t("welcome") }}!</div>
           </q-card-section>
           <q-card-section>
-            <p
-              v-if="errorMsg"
-              class="text-red q-mt-md"
-            >{{ errorMsg }}</p>
+            <p v-if="errorMsg" class="text-red q-mt-md">{{ errorMsg }}</p>
             <q-form class="q-gutter-md">
               <q-input
                 clearable
@@ -75,7 +72,7 @@ export default class PageLogin extends Vue {
       .loginWithCredential(credential)
       .then(() => {
         // console.log(`Logged in as user with id: ${user.id}`);
-        this.$router.push({ name: "customer" });
+        this.$router.push({ name: "client" });
       })
       .catch(err => {
         this.errorMsg = err.message;

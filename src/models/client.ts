@@ -4,7 +4,7 @@ import { ObjectID } from "bson";
 import { MasterData } from "./masterData";
 import { ProblemRecord } from "./problemRecord";
 
-export class Customer {
+export class Client {
     // optional properties need an initial value because Vue does not detect the addition or removal of a property
     _id?: ObjectID = undefined;
     user_id = "";
@@ -18,8 +18,8 @@ export class Customer {
     @Type(() => Date)
     leftAt?: Date = undefined;
 
-    static fromObject(object: unknown): Customer | Customer[] {
-        return plainToClass(Customer, object);
+    static fromObject(object: unknown): Client | Client[] {
+        return plainToClass(Client, object);
     }
 
     constructor(userId: string, name: string) {
@@ -31,7 +31,7 @@ export class Customer {
         return this.problems.find(problem => problem.id == id);
     }
 
-    equals(customer: Customer) {
-        return this._id?.equals(customer._id || "") || false;
+    equals(client: Client) {
+        return this._id?.equals(client._id || "") || false;
     }
 }

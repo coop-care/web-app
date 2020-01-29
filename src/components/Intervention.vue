@@ -76,12 +76,12 @@
                   v-if="interventions.includes(prop.node.id)"
                   :value="details[prop.node.id]"
                   @input="updateDetails(prop.node.id, $event)"
-                  :label="$t('customerSpecificInterventions')"
+                  :label="$t('clientSpecificInterventions')"
                   autogrow
                   :autofocus="!details[prop.node.id]"
                   color="intervention"
                   debounce="50"
-                  :hint="$t('customerSpecificInterventionsHint')"
+                  :hint="$t('clientSpecificInterventionsHint')"
                 />
               </template>
             </q-tree>

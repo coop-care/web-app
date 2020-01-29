@@ -114,8 +114,8 @@ export default class ProblemRecording extends Vue {
   get terminology() {
     return this.$t("terminology");
   }
-  get customer() {
-    return this.$store.getters.getCustomer(this.$route.params);
+  get client() {
+    return this.$store.getters.getClient(this.$route.params);
   }
   get record() {
     return this.$store.getters.getProblemRecordById(this.$route.params);
@@ -126,7 +126,7 @@ export default class ProblemRecording extends Vue {
 
   beforeCreate() {
     if (!this.$store.getters.getProblemRecordById(this.$route.params)) {
-      this.$router.push({ name: "customer" });
+      this.$router.push({ name: "client" });
     }
   }
 
@@ -137,8 +137,8 @@ export default class ProblemRecording extends Vue {
   saveProblemRecord() {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
     this.$store.direct.dispatch
-      .saveCustomer(this.$route.params)
-      .then(() => this.$router.push({ name: "customer" }));
+      .saveClient(this.$route.params)
+      .then(() => this.$router.push({ name: "client" }));
   }
 }
 </script>
