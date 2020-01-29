@@ -35,7 +35,7 @@
           class="q-mr-xs"
         />
         <q-btn
-          v-if="isDraft && !isDisabled"
+          v-if="isDraft"
           :label="$t('editDraft')"
           icon="edit"
           :to="{ name: 'problem', params: params }"
@@ -45,6 +45,7 @@
           size="md"
           color="negative"
           class="shadow-1 q-mr-xs q-px-xs"
+          :disable="isDisabled"
         />
         <q-btn
           v-if="isDraft && !isDisabled"
@@ -129,9 +130,7 @@
         </li>
       </ul>
     </q-card-section>
-    <q-card-section
-      v-if="lastOutcome || (!isSummary && problem.isHighPriority)"
-    >
+    <q-card-section v-if="!!lastOutcome && problem.isHighPriority">
       <div
         :class="
           'text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
@@ -150,8 +149,8 @@
           class="shadow-1"
         />
       </div>
-      <div v-if="lastOutcome">
-        <div v-if="!isSummary" class="row q-col-gutter-md">
+      <div>
+        <div v-if="!isSummary && !isDraft" class="row q-col-gutter-md">
           <div
             class="col-12 col-sm-4"
             style=""
@@ -240,7 +239,7 @@ export default class ProblemSummary extends Vue {
     if (this.record.outcomes.length) {
       return this.record.outcomes[this.record.outcomes.length - 1];
     } else {
-      return null;
+      return undefined;
     }
   }
   get ratings() {
