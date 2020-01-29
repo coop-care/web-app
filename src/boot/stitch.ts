@@ -5,7 +5,7 @@ import {
     RemoteMongoClient,
     RemoteMongoCollection
 } from "mongodb-stitch-browser-sdk";
-import { Customer } from "../models/customer";
+import { Client } from "../models/client";
 import { ObjectID } from "bson";
 
 declare module "vue/types/vue" {
@@ -18,14 +18,14 @@ declare module "vue/types/vue" {
 class StitchApi {
     stitch: StitchAppClient;
     mongodb: RemoteMongoClient;
-    customers: RemoteMongoCollection<Customer>;
+    clients: RemoteMongoCollection<Client>;
     constructor(stitchApp: string, database: string, collection: string) {
         this.stitch = Stitch.initializeDefaultAppClient(stitchApp);
         this.mongodb = this.stitch.getServiceClient(
             RemoteMongoClient.factory,
             "mongodb-atlas"
         );
-        this.customers = this.mongodb.db(database).collection(collection);
+        this.clients = this.mongodb.db(database).collection(collection);
     }
     userId() {
         if (this.stitch.auth.user) {
@@ -33,41 +33,41 @@ class StitchApi {
         }
         return "";
     }
-    createCustomer(customer: Customer) {
-        return this.customers.insertOne(customer);
+    createClient(client: Client) {
+        return this.clients.insertOne(client);
     }
-    deleteCustomer(customer: Customer) {
-        return this.customers.deleteOne(customer);
+    deleteClient(client: Client) {
+        return this.clients.deleteOne(client);
     }
-    deleteAllCustomers() {
-        return this.customers.deleteMany({});
+    deleteAllClients() {
+        return this.clients.deleteMany({});
     }
-    getAllCustomers(): Promise<Customer[]> {
+    getAllClients(): Promise<Client[]> {
         return (
-            this.customers
+            this.clients
                 // limiting the fetched properties to name and leftAt causes bugs
-                // where details of selected customer cannot be displayed in customer view
+                // where details of selected client cannot be displayed in client view
                 .find({}, {})
                 .toArray()
                 .then(data => {
-                    return Customer.fromObject(data) as Customer[];
+                    return Client.fromObject(data) as Client[];
                 })
         );
     }
-    getCustomerById(id: ObjectID) {
-        // console.log("getCustomerById:", id);
-        return this.customers
+    getClientById(id: ObjectID) {
+        // console.log("getClientById:", id);
+        return this.clients
             .find({ _id: id }, {})
             .first()
             .then(data => {
-                return Customer.fromObject(data) as Customer;
+                return Client.fromObject(data) as Client;
             });
     }
-    saveCustomer(customer: Customer) {
-        customer.user_id = this.userId();
-        return this.customers.findOneAndReplace(
-            { _id: customer._id },
-            customer
+    saveClient(client: Client) {
+        client.user_id = this.userId();
+        return this.clients.findOneAndReplace(
+            { _id: client._id },
+            client
         );
     }
 }

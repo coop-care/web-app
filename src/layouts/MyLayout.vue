@@ -9,7 +9,7 @@
           flat
           icon="menu"
           aria-label="menu"
-          @click="$root.$emit('toggleCustomerDrawer')"
+          @click="$root.$emit('toggleClientDrawer')"
         />
         <q-btn
           v-if="!['client', 'login'].includes($router.currentRoute.name)"
@@ -156,7 +156,7 @@ export default class MyLayout extends Vue {
 
   logout() {
     // console.log('logging out...');
-    this.$store.direct.commit.setSelectedCustomer(undefined);
+    this.$store.direct.commit.setSelectedClient(undefined);
     this.$stitchApi.stitch.auth
       .logout()
       .then(() => this.$router.push({ name: "login" }));

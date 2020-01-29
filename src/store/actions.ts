@@ -2,38 +2,38 @@ import { createActions } from "direct-vuex";
 import { stitchApi } from "../boot/stitch";
 import sampleData from "../data/sample1.json";
 import { rootActionContext } from ".";
-import { Customer } from "../models/customer";
+import { Client } from "../models/client";
 
 export default createActions({
-    fetchCustomersFromDB(context) {
+    fetchClientsFromDB(context) {
         const { commit } = rootActionContext(context);
-        commit.isLoadingCustomerList(true);
+        commit.isLoadingClientList(true);
         return new Promise((resolve, reject) => {
             stitchApi
-                .getAllCustomers()
-                .then(customers => {
+                .getAllClients()
+                .then(clients => {
                     // console.log("Success:", result);
-                    commit.setCustomers((customers as unknown) as Customer[]);
-                    commit.isLoadingCustomerList(false);
+                    commit.setClients((clients as unknown) as Client[]);
+                    commit.isLoadingClientList(false);
                     resolve();
                 })
                 .catch(err => {
                     console.error(`Failed: ${err}`);
-                    commit.isLoadingCustomerList(false);
+                    commit.isLoadingClientList(false);
                     reject();
                 });
         });
     },
 
-    saveCustomer(context, payload) {
+    saveClient(context, payload) {
         return new Promise((resolve, reject) => {
-            const customer =
-                payload.customer ||
-                rootActionContext(context).getters.getCustomer(payload);
+            const client =
+                payload.client ||
+                rootActionContext(context).getters.getClient(payload);
 
-            if (customer) {
+            if (client) {
                 stitchApi
-                    .saveCustomer(customer)
+                    .saveClient(client)
                     .then(resolve)
                     .catch(error => {
                         console.error(error);
@@ -47,36 +47,36 @@ export default createActions({
                 if (payload.resolveOnError) {
                     resolve();
                 } else {
-                    reject("customer not found");
+                    reject("client not found");
                 }
             }
         });
     },
 
-    deleteCustomer(context, customer: Customer) {
+    deleteClient(context, client: Client) {
         const { commit, dispatch } = rootActionContext(context);
         stitchApi
-            .deleteCustomer(customer)
+            .deleteClient(client)
             .then(() => {
-                commit.setSelectedCustomer(undefined);
-                return dispatch.fetchCustomersFromDB();
+                commit.setSelectedClient(undefined);
+                return dispatch.fetchClientsFromDB();
             })
             .catch(err =>
-                console.error(`Save current customer failed with error: ${err}`)
+                console.error(`Save current client failed with error: ${err}`)
             );
     },
 
     addSamplesToDB(context) {
         const { dispatch } = rootActionContext(context);
-        const samples = Customer.fromObject(sampleData) as Customer[];
-        samples.forEach(customer => {
-            customer.user_id = stitchApi.userId();
+        const samples = Client.fromObject(sampleData) as Client[];
+        samples.forEach(client => {
+            client.user_id = stitchApi.userId();
         });
-        stitchApi.customers
+        stitchApi.clients
             .insertMany(samples)
             .then(() => {
                 // console.log("Successfully inserted", result);
-                dispatch.fetchCustomersFromDB();
+                dispatch.fetchClientsFromDB();
             })
             .catch(err => console.error(`Failed to insert documents: ${err}`));
     },
@@ -84,10 +84,10 @@ export default createActions({
     clearDB(context) {
         const { commit, dispatch } = rootActionContext(context);
         stitchApi
-            .deleteAllCustomers()
+            .deleteAllClients()
             .then(() => {
-                dispatch.fetchCustomersFromDB();
-                commit.setSelectedCustomer(undefined);
+                dispatch.fetchClientsFromDB();
+                commit.setSelectedClient(undefined);
             })
             .catch(err => console.error(`Delete failed with error: ${err}`));
     }

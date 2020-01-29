@@ -2,7 +2,7 @@
   <q-card class="overflow-hidden">
     <q-card-section>
       <div v-if="isSummary">
-        <div class="text-subtitle2 text-weight-normal">{{ customerName }}:</div>
+        <div class="text-subtitle2 text-weight-normal">{{ clientName }}:</div>
         <div class="text-h6 text-classification">
           {{ $t(problem.title) }}
         </div>
@@ -275,7 +275,7 @@ export default class ProblemSummary extends Vue {
         icon: "fas fa-check",
         action: () => {
           this.$store.direct.commit.dismissProblemRecord(this.$props.params);
-          this.$store.direct.dispatch.saveCustomer(this.$props.params);
+          this.$store.direct.dispatch.saveClient(this.$props.params);
         }
       }
     ];
@@ -284,8 +284,8 @@ export default class ProblemSummary extends Vue {
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
   }
-  get customerName() {
-    return this.$store.getters.getCustomer(this.$props.params).name;
+  get clientName() {
+    return this.$store.getters.getClient(this.$props.params).name;
   }
   get language() {
     return this.$root.$i18n.locale;
@@ -302,7 +302,7 @@ export default class ProblemSummary extends Vue {
         this.$props.params
       )
     });
-    this.$store.direct.dispatch.saveCustomer(this.$props.params);
+    this.$store.direct.dispatch.saveClient(this.$props.params);
   }
 
   updateLocale() {
@@ -317,7 +317,7 @@ export default class ProblemSummary extends Vue {
 
   deleteDraft() {
     this.$store.direct.commit.deleteDraftProblemRecord(this.$props.params);
-    this.$store.direct.dispatch.saveCustomer(this.$props.params);
+    this.$store.direct.dispatch.saveClient(this.$props.params);
   }
 
   created() {
@@ -334,7 +334,7 @@ export default class ProblemSummary extends Vue {
     // @ts-ignore
     const Apex = window.Apex;
     const params = this.$props.params;
-    const group = ["summary", params.customerId, params.problemId].join(".");
+    const group = ["summary", params.clientId, params.problemId].join(".");
     if (!Apex._chartInstances) return; // I get an error that this is undefined
     const zombieChartIndices = Apex._chartInstances
       .map((chart: any, index: number) => {

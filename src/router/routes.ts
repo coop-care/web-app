@@ -8,7 +8,7 @@ const routes: RouteConfig[] = [
             {
                 name: "client",
                 path: "",
-                component: () => import("pages/Customer.vue")
+                component: () => import("pages/Client.vue")
             },
             {
                 name: "login",
@@ -27,12 +27,12 @@ const routes: RouteConfig[] = [
             },
             {
                 name: "problem",
-                path: "/client/:customerId/problem/:problemId",
+                path: "/client/:clientId/problem/:problemId",
                 component: () => import("pages/ProblemRecording.vue")
             },
             {
                 name: "outcome",
-                path: "/client/:customerId/problem/:problemId/outcome",
+                path: "/client/:clientId/problem/:problemId/outcome",
                 component: () => import("pages/Rating.vue")
             }
         ]

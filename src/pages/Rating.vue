@@ -32,8 +32,8 @@ const nameof = (name: keyof Outcome) => name;
   }
 })
 export default class Rating extends Vue {
-  get customer() {
-    return this.$store.direct.getters.getCustomer(this.$route.params);
+  get client() {
+    return this.$store.direct.getters.getClient(this.$route.params);
   }
 
   save() {
@@ -44,7 +44,7 @@ export default class Rating extends Vue {
       ...this.$route.params
     });
     this.$store.direct.dispatch
-      .saveCustomer(this.$route.params)
+      .saveClient(this.$route.params)
       .then(() => this.$router.push({ name: "client" }));
   }
 }
