@@ -7,7 +7,7 @@
     dense
     class="more-button shadow-1"
     auto-close
-    content-class="action-menu text-primary"
+    content-class="dense-avatar text-primary"
     :title="title || $t('moreActions')"
   >
     <q-list>
@@ -32,8 +32,6 @@
 <style lang="sass">
 .more-button.q-btn-dropdown .q-btn-dropdown__arrow
   margin: 0
-.action-menu .q-item__section--avatar
-  min-width: inherit
 </style>
 <script lang="ts">
 import Vue from "vue";
