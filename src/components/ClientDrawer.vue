@@ -1,7 +1,7 @@
 <template>
   <q-drawer
     v-model="isVisible"
-    content-class="bg-grey-2 client-drawer"
+    content-class="bg-grey-2 dense-avatar"
     show-if-above
   >
     <q-list>
@@ -74,8 +74,6 @@
 </template>
 
 <style lang="sass">
-.client-drawer .q-item__section--avatar
-  min-width: inherit
 </style>
 
 <script lang="ts">

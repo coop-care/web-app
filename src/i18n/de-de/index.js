@@ -92,5 +92,15 @@ export default {
   clientDismissal: "Pflege beenden und Kundendaten archivieren",
   deleteClient: "Kundendaten permanent löschen",
   clientReadmission: "Pflege des Kunden wieder aufnehmen",
-  clientArchive: "Archiv"
+  clientArchive: "Archiv",
+  problemAdmissionByDiagnosis: "Probleme nach Diagnose",
+  diagnosisSelectionTitle:
+    "Zutreffende Erkrankung, medizinische Diagnose oder Behandlung auswählen",
+  problemsForDiagnosisSelectionTitle:
+    "Aus den typischerweise auftretenden Problemen auswählen",
+  frequentProblemsForDiagnosis:
+    "Häufig zu beobachtende Probleme bei {diagnosis}",
+  additionalProblemSelection: "Weitere Probleme auswählen …",
+  createDraftProblemRecords:
+    "0 Probleme als Entwurf anlegen | 1 Problem als Entwurf anlegen | {count} Probleme als Entwurf anlegen"
 };

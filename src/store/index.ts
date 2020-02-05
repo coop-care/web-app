@@ -36,13 +36,14 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
     strict: (process.env.DEV as unknown) === true || process.env.DEV === "true"
 });
 
+store.dispatch.fetchClientsFromDB();
+
 setBrand("classification", "#f44336");
 setBrand("outcome", "#009688");
 setBrand("intervention", "#ff6f00");
 
 // @ts-ignore
-window.download = () =>
-    downloadJSON(store.state.clients || [], "sample1.json");
+window.download = () => downloadJSON(store.state.clients || [], "sample1.json");
 
 // Export the original Vuex store because of quasar
 export default store.original;
