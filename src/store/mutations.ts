@@ -41,7 +41,9 @@ export default createMutations<StoreState>()({
     },
 
     createProblemRecord(state, payload) {
-        store.getters.getClient(payload)?.problems.push(new ProblemRecord());
+        store.getters
+            .getClient(payload)
+            ?.problems.push(payload.problemRecord || new ProblemRecord());
     },
 
     updateObject(

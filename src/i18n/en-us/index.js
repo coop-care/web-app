@@ -91,5 +91,14 @@ export default {
   deleteClient: "Permanently delete client data",
   clientReadmission: "Client care readmission",
   clientArchive: "Archive",
-  problemAdmissionByDiagnosis: "Problems by diagnosis"
+  problemAdmissionByDiagnosis: "Problems by diagnosis",
+  diagnosisSelectionTitle:
+    "Select appropriate condition, medical diagnosis or treatment",
+  problemsForDiagnosisSelectionTitle:
+    "Select from the typically occurring problems",
+  frequentProblemsForDiagnosis:
+    "Frequently occurring problems with {diagnosis}",
+  additionalProblemSelection: "Select additional problems …",
+  createDraftProblemRecords:
+    "create 0 problems as draft | create 1 problem as draft | create {count} problems as draft"
 };
