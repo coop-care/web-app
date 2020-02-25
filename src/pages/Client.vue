@@ -6,14 +6,20 @@
       @didSelectClient="addingClient = false"
     />
 
-    <div class="client-overview q-pa-xl" v-if="loading">
+    <div
+      class="client-overview q-pa-xl"
+      v-if="loading"
+    >
       <p>{{ $t("loading") }}</p>
     </div>
     <div
       class="client-overview q-pt-lg q-px-xl q-pb-xl"
       v-else-if="addingClient"
     >
-      <new-client @save="addClient" @cancel="addingClient = false" />
+      <new-client
+        @save="addClient"
+        @cancel="addingClient = false"
+      />
     </div>
     <div
       class="client-overview q-pt-lg q-px-xl q-pb-xl"
@@ -28,7 +34,10 @@
           @change="changeClientName(selectedClientId, $event.value)"
         />
         <div>
-          <action-menu :items="clientActionItems" class="on-right q-mt-sm" />
+          <action-menu
+            :items="clientActionItems"
+            class="on-right q-mt-sm"
+          />
         </div>
       </div>
       <div class="q-gutter-md">
@@ -67,7 +76,10 @@
       </div>
     </div>
 
-    <div class="client-overview q-pa-xl" v-else-if="!clients.length">
+    <div
+      class="client-overview q-pa-xl"
+      v-else-if="!clients.length"
+    >
       <p>{{ $t("noExistingClient") }}</p>
       <q-btn
         @click="addingClient = true"
@@ -78,7 +90,10 @@
         class="q-mt-md"
       />
     </div>
-    <div class="client-overview q-pa-xl" v-else>
+    <div
+      class="client-overview q-pa-xl"
+      v-else
+    >
       <p>{{ $t("noSelectedClient") }}</p>
     </div>
   </q-page>
@@ -133,7 +148,7 @@ export default class PageIndex extends Vue {
 
     return [
       {
-        name: this.$t("clientDismissal"),
+        name: this.$t("clientDischarge"),
         icon: "fas fa-archive",
         action: this.archiveClient,
         condition: !client.leftAt

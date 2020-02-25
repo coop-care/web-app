@@ -87,7 +87,7 @@ export default {
   admissionRatingStep: "Identify admission rating",
   planInterveneStep: "Plan and intervene",
   moreActions: "More actions…",
-  clientDismissal: "Dismiss client care and archive client data",
+  clientDischarge: "Discharge client and archive client data",
   deleteClient: "Permanently delete client data",
   clientReadmission: "Client care readmission",
   clientArchive: "Archive",
