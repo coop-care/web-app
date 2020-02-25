@@ -51,23 +51,39 @@
                 {{ username() }}
               </div>
             </q-item-label>
-            <q-item clickable v-ripple @click="logout">
+            <q-item
+              clickable
+              v-ripple
+              @click="logout"
+            >
               <q-item-section>{{ $t("logout") }}</q-item-section>
             </q-item>
 
             <q-separator />
 
             <q-item-label header>{{ $t("databaseTestSettings") }}</q-item-label>
-            <q-item clickable @click="addSamplesToDB">
+            <q-item
+              clickable
+              @click="addSamplesToDB"
+            >
               <q-item-section>{{ $t("databaseInsertSamples") }}</q-item-section>
             </q-item>
-            <q-item clickable @click="clearDB">
+            <q-item
+              clickable
+              @click="clearDB"
+            >
               <q-item-section>{{ $t("databaseClearAll") }}</q-item-section>
             </q-item>
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator v-if="isLoggedIn()" vertical inset spaced dark />
+        <q-separator
+          v-if="isLoggedIn()"
+          vertical
+          inset
+          spaced
+          dark
+        />
 
         <q-btn-dropdown
           :label="$root.$i18n.locale.split('-')[0]"
@@ -85,6 +101,7 @@
               :active="$root.$i18n.locale === locale"
               @click="
                 $root.$i18n.locale = locale;
+                $loadLangPack(locale);
                 $root.$emit('didChangeLocale', locale);
               "
             >
@@ -95,7 +112,12 @@
           </q-list>
         </q-btn-dropdown>
 
-        <q-separator vertical inset spaced dark />
+        <q-separator
+          vertical
+          inset
+          spaced
+          dark
+        />
 
         <q-btn
           size="md"
@@ -127,7 +149,19 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component
+@Component({
+  meta() {
+    return {
+      meta: {
+        google: { name: "google", content: "notranslate" },
+        contentLanguage: {
+          "http-equiv": "Content-Language",
+          content: this.$root.$i18n.locale
+        }
+      }
+    };
+  }
+})
 export default class MyLayout extends Vue {
   get mailto() {
     return (

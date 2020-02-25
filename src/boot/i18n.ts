@@ -28,14 +28,17 @@ function matchLocale(
     return resultingLocale;
 }
 
+// @ts-ignore
+const defaultLocale = Quasar.lang.isoName;
+
 const i18n = new VueI18n({
     locale: matchLocale(
         // @ts-ignore
         Quasar.lang.getLocale(),
         Object.keys(messages),
-        "en-us"
+        defaultLocale
     ),
-    fallbackLocale: "en-us",
+    fallbackLocale: defaultLocale,
     messages
 });
 
