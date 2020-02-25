@@ -81,7 +81,8 @@ module.exports = function(ctx) {
         "QCardActions",
         "QChip",
         "QExpansionItem",
-        "QCheckbox"
+        "QCheckbox",
+        "QTooltip"
       ],
 
       directives: ["Ripple"],
