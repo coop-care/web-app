@@ -39,6 +39,7 @@
           :filter-method="filterTerminology"
           :no-results-label="$t('noProblemsFound')"
           color="classification"
+          ref="problems"
         >
           <template v-slot:header-domains="prop">
             <div class="row items-center text-white">
@@ -217,7 +218,7 @@ import {
   treeifyTerminology,
   filterTerminology
 } from "../helper/terminology";
-import { QInput } from "quasar";
+import { QInput, QTree } from "quasar";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { ProblemRecord } from "../models/problemRecord";
 import { Problem } from "../models/problem";
@@ -363,6 +364,26 @@ export default class ProblemClassification extends Vue {
 
   filterTerminology(node: HasTitleDescription, filter: string) {
     return filterTerminology(node, filter);
+  }
+
+  expandDomainForSelectedProblem() {
+    if (this.selectedProblem) {
+      const domain = this.terminology.problemClassificationScheme.domains.find(
+        domain =>
+          domain.problems.find(problem => problem.code == this.selectedProblem)
+      );
+
+      if (domain) {
+        (this.$refs.problems as QTree).setExpanded(
+          "domains." + domain.code,
+          true
+        );
+      }
+    }
+  }
+
+  mounted() {
+    this.expandDomainForSelectedProblem();
   }
 }
 </script>
