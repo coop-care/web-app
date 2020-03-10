@@ -1,17 +1,11 @@
 import "reflect-metadata";
-import { Type } from "class-transformer";
-import { Note } from "./note";
+import { Reminder } from "./reminder";
 import { Term } from "./term";
 
-export class Intervention {
+export class Intervention extends Reminder {
     categoryCode = "";
     targetCode = "";
-    @Type(() => Note)
-    details: Note[] = [];
-    @Type(() => Date)
-    startedAt?: Date = undefined;
-    @Type(() => Date)
-    endedAt?: Date = undefined;
+    details = "";
 
     static fromCode(code: string) {
         const codes = code.split(".");

@@ -1,5 +1,8 @@
 <template>
-  <div class="intervention" v-if="record">
+  <div
+    class="intervention"
+    v-if="record"
+  >
     <div class="row q-col-gutter-lg">
       <div class="col-md-9 col-12">
         <h6>{{ $t("selectInterventions") }}</h6>
@@ -19,7 +22,10 @@
             v-bind:key="index"
           />
         </q-tabs>
-        <q-tab-panels v-model="categorySelected" animated>
+        <q-tab-panels
+          v-model="categorySelected"
+          animated
+        >
           <q-tab-panel
             :name="index"
             v-for="(category, index) in categories"
@@ -37,7 +43,10 @@
               dense
             >
               <template v-slot:prepend>
-                <q-icon name="search" color="intervention" />
+                <q-icon
+                  name="search"
+                  color="intervention"
+                />
               </template>
               <template v-slot:append>
                 <q-icon
@@ -138,7 +147,7 @@ import ProblemSummary from "../components/ProblemSummary.vue";
 import { QInput } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention as InterventionModel } from "../models/intervention";
-import { Note } from "../models/note";
+import { Reminder } from "../models/reminder";
 
 const nameof = (name: keyof ProblemRecord) => name;
 
@@ -175,8 +184,7 @@ export default class Intervention extends Vue {
   get details() {
     const map: any = {};
     this.unsavedInterventions.forEach(intervention => {
-      const text = (intervention.details[0] || {}).text || "";
-      map[intervention.code] = text;
+      map[intervention.code] = intervention.details;
     });
     return map;
   }
@@ -225,13 +233,17 @@ export default class Intervention extends Vue {
   }
   get unsavedInterventions() {
     const interventions: InterventionModel[] =
-      (this.record || {}).interventions || [];
-    return interventions.filter(intervention => !intervention.startedAt);
+      (this.record || {}).reminders || [];
+    return interventions.filter(
+      intervention => !intervention.startDate && intervention.categoryCode
+    );
   }
   get savedInterventions() {
     const interventions: InterventionModel[] =
-      (this.record || {}).interventions || [];
-    return interventions.filter(intervention => intervention.startedAt);
+      (this.record || {}).reminders || [];
+    return interventions.filter(
+      intervention => intervention.startDate && intervention.categoryCode
+    );
   }
 
   updateDetails(key: string, value: string) {
@@ -244,10 +256,7 @@ export default class Intervention extends Vue {
       return;
     }
 
-    const note = intervention.details[0] || new Note();
-    note.text = value;
-    note.createdAt = new Date();
-    intervention.details[0] = note;
+    intervention.details = value;
 
     this.updateProblemRecord(
       this.savedInterventions.concat(unsavedInterventions)
@@ -256,7 +265,7 @@ export default class Intervention extends Vue {
 
   updateProblemRecord(interventions: InterventionModel[]) {
     const changes: any = {};
-    changes[nameof("interventions")] = interventions;
+    changes[nameof("reminders")] = interventions;
     this.$store.direct.commit.updateObject({
       target: this.record,
       changes: changes

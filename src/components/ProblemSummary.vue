@@ -7,7 +7,10 @@
           {{ $t(problem.title) }}
         </div>
       </div>
-      <div v-else class="text-h6">
+      <div
+        v-else
+        class="text-h6"
+      >
         <span class="text-classification q-mr-md">{{ $t(problem.title) }}</span>
         <span class="text-subtitle2 text-weight-light q-mr-sm">
           <q-chip
@@ -81,9 +84,7 @@
         {{ problem.details }}
       </p>
     </q-card-section>
-    <q-card-section
-      v-if="problem.severityCode == 2 && problem.signsAndSymptomsCodes.length"
-    >
+    <q-card-section v-if="problem.severityCode == 2 && problem.signsAndSymptomsCodes.length">
       <div class="text-subtitle1 text-weight-bold text-classification">
         {{ $t("actualSignsAndSymptomsTitle") }}
       </div>
@@ -94,13 +95,11 @@
           class="no-column-break"
         >
           {{ $t(symptom.title)
-          }}<span
-            v-if="
+          }}<span v-if="
               index == problem.signsAndSymptomsCodes.length - 1 &&
                 $t(symptom.title).toLowerCase() == $t('otherSymptom') &&
                 problem.details
-            "
-            >:
+            ">:
             <span class="text-italic">{{ problem.details }}</span>
           </span>
         </li>
@@ -119,23 +118,17 @@
           {{ $t(intervention.category.title) }}:
           {{ $t(intervention.target.title) }}
           <span v-if="intervention.details.length">
-            <span
-              v-for="(detail, index) in intervention.details"
-              v-bind:key="index"
-              class="text-italic"
-            >
-              – {{ detail.text }}
+            <span class="text-italic">
+              – {{ intervention.details }}
             </span>
           </span>
         </li>
       </ul>
     </q-card-section>
     <q-card-section v-if="!!lastOutcome && problem.isHighPriority">
-      <div
-        :class="
+      <div :class="
           'text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
-        "
-      >
+        ">
         <span class="text-outcome q-mr-md">{{ $tc("outcome", 2) }}</span>
         <q-btn
           v-if="isInteractive"
@@ -150,7 +143,10 @@
         />
       </div>
       <div>
-        <div v-if="!isSummary && !isDraft" class="row q-col-gutter-md">
+        <div
+          v-if="!isSummary && !isDraft"
+          class="row q-col-gutter-md"
+        >
           <div
             class="col-12 col-sm-4"
             style=""
@@ -186,11 +182,12 @@
               }}
               ({{ rating.observation
               }}<span v-if="rating.expectation">
-                / {{ rating.expectation }}</span
-              >)
-              <span v-if="rating.comment" class="text-italic">
-                ({{ rating.comment }})</span
+                / {{ rating.expectation }}</span>)
+              <span
+                v-if="rating.comment"
+                class="text-italic"
               >
+                ({{ rating.comment }})</span>
             </li>
           </ul>
           <p

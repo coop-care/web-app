@@ -2,9 +2,10 @@ import "reflect-metadata";
 import { Type } from "class-transformer";
 import { Base } from "./base";
 import { Problem } from "./problem";
-import { Intervention } from "./intervention";
+import { Reminder } from "./reminder";
 import { Outcome } from "./outcome";
 import { Note } from "./note";
+import { Intervention } from "./intervention";
 
 export class ProblemRecord extends Base {
     id = this.generateId();
@@ -12,8 +13,13 @@ export class ProblemRecord extends Base {
     assessment: Note[] = [];
     @Type(() => Problem)
     problem = new Problem();
-    @Type(() => Intervention)
-    interventions: Intervention[] = [];
+    @Type(() => Reminder, {
+        discriminator: {
+            property: "__type",
+            subTypes: [{ value: Intervention, name: "intervention" }]
+        }
+    })
+    reminders: Reminder[] = [];
     @Type(() => Outcome)
     outcomes: Outcome[] = [];
     @Type(() => Date)
@@ -21,8 +27,12 @@ export class ProblemRecord extends Base {
     createdAt?: Date = undefined;
     @Type(() => Date)
     resolvedAt?: Date = undefined;
-    ratingIntervalInDays = 28;
 
+    get interventions() {
+        return this.reminders.filter(
+            reminder => reminder instanceof Intervention
+        );
+    }
     get editableOutcome() {
         let lastOutcome = this.outcomes[this.outcomes.length - 1];
 

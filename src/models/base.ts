@@ -8,6 +8,6 @@ export class Base {
     generateId() {
         return Math.random()
             .toString(36)
-            .substring(2, 10);
+            .substring(2, 12);
     }
 }

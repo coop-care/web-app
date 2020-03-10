@@ -27,46 +27,26 @@
           {
             "categoryCode": "01",
             "targetCode": "28",
-            "details": [
-              {
-                "text": "angefangen eine therapeutische Beziehung aufzubauen",
-                "createdAt": "2019-06-11T00:00:00.000Z"
-              }
-            ],
-            "startedAt": "2019-06-11T00:00:00.000Z"
+            "details": "angefangen eine therapeutische Beziehung aufzubauen",
+            "startDate": "2019-06-11T00:00:00.000Z"
           },
           {
             "categoryCode": "01",
             "targetCode": "49",
-            "details": [
-              {
-                "text": "Symptome überprüft",
-                "createdAt": "2019-06-11T00:00:00.000Z"
-              }
-            ],
-            "startedAt": "2019-06-11T00:00:00.000Z"
+            "details": "Symptome überprüft",
+            "startDate": "2019-06-11T00:00:00.000Z"
           },
           {
             "categoryCode": "03",
             "targetCode": "31",
-            "details": [
-              {
-                "text": "Termin zur Einschätzung geplant",
-                "createdAt": "2019-06-11T00:00:00.000Z"
-              }
-            ],
-            "startedAt": "2019-06-11T00:00:00.000Z"
+            "details": "Termin zur Einschätzung geplant",
+            "startDate": "2019-06-11T00:00:00.000Z"
           },
           {
             "categoryCode": "04",
             "targetCode": "49",
-            "details": [
-              {
-                "text": "Aktivität, Stimmungsschwankungen, Halluzinationen und Pflegeberichte",
-                "createdAt": "2019-06-11T00:00:00.000Z"
-              }
-            ],
-            "startedAt": "2019-06-11T00:00:00.000Z"
+            "details": "Aktivität, Stimmungsschwankungen, Halluzinationen und Pflegeberichte",
+            "startDate": "2019-06-11T00:00:00.000Z"
           }
         ],
         "outcomes": [
@@ -185,8 +165,7 @@
             "createdAt": "2019-10-29T00:00:00.000Z"
           }
         ],
-        "createdAt": "2019-06-11T00:00:00.000Z",
-        "ratingIntervalInDays": 28
+        "createdAt": "2019-06-11T00:00:00.000Z"
       },
       {
         "id": "32v3yacn",
@@ -204,35 +183,20 @@
           {
             "categoryCode": "01",
             "targetCode": "41",
-            "details": [
-              {
-                "text": "was sie tun kann und was nicht",
-                "createdAt": "2019-11-21T21:40:18.274Z"
-              }
-            ],
-            "startedAt": "2019-11-21T21:41:51.957Z"
+            "details": "was sie tun kann und was nicht",
+            "startDate": "2019-11-21T21:41:51.957Z"
           },
           {
             "categoryCode": "03",
             "targetCode": "77",
-            "details": [
-              {
-                "text": "Vermittlung von Hilfe bei Dusche, Umziehen und Wäsche",
-                "createdAt": "2019-11-21T21:41:14.572Z"
-              }
-            ],
-            "startedAt": "2019-11-21T21:41:51.957Z"
+            "details": "Vermittlung von Hilfe bei Dusche, Umziehen und Wäsche",
+            "startDate": "2019-11-21T21:41:51.957Z"
           },
           {
             "categoryCode": "04",
             "targetCode": "41",
-            "details": [
-              {
-                "text": "Sauberkeit, Angemessenheit der Hilfeleistung",
-                "createdAt": "2019-11-21T21:41:42.763Z"
-              }
-            ],
-            "startedAt": "2019-11-21T21:41:51.957Z"
+            "details": "Sauberkeit, Angemessenheit der Hilfeleistung",
+            "startDate": "2019-11-21T21:41:51.957Z"
           }
         ],
         "outcomes": [
@@ -351,8 +315,7 @@
             "personRatedInPlaceOfOwner": ""
           }
         ],
-        "createdAt": "2019-11-21T21:41:51.957Z",
-        "ratingIntervalInDays": 28
+        "createdAt": "2019-11-21T21:41:51.957Z"
       },
       {
         "id": "26nppfzo",
@@ -370,57 +333,32 @@
           {
             "categoryCode": "01",
             "targetCode": "32",
-            "details": [
-              {
-                "text": "weniger Koffein trinken, weil es die Wirksamkeit psychotroper Medikamente verringert",
-                "createdAt": "2019-11-21T21:46:28.059Z"
-              }
-            ],
-            "startedAt": "2019-11-21T21:53:44.870Z"
+            "details": "weniger Koffein trinken, weil es die Wirksamkeit psychotroper Medikamente verringert",
+            "startDate": "2019-11-21T21:53:44.870Z"
           },
           {
             "categoryCode": "01",
             "targetCode": "33",
-            "details": [
-              {
-                "text": "muss alle Dosen wie geplant einnehmen",
-                "createdAt": "2019-11-21T21:47:35.850Z"
-              }
-            ],
-            "startedAt": "2019-11-21T21:53:44.870Z"
+            "details": "muss alle Dosen wie geplant einnehmen",
+            "startDate": "2019-11-21T21:53:44.870Z"
           },
           {
             "categoryCode": "03",
             "targetCode": "31",
-            "details": [
-              {
-                "text": "Terminplanung zur Überprüfung von Medikamenten",
-                "createdAt": "2019-11-21T21:48:38.586Z"
-              }
-            ],
-            "startedAt": "2019-11-21T21:53:44.870Z"
+            "details": "Terminplanung zur Überprüfung von Medikamenten",
+            "startDate": "2019-11-21T21:53:44.870Z"
           },
           {
             "categoryCode": "03",
             "targetCode": "77",
-            "details": [
-              {
-                "text": "Psychiatriefachkraft wird Emma helfen",
-                "createdAt": "2019-11-21T21:49:35.282Z"
-              }
-            ],
-            "startedAt": "2019-11-21T21:53:44.870Z"
+            "details": "Psychiatriefachkraft wird Emma helfen",
+            "startDate": "2019-11-21T21:53:44.870Z"
           },
           {
             "categoryCode": "04",
             "targetCode": "33",
-            "details": [
-              {
-                "text": "Berichte von Kundin, Psychiater und Verwaltung",
-                "createdAt": "2019-11-21T21:53:14.345Z"
-              }
-            ],
-            "startedAt": "2019-11-21T21:53:44.870Z"
+            "details": "Berichte von Kundin, Psychiater und Verwaltung",
+            "startDate": "2019-11-21T21:53:44.870Z"
           }
         ],
         "outcomes": [
@@ -539,8 +477,7 @@
             "personRatedInPlaceOfOwner": ""
           }
         ],
-        "createdAt": "2019-11-21T21:53:44.870Z",
-        "ratingIntervalInDays": 28
+        "createdAt": "2019-11-21T21:53:44.870Z"
       }
     ],
     "createdAt": "2019-06-11T00:00:00.000Z"
@@ -562,8 +499,7 @@
         },
         "interventions": [],
         "outcomes": [],
-        "createdAt": "2019-11-25T18:33:51.943Z",
-        "ratingIntervalInDays": 28
+        "createdAt": "2019-11-25T18:33:51.943Z"
       },
       {
         "id": "f6mzr2gz",
@@ -579,8 +515,7 @@
         },
         "interventions": [],
         "outcomes": [],
-        "createdAt": "2019-11-25T18:34:55.223Z",
-        "ratingIntervalInDays": 28
+        "createdAt": "2019-11-25T18:34:55.223Z"
       },
       {
         "id": "gq5eclb3",
@@ -598,57 +533,32 @@
           {
             "categoryCode": "01",
             "targetCode": "07",
-            "details": [
-              {
-                "text": "Linderung von Ödemen, Erhöhung der Beine, Anstrengung reduzieren, Verbesserung des Schlafes, Planung der Flüssigkeitsaufnahme",
-                "createdAt": "2019-11-25T18:38:53.610Z"
-              }
-            ],
-            "startedAt": "2019-11-25T18:41:07.807Z"
+            "details": "Linderung von Ödemen, Erhöhung der Beine, Anstrengung reduzieren, Verbesserung des Schlafes, Planung der Flüssigkeitsaufnahme",
+            "startDate": "2019-11-25T18:41:07.807Z"
           },
           {
             "categoryCode": "01",
             "targetCode": "67",
-            "details": [
-              {
-                "text": "einige eisenreiche Lebensmittel essen",
-                "createdAt": "2019-11-25T18:39:19.966Z"
-              }
-            ],
-            "startedAt": "2019-11-25T18:41:07.807Z"
+            "details": "einige eisenreiche Lebensmittel essen",
+            "startDate": "2019-11-25T18:41:07.807Z"
           },
           {
             "categoryCode": "01",
             "targetCode": "50",
-            "details": [
-              {
-                "text": "täglich Körpergewicht messen, Symptomprotokoll, wann sind die Dienstleister zu benachrichtigen",
-                "createdAt": "2019-11-25T18:39:53.047Z"
-              }
-            ],
-            "startedAt": "2019-11-25T18:41:07.807Z"
+            "details": "täglich Körpergewicht messen, Symptomprotokoll, wann sind die Dienstleister zu benachrichtigen",
+            "startDate": "2019-11-25T18:41:07.807Z"
           },
           {
             "categoryCode": "03",
             "targetCode": "67",
-            "details": [
-              {
-                "text": "arrangierte Essen auf Rädern ab dem nächsten Tag",
-                "createdAt": "2019-11-25T18:40:18.774Z"
-              }
-            ],
-            "startedAt": "2019-11-25T18:41:07.807Z"
+            "details": "arrangierte Essen auf Rädern ab dem nächsten Tag",
+            "startDate": "2019-11-25T18:41:07.807Z"
           },
           {
             "categoryCode": "04",
             "targetCode": "50",
-            "details": [
-              {
-                "text": "Vitalwerte, Veränderungen in Schweregrad und Status",
-                "createdAt": "2019-11-25T18:40:38.599Z"
-              }
-            ],
-            "startedAt": "2019-11-25T18:41:07.807Z"
+            "details": "Vitalwerte, Veränderungen in Schweregrad und Status",
+            "startDate": "2019-11-25T18:41:07.807Z"
           }
         ],
         "outcomes": [
@@ -710,8 +620,7 @@
             "personRatedInPlaceOfOwner": ""
           }
         ],
-        "createdAt": "2019-11-25T18:41:07.807Z",
-        "ratingIntervalInDays": 28
+        "createdAt": "2019-11-25T18:41:07.807Z"
       },
       {
         "id": "cecvl9zs",
@@ -729,35 +638,20 @@
           {
             "categoryCode": "01",
             "targetCode": "32",
-            "details": [
-              {
-                "text": "Zweck, was ist zu erwarten oder zu berichten",
-                "createdAt": "2019-11-25T18:44:14.309Z"
-              }
-            ],
-            "startedAt": "2019-11-25T18:45:19.054Z"
+            "details": "Zweck, was ist zu erwarten oder zu berichten",
+            "startDate": "2019-11-25T18:45:19.054Z"
           },
           {
             "categoryCode": "01",
             "targetCode": "34",
-            "details": [
-              {
-                "text": "Benutzung, Vorteile und Möglichkeiten eines Tablettenorganisators",
-                "createdAt": "2019-11-25T18:44:24.773Z"
-              }
-            ],
-            "startedAt": "2019-11-25T18:45:19.054Z"
+            "details": "Benutzung, Vorteile und Möglichkeiten eines Tablettenorganisators",
+            "startDate": "2019-11-25T18:45:19.054Z"
           },
           {
             "categoryCode": "04",
             "targetCode": "32",
-            "details": [
-              {
-                "text": "wie vorgeschrieben einnehmen, Notizen machen",
-                "createdAt": "2019-11-25T18:44:55.134Z"
-              }
-            ],
-            "startedAt": "2019-11-25T18:45:19.054Z"
+            "details": "wie vorgeschrieben einnehmen, Notizen machen",
+            "startDate": "2019-11-25T18:45:19.054Z"
           }
         ],
         "outcomes": [
@@ -819,8 +713,7 @@
             "personRatedInPlaceOfOwner": ""
           }
         ],
-        "createdAt": "2019-11-25T18:45:19.054Z",
-        "ratingIntervalInDays": 28
+        "createdAt": "2019-11-25T18:45:19.054Z"
       }
     ],
     "createdAt": "2019-11-25T18:12:32.060Z"
