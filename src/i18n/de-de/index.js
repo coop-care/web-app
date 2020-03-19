@@ -102,5 +102,7 @@ export default {
     "Häufig zu beobachtende Probleme bei {diagnosis}",
   additionalProblemSelection: "Weitere Probleme auswählen …",
   createDraftProblemRecords:
-    "0 Probleme als Entwurf anlegen | 1 Problem als Entwurf anlegen | {count} Probleme als Entwurf anlegen"
+    "0 Probleme als Entwurf anlegen | 1 Problem als Entwurf anlegen | {count} Probleme als Entwurf anlegen",
+  omahaSystemBookCopyrightNotice:
+    "Mit Genehmigung reproduziert und übersetzt: Martin KS. (2005). *The Omaha System: A Key to Practice, Documentation, and Information Management* (Reprinted 2nd ed.). Omaha, NE: Health Connections Press."
 };

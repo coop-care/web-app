@@ -146,6 +146,9 @@
         </q-stepper-navigation>
       </template>
     </q-stepper>
+    <div class="text-caption text-center q-px-lg q-pb-md">
+      <simplified-markdown :text="$t('omahaSystemBookCopyrightNotice')" />
+    </div>
   </q-page>
 </template>
 
@@ -173,6 +176,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { ProblemRecord } from "../models/problemRecord";
+import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 
 @Component({
   watch: {
@@ -181,6 +185,9 @@ import { ProblemRecord } from "../models/problemRecord";
         (this as ProblemsByDiagnosis).step += 1;
       }
     }
+  },
+  components: {
+    SimplifiedMarkdown
   }
 })
 export default class ProblemsByDiagnosis extends Vue {

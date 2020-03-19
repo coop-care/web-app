@@ -100,5 +100,7 @@ export default {
     "Frequently occurring problems with {diagnosis}",
   additionalProblemSelection: "Select additional problems …",
   createDraftProblemRecords:
-    "create 0 problems as draft | create 1 problem as draft | create {count} problems as draft"
+    "create 0 problems as draft | create 1 problem as draft | create {count} problems as draft",
+  omahaSystemBookCopyrightNotice:
+    "Reprinted and translated with permission: Martin KS. (2005). *The Omaha System: A Key to Practice, Documentation, and Information Management* (Reprinted 2nd ed.). Omaha, NE: Health Connections Press."
 };
