@@ -15,31 +15,12 @@
         :title="$t('diagnosisSelectionTitle')"
         :done="step > 1"
       >
-        <q-list>
-          <q-item
-            tag="label"
-            v-for="diagnosisCode in diagnosisCodes"
-            v-bind:key="diagnosisCode"
-            dense
-          >
-            <q-item-section
-              side
-              top
-            >
-              <q-radio
-                v-model="selectedDiagnosisCode"
-                :val="diagnosisCode"
-                color="primary"
-                keep-color
-              />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{
-            $t("diagnosisNames." + diagnosisCode)
-          }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
+        <searchable-option-list
+          color="primary"
+          :options="diagnosisCodes"
+          v-model="selectedDiagnosisCode"
+          class="column-2-sm"
+        />
       </q-step>
 
       <q-step
@@ -59,34 +40,12 @@
             <span class="text-weight-bold">{{ $t("diagnosisNames." + selectedDiagnosisCode) }}</span>
           </template>
         </i18n>
-        <q-list>
-          <q-item
-            v-for="problemCode in problemCodesForSelectedDiagnosis"
-            v-bind:key="selectedDiagnosisCode + '_' + problemCode"
-            tag="label"
-          >
-            <q-item-section
-              side
-              top
-            >
-              <q-checkbox
-                v-model="selectedProblemCodes"
-                :val="problemCode"
-                color="classification"
-                keep-color
-              />
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label class="text-weight-medium">{{
-            $t("terminology.problemByCode." + problemCode + ".title")
-          }}</q-item-label>
-              <q-item-label caption>{{
-            $t("terminology.problemByCode." + problemCode + ".description")
-          }}</q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-list>
+        <searchable-option-list
+          color="classification"
+          :options="problemOptionsForSelectedDiagnosis"
+          v-model="selectedProblemCodes"
+          allowMultipleSelection
+        />
 
         <q-expansion-item
           :label="$t('additionalProblemSelection')"
@@ -94,34 +53,12 @@
           switch-toggle-side
           :default-opened="false"
         >
-          <q-list>
-            <q-item
-              v-for="problemCode in otherProblemCodesForSelectedDiagnosis"
-              v-bind:key="selectedDiagnosisCode + '_' + problemCode"
-              tag="label"
-            >
-              <q-item-section
-                side
-                top
-              >
-                <q-checkbox
-                  v-model="selectedProblemCodes"
-                  :val="problemCode"
-                  color="classification"
-                  keep-color
-                />
-              </q-item-section>
-
-              <q-item-section>
-                <q-item-label class="text-weight-medium text-grey-8">{{
-            $t("terminology.problemByCode." + problemCode + ".title")
-          }}</q-item-label>
-                <q-item-label caption>{{
-            $t("terminology.problemByCode." + problemCode + ".description")
-          }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
+          <searchable-option-list
+            color="classification"
+            :options="otherProblemOptionsForSelectedDiagnosis"
+            v-model="selectedProblemCodes"
+            allowMultipleSelection
+          />
         </q-expansion-item>
       </q-step>
 
@@ -176,17 +113,21 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { ProblemRecord } from "../models/problemRecord";
+import SearchableOptionList from "../components/SearchableOptionList.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 
 @Component({
   watch: {
     selectedDiagnosisCode(value) {
+      const self = this as ProblemsByDiagnosis;
       if (value) {
-        (this as ProblemsByDiagnosis).step += 1;
+        self.step += 1;
       }
+      self.selectedProblemCodes = [];
     }
   },
   components: {
+    SearchableOptionList,
     SimplifiedMarkdown
   }
 })
@@ -201,7 +142,12 @@ export default class ProblemsByDiagnosis extends Vue {
     };
   }
   get diagnosisCodes() {
-    return Object.keys(this.problemCodesByDiagnosis);
+    return Object.keys(this.problemCodesByDiagnosis).map(code => {
+      return {
+        code: code,
+        title: this.$t("diagnosisNames." + code)
+      };
+    });
   }
   get allProblemCodes() {
     return Object.keys(this.$t("terminology.problemByCode"));
@@ -209,10 +155,13 @@ export default class ProblemsByDiagnosis extends Vue {
   get problemCodesForSelectedDiagnosis() {
     return this.problemCodesByDiagnosis[this.selectedDiagnosisCode] || [];
   }
-  get otherProblemCodesForSelectedDiagnosis() {
-    return this.allProblemCodes.filter(
-      code => !this.problemCodesForSelectedDiagnosis.includes(code)
-    );
+  get problemOptionsForSelectedDiagnosis() {
+    return this.problemCodesForSelectedDiagnosis.map(this.makeProblemOption);
+  }
+  get otherProblemOptionsForSelectedDiagnosis() {
+    return this.allProblemCodes
+      .filter(code => !this.problemCodesForSelectedDiagnosis.includes(code))
+      .map(this.makeProblemOption);
   }
 
   createDraftProblemRecords() {
@@ -228,6 +177,14 @@ export default class ProblemsByDiagnosis extends Vue {
     this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.push({ name: "client" }));
+  }
+
+  makeProblemOption(code: string) {
+    return {
+      code: code,
+      title: this.$t("terminology.problemByCode." + code + ".title"),
+      description: this.$t("terminology.problemByCode." + code + ".description")
+    };
   }
 }
 </script>
