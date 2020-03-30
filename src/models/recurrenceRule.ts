@@ -2,7 +2,8 @@ import "reflect-metadata";
 import { Type } from "class-transformer";
 
 export enum RecurrenceFrequency {
-    Daily = 1,
+    Never,
+    Daily,
     Weekly,
     Monthly,
     Yearly
@@ -41,7 +42,7 @@ export class RecurrenceRule {
     @Type(() => Number)
     daysOfTheYear: number[];
     @Type(() => Number)
-    weeksOfTheYer: number[];
+    weeksOfTheYear: number[];
     @Type(() => Number)
     monthsOfTheYear: number[];
     @Type(() => Number)
@@ -56,7 +57,7 @@ export class RecurrenceRule {
         daysOfTheWeek: RecurrenceDayOfWeek[] = [],
         daysOfTheMonth: number[] = [],
         daysOfTheYear: number[] = [],
-        weeksOfTheYer: number[] = [],
+        weeksOfTheYear: number[] = [],
         monthsOfTheYear: number[] = [],
         positions: number[] = [],
         recurrenceEnd?: RecurrenceEnd
@@ -67,7 +68,7 @@ export class RecurrenceRule {
         this.daysOfTheWeek = daysOfTheWeek;
         this.daysOfTheMonth = daysOfTheMonth;
         this.daysOfTheYear = daysOfTheYear;
-        this.weeksOfTheYer = weeksOfTheYer;
+        this.weeksOfTheYear = weeksOfTheYear;
         this.monthsOfTheYear = monthsOfTheYear;
         this.positions = positions;
         this.recurrenceEnd = recurrenceEnd;

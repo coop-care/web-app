@@ -10,19 +10,32 @@ import deDE from "./de-de";
 import terminologyDE from "./de-de/terminology.json";
 deDE.terminology = makeTerminologyWithMaps(terminologyDE);
 
+const responseHandler = response => {
+  if (response.ok) {
+    return response.json();
+  } else {
+    throw new Error("no data");
+  }
+};
 fetch("statics/diagnoses.sln")
-  .then(response => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error("no data");
-    }
-  })
+  .then(responseHandler)
   .then(data => {
     enUS.diagnosisNames = data.diagnoses["en-us"];
     enUS.problemCodesByDiagnosis = data.problemCodesByDiagnosis;
     deDE.diagnosisNames = data.diagnoses["de-de"];
     deDE.problemCodesByDiagnosis = data.problemCodesByDiagnosis;
+  })
+  .catch(() => 0);
+fetch("statics/usersguide_EN.sln")
+  .then(responseHandler)
+  .then(data => {
+    enUS.usersGuide = data;
+  })
+  .catch(() => 0);
+fetch("statics/usersguide_DE.sln")
+  .then(responseHandler)
+  .then(data => {
+    deDE.usersGuide = data;
   })
   .catch(() => 0);
 

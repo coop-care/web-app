@@ -99,7 +99,7 @@ import Component from "vue-class-component";
 import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
-import Intervention from "components/Intervention.vue";
+import Intervention from "components/NewIntervention.vue";
 
 @Component({
   components: {

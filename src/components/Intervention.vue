@@ -147,7 +147,6 @@ import ProblemSummary from "../components/ProblemSummary.vue";
 import { QInput } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention as InterventionModel } from "../models/intervention";
-import { Reminder } from "../models/reminder";
 
 const nameof = (name: keyof ProblemRecord) => name;
 
