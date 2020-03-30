@@ -6,9 +6,42 @@ const routes: RouteConfig[] = [
         component: () => import("layouts/MyLayout.vue"),
         children: [
             {
-                name: "client",
                 path: "",
-                component: () => import("pages/Client.vue")
+                redirect: "client"
+            },
+            {
+                name: "client",
+                path: "/client/:clientId?",
+                component: () => import("pages/Client.vue"),
+                children: [
+                    {
+                        name: "clientReminders",
+                        path: "reminders"
+                    },
+                    {
+                        name: "clientProblems",
+                        path: "problems"
+                    },
+                    {
+                        name: "clientHistory",
+                        path: "history"
+                    }
+                ]
+            },
+            {
+                name: "problem",
+                path: "/client/:clientId/problem/:problemId/:step?",
+                component: () => import("pages/ProblemRecording.vue")
+            },
+            {
+                name: "outcome",
+                path: "/client/:clientId/problem/:problemId/outcome",
+                component: () => import("pages/Rating.vue")
+            },
+            {
+                name: "problemsByDiagnosis",
+                path: "/client/:clientId/diagnoses",
+                component: () => import("pages/ProblemsByDiagnosis.vue")
             },
             {
                 name: "login",
@@ -24,21 +57,6 @@ const routes: RouteConfig[] = [
                 name: "confirm",
                 path: "/confirm",
                 component: () => import("pages/Confirm.vue")
-            },
-            {
-                name: "problem",
-                path: "/client/:clientId/problem/:problemId",
-                component: () => import("pages/ProblemRecording.vue")
-            },
-            {
-                name: "outcome",
-                path: "/client/:clientId/problem/:problemId/outcome",
-                component: () => import("pages/Rating.vue")
-            },
-            {
-                name: "problemsByDiagnosis",
-                path: "/client/:clientId/diagnoses",
-                component: () => import("pages/ProblemsByDiagnosis.vue")
             }
         ]
     }

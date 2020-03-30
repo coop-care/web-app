@@ -1,26 +1,49 @@
 <template>
   <q-page>
-    <client-drawer
-      ref="clientDrawer"
-      @willAddClient="addingClient = true"
-      @didSelectClient="addingClient = false"
-    />
+    <client-drawer ref="clientDrawer" />
 
     <div
-      class="client-overview q-pa-xl"
-      v-if="loading"
+      v-if="!$store.direct.state.isLoadingClientList && !clients.length"
+      class="fit"
     >
-      <p>{{ $t("loading") }}</p>
+      <div class="q-pa-md absolute-center vertical-middle">
+        <div class="text-center text-body2">{{ $t("noExistingClient") }}</div>
+        <q-btn
+          @click="$router.push({name: 'client', params: {clientId: 'new'}})"
+          no-caps
+          color="primary"
+          rounded
+          :label="$t('createFirstClient')"
+          class="q-mt-md"
+        />
+      </div>
     </div>
+
     <div
-      class="client-overview q-pt-lg q-px-xl q-pb-xl"
-      v-else-if="addingClient"
+      v-if="!$route.params.clientId"
+      class="fit"
+    >
+      <div class="q-pa-md absolute-center vertical-middle text-center text-body2">{{ $t("noSelectedClient") }}</div>
+    </div>
+
+    <div
+      v-if="$route.params.clientId == 'new'"
+      class="fit"
     >
       <new-client
+        class="q-py-xl q-px-lg"
         @save="addClient"
-        @cancel="addingClient = false"
+        @cancel="$router.push({name: 'client'})"
       />
     </div>
+
+    <loading v-else-if="$store.direct.state.isLoadingClientList && $route.params.clientId && !selectedClient" />
+
+    <central-message
+      v-else-if="$route.params.clientId && !selectedClient"
+      :message="$t('clientNotFound')"
+    />
+
     <div
       class="client-overview q-pt-lg q-px-xl q-pb-xl"
       v-else-if="selectedClient"
@@ -31,7 +54,7 @@
           class="col q-mt-sm q-mb-xl q-py-sm text-h2"
           v-text="selectedClient.name"
           :contenteditable="!isDisabled"
-          @change="changeClientName(selectedClientId, $event.value)"
+          @change="changeClientName($route.params.clientId, $event.value)"
         />
         <div>
           <action-menu
@@ -48,11 +71,12 @@
         :inline-label="$q.screen.gt.xs"
         align="left"
       >
-        <q-tab
+        <q-route-tab
           name="reminders"
           :label="$tc('task', 2)"
           icon="fas fa-tasks"
           v-if="!isDisabled"
+          :to="{ name: 'clientReminders', params: $route.params }"
         >
           <q-badge
             color="red"
@@ -60,21 +84,23 @@
             :label="Math.ceil(Math.random() * 3)"
             v-if="Math.round(Math.random())"
           />
-        </q-tab>
-        <q-tab
+        </q-route-tab>
+        <q-route-tab
           name="problems"
           :label="$tc('problem', 2)"
           icon="fas fa-book-medical"
+          :to="{ name: 'clientProblems', params: $route.params }"
         />
-        <q-tab
+        <q-route-tab
           name="history"
           :label="$t('documentationHistory')"
           icon="fas fa-history"
+          :to="{ name: 'clientHistory', params: $route.params }"
         />
       </q-tabs>
       <q-tab-panels
-        v-model="selectedTab"
         animated
+        v-model="selectedTab"
       >
         <q-tab-panel name="reminders">
           <client-reminders />
@@ -86,27 +112,6 @@
           <client-history />
         </q-tab-panel>
       </q-tab-panels>
-    </div>
-
-    <div
-      class="client-overview q-pa-xl"
-      v-else-if="!clients.length"
-    >
-      <p>{{ $t("noExistingClient") }}</p>
-      <q-btn
-        @click="addingClient = true"
-        no-caps
-        color="primary"
-        rounded
-        :label="$t('createFirstClient')"
-        class="q-mt-md"
-      />
-    </div>
-    <div
-      class="client-overview q-pa-xl"
-      v-else
-    >
-      <p>{{ $t("noSelectedClient") }}</p>
     </div>
   </q-page>
 </template>
@@ -129,6 +134,8 @@ import ClientReminders from "../components/ClientReminders.vue";
 import ClientHistory from "../components/ClientHistory.vue";
 import { Client } from "../models/client";
 import { ObjectID } from "bson";
+import Loading from "components/Loading.vue";
+import CentralMessage from "components/CentralMessage.vue";
 
 const nameof = (name: keyof Client) => name;
 
@@ -140,19 +147,14 @@ const nameof = (name: keyof Client) => name;
     ClientDrawer,
     ClientProblems,
     ClientReminders,
-    ClientHistory
+    ClientHistory,
+    Loading,
+    CentralMessage
   }
 })
 export default class PageIndex extends Vue {
-  addingClient = false;
-  selectedTab = !this.isDisabled ? "reminders" : "history";
+  selectedTab = null;
 
-  get loading() {
-    return (
-      this.$store.direct.state.isLoadingClientList ||
-      this.$store.direct.state.isLoadingClient
-    );
-  }
   get clients() {
     return this.$store.direct.state.clients;
   }
@@ -187,19 +189,13 @@ export default class PageIndex extends Vue {
     ];
   }
   get selectedClient() {
-    return this.$store.direct.getters.getSelectedClient();
-  }
-  get selectedClientId() {
-    return this.$store.direct.state.selectedClientId;
+    return this.$store.direct.getters.getClient(this.$root.$route.params);
   }
   get isDisabled() {
     return !!this.selectedClient?.leftAt;
   }
 
   created() {
-    if (this.selectedClient) {
-      this.$store.direct.commit.isLoadingClientList(true);
-    }
     this.$store.direct.dispatch
       .saveClient({ client: this.selectedClient, resolveOnError: true })
       .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
@@ -211,13 +207,13 @@ export default class PageIndex extends Vue {
       .createClient(client)
       .then(res => {
         this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
-          (this.$refs.clientDrawer as ClientDrawer).selectClientById(
-            res.insertedId
-          );
+          this.$router.push({
+            name: "clientProblems",
+            params: { clientId: res.insertedId }
+          });
         });
       })
       .catch(console.error);
-    this.addingClient = false;
   }
 
   changeClientName(clientId: ObjectID | undefined, name: string) {
@@ -264,6 +260,7 @@ export default class PageIndex extends Vue {
   deleteClient() {
     if (this.selectedClient) {
       this.$store.direct.dispatch.deleteClient(this.selectedClient);
+      this.$router.push({ name: "client" });
     }
   }
 }

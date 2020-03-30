@@ -68,7 +68,7 @@
             flat
             color="primary"
             rounded
-            to="/"
+            :to="{name: 'clientProblems', params: $route.params}"
             :label="$t('cancel')"
             class="shadow-1 q-ml-sm q-mb-sm"
           />
@@ -176,7 +176,7 @@ export default class ProblemsByDiagnosis extends Vue {
     });
     this.$store.direct.dispatch
       .saveClient(this.$route.params)
-      .then(() => this.$router.push({ name: "client" }));
+      .then(() => this.$router.push({ name: "clientProblems" }));
   }
 
   makeProblemOption(code: string) {

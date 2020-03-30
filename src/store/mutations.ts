@@ -6,26 +6,8 @@ import { Outcome } from "../models/outcome";
 import { Rating } from "src/models/rating";
 
 export default createMutations<StoreState>()({
-    setSelectedClient(state, client: Client | undefined) {
-        state.selectedClientId = client?._id;
-    },
-
-    replaceClientInList(state, client: Client) {
-        state.clients = state.clients.map(current => {
-            if (current.equals(client)) {
-                return client;
-            } else {
-                return current;
-            }
-        });
-    },
-
     setClients(state, clients: Client[]) {
         state.clients = clients;
-    },
-
-    isLoadingClient(state, isLoading: boolean) {
-        state.isLoadingClient = isLoading;
     },
 
     isLoadingClientList(state, isLoading: boolean) {

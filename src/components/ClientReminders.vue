@@ -5,7 +5,7 @@
         <div class="text-h6">{{ formattedDate({weekday: "long" }) }} {{ isToday ? $t("isTodayHint") : "" }}</div>
         <div class="text-body2">{{ formattedDate({year: "numeric", month: "long", day: "numeric" }) }}</div>
       </div>
-      <div class="q-mt-xs q-ml-lg">
+      <div class="q-mt-xs q-ml-sm">
         <q-btn
           icon="add"
           round

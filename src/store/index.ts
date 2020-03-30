@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { ObjectID } from "bson";
 import { downloadJSON } from "../helper/download";
 import { colors } from "quasar";
 import { Client } from "../models/client";
@@ -15,16 +14,12 @@ Vue.use(Vuex);
 
 export interface StoreState {
     clients: Client[];
-    selectedClientId: ObjectID | undefined;
-    isLoadingClient: boolean;
     isLoadingClientList: boolean;
 }
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
         clients: [],
-        selectedClientId: undefined,
-        isLoadingClient: false,
         isLoadingClientList: false
     } as StoreState,
     getters,

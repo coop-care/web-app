@@ -12,7 +12,7 @@
       size="12.5px"
     />
     <q-btn
-      v-if="$te('problemCodesByDiagnosis')"
+      v-if="!isDisabled && $te('problemCodesByDiagnosis')"
       icon="playlist_add"
       color="primary"
       :label="$t('problemAdmissionByDiagnosis')"
@@ -27,7 +27,7 @@
       v-bind:key="problemRecord.id"
       :problemRecord="problemRecord"
       :params="{
-            clientId: selectedClientId,
+            clientId: $route.params.clientId,
             problemId: problemRecord.id
           }"
       :isDisabled="isDisabled"
@@ -47,10 +47,7 @@ import { ProblemRecord } from "../models/problemRecord";
 @Component({ components: { ProblemSummary } })
 export default class ClientProblems extends Vue {
   get selectedClient() {
-    return this.$store.direct.getters.getSelectedClient();
-  }
-  get selectedClientId() {
-    return this.$store.direct.state.selectedClientId;
+    return this.$store.direct.getters.getClient(this.$route.params);
   }
   get isDisabled() {
     return !!this.selectedClient?.leftAt;
@@ -80,22 +77,19 @@ export default class ClientProblems extends Vue {
       return;
     }
 
-    const params = {
-      clientId: this.selectedClientId
-    };
-    this.$store.direct.commit.createProblemRecord(params);
+    this.$store.direct.commit.createProblemRecord(this.$route.params);
     this.$router.push({
       name: "problem",
-      params: this.$store.direct.getters.getRouteParamsForLatestProblem(params)
+      params: this.$store.direct.getters.getRouteParamsForLatestProblem(
+        this.$route.params
+      )
     });
   }
 
   addProblemsByDiagnosis() {
     this.$router.push({
       name: "problemsByDiagnosis",
-      params: {
-        clientId: this.selectedClientId
-      } as any
+      params: this.$route.params
     });
   }
 }

@@ -81,7 +81,6 @@ export default {
   confirmationMessage: "Successfully sent confirmation mail. Check your inbox!",
   goToLogin: "Go to login",
   confirmationInProgress: "Confirmation in progress …",
-  loading: "Loading…",
   accountWelcomeMessage: "Hello! You are logged in as:",
   logout: "Logout",
   databaseTestSettings: "Database Test Settings",
@@ -137,5 +136,6 @@ export default {
   everyDayPrefix: "Every",
   ownRecurrencePatternTitle: "Own recurrence pattern",
   addTask: "Add Task",
-  anytimeTitle: "Anytime"
+  anytimeTitle: "Anytime",
+  clientNotFound: "No customer data was found. 🤷"
 };

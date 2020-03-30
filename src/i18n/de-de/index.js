@@ -82,7 +82,6 @@ export default {
     "Die Bestätigungsmail wurde versandt. Überprüfe bitte Deinen Posteingang und klick auf den Bestätigungslink!",
   goToLogin: "Zum Einloggen",
   confirmationInProgress: "Bestätigung in Arbeit...",
-  loading: "Lädt…",
   accountWelcomeMessage: "Hallo! Du bist angemeldet als:",
   logout: "Abmelden",
   databaseTestSettings: "Datenbank-Test-Einstellungen",
@@ -138,5 +137,6 @@ export default {
   everyDayPrefix: "Jeden",
   ownRecurrencePatternTitle: "Eigener Rhytmus",
   addTask: "Aufgabe hinzufügen",
-  anytimeTitle: "Jederzeit"
+  anytimeTitle: "Jederzeit",
+  clientNotFound: "Es wurden keine Kundendaten gefunden. 🤷"
 };

@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-btn
-          v-if="$router.currentRoute.name == 'client' && $q.screen.lt.md"
+          v-if="$router.currentRoute.name.startsWith('client')  && $q.screen.lt.md"
           dense
           no-caps
           flat
@@ -12,7 +12,7 @@
           @click="$root.$emit('toggleClientDrawer')"
         />
         <q-btn
-          v-if="!['client', 'login'].includes($router.currentRoute.name)"
+          v-if="!['client', 'clientReminders', 'clientProblems', 'clientHistory', 'login'].includes($router.currentRoute.name)"
           size="lg"
           dense
           no-caps
@@ -189,8 +189,6 @@ export default class MyLayout extends Vue {
   }
 
   logout() {
-    // console.log('logging out...');
-    this.$store.direct.commit.setSelectedClient(undefined);
     this.$stitchApi.stitch.auth
       .logout()
       .then(() => this.$router.push({ name: "login" }));
@@ -202,6 +200,7 @@ export default class MyLayout extends Vue {
 
   clearDB() {
     this.$store.dispatch("clearDB");
+    this.$router.push({ name: "client" });
   }
 }
 </script>

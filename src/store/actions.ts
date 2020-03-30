@@ -54,11 +54,10 @@ export default createActions({
     },
 
     deleteClient(context, client: Client) {
-        const { commit, dispatch } = rootActionContext(context);
+        const { dispatch } = rootActionContext(context);
         stitchApi
             .deleteClient(client)
             .then(() => {
-                commit.setSelectedClient(undefined);
                 return dispatch.fetchClientsFromDB();
             })
             .catch(err =>
@@ -70,6 +69,7 @@ export default createActions({
         const { dispatch } = rootActionContext(context);
         const samples = Client.fromObject(sampleData) as Client[];
         samples.forEach(client => {
+            // eslint-disable-next-line @typescript-eslint/camelcase
             client.user_id = stitchApi.userId();
         });
         stitchApi.clients
@@ -82,12 +82,11 @@ export default createActions({
     },
 
     clearDB(context) {
-        const { commit, dispatch } = rootActionContext(context);
+        const { dispatch } = rootActionContext(context);
         stitchApi
             .deleteAllClients()
             .then(() => {
                 dispatch.fetchClientsFromDB();
-                commit.setSelectedClient(undefined);
             })
             .catch(err => console.error(`Delete failed with error: ${err}`));
     }

@@ -20,12 +20,6 @@ export default createGetters<StoreState>()({
         }
     },
 
-    getSelectedClient: state => (): Client | undefined => {
-        return store.getters.getClient({
-            clientId: state.selectedClientId
-        });
-    },
-
     getProblemRecordById: () => (payload: any): ProblemRecord | undefined => {
         return store.getters
             .getClient(payload)
@@ -82,11 +76,9 @@ export default createGetters<StoreState>()({
                 }
             ];
 
-            const group = [
-                "summary",
-                payload.clientId,
-                payload.problemId
-            ].join(".");
+            const group = ["summary", payload.clientId, payload.problemId].join(
+                "."
+            );
             const id = [group, key].join(".");
 
             let options: any = {

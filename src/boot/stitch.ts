@@ -64,6 +64,7 @@ class StitchApi {
             });
     }
     saveClient(client: Client) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
         client.user_id = this.userId();
         return this.clients.findOneAndReplace({ _id: client._id }, client);
     }

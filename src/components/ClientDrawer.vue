@@ -38,7 +38,7 @@
           v-ripple
           :active="isSelected(client)"
           active-class="text-primary"
-          @click="selectClient(client)"
+          @click="selectClient(client, 'clientReminders')"
           class="q-pl-xl"
         >
           <q-item-section>
@@ -46,6 +46,7 @@
           </q-item-section>
         </q-item>
       </q-expansion-item>
+      <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
 
       <q-expansion-item
         v-if="archivedClients.length"
@@ -61,7 +62,7 @@
           v-ripple
           :active="isSelected(client)"
           active-class="text-primary"
-          @click="selectClient(client)"
+          @click="selectClient(client, 'clientProblems')"
           class="q-pl-xl"
         >
           <q-item-section>
@@ -79,17 +80,17 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { ObjectID } from "bson";
 import { Client } from "../models/client";
+import Loading from "./Loading.vue";
 
-@Component
+@Component({ components: { Loading } })
 export default class ClientDrawer extends Vue {
   isVisible = this.$q.screen.gt.sm;
   activeClientsExpansionState = true;
   archivedClientsExpansionState = false;
 
   get selectedClient() {
-    return this.$store.direct.getters.getSelectedClient();
+    return this.$store.direct.getters.getClient(this.$route.params);
   }
   get clients() {
     return this.$store.direct.state.clients;
@@ -120,42 +121,20 @@ export default class ClientDrawer extends Vue {
   }
 
   addClient() {
-    this.$emit("willAddClient");
+    this.$router.push({
+      name: "client",
+      params: { clientId: "new" } as any
+    });
     this.closeDrawerIfNeeded();
   }
 
-  selectClient(client: Client) {
-    this.selectClientById(client._id);
+  selectClient(client: Client, name = "client") {
+    this.$router.push({
+      name: name,
+      params: { clientId: client._id } as any
+    });
     this.closeDrawerIfNeeded();
-  }
-
-  selectClientById(id: ObjectID | undefined) {
-    if (!id) {
-      return;
-    }
-
-    this.$emit("didSelectClient");
-    if (this.selectedClient) {
-      this.$store.direct.commit.isLoadingClient(true);
-    }
-    this.$store.direct.dispatch
-      .saveClient({ client: this.selectedClient, resolveOnError: true })
-      .then(() => this.loadClientFromDB(id));
-  }
-
-  loadClientFromDB(id: ObjectID) {
-    this.$store.direct.commit.isLoadingClient(true);
-    this.$stitchApi
-      .getClientById(id)
-      .then(client => {
-        this.$store.direct.commit.replaceClientInList(client);
-        this.$store.direct.commit.setSelectedClient(client);
-        this.$store.direct.commit.isLoadingClient(false);
-      })
-      .catch(err => {
-        console.error(`Failed: ${err}`);
-        this.$store.direct.commit.isLoadingClient(false);
-      });
+    this.$store.direct.dispatch.fetchClientsFromDB();
   }
 
   closeDrawerIfNeeded() {

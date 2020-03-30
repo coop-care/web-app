@@ -1,6 +1,14 @@
 <template>
   <q-page>
+    <loading v-if="$store.direct.state.isLoadingClientList && !record" />
+
+    <central-message
+      v-else-if="!$store.direct.state.isLoadingClientList && !record"
+      :message="$t('clientNotFound')"
+    />
+
     <q-stepper
+      v-else
       v-model="step"
       ref="stepper"
       color="primary"
@@ -55,7 +63,7 @@
             flat
             color="primary"
             rounded
-            to="/"
+            :to="{name: 'clientProblems', params: $route.params}"
             :label="$t('cancel')"
             class="shadow-1 q-ml-sm"
           />
@@ -64,13 +72,13 @@
             flat
             color="primary"
             rounded
-            @click="$refs.stepper.previous()"
+            @click="$refs.stepper.previous(); replaceLocation()"
             :label="$t('back')"
             class="shadow-1 q-ml-sm"
           />
           <q-btn
             v-if="step < 3 && isHighPriority"
-            @click="$refs.stepper.next()"
+            @click="$refs.stepper.next(); replaceLocation()"
             color="primary"
             rounded
             :label="$t('continue')"
@@ -100,16 +108,20 @@ import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import Intervention from "components/NewIntervention.vue";
+import Loading from "components/Loading.vue";
+import CentralMessage from "components/CentralMessage.vue";
 
 @Component({
   components: {
     ProblemClassification,
     ProblemRating,
-    Intervention
+    Intervention,
+    Loading,
+    CentralMessage
   }
 })
 export default class ProblemRecording extends Vue {
-  step = 1;
+  step = parseInt(this.$root.$route.params.step) || 1;
 
   get terminology() {
     return this.$t("terminology");
@@ -124,12 +136,6 @@ export default class ProblemRecording extends Vue {
     return this.record.problem.isHighPriority;
   }
 
-  beforeCreate() {
-    if (!this.$store.getters.getProblemRecordById(this.$route.params)) {
-      this.$router.push({ name: "client" });
-    }
-  }
-
   scrollToTop() {
     scroll.setScrollPosition(window, 0, 200);
   }
@@ -138,7 +144,12 @@ export default class ProblemRecording extends Vue {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
     this.$store.direct.dispatch
       .saveClient(this.$route.params)
-      .then(() => this.$router.push({ name: "client" }));
+      .then(() => this.$router.push({ name: "clientProblems" }));
+  }
+  replaceLocation() {
+    const location = this.$route;
+    location.params.step = "" + this.step;
+    this.$router.replace(location);
   }
 }
 </script>
