@@ -62,21 +62,35 @@
               />
               <div class="col">
                 <div class="text-weight-bold text-classification">
-                  {{ prop.node.title }}
+                  <text-with-highlights
+                    :text="prop.node.title"
+                    :regex="filterRegex"
+                    classesForMatches="text-underline text-weight-bolder"
+                  />
                 </div>
                 <div class="text-weight-light text-black">
-                  {{ prop.node.description }}
+                  <text-with-highlights
+                    :text="prop.node.description"
+                    :regex="filterRegex"
+                    classesForMatches="text-underline text-weight-bolder"
+                  />
                 </div>
               </div>
             </div>
           </template>
-          <template v-slot:body-problems="prop">
+          <template v-slot:body-problems>
             <div class="text-weight-light text-black">
               {{ $t("signsAndSymptoms") }}:
             </div>
           </template>
           <template v-slot:header-signsAndSymptoms="prop">
-            <div class="text-weight-light">{{ prop.node.title }}</div>
+            <div class="text-weight-light">
+              <text-with-highlights
+                :text="prop.node.title"
+                :regex="filterRegex"
+                classesForMatches="text-underline text-weight-bolder"
+              />
+            </div>
           </template>
         </q-tree>
       </div>
@@ -222,12 +236,14 @@ import { QInput, QTree } from "quasar";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { ProblemRecord } from "../models/problemRecord";
 import { Problem } from "../models/problem";
+import TextWithHighlights from "./TextWithHighlights.vue";
 
 const nameof = (name: keyof Problem) => name;
 
 @Component({
   components: {
-    ProblemSummary
+    ProblemSummary,
+    TextWithHighlights
   }
 })
 export default class ProblemClassification extends Vue {
@@ -311,6 +327,17 @@ export default class ProblemClassification extends Vue {
         icon: this.terminology.icons.priority[1]
       }
     ];
+  }
+  get filterRegex() {
+    if (!this.problemsFilter) {
+      return undefined;
+    } else {
+      return new RegExp(
+        "(^|\\b)" +
+          this.problemsFilter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
+        "gi"
+      );
+    }
   }
 
   get terminology() {
