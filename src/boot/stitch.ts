@@ -65,10 +65,7 @@ class StitchApi {
     }
     saveClient(client: Client) {
         client.user_id = this.userId();
-        return this.clients.findOneAndReplace(
-            { _id: client._id },
-            client
-        );
+        return this.clients.findOneAndReplace({ _id: client._id }, client);
     }
 }
 

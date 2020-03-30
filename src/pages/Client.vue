@@ -40,40 +40,52 @@
           />
         </div>
       </div>
-      <div class="q-gutter-md">
-        <q-btn
+      <q-tabs
+        v-model="selectedTab"
+        dense
+        no-caps
+        class="text-primary q-mb-md"
+        :inline-label="$q.screen.gt.xs"
+        align="left"
+      >
+        <q-tab
+          name="reminders"
+          :label="$tc('task', 2)"
+          icon="fas fa-tasks"
           v-if="!isDisabled"
-          icon="add"
-          color="primary"
-          :label="$t('problemAdmission')"
-          rounded
-          outline
-          class="shadow-1 q-mt-md"
-          @click="addProblem"
-          size="12.5px"
+        >
+          <q-badge
+            color="red"
+            floating
+            :label="Math.ceil(Math.random() * 3)"
+            v-if="Math.round(Math.random())"
+          />
+        </q-tab>
+        <q-tab
+          name="problems"
+          :label="$tc('problem', 2)"
+          icon="fas fa-book-medical"
         />
-        <q-btn
-          v-if="$te('problemCodesByDiagnosis')"
-          icon="playlist_add"
-          color="primary"
-          :label="$t('problemAdmissionByDiagnosis')"
-          rounded
-          outline
-          class="shadow-1 q-mt-md"
-          @click="addProblemsByDiagnosis"
-          size="12.5px"
+        <q-tab
+          name="history"
+          :label="$t('documentationHistory')"
+          icon="fas fa-history"
         />
-        <problem-summary
-          v-for="problemRecord in selectedClientProblems"
-          v-bind:key="problemRecord.id"
-          :problemRecord="problemRecord"
-          :params="{
-            clientId: selectedClientId,
-            problemId: problemRecord.id
-          }"
-          :isDisabled="isDisabled"
-        />
-      </div>
+      </q-tabs>
+      <q-tab-panels
+        v-model="selectedTab"
+        animated
+      >
+        <q-tab-panel name="reminders">
+          <client-reminders />
+        </q-tab-panel>
+        <q-tab-panel name="problems">
+          <client-problems />
+        </q-tab-panel>
+        <q-tab-panel name="history">
+          <client-history />
+        </q-tab-panel>
+      </q-tab-panels>
     </div>
 
     <div
@@ -112,9 +124,10 @@ import ClientDrawer from "../components/ClientDrawer.vue";
 import ContentEditable from "../components/ContentEditable.vue";
 import NewClient from "../components/NewClient.vue";
 import ActionMenu from "../components/ActionMenu.vue";
-import ProblemSummary from "../components/ProblemSummary.vue";
+import ClientProblems from "../components/ClientProblems.vue";
+import ClientReminders from "../components/ClientReminders.vue";
+import ClientHistory from "../components/ClientHistory.vue";
 import { Client } from "../models/client";
-import { ProblemRecord } from "../models/problemRecord";
 import { ObjectID } from "bson";
 
 const nameof = (name: keyof Client) => name;
@@ -123,13 +136,16 @@ const nameof = (name: keyof Client) => name;
   components: {
     ContentEditable,
     NewClient,
-    ProblemSummary,
     ActionMenu,
-    ClientDrawer
+    ClientDrawer,
+    ClientProblems,
+    ClientReminders,
+    ClientHistory
   }
 })
 export default class PageIndex extends Vue {
   addingClient = false;
+  selectedTab = !this.isDisabled ? "reminders" : "history";
 
   get loading() {
     return (
@@ -175,23 +191,6 @@ export default class PageIndex extends Vue {
   }
   get selectedClientId() {
     return this.$store.direct.state.selectedClientId;
-  }
-  get selectedClientProblems() {
-    const client = this.selectedClient;
-    const problems = client ? client.problems : [];
-    return problems
-      .concat()
-      .filter((problem: ProblemRecord) => {
-        return !problem.resolvedAt;
-      })
-      .sort(
-        (first: ProblemRecord, second: ProblemRecord) =>
-          // sort order: draft first, then high priority followed by low priority
-          //@ts-ignore
-          !second.createdAt - !first.createdAt ||
-          //@ts-ignore
-          second.problem.isHighPriority - first.problem.isHighPriority
-      );
   }
   get isDisabled() {
     return !!this.selectedClient?.leftAt;
@@ -266,32 +265,6 @@ export default class PageIndex extends Vue {
     if (this.selectedClient) {
       this.$store.direct.dispatch.deleteClient(this.selectedClient);
     }
-  }
-
-  addProblem() {
-    const client = this.selectedClient;
-    if (!client) {
-      console.error("no client selected: this should not happen.");
-      return;
-    }
-
-    const params = {
-      clientId: this.selectedClientId
-    };
-    this.$store.direct.commit.createProblemRecord(params);
-    this.$router.push({
-      name: "problem",
-      params: this.$store.direct.getters.getRouteParamsForLatestProblem(params)
-    });
-  }
-
-  addProblemsByDiagnosis() {
-    this.$router.push({
-      name: "problemsByDiagnosis",
-      params: {
-        clientId: this.selectedClientId
-      } as any
-    });
   }
 }
 </script>

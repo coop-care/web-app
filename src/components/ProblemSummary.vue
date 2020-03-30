@@ -1,5 +1,9 @@
 <template>
-  <q-card class="overflow-hidden">
+  <q-card
+    flat
+    bordered
+    class="overflow-hidden border-primary radius-sm"
+  >
     <q-card-section>
       <div v-if="isSummary">
         <div class="text-subtitle2 text-weight-normal">{{ clientName }}:</div>
@@ -202,8 +206,6 @@
   </q-card>
 </template>
 
-<style lang="sass"></style>
-
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
@@ -241,7 +243,7 @@ export default class ProblemSummary extends Vue {
   }
   get ratings() {
     return ["knowledge", "behaviour", "status"].map(
-      key => this.lastOutcome[key]
+      key => (this.lastOutcome || {})[key]
     );
   }
   get isDraft() {

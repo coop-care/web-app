@@ -5,6 +5,8 @@
   -moz-user-select: none
   -ms-user-select: none
   user-select: none
+.text-underline
+  text-decoration: underline
 .q-btn-toggle
   border-width: 1px
   border-style: solid
@@ -31,6 +33,11 @@
   column-gap: 2em
   @media screen and (max-width: $breakpoint-xs-max)
     column-count: 1
+.column-2-sm
+  column-count: 2
+  column-gap: 2em
+  @media screen and (max-width: $breakpoint-sm-max)
+    column-count: 1
 .column-3
   column-count: 3
   column-gap: 2em
@@ -52,3 +59,13 @@
   color: $intervention
 .bg-intervention
   background: $intervention
+.border-primary
+  border-color: $primary
+.radius-xs
+  border-radius: 4px
+.radius-sm
+  border-radius: 8px
+.radius-md
+  border-radius: 12px
+.radius-lg
+  border-radius: 16px

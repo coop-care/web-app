@@ -16,7 +16,11 @@ export class ProblemRecord extends Base {
     @Type(() => Reminder, {
         discriminator: {
             property: "__type",
-            subTypes: [{ value: Intervention, name: "intervention" }]
+            subTypes: [
+                { value: Intervention, name: "intervention" },
+                // @ts-ignore
+                { value: Intervention, name: undefined }
+            ]
         }
     })
     reminders: Reminder[] = [];

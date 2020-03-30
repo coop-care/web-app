@@ -88,8 +88,8 @@ export function filterTerminology(node: HasTitleDescription, filter: string) {
         "gi"
     );
     return (
-        (node.title && node.title.match(regex)) ||
-        (node.description && node.description.match(regex))
+        (!!node.title && node.title.match(regex)) ||
+        (!!node.description && node.description.match(regex))
     );
 }
 

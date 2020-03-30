@@ -82,10 +82,18 @@ module.exports = function(ctx) {
         "QChip",
         "QExpansionItem",
         "QCheckbox",
-        "QTooltip"
+        "QTooltip",
+        "QBadge",
+        "QTimeline",
+        "QTimelineEntry",
+        "QSelect",
+        "QTime",
+        "QPopupProxy",
+        "QDate",
+        "QToggle"
       ],
 
-      directives: ["Ripple"],
+      directives: ["Ripple", "TouchSwipe"],
 
       // Quasar plugins
       plugins: ["Meta"]
