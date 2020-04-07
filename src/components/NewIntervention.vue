@@ -64,56 +64,69 @@
         />
 
         <h6 class="counter">{{ $t("planReminder") }}</h6>
-        <q-input
-          type="datetime"
-          mask="datetime"
-          v-model="startdate"
-          :label="$t('dateAndTime')"
-          color="intervention"
-          style="max-width: 300px"
-        >
-          <template v-slot:prepend>
-            <q-icon
-              name="event"
-              class="cursor-pointer"
-            >
-              <q-popup-proxy
-                ref="startdateDateProxy"
-                transition-show="scale"
-                transition-hide="scale"
+        <div class="row q-col-gutter-lg q-mb-lg items-start">
+          <q-input
+            type="datetime"
+            mask="datetime"
+            v-model="startdate"
+            :label="$t('addReminderTime')"
+            color="intervention"
+            class="col-md-4 col-sm-6 col-12"
+          >
+            <template v-slot:prepend>
+              <q-icon
+                name="event"
+                class="cursor-pointer"
+                color="intervention"
               >
-                <q-date
-                  v-model="startdate"
-                  mask="YYYY-MM-DD HH:mm"
-                  color="intervention"
-                  @input="$refs.startdateDateProxy.hide()"
-                />
-              </q-popup-proxy>
-            </q-icon>
-          </template>
+                <q-popup-proxy
+                  ref="startdateDateProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date
+                    v-model="startdate"
+                    mask="YYYY-MM-DD HH:mm"
+                    color="intervention"
+                    @input="$refs.startdateDateProxy.hide()"
+                  />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
 
-          <template v-slot:append>
-            <q-icon
-              name="access_time"
-              class="cursor-pointer"
-            >
-              <q-popup-proxy
-                ref="startdateTimeProxy"
-                transition-show="scale"
-                transition-hide="scale"
+            <template v-slot:append>
+              <q-icon
+                v-if="startdate"
+                name="cancel"
+                @click.stop="startdate = null"
+                class="cursor-pointer"
+              />
+              <q-icon
+                name="access_time"
+                class="cursor-pointer"
+                color="intervention"
               >
-                <q-time
-                  v-model="startdate"
-                  mask="YYYY-MM-DD HH:mm"
-                  format24h
-                  color="intervention"
-                  @input="$refs.startdateTimeProxy.hide()"
-                />
-              </q-popup-proxy>
-            </q-icon>
-          </template>
-        </q-input>
-        <edit-reminder />
+                <q-popup-proxy
+                  ref="startdateTimeProxy"
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-time
+                    v-model="startdate"
+                    mask="YYYY-MM-DD HH:mm"
+                    format24h
+                    color="intervention"
+                    @input="$refs.startdateTimeProxy.hide()"
+                  />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+          <edit-reminder
+            v-if="startdate"
+            class="col-md-8 col-sm-6 col-12"
+          />
+        </div>
       </div>
       <div class="col-md-3 col-12 summary">
         <problem-summary

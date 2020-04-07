@@ -11,6 +11,7 @@
       round
       :size="size"
       no-caps
+      class="text-weight-regular"
     />
   </div>
 </template>

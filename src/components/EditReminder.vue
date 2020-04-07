@@ -1,203 +1,277 @@
 <template>
-  <div style="max-width: 300px">
-    <q-select
-      v-model="frequency"
-      :options="frequencyOptions"
-      :label="$t('recurrence')"
-      options-dense
-      color="intervention"
-      options-cover
-      map-options
-      emit-value
-      style="width: 180px"
-    />
-
-    <div v-if="frequency != RecurrenceFrequency.Never">
-      <q-input
+  <div class="row q-col-gutter-lg items-start">
+    <div class="col-md-6 col-12">
+      <q-select
+        v-model="frequency"
+        :options="frequencyOptions"
+        :label="$t('recurrence')"
+        options-dense
         color="intervention"
-        v-model.number="interval"
-        type="number"
-        class="q-my-sm"
-        :prefix="$tc('every' + frequencyUnit, 5).split(' 5 ')[0]"
-        :suffix="$tc('every' + frequencyUnit, 5).split(' 5 ')[1]"
-        step="1"
-        min="1"
-        max="999"
-        :rules="[ val => val >= 1 && val <= 999 || '']"
-        style="width: 180px"
-        input-class="text-center"
+        options-cover
+        map-options
+        emit-value
       />
-    </div>
 
-    <q-expansion-item
-      v-if="frequency != RecurrenceFrequency.Never"
-      :label="$t('ownRecurrencePatternTitle')"
-      switch-toggle-side
-    >
-      <div v-if="frequency == RecurrenceFrequency.Daily">
+      <div v-if="frequency != RecurrenceFrequency.Never">
         <q-input
           color="intervention"
-          v-model="time"
-          mask="time"
-          :rules="['time']"
-          type="time"
-          borderless
+          v-model.number="interval"
+          type="number"
+          class="q-my-sm"
+          dense
+          :prefix="$tc('every' + frequencyUnit, 5).split(' 5 ')[0]"
+          :suffix="$tc('every' + frequencyUnit, 5).split(' 5 ')[1]"
+          step="1"
+          min="1"
+          max="999"
+          :rules="[ val => val >= 1 && val <= 999 || '']"
+          input-class="text-center"
+        />
+      </div>
+
+      <q-expansion-item
+        v-if="frequency != RecurrenceFrequency.Never"
+        :label="$t('ownRecurrencePatternTitle')"
+        switch-toggle-side
+        dense
+      >
+        <div v-if="frequency == RecurrenceFrequency.Daily">
+          <q-input
+            color="intervention"
+            v-model="time"
+            mask="time"
+            :rules="['time']"
+            type="time"
+            borderless
+          >
+            <template v-slot:prepend>
+              <q-icon
+                name="access_time"
+                class="cursor-pointer"
+              >
+                <q-popup-proxy
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-time
+                    v-model="time"
+                    color="intervention"
+                  />
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+          <q-btn
+            icon="add"
+            round
+            outline
+            size="10.5px"
+            color="intervention"
+            :title="$t('addTime')"
+            class="shadow-1"
+          />
+        </div>
+
+        <div v-if="frequency == RecurrenceFrequency.Weekly">
+          <toggle-button-group
+            v-model="daysOfTheWeek"
+            :options="daysOfTheWeekOptions"
+            color="white"
+            text-color="gray-9"
+            toggle-color="intervention"
+            toggle-text-color="white"
+            size="14px"
+            class="q-my-sm"
+          />
+        </div>
+
+        <div v-if="frequency == RecurrenceFrequency.Monthly">
+          <div>
+            <q-radio
+              v-model="monthlyMode"
+              val="dayOfMonth"
+              :label="$t('onDayOfMonthTitle')"
+              color="intervention"
+              dense
+            />
+          </div>
+          <toggle-button-group
+            v-if="monthlyMode == 'dayOfMonth'"
+            v-model="daysOfTheMonth"
+            :options="daysOfTheMonthOptions"
+            color="white"
+            text-color="gray-9"
+            toggle-color="intervention"
+            toggle-text-color="white"
+            size="14px"
+            class="q-mt-sm q-mb-lg"
+          />
+          <div class="q-mt-sm">
+            <q-radio
+              v-model="monthlyMode"
+              val="dayOfWeek"
+              :label="$t('onDayOfWeekTitle')"
+              color="intervention"
+              dense
+            />
+          </div>
+          <div
+            v-if="monthlyMode == 'dayOfWeek'"
+            class="row q-gutter-md"
+          >
+            <q-select
+              v-model="positions"
+              :options="positionOptions"
+              dense
+              options-dense
+              color="intervention"
+              options-cover
+              map-options
+              emit-value
+              style="width: 142px"
+              :prefix="$t('everyDayPrefix')"
+            />
+            <q-select
+              v-model="singleDayOfTheWeek"
+              :options="singleDayOfTheWeekOptions"
+              dense
+              options-dense
+              color="intervention"
+              options-cover
+              map-options
+              emit-value
+              style="width: 142px"
+            />
+          </div>
+        </div>
+
+        <div v-if="frequency == RecurrenceFrequency.Yearly">
+          <toggle-button-group
+            v-model="monthsOfTheYear"
+            :options="monthsOfTheYearOptions"
+            color="white"
+            text-color="gray-9"
+            toggle-color="intervention"
+            toggle-text-color="white"
+            size="16px"
+            class="q-my-sm"
+          />
+          <div class="q-mt-lg">
+            <q-toggle
+              v-model="showYearlyDayOfWeek"
+              :label="$t('onDayOfWeekTitle')"
+              color="intervention"
+              dense
+            />
+          </div>
+          <div
+            v-if="showYearlyDayOfWeek"
+            class="row q-gutter-md"
+          >
+            <q-select
+              v-model="positions"
+              :options="positionOptions"
+              dense
+              options-dense
+              color="intervention"
+              options-cover
+              map-options
+              emit-value
+              style="width: 142px"
+              :prefix="$t('everyDayPrefix')"
+            />
+            <q-select
+              v-model="singleDayOfTheWeek"
+              :options="singleDayOfTheWeekOptions"
+              dense
+              options-dense
+              color="intervention"
+              options-cover
+              map-options
+              emit-value
+              style="width: 142px"
+            />
+          </div>
+        </div>
+      </q-expansion-item>
+
+      <div
+        class="text-caption q-mt-md bg-grey-2 q-pa-sm"
+        v-if="!!description"
+      >{{ description }}</div>
+    </div>
+
+    <div
+      v-if="frequency != RecurrenceFrequency.Never"
+      class="col-md-6 col-12"
+    >
+      <q-select
+        v-model="recurrenceEnd"
+        :options="recurrenceEndOptions"
+        :label="$t('recurrenceEndLabel')"
+        options-dense
+        color="intervention"
+        options-cover
+        map-options
+        emit-value
+      />
+
+      <div v-if="recurrenceEnd == 2">
+        <q-input
+          type="date"
+          mask="date"
+          v-model="endDate"
+          :label="$t('recurrenceEndDate')"
+          color="intervention"
+          class="q-mt-sm"
+          dense
         >
           <template v-slot:prepend>
             <q-icon
-              name="access_time"
+              name="event"
               class="cursor-pointer"
+              color="intervention"
             >
               <q-popup-proxy
+                ref="endDateProxy"
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-time
-                  v-model="time"
+                <q-date
+                  v-model="endDate"
+                  mask="YYYY-MM-DD"
                   color="intervention"
+                  @input="$refs.endDateProxy.hide()"
                 />
               </q-popup-proxy>
             </q-icon>
           </template>
         </q-input>
-        <q-btn
-          icon="add"
-          round
-          outline
-          size="10.5px"
+      </div>
+
+      <div v-if="recurrenceEnd == 3">
+        <q-input
           color="intervention"
-          :title="$t('addTime')"
-          class="shadow-1"
-        />
-      </div>
-
-      <div v-if="frequency == RecurrenceFrequency.Weekly">
-        <toggle-button-group
-          v-model="daysOfTheWeek"
-          :options="daysOfTheWeekOptions"
-          color="white"
-          text-color="gray-9"
-          toggle-color="intervention"
-          toggle-text-color="white"
-          size="14px"
+          v-model.number="occurenceCount"
+          type="number"
           class="q-my-sm"
-        />
-      </div>
-
-      <div v-if="frequency == RecurrenceFrequency.Monthly">
-        <div>
-          <q-radio
-            v-model="monthlyMode"
-            val="dayOfMonth"
-            :label="$t('onDayOfMonthTitle')"
-            color="intervention"
-            dense
-          />
-        </div>
-        <toggle-button-group
-          v-if="monthlyMode == 'dayOfMonth'"
-          v-model="daysOfTheMonth"
-          :options="daysOfTheMonthOptions"
-          color="white"
-          text-color="gray-9"
-          toggle-color="intervention"
-          toggle-text-color="white"
-          size="14px"
-          class="q-mt-sm q-mb-lg"
-        />
-        <div class="q-mt-sm">
-          <q-radio
-            v-model="monthlyMode"
-            val="dayOfWeek"
-            :label="$t('onDayOfWeekTitle')"
-            color="intervention"
-            dense
-          />
-        </div>
-        <div
-          v-if="monthlyMode == 'dayOfWeek'"
-          class="row q-gutter-md"
+          dense
+          step="1"
+          min="1"
+          max="999"
+          :rules="[ val => val >= 1 && val <= 999 || '']"
+          input-class="text-center"
         >
-          <q-select
-            v-model="positions"
-            :options="positionOptions"
-            dense
-            options-dense
-            color="intervention"
-            options-cover
-            map-options
-            emit-value
-            style="width: 142px"
-            :prefix="$t('everyDayPrefix')"
-          />
-          <q-select
-            v-model="singleDayOfTheWeek"
-            :options="singleDayOfTheWeekOptions"
-            dense
-            options-dense
-            color="intervention"
-            options-cover
-            map-options
-            emit-value
-            style="width: 142px"
-          />
-        </div>
+          <template v-slot:prepend>
+            <div class="text-body2 text-black">{{ $tc('endAfterOccureceCountLabel', occurenceCount).split(' ' + occurenceCount + ' ')[0] }}</div>
+          </template>
+          <template v-slot:append>
+            <span class="text-body2 text-black">{{ $tc('endAfterOccureceCountLabel', occurenceCount).split(' ' + occurenceCount + ' ')[1] }}</span>
+          </template>
+        </q-input>
       </div>
 
-      <div v-if="frequency == RecurrenceFrequency.Yearly">
-        <toggle-button-group
-          v-model="monthsOfTheYear"
-          :options="monthsOfTheYearOptions"
-          color="white"
-          text-color="gray-9"
-          toggle-color="intervention"
-          toggle-text-color="white"
-          size="16px"
-          class="q-my-sm"
-        />
-        <div class="q-mt-lg">
-          <q-toggle
-            v-model="showYearlyDayOfWeek"
-            :label="$t('onDayOfWeekTitle')"
-            color="intervention"
-            dense
-          />
-        </div>
-        <div
-          v-if="showYearlyDayOfWeek"
-          class="row q-gutter-md"
-        >
-          <q-select
-            v-model="positions"
-            :options="positionOptions"
-            dense
-            options-dense
-            color="intervention"
-            options-cover
-            map-options
-            emit-value
-            style="width: 142px"
-            :prefix="$t('everyDayPrefix')"
-          />
-          <q-select
-            v-model="singleDayOfTheWeek"
-            :options="singleDayOfTheWeekOptions"
-            dense
-            options-dense
-            color="intervention"
-            options-cover
-            map-options
-            emit-value
-            style="width: 142px"
-          />
-        </div>
-      </div>
-    </q-expansion-item>
-
-    <div
-      class="text-caption q-mt-md"
-      v-if="!!description"
-    >{{ description }}</div>
+    </div>
   </div>
 </template>
 
@@ -224,6 +298,9 @@ export default class EditReminder extends Vue {
   positions: number[] = [];
   showYearlyDayOfWeek = false;
   monthlyMode = "dayOfMonth";
+  recurrenceEnd = 1;
+  endDate = null;
+  occurenceCount = 1;
 
   get singleDayOfTheWeek() {
     if (this.daysOfTheWeek.length == 1) {
@@ -278,6 +355,11 @@ export default class EditReminder extends Vue {
       .map(key => this.$t(key) as string)
       .map(this.toOption)
       .concat([{ label: this.$t("lastDay") as string, value: -1 }]);
+  }
+  get recurrenceEndOptions() {
+    return ["never", "recurrenceEndDate", "endAfterOccurenceCount"]
+      .map(key => this.$t(key) as string)
+      .map(this.toOption);
   }
   get frequencyUnit() {
     if (this.frequency == RecurrenceFrequency.Daily) {

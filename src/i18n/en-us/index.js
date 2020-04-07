@@ -137,5 +137,12 @@ export default {
   ownRecurrencePatternTitle: "Own recurrence pattern",
   addTask: "Add Task",
   anytimeTitle: "Anytime",
-  clientNotFound: "No customer data was found. 🤷"
+  clientNotFound: "No customer data was found. 🤷",
+  addReminderTime: "Add time",
+  recurrenceEndLabel: "End",
+  never: "never",
+  recurrenceEndDate: "end date",
+  endAfterOccurenceCount: "after number of occurences",
+  endAfterOccureceCountLabel:
+    "after {count} occurence | after {count} occurences"
 };

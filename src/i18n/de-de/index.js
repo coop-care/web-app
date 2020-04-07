@@ -138,5 +138,11 @@ export default {
   ownRecurrencePatternTitle: "Eigener Rhytmus",
   addTask: "Aufgabe hinzufügen",
   anytimeTitle: "Jederzeit",
-  clientNotFound: "Es wurden keine Kundendaten gefunden. 🤷"
+  clientNotFound: "Es wurden keine Kundendaten gefunden. 🤷",
+  addReminderTime: "Zeitpunkt hinzufügen",
+  recurrenceEndLabel: "Beenden",
+  never: "Nie",
+  recurrenceEndDate: "Enddatum",
+  endAfterOccurenceCount: "Nach Anzahl von Ereignissen",
+  endAfterOccureceCountLabel: "Nach {count} Ereignis | Nach {count} Ereignissen"
 };
