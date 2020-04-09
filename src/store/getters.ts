@@ -1,4 +1,4 @@
-import { createGetters } from "direct-vuex";
+import { defineGetters } from "direct-vuex";
 import { store, StoreState } from ".";
 import { Client } from "../models/client";
 import { ProblemRecord } from "../models/problemRecord";
@@ -9,7 +9,7 @@ import ApexCharts from "apexcharts";
 
 const { getBrand } = colors;
 
-export default createGetters<StoreState>()({
+export default defineGetters<StoreState>()({
     getClient: state => (payload: any): Client | undefined => {
         if (payload.clientId) {
             return state.clients.find(

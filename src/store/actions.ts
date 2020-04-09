@@ -1,10 +1,10 @@
-import { createActions } from "direct-vuex";
+import { defineActions } from "direct-vuex";
 import { stitchApi } from "../boot/stitch";
 import sampleData from "../data/sample1.json";
 import { rootActionContext } from ".";
 import { Client } from "../models/client";
 
-export default createActions({
+export default defineActions({
     fetchClientsFromDB(context) {
         const { commit } = rootActionContext(context);
         commit.isLoadingClientList(true);

@@ -1,11 +1,11 @@
-import { createMutations } from "direct-vuex";
+import { defineMutations } from "direct-vuex";
 import { store, StoreState } from ".";
 import { Client } from "../models/client";
 import { ProblemRecord } from "../models/problemRecord";
 import { Outcome } from "../models/outcome";
 import { Rating } from "src/models/rating";
 
-export default createMutations<StoreState>()({
+export default defineMutations<StoreState>()({
     setClients(state, clients: Client[]) {
         state.clients = clients;
     },
