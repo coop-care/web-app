@@ -147,9 +147,10 @@ export default class ProblemRecording extends Vue {
       .then(() => this.$router.push({ name: "clientProblems" }));
   }
   replaceLocation() {
-    const location = this.$route;
-    location.params.step = "" + this.step;
-    this.$router.replace(location);
+    const name = this.$route.name || undefined;
+    const params = this.$route.params;
+    params.step = "" + this.step;
+    this.$router.replace({ name: name, params: params });
   }
 }
 </script>

@@ -45,13 +45,49 @@
       v-bind:key="index"
     >
       <div class="text-subtitle1 text-weight-bold q-mt-lg">{{ visit.time }}</div>
-      <searchable-option-list
-        color="intervention"
-        :options="visit.tasks"
-        allowMultipleSelection
-        v-model="foo"
-        dense
-      />
+      <div style="max-width:480px">
+        <q-list dense>
+          <q-item
+            tag="label"
+            v-for="(task, index) in visit.tasks"
+            v-bind:key="index"
+          >
+            <q-item-section
+              side
+              top
+            >
+              <q-checkbox
+                v-model="foo"
+                :val="task.code"
+                color="intervention"
+                keep-color
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">
+                {{ task.title }}
+              </q-item-label>
+              <q-item-label
+                caption
+                v-if="!!task.description"
+                :lines="!foo.includes(task.code) ? 2 : 0"
+              >
+                {{ task.description }}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section
+              side
+              top
+            >
+              <action-menu
+                :items="reminderActionItems"
+                color="intervention"
+                class="q-my-xs"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </div>
     </div>
   </div>
 </template>
@@ -64,8 +100,14 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { date, uid } from "quasar";
 import SearchableOptionList from "./SearchableOptionList.vue";
+import ActionMenu from "./ActionMenu.vue";
 
-@Component({ components: { SearchableOptionList } })
+@Component({
+  components: {
+    SearchableOptionList,
+    ActionMenu
+  }
+})
 export default class ClientReminders extends Vue {
   selectedDate = new Date();
   foo = [];
@@ -98,6 +140,31 @@ export default class ClientReminders extends Vue {
   }
   get isToday() {
     return date.isSameDate(this.selectedDate, new Date(), "day");
+  }
+  get reminderActionItems() {
+    return [
+      {
+        name: this.$t("cancelTask"),
+        icon: "",
+        action: () => {}
+      },
+      {
+        name: this.$t("moveTask"),
+        icon: "",
+        action: () => {}
+      },
+      {
+        name: this.$t("editIntervention"),
+        icon: "",
+        action: () => {}
+      },
+      {
+        name: this.$t("deleteIntervention"),
+        icon: "",
+        isDestructive: true,
+        action: () => {}
+      }
+    ];
   }
 
   formattedDate(options: any) {

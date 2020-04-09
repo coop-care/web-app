@@ -144,5 +144,10 @@ export default {
   never: "Nie",
   recurrenceEndDate: "Enddatum",
   endAfterOccurenceCount: "Nach Anzahl von Ereignissen",
-  endAfterOccureceCountLabel: "Nach {count} Ereignis | Nach {count} Ereignissen"
+  endAfterOccureceCountLabel:
+    "Nach {count} Ereignis | Nach {count} Ereignissen",
+  cancelTask: "Aufgabe auslassen",
+  moveTask: "Aufgabe verschieben",
+  editIntervention: "Intervention bearbeiten",
+  deleteIntervention: "Intervention beenden"
 };

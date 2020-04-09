@@ -144,5 +144,9 @@ export default {
   recurrenceEndDate: "end date",
   endAfterOccurenceCount: "after number of occurences",
   endAfterOccureceCountLabel:
-    "after {count} occurence | after {count} occurences"
+    "after {count} occurence | after {count} occurences",
+  cancelTask: "Omit task",
+  moveTask: "Move task",
+  editIntervention: "Edit intervention",
+  deleteIntervention: "End intervention"
 };

@@ -1,6 +1,6 @@
 <template>
   <q-btn-dropdown
-    color="primary"
+    :color="color"
     rounded
     outline
     size="14px"
@@ -18,7 +18,7 @@
         clickable
         v-ripple
         @click="item.action"
-        :class="item.isDestructive ? 'text-negative' : ''"
+        :class="item.isDestructive ? 'text-negative' : 'text-' + color"
       >
         <q-item-section avatar>
           <q-icon :name="item.icon" />
@@ -40,7 +40,11 @@ import Component from "vue-class-component";
 @Component({
   props: {
     title: String,
-    items: Array
+    items: Array,
+    color: {
+      type: String,
+      default: "primary"
+    }
   }
 })
 export default class ActionMenu extends Vue {}
