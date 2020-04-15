@@ -92,7 +92,8 @@ module.exports = function(ctx) {
         "QDate",
         "QToggle",
         "QSpinner",
-        "QRouteTab"
+        "QRouteTab",
+        "QMenu"
       ],
 
       directives: ["Ripple", "TouchSwipe"],

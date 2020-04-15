@@ -149,5 +149,15 @@ export default {
   cancelTask: "Aufgabe auslassen",
   moveTask: "Aufgabe verschieben",
   editIntervention: "Intervention bearbeiten",
-  deleteIntervention: "Intervention beenden"
+  deleteIntervention: "Intervention beenden",
+  dateFormat: "DD.MM.YYYY",
+  timeFormat: "HH:mm",
+  datetimeFormat: "DD.MM.YYYY HH:mm",
+  dateFormatPlaceholder: "TT.MM.JJJJ",
+  timeFormatPlaceholder: "hh:mm",
+  datetimeFormatPlaceholder: "TT.MM.JJJJ hh:mm",
+  today: "Heute",
+  tomorrow: "Morgen",
+  inOneWeek: "In einer Woche",
+  addTimePlaceholder: "Uhrzeit hinzufügen ({format})"
 };

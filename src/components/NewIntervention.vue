@@ -20,12 +20,16 @@
             class="text-subtitle1 text-weight-medium q-mt-md q-mb-sm"
           >
             <template v-slot:problem>
-              <span class="text-weight-bold">{{ $t(record.problem.title) }}</span>
+              <span class="text-weight-bold">{{
+                $t(record.problem.title)
+              }}</span>
             </template>
           </i18n>
           <searchable-option-list
             color="intervention"
-            :options="terminology.interventionScheme.targets.concat([]).slice(0, 5)"
+            :options="
+              terminology.interventionScheme.targets.concat([]).slice(0, 5)
+            "
             v-model="targetCode"
           />
           <q-expansion-item
@@ -64,66 +68,21 @@
         />
 
         <h6 class="counter">{{ $t("planReminder") }}</h6>
-        <div class="row q-col-gutter-lg q-mb-lg items-start">
-          <q-input
-            type="datetime"
-            mask="datetime"
-            v-model="startdate"
+        <div class="row q-col-gutter-xl q-mb-lg items-start">
+          <date-time
+            v-model="startDate"
+            :min="new Date()"
+            :format="$t('datetimeFormat')"
             :label="$t('addReminderTime')"
+            :placeholder="$t('datetimeFormatPlaceholder')"
+            :options="startDateOptions"
             color="intervention"
             class="col-md-4 col-sm-6 col-12"
-          >
-            <template v-slot:prepend>
-              <q-icon
-                name="event"
-                class="cursor-pointer"
-                color="intervention"
-              >
-                <q-popup-proxy
-                  ref="startdateDateProxy"
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    v-model="startdate"
-                    mask="YYYY-MM-DD HH:mm"
-                    color="intervention"
-                    @input="$refs.startdateDateProxy.hide()"
-                  />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-
-            <template v-slot:append>
-              <q-icon
-                v-if="startdate"
-                name="cancel"
-                @click.stop="startdate = null"
-                class="cursor-pointer"
-              />
-              <q-icon
-                name="access_time"
-                class="cursor-pointer"
-                color="intervention"
-              >
-                <q-popup-proxy
-                  ref="startdateTimeProxy"
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-time
-                    v-model="startdate"
-                    mask="YYYY-MM-DD HH:mm"
-                    format24h
-                    color="intervention"
-                    @input="$refs.startdateTimeProxy.hide()"
-                  />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+          />
           <edit-reminder
-            v-if="startdate"
+            v-if="startDate"
+            :defaultTime="startDate"
+            color="intervention"
             class="col-md-8 col-sm-6 col-12"
           />
         </div>
@@ -142,24 +101,46 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { date } from "quasar";
 import { Terminology } from "../helper/terminology";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
 import EditReminder from "../components/EditReminder.vue";
+import DateTime from "../components/DateTime.vue";
 
 @Component({
   components: {
     ProblemSummary,
     SearchableOptionList,
-    EditReminder
+    EditReminder,
+    DateTime
   }
 })
 export default class Intervention extends Vue {
   categoryCode = "";
   targetCode = "";
   details = "";
-  startdate = null;
+  startDate: Date | null = null;
 
+  get startDateOptions() {
+    const today = date.startOfDate(new Date(), "day");
+    const tomorrow = date.addToDate(today, { days: 1 });
+    const nextWeek = date.addToDate(today, { days: 7 });
+    return [
+      {
+        label: this.$t("today"),
+        value: today
+      },
+      {
+        label: this.$t("tomorrow"),
+        value: tomorrow
+      },
+      {
+        label: this.$t("inOneWeek"),
+        value: nextWeek
+      }
+    ];
+  }
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
   }

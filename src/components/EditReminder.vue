@@ -13,60 +13,44 @@
           emit-value
         />
 
-        <div v-if="frequency != RecurrenceFrequency.Never">
-          <q-input
-            :color="color"
-            v-model.number="interval"
-            type="number"
-            class="q-my-sm"
-            dense
-            :prefix="$tc('every' + frequencyUnit, 5).split(' 5 ')[0]"
-            :suffix="$tc('every' + frequencyUnit, 5).split(' 5 ')[1]"
-            step="1"
-            min="1"
-            max="999"
-            :rules="[val => (val >= 1 && val <= 999) || '']"
-            input-class="text-center"
-          />
-        </div>
-
         <q-toggle
           v-if="frequency != RecurrenceFrequency.Never"
           v-model="hasOwnRecurrencePattern"
           :label="$t('ownRecurrencePatternTitle')"
           :color="color"
           switch-toggle-side
+          class="q-mt-lg q-mb-sm"
           dense
         />
+
         <div v-if="hasOwnRecurrencePattern">
-          <div v-if="frequency == RecurrenceFrequency.Daily">
+          <div v-if="frequency != RecurrenceFrequency.Never">
             <q-input
               :color="color"
-              v-model="time"
-              mask="time"
-              :rules="['time']"
-              type="time"
-              borderless
-            >
-              <template v-slot:prepend>
-                <q-icon name="access_time" class="cursor-pointer">
-                  <q-popup-proxy
-                    transition-show="scale"
-                    transition-hide="scale"
-                  >
-                    <q-time v-model="time" :color="color" />
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
-            <q-btn
-              icon="add"
-              round
-              outline
-              size="10.5px"
-              :color="color"
-              :title="$t('addTime')"
-              class="shadow-1"
+              v-model.number="interval"
+              type="number"
+              dense
+              step="1"
+              :prefix="$tc('every' + frequencyUnit, 5).split(' 5 ')[0]"
+              :suffix="$tc('every' + frequencyUnit, 5).split(' 5 ')[1]"
+              input-class="text-center"
+              class="q-pb-md"
+              :key="intervalKey"
+              @input="validateInterval"
+            />
+          </div>
+
+          <div v-if="frequency == RecurrenceFrequency.Daily">
+            <date-time
+              v-for="(time, index) in timesOfTheDay.concat([null])"
+              :key="index"
+              :value="time"
+              :format="$t('timeFormat')"
+              :placeholder="$t('addTimePlaceholder', {format: $t('timeFormatPlaceholder')})"
+              color="intervention"
+              class=""
+              dense
+              @input="timesOfTheDayInput($event, index)"
             />
           </div>
 
@@ -76,20 +60,20 @@
               :options="daysOfTheWeekOptions"
               color="white"
               text-color="gray-9"
-              toggle-:color="color"
+              :toggle-color="color"
               toggle-text-color="white"
-              class="q-mt-sm"
             />
           </div>
 
           <div v-if="frequency == RecurrenceFrequency.Monthly">
-            <div class="q-mt-md">
+            <div>
               <q-radio
                 v-model="monthlyMode"
                 val="dayOfMonth"
                 :label="$t('onDayOfMonthTitle')"
                 :color="color"
                 dense
+                class="q-mt-xs"
               />
             </div>
             <toggle-button-group
@@ -98,7 +82,7 @@
               :options="daysOfTheMonthOptions"
               color="white"
               text-color="gray-9"
-              toggle-:color="color"
+              :toggle-color="color"
               toggle-text-color="white"
               class="q-mt-sm q-mb-md"
             />
@@ -149,9 +133,9 @@
               :options="monthsOfTheYearOptions"
               color="white"
               text-color="gray-9"
-              toggle-:color="color"
+              :toggle-color="color"
               toggle-text-color="white"
-              class="q-my-sm"
+              class="q-mb-sm"
             />
             <div class="q-mt-md q-mb-sm">
               <q-toggle
@@ -161,7 +145,10 @@
                 dense
               />
             </div>
-            <div v-if="showYearlyDayOfWeek" class="row q-col-gutter-x-sm">
+            <div
+              v-if="showYearlyDayOfWeek"
+              class="row q-col-gutter-x-sm"
+            >
               <q-select
                 v-model="positions"
                 :options="positionOptions"
@@ -215,32 +202,16 @@
         />
 
         <div v-if="recurrenceEnd == 2">
-          <q-input
+          <date-time
             v-model="endDate"
-            type="date"
-            mask="date"
-            :color="color"
+            :format="$t('dateFormat')"
+            :min="new Date()"
+            :placeholder="$t('dateFormatPlaceholder')"
+            color="intervention"
             class="q-mt-sm"
+            required
             dense
-          >
-            <template v-slot:prepend>
-              <q-icon name="event" class="cursor-pointer" :color="color">
-                <q-popup-proxy
-                  ref="endDateProxy"
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    v-model="endDate"
-                    mask="YYYY-MM-DD"
-                    :color="color"
-                    @input="$refs.endDateProxy.hide()"
-                    today-btn
-                  />
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
+          />
         </div>
 
         <div v-if="recurrenceEnd == 3">
@@ -251,10 +222,9 @@
             class="q-my-sm"
             dense
             step="1"
-            min="1"
-            max="999"
-            :rules="[val => (val >= 1 && val <= 999) || '']"
             input-class="text-center"
+            @input="validateOccurenceCount"
+            :key="occurenceCountKey"
           >
             <template v-slot:prepend>
               <div class="text-body2 text-black">
@@ -285,9 +255,11 @@ import Component from "vue-class-component";
 import { RecurrenceFrequency } from "../models/recurrenceRule";
 import SearchableOptionList from "./SearchableOptionList.vue";
 import ToggleButtonGroup from "./ToggleButtonGroup.vue";
+import DateTime from "../components/DateTime.vue";
 
 @Component({
   props: {
+    defaultTime: Date,
     color: {
       type: String,
       default: "primary"
@@ -295,38 +267,26 @@ import ToggleButtonGroup from "./ToggleButtonGroup.vue";
   },
   components: {
     SearchableOptionList,
-    ToggleButtonGroup
+    ToggleButtonGroup,
+    DateTime
   },
   watch: {
     frequency() {
-      const self = this as EditReminder;
-      self.interval = 1;
-      self.daysOfTheWeek = [];
-      self.daysOfTheMonth = [];
-      self.monthsOfTheYear = [];
-      self.positions = [];
-      self.showYearlyDayOfWeek = false;
-      self.monthlyMode = "dayOfMonth";
+      (this as EditReminder).reset();
     },
     hasOwnRecurrencePattern() {
-      const self = this as EditReminder;
-      self.daysOfTheWeek = [];
-      self.daysOfTheMonth = [];
-      self.monthsOfTheYear = [];
-      self.positions = [];
-      self.showYearlyDayOfWeek = false;
-      self.monthlyMode = "dayOfMonth";
+      (this as EditReminder).reset();
     },
     recurrenceEnd(value) {
       const self = this as EditReminder;
       if (value == 1) {
-        self.endDate = "";
+        self.endDate = null;
         self.occurenceCount = 0;
       } else if (value == 2) {
-        self.endDate = new Date().toISOString().substring(0, 10);
+        self.endDate = new Date();
         self.occurenceCount = 0;
       } else if (value == 3) {
-        self.endDate = "";
+        self.endDate = null;
         self.occurenceCount = 1;
       }
     }
@@ -336,7 +296,7 @@ export default class EditReminder extends Vue {
   frequency = RecurrenceFrequency.Never;
   interval = 1;
   hasOwnRecurrencePattern = false;
-  time = "10:00";
+  timesOfTheDay: Date[] = [];
   daysOfTheWeek: number[] = [];
   daysOfTheMonth: number[] = [];
   monthsOfTheYear: number[] = [];
@@ -344,8 +304,10 @@ export default class EditReminder extends Vue {
   showYearlyDayOfWeek = false;
   monthlyMode = "dayOfMonth";
   recurrenceEnd = 1;
-  endDate = "";
+  endDate: Date | null = null;
   occurenceCount = 0;
+  intervalKey = Math.random();
+  occurenceCountKey = Math.random();
 
   get singleDayOfTheWeek() {
     if (this.daysOfTheWeek.length == 1) {
@@ -434,6 +396,45 @@ export default class EditReminder extends Vue {
 
   toOption(name: string, index: number) {
     return { label: name, value: index + 1 };
+  }
+  reset() {
+    this.interval = 1;
+    this.timesOfTheDay = [];
+    if (
+      this.frequency == RecurrenceFrequency.Daily &&
+      this.hasOwnRecurrencePattern &&
+      this.$props.defaultTime
+    ) {
+      this.timesOfTheDay = [this.$props.defaultTime];
+    } else {
+      this.timesOfTheDay = [];
+    }
+    this.daysOfTheWeek = [];
+    this.daysOfTheMonth = [];
+    this.monthsOfTheYear = [];
+    this.positions = [];
+    this.showYearlyDayOfWeek = false;
+    this.monthlyMode = "dayOfMonth";
+  }
+  validateInterval(value: number) {
+    if (!/^\d{1,3}$/.test("" + value) || value < 1) {
+      this.interval = 1;
+      this.intervalKey = Math.random();
+    }
+  }
+  validateOccurenceCount(value: number) {
+    if (!/^\d{1,3}$/.test("" + value) || value < 1) {
+      this.occurenceCount = 1;
+      this.occurenceCountKey = Math.random();
+    }
+  }
+  timesOfTheDayInput(value: Date | null, index: number) {
+    if (value == null) {
+      this.timesOfTheDay.splice(index, 1);
+    } else {
+      this.timesOfTheDay[index] = value;
+    }
+    this.timesOfTheDay = this.timesOfTheDay.concat([]);
   }
 }
 </script>
