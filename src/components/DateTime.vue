@@ -8,6 +8,7 @@
     :dense="dense"
     :key="dateKey"
     @blur="dateKey = Math.random()"
+    ref="dateInput"
   >
     <q-menu
       v-if="mappedOptions"
@@ -17,6 +18,7 @@
       anchor="bottom left"
       self="top left"
       square
+      no-focus
     >
       <q-list dense>
         <q-item
@@ -80,7 +82,7 @@
       <q-icon
         v-if="!required && dateString"
         name="cancel"
-        @click.stop="$emit('input', null)"
+        @click.stop="clear"
         class="cursor-pointer"
       />
       <q-icon
@@ -110,7 +112,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { date } from "quasar";
+import { date, QInput } from "quasar";
 
 const emptyDate = new Date(0, 0, 0, 0, 0, 0, 0).getTime();
 
@@ -186,6 +188,11 @@ export default class DateTime extends Vue {
       !this.$props.min ||
       value >= date.formatDate(this.$props.min, "YYYY/MM/DD")
     );
+  }
+  clear(event: Event) {
+    this.$emit("input", null);
+    (this.$refs.dateInput as QInput).$emit("blur", event);
+    this.showOptions = false;
   }
 }
 </script>
