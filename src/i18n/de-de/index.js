@@ -159,5 +159,7 @@ export default {
   today: "Heute",
   tomorrow: "Morgen",
   inOneWeek: "In einer Woche",
-  addTimePlaceholder: "Uhrzeit hinzufügen ({format})"
+  addTimePlaceholder: "Uhrzeit hinzufügen ({format})",
+  reportTitle: "Bericht",
+  masterDataTitle: "Stammblatt"
 };

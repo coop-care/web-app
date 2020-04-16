@@ -18,7 +18,7 @@
       <div class="flex justify-around q-mt-lg">
         <q-btn
           :label="$t('cancel')"
-          :to="{name: 'clientProblems', params: $route.params}"
+          :to="{name: 'clientReport', params: $route.params}"
           color="primary"
           rounded
           flat
@@ -66,7 +66,9 @@ export default class Rating extends Vue {
     });
     this.$store.direct.dispatch
       .saveClient(this.$route.params)
-      .then(() => this.$router.push({ name: "clientProblems" }));
+      .then(() =>
+        this.$router.push({ name: "clientReport", params: this.$route.params })
+      );
   }
 }
 </script>

@@ -86,10 +86,10 @@
           />
         </q-route-tab>
         <q-route-tab
-          name="problems"
-          :label="$tc('problem', 2)"
-          icon="fas fa-book-medical"
-          :to="{ name: 'clientProblems', params: $route.params }"
+          name="report"
+          :label="$t('reportTitle')"
+          icon="fas fa-notes-medical"
+          :to="{ name: 'clientReport', params: $route.params }"
         />
         <q-route-tab
           name="history"
@@ -97,19 +97,40 @@
           icon="fas fa-history"
           :to="{ name: 'clientHistory', params: $route.params }"
         />
+        <q-route-tab
+          name="masterData"
+          :label="$t('masterDataTitle')"
+          icon="fas fa-address-book"
+          :to="{ name: 'clientMasterData', params: $route.params }"
+        />
       </q-tabs>
       <q-tab-panels
         animated
         v-model="selectedTab"
       >
-        <q-tab-panel name="reminders">
+        <q-tab-panel
+          name="reminders"
+          class="q-px-none"
+        >
           <client-reminders />
         </q-tab-panel>
-        <q-tab-panel name="problems">
+        <q-tab-panel
+          name="report"
+          class="q-px-none"
+        >
           <client-problems />
         </q-tab-panel>
-        <q-tab-panel name="history">
+        <q-tab-panel
+          name="history"
+          class="q-px-none"
+        >
           <client-history />
+        </q-tab-panel>
+        <q-tab-panel
+          name="masterData"
+          class="q-px-none"
+        >
+          <client-master-data />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -132,6 +153,7 @@ import ActionMenu from "../components/ActionMenu.vue";
 import ClientProblems from "../components/ClientProblems.vue";
 import ClientReminders from "../components/ClientReminders.vue";
 import ClientHistory from "../components/ClientHistory.vue";
+import ClientMasterData from "../components/ClientMasterData.vue";
 import { Client } from "../models/client";
 import { ObjectID } from "bson";
 import Loading from "components/Loading.vue";
@@ -148,6 +170,7 @@ const nameof = (name: keyof Client) => name;
     ClientProblems,
     ClientReminders,
     ClientHistory,
+    ClientMasterData,
     Loading,
     CentralMessage
   }
@@ -208,7 +231,7 @@ export default class PageIndex extends Vue {
       .then(res => {
         this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
           this.$router.push({
-            name: "clientProblems",
+            name: "clientReport",
             params: { clientId: res.insertedId }
           });
         });

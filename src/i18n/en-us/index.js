@@ -158,5 +158,7 @@ export default {
   today: "Today",
   tomorrow: "Tomorrow",
   inOneWeek: "In one week",
-  addTimePlaceholder: "Add time of day ({format})"
+  addTimePlaceholder: "Add time of day ({format})",
+  reportTitle: "Report",
+  masterDataTitle: "Master Data"
 };

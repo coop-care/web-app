@@ -62,7 +62,7 @@
           v-ripple
           :active="isSelected(client)"
           active-class="text-primary"
-          @click="selectClient(client, 'clientProblems')"
+          @click="selectClient(client, 'clientReport')"
           class="q-pl-xl"
         >
           <q-item-section>

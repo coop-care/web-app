@@ -19,12 +19,16 @@ const routes: RouteConfig[] = [
                         path: "reminders"
                     },
                     {
-                        name: "clientProblems",
-                        path: "problems"
+                        name: "clientReport",
+                        path: "report"
                     },
                     {
                         name: "clientHistory",
                         path: "history"
+                    },
+                    {
+                        name: "clientMasterData",
+                        path: "masterdata"
                     }
                 ]
             },

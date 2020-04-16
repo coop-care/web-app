@@ -12,7 +12,7 @@
           @click="$root.$emit('toggleClientDrawer')"
         />
         <q-btn
-          v-if="!['client', 'clientReminders', 'clientProblems', 'clientHistory', 'login'].includes($router.currentRoute.name)"
+          v-if="!['client', 'clientReminders', 'clientReport', 'clientHistory', 'clientMasterData', 'login'].includes($router.currentRoute.name)"
           size="lg"
           dense
           no-caps
