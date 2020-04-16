@@ -275,7 +275,7 @@ enum RecurrenceEndMode {
 @Component({
   props: {
     value: RecurrenceRule,
-    defaultTime: Date,
+    startDate: Date,
     color: {
       type: String,
       default: "primary"
@@ -450,9 +450,9 @@ export default class EditReminder extends Vue {
     if (
       this.rule.frequency == RecurrenceFrequency.Daily &&
       this.hasOwnRecurrencePattern &&
-      this.$props.defaultTime
+      this.$props.startDate
     ) {
-      this.rule.timesOfTheDay = [this.$props.defaultTime];
+      this.rule.timesOfTheDay = [this.$props.startDate];
     } else {
       this.rule.timesOfTheDay = [];
     }

@@ -82,7 +82,7 @@
           <edit-reminder
             v-if="startDate"
             v-model="recurrenceRule"
-            :defaultTime="startDate"
+            :startDate="startDate"
             color="intervention"
             class="col-md-8 col-sm-6 col-12"
           />

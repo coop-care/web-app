@@ -47,6 +47,8 @@ export class RecurrenceRule {
     monthsOfTheYear: number[];
     @Type(() => Number)
     positions: number[];
+    @Type(() => Date)
+    recurrenceStart?: Date;
     @Type(() => RecurrenceEnd)
     recurrenceEnd?: RecurrenceEnd;
 
@@ -60,6 +62,7 @@ export class RecurrenceRule {
         weeksOfTheYear: number[] = [],
         monthsOfTheYear: number[] = [],
         positions: number[] = [],
+        recurrenceStart?: Date,
         recurrenceEnd?: RecurrenceEnd
     ) {
         this.frequency = frequency;
@@ -71,6 +74,7 @@ export class RecurrenceRule {
         this.weeksOfTheYear = weeksOfTheYear;
         this.monthsOfTheYear = monthsOfTheYear;
         this.positions = positions;
+        this.recurrenceStart = recurrenceStart;
         this.recurrenceEnd = recurrenceEnd;
     }
 
