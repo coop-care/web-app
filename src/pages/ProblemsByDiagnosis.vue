@@ -118,12 +118,11 @@ import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 
 @Component({
   watch: {
-    selectedDiagnosisCode(value) {
-      const self = this as ProblemsByDiagnosis;
+    selectedDiagnosisCode(this: ProblemsByDiagnosis, value: string) {
       if (value) {
-        self.step += 1;
+        this.step += 1;
       }
-      self.selectedProblemCodes = [];
+      this.selectedProblemCodes = [];
     }
   },
   components: {

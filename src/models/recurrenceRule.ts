@@ -11,11 +11,11 @@ export enum RecurrenceFrequency {
 
 export class RecurrenceDayOfWeek {
     dayOfTheWeek: number;
-    weakNumber: number;
+    weekNumber: number;
 
-    constructor(dayOfTheWeek: number, weakNumber = 0) {
+    constructor(dayOfTheWeek: number, weekNumber = 0) {
         this.dayOfTheWeek = dayOfTheWeek;
-        this.weakNumber = weakNumber;
+        this.weekNumber = weekNumber;
     }
 }
 
@@ -52,7 +52,7 @@ export class RecurrenceRule {
 
     constructor(
         frequency: RecurrenceFrequency,
-        interval: number,
+        interval = 1,
         timesOfTheDay: Date[] = [],
         daysOfTheWeek: RecurrenceDayOfWeek[] = [],
         daysOfTheMonth: number[] = [],
@@ -72,5 +72,19 @@ export class RecurrenceRule {
         this.monthsOfTheYear = monthsOfTheYear;
         this.positions = positions;
         this.recurrenceEnd = recurrenceEnd;
+    }
+
+    get frequencyUnit() {
+        if (this.frequency == RecurrenceFrequency.Daily) {
+            return "Day";
+        } else if (this.frequency == RecurrenceFrequency.Weekly) {
+            return "Week";
+        } else if (this.frequency == RecurrenceFrequency.Monthly) {
+            return "Month";
+        } else if (this.frequency == RecurrenceFrequency.Yearly) {
+            return "Year";
+        } else {
+            return "";
+        }
     }
 }

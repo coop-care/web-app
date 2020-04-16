@@ -3,7 +3,7 @@
     <div class="row q-col-gutter-xl items-start">
       <div class="col-md-6 col-12">
         <q-select
-          v-model="frequency"
+          v-model="rule.frequency"
           :options="frequencyOptions"
           :label="$t('recurrence')"
           options-dense
@@ -14,7 +14,7 @@
         />
 
         <q-toggle
-          v-if="frequency != RecurrenceFrequency.Never"
+          v-if="rule.frequency != RecurrenceFrequency.Never"
           v-model="hasOwnRecurrencePattern"
           :label="$t('ownRecurrencePatternTitle')"
           :color="color"
@@ -24,15 +24,15 @@
         />
 
         <div v-if="hasOwnRecurrencePattern">
-          <div v-if="frequency != RecurrenceFrequency.Never">
+          <div v-if="rule.frequency != RecurrenceFrequency.Never">
             <q-input
               :color="color"
-              v-model.number="interval"
+              v-model.number="rule.interval"
               type="number"
               dense
               step="1"
-              :prefix="$tc('every' + frequencyUnit, 5).split(' 5 ')[0]"
-              :suffix="$tc('every' + frequencyUnit, 5).split(' 5 ')[1]"
+              :prefix="$tc('every' + rule.frequencyUnit, 5).split(' 5 ')[0]"
+              :suffix="$tc('every' + rule.frequencyUnit, 5).split(' 5 ')[1]"
               input-class="text-center"
               class="q-pb-md"
               :key="intervalKey"
@@ -40,9 +40,9 @@
             />
           </div>
 
-          <div v-if="frequency == RecurrenceFrequency.Daily">
+          <div v-if="rule.frequency == RecurrenceFrequency.Daily">
             <date-time
-              v-for="(time, index) in timesOfTheDay.concat([null])"
+              v-for="(time, index) in rule.timesOfTheDay.concat([null])"
               :key="index"
               :value="time"
               :format="$t('timeFormat')"
@@ -54,7 +54,7 @@
             />
           </div>
 
-          <div v-if="frequency == RecurrenceFrequency.Weekly">
+          <div v-if="rule.frequency == RecurrenceFrequency.Weekly">
             <toggle-button-group
               v-model="daysOfTheWeek"
               :options="daysOfTheWeekOptions"
@@ -65,11 +65,11 @@
             />
           </div>
 
-          <div v-if="frequency == RecurrenceFrequency.Monthly">
+          <div v-if="rule.frequency == RecurrenceFrequency.Monthly">
             <div>
               <q-radio
                 v-model="monthlyMode"
-                val="dayOfMonth"
+                :val="MonthlyMode.DayOfMonth"
                 :label="$t('onDayOfMonthTitle')"
                 :color="color"
                 dense
@@ -77,8 +77,8 @@
               />
             </div>
             <toggle-button-group
-              v-if="monthlyMode == 'dayOfMonth'"
-              v-model="daysOfTheMonth"
+              v-if="monthlyMode == MonthlyMode.DayOfMonth"
+              v-model="rule.daysOfTheMonth"
               :options="daysOfTheMonthOptions"
               color="white"
               text-color="gray-9"
@@ -89,18 +89,18 @@
             <div class="q-my-sm">
               <q-radio
                 v-model="monthlyMode"
-                val="dayOfWeek"
+                :val="MonthlyMode.DayOfWeek"
                 :label="$t('onDayOfWeekTitle')"
                 :color="color"
                 dense
               />
             </div>
             <div
-              v-if="monthlyMode == 'dayOfWeek'"
+              v-if="monthlyMode == MonthlyMode.DayOfWeek"
               class="row q-col-gutter-x-sm"
             >
               <q-select
-                v-model="positions"
+                v-model="rule.positions"
                 :options="positionOptions"
                 dense
                 options-dense
@@ -127,9 +127,9 @@
             </div>
           </div>
 
-          <div v-if="frequency == RecurrenceFrequency.Yearly">
+          <div v-if="rule.frequency == RecurrenceFrequency.Yearly">
             <toggle-button-group
-              v-model="monthsOfTheYear"
+              v-model="rule.monthsOfTheYear"
               :options="monthsOfTheYearOptions"
               color="white"
               text-color="gray-9"
@@ -150,7 +150,7 @@
               class="row q-col-gutter-x-sm"
             >
               <q-select
-                v-model="positions"
+                v-model="rule.positions"
                 :options="positionOptions"
                 dense
                 options-dense
@@ -187,7 +187,7 @@
       </div>
 
       <div
-        v-if="frequency != RecurrenceFrequency.Never"
+        v-if="rule.frequency != RecurrenceFrequency.Never"
         class="col-md-6 col-12"
       >
         <q-select
@@ -201,9 +201,9 @@
           emit-value
         />
 
-        <div v-if="recurrenceEnd == 2">
+        <div v-if="recurrenceEnd == RecurrenceEndMode.EndDate">
           <date-time
-            v-model="endDate"
+            v-model="rule.recurrenceEnd.endDate"
             :format="$t('dateFormat')"
             :min="new Date()"
             :placeholder="$t('dateFormatPlaceholder')"
@@ -214,10 +214,10 @@
           />
         </div>
 
-        <div v-if="recurrenceEnd == 3">
+        <div v-if="recurrenceEnd == RecurrenceEndMode.NumberOfOccurences">
           <q-input
             :color="color"
-            v-model.number="occurenceCount"
+            v-model.number="rule.recurrenceEnd.occurenceCount"
             type="number"
             class="q-my-sm"
             dense
@@ -229,16 +229,16 @@
             <template v-slot:prepend>
               <div class="text-body2 text-black">
                 {{
-                  $tc("endAfterOccureceCountLabel", occurenceCount).split(
-                    " " + occurenceCount + " "
+                  $tc("endAfterOccureceCountLabel", rule.recurrenceEnd.occurenceCount).split(
+                    " " + rule.recurrenceEnd.occurenceCount + " "
                   )[0]
                 }}
               </div>
             </template>
             <template v-slot:append>
               <span class="text-body2 text-black">{{
-                $tc("endAfterOccureceCountLabel", occurenceCount).split(
-                  " " + occurenceCount + " "
+                $tc("endAfterOccureceCountLabel", rule.recurrenceEnd.occurenceCount).split(
+                  " " + rule.recurrenceEnd.occurenceCount + " "
                 )[1]
               }}</span>
             </template>
@@ -252,13 +252,29 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { RecurrenceFrequency } from "../models/recurrenceRule";
+import {
+  RecurrenceRule,
+  RecurrenceFrequency,
+  RecurrenceDayOfWeek,
+  RecurrenceEnd
+} from "../models/recurrenceRule";
 import SearchableOptionList from "./SearchableOptionList.vue";
 import ToggleButtonGroup from "./ToggleButtonGroup.vue";
 import DateTime from "../components/DateTime.vue";
 
+enum MonthlyMode {
+  DayOfMonth = 1,
+  DayOfWeek
+}
+enum RecurrenceEndMode {
+  Never = 1,
+  EndDate,
+  NumberOfOccurences
+}
+
 @Component({
   props: {
+    value: RecurrenceRule,
     defaultTime: Date,
     color: {
       type: String,
@@ -271,44 +287,60 @@ import DateTime from "../components/DateTime.vue";
     DateTime
   },
   watch: {
-    frequency() {
-      (this as EditReminder).reset();
+    rule: {
+      handler: function(this: EditReminder) {
+        if (this.rule.frequency == RecurrenceFrequency.Never) {
+          this.$emit("input", null);
+        } else if (this.rule != this.$props.value) {
+          this.$emit("input", this.rule);
+        }
+      },
+      deep: true
     },
-    hasOwnRecurrencePattern() {
-      (this as EditReminder).reset();
-    },
-    recurrenceEnd(value) {
-      const self = this as EditReminder;
-      if (value == 1) {
-        self.endDate = null;
-        self.occurenceCount = 0;
-      } else if (value == 2) {
-        self.endDate = new Date();
-        self.occurenceCount = 0;
-      } else if (value == 3) {
-        self.endDate = null;
-        self.occurenceCount = 1;
+    value(this: EditReminder, rule: RecurrenceRule | undefined) {
+      if (!rule) {
+        this.rule.frequency = RecurrenceFrequency.Never;
+      } else if (rule != this.rule) {
+        this.rule = rule;
       }
     }
   }
 })
 export default class EditReminder extends Vue {
-  frequency = RecurrenceFrequency.Never;
-  interval = 1;
+  rule = new RecurrenceRule(RecurrenceFrequency.Never);
   hasOwnRecurrencePattern = false;
-  timesOfTheDay: Date[] = [];
-  daysOfTheWeek: number[] = [];
-  daysOfTheMonth: number[] = [];
-  monthsOfTheYear: number[] = [];
-  positions: number[] = [];
+  monthlyMode = MonthlyMode.DayOfMonth;
   showYearlyDayOfWeek = false;
-  monthlyMode = "dayOfMonth";
-  recurrenceEnd = 1;
-  endDate: Date | null = null;
-  occurenceCount = 0;
   intervalKey = Math.random();
   occurenceCountKey = Math.random();
 
+  get daysOfTheWeek() {
+    return this.rule.daysOfTheWeek.map(day => day.dayOfTheWeek);
+  }
+  set daysOfTheWeek(value: number[]) {
+    this.rule.daysOfTheWeek = value.map(day => new RecurrenceDayOfWeek(day));
+  }
+  get recurrenceEnd() {
+    if (this.rule.recurrenceEnd && this.rule.recurrenceEnd.endDate) {
+      return RecurrenceEndMode.EndDate;
+    } else if (
+      this.rule.recurrenceEnd &&
+      this.rule.recurrenceEnd.occurenceCount
+    ) {
+      return RecurrenceEndMode.NumberOfOccurences;
+    } else {
+      return RecurrenceEndMode.Never;
+    }
+  }
+  set recurrenceEnd(value: RecurrenceEndMode) {
+    if (value == RecurrenceEndMode.EndDate) {
+      this.rule.recurrenceEnd = new RecurrenceEnd(new Date());
+    } else if (value == RecurrenceEndMode.NumberOfOccurences) {
+      this.rule.recurrenceEnd = new RecurrenceEnd(undefined, 1);
+    } else {
+      this.rule.recurrenceEnd = undefined;
+    }
+  }
   get singleDayOfTheWeek() {
     if (this.daysOfTheWeek.length == 1) {
       return this.daysOfTheWeek[0];
@@ -359,33 +391,27 @@ export default class EditReminder extends Vue {
   }
   get positionOptions() {
     return ["firstDay", "secondDay", "thirdDay", "fourthDay", "fifthDay"]
-      .map(key => this.$t(key) as string)
-      .map(this.toOption)
-      .concat([{ label: this.$t("lastDay") as string, value: -1 }]);
+      .map((key, index) => {
+        return {
+          label: this.$t(key) as string,
+          value: [index + 1]
+        };
+      })
+      .concat([{ label: this.$t("lastDay") as string, value: [-1] }]);
   }
   get recurrenceEndOptions() {
     return ["never", "recurrenceEndDate", "endAfterOccurenceCount"]
       .map(key => this.$t(key) as string)
       .map(this.toOption);
   }
-  get frequencyUnit() {
-    if (this.frequency == RecurrenceFrequency.Daily) {
-      return "Day";
-    } else if (this.frequency == RecurrenceFrequency.Weekly) {
-      return "Week";
-    } else if (this.frequency == RecurrenceFrequency.Monthly) {
-      return "Month";
-    } else if (this.frequency == RecurrenceFrequency.Yearly) {
-      return "Year";
-    } else {
-      return "";
-    }
-  }
   get description() {
     let description = "";
 
-    if (this.frequencyUnit) {
-      description += this.$tc("every" + this.frequencyUnit, this.interval);
+    if (this.rule.frequencyUnit) {
+      description += this.$tc(
+        "every" + this.rule.frequencyUnit,
+        this.rule.interval
+      );
     }
 
     return description;
@@ -393,48 +419,111 @@ export default class EditReminder extends Vue {
   get RecurrenceFrequency() {
     return RecurrenceFrequency;
   }
+  get MonthlyMode() {
+    return MonthlyMode;
+  }
+  get RecurrenceEndMode() {
+    return RecurrenceEndMode;
+  }
 
   toOption(name: string, index: number) {
     return { label: name, value: index + 1 };
   }
-  reset() {
-    this.interval = 1;
-    this.timesOfTheDay = [];
-    if (
-      this.frequency == RecurrenceFrequency.Daily &&
-      this.hasOwnRecurrencePattern &&
-      this.$props.defaultTime
-    ) {
-      this.timesOfTheDay = [this.$props.defaultTime];
-    } else {
-      this.timesOfTheDay = [];
-    }
-    this.daysOfTheWeek = [];
-    this.daysOfTheMonth = [];
-    this.monthsOfTheYear = [];
-    this.positions = [];
-    this.showYearlyDayOfWeek = false;
-    this.monthlyMode = "dayOfMonth";
-  }
   validateInterval(value: number) {
     if (!/^\d{1,3}$/.test("" + value) || value < 1) {
-      this.interval = 1;
+      this.rule.interval = 1;
       this.intervalKey = Math.random();
     }
   }
   validateOccurenceCount(value: number) {
-    if (!/^\d{1,3}$/.test("" + value) || value < 1) {
-      this.occurenceCount = 1;
+    if (
+      this.rule.recurrenceEnd &&
+      (!/^\d{1,3}$/.test("" + value) || value < 1)
+    ) {
+      this.rule.recurrenceEnd.occurenceCount = 1;
       this.occurenceCountKey = Math.random();
+    }
+  }
+  resetOwnRecurrencePattern() {
+    this.rule.interval = 1;
+    this.rule.timesOfTheDay = [];
+    if (
+      this.rule.frequency == RecurrenceFrequency.Daily &&
+      this.hasOwnRecurrencePattern &&
+      this.$props.defaultTime
+    ) {
+      this.rule.timesOfTheDay = [this.$props.defaultTime];
+    } else {
+      this.rule.timesOfTheDay = [];
+    }
+    this.daysOfTheWeek = [];
+    this.rule.daysOfTheMonth = [];
+    this.rule.monthsOfTheYear = [];
+    this.rule.positions = [];
+    this.showYearlyDayOfWeek = false;
+    this.monthlyMode = MonthlyMode.DayOfMonth;
+  }
+  resetMonthlyMode() {
+    if (this.monthlyMode == MonthlyMode.DayOfMonth) {
+      this.rule.daysOfTheMonth = [];
+      this.rule.positions = [];
+      this.daysOfTheWeek = [];
+    } else {
+      this.rule.daysOfTheMonth = [];
+      this.rule.positions = this.positionOptions[0].value;
+      this.daysOfTheWeek = [this.daysOfTheWeekOptions[0].value];
+    }
+  }
+  resetYearlyDayOfWeek() {
+    if (this.showYearlyDayOfWeek) {
+      this.rule.positions = this.positionOptions[0].value;
+      this.daysOfTheWeek = [this.daysOfTheWeekOptions[0].value];
+    } else {
+      this.rule.positions = [];
+      this.daysOfTheWeek = [];
     }
   }
   timesOfTheDayInput(value: Date | null, index: number) {
     if (value == null) {
-      this.timesOfTheDay.splice(index, 1);
+      this.rule.timesOfTheDay.splice(index, 1);
     } else {
-      this.timesOfTheDay[index] = value;
+      this.rule.timesOfTheDay[index] = value;
     }
-    this.timesOfTheDay = this.timesOfTheDay.concat([]);
+    this.rule.timesOfTheDay = this.rule.timesOfTheDay.concat([]);
+  }
+  setupFromRecurrenceRule(rule: RecurrenceRule | undefined) {
+    if (rule) {
+      this.rule = rule;
+      this.hasOwnRecurrencePattern =
+        rule.timesOfTheDay.length > 0 ||
+        rule.daysOfTheWeek.length > 0 ||
+        rule.daysOfTheMonth.length > 0 ||
+        rule.monthsOfTheYear.length > 0 ||
+        rule.positions.length > 0;
+      this.showYearlyDayOfWeek =
+        rule.frequency == RecurrenceFrequency.Yearly &&
+        rule.daysOfTheWeek.length > 0 &&
+        rule.positions.length > 0;
+
+      if (
+        rule.frequency == RecurrenceFrequency.Monthly &&
+        rule.daysOfTheWeek.length > 0 &&
+        rule.positions.length > 0 &&
+        rule.daysOfTheMonth.length == 0
+      ) {
+        this.monthlyMode = MonthlyMode.DayOfWeek;
+      } else {
+        this.monthlyMode = MonthlyMode.DayOfMonth;
+      }
+    }
+  }
+
+  created() {
+    this.setupFromRecurrenceRule(this.$props.value);
+    this.$watch("rule.frequency", this.resetOwnRecurrencePattern);
+    this.$watch("hasOwnRecurrencePattern", this.resetOwnRecurrencePattern);
+    this.$watch("monthlyMode", this.resetMonthlyMode);
+    this.$watch("showYearlyDayOfWeek", this.resetYearlyDayOfWeek);
   }
 }
 </script>

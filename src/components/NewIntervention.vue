@@ -81,6 +81,7 @@
           />
           <edit-reminder
             v-if="startDate"
+            v-model="recurrenceRule"
             :defaultTime="startDate"
             color="intervention"
             class="col-md-8 col-sm-6 col-12"
@@ -103,6 +104,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { date } from "quasar";
 import { Terminology } from "../helper/terminology";
+import { RecurrenceRule } from "../models/recurrenceRule";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
 import EditReminder from "../components/EditReminder.vue";
@@ -114,6 +116,13 @@ import DateTime from "../components/DateTime.vue";
     SearchableOptionList,
     EditReminder,
     DateTime
+  },
+  watch: {
+    startDate(this: Intervention, value: Date | null) {
+      if (!value) {
+        this.recurrenceRule = null;
+      }
+    }
   }
 })
 export default class Intervention extends Vue {
@@ -121,6 +130,7 @@ export default class Intervention extends Vue {
   targetCode = "";
   details = "";
   startDate: Date | null = null;
+  recurrenceRule: RecurrenceRule | null = null;
 
   get startDateOptions() {
     const today = date.startOfDate(new Date(), "day");
