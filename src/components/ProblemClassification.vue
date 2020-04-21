@@ -123,7 +123,12 @@
           class="q-mb-xs"
         />
         <div class="text-weight-light q-mb-md q-px-lg">
-          {{ $t(problem.severity.description) }}
+          {{$t(problem.severity.description)}}
+          <simplified-markdown
+            v-if="severityModifierExample"
+            :text="$t('examplePrefix', {text: severityModifierExample})"
+            class="text-caption"
+          />
         </div>
 
         <h6
@@ -230,20 +235,23 @@ import {
   HasTitleDescription,
   TerminologyWithMaps,
   treeifyTerminology,
-  filterTerminology
+  filterTerminology,
+  UsersGuide
 } from "../helper/terminology";
 import { QInput, QTree } from "quasar";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { ProblemRecord } from "../models/problemRecord";
 import { Problem } from "../models/problem";
 import TextWithHighlights from "./TextWithHighlights.vue";
+import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 
 const nameof = (name: keyof Problem) => name;
 
 @Component({
   components: {
     ProblemSummary,
-    TextWithHighlights
+    TextWithHighlights,
+    SimplifiedMarkdown
   }
 })
 export default class ProblemClassification extends Vue {
@@ -338,6 +346,12 @@ export default class ProblemClassification extends Vue {
         "gi"
       );
     }
+  }
+  get severityModifierExample() {
+    const usersGuide = (this.$t("usersGuide") as unknown) as UsersGuide;
+    const usersGuideForProblem = usersGuide[this.problem.code];
+    const examples = usersGuideForProblem?.severityModifierExamples || [];
+    return examples[this.severity];
   }
 
   get terminology() {

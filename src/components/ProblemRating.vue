@@ -1,5 +1,8 @@
 <template>
-  <div class="problem-rating row q-col-gutter-lg" v-if="record">
+  <div
+    class="problem-rating row q-col-gutter-lg"
+    v-if="record"
+  >
     <div class="col-12 col-md-9">
       <div class="q-gutter-md">
         <rating
@@ -8,6 +11,7 @@
           :title="rating.title"
           :description="rating.description"
           :scale="rating.scale"
+          :examples="rating.scaleExamples"
           :type="rating.type"
           :rating="outcome[rating.type] || {}"
         />
@@ -22,7 +26,10 @@
             size="md"
             color="outcome"
           />
-          <div v-else class="q-mt-xs q-mb-md">
+          <div
+            v-else
+            class="q-mt-xs q-mb-md"
+          >
             <q-input
               v-model="personRatedInPlaceOfOwner"
               :label="$t('personRatedInPlaceOfOwnerLabel')"
@@ -39,7 +46,10 @@
       </div>
     </div>
     <div class="col-12 col-md-3">
-      <problem-summary :params="$route.params" :isSummary="true" />
+      <problem-summary
+        :params="$route.params"
+        :isSummary="true"
+      />
     </div>
   </div>
 </template>
@@ -51,7 +61,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import Rating from "components/Rating.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
-import { Terminology } from "../helper/terminology";
+import { Terminology, UsersGuide } from "../helper/terminology";
 import { Outcome } from "../models/outcome";
 
 const nameof = (name: keyof Outcome) => name;
@@ -88,11 +98,15 @@ export default class ProblemRating extends Vue {
   }
   get ratings() {
     const indexToType = ["knowledge", "behaviour", "status"];
+    const usersGuide = (this.$t("usersGuide") as unknown) as UsersGuide;
+    const guideForProblem = usersGuide[this.record.problem.code];
+    const examples = guideForProblem?.problemRatingScaleExamples.ratings || [];
     return this.terminology.problemRatingScale.ratings.map((rating, index) => {
       return {
         title: rating.title,
         description: rating.description,
         scale: rating.scale.map(item => item.title),
+        scaleExamples: examples[index]?.scale.map(text => text.title) || [],
         type: indexToType[index]
       };
     });

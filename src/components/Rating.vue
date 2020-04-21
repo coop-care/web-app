@@ -76,9 +76,11 @@
                 size="lg"
               />
             </div>
-            <div class="text-center text-weight-light q-my-xs">
-              {{ scale[observationMouseover] || scale[observation - 1] || "&nbsp;" }}
-            </div>
+            <text-with-tooltip
+              :text="observationScale"
+              :tooltip="observationExample"
+              class="text-center text-weight-light q-my-xs"
+            />
           </div>
         </div>
 
@@ -154,9 +156,11 @@
                 size="lg"
               />
             </div>
-            <div class="text-center text-weight-light q-my-xs">
-              {{ scale[expectationMouseover] || scale[expectation - 1] || "&nbsp;" }}
-            </div>
+            <text-with-tooltip
+              :text="expectationScale"
+              :tooltip="expectationExample"
+              class="text-center text-weight-light q-my-xs"
+            />
           </div>
         </div>
       </div>
@@ -224,6 +228,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { Rating as RatingModel } from "../models/rating";
+import TextWithTooltip from "./TextWithTooltip.vue";
 
 const nameof = (name: keyof RatingModel) => name;
 
@@ -233,7 +238,14 @@ const nameof = (name: keyof RatingModel) => name;
     description: String,
     scale: Array,
     type: String,
-    rating: Object
+    rating: Object,
+    examples: {
+      type: Array,
+      default: []
+    }
+  },
+  components: {
+    TextWithTooltip
   }
 })
 export default class Rating extends Vue {
@@ -264,6 +276,46 @@ export default class Rating extends Vue {
     return [1, 2, 3, 4, 5].map(value => {
       return { label: "" + value, value: value, slot: value };
     });
+  }
+  get observationScale() {
+    if (this.observationMouseover < 0) {
+      return this.$props.scale[this.observation - 1] || " ";
+    } else {
+      return this.$props.scale[this.observationMouseover];
+    }
+  }
+  get expectationScale() {
+    if (this.expectationMouseover < 0) {
+      return this.$props.scale[this.expectation - 1] || " ";
+    } else {
+      return this.$props.scale[this.expectationMouseover];
+    }
+  }
+  get observationExample() {
+    if (
+      (this.observationMouseover < 0 ||
+        this.observationMouseover == this.observation - 1) &&
+      this.$props.examples[this.observation - 1]
+    ) {
+      return this.$t("examplePrefix", {
+        text: this.$props.examples[this.observation - 1]
+      });
+    } else {
+      return "";
+    }
+  }
+  get expectationExample() {
+    if (
+      (this.expectationMouseover < 0 ||
+        this.expectationMouseover == this.expectation - 1) &&
+      this.$props.examples[this.expectation - 1]
+    ) {
+      return this.$t("examplePrefix", {
+        text: this.$props.examples[this.expectation - 1]
+      });
+    } else {
+      return "";
+    }
   }
 
   updateNewOutcome(key: string, value: any) {

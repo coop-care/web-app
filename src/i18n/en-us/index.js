@@ -160,5 +160,9 @@ export default {
   inOneWeek: "In one week",
   addTimePlaceholder: "Add time of day ({format})",
   reportTitle: "Report",
-  masterDataTitle: "Master Data"
+  masterDataTitle: "Master Data",
+  usersGuide: {},
+  diagnosisNames: {},
+  problemCodesByDiagnosis: {},
+  examplePrefix: "Example: {text}"
 };

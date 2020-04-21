@@ -13,7 +13,7 @@
         />
 
         <h6 class="counter">{{ $t("selectInterventionTarget") }}</h6>
-        <div v-if="true">
+        <div v-if="usersGuideForProblem">
           <i18n
             path="frequentInterventionTargetsForProblem"
             tag="div"
@@ -27,9 +27,7 @@
           </i18n>
           <searchable-option-list
             color="intervention"
-            :options="
-              terminology.interventionScheme.targets.concat([]).slice(0, 5)
-            "
+            :options="suggestedTargets"
             v-model="targetCode"
           />
           <q-expansion-item
@@ -41,7 +39,7 @@
             <searchable-option-list
               color="intervention"
               :searchInputLabel="$t('findTargets')"
-              :options="terminology.interventionScheme.targets"
+              :options="notSuggestedTargets"
               v-model="targetCode"
             />
           </q-expansion-item>
@@ -50,14 +48,14 @@
           <searchable-option-list
             color="intervention"
             :searchInputLabel="$t('findTargets')"
-            :options="terminology.interventionScheme.targets"
+            :options="allTargets"
             v-model="targetCode"
           />
         </div>
 
         <h6 class="counter">{{ $t("describeClientSpecificIntervention") }}</h6>
         <q-input
-          :model="details"
+          v-model="details"
           :label="$t('clientSpecificInterventions')"
           autogrow
           color="intervention"
@@ -65,7 +63,30 @@
           :hint="$t('clientSpecificInterventionsHint')"
           filled
           dense
-        />
+        >
+          <q-menu
+            v-if="suggestedDetails.length"
+            auto-close
+            fit
+            anchor="bottom left"
+            self="top left"
+            square
+            no-focus
+          >
+            <q-list dense>
+              <q-item
+                v-for="text in suggestedDetails"
+                :key="text"
+                clickable
+                @click="details = text"
+                :active="details == text"
+                active-class="text-intervention"
+              >
+                <q-item-section>{{ text }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-input>
 
         <h6 class="counter">{{ $t("planReminder") }}</h6>
         <div class="row q-col-gutter-xl q-mb-lg items-start">
@@ -103,7 +124,11 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { date } from "quasar";
-import { Terminology } from "../helper/terminology";
+import {
+  TerminologyWithMaps,
+  UsersGuide,
+  sortByTitle
+} from "../helper/terminology";
 import { RecurrenceRule } from "../models/recurrenceRule";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
@@ -151,8 +176,65 @@ export default class Intervention extends Vue {
       }
     ];
   }
+  get suggestedTargetCodes() {
+    const suggestions = this.usersGuideForProblem?.interventionSuggestions;
+    const codes: string[] = [];
+
+    if (!suggestions) {
+      return codes;
+    }
+
+    if (this.categoryCode) {
+      return Object.keys(suggestions[this.categoryCode] || {});
+    } else {
+      return Array.from(
+        new Set(
+          Object.values(suggestions).reduce(
+            (a, b) => a.concat(Object.keys(b)),
+            [] as string[]
+          )
+        )
+      );
+    }
+  }
+  get allTargets() {
+    let targets = this.terminology.interventionScheme.targets.concat([]);
+    const other = targets.pop();
+    targets = targets.sort(sortByTitle);
+
+    if (other) {
+      targets.push(other);
+    }
+    return targets;
+  }
+  get suggestedTargets() {
+    return this.suggestedTargetCodes
+      .map(code => this.terminology.targetByCode[code])
+      .sort(sortByTitle)
+      .concat(this.terminology.targetByCode["63"]);
+  }
+  get notSuggestedTargets() {
+    const suggestedTargetCodes = this.suggestedTargetCodes.concat(["63"]);
+    return Object.values(this.terminology.targetByCode)
+      .filter(target => !suggestedTargetCodes.includes(target.code))
+      .sort(sortByTitle);
+  }
+  get suggestedDetails() {
+    if (this.categoryCode && this.targetCode) {
+      const intervention = this.usersGuideForProblem?.interventionSuggestions;
+      const category = intervention[this.categoryCode] || {};
+      return category[this.targetCode] || [];
+    } else {
+      return [];
+    }
+  }
+  get usersGuideForProblem() {
+    return ((this.$t("usersGuide") as unknown) as UsersGuide)[
+      this.record.problem.code
+    ];
+  }
   get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
+    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
     return this.$store.getters.getProblemRecordById(this.$route.params);

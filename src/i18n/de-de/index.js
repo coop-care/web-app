@@ -161,5 +161,9 @@ export default {
   inOneWeek: "In einer Woche",
   addTimePlaceholder: "Uhrzeit hinzufügen ({format})",
   reportTitle: "Bericht",
-  masterDataTitle: "Stammblatt"
+  masterDataTitle: "Stammblatt",
+  usersGuide: {},
+  diagnosisNames: {},
+  problemCodesByDiagnosis: {},
+  examplePrefix: "Beispiel: {text}"
 };

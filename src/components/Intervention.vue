@@ -209,7 +209,7 @@ export default class Intervention extends Vue {
     );
   }
   get targets() {
-    let targets = this.terminology.interventionScheme.targets;
+    let targets = this.terminology.interventionScheme.targets.concat([]);
     const other = targets.pop();
     targets = targets.sort(sortByTitle);
 
