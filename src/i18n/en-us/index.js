@@ -36,7 +36,7 @@ export default {
   clientSpecificInterventionsHint: "What concrete activity is planned?",
   frequentInterventionTargetsForProblem:
     "Frequent intervention targets for {problem}",
-  unspecifiedProblem: "unspecified problem",
+  unspecifiedProblem: "unknown problem",
   priorityTitle: "Define Priority",
   lowPriorityReasonLabel: "Reason for low priority",
   lowPriorityReasonHint:

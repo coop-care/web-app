@@ -4,7 +4,7 @@
     bordered
     class="overflow-hidden border-primary radius-sm"
   >
-    <q-card-section>
+    <q-card-section :class="sectionPadding + (sectionPadding ? ' q-pt-sm' : '')">
       <div v-if="isSummary">
         <div class="text-subtitle2 text-weight-normal">{{ clientName }}:</div>
         <div class="text-h6 text-classification">
@@ -15,17 +15,41 @@
         v-else
         class="text-h6"
       >
-        <span class="text-classification q-mr-md">{{ $t(problem.title) }}</span>
-        <span class="text-subtitle2 text-weight-light q-mr-sm">
-          <q-chip
-            size="12px"
-            dense
-            color="transparent"
-            :icon="problem.scopeIcon(terminology)"
-            text-color="classification"
-            :label="$t(problem.scope.title)"
-            class="text-weight-medium"
-          />
+        <div class="row justify-between">
+          <div class="text-classification">{{ $t(problem.title) }}</div>
+          <div class="q-gutter-xs">
+            <q-btn
+              v-if="isDraft"
+              :label="$t('editDraft')"
+              icon="edit"
+              :to="{ name: 'problem', params: params }"
+              rounded
+              unelevated
+              dense
+              size="md"
+              color="negative"
+              class="shadow-1 q-px-xs"
+              :disable="isDisabled"
+            />
+            <q-btn
+              v-if="isDraft && !isDisabled"
+              icon="delete_forever"
+              :title="$t('delete')"
+              @click="deleteDraft"
+              dense
+              round
+              unelevated
+              size="13.5px"
+              color="negative"
+              class="shadow-1"
+            />
+            <action-menu
+              v-if="isInteractive"
+              :items="actionMenuItems"
+            />
+          </div>
+        </div>
+        <div class="text-subtitle2 text-weight-light q-mt-sm">
           <q-chip
             size="12px"
             dense
@@ -35,46 +59,31 @@
             :label="$t(problem.priority.title)"
             class="text-weight-medium"
           />
-        </span>
-        <action-menu
-          v-if="isInteractive"
-          :items="actionMenuItems"
-          class="q-mr-xs"
-        />
-        <q-btn
-          v-if="isDraft"
-          :label="$t('editDraft')"
-          icon="edit"
-          :to="{ name: 'problem', params: params }"
-          rounded
-          unelevated
-          dense
-          size="md"
-          color="negative"
-          class="shadow-1 q-mr-xs q-px-xs"
-          :disable="isDisabled"
-        />
-        <q-btn
-          v-if="isDraft && !isDisabled"
-          icon="delete_forever"
-          :title="$t('delete')"
-          @click="deleteDraft"
-          dense
-          round
-          unelevated
-          size="13.5px"
-          color="negative"
-          class="shadow-1 q-mr-sm"
-        />
+          <q-chip
+            size="12px"
+            dense
+            color="transparent"
+            :icon="problem.scopeIcon(terminology)"
+            text-color="classification"
+            :label="$t(problem.scope.title)"
+            class="text-weight-medium"
+          />
+        </div>
       </div>
     </q-card-section>
-    <q-card-section v-if="problem.priorityDetails">
+    <q-card-section
+      v-if="problem.priorityDetails"
+      :class="sectionPadding"
+    >
       <p class="q-pl-lg q-my-none">
         {{ $t(problem.priority.title) }}:
         <span class="text-italic">{{ problem.priorityDetails }}</span>
       </p>
     </q-card-section>
-    <q-card-section v-if="problem.severityCode < 2 && problem.details">
+    <q-card-section
+      v-if="problem.severityCode < 2 && problem.details"
+      :class="sectionPadding"
+    >
       <div class="text-subtitle1 text-weight-bold text-classification">
         {{
           $t(
@@ -88,7 +97,10 @@
         {{ problem.details }}
       </p>
     </q-card-section>
-    <q-card-section v-if="problem.severityCode == 2 && problem.signsAndSymptomsCodes.length">
+    <q-card-section
+      v-if="problem.severityCode == 2 && problem.signsAndSymptomsCodes.length"
+      :class="sectionPadding"
+    >
       <div class="text-subtitle1 text-weight-bold text-classification">
         {{ $t("actualSignsAndSymptomsTitle") }}
       </div>
@@ -109,7 +121,10 @@
         </li>
       </ul>
     </q-card-section>
-    <q-card-section v-if="interventions.length">
+    <q-card-section
+      v-if="interventions.length"
+      :class="sectionPadding"
+    >
       <div class="text-subtitle1 text-weight-bold text-intervention">
         {{ $tc("intervention", 2) }}
       </div>
@@ -119,17 +134,22 @@
           v-bind:key="index"
           class="no-column-break"
         >
-          {{ $t(intervention.category.title) }}:
-          {{ $t(intervention.target.title) }}
-          <span v-if="intervention.details">
-            <span class="text-italic">
-              – {{ intervention.details }}
-            </span>
-          </span>
+          <div>
+            {{ $t(intervention.category.title) }}: {{ $t(intervention.target.title) }}
+          </div>
+          <div
+            v-if="intervention.details"
+            class="text-weight-bold text-intervention"
+          >
+            {{ intervention.details }}
+          </div>
         </li>
       </ul>
     </q-card-section>
-    <q-card-section v-if="!!lastOutcome && problem.isHighPriority">
+    <q-card-section
+      v-if="!!lastOutcome && problem.isHighPriority"
+      :class="sectionPadding"
+    >
       <div :class="
           'text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
         ">
@@ -277,6 +297,13 @@ export default class ProblemSummary extends Vue {
         }
       }
     ];
+  }
+  get sectionPadding() {
+    if (this.$q.screen.lt.sm) {
+      return "q-px-sm";
+    } else {
+      return "";
+    }
   }
 
   get terminology() {
