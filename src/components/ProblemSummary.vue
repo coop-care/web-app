@@ -121,7 +121,7 @@
         >
           {{ $t(intervention.category.title) }}:
           {{ $t(intervention.target.title) }}
-          <span v-if="intervention.details.length">
+          <span v-if="intervention.details">
             <span class="text-italic">
               – {{ intervention.details }}
             </span>

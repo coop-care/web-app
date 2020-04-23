@@ -23,26 +23,30 @@
           "isHighPriority": true,
           "priorityDetails": ""
         },
-        "interventions": [
+        "reminders": [
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "28",
             "details": "angefangen eine therapeutische Beziehung aufzubauen",
             "startDate": "2019-06-11T00:00:00.000Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "49",
             "details": "Symptome überprüft",
             "startDate": "2019-06-11T00:00:00.000Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "03",
             "targetCode": "31",
             "details": "Termin zur Einschätzung geplant",
             "startDate": "2019-06-11T00:00:00.000Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "04",
             "targetCode": "49",
             "details": "Aktivität, Stimmungsschwankungen, Halluzinationen und Pflegeberichte",
@@ -179,20 +183,23 @@
           "isHighPriority": true,
           "priorityDetails": ""
         },
-        "interventions": [
+        "reminders": [
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "41",
             "details": "was sie tun kann und was nicht",
             "startDate": "2019-11-21T21:41:51.957Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "03",
             "targetCode": "77",
             "details": "Vermittlung von Hilfe bei Dusche, Umziehen und Wäsche",
             "startDate": "2019-11-21T21:41:51.957Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "04",
             "targetCode": "41",
             "details": "Sauberkeit, Angemessenheit der Hilfeleistung",
@@ -329,32 +336,37 @@
           "isHighPriority": true,
           "priorityDetails": ""
         },
-        "interventions": [
+        "reminders": [
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "32",
             "details": "weniger Koffein trinken, weil es die Wirksamkeit psychotroper Medikamente verringert",
             "startDate": "2019-11-21T21:53:44.870Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "33",
             "details": "muss alle Dosen wie geplant einnehmen",
             "startDate": "2019-11-21T21:53:44.870Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "03",
             "targetCode": "31",
             "details": "Terminplanung zur Überprüfung von Medikamenten",
             "startDate": "2019-11-21T21:53:44.870Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "03",
             "targetCode": "77",
             "details": "Psychiatriefachkraft wird Emma helfen",
             "startDate": "2019-11-21T21:53:44.870Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "04",
             "targetCode": "33",
             "details": "Berichte von Kundin, Psychiater und Verwaltung",
@@ -497,7 +509,7 @@
           "isHighPriority": false,
           "priorityDetails": "Interventionen anbieten und bewerten, wenn sie nicht in der Lage ist, Medikamente regelmäßig einzunehmen und mehr Unterstützung benötigt."
         },
-        "interventions": [],
+        "reminders": [],
         "outcomes": [],
         "createdAt": "2019-11-25T18:33:51.943Z"
       },
@@ -513,7 +525,7 @@
           "isHighPriority": false,
           "priorityDetails": "Interventionen anbieten und bewerten, wenn Gedächtnisprobleme bei zukünftigen Besuchen signifikant werden."
         },
-        "interventions": [],
+        "reminders": [],
         "outcomes": [],
         "createdAt": "2019-11-25T18:34:55.223Z"
       },
@@ -529,32 +541,37 @@
           "isHighPriority": true,
           "priorityDetails": ""
         },
-        "interventions": [
+        "reminders": [
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "07",
             "details": "Linderung von Ödemen, Erhöhung der Beine, Anstrengung reduzieren, Verbesserung des Schlafes, Planung der Flüssigkeitsaufnahme",
             "startDate": "2019-11-25T18:41:07.807Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "67",
             "details": "einige eisenreiche Lebensmittel essen",
             "startDate": "2019-11-25T18:41:07.807Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "50",
             "details": "täglich Körpergewicht messen, Symptomprotokoll, wann sind die Dienstleister zu benachrichtigen",
             "startDate": "2019-11-25T18:41:07.807Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "03",
             "targetCode": "67",
             "details": "arrangierte Essen auf Rädern ab dem nächsten Tag",
             "startDate": "2019-11-25T18:41:07.807Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "04",
             "targetCode": "50",
             "details": "Vitalwerte, Veränderungen in Schweregrad und Status",
@@ -634,20 +651,23 @@
           "isHighPriority": true,
           "priorityDetails": ""
         },
-        "interventions": [
+        "reminders": [
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "32",
             "details": "Zweck, was ist zu erwarten oder zu berichten",
             "startDate": "2019-11-25T18:45:19.054Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "01",
             "targetCode": "34",
             "details": "Benutzung, Vorteile und Möglichkeiten eines Tablettenorganisators",
             "startDate": "2019-11-25T18:45:19.054Z"
           },
           {
+            "__type": "intervention",
             "categoryCode": "04",
             "targetCode": "32",
             "details": "wie vorgeschrieben einnehmen, Notizen machen",
