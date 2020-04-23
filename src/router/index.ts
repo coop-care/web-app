@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import routes from "./routes";
-import { ccApi } from "../api/api";
+import { ccApi } from "../api/apiProvider";
 
 Vue.use(VueRouter);
 

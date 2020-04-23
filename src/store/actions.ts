@@ -2,7 +2,7 @@ import { defineActions } from "direct-vuex";
 import sampleData from "../data/sample1.json";
 import { rootActionContext } from ".";
 import { Client } from "../models/client";
-import { ccApi } from "../api/api";
+import { ccApi } from "../api/apiProvider";
 
 export default defineActions({
     fetchClientsFromDB(context) {
