@@ -36,7 +36,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { UserPasswordAuthProviderClient } from "mongodb-stitch-browser-sdk";
 
 enum State {
   Pending,
@@ -57,13 +56,9 @@ export default class PageConfirm extends Vue {
   }
 
   mounted() {
-    // console.log(this.$route);
     const token = String(this.$route.query.token);
     const tokenId = String(this.$route.query.tokenId);
-    const epclient = this.$stitchApi.stitch.auth.getProviderClient(
-      UserPasswordAuthProviderClient.factory
-    );
-    epclient
+    this.$ccApi
       .confirmUser(token, tokenId)
       .then(() => (this.state = State.Confirmed))
       .catch(err => {

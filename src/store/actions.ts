@@ -1,15 +1,15 @@
 import { defineActions } from "direct-vuex";
-import { stitchApi } from "../boot/stitch";
 import sampleData from "../data/sample1.json";
 import { rootActionContext } from ".";
 import { Client } from "../models/client";
+import { ccApi } from "../api/api";
 
 export default defineActions({
     fetchClientsFromDB(context) {
         const { commit } = rootActionContext(context);
         commit.isLoadingClientList(true);
         return new Promise((resolve, reject) => {
-            stitchApi
+            ccApi
                 .getAllClients()
                 .then(clients => {
                     // console.log("Success:", result);
@@ -32,7 +32,7 @@ export default defineActions({
                 rootActionContext(context).getters.getClient(payload);
 
             if (client) {
-                stitchApi
+                ccApi
                     .saveClient(client)
                     .then(resolve)
                     .catch(error => {
@@ -55,7 +55,7 @@ export default defineActions({
 
     deleteClient(context, client: Client) {
         const { dispatch } = rootActionContext(context);
-        stitchApi
+        ccApi
             .deleteClient(client)
             .then(() => {
                 return dispatch.fetchClientsFromDB();
@@ -68,12 +68,13 @@ export default defineActions({
     addSamplesToDB(context) {
         const { dispatch } = rootActionContext(context);
         const samples = Client.fromObject(sampleData) as Client[];
-        samples.forEach(client => {
-            // eslint-disable-next-line @typescript-eslint/camelcase
-            client.user_id = stitchApi.userId();
-        });
-        stitchApi.clients
-            .insertMany(samples)
+        return Promise.all(
+            samples.map(client => {
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                client.user_id = ccApi.userId;
+                return ccApi.createClient(client);
+            })
+        )
             .then(() => {
                 // console.log("Successfully inserted", result);
                 dispatch.fetchClientsFromDB();
@@ -83,7 +84,7 @@ export default defineActions({
 
     clearDB(context) {
         const { dispatch } = rootActionContext(context);
-        stitchApi
+        ccApi
             .deleteAllClients()
             .then(() => {
                 dispatch.fetchClientsFromDB();

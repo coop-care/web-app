@@ -1,9 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-
 import routes from "./routes";
-
-import { stitchApi } from "../boot/stitch";
+import { ccApi } from "../api/api";
 
 Vue.use(VueRouter);
 
@@ -26,7 +24,7 @@ export default function(/* { store, ssrContext } */) {
 
     Router.beforeEach((to, from, next) => {
         // console.log("before each. to:", to.name, "from:", from.name);
-        if (stitchApi.stitch.auth.isLoggedIn) {
+        if (ccApi.isLoggedIn) {
             next();
         } else {
             if (to.name === "login") {

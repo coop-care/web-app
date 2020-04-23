@@ -36,7 +36,7 @@
         </q-toolbar-title>
 
         <q-btn-dropdown
-          v-if="isLoggedIn()"
+          v-if="$ccApi.isLoggedIn"
           icon="account_circle"
           no-caps
           flat
@@ -48,7 +48,7 @@
             <q-item-label header>
               <div>{{ $t("accountWelcomeMessage") }}</div>
               <div class="q-mt-xs text-bold">
-                {{ username() }}
+                {{ $ccApi.username }}
               </div>
             </q-item-label>
             <q-item
@@ -78,7 +78,7 @@
         </q-btn-dropdown>
 
         <q-separator
-          v-if="isLoggedIn()"
+          v-if="$ccApi.isLoggedIn"
           vertical
           inset
           spaced
@@ -175,23 +175,8 @@ export default class MyLayout extends Vue {
     );
   }
 
-  isLoggedIn() {
-    return this.$stitchApi.stitch.auth.isLoggedIn;
-  }
-
-  username() {
-    let name = undefined;
-    const user = this.$stitchApi.stitch.auth.user;
-    if (user) {
-      name = user.profile.email;
-    }
-    return name;
-  }
-
   logout() {
-    this.$stitchApi.stitch.auth
-      .logout()
-      .then(() => this.$router.push({ name: "login" }));
+    this.$ccApi.logout().then(() => this.$router.push({ name: "login" }));
   }
 
   addSamplesToDB() {

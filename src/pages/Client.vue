@@ -225,14 +225,14 @@ export default class PageIndex extends Vue {
   }
 
   addClient(name: string) {
-    const client = new Client(this.$stitchApi.userId(), name);
-    this.$stitchApi
+    const client = new Client(this.$ccApi.userId, name);
+    this.$ccApi
       .createClient(client)
-      .then(res => {
+      .then(client => {
         this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
           this.$router.push({
             name: "clientReport",
-            params: { clientId: res.insertedId }
+            params: { clientId: client._id?.toString() || "" }
           });
         });
       })

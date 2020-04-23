@@ -51,6 +51,7 @@ export class Client {
     }
 
     constructor(userId: string, name: string) {
+        // eslint-disable-next-line @typescript-eslint/camelcase
         this.user_id = userId;
         this.name = name;
     }
