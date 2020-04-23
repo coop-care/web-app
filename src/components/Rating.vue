@@ -195,6 +195,7 @@
 <style lang="sass">
 .q-btn-toggle
   border-color: $outcome
+  border-color: var(--q-color-outcome)
 .custom-gutter
   margin-top: -24px
   margin-left: -24px

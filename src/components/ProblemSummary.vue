@@ -139,7 +139,7 @@
           </div>
           <div
             v-if="intervention.details"
-            class="text-weight-bold text-intervention"
+            class="text-weight-bold"
           >
             {{ intervention.details }}
           </div>

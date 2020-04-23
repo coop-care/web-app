@@ -217,12 +217,14 @@
 .problem-classification
   .q-tree > .q-tree__node > .q-tree__node-header
     background-color: $classification
+    background-color: var(--q-color-classification)
     color: #fff
   .q-tree__node .q-tree__node .q-tree__node .q-tree__node-header
     padding-top: 0
     padding-bottom: 0
   .q-btn-toggle
     border-color: $classification
+    border-color: var(--q-color-classification)
     button
       @media screen and (max-width: $breakpoint-xs-max)
         font-size: 13px
