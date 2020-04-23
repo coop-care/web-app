@@ -1,6 +1,6 @@
 <template>
   <div class="fit">
-    <div class="q-pa-md absolute-center vertical-middle text-center text-body2">{{ message }}</div>
+    <div class="q-pa-md absolute-center vertical-middle text-center text-body2 full-width">{{ message }}</div>
   </div>
 </template>
 

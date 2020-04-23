@@ -2,11 +2,13 @@
   <q-page>
     <client-drawer ref="clientDrawer" />
 
+    <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
+
     <div
-      v-if="!$store.direct.state.isLoadingClientList && !clients.length"
+      v-else-if="!$store.direct.state.isLoadingClientList && !clients.length && !$route.params.clientId"
       class="fit"
     >
-      <div class="q-pa-md absolute-center vertical-middle">
+      <div class="q-pa-md absolute-center vertical-middle column items-center full-width">
         <div class="text-center text-body2">{{ $t("noExistingClient") }}</div>
         <q-btn
           @click="$router.push({name: 'client', params: {clientId: 'new'}})"
@@ -20,14 +22,14 @@
     </div>
 
     <div
-      v-if="!$route.params.clientId"
+      v-else-if="clients.length && !$route.params.clientId"
       class="fit"
     >
-      <div class="q-pa-md absolute-center vertical-middle text-center text-body2">{{ $t("noSelectedClient") }}</div>
+      <div class="q-pa-md absolute-center full-width vertical-middle text-center text-body2 ">{{ $t("noSelectedClient") }}</div>
     </div>
 
     <div
-      v-if="$route.params.clientId == 'new'"
+      v-else-if="$route.params.clientId == 'new'"
       class="fit"
     >
       <new-client
@@ -36,8 +38,6 @@
         @cancel="$router.push({name: 'client'})"
       />
     </div>
-
-    <loading v-else-if="$store.direct.state.isLoadingClientList && $route.params.clientId && !selectedClient" />
 
     <central-message
       v-else-if="$route.params.clientId && !selectedClient"

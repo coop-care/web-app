@@ -165,7 +165,7 @@ import Component from "vue-class-component";
 export default class MyLayout extends Vue {
   get mailto() {
     return (
-      "mailto:feedback@cooperativecare.de?subject=CoopCare Feedback&body=" +
+      "mailto:feedback@coopcare.de?subject=CoopCare Feedback&body=" +
       encodeURIComponent("\n\n\n––––––––––––––––––––\n") +
       "Einige freiwillige technische Angaben, die uns beim Nachvollziehen des Feedbacks helfen:" +
       encodeURIComponent("\n\nBrowser: ") +
