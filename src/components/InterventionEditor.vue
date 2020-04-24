@@ -100,7 +100,7 @@
             color="intervention"
             class="col-md-4 col-sm-6 col-12"
           />
-          <edit-reminder
+          <reminder-editor
             v-if="startDate"
             v-model="recurrenceRule"
             :startDate="startDate"
@@ -132,25 +132,25 @@ import {
 import { RecurrenceRule } from "../models/recurrenceRule";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
-import EditReminder from "../components/EditReminder.vue";
+import ReminderEditor from "../components/ReminderEditor.vue";
 import DateTime from "../components/DateTime.vue";
 
 @Component({
   components: {
     ProblemSummary,
     SearchableOptionList,
-    EditReminder,
+    ReminderEditor,
     DateTime
   },
   watch: {
-    startDate(this: Intervention, value: Date | null) {
+    startDate(this: InterventionEditor, value: Date | null) {
       if (!value) {
         this.recurrenceRule = null;
       }
     }
   }
 })
-export default class Intervention extends Vue {
+export default class InterventionEditor extends Vue {
   categoryCode = "";
   targetCode = "";
   details = "";

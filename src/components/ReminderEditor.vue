@@ -288,7 +288,7 @@ enum RecurrenceEndMode {
   },
   watch: {
     rule: {
-      handler: function(this: EditReminder) {
+      handler: function(this: ReminderEditor) {
         if (this.rule.frequency == RecurrenceFrequency.Never) {
           this.$emit("input", null);
         } else if (this.rule != this.$props.value) {
@@ -297,7 +297,7 @@ enum RecurrenceEndMode {
       },
       deep: true
     },
-    value(this: EditReminder, rule: RecurrenceRule | undefined) {
+    value(this: ReminderEditor, rule: RecurrenceRule | undefined) {
       if (!rule) {
         this.rule.frequency = RecurrenceFrequency.Never;
       } else if (rule != this.rule) {
@@ -306,7 +306,7 @@ enum RecurrenceEndMode {
     }
   }
 })
-export default class EditReminder extends Vue {
+export default class ReminderEditor extends Vue {
   rule = new RecurrenceRule(RecurrenceFrequency.Never);
   hasOwnRecurrencePattern = false;
   monthlyMode = MonthlyMode.DayOfMonth;

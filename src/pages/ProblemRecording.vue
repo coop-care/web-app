@@ -107,7 +107,7 @@ import Component from "vue-class-component";
 import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
-import Intervention from "components/NewIntervention.vue";
+import Intervention from "components/InterventionV2.vue";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 
