@@ -12,7 +12,6 @@ export default defineActions({
             ccApi
                 .getAllClients()
                 .then(clients => {
-                    // console.log("Success:", result);
                     commit.setClients((clients as unknown) as Client[]);
                     commit.isLoadingClientList(false);
                     resolve();
@@ -76,7 +75,6 @@ export default defineActions({
             })
         )
             .then(() => {
-                // console.log("Successfully inserted", result);
                 dispatch.fetchClientsFromDB();
             })
             .catch(err => console.error(`Failed to insert documents: ${err}`));

@@ -24,9 +24,17 @@ export class Intervention extends Reminder {
         return this.categoryCode + "." + this.targetCode;
     }
     get category() {
-        return new Term("terminology.categoryByCode." + this.categoryCode);
+        if (this.categoryCode) {
+            return new Term("terminology.categoryByCode." + this.categoryCode);
+        } else {
+            return new Term("");
+        }
     }
     get target() {
-        return new Term("terminology.targetByCode." + this.targetCode);
+        if (this.targetCode) {
+            return new Term("terminology.targetByCode." + this.targetCode);
+        } else {
+            return new Term("");
+        }
     }
 }

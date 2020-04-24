@@ -164,5 +164,9 @@ export default {
   usersGuide: {},
   diagnosisNames: {},
   problemCodesByDiagnosis: {},
-  examplePrefix: "Example: {text}"
+  examplePrefix: "Example: {text}",
+  addIntervention: "Add Intervention",
+  noPlannedInterventions: "There are no interventions planned yet.",
+  fullName: "Full name",
+  newIntervention: "New Intervention"
 };
