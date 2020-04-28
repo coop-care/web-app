@@ -13,7 +13,7 @@
           :scale="rating.scale"
           :examples="rating.scaleExamples"
           :type="rating.type"
-          :rating="outcome[rating.type] || {}"
+          :rating="(outcome || {})[rating.type] || {}"
         />
         <div>
           <q-btn
