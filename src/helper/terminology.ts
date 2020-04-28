@@ -31,8 +31,11 @@ export interface Problem extends HasTitleDescriptionCode {
     signsAndSymptoms: HasTitleCode[];
 }
 export interface InterventionScheme extends HasTitle {
-    categories: HasTitleDescriptionCode[];
+    categories: Category[];
     targets: HasTitleDescriptionCode[];
+}
+export interface Category extends HasTitleDescriptionCode {
+    icon?: string;
 }
 export interface ProblemRatingScale extends HasTitle {
     ratings: Rating[];
@@ -49,6 +52,7 @@ export interface TerminologyWithMaps extends Terminology {
         severity: string[];
         scope: string[];
         priority: string[];
+        category: { [key: string]: string };
     };
 }
 
@@ -137,7 +141,8 @@ export function makeTerminologyWithMaps(terminology: Terminology) {
         icons: {
             severity: [],
             scope: [],
-            priority: []
+            priority: [],
+            category: {}
         }
     };
 
@@ -150,7 +155,15 @@ export function makeTerminologyWithMaps(terminology: Terminology) {
         });
     });
 
+    result.icons.category = {
+        "01": "fas fa-comment-medical",
+        "02": "fas fa-band-aid",
+        "03": "fas fa-project-diagram",
+        "04": "fas fa-eye"
+    };
+
     terminology.interventionScheme.categories.forEach(category => {
+        category.icon = result.icons.category[category.code];
         result.categoryByCode[category.code] = category;
     });
     terminology.interventionScheme.targets.forEach(target => {

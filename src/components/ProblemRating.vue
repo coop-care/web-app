@@ -5,7 +5,7 @@
   >
     <div class="col-12 col-md-9">
       <div class="q-gutter-md">
-        <rating
+        <rating-view
           v-for="(rating, index) in ratings"
           v-bind:key="index"
           :title="rating.title"
@@ -59,7 +59,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import Rating from "components/Rating.vue";
+import RatingView from "components/Rating.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Terminology, UsersGuide } from "../helper/terminology";
 import { Outcome } from "../models/outcome";
@@ -68,7 +68,7 @@ const nameof = (name: keyof Outcome) => name;
 
 @Component({
   components: {
-    Rating,
+    RatingView,
     ProblemSummary
   }
 })

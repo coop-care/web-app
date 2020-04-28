@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row q-col-gutter-xl items-start">
+    <div class="row q-col-gutter-lg items-start">
       <div class="col-md-6 col-12">
         <q-select
           v-model="rule.frequency"
@@ -58,7 +58,7 @@
             <toggle-button-group
               v-model="daysOfTheWeek"
               :options="daysOfTheWeekOptions"
-              color="white"
+              color="transparent"
               text-color="gray-9"
               :toggle-color="color"
               toggle-text-color="white"
@@ -80,7 +80,7 @@
               v-if="monthlyMode == MonthlyMode.DayOfMonth"
               v-model="rule.daysOfTheMonth"
               :options="daysOfTheMonthOptions"
-              color="white"
+              color="transparent"
               text-color="gray-9"
               :toggle-color="color"
               toggle-text-color="white"
@@ -131,7 +131,7 @@
             <toggle-button-group
               v-model="rule.monthsOfTheYear"
               :options="monthsOfTheYearOptions"
-              color="white"
+              color="transparent"
               text-color="gray-9"
               :toggle-color="color"
               toggle-text-color="white"

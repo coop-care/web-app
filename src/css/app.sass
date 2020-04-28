@@ -28,6 +28,14 @@
     &.counter:before
       counter-increment: section
       content: counter(section) ". "
+.intervention
+  .editable-intervention
+    counter-reset: intervention
+  .counter
+    margin: 0.75em 0 0em
+  .counter:before
+    counter-increment: intervention
+    content: counter(intervention) ". "
 .column-2
   column-count: 2
   column-gap: 2em

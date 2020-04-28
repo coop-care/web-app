@@ -53,7 +53,7 @@
         done-color="intervention"
         active-color="intervention"
       >
-        <intervention />
+        <intervention-view />
       </q-step>
 
       <template v-slot:navigation>
@@ -107,7 +107,7 @@ import Component from "vue-class-component";
 import { scroll } from "quasar";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
-import Intervention from "components/InterventionV2.vue";
+import InterventionView from "components/InterventionV2.vue";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 
@@ -115,7 +115,7 @@ import CentralMessage from "components/CentralMessage.vue";
   components: {
     ProblemClassification,
     ProblemRating,
-    Intervention,
+    InterventionView,
     Loading,
     CentralMessage
   }

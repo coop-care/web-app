@@ -146,7 +146,7 @@ import {
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { QInput } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
-import { Intervention as InterventionModel } from "../models/intervention";
+import { Intervention } from "../models/intervention";
 
 const nameof = (name: keyof ProblemRecord) => name;
 
@@ -155,7 +155,7 @@ const nameof = (name: keyof ProblemRecord) => name;
     ProblemSummary
   }
 })
-export default class Intervention extends Vue {
+export default class InterventionView extends Vue {
   categorySelected = null;
   targetsFilter = "";
 
@@ -166,14 +166,14 @@ export default class Intervention extends Vue {
     const existingInterventions = this.unsavedInterventions.filter(
       intervention => values.includes(intervention.code)
     );
-    const addedInterventions: InterventionModel[] = values
+    const addedInterventions: Intervention[] = values
       .filter(code => {
         return !existingInterventions.find(
           intervention => intervention.code == code
         );
       })
       .map(code => {
-        return InterventionModel.fromCode(code);
+        return Intervention.fromCode(code);
       });
     const interventions = this.savedInterventions
       .concat(existingInterventions)
@@ -231,15 +231,13 @@ export default class Intervention extends Vue {
     return this.$store.getters.getProblemRecordById(this.$route.params);
   }
   get unsavedInterventions() {
-    const interventions: InterventionModel[] =
-      (this.record || {}).reminders || [];
+    const interventions: Intervention[] = (this.record || {}).reminders || [];
     return interventions.filter(
       intervention => !intervention.startDate && intervention.categoryCode
     );
   }
   get savedInterventions() {
-    const interventions: InterventionModel[] =
-      (this.record || {}).reminders || [];
+    const interventions: Intervention[] = (this.record || {}).reminders || [];
     return interventions.filter(
       intervention => intervention.startDate && intervention.categoryCode
     );
@@ -262,7 +260,7 @@ export default class Intervention extends Vue {
     );
   }
 
-  updateProblemRecord(interventions: InterventionModel[]) {
+  updateProblemRecord(interventions: Intervention[]) {
     const changes: any = {};
     changes[nameof("reminders")] = interventions;
     this.$store.direct.commit.updateObject({

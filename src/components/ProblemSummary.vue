@@ -135,13 +135,10 @@
           class="no-column-break"
         >
           <div>
-            {{ $t(intervention.category.title) }}: {{ $t(intervention.target.title) }}
+            {{ [intervention.category.title, intervention.target.title].filter(title => title).map(title => $t(title)).join(": ") || ""}}
           </div>
-          <div
-            v-if="intervention.details"
-            class="text-weight-bold"
-          >
-            {{ intervention.details }}
+          <div class="text-weight-bold">
+            {{ intervention.details || $t("newIntervention") }}
           </div>
         </li>
       </ul>
@@ -232,6 +229,7 @@ import Component from "vue-class-component";
 import ActionMenu from "../components/ActionMenu.vue";
 import VueApexCharts from "vue-apexcharts";
 import { Terminology } from "../helper/terminology";
+import { ProblemRecord } from "../models/problemRecord";
 
 Vue.use(VueApexCharts);
 
@@ -263,7 +261,7 @@ export default class ProblemSummary extends Vue {
   }
   get ratings() {
     return ["knowledge", "behaviour", "status"].map(
-      key => (this.lastOutcome || {})[key]
+      key => ((this.lastOutcome || {}) as any)[key]
     );
   }
   get isDraft() {
@@ -316,7 +314,8 @@ export default class ProblemSummary extends Vue {
     return this.$root.$i18n.locale;
   }
   get record() {
-    return this.$props.problemRecord || this.getRecordFromStore();
+    return (this.$props.problemRecord ||
+      this.getRecordFromStore()) as ProblemRecord;
   }
 
   prioritizeProblemRecord() {

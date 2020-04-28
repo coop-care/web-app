@@ -35,7 +35,7 @@ export class ProblemRecord extends Base {
     get interventions() {
         return this.reminders.filter(
             reminder => reminder instanceof Intervention
-        );
+        ) as Intervention[];
     }
     get editableOutcome() {
         let lastOutcome = this.outcomes[this.outcomes.length - 1];

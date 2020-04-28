@@ -55,6 +55,11 @@
         </q-item-section>
         <q-item-section>
           <q-item-label :class="!!option.description ? 'text-weight-medium' : ''">
+            <q-icon
+              v-if="option.icon"
+              :name="option.icon"
+              class="on-left q-mr-sm"
+            />
             <text-with-highlights
               :text="option.title"
               :regex="filterRegex"

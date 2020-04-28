@@ -1,28 +1,71 @@
 <template>
   <q-expansion-item
-    expand-separator
-    icon=""
-    :label="title"
-    :caption="subtitle"
+    :icon="icon"
     :value="isExpanded"
     @input="expansionChanged"
-    @show="scroll"
     ref="expansionItem"
+    class="intervention-item rounded-borders q-mb-sm"
+    expand-icon-class="text-intervention expand-icon"
   >
+    <template v-slot:header>
+      <q-item-section side>
+        <q-icon
+          :name="icon"
+          color="intervention"
+        />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label class="text-weight-bold">{{ title }}</q-item-label>
+        <q-item-label caption>{{ subtitle }}</q-item-label>
+      </q-item-section>
+      <q-item-section
+        side
+        class="close-icon"
+      >
+        <q-btn
+          icon="cancel"
+          flat
+          round
+          dense
+          @click.stop="$emit('deleteIntervention')"
+        />
+      </q-item-section>
+    </template>
     <intervention-editor
       :value="value"
-      class="q-pl-xl q-pb-md"
+      class="intervention-editor q-pb-md"
     />
   </q-expansion-item>
 </template>
+
+<style lang="sass">
+.intervention
+  .intervention-item
+    background-color: scale-color($intervention, $lightness: 96%)
+    .q-item
+      @media (max-width: $breakpoint-xs-max)
+        padding-right: 2px
+    .expand-icon
+      padding-left: 8px
+      @media (max-width: $breakpoint-xs-max)
+        padding-left: 0
+        margin-left: -4px
+    .q-expansion-item__toggle-icon
+      font-size: 36px
+    .close-icon
+      @media (max-width: $breakpoint-xs-max)
+        padding-left: 2px
+  .intervention-editor
+    padding-left: 58px
+    @media (max-width: $breakpoint-xs-max)
+      padding-left: 8px
+</style>
+
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { scroll } from "quasar";
 import InterventionEditor from "./InterventionEditor.vue";
 import { Intervention } from "../models/intervention";
-
-const { setScrollPosition } = scroll;
 
 @Component({
   props: {
@@ -35,41 +78,24 @@ const { setScrollPosition } = scroll;
 })
 export default class EditableIntervention extends Vue {
   get icon() {
-    return "";
+    return this.$t(this.intervention.category.icon) || "fas fa-question";
   }
   get title() {
-    return this.$props.value.details || this.$t("newIntervention");
+    return this.intervention.details || this.$t("newIntervention");
   }
   get subtitle() {
     return (
-      [this.$props.value.category.title, this.$props.value.target.title]
+      [this.intervention.category.title, this.intervention.target.title]
         .filter(title => title)
         .map(title => this.$t(title))
         .join(": ") || ""
     );
   }
+  get intervention() {
+    return this.$props.value as Intervention;
+  }
   expansionChanged(expanded: boolean) {
     this.$emit(expanded ? "didExpand" : "didCollapse");
-  }
-  created() {
-    if (this.$props.isExpanded) {
-      setTimeout(this.scroll, 10);
-    }
-  }
-  scroll() {
-    if (!this.$el || !this.$el.parentElement) {
-      return;
-    }
-    const siblings = Array.from(this.$el.parentElement.children || []);
-    const offsetTop =
-      ((this.$el as HTMLElement).offsetParent as HTMLElement).offsetTop +
-      (siblings[0] as HTMLElement).offsetTop;
-    const headerHeight = (this.$el.querySelector(".q-item") as HTMLElement)
-      .offsetHeight;
-    const index = siblings.indexOf(this.$el);
-    const offset = offsetTop + headerHeight * index;
-    const duration = 250;
-    setScrollPosition(window, offset, duration);
   }
 }
 </script>

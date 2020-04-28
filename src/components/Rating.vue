@@ -228,10 +228,10 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Rating as RatingModel } from "../models/rating";
+import { Rating } from "../models/rating";
 import TextWithTooltip from "./TextWithTooltip.vue";
 
-const nameof = (name: keyof RatingModel) => name;
+const nameof = (name: keyof Rating) => name;
 
 @Component({
   props: {
@@ -249,7 +249,7 @@ const nameof = (name: keyof RatingModel) => name;
     TextWithTooltip
   }
 })
-export default class Rating extends Vue {
+export default class RatingView extends Vue {
   observationMouseover = -1;
   expectationMouseover = -1;
   showComment = false;
