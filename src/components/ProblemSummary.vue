@@ -271,7 +271,7 @@ export default class ProblemSummary extends Vue {
     return !this.isDraft && !this.$props.isSummary && !this.$props.isDisabled;
   }
   get outcomesForChart() {
-    return this.$store.getters.getOutcomeAsChartData({
+    return this.$store.direct.getters.getOutcomeAsChartData({
       expectation: this.$t("expectation"),
       ratings: this.terminology.problemRatingScale.ratings,
       locale: this.$root.$i18n.locale,
@@ -308,21 +308,22 @@ export default class ProblemSummary extends Vue {
     return (this.$t("terminology") as unknown) as Terminology;
   }
   get clientName() {
-    return this.$store.getters.getClient(this.$props.params).name;
+    return this.$store.direct.getters.getClient(this.$props.params)?.name || "";
   }
   get language() {
     return this.$root.$i18n.locale;
   }
   get record() {
-    return (this.$props.problemRecord ||
-      this.getRecordFromStore()) as ProblemRecord;
+    return (
+      (this.$props.problemRecord as ProblemRecord) || this.getRecordFromStore()
+    );
   }
 
   prioritizeProblemRecord() {
     this.$store.direct.commit.prioritizeProblemRecord(this.$props.params);
     this.$router.push({
       name: "problem",
-      params: this.$store.getters.getRouteParamsForLatestProblem(
+      params: this.$store.direct.getters.getRouteParamsForLatestProblem(
         this.$props.params
       )
     });
@@ -336,7 +337,7 @@ export default class ProblemSummary extends Vue {
   }
 
   getRecordFromStore() {
-    return this.$store.getters.getProblemRecordById(this.$props.params);
+    return this.$store.direct.getters.getProblemRecordById(this.$props.params);
   }
 
   deleteDraft() {

@@ -42,7 +42,6 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import ProblemSummary from "../components/ProblemSummary.vue";
-import { ProblemRecord } from "../models/problemRecord";
 
 @Component({ components: { ProblemSummary } })
 export default class ClientProblems extends Vue {
@@ -57,11 +56,11 @@ export default class ClientProblems extends Vue {
     const problems = client ? client.problems : [];
     return problems
       .concat()
-      .filter((problem: ProblemRecord) => {
+      .filter(problem => {
         return !problem.resolvedAt;
       })
       .sort(
-        (first: ProblemRecord, second: ProblemRecord) =>
+        (first, second) =>
           // sort order: draft first, then high priority followed by low priority
           //@ts-ignore
           !second.createdAt - !first.createdAt ||

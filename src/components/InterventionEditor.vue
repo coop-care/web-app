@@ -229,7 +229,7 @@ export default class InterventionEditor extends Vue {
   }
   get usersGuideForProblem() {
     return ((this.$t("usersGuide") as unknown) as UsersGuide)[
-      this.record.problem.code
+      this.record?.problem.code || ""
     ];
   }
   get intervention() {
@@ -239,7 +239,7 @@ export default class InterventionEditor extends Vue {
     return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
-    return this.$store.getters.getProblemRecordById(this.$route.params);
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 }
 </script>

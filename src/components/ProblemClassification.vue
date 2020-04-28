@@ -242,7 +242,6 @@ import {
 } from "../helper/terminology";
 import { QInput, QTree } from "quasar";
 import ProblemSummary from "../components/ProblemSummary.vue";
-import { ProblemRecord } from "../models/problemRecord";
 import { Problem } from "../models/problem";
 import TextWithHighlights from "./TextWithHighlights.vue";
 import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
@@ -351,7 +350,7 @@ export default class ProblemClassification extends Vue {
   }
   get severityModifierExample() {
     const usersGuide = (this.$t("usersGuide") as unknown) as UsersGuide;
-    const usersGuideForProblem = usersGuide[this.problem.code];
+    const usersGuideForProblem = usersGuide[this.problem?.code || ""];
     const examples = usersGuideForProblem?.severityModifierExamples || [];
     return examples[this.severity];
   }
@@ -360,12 +359,11 @@ export default class ProblemClassification extends Vue {
     return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
-    return this.$store.getters.getProblemRecordById(
-      this.$route.params
-    ) as ProblemRecord;
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
   get problem() {
-    return this.record.problem;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.record!.problem;
   }
 
   updateProblem(key: string, value: any) {

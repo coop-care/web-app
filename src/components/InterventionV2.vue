@@ -67,12 +67,13 @@ export default class InterventionView extends Vue {
   editedIntervention = -1;
 
   get interventions() {
-    return this.record.interventions;
+    return this.record?.interventions || [];
   }
   set interventions(interventions) {
-    const notInterventions = this.record.reminders.filter(
-      reminder => !(reminder instanceof Intervention)
-    );
+    const notInterventions =
+      this.record?.reminders.filter(
+        reminder => !(reminder instanceof Intervention)
+      ) || [];
     const changes: any = {};
     changes[nameof("reminders")] = notInterventions.concat(interventions);
     this.$store.direct.commit.updateObject({
@@ -81,9 +82,7 @@ export default class InterventionView extends Vue {
     });
   }
   get record() {
-    return this.$store.getters.getProblemRecordById(
-      this.$route.params
-    ) as ProblemRecord;
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
   addIntervention() {

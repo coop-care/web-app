@@ -228,16 +228,16 @@ export default class InterventionView extends Vue {
     return (this.$t("terminology") as unknown) as Terminology;
   }
   get record() {
-    return this.$store.getters.getProblemRecordById(this.$route.params);
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
   get unsavedInterventions() {
-    const interventions: Intervention[] = (this.record || {}).reminders || [];
+    const interventions = this.record?.interventions || [];
     return interventions.filter(
       intervention => !intervention.startDate && intervention.categoryCode
     );
   }
   get savedInterventions() {
-    const interventions: Intervention[] = (this.record || {}).reminders || [];
+    const interventions = this.record?.interventions || [];
     return interventions.filter(
       intervention => intervention.startDate && intervention.categoryCode
     );

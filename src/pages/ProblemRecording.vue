@@ -127,13 +127,13 @@ export default class ProblemRecording extends Vue {
     return this.$t("terminology");
   }
   get client() {
-    return this.$store.getters.getClient(this.$route.params);
+    return this.$store.direct.getters.getClient(this.$route.params);
   }
   get record() {
-    return this.$store.getters.getProblemRecordById(this.$route.params);
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
   get isHighPriority() {
-    return this.record.problem.isHighPriority;
+    return this.record?.problem.isHighPriority || false;
   }
 
   scrollToTop() {

@@ -76,7 +76,7 @@ export default class ProblemRating extends Vue {
   showPersonRatedInPlaceOfOwner = false;
 
   get personRatedInPlaceOfOwner() {
-    return this.outcome.personRatedInPlaceOfOwner || "";
+    return this.outcome?.personRatedInPlaceOfOwner || "";
   }
   set personRatedInPlaceOfOwner(value: string) {
     const changes: any = {};
@@ -91,15 +91,15 @@ export default class ProblemRating extends Vue {
     return (this.$t("terminology") as unknown) as Terminology;
   }
   get record() {
-    return this.$store.getters.getProblemRecordById(this.$route.params);
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
   get outcome() {
-    return this.record.outcomes[this.record.outcomes.length - 1] || {};
+    return this.record?.outcomes[this.record.outcomes.length - 1];
   }
   get ratings() {
     const indexToType = ["knowledge", "behaviour", "status"];
     const usersGuide = (this.$t("usersGuide") as unknown) as UsersGuide;
-    const guideForProblem = usersGuide[this.record.problem.code];
+    const guideForProblem = usersGuide[this.record?.problem.code || ""];
     const examples = guideForProblem?.problemRatingScaleExamples.ratings || [];
     return this.terminology.problemRatingScale.ratings.map((rating, index) => {
       return {
