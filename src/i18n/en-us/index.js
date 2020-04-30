@@ -159,7 +159,7 @@ export default {
   tomorrow: "Tomorrow",
   inOneWeek: "In one week",
   addTimePlaceholder: "Add time of day ({format})",
-  reportTitle: "Report",
+  reportTitle: "Problems",
   masterDataTitle: "Master Data",
   usersGuide: {},
   diagnosisNames: {},

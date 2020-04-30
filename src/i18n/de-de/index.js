@@ -160,7 +160,7 @@ export default {
   tomorrow: "Morgen",
   inOneWeek: "In einer Woche",
   addTimePlaceholder: "Uhrzeit hinzufügen ({format})",
-  reportTitle: "Bericht",
+  reportTitle: "Probleme",
   masterDataTitle: "Stammblatt",
   usersGuide: {},
   diagnosisNames: {},
