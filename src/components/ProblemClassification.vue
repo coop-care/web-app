@@ -123,11 +123,10 @@
           class="q-mb-xs"
         />
         <div class="text-weight-light q-mb-md q-px-lg">
-          {{$t(problem.severity.description)}}
-          <simplified-markdown
-            v-if="severityModifierExample"
-            :text="$t('examplePrefix', {text: severityModifierExample})"
-            class="text-caption"
+          <text-with-tooltip
+            :text="$t(problem.severity.description)"
+            :tooltip="severityModifierExample ? $t('examplePrefix', {text: severityModifierExample}) : ''"
+            class="text-weight-light q-my-xs"
           />
         </div>
 
@@ -244,7 +243,7 @@ import { QInput, QTree } from "quasar";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { Problem } from "../models/problem";
 import TextWithHighlights from "./TextWithHighlights.vue";
-import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
+import TextWithTooltip from "./TextWithTooltip.vue";
 
 const nameof = (name: keyof Problem) => name;
 
@@ -252,7 +251,7 @@ const nameof = (name: keyof Problem) => name;
   components: {
     ProblemSummary,
     TextWithHighlights,
-    SimplifiedMarkdown
+    TextWithTooltip
   }
 })
 export default class ProblemClassification extends Vue {
