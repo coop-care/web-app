@@ -113,6 +113,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { ProblemRecord } from "../models/problemRecord";
+import { sortByTitle } from "../helper/terminology";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 
@@ -141,12 +142,14 @@ export default class ProblemsByDiagnosis extends Vue {
     };
   }
   get diagnosisCodes() {
-    return Object.keys(this.problemCodesByDiagnosis).map(code => {
-      return {
-        code: code,
-        title: this.$t("diagnosisNames." + code)
-      };
-    });
+    return Object.keys(this.problemCodesByDiagnosis)
+      .map(code => {
+        return {
+          code: code,
+          title: this.$t("diagnosisNames." + code) as string
+        };
+      })
+      .sort(sortByTitle);
   }
   get allProblemCodes() {
     return Object.keys(this.$t("terminology.problemByCode"));
@@ -155,12 +158,15 @@ export default class ProblemsByDiagnosis extends Vue {
     return this.problemCodesByDiagnosis[this.selectedDiagnosisCode] || [];
   }
   get problemOptionsForSelectedDiagnosis() {
-    return this.problemCodesForSelectedDiagnosis.map(this.makeProblemOption);
+    return this.problemCodesForSelectedDiagnosis
+      .map(this.makeProblemOption)
+      .sort(sortByTitle);
   }
   get otherProblemOptionsForSelectedDiagnosis() {
     return this.allProblemCodes
       .filter(code => !this.problemCodesForSelectedDiagnosis.includes(code))
-      .map(this.makeProblemOption);
+      .map(this.makeProblemOption)
+      .sort(sortByTitle);
   }
 
   createDraftProblemRecords() {
@@ -183,8 +189,10 @@ export default class ProblemsByDiagnosis extends Vue {
   makeProblemOption(code: string) {
     return {
       code: code,
-      title: this.$t("terminology.problemByCode." + code + ".title"),
-      description: this.$t("terminology.problemByCode." + code + ".description")
+      title: this.$t("terminology.problemByCode." + code + ".title") as string,
+      description: this.$t(
+        "terminology.problemByCode." + code + ".description"
+      ) as string
     };
   }
 }
