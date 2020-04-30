@@ -55,10 +55,10 @@ export default class ClientProblems extends Vue {
     const client = this.selectedClient;
     const problems = client ? client.problems : [];
     return problems
-      .concat()
       .filter(problem => {
         return !problem.resolvedAt;
       })
+      .reverse()
       .sort(
         (first, second) =>
           // sort order: draft first, then high priority followed by low priority

@@ -8,7 +8,7 @@ export default {
   client: "Client | Clients",
   newClient: "New Client",
   problem: "Problem | Problems",
-  problemAdmission: "problem admission",
+  problemAdmission: "add problem",
   rating: "Rating | Ratings",
   newRating: "Interim rating",
   intervention: "Intervention | Interventions",
