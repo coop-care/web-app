@@ -219,10 +219,10 @@ export default class InterventionEditor extends Vue {
       .sort(sortByTitle);
   }
   get suggestedDetails() {
-    if (this.intervention.categoryCode && this.intervention.targetCode) {
-      const intervention = this.usersGuideForProblem?.interventionSuggestions;
-      const category = intervention[this.intervention.categoryCode] || {};
-      return category[this.intervention.targetCode] || [];
+    if (this.categoryCode && this.targetCode && this.usersGuideForProblem) {
+      const intervention = this.usersGuideForProblem.interventionSuggestions;
+      const category = intervention[this.categoryCode] || {};
+      return category[this.targetCode] || [];
     } else {
       return [];
     }
