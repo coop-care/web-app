@@ -143,7 +143,7 @@ export default {
   never: "Never",
   recurrenceEndDate: "End date",
   endAfterOccurenceCount: "After number of occurences",
-  endAfterOccureceCountLabel:
+  endAfterOccurenceCountLabel:
     "After {count} occurence | After {count} occurences",
   cancelTask: "Omit task",
   moveTask: "Move task",

@@ -4,7 +4,7 @@
     <searchable-option-list
       color="intervention"
       :options="terminology.interventionScheme.categories"
-      v-model="intervention.categoryCode"
+      v-model="categoryCode"
     />
 
     <div class="text-subtitle1 counter">{{ $t("selectInterventionTarget") }}</div>
@@ -21,7 +21,7 @@
       <searchable-option-list
         color="intervention"
         :options="suggestedTargets"
-        v-model="intervention.targetCode"
+        v-model="targetCode"
       />
       <q-expansion-item
         :label="$t('otherInterventionTargetSelection')"
@@ -32,7 +32,7 @@
           color="intervention"
           :searchInputLabel="$t('findTargets')"
           :options="notSuggestedTargets"
-          v-model="intervention.targetCode"
+          v-model="targetCode"
         />
       </q-expansion-item>
     </div>
@@ -41,13 +41,13 @@
         color="intervention"
         :searchInputLabel="$t('findTargets')"
         :options="allTargets"
-        v-model="intervention.targetCode"
+        v-model="targetCode"
       />
     </div>
 
     <div class="text-subtitle1 counter">{{ $t("describeClientSpecificIntervention") }}</div>
     <q-input
-      v-model="intervention.details"
+      v-model="details"
       :label="$t('clientSpecificInterventionsHint')"
       autogrow
       color="intervention"
@@ -69,8 +69,8 @@
             v-for="text in suggestedDetails"
             :key="text"
             clickable
-            @click="intervention.details = text"
-            :active="intervention.details == text"
+            @click="details = text"
+            :active="details == text"
             active-class="text-intervention"
           >
             <q-item-section>{{ text }}</q-item-section>
@@ -83,7 +83,7 @@
     <div class="q-mx-md">
       <div class="row q-col-gutter-lg q-mb-md items-start">
         <date-time
-          v-model="intervention.startDate"
+          v-model="startDate"
           :min="new Date()"
           :format="$t('datetimeFormat')"
           :label="$t('addReminderTime')"
@@ -93,9 +93,9 @@
           class="col-md-4 col-sm-6 col-12"
         />
         <reminder-editor
-          v-if="intervention.startDate"
+          v-if="startDate"
           v-model="recurrenceRule"
-          :startDate="intervention.startDate"
+          :startDate="startDate"
           color="intervention"
           class="col-md-8 col-sm-6 col-12"
         />
@@ -119,6 +119,8 @@ import SearchableOptionList from "../components/SearchableOptionList.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
 import DateTime from "../components/DateTime.vue";
 
+const nameof = (name: keyof Intervention) => name;
+
 @Component({
   components: {
     SearchableOptionList,
@@ -137,6 +139,30 @@ import DateTime from "../components/DateTime.vue";
   }
 })
 export default class InterventionEditor extends Vue {
+  get categoryCode() {
+    return this.intervention.categoryCode;
+  }
+  set categoryCode(value) {
+    this.updateIntervention(nameof("categoryCode"), value);
+  }
+  get targetCode() {
+    return this.intervention.targetCode;
+  }
+  set targetCode(value) {
+    this.updateIntervention(nameof("targetCode"), value);
+  }
+  get details() {
+    return this.intervention.details;
+  }
+  set details(value) {
+    this.updateIntervention(nameof("details"), value);
+  }
+  get startDate() {
+    return this.intervention.startDate;
+  }
+  set startDate(value) {
+    this.updateIntervention(nameof("startDate"), value);
+  }
   get recurrenceRule() {
     // Always edit the last one. Fits most situations, but should be replaced with returning the currently valid one
     // based on startDate and recurrenceEnd
@@ -144,17 +170,25 @@ export default class InterventionEditor extends Vue {
     return rules[rules.length - 1] || null;
   }
   set recurrenceRule(value: RecurrenceRule | null) {
+    if (value == this.recurrenceRule) {
+      return;
+    }
+
+    const recurrenceRules = this.intervention.recurrenceRules.slice();
+
     if (this.recurrenceRule) {
+      const index = recurrenceRules.indexOf(this.recurrenceRule);
+
       if (value) {
-        this.recurrenceRule = value;
+        recurrenceRules[index] = value;
       } else {
-        this.intervention.recurrenceRules = this.intervention.recurrenceRules.filter(
-          rule => rule != this.recurrenceRule
-        );
+        recurrenceRules.splice(index, 1);
       }
     } else if (value) {
-      this.intervention.recurrenceRules.push(value);
+      recurrenceRules.push(value);
     }
+
+    this.updateIntervention(nameof("recurrenceRules"), recurrenceRules);
   }
   get startDateOptions() {
     const today = date.startOfDate(new Date(), "day");
@@ -183,8 +217,8 @@ export default class InterventionEditor extends Vue {
       return codes;
     }
 
-    if (this.intervention.categoryCode) {
-      return Object.keys(suggestions[this.intervention.categoryCode] || {});
+    if (this.categoryCode) {
+      return Object.keys(suggestions[this.categoryCode] || {});
     } else {
       return Array.from(
         new Set(
@@ -240,6 +274,16 @@ export default class InterventionEditor extends Vue {
   }
   get record() {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
+  }
+
+  updateIntervention(key: string, value: any) {
+    const changes: any = {};
+    changes[key] = value;
+
+    this.$store.direct.commit.updateObject({
+      target: this.intervention,
+      changes: changes
+    });
   }
 }
 </script>

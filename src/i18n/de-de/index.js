@@ -144,7 +144,7 @@ export default {
   never: "Nie",
   recurrenceEndDate: "Enddatum",
   endAfterOccurenceCount: "Nach Anzahl von Ereignissen",
-  endAfterOccureceCountLabel:
+  endAfterOccurenceCountLabel:
     "Nach {count} Ereignis | Nach {count} Ereignissen",
   cancelTask: "Aufgabe auslassen",
   moveTask: "Aufgabe verschieben",

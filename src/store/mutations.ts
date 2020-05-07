@@ -32,6 +32,7 @@ export default defineMutations<StoreState>()({
         state,
         { target, changes }: { target: any; changes: { [key: string]: any } }
     ) {
+        // maybe check for each key if new value is really differs first? And consider array equality at least for empty arrays?
         Object.assign(target, changes);
     },
 
