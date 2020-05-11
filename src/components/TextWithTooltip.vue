@@ -27,16 +27,19 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 
-@Component({
+const TextWithTooltipProps = Vue.extend({
   props: {
     text: String,
     tooltip: String
-  },
+  }
+});
+
+@Component({
   components: {
     SimplifiedMarkdown
   }
 })
-export default class TextWithTooltip extends Vue {
+export default class TextWithTooltip extends TextWithTooltipProps {
   width = "100%";
 }
 </script>

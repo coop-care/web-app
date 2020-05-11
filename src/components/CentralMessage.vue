@@ -8,6 +8,12 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component({ props: { message: String } })
-export default class CentralMessage extends Vue {}
+const CentralMessageProps = Vue.extend({
+  props: {
+    message: String
+  }
+});
+
+@Component
+export default class CentralMessage extends CentralMessageProps {}
 </script>

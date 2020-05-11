@@ -233,7 +233,7 @@ import TextWithTooltip from "./TextWithTooltip.vue";
 
 const nameof = (name: keyof Rating) => name;
 
-@Component({
+const RatingViewProps = Vue.extend({
   props: {
     title: String,
     description: String,
@@ -242,32 +242,35 @@ const nameof = (name: keyof Rating) => name;
     rating: Object,
     examples: {
       type: Array,
-      default: []
+      default: () => []
     }
-  },
+  }
+});
+
+@Component({
   components: {
     TextWithTooltip
   }
 })
-export default class RatingView extends Vue {
+export default class RatingView extends RatingViewProps {
   observationMouseover = -1;
   expectationMouseover = -1;
   showComment = false;
 
   get observation() {
-    return this.$props.rating.observation || 0;
+    return this.rating.observation || 0;
   }
   set observation(value: number) {
     this.updateNewOutcome(nameof("observation"), value);
   }
   get expectation() {
-    return this.$props.rating.expectation || 0;
+    return this.rating.expectation || 0;
   }
   set expectation(value: number) {
     this.updateNewOutcome(nameof("expectation"), value);
   }
   get comment() {
-    return this.$props.rating.comment || "";
+    return this.rating.comment || "";
   }
   set comment(value: string) {
     this.updateNewOutcome(nameof("comment"), value);
@@ -280,26 +283,26 @@ export default class RatingView extends Vue {
   }
   get observationScale() {
     if (this.observationMouseover < 0) {
-      return this.$props.scale[this.observation - 1] || " ";
+      return this.scale[this.observation - 1] || " ";
     } else {
-      return this.$props.scale[this.observationMouseover];
+      return this.scale[this.observationMouseover];
     }
   }
   get expectationScale() {
     if (this.expectationMouseover < 0) {
-      return this.$props.scale[this.expectation - 1] || " ";
+      return this.scale[this.expectation - 1] || " ";
     } else {
-      return this.$props.scale[this.expectationMouseover];
+      return this.scale[this.expectationMouseover];
     }
   }
   get observationExample() {
     if (
       (this.observationMouseover < 0 ||
         this.observationMouseover == this.observation - 1) &&
-      this.$props.examples[this.observation - 1]
+      this.examples[this.observation - 1]
     ) {
       return this.$t("examplePrefix", {
-        text: this.$props.examples[this.observation - 1]
+        text: this.examples[this.observation - 1]
       });
     } else {
       return "";
@@ -309,10 +312,10 @@ export default class RatingView extends Vue {
     if (
       (this.expectationMouseover < 0 ||
         this.expectationMouseover == this.expectation - 1) &&
-      this.$props.examples[this.expectation - 1]
+      this.examples[this.expectation - 1]
     ) {
       return this.$t("examplePrefix", {
-        text: this.$props.examples[this.expectation - 1]
+        text: this.examples[this.expectation - 1]
       });
     } else {
       return "";
@@ -323,7 +326,7 @@ export default class RatingView extends Vue {
     const changes: any = {};
     changes[key] = value;
     this.$store.direct.commit.updateNewOutcome({
-      ratingType: this.$props.type,
+      ratingType: this.type,
       changes: changes,
       ...this.$route.params
     });

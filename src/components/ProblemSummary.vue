@@ -233,19 +233,22 @@ import { ProblemRecord } from "../models/problemRecord";
 
 Vue.use(VueApexCharts);
 
-@Component({
+const ProblemSummaryProps = Vue.extend({
   props: {
     params: Object,
-    problemRecord: Object,
+    problemRecord: ProblemRecord,
     isSummary: Boolean,
     isDisabled: Boolean
-  },
+  }
+});
+
+@Component({
   components: {
     apexchart: VueApexCharts,
     ActionMenu
   }
 })
-export default class ProblemSummary extends Vue {
+export default class ProblemSummary extends ProblemSummaryProps {
   get problem() {
     return this.record.problem;
   }
@@ -268,14 +271,14 @@ export default class ProblemSummary extends Vue {
     return !this.record.createdAt;
   }
   get isInteractive() {
-    return !this.isDraft && !this.$props.isSummary && !this.$props.isDisabled;
+    return !this.isDraft && !this.isSummary && !this.isDisabled;
   }
   get outcomesForChart() {
     return this.$store.direct.getters.getOutcomeAsChartData({
       expectation: this.$t("expectation"),
       ratings: this.terminology.problemRatingScale.ratings,
       locale: this.$root.$i18n.locale,
-      ...this.$props.params
+      ...this.params
     });
   }
   get actionMenuItems() {
@@ -290,8 +293,8 @@ export default class ProblemSummary extends Vue {
         name: this.$t("problemDismissal"),
         icon: "fas fa-check",
         action: () => {
-          this.$store.direct.commit.dismissProblemRecord(this.$props.params);
-          this.$store.direct.dispatch.saveClient(this.$props.params);
+          this.$store.direct.commit.dismissProblemRecord(this.params);
+          this.$store.direct.dispatch.saveClient(this.params);
         }
       }
     ];
@@ -308,41 +311,39 @@ export default class ProblemSummary extends Vue {
     return (this.$t("terminology") as unknown) as Terminology;
   }
   get clientName() {
-    return this.$store.direct.getters.getClient(this.$props.params)?.name || "";
+    return this.$store.direct.getters.getClient(this.params)?.name || "";
   }
   get language() {
     return this.$root.$i18n.locale;
   }
   get record() {
-    return (
-      (this.$props.problemRecord as ProblemRecord) || this.getRecordFromStore()
-    );
+    return this.problemRecord || this.getRecordFromStore();
   }
 
   prioritizeProblemRecord() {
-    this.$store.direct.commit.prioritizeProblemRecord(this.$props.params);
+    this.$store.direct.commit.prioritizeProblemRecord(this.params);
     this.$router.push({
       name: "problem",
       params: this.$store.direct.getters.getRouteParamsForLatestProblem(
-        this.$props.params
+        this.params
       )
     });
-    this.$store.direct.dispatch.saveClient(this.$props.params);
+    this.$store.direct.dispatch.saveClient(this.params);
   }
 
   updateLocale() {
-    if (this.$props.problemRecord) {
-      this.$props.problemRecord = this.getRecordFromStore();
+    if (this.problemRecord) {
+      this.problemRecord = this.getRecordFromStore() as ProblemRecord;
     }
   }
 
   getRecordFromStore() {
-    return this.$store.direct.getters.getProblemRecordById(this.$props.params);
+    return this.$store.direct.getters.getProblemRecordById(this.params);
   }
 
   deleteDraft() {
-    this.$store.direct.commit.deleteDraftProblemRecord(this.$props.params);
-    this.$store.direct.dispatch.saveClient(this.$props.params);
+    this.$store.direct.commit.deleteDraftProblemRecord(this.params);
+    this.$store.direct.dispatch.saveClient(this.params);
   }
 
   created() {
@@ -358,7 +359,7 @@ export default class ProblemSummary extends Vue {
     // which causes duplicate entries and therefore errors when the charts are drawn again for the same components
     // @ts-ignore
     const Apex = window.Apex;
-    const params = this.$props.params;
+    const params = this.params;
     const group = ["summary", params.clientId, params.problemId].join(".");
     if (!Apex._chartInstances) return; // I get an error that this is undefined
     const zombieChartIndices = Apex._chartInstances

@@ -121,44 +121,47 @@ import DateTime from "../components/DateTime.vue";
 
 const nameof = (name: keyof Intervention) => name;
 
+const InterventionEditorProps = Vue.extend({
+  props: {
+    value: Intervention
+  }
+});
+
 @Component({
   components: {
     SearchableOptionList,
     ReminderEditor,
     DateTime
   },
-  props: {
-    value: Intervention
-  },
   watch: {
     startDate(this: InterventionEditor, value: Date | null) {
       if (!value) {
-        this.recurrenceRule = null;
+        this.recurrenceRule = undefined;
       }
     }
   }
 })
-export default class InterventionEditor extends Vue {
+export default class InterventionEditor extends InterventionEditorProps {
   get categoryCode() {
-    return this.intervention.categoryCode;
+    return this.value.categoryCode;
   }
   set categoryCode(value) {
     this.updateIntervention(nameof("categoryCode"), value);
   }
   get targetCode() {
-    return this.intervention.targetCode;
+    return this.value.targetCode;
   }
   set targetCode(value) {
     this.updateIntervention(nameof("targetCode"), value);
   }
   get details() {
-    return this.intervention.details;
+    return this.value.details;
   }
   set details(value) {
     this.updateIntervention(nameof("details"), value);
   }
   get startDate() {
-    return this.intervention.startDate;
+    return this.value.startDate;
   }
   set startDate(value) {
     this.updateIntervention(nameof("startDate"), value);
@@ -166,15 +169,15 @@ export default class InterventionEditor extends Vue {
   get recurrenceRule() {
     // Always edit the last one. Fits most situations, but should be replaced with returning the currently valid one
     // based on startDate and recurrenceEnd
-    const rules = this.intervention.recurrenceRules;
-    return rules[rules.length - 1] || null;
+    const rules = this.value.recurrenceRules;
+    return rules[rules.length - 1] || undefined;
   }
-  set recurrenceRule(value: RecurrenceRule | null) {
+  set recurrenceRule(value: RecurrenceRule | undefined) {
     if (value == this.recurrenceRule) {
       return;
     }
 
-    const recurrenceRules = this.intervention.recurrenceRules.slice();
+    const recurrenceRules = this.value.recurrenceRules.slice();
 
     if (this.recurrenceRule) {
       const index = recurrenceRules.indexOf(this.recurrenceRule);
@@ -266,9 +269,6 @@ export default class InterventionEditor extends Vue {
       this.record?.problem.code || ""
     ];
   }
-  get intervention() {
-    return this.$props.value as Intervention;
-  }
   get terminology() {
     return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
@@ -281,7 +281,7 @@ export default class InterventionEditor extends Vue {
     changes[key] = value;
 
     this.$store.direct.commit.updateObject({
-      target: this.intervention,
+      target: this.value,
       changes: changes
     });
   }

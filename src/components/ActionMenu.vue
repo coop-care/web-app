@@ -37,7 +37,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component({
+const ActionMenuProps = Vue.extend({
   props: {
     title: String,
     items: Array,
@@ -46,6 +46,8 @@ import Component from "vue-class-component";
       default: "primary"
     }
   }
-})
-export default class ActionMenu extends Vue {}
+});
+
+@Component
+export default class ActionMenu extends ActionMenuProps {}
 </script>

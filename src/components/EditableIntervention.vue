@@ -67,32 +67,32 @@ import Component from "vue-class-component";
 import InterventionEditor from "./InterventionEditor.vue";
 import { Intervention } from "../models/intervention";
 
-@Component({
+const EditableInterventionProps = Vue.extend({
   props: {
     value: Intervention,
     isExpanded: Boolean
-  },
+  }
+});
+
+@Component({
   components: {
     InterventionEditor
   }
 })
-export default class EditableIntervention extends Vue {
+export default class EditableIntervention extends EditableInterventionProps {
   get icon() {
-    return this.$t(this.intervention.category.icon) || "fas fa-question";
+    return this.$t(this.value.category.icon) || "fas fa-question";
   }
   get title() {
-    return this.intervention.details || this.$t("newIntervention");
+    return this.value.details || this.$t("newIntervention");
   }
   get subtitle() {
     return (
-      [this.intervention.category.title, this.intervention.target.title]
+      [this.value.category.title, this.value.target.title]
         .filter(title => title)
         .map(title => this.$t(title))
         .join(": ") || ""
     );
-  }
-  get intervention() {
-    return this.$props.value as Intervention;
   }
   expansionChanged(expanded: boolean) {
     this.$emit(expanded ? "didExpand" : "didCollapse");

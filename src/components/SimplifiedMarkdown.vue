@@ -12,12 +12,14 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component({
+const SimplifiedMarkdownProps = Vue.extend({
   props: {
     text: String
   }
-})
-export default class SimplifiedMarkdown extends Vue {
+});
+
+@Component
+export default class SimplifiedMarkdown extends SimplifiedMarkdownProps {
   classes(text: string) {
     let classes = "";
     if (text.startsWith("**")) {

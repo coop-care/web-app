@@ -90,20 +90,23 @@ import { QInput } from "quasar";
 import { HasTitleDescriptionCode } from "../helper/terminology";
 import TextWithHighlights from "./TextWithHighlights.vue";
 
-@Component({
+const SearchableOptionListProps = Vue.extend({
   props: {
     searchInputLabel: String,
     color: String,
-    options: Array,
+    options: Array as () => HasTitleDescriptionCode[],
     value: [String, Array],
     allowMultipleSelection: Boolean,
     dense: Boolean
-  },
+  }
+});
+
+@Component({
   components: {
     TextWithHighlights
   }
 })
-export default class SearchableOptionList extends Vue {
+export default class SearchableOptionList extends SearchableOptionListProps {
   filter = "";
 
   get filterRegex() {
@@ -117,11 +120,10 @@ export default class SearchableOptionList extends Vue {
     }
   }
   get filteredOptions() {
-    const options = this.$props.options as HasTitleDescriptionCode[];
     if (!this.filter) {
-      return options;
+      return this.options;
     } else {
-      return options.filter(option => {
+      return this.options.filter(option => {
         return (
           !this.filterRegex ||
           (option.title && option.title.match(this.filterRegex)) ||

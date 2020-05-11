@@ -116,7 +116,7 @@ import { date, QInput } from "quasar";
 
 const emptyDate = new Date(0, 0, 0, 0, 0, 0, 0).getTime();
 
-@Component({
+const DateTimeProps = Vue.extend({
   props: {
     value: Date,
     format: {
@@ -134,21 +134,23 @@ const emptyDate = new Date(0, 0, 0, 0, 0, 0, 0).getTime();
     dense: Boolean,
     options: Array
   }
-})
-export default class DateTime extends Vue {
+});
+
+@Component
+export default class DateTime extends DateTimeProps {
   dateKey = Math.random();
   showOptions = false;
 
   get dateString(): string {
-    return date.formatDate(this.$props.value || undefined, this.$props.format);
+    return date.formatDate(this.value || undefined, this.format);
   }
   set dateString(value: string) {
-    const result = date.extractDate(value, this.$props.format);
+    const result = date.extractDate(value, this.format);
 
     if (!isNaN(result.getTime()) && result.getTime() != emptyDate) {
       if (
-        !this.$props.min ||
-        date.isBetweenDates(result, this.$props.min, result, {
+        !this.min ||
+        date.isBetweenDates(result, this.min, result, {
           inclusiveTo: true,
           inclusiveFrom: true,
           onlyDate: true
@@ -156,38 +158,35 @@ export default class DateTime extends Vue {
       ) {
         this.$emit("input", result);
       } else {
-        this.$emit("input", this.$props.min);
+        this.$emit("input", this.min);
       }
     }
   }
   get dateMaskForInput() {
-    return this.$props.format
+    return this.format
       .toString()
       .replace(/[dDMYHhm]/g, "#")
       .replace(/A/g, "AA");
   }
   get showDatePicker() {
-    return /[YMDd]/.test(this.$props.format);
+    return /[YMDd]/.test(this.format);
   }
   get showTimePicker() {
-    return /[hHmaA]/.test(this.$props.format);
+    return /[hHmaA]/.test(this.format);
   }
   get mappedOptions() {
-    return this.$props.options
+    return this.options
       ?.sort((a: any, b: any) => a.value.getTime() - b.value.getTime())
       .map((option: any) => {
         return {
           label: option.label,
-          value: date.formatDate(option.value, this.$props.format)
+          value: date.formatDate(option.value, this.format)
         };
       });
   }
 
   dateOptions(value: string) {
-    return (
-      !this.$props.min ||
-      value >= date.formatDate(this.$props.min, "YYYY/MM/DD")
-    );
+    return !this.min || value >= date.formatDate(this.min, "YYYY/MM/DD");
   }
   clear(event: Event) {
     this.$emit("input", null);

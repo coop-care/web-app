@@ -31,8 +31,8 @@
               type="number"
               dense
               step="1"
-              :prefix="$tc('every' + rule.frequencyUnit, 5).split(' 5 ')[0]"
-              :suffix="$tc('every' + rule.frequencyUnit, 5).split(' 5 ')[1]"
+              :prefix="$tc('every' + value.frequencyUnit, 5).split(' 5 ')[0]"
+              :suffix="$tc('every' + value.frequencyUnit, 5).split(' 5 ')[1]"
               input-class="text-center"
               class="q-pb-md"
               :key="intervalKey"
@@ -41,7 +41,7 @@
 
           <div v-if="frequency == RecurrenceFrequency.Daily">
             <date-time
-              v-for="(time, index) in rule.timesOfTheDay.concat([null])"
+              v-for="(time, index) in value.timesOfTheDay.concat([null])"
               :key="index"
               :value="time"
               :format="$t('timeFormat')"
@@ -264,48 +264,53 @@ enum RecurrenceEndMode {
   NumberOfOccurences
 }
 
-@Component({
+const ReminderEditorProps = Vue.extend({
   props: {
-    value: RecurrenceRule,
-    startDate: Date,
+    value: {
+      type: RecurrenceRule,
+      default: () => noRecurrenceRule
+    },
+    startDate: {
+      type: (Date as unknown) as () => Date // don't ask… typechecker madness
+    },
     color: {
       type: String,
       default: "primary"
     }
-  },
+  }
+});
+
+@Component({
   components: {
     SearchableOptionList,
     ToggleButtonGroup,
     DateTime
   }
 })
-export default class ReminderEditor extends Vue {
+export default class ReminderEditor extends ReminderEditorProps {
   hasOwnRecurrencePattern = false;
   monthlyMode = MonthlyMode.DayOfMonth;
   showYearlyDayOfWeek = false;
   intervalKey = Math.random();
   occurenceCountKey = Math.random();
 
-  get rule() {
-    return (this.$props.value as RecurrenceRule) || noRecurrenceRule;
-  }
   get frequency() {
-    return this.rule.frequency;
+    return this.value.frequency;
   }
   set frequency(value) {
     if (value == RecurrenceFrequency.Never) {
-      this.$emit("input", null);
+      this.$emit("input", undefined);
     } else {
       const rule = new RecurrenceRule(value);
-      rule.recurrenceStart = this.$props.startDate;
-      rule.recurrenceEnd = this.rule.recurrenceEnd;
+      rule.recurrenceStart = this.startDate;
+      rule.recurrenceEnd = this.value.recurrenceEnd;
 
       if (
         value == RecurrenceFrequency.Daily &&
         this.hasOwnRecurrencePattern &&
-        this.$props.startDate
+        this.startDate
       ) {
-        rule.timesOfTheDay = [this.$props.startDate];
+        rule.timesOfTheDay = [this.startDate];
       }
 
       this.$emit("input", rule);
@@ -314,7 +319,7 @@ export default class ReminderEditor extends Vue {
     this.monthlyMode = MonthlyMode.DayOfMonth;
   }
   get interval() {
-    return this.rule.interval;
+    return this.value.interval;
   }
   set interval(value) {
     if (!/^\d{1,3}$/.test("" + value) || value < 1) {
@@ -324,36 +329,36 @@ export default class ReminderEditor extends Vue {
     this.updateRecurrenceRule(nameof("interval"), value);
   }
   get daysOfTheWeek() {
-    return this.rule.daysOfTheWeek.map(day => day.dayOfTheWeek);
+    return this.value.daysOfTheWeek.map(day => day.dayOfTheWeek);
   }
   set daysOfTheWeek(value) {
     const daysOfTheWeek = value.map(day => new RecurrenceDayOfWeek(day));
     this.updateRecurrenceRule(nameof("daysOfTheWeek"), daysOfTheWeek);
   }
   get daysOfTheMonth() {
-    return this.rule.daysOfTheMonth;
+    return this.value.daysOfTheMonth;
   }
   set daysOfTheMonth(value) {
     this.updateRecurrenceRule(nameof("daysOfTheMonth"), value);
   }
   get monthsOfTheYear() {
-    return this.rule.monthsOfTheYear;
+    return this.value.monthsOfTheYear;
   }
   set monthsOfTheYear(value) {
     this.updateRecurrenceRule(nameof("monthsOfTheYear"), value);
   }
   get positions() {
-    return this.rule.positions;
+    return this.value.positions;
   }
   set positions(value) {
     this.updateRecurrenceRule(nameof("positions"), value);
   }
   get recurrenceEndMode() {
-    if (this.rule.recurrenceEnd && this.rule.recurrenceEnd.endDate) {
+    if (this.value.recurrenceEnd && this.value.recurrenceEnd.endDate) {
       return RecurrenceEndMode.EndDate;
     } else if (
-      this.rule.recurrenceEnd &&
-      this.rule.recurrenceEnd.occurenceCount
+      this.value.recurrenceEnd &&
+      this.value.recurrenceEnd.occurenceCount
     ) {
       return RecurrenceEndMode.NumberOfOccurences;
     } else {
@@ -372,17 +377,17 @@ export default class ReminderEditor extends Vue {
     this.updateRecurrenceRule(nameof("recurrenceEnd"), recurrenceEnd);
   }
   get recurrenceEndDate() {
-    return this.rule.recurrenceEnd?.endDate;
+    return this.value.recurrenceEnd?.endDate;
   }
   set recurrenceEndDate(value) {
     this.updateRecurrenceEnd(nameofEnd("endDate"), value);
   }
   get recurrenceEndCount() {
-    return this.rule.recurrenceEnd?.occurenceCount || 0;
+    return this.value.recurrenceEnd?.occurenceCount || 0;
   }
   set recurrenceEndCount(value) {
     if (
-      this.rule.recurrenceEnd &&
+      this.value.recurrenceEnd &&
       (!/^\d{1,3}$/.test("" + value) || value < 1)
     ) {
       value = 1;
@@ -462,10 +467,10 @@ export default class ReminderEditor extends Vue {
   get description() {
     let description = "";
 
-    if (this.rule.frequencyUnit) {
+    if (this.value.frequencyUnit) {
       description += this.$tc(
-        "every" + this.rule.frequencyUnit,
-        this.rule.interval
+        "every" + this.value.frequencyUnit,
+        this.value.interval
       );
     }
 
@@ -485,7 +490,7 @@ export default class ReminderEditor extends Vue {
     return { label: name, value: index + 1 };
   }
   timesOfTheDayInput(value: Date | null, index: number) {
-    const timesOfTheDay = this.rule.timesOfTheDay.slice();
+    const timesOfTheDay = this.value.timesOfTheDay.slice();
     if (value == null) {
       timesOfTheDay.splice(index, 1);
     } else {
@@ -494,7 +499,7 @@ export default class ReminderEditor extends Vue {
     this.updateRecurrenceRule(nameof("timesOfTheDay"), timesOfTheDay);
   }
   resetOwnRecurrencePattern() {
-    this.frequency = this.rule.frequency;
+    this.frequency = this.value.frequency;
   }
   resetMonthlyMode() {
     this.daysOfTheMonth = [];
@@ -544,7 +549,7 @@ export default class ReminderEditor extends Vue {
     changes[key] = value;
 
     this.$store.direct.commit.updateObject({
-      target: this.rule,
+      target: this.value,
       changes: changes
     });
   }
@@ -553,13 +558,13 @@ export default class ReminderEditor extends Vue {
     changes[key] = value;
 
     this.$store.direct.commit.updateObject({
-      target: this.rule.recurrenceEnd,
+      target: this.value.recurrenceEnd,
       changes: changes
     });
   }
 
   created() {
-    this.setupFromRecurrenceRule(this.rule);
+    this.setupFromRecurrenceRule(this.value);
     this.$watch("hasOwnRecurrencePattern", this.resetOwnRecurrencePattern);
     this.$watch("monthlyMode", this.resetMonthlyMode);
     this.$watch("showYearlyDayOfWeek", this.resetYearlyDayOfWeek);

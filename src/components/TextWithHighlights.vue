@@ -13,17 +13,19 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component({
+const TextWithHighlightsProps = Vue.extend({
   props: {
     text: String,
     regex: RegExp,
     classesForMatches: String
   }
-})
-export default class TextWithHighlights extends Vue {
+});
+
+@Component
+export default class TextWithHighlights extends TextWithHighlightsProps {
   get separatedText() {
-    return this.$props.text
-      .replace(this.$props.regex, (text: string) => "|" + text + "|")
+    return this.text
+      .replace(this.regex, (text: string) => "|" + text + "|")
       .split("|");
   }
 }

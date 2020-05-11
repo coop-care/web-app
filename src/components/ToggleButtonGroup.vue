@@ -25,7 +25,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 
-@Component({
+const ToggleButtonGroupProps = Vue.extend({
   props: {
     options: Array,
     color: String,
@@ -38,16 +38,18 @@ import Component from "vue-class-component";
       default: "md"
     }
   }
-})
-export default class ToggleButtonGroup extends Vue {
+});
+
+@Component
+export default class ToggleButtonGroup extends ToggleButtonGroupProps {
   toggle(value: any) {
-    if (this.$props.value.includes(value)) {
+    if (this.value.includes(value)) {
       this.$emit(
         "input",
-        this.$props.value.filter((val: any) => val != value)
+        this.value.filter((val: any) => val != value)
       );
     } else {
-      this.$emit("input", this.$props.value.concat([value]));
+      this.$emit("input", this.value.concat([value]));
     }
   }
 }
