@@ -72,13 +72,13 @@
             flat
             color="primary"
             rounded
-            @click="$refs.stepper.previous(); replaceLocation()"
+            @click="$refs.stepper.previous()"
             :label="$t('back')"
             class="shadow-1 q-ml-sm"
           />
           <q-btn
             v-if="step < 3 && isHighPriority"
-            @click="$refs.stepper.next(); replaceLocation()"
+            @click="$refs.stepper.next()"
             color="primary"
             rounded
             :label="$t('continue')"
@@ -118,6 +118,15 @@ import CentralMessage from "components/CentralMessage.vue";
     InterventionView,
     Loading,
     CentralMessage
+  },
+  watch: {
+    step(this: ProblemRecording, value: number) {
+      this.$route.params.step = "" + value;
+      this.$router.replace({
+        name: this.$route.name || undefined,
+        params: this.$route.params
+      });
+    }
   }
 })
 export default class ProblemRecording extends Vue {
@@ -147,12 +156,6 @@ export default class ProblemRecording extends Vue {
       .then(() =>
         this.$router.push({ name: "clientReport", params: this.$route.params })
       );
-  }
-  replaceLocation() {
-    const name = this.$route.name || undefined;
-    const params = this.$route.params;
-    params.step = "" + this.step;
-    this.$router.replace({ name: name, params: params });
   }
 }
 </script>
