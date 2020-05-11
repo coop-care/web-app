@@ -177,6 +177,7 @@ const nameof = (name: keyof Client) => name;
 })
 export default class PageIndex extends Vue {
   selectedTab = null;
+  $refs!: { clientDrawer: ClientDrawer };
 
   get clients() {
     return this.$store.direct.state.clients;
@@ -254,16 +255,14 @@ export default class PageIndex extends Vue {
     this.updateClient(client =>
       this.$store.direct.commit.archiveClient(client)
     );
-    (this.$refs
-      .clientDrawer as ClientDrawer).archivedClientsExpansionState = true;
+    this.$refs.clientDrawer.archivedClientsExpansionState = true;
   }
 
   unarchiveClient() {
     this.updateClient(client =>
       this.$store.direct.commit.unarchiveClient(client)
     );
-    (this.$refs
-      .clientDrawer as ClientDrawer).activeClientsExpansionState = true;
+    this.$refs.clientDrawer.activeClientsExpansionState = true;
   }
 
   updateClient(mutate: (client: Client) => void) {

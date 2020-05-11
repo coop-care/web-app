@@ -108,6 +108,7 @@ const SearchableOptionListProps = Vue.extend({
 })
 export default class SearchableOptionList extends SearchableOptionListProps {
   filter = "";
+  $refs!: { filter: QInput };
 
   get filterRegex() {
     if (!this.filter) {
@@ -135,7 +136,7 @@ export default class SearchableOptionList extends SearchableOptionListProps {
 
   resetFilter() {
     this.filter = "";
-    (this.$refs.filter as QInput).focus();
+    this.$refs.filter.focus();
   }
 }
 </script>

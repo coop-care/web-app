@@ -140,6 +140,7 @@ const DateTimeProps = Vue.extend({
 export default class DateTime extends DateTimeProps {
   dateKey = Math.random();
   showOptions = false;
+  $refs!: { dateInput: QInput };
 
   get dateString(): string {
     return date.formatDate(this.value || undefined, this.format);
@@ -190,7 +191,7 @@ export default class DateTime extends DateTimeProps {
   }
   clear(event: Event) {
     this.$emit("input", null);
-    (this.$refs.dateInput as QInput).$emit("blur", event);
+    this.$refs.dateInput.$emit("blur", event);
     this.showOptions = false;
   }
 }

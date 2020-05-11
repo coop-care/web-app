@@ -158,6 +158,7 @@ const nameof = (name: keyof ProblemRecord) => name;
 export default class InterventionView extends Vue {
   categorySelected = null;
   targetsFilter = "";
+  $refs!: { filter: QInput[] };
 
   get interventions() {
     return this.unsavedInterventions.map(intervention => intervention.code);
@@ -271,7 +272,7 @@ export default class InterventionView extends Vue {
 
   resetTargetsFilter() {
     this.targetsFilter = "";
-    (this.$refs.filter as QInput[])[0].focus();
+    this.$refs.filter[0].focus();
   }
 
   filterTerminology(node: HasTitleDescription, filter: string) {

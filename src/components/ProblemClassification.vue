@@ -256,6 +256,10 @@ const nameof = (name: keyof Problem) => name;
 })
 export default class ProblemClassification extends Vue {
   problemsFilter = "";
+  $refs!: {
+    filter: QInput;
+    problems: QTree;
+  };
 
   get selectedProblem() {
     return this.problem.code;
@@ -399,7 +403,7 @@ export default class ProblemClassification extends Vue {
 
   resetProblemsFilter() {
     this.problemsFilter = "";
-    (this.$refs.filter as QInput).focus();
+    this.$refs.filter.focus();
   }
 
   filterTerminology(node: HasTitleDescription, filter: string) {
@@ -414,10 +418,7 @@ export default class ProblemClassification extends Vue {
       );
 
       if (domain) {
-        (this.$refs.problems as QTree).setExpanded(
-          "domains." + domain.code,
-          true
-        );
+        this.$refs.problems.setExpanded("domains." + domain.code, true);
       }
     }
   }
