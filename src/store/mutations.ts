@@ -98,8 +98,5 @@ export default defineMutations<StoreState>()({
         const now = new Date();
         problemRecord.createdAt = now;
         (problemRecord.outcomes[0] || {}).createdAt = now;
-        problemRecord.reminders.forEach(intervention => {
-            intervention.startDate = now;
-        });
     }
 });
