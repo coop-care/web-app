@@ -1,57 +1,46 @@
 <template>
-  <div
-    class="problem-rating row q-col-gutter-lg"
-    v-if="record"
-  >
-    <div class="col-12 col-md-9">
-      <div class="q-gutter-md">
-        <rating-view
-          v-for="(rating, index) in ratings"
-          v-bind:key="index"
-          :title="rating.title"
-          :description="rating.description"
-          :scale="rating.scale"
-          :examples="rating.scaleExamples"
-          :type="rating.type"
-          :rating="(outcome || {})[rating.type] || {}"
+  <problem-summary-container class="problem-rating">
+    <div class="q-gutter-md">
+      <rating-view
+        v-for="(rating, index) in ratings"
+        v-bind:key="index"
+        :title="rating.title"
+        :description="rating.description"
+        :scale="rating.scale"
+        :examples="rating.scaleExamples"
+        :type="rating.type"
+        :rating="(outcome || {})[rating.type] || {}"
+      />
+      <div>
+        <q-btn
+          v-if="!showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner"
+          @click="showPersonRatedInPlaceOfOwner = true"
+          :label="$t('showPersonRatedInPlaceOfOwnerInput')"
+          flat
+          dense
+          no-caps
+          size="md"
+          color="outcome"
         />
-        <div>
-          <q-btn
-            v-if="!showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner"
-            @click="showPersonRatedInPlaceOfOwner = true"
-            :label="$t('showPersonRatedInPlaceOfOwnerInput')"
-            flat
-            dense
-            no-caps
-            size="md"
-            color="outcome"
-          />
-          <div
-            v-else
-            class="q-mt-xs q-mb-md"
-          >
-            <q-input
-              v-model="personRatedInPlaceOfOwner"
-              :label="$t('personRatedInPlaceOfOwnerLabel')"
-              autogrow
-              :autofocus="
+        <div
+          v-else
+          class="q-mt-xs q-mb-md"
+        >
+          <q-input
+            v-model="personRatedInPlaceOfOwner"
+            :label="$t('personRatedInPlaceOfOwnerLabel')"
+            autogrow
+            :autofocus="
                 showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
               "
-              color="outcome"
-              filled
-              dense
-            />
-          </div>
+            color="outcome"
+            filled
+            dense
+          />
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-3">
-      <problem-summary
-        :params="$route.params"
-        :isSummary="true"
-      />
-    </div>
-  </div>
+  </problem-summary-container>
 </template>
 
 <style lang="sass"></style>
@@ -60,7 +49,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import RatingView from "components/Rating.vue";
-import ProblemSummary from "../components/ProblemSummary.vue";
+import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import { Terminology, UsersGuide } from "../helper/terminology";
 import { Outcome } from "../models/outcome";
 
@@ -69,7 +58,7 @@ const nameof = (name: keyof Outcome) => name;
 @Component({
   components: {
     RatingView,
-    ProblemSummary
+    ProblemSummaryContainer
   }
 })
 export default class ProblemRating extends Vue {

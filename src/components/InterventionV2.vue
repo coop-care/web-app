@@ -1,49 +1,34 @@
 <template>
-  <div
-    class="intervention"
-    v-if="record"
-  >
-    <div class="row q-col-gutter-lg">
-      <div
-        class="col-md-9 col-12"
-        ref="interventionList"
-      >
-        <editable-intervention
-          v-for="(intervention, index) in interventions"
-          :key="intervention.id"
-          :value="intervention"
-          :isExpanded="index == editedIntervention"
-          @didExpand="didExpand(index)"
-          @didCollapse="didCollapse"
-          @deleteIntervention="deleteIntervention(index)"
-          class="editable-intervention"
-        />
-        <div class="column items-center">
-          <div
-            v-if="!interventions.length"
-            class="text-body2 text-center"
-          >{{ $t("noPlannedInterventions") }}</div>
-          <q-btn
-            icon="add"
-            color="intervention"
-            :label="$t('addIntervention')"
-            rounded
-            outline
-            class="shadow-1 q-mt-md"
-            @click="addIntervention"
-            size="12.5px"
-          />
-        </div>
-      </div>
-      <div class="col-md-3 col-12 summary">
-        <problem-summary
-          :problemRecord="record"
-          :params="$route.params"
-          :isSummary="true"
-        />
-      </div>
+  <problem-summary-container class="intervention">
+    <div ref="interventionList">
+      <editable-intervention
+        v-for="(intervention, index) in interventions"
+        :key="intervention.id"
+        :value="intervention"
+        :isExpanded="index == editedIntervention"
+        @didExpand="didExpand(index)"
+        @didCollapse="didCollapse"
+        @deleteIntervention="deleteIntervention(index)"
+        class="editable-intervention"
+      />
     </div>
-  </div>
+    <div class="column items-center">
+      <div
+        v-if="!interventions.length"
+        class="text-body2 text-center"
+      >{{ $t("noPlannedInterventions") }}</div>
+      <q-btn
+        icon="add"
+        color="intervention"
+        :label="$t('addIntervention')"
+        rounded
+        outline
+        class="shadow-1 q-mt-md"
+        @click="addIntervention"
+        size="12.5px"
+      />
+    </div>
+  </problem-summary-container>
 </template>
 <script lang="ts">
 import Vue from "vue";
@@ -52,7 +37,7 @@ import { scroll } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 import EditableIntervention from "./EditableIntervention.vue";
-import ProblemSummary from "./ProblemSummary.vue";
+import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 
 const { setScrollPosition } = scroll;
 const nameof = (name: keyof ProblemRecord) => name;
@@ -60,7 +45,7 @@ const nameof = (name: keyof ProblemRecord) => name;
 @Component({
   components: {
     EditableIntervention,
-    ProblemSummary
+    ProblemSummaryContainer
   }
 })
 export default class InterventionView extends Vue {

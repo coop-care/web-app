@@ -1,111 +1,97 @@
 <template>
-  <div
-    class="intervention"
-    v-if="record"
-  >
-    <div class="row q-col-gutter-lg">
-      <div class="col-md-9 col-12">
-        <h6>{{ $t("selectInterventions") }}</h6>
-        <q-tabs
-          v-model="categorySelected"
-          dense
-          no-caps
-          class="bg-intervention text-white shadow-2 q-mb-sm"
-        >
-          <q-tab
-            :name="index"
-            :label="
+  <problem-summary-container class="intervention">
+    <h6>{{ $t("selectInterventions") }}</h6>
+    <q-tabs
+      v-model="categorySelected"
+      dense
+      no-caps
+      class="bg-intervention text-white shadow-2 q-mb-sm"
+    >
+      <q-tab
+        :name="index"
+        :label="
               $q.screen.gt.xs ? category.title : shortCategoryTitles[index]
             "
-            :icon="category.icon"
-            v-for="(category, index) in categories"
-            v-bind:key="index"
-          />
-        </q-tabs>
-        <q-tab-panels
-          v-model="categorySelected"
-          animated
+        :icon="category.icon"
+        v-for="(category, index) in categories"
+        v-bind:key="index"
+      />
+    </q-tabs>
+    <q-tab-panels
+      v-model="categorySelected"
+      animated
+    >
+      <q-tab-panel
+        :name="index"
+        v-for="(category, index) in categories"
+        v-bind:key="index"
+      >
+        <div class="text-weight-light q-mb-md">
+          {{ category.description }}
+        </div>
+        <q-input
+          ref="filter"
+          color="intervention"
+          filled
+          v-model="targetsFilter"
+          :label="$t('findTargets')"
+          dense
         >
-          <q-tab-panel
-            :name="index"
-            v-for="(category, index) in categories"
-            v-bind:key="index"
-          >
-            <div class="text-weight-light q-mb-md">
-              {{ category.description }}
-            </div>
-            <q-input
-              ref="filter"
+          <template v-slot:prepend>
+            <q-icon
+              name="search"
               color="intervention"
-              filled
-              v-model="targetsFilter"
-              :label="$t('findTargets')"
-              dense
-            >
-              <template v-slot:prepend>
-                <q-icon
-                  name="search"
-                  color="intervention"
-                />
-              </template>
-              <template v-slot:append>
-                <q-icon
-                  v-if="targetsFilter !== ''"
-                  name="clear"
-                  color="intervention"
-                  class="cursor-pointer"
-                  @click="resetTargetsFilter"
-                />
-              </template>
-            </q-input>
+            />
+          </template>
+          <template v-slot:append>
+            <q-icon
+              v-if="targetsFilter !== ''"
+              name="clear"
+              color="intervention"
+              class="cursor-pointer"
+              @click="resetTargetsFilter"
+            />
+          </template>
+        </q-input>
 
-            <q-tree
-              :nodes="targets[index]"
-              label-key="title"
-              node-key="id"
-              :filter="targetsFilter"
-              :filter-method="filterTerminology"
-              :no-results-label="$t('noTargetsFound')"
-              control-color="intervention"
-              tick-strategy="strict"
-              :ticked.sync="interventions"
-            >
-              <template v-slot:default-header="prop">
-                <div>
-                  <div class="text-weight-bold text-intervention">
-                    {{ prop.node.title }}
-                  </div>
-                  <div class="text-weight-light">
-                    {{ prop.node.description }}
-                  </div>
-                </div>
-              </template>
-              <template v-slot:default-body="prop">
-                <q-input
-                  v-if="interventions.includes(prop.node.id)"
-                  :value="details[prop.node.id]"
-                  @input="updateDetails(prop.node.id, $event)"
-                  :label="$t('clientSpecificInterventions')"
-                  autogrow
-                  :autofocus="!details[prop.node.id]"
-                  color="intervention"
-                  debounce="50"
-                  :hint="$t('clientSpecificInterventionsHint')"
-                />
-              </template>
-            </q-tree>
-          </q-tab-panel>
-        </q-tab-panels>
-      </div>
-      <div class="col-md-3 col-12 summary">
-        <problem-summary
-          :problemRecord="record"
-          :params="$route.params"
-          :isSummary="true"
-        />
-      </div>
-    </div>
-  </div>
+        <q-tree
+          :nodes="targets[index]"
+          label-key="title"
+          node-key="id"
+          :filter="targetsFilter"
+          :filter-method="filterTerminology"
+          :no-results-label="$t('noTargetsFound')"
+          control-color="intervention"
+          tick-strategy="strict"
+          :ticked.sync="interventions"
+        >
+          <template v-slot:default-header="prop">
+            <div>
+              <div class="text-weight-bold text-intervention">
+                {{ prop.node.title }}
+              </div>
+              <div class="text-weight-light">
+                {{ prop.node.description }}
+              </div>
+            </div>
+          </template>
+          <template v-slot:default-body="prop">
+            <q-input
+              v-if="interventions.includes(prop.node.id)"
+              :value="details[prop.node.id]"
+              @input="updateDetails(prop.node.id, $event)"
+              :label="$t('clientSpecificInterventions')"
+              autogrow
+              :autofocus="!details[prop.node.id]"
+              color="intervention"
+              debounce="50"
+              :hint="$t('clientSpecificInterventionsHint')"
+            />
+          </template>
+        </q-tree>
+      </q-tab-panel>
+    </q-tab-panels>
+  </problem-summary-container>
 </template>
 
 <style lang="sass">
@@ -143,7 +129,7 @@ import {
   filterTerminology,
   treeifyTerminology
 } from "../helper/terminology";
-import ProblemSummary from "../components/ProblemSummary.vue";
+import ProblemSummaryContainer from "../components/ProblemSummaryContainer.vue";
 import { QInput } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
@@ -152,7 +138,7 @@ const nameof = (name: keyof ProblemRecord) => name;
 
 @Component({
   components: {
-    ProblemSummary
+    ProblemSummaryContainer
   }
 })
 export default class InterventionView extends Vue {

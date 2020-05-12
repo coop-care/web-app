@@ -3,6 +3,7 @@
     flat
     bordered
     class="overflow-hidden border-primary radius-sm"
+    v-if="!!record"
   >
     <q-card-section :class="sectionPadding + (sectionPadding ? ' q-pt-sm' : '')">
       <div v-if="isSummary">
@@ -144,7 +145,7 @@
       </ul>
     </q-card-section>
     <q-card-section
-      v-if="problem.isHighPriority"
+      v-if="problem.isHighPriority && (lastOutcome || isInteractive)"
       :class="sectionPadding"
     >
       <div :class="
