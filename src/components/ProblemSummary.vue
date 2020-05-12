@@ -144,7 +144,7 @@
       </ul>
     </q-card-section>
     <q-card-section
-      v-if="!!lastOutcome && problem.isHighPriority"
+      v-if="problem.isHighPriority"
       :class="sectionPadding"
     >
       <div :class="
@@ -163,7 +163,7 @@
           class="shadow-1"
         />
       </div>
-      <div>
+      <div v-if="lastOutcome">
         <div
           v-if="!isSummary && !isDraft"
           class="row q-col-gutter-md"
