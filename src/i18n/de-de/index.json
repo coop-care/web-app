@@ -10,7 +10,7 @@
   "problem": "Problem | Probleme",
   "problemAdmission": "Problem aufnehmen",
   "rating": "Bewertung | Bewertungen",
-  "newRating": "Zwischenbewertung",
+  "newRating": "Zwischenbewertung vornehmen",
   "intervention": "Intervention | Interventionen",
   "feedback": "Feedback",
   "observation": "Beobachtung",
@@ -156,5 +156,7 @@
   "addIntervention": "Intervention hinzufügen",
   "noPlannedInterventions": "Es sind noch keine Interventionen geplant.",
   "fullName": "Vor- und Nachname",
-  "newIntervention": "Neue Intervention"
+  "newIntervention": "Neue Intervention",
+  "editProblem": "Problem bearbeiten",
+  "editInterventions": "Interventionen bearbeiten"
 }

@@ -63,7 +63,7 @@
             flat
             color="primary"
             rounded
-            :to="{name: 'clientReport', params: $route.params}"
+            @click="$router.back()"
             :label="$t('cancel')"
             class="shadow-1 q-ml-sm"
           />
@@ -153,9 +153,7 @@ export default class ProblemRecording extends Vue {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
     this.$store.direct.dispatch
       .saveClient(this.$route.params)
-      .then(() =>
-        this.$router.push({ name: "clientReport", params: this.$route.params })
-      );
+      .then(() => this.$router.back());
   }
 }
 </script>

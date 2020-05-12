@@ -33,14 +33,30 @@ const routes: RouteConfig[] = [
                 ]
             },
             {
-                name: "problem",
-                path: "/client/:clientId/problem/:problemId/:step?",
-                component: () => import("pages/ProblemRecording.vue")
+                name: "classification",
+                path: "/client/:clientId/problem/:problemId/classification",
+                component: () => import("pages/Classification.vue")
             },
             {
                 name: "outcome",
                 path: "/client/:clientId/problem/:problemId/outcome",
                 component: () => import("pages/Rating.vue")
+            },
+            {
+                name: "interventions",
+                path: "/client/:clientId/problem/:problemId/intervention",
+                component: () => import("pages/InterventionList.vue")
+            },
+            {
+                name: "intervention",
+                path:
+                    "/client/:clientId/problem/:problemId/intervention/:interventionId",
+                component: () => import("pages/Intervention.vue")
+            },
+            {
+                name: "problem",
+                path: "/client/:clientId/problem/:problemId/:step?",
+                component: () => import("pages/ProblemRecording.vue")
             },
             {
                 name: "problemsByDiagnosis",

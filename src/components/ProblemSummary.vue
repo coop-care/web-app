@@ -17,7 +17,19 @@
         class="text-h6"
       >
         <div class="row justify-between">
-          <div class="text-classification">{{ $t(problem.title) }}</div>
+          <div class="text-classification">{{ $t(problem.title) }}
+            <q-btn
+              v-if="isInteractive"
+              :title="$t('editProblem')"
+              icon="edit"
+              :to="{ name: 'classification', params: params }"
+              round
+              outline
+              size="10.5px"
+              color="classification"
+              class="on-right shadow-1"
+            />
+          </div>
           <div class="q-gutter-xs">
             <q-btn
               v-if="isDraft"
@@ -126,8 +138,19 @@
       v-if="interventions.length"
       :class="sectionPadding"
     >
-      <div class="text-subtitle1 text-weight-bold text-intervention">
+      <div class="text-subtitle1 text-weight-bold text-intervention q-mb-xs">
         {{ $tc("intervention", 2) }}
+        <q-btn
+          v-if="isInteractive"
+          :title="$t('editInterventions')"
+          icon="edit"
+          :to="{ name: 'interventions', params: params }"
+          round
+          outline
+          size="10.5px"
+          color="intervention"
+          class="on-right shadow-1"
+        />
       </div>
       <ul :class="'q-ma-none '">
         <li
@@ -149,9 +172,9 @@
       :class="sectionPadding"
     >
       <div :class="
-          'text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
+          'text-outcome text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
         ">
-        <span class="text-outcome q-mr-md">{{ $tc("outcome", 2) }}</span>
+        {{ $tc("outcome", 2) }}
         <q-btn
           v-if="isInteractive"
           :title="$t('newRating')"
@@ -161,7 +184,7 @@
           outline
           size="10.5px"
           color="primary"
-          class="shadow-1"
+          class="on-right shadow-1"
         />
       </div>
       <div v-if="lastOutcome">

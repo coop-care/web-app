@@ -10,7 +10,7 @@
   "problem": "Problem | Problems",
   "problemAdmission": "add problem",
   "rating": "Rating | Ratings",
-  "newRating": "Interim rating",
+  "newRating": "Make interim rating",
   "intervention": "Intervention | Interventions",
   "feedback": "Feedback",
   "observation": "Observation",
@@ -156,5 +156,7 @@
   "addIntervention": "Add Intervention",
   "noPlannedInterventions": "There are no interventions planned yet.",
   "fullName": "Full name",
-  "newIntervention": "New Intervention"
+  "newIntervention": "New Intervention",
+  "editProblem": "Edit problem",
+  "editInterventions": "Edit interventions"
 }
