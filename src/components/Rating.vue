@@ -183,7 +183,6 @@
             autogrow
             :autofocus="showComment && !comment"
             color="outcome"
-            filled
             dense
           />
         </div>

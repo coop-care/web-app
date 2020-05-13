@@ -150,8 +150,6 @@
           color="classification"
           autogrow
           :autofocus="!details"
-          dense
-          filled
           :label="$t('otherSignsAndSymptoms')"
           class="q-ml-xl"
         />
@@ -165,8 +163,6 @@
           autogrow
           :autofocus="!details"
           color="classification"
-          filled
-          dense
         />
 
         <h6 class="counter">{{ $t("priorityTitle") }}</h6>
@@ -191,8 +187,6 @@
           autogrow
           :autofocus="!priorityDetails"
           color="classification"
-          filled
-          dense
           bottom-slots
           :hint="$t('lowPriorityReasonHint')"
         />

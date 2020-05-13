@@ -34,8 +34,6 @@
                 showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
               "
             color="outcome"
-            filled
-            dense
           />
         </div>
       </div>
