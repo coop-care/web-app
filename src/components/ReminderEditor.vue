@@ -329,11 +329,10 @@ export default class ReminderEditor extends ReminderEditorProps {
     this.updateRecurrenceRule(nameof("interval"), value);
   }
   get daysOfTheWeek() {
-    return this.value.daysOfTheWeek.map(day => day.dayOfTheWeek);
+    return this.value.daysOfTheWeekOnlyDays;
   }
   set daysOfTheWeek(value) {
-    const daysOfTheWeek = value.map(day => new RecurrenceDayOfWeek(day));
-    this.updateRecurrenceRule(nameof("daysOfTheWeek"), daysOfTheWeek);
+    this.updateRecurrenceRule(nameof("daysOfTheWeekOnlyDays"), value);
   }
   get daysOfTheMonth() {
     return this.value.daysOfTheMonth;
@@ -454,7 +453,7 @@ export default class ReminderEditor extends ReminderEditorProps {
       .concat([{ label: this.$t("lastDay") as string, value: [-1] }]);
   }
   get recurrenceEndOptions() {
-    return ["never", "recurrenceEndDate", "endAfterOccurenceCount"]
+    return ["never", "recurrenceEndDate"] // add "endAfterOccurenceCount" eventually later to keep things simpler at start
       .map(key => this.$t(key) as string)
       .map(this.toOption);
   }
@@ -522,12 +521,7 @@ export default class ReminderEditor extends ReminderEditorProps {
     }
   }
   setupFromRecurrenceRule(rule: RecurrenceRule) {
-    this.hasOwnRecurrencePattern =
-      rule.timesOfTheDay.length > 0 ||
-      rule.daysOfTheWeek.length > 0 ||
-      rule.daysOfTheMonth.length > 0 ||
-      rule.monthsOfTheYear.length > 0 ||
-      rule.positions.length > 0;
+    this.hasOwnRecurrencePattern = rule.hasOwnRecurrencePattern;
     this.showYearlyDayOfWeek =
       rule.frequency == RecurrenceFrequency.Yearly &&
       rule.daysOfTheWeek.length > 0 &&

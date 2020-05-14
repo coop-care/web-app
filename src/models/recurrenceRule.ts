@@ -78,6 +78,23 @@ export class RecurrenceRule {
         this.recurrenceEnd = recurrenceEnd;
     }
 
+    get daysOfTheWeekOnlyDays() {
+        return this.daysOfTheWeek.map(day => day.dayOfTheWeek);
+    }
+    set daysOfTheWeekOnlyDays(values) {
+        this.daysOfTheWeek = values.map(day => new RecurrenceDayOfWeek(day));
+    }
+
+    get hasOwnRecurrencePattern() {
+        return (
+            this.timesOfTheDay.length > 0 ||
+            this.daysOfTheWeek.length > 0 ||
+            this.daysOfTheMonth.length > 0 ||
+            this.monthsOfTheYear.length > 0 ||
+            this.positions.length > 0
+        );
+    }
+
     get frequencyUnit() {
         if (this.frequency == RecurrenceFrequency.Daily) {
             return "Day";
