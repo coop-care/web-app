@@ -9,7 +9,7 @@ node_modules
 /src-cordova/plugins
 /src-cordova/www
 /src/statics/app-logo-*.png
-/src/statics/icons/*icon*.png
+/src/statics/icons
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

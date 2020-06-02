@@ -150,14 +150,19 @@ module.exports = function(ctx) {
     pwa: {
       // workboxPluginMode: 'InjectManifest',
       // workboxOptions: {}, // only for NON InjectManifest
+      metaVariables: {
+        appleMobileWebAppStatusBarStyle: "black" //"black-translucent"
+      },
       manifest: {
-        // name: 'CoopCare',
-        // short_name: 'CoopCare',
-        // description: 'Omaha System based open source software for cooperative care teams',
+        name: "CoopCare",
+        short_name: "CoopCare",
+        description:
+          "Omaha System based open source software for cooperative care teams",
         display: "standalone",
         orientation: "portrait",
-        background_color: "#ffffff",
-        theme_color: "#027be3",
+        background_color: "#009688",
+        theme_color: "#009688",
+        start_url: "/",
         icons: [
           {
             src: "statics/icons/icon-128x128.png",
