@@ -12,7 +12,7 @@
   "rating": "Rating | Ratings",
   "newRating": "Make interim rating",
   "intervention": "Intervention | Interventions",
-  "feedback": "Feedback",
+  "feedback": "Provide Feedback",
   "observedRating": "currently observed",
   "expectedRating": "expected goal",
   "selectProblem": "Select the Need or Problem",
@@ -216,5 +216,11 @@
   "datesOfConduction": "Dates of conduction",
   "noCompletedTasksFound": "No completed tasks found in this time period. 🧐",
   "from": "from",
-  "until": "until"
+  "until": "until",
+  "userSettings": "User Settings",
+  "teamSettings": "Team Settings",
+  "contributeAndOpenSource": "Open Source / Contribute",
+  "selectLanguage": "Language: {language}",
+  "aboutUs": "About Us",
+  "privacyPolicy": "Privacy Policy"
 }

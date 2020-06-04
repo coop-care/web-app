@@ -12,7 +12,7 @@
   "rating": "Bewertung | Bewertungen",
   "newRating": "Zwischenbewertung vornehmen",
   "intervention": "Intervention | Interventionen",
-  "feedback": "Feedback",
+  "feedback": "Feedback geben",
   "observedRating": "aktuell beobachtet",
   "expectedRating": "erwartetes Ziel",
   "selectProblem": "Das Bedürfnis oder Problem auswählen",
@@ -216,5 +216,11 @@
   "datesOfConduction": "Termine der Durchführung",
   "noCompletedTasksFound": "Keine durchgeführten Leistungen in diesem Zeitraum gefunden. 🧐",
   "from": "vom",
-  "until": "bis zum"
+  "until": "bis zum",
+  "userSettings": "Benutzer-Einstellungen",
+  "teamSettings": "Team-Einstellungen",
+  "contributeAndOpenSource": "Open Source / Mitmachen",
+  "selectLanguage": "Sprache: {language}",
+  "aboutUs": "Impressum",
+  "privacyPolicy": "Datenschutz"
 }

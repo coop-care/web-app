@@ -1,5 +1,5 @@
 <template>
-  <div>…</div>
+  <div class="text-h1">👷</div>
 </template>
 
 <style lang="sass">

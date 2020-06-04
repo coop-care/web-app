@@ -74,6 +74,16 @@ const routes: RouteConfig[] = [
                 component: () => import("pages/ProofOfPerformance.vue")
             },
             {
+                name: "userSettings",
+                path: "/settings/user",
+                component: () => import("pages/Settings.vue")
+            },
+            {
+                name: "teamSettings",
+                path: "/settings/team",
+                component: () => import("pages/Settings.vue")
+            },
+            {
                 name: "login",
                 path: "/login",
                 component: () => import("pages/Login.vue")

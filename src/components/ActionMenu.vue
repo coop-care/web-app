@@ -8,7 +8,7 @@
     dense
     class="more-button shadow-1"
     auto-close
-    content-class="dense-avatar text-primary"
+    content-class="text-primary"
     :title="title || $t('moreActions')"
   >
     <q-list>
@@ -21,8 +21,11 @@
         @click="item.action"
         :class="item.isDestructive ? 'text-negative' : 'text-' + color"
       >
-        <q-item-section avatar>
-          <q-icon :name="item.icon" />
+        <q-item-section side>
+          <q-icon
+            :name="item.icon"
+            :color="color"
+          />
         </q-item-section>
         <q-item-section>{{ item.name }}</q-item-section>
       </q-item>
