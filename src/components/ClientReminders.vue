@@ -1,27 +1,24 @@
 <template>
-  <div v-touch-swipe.mouse.horizontal="swipeTasks">
+  <div
+    v-touch-swipe.mouse.horizontal="swipeTasks"
+    style="max-width: 480px; min-height: 95vh"
+  >
     <div class="row">
-      <div>
-        <div class="text-h6">{{ formattedDate({weekday: "long" }) }} {{ isToday ? $t("isTodayHint") : "" }}</div>
-        <div class="text-body2">{{ formattedDate({year: "numeric", month: "long", day: "numeric" }) }}</div>
-      </div>
-      <div class="q-mt-xs q-ml-sm">
+      <div class="q-mt-xs">
         <q-btn
-          icon="add"
-          round
-          outline
-          class="shadow-1 on-right"
+          icon="fas fa-caret-left"
           color="intervention"
-          :title="$t('addTask')"
-          size="12px"
+          flat
+          round
+          dense
+          size="18px"
+          @click="gotoPreviousDay"
         />
         <q-btn
           icon="event"
           round
-          outline
-          class="shadow-1 on-right"
+          flat
           color="intervention"
-          size="12px"
         >
           <q-popup-proxy
             ref="dateProxy"
@@ -32,6 +29,7 @@
               v-model="selectedDateString"
               @input="$refs.dateProxy.hide()"
               :events="[]"
+              color="intervention"
               event-color="intervention"
               mask="YYYY-MM-DDTHH:mm:ss.sssZ"
               today-btn
@@ -39,78 +37,104 @@
           </q-popup-proxy>
         </q-btn>
       </div>
+      <div class="q-mx-xs">
+        <div class="text-h6">
+          {{ formattedDate({ weekday: "long" }) }}
+          {{ isToday ? $t("isTodayHint") : "" }}
+        </div>
+        <div
+          class="text-body2"
+          style="margin-top:-3px"
+        >
+          {{
+            formattedDate({ year: "numeric", month: "long", day: "numeric" })
+          }}
+        </div>
+      </div>
+      <q-space />
+      <div class="q-mt-xs">
+        <q-btn
+          icon="fas fa-caret-right"
+          color="intervention"
+          flat
+          round
+          dense
+          size="18px"
+          @click="gotoNextDay"
+        />
+      </div>
     </div>
     <div
       v-for="(visit, index) in tasks"
       v-bind:key="index"
     >
-      <div class="text-subtitle1 text-weight-bold q-mt-lg">{{ visit.time }}</div>
-      <div style="max-width:480px">
+      <div class="text-subtitle1 text-weight-bold q-mt-lg">
+        {{ visit.title }}
+      </div>
+      <div>
         <q-list dense>
-          <q-item
-            tag="label"
+          <task-view
             v-for="(task, index) in visit.tasks"
             v-bind:key="index"
-          >
-            <q-item-section
-              side
-              top
-            >
-              <q-checkbox
-                v-model="foo"
-                :val="task.code"
-                color="intervention"
-                keep-color
-              />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-weight-medium">
-                {{ task.title }}
-              </q-item-label>
-              <q-item-label
-                caption
-                v-if="!!task.description"
-                :lines="!foo.includes(task.code) ? 2 : 0"
-              >
-                {{ task.description }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section
-              side
-              top
-            >
-              <action-menu
-                :items="reminderActionItems"
-                color="intervention"
-                class="q-my-xs"
-              />
-            </q-item-section>
-          </q-item>
+            :client="client"
+            :task="task"
+            :date="selectedDate"
+            :hasCheckbox="canComplete"
+          />
         </q-list>
       </div>
     </div>
+    <q-page-sticky
+      position="bottom-left"
+      :offset="$q.screen.lt.sm ? [16, 10] : [56, 10]"
+    >
+      <q-btn
+        fab
+        icon="add"
+        color="intervention"
+        :title="$t('addTask')"
+        @click="addIntervention"
+      />
+    </q-page-sticky>
   </div>
 </template>
 
-<style lang="sass">
-</style>
+<style lang="sass"></style>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { date, uid } from "quasar";
-import SearchableOptionList from "./SearchableOptionList.vue";
-import ActionMenu from "./ActionMenu.vue";
+import { date } from "quasar";
+import { Task, TaskGroup } from "../models/task";
+import TaskView from "components/TaskView.vue";
+
+const {
+  isSameDate,
+  isBetweenDates,
+  subtractFromDate,
+  addToDate,
+  startOfDate,
+  endOfDate
+} = date;
 
 @Component({
   components: {
-    SearchableOptionList,
-    ActionMenu
+    TaskView
+  },
+  watch: {
+    selectedDate(this: ClientReminders, value: Date) {
+      this.$route.params.day = "" + value.getTime();
+      this.$router.replace({
+        name: this.$route.name || undefined,
+        params: this.$route.params
+      });
+    }
   }
 })
 export default class ClientReminders extends Vue {
-  selectedDate = new Date();
-  foo = [];
+  selectedDate = parseInt(this.$root.$route.params.day)
+    ? new Date(parseInt(this.$root.$route.params.day))
+    : new Date();
 
   get selectedDateString() {
     return this.selectedDate.toISOString();
@@ -119,76 +143,162 @@ export default class ClientReminders extends Vue {
     this.selectedDate = new Date(value);
   }
   get tasks() {
-    return [
-      {
-        time: this.$t("anytimeTitle"),
-        tasks: [this.makeTask("Arzttermin", "02", "10")]
-      },
-      {
-        time: "09:00",
-        tasks: [
-          this.makeTask("Stützstrümpfe anlegen", "01", "63"),
-          this.makeTask("Medikamente richten", "01", "34"),
-          this.makeTask("Große Körperpflege", "01", "41")
-        ]
-      },
-      {
-        time: "20:30",
-        tasks: [this.makeTask("Stützstrümpfe abnehmen", "01", "63")]
-      }
-    ];
+    return this.tasksForDay(this.selectedDate);
+  }
+  get canComplete() {
+    return isBetweenDates(this.selectedDate, this.selectedDate, new Date(), {
+      inclusiveFrom: true,
+      inclusiveTo: true,
+      onlyDate: true
+    });
   }
   get isToday() {
-    return date.isSameDate(this.selectedDate, new Date(), "day");
+    return isSameDate(this.selectedDate, new Date(), "day");
   }
-  get reminderActionItems() {
-    return [
-      {
-        name: this.$t("cancelTask"),
-        icon: "",
-        action: () => {}
-      },
-      {
-        name: this.$t("moveTask"),
-        icon: "",
-        action: () => {}
-      },
-      {
-        name: this.$t("editIntervention"),
-        icon: "",
-        action: () => {}
-      },
-      {
-        name: this.$t("deleteIntervention"),
-        icon: "",
-        isDestructive: true,
-        action: () => {}
-      }
-    ];
+  get timeFormatter() {
+    return new Intl.DateTimeFormat(this.$root.$i18n.locale, {
+      hour: "numeric",
+      minute: "numeric"
+    });
+  }
+  get client() {
+    return this.$store.direct.getters.getClient(this.$route.params);
   }
 
-  formattedDate(options: any) {
+  formattedDate(options: Intl.DateTimeFormatOptions) {
     return this.selectedDate.toLocaleDateString(
       this.$root.$i18n.locale,
       options
     );
   }
-  makeTask(title: string, category: string, target: string) {
-    return {
-      title: title,
-      description:
-        this.$t("terminology.categoryByCode." + category + ".title") +
-        ": " +
-        this.$t("terminology.targetByCode." + target + ".title"),
-      code: uid()
-    };
-  }
+
   swipeTasks({ direction }: any) {
     if (direction == "left") {
-      this.selectedDate = date.addToDate(this.selectedDate, { days: 1 });
+      this.gotoNextDay();
     } else if (direction == "right") {
-      this.selectedDate = date.subtractFromDate(this.selectedDate, { days: 1 });
+      this.gotoPreviousDay();
     }
+  }
+
+  gotoNextDay() {
+    this.selectedDate = addToDate(this.selectedDate, { days: 1 });
+  }
+
+  gotoPreviousDay() {
+    this.selectedDate = subtractFromDate(this.selectedDate, { days: 1 });
+  }
+
+  tasksForDay(day: Date) {
+    const startOfDayTimestamp = startOfDate(day, "day").getTime();
+    const startOfTodayTimestamp = new Date().setHours(0, 0, 0, 0);
+    const pastDueTimestamp = Math.min(
+      startOfDayTimestamp,
+      startOfTodayTimestamp
+    );
+    const showPastDue = startOfDayTimestamp <= startOfTodayTimestamp;
+    const endOfDay = endOfDate(day, "day");
+    const pastDueTasks: Task[] = [];
+    const anytimeTasks: Task[] = [];
+    let scheduledTasks: Task[] = [];
+    const groupedTasks: TaskGroup[] = [];
+
+    this.client?.forAllReminders((reminder, problem) => {
+      const isReminderActiveAndUncompleted =
+        !problem.resolvedAt &&
+        problem.problem.isHighPriority &&
+        !reminder.isCompleted;
+
+      reminder.occurrences.forEach(item => {
+        if (
+          showPastDue &&
+          isReminderActiveAndUncompleted &&
+          !item.completed &&
+          item.due.getTime() < pastDueTimestamp
+        ) {
+          pastDueTasks.push(
+            new Task(reminder, problem.id, item.due, item.completed)
+          );
+        } else if (isBetweenDates(item.due, startOfDayTimestamp, endOfDay)) {
+          scheduledTasks.push(
+            new Task(reminder, problem.id, item.due, item.completed)
+          );
+        }
+      });
+
+      if (reminder.recurrenceRules) {
+        if (isReminderActiveAndUncompleted) {
+          const start = new Date(
+            Math.max(
+              reminder.lastOccurrenceCalculationAt.getTime(),
+              startOfDayTimestamp
+            )
+          );
+          scheduledTasks = scheduledTasks.concat(
+            reminder.recurrenceRules
+              .between(start, endOfDay, true)
+              .map(date => new Task(reminder, problem.id, date))
+          );
+        }
+      } else {
+        if (
+          (isReminderActiveAndUncompleted &&
+            isBetweenDates(day, reminder.createdAt, endOfDay)) ||
+          (reminder.completedAt &&
+            isBetweenDates(reminder.completedAt, startOfDayTimestamp, endOfDay))
+        ) {
+          anytimeTasks.push(
+            new Task(reminder, problem.id, undefined, reminder.completedAt)
+          );
+        }
+      }
+    });
+
+    if (pastDueTasks.length) {
+      groupedTasks.push(
+        new TaskGroup("" + this.$t("pastDueTitle"), pastDueTasks)
+      );
+    }
+
+    if (anytimeTasks.length) {
+      groupedTasks.push(
+        new TaskGroup("" + this.$t("anytimeTitle"), anytimeTasks)
+      );
+    }
+
+    scheduledTasks
+      .sort((a, b) => (a.due?.getTime() || 0) - (b.due?.getTime() || 0))
+      .forEach(task => {
+        const title = this.timeFormatter.format(task.due);
+        const group = groupedTasks.find(group => group.title == title);
+
+        if (group) {
+          group.tasks.push(task);
+        } else {
+          groupedTasks.push(new TaskGroup(title, [task]));
+        }
+      });
+
+    return groupedTasks;
+  }
+
+  addIntervention() {
+    let name: string;
+    let params = this.$route.params;
+
+    if (this.client?.problems.length) {
+      name = "newIntervention";
+    } else {
+      this.$store.direct.commit.createProblemRecord(this.$route.params);
+      name = "problem";
+      params = this.$store.direct.getters.getRouteParamsForLatestProblem(
+        params
+      );
+    }
+
+    this.$router.push({
+      name: name,
+      params: params
+    });
   }
 }
 </script>

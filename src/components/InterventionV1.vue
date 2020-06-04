@@ -134,8 +134,6 @@ import { QInput } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 
-const nameof = (name: keyof ProblemRecord) => name;
-
 @Component({
   components: {
     ProblemSummaryContainer
@@ -220,13 +218,13 @@ export default class InterventionView extends Vue {
   get unsavedInterventions() {
     const interventions = this.record?.interventions || [];
     return interventions.filter(
-      intervention => !intervention.startDate && intervention.categoryCode
+      intervention => !intervention.createdAt && intervention.categoryCode
     );
   }
   get savedInterventions() {
     const interventions = this.record?.interventions || [];
     return interventions.filter(
-      intervention => intervention.startDate && intervention.categoryCode
+      intervention => intervention.createdAt && intervention.categoryCode
     );
   }
 
@@ -249,7 +247,8 @@ export default class InterventionView extends Vue {
 
   updateProblemRecord(interventions: Intervention[]) {
     const changes: any = {};
-    changes[nameof("reminders")] = interventions;
+    const key: keyof ProblemRecord = "interventions";
+    changes[key] = interventions;
     this.$store.direct.commit.updateObject({
       target: this.record,
       changes: changes

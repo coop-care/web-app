@@ -2,8 +2,10 @@ import { defineMutations } from "direct-vuex";
 import { store, StoreState } from ".";
 import { Client } from "../models/client";
 import { ProblemRecord } from "../models/problemRecord";
+import { Reminder } from "../models/reminder";
 import { Outcome } from "../models/outcome";
 import { Rating } from "src/models/rating";
+import { Task } from "src/models/task";
 
 export default defineMutations<StoreState>()({
     setClients(state, clients: Client[]) {
@@ -12,6 +14,10 @@ export default defineMutations<StoreState>()({
 
     isLoadingClientList(state, isLoading: boolean) {
         state.isLoadingClientList = isLoading;
+    },
+
+    calculateOccurences(state, client: Client) {
+        client.calculateOccurrences();
     },
 
     archiveClient(state, client: Client) {
@@ -34,6 +40,63 @@ export default defineMutations<StoreState>()({
     ) {
         // maybe check for each key if new value is really differs first? And consider array equality at least for empty arrays?
         Object.assign(target, changes);
+    },
+
+    toggleTaskCompletion(
+        state,
+        {
+            task,
+            isCompleted,
+            date
+        }: { task: Task; isCompleted: boolean; date: Date }
+    ) {
+        const now = new Date();
+        let completedAt: Date | undefined = undefined;
+
+        if (isCompleted) {
+            completedAt = new Date(
+                date.setHours(
+                    now.getHours(),
+                    now.getMinutes(),
+                    now.getSeconds(),
+                    now.getMilliseconds()
+                )
+            );
+        }
+
+        if (task.due) {
+            const occurence = task.reminder.occurrences.find(
+                item => item.due.getTime() == task.due?.getTime()
+            );
+
+            if (occurence) {
+                occurence.completed = completedAt;
+            }
+        }
+
+        store.commit.setReminderCompletedAt({
+            reminder: task.reminder,
+            completedAt: completedAt
+        });
+    },
+
+    setReminderCompletedAt(
+        state,
+        { reminder, completedAt }: { reminder: Reminder; completedAt?: Date }
+    ) {
+        if (reminder.isScheduled) {
+            const hasUncompleted =
+                reminder.occurrences.filter(item => !item.completed).length > 0;
+            const date = reminder.lastOccurrenceCalculationAt;
+
+            if (!hasUncompleted && !reminder.recurrenceRules?.hasNext(date)) {
+                reminder.completedAt = completedAt;
+            } else {
+                reminder.completedAt = undefined;
+            }
+        } else {
+            reminder.completedAt = completedAt;
+        }
     },
 
     prioritizeProblemRecord(state, payload) {

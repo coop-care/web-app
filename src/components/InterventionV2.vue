@@ -40,7 +40,6 @@ import EditableIntervention from "./EditableIntervention.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 
 const { setScrollPosition } = scroll;
-const nameof = (name: keyof ProblemRecord) => name;
 
 @Component({
   components: {
@@ -55,12 +54,9 @@ export default class InterventionView extends Vue {
     return this.record?.interventions || [];
   }
   set interventions(interventions) {
-    const notInterventions =
-      this.record?.reminders.filter(
-        reminder => !(reminder instanceof Intervention)
-      ) || [];
     const changes: any = {};
-    changes[nameof("reminders")] = notInterventions.concat(interventions);
+    const key: keyof ProblemRecord = "interventions";
+    changes[key] = interventions;
     this.$store.direct.commit.updateObject({
       target: this.record,
       changes: changes

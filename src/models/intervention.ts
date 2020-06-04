@@ -5,6 +5,7 @@ import { Term } from "./term";
 export class Intervention extends Reminder {
     categoryCode = "";
     targetCode = "";
+    detailsCode = "";
     details = "";
 
     static fromCode(code: string) {

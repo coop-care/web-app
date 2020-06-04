@@ -14,3 +14,15 @@ export class Outcome extends Base {
     status = new Rating();
     personRatedInPlaceOfOwner = "";
 }
+
+// preferred modeL:
+
+// export class Outcome extends Base {
+//     @Type(() => Rating)
+//     observations: Rating[] = [];
+//     @Type(() => Rating)
+//     expectations: Rating[] = [];
+//     personRatedInPlaceOfOwner = "";
+//     @Type(() => RatingReminder)
+//     ratingReminder?: RatingReminder
+// }

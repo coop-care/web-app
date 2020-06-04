@@ -44,6 +44,12 @@
           <q-item-section>
             <q-item-label class="q-pl-sm">{{ client.name }}</q-item-label>
           </q-item-section>
+          <q-item-section
+            side
+            v-if="client.dueTasksCount"
+          >
+            <q-item-label class="text-white text-weight-medium bg-grey-6 q-px-sm q-py-xs radius-lg">{{ client.dueTasksCount }}</q-item-label>
+          </q-item-section>
         </q-item>
       </q-expansion-item>
       <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
@@ -98,12 +104,16 @@ export default class ClientDrawer extends Vue {
   get activeClients() {
     return this.clients
       .filter(client => !client.leftAt)
-      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+      .sort((a: any, b: any) =>
+        a.masterData.name.localeCompare(b.masterData.name)
+      );
   }
   get archivedClients() {
     return this.clients
       .filter(client => !!client.leftAt)
-      .sort((a: any, b: any) => a.name.localeCompare(b.name));
+      .sort((a: any, b: any) =>
+        a.masterData.name.localeCompare(b.masterData.name)
+      );
   }
 
   created() {

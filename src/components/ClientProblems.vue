@@ -1,37 +1,41 @@
 <template>
-  <div class="q-gutter-md">
-    <q-btn
-      v-if="!isDisabled"
-      icon="add"
-      color="primary"
-      :label="$t('problemAdmission')"
-      rounded
-      outline
-      class="shadow-1 q-mt-md"
-      @click="addProblem"
-      size="12.5px"
-    />
-    <q-btn
-      v-if="!isDisabled && $te('problemCodesByDiagnosis')"
-      icon="playlist_add"
-      color="primary"
-      :label="$t('problemAdmissionByDiagnosis')"
-      rounded
-      outline
-      class="shadow-1 q-mt-md"
-      @click="addProblemsByDiagnosis"
-      size="12.5px"
-    />
-    <problem-summary
-      v-for="problemRecord in selectedClientProblems"
-      v-bind:key="problemRecord.id"
-      :problemRecord="problemRecord"
-      :params="{
+  <div>
+    <div class="q-gutter-md q-mb-md">
+      <q-btn
+        v-if="!isDisabled"
+        icon="add"
+        color="primary"
+        :label="$t('problemAdmission')"
+        rounded
+        outline
+        class="shadow-1 q-mt-md"
+        @click="addProblem"
+        size="12.5px"
+      />
+      <q-btn
+        v-if="!isDisabled && $te('problemCodesByDiagnosis')"
+        icon="playlist_add"
+        color="primary"
+        :label="$t('problemAdmissionByDiagnosis')"
+        rounded
+        outline
+        class="shadow-1 q-mt-md"
+        @click="addProblemsByDiagnosis"
+        size="12.5px"
+      />
+    </div>
+    <div class="q-gutter-md q-mt-md">
+      <problem-summary
+        v-for="problemRecord in selectedClientProblems"
+        v-bind:key="problemRecord.id"
+        :problemRecord="problemRecord"
+        :params="{
             clientId: $route.params.clientId,
             problemId: problemRecord.id
           }"
-      :isDisabled="isDisabled"
-    />
+        :isDisabled="isDisabled"
+      />
+    </div>
   </div>
 </template>
 

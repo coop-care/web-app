@@ -16,8 +16,6 @@ import EditingPageContainer from "components/EditingPageContainer.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import { Outcome } from "../models/outcome";
 
-const nameof = (name: keyof Outcome) => name;
-
 @Component({
   components: {
     ProblemRating,
@@ -31,7 +29,8 @@ export default class Rating extends Vue {
 
   save() {
     const changes: any = {};
-    changes[nameof("createdAt")] = new Date();
+    const key: keyof Outcome = "createdAt";
+    changes[key] = new Date();
     this.$store.direct.commit.updateNewOutcome({
       changes: changes,
       ...this.$route.params

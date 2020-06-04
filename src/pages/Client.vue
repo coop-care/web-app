@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="limit-page-width">
     <client-drawer ref="clientDrawer" />
 
     <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
@@ -49,13 +49,20 @@
       v-else-if="selectedClient"
     >
       <div class="row">
-        <content-editable
-          ref="clientName"
-          class="col q-mt-sm q-mb-xl q-py-sm text-h2"
-          v-text="selectedClient.name"
-          :contenteditable="!isDisabled"
-          @change="changeClientName($route.params.clientId, $event.value)"
-        />
+        <div class="col row q-mt-sm q-mb-xl">
+          <content-editable
+            class="q-py-sm q-mr-md text-h2"
+            v-text="firstName"
+            :contenteditable="!isDisabled"
+            @change="firstName = $event.value"
+          />
+          <content-editable
+            class="q-py-sm text-h2"
+            v-text="lastName"
+            :contenteditable="!isDisabled"
+            @change="lastName = $event.value"
+          />
+        </div>
         <div>
           <action-menu
             :items="clientActionItems"
@@ -79,10 +86,11 @@
           :to="{ name: 'clientReminders', params: $route.params }"
         >
           <q-badge
-            color="red"
+            color="intervention"
             floating
-            :label="Math.ceil(Math.random() * 3)"
-            v-if="Math.round(Math.random())"
+            :label="dueTaskCount"
+            v-if="dueTaskCount"
+            class="radius-lg text-weight-medium"
           />
         </q-route-tab>
         <q-route-tab
@@ -140,7 +148,7 @@
 <style lang="sass">
 .client-overview
   @media (max-width: $breakpoint-xs-max)
-    padding: 15px
+    padding: 8px
 </style>
 
 <script lang="ts">
@@ -155,11 +163,9 @@ import ClientReminders from "../components/ClientReminders.vue";
 import ClientHistory from "../components/ClientHistory.vue";
 import ClientMasterData from "../components/ClientMasterData.vue";
 import { Client } from "../models/client";
-import { ObjectID } from "bson";
+import { MasterData } from "../models/masterData";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
-
-const nameof = (name: keyof Client) => name;
 
 @Component({
   components: {
@@ -179,6 +185,18 @@ export default class PageIndex extends Vue {
   selectedTab = null;
   $refs!: { clientDrawer: ClientDrawer };
 
+  get firstName() {
+    return this.selectedClient?.masterData.firstName || "";
+  }
+  set firstName(value) {
+    this.updateMasterData("firstName", value);
+  }
+  get lastName() {
+    return this.selectedClient?.masterData.lastName || "";
+  }
+  set lastName(value) {
+    this.updateMasterData("lastName", value);
+  }
   get clients() {
     return this.$store.direct.state.clients;
   }
@@ -189,6 +207,11 @@ export default class PageIndex extends Vue {
     }
 
     return [
+      {
+        name: this.$t("showProofOfPerformance") + " …",
+        icon: "fas fa-clipboard",
+        action: () => this.pushRoute("proofOfPerformance")
+      },
       {
         name: this.$t("clientDischarge"),
         icon: "fas fa-archive",
@@ -205,12 +228,13 @@ export default class PageIndex extends Vue {
         name: this.$t("deleteClient"),
         icon: "delete_forever",
         action: this.deleteClient,
-        condition:
-          !!client.leftAt ||
-          (!client.problems.length && !client.masterDataHistory.length),
+        condition: !!client.leftAt || !client.problems.length,
         isDestructive: true
       }
     ];
+  }
+  get dueTaskCount() {
+    return this.selectedClient?.dueTasksCount || 0;
   }
   get selectedClient() {
     return this.$store.direct.getters.getClient(this.$root.$route.params);
@@ -225,8 +249,9 @@ export default class PageIndex extends Vue {
       .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
   }
 
-  addClient(name: string) {
-    const client = new Client(this.$ccApi.userId, name);
+  addClient(masterData: MasterData) {
+    const client = new Client(this.$ccApi.userId);
+    client.masterData = masterData;
     this.$ccApi
       .createClient(client)
       .then(client => {
@@ -240,12 +265,12 @@ export default class PageIndex extends Vue {
       .catch(console.error);
   }
 
-  changeClientName(clientId: ObjectID | undefined, name: string) {
+  updateMasterData(key: keyof MasterData, value: any) {
     this.updateClient(client => {
       const changes: any = {};
-      changes[nameof("name")] = name;
+      changes[key] = value;
       this.$store.direct.commit.updateObject({
-        target: client,
+        target: client.masterData,
         changes: changes
       });
     });
@@ -284,6 +309,13 @@ export default class PageIndex extends Vue {
       this.$store.direct.dispatch.deleteClient(this.selectedClient);
       this.$router.push({ name: "client" });
     }
+  }
+
+  pushRoute(name: string) {
+    this.$router.push({
+      name: name,
+      params: this.$route.params
+    });
   }
 }
 </script>

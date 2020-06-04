@@ -4,38 +4,34 @@ import { Base } from "./base";
 import { Problem } from "./problem";
 import { Reminder } from "./reminder";
 import { Outcome } from "./outcome";
-import { Note } from "./note";
 import { Intervention } from "./intervention";
+import { RatingReminder } from "./ratingReminder";
 
 export class ProblemRecord extends Base {
     id = this.generateId();
-    @Type(() => Note)
-    assessment: Note[] = [];
     @Type(() => Problem)
     problem = new Problem();
-    @Type(() => Reminder, {
-        discriminator: {
-            property: "__type",
-            subTypes: [
-                { value: Intervention, name: "intervention" },
-                // @ts-ignore
-                { value: Intervention, name: undefined }
-            ]
-        }
-    })
-    reminders: Reminder[] = [];
+    @Type(() => Intervention)
+    interventions: Intervention[] = [];
     @Type(() => Outcome)
     outcomes: Outcome[] = [];
+    @Type(() => RatingReminder)
+    ratingReminder = new RatingReminder(4, 2);
     @Type(() => Date)
     // optional properties need an initial value because Vue does not detect the addition or removal of a property
     createdAt?: Date = undefined;
     @Type(() => Date)
     resolvedAt?: Date = undefined;
+    tag = "";
 
-    get interventions() {
-        return this.reminders.filter(
-            reminder => reminder instanceof Intervention
-        ) as Intervention[];
+    get reminders(): Reminder[] {
+        if (this.ratingReminder) {
+            return (this.interventions as Reminder[]).concat([
+                this.ratingReminder
+            ]);
+        } else {
+            return this.interventions;
+        }
     }
     get editableOutcome() {
         let lastOutcome = this.outcomes[this.outcomes.length - 1];
@@ -66,6 +62,7 @@ export class ProblemRecord extends Base {
         clone.createdAt = undefined;
         clone.problem.isHighPriority = true;
         clone.problem.priorityDetails = "";
+        clone.ratingReminder = new RatingReminder(4, 2);
         return clone;
     }
 }

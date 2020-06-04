@@ -7,8 +7,8 @@
     <div class="row custom-gutter">
       <div class="col-12 col-sm-9 col-md-7">
         <div class="row q-pb-sm q-pa-xxs-none">
-          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
-            {{ $t("observation") }}
+          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11">
+            {{ $t("observedRating") }}:
           </div>
           <div class="col-12-xxs col-9">
             <div class="row">
@@ -88,8 +88,8 @@
           class="row"
           style="opacity: 0.7"
         >
-          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
-            {{ $t("expectation") }}
+          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11">
+            {{ $t("expectedRating") }}:
           </div>
           <div class="col-12-xxs col-9">
             <div class="row">
@@ -230,8 +230,6 @@ import Component from "vue-class-component";
 import { Rating } from "../models/rating";
 import TextWithTooltip from "./TextWithTooltip.vue";
 
-const nameof = (name: keyof Rating) => name;
-
 const RatingViewProps = Vue.extend({
   props: {
     title: String,
@@ -260,19 +258,19 @@ export default class RatingView extends RatingViewProps {
     return this.rating.observation || 0;
   }
   set observation(value: number) {
-    this.updateNewOutcome(nameof("observation"), value);
+    this.updateNewOutcome("observation", value);
   }
   get expectation() {
     return this.rating.expectation || 0;
   }
   set expectation(value: number) {
-    this.updateNewOutcome(nameof("expectation"), value);
+    this.updateNewOutcome("expectation", value);
   }
   get comment() {
     return this.rating.comment || "";
   }
   set comment(value: string) {
-    this.updateNewOutcome(nameof("comment"), value);
+    this.updateNewOutcome("comment", value);
   }
 
   get options() {
@@ -321,7 +319,7 @@ export default class RatingView extends RatingViewProps {
     }
   }
 
-  updateNewOutcome(key: string, value: any) {
+  updateNewOutcome(key: keyof Rating, value: any) {
     const changes: any = {};
     changes[key] = value;
     this.$store.direct.commit.updateNewOutcome({

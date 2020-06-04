@@ -94,10 +94,13 @@ module.exports = function(ctx) {
         "QSpinner",
         "QRouteTab",
         "QMenu",
-        "QResizeObserver"
+        "QResizeObserver",
+        "QColor",
+        "QSpace",
+        "QPageSticky"
       ],
 
-      directives: ["Ripple", "TouchSwipe"],
+      directives: ["Ripple", "TouchSwipe", "ClosePopup"],
 
       // Quasar plugins
       plugins: ["Meta"]

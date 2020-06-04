@@ -7,6 +7,7 @@
     :color="color"
     :dense="dense"
     :key="dateKey"
+    :hint="hint"
     @blur="dateKey = Math.random()"
     ref="dateInput"
   >
@@ -50,7 +51,7 @@
             v-model="dateString"
             :mask="format"
             :color="color"
-            @input="$refs.dateProxy.hide()"
+            @input="onInputDate"
             today-btn
             :options="dateOptions"
           />
@@ -112,9 +113,10 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { date, QInput } from "quasar";
+import { date, QInput, QPopupProxy } from "quasar";
 
 const emptyDate = new Date(0, 0, 0, 0, 0, 0, 0).getTime();
+const { formatDate, extractDate, isBetweenDates } = date;
 
 const DateTimeProps = Vue.extend({
   props: {
@@ -126,32 +128,34 @@ const DateTimeProps = Vue.extend({
     min: Date,
     label: String,
     placeholder: String,
+    defaultTime: String,
     color: {
       type: String,
       default: "primary"
     },
     required: Boolean,
     dense: Boolean,
-    options: Array
+    options: Array,
+    hint: String
   }
 });
 
 @Component
-export default class DateTime extends DateTimeProps {
+export default class DateTimeInput extends DateTimeProps {
   dateKey = Math.random();
   showOptions = false;
-  $refs!: { dateInput: QInput };
+  $refs!: { dateInput: QInput; dateProxy: QPopupProxy };
 
   get dateString(): string {
-    return date.formatDate(this.value || undefined, this.format);
+    return formatDate(this.value || undefined, this.format);
   }
   set dateString(value: string) {
-    const result = date.extractDate(value, this.format);
+    const result = extractDate(value, this.format);
 
     if (!isNaN(result.getTime()) && result.getTime() != emptyDate) {
       if (
         !this.min ||
-        date.isBetweenDates(result, this.min, result, {
+        isBetweenDates(result, this.min, result, {
           inclusiveTo: true,
           inclusiveFrom: true,
           onlyDate: true
@@ -181,13 +185,19 @@ export default class DateTime extends DateTimeProps {
       .map((option: any) => {
         return {
           label: option.label,
-          value: date.formatDate(option.value, this.format)
+          value: formatDate(option.value, this.format)
         };
       });
   }
 
   dateOptions(value: string) {
-    return !this.min || value >= date.formatDate(this.min, "YYYY/MM/DD");
+    return !this.min || value >= formatDate(this.min, "YYYY/MM/DD");
+  }
+  onInputDate(value: string) {
+    if (!this.dateString && this.defaultTime) {
+      this.dateString = value.replace("00:00", this.defaultTime);
+    }
+    this.$refs.dateProxy.hide();
   }
   clear(event: Event) {
     this.$emit("input", null);

@@ -1,5 +1,6 @@
 <template>
   <q-btn-dropdown
+    v-if="items.filter(item => item.condition).length"
     :color="color"
     rounded
     outline

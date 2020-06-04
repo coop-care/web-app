@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="limit-page-width">
 
     <q-stepper
       v-model="step"

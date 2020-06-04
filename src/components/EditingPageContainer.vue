@@ -1,5 +1,8 @@
 <template>
-  <q-page padding>
+  <q-page
+    padding
+    class="limit-page-width"
+  >
     <loading v-if="$store.direct.state.isLoadingClientList && !isDataAvailable" />
 
     <central-message

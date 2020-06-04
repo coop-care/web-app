@@ -1,236 +1,254 @@
 <template>
-  <div>
-    <div class="row q-col-gutter-lg items-start">
-      <div class="col-md-6 col-12">
-        <q-select
-          v-model="frequency"
-          :options="frequencyOptions"
-          :label="$t('recurrence')"
-          options-dense
-          :color="color"
-          options-cover
-          map-options
-          emit-value
-        />
+  <div class="row q-col-gutter-lg q-mb-md items-start">
+    <date-time-input
+      v-model="startDate"
+      :min="new Date()"
+      :format="$t('datetimeFormat')"
+      :label="$t('addReminderTime')"
+      :placeholder="$t('datetimeFormatPlaceholder')"
+      :options="startDateOptions"
+      :color="color"
+      class="col-md-4 col-sm-6 col-12"
+      default-time="08:00"
+    />
+    <div class="col-md-8 col-sm-6 col-12">
+      <div
+        v-if="startDate"
+        class="row q-col-gutter-lg items-start"
+      >
+        <div class="col-md-6 col-12">
+          <q-select
+            v-model="frequency"
+            :options="frequencyOptions"
+            :label="$t('recurrence')"
+            options-dense
+            :color="color"
+            options-cover
+            map-options
+            emit-value
+            :hint="recurrenceDescription"
+          />
 
-        <q-toggle
-          v-if="frequency != RecurrenceFrequency.Never"
-          v-model="hasOwnRecurrencePattern"
-          :label="$t('ownRecurrencePatternTitle')"
-          :color="color"
-          switch-toggle-side
-          class="q-mt-lg q-mb-sm"
-          dense
-        />
+          <q-toggle
+            v-if="frequency != -1"
+            v-model="hasOwnRecurrencePattern"
+            :label="$t('ownRecurrencePatternTitle')"
+            :color="color"
+            switch-toggle-side
+            class="q-mt-lg q-mb-sm"
+            dense
+          />
 
-        <div v-if="hasOwnRecurrencePattern">
-          <div v-if="frequency != RecurrenceFrequency.Never">
-            <q-input
-              :color="color"
-              v-model.number="interval"
-              type="number"
-              dense
-              step="1"
-              :prefix="$tc('every' + value.frequencyUnit, 5).split(' 5 ')[0]"
-              :suffix="$tc('every' + value.frequencyUnit, 5).split(' 5 ')[1]"
-              input-class="text-center"
-              class="q-pb-md"
-              :key="intervalKey"
-            />
-          </div>
-
-          <div v-if="frequency == RecurrenceFrequency.Daily">
-            <date-time
-              v-for="(time, index) in value.timesOfTheDay.concat([null])"
-              :key="index"
-              :value="time"
-              :format="$t('timeFormat')"
-              :placeholder="$t('addTimePlaceholder', {format: $t('timeFormatPlaceholder')})"
-              color="intervention"
-              class=""
-              dense
-              @input="timesOfTheDayInput($event, index)"
-            />
-          </div>
-
-          <div v-if="frequency == RecurrenceFrequency.Weekly">
-            <toggle-button-group
-              v-model="daysOfTheWeek"
-              :options="daysOfTheWeekOptions"
-              color="transparent"
-              text-color="gray-9"
-              :toggle-color="color"
-              toggle-text-color="white"
-            />
-          </div>
-
-          <div v-if="frequency == RecurrenceFrequency.Monthly">
-            <div>
-              <q-radio
-                v-model="monthlyMode"
-                :val="MonthlyMode.DayOfMonth"
-                :label="$t('onDayOfMonthTitle')"
+          <div v-if="hasOwnRecurrencePattern">
+            <div v-if="frequency != -1">
+              <q-input
                 :color="color"
+                v-model.number="interval"
+                type="number"
                 dense
-                class="q-mt-xs"
+                step="1"
+                :prefix="intervalLabels[0]"
+                :suffix="intervalLabels[1]"
+                input-class="text-center"
+                class="q-pb-md"
+                :key="intervalKey"
               />
             </div>
-            <toggle-button-group
-              v-if="monthlyMode == MonthlyMode.DayOfMonth"
-              v-model="daysOfTheMonth"
-              :options="daysOfTheMonthOptions"
-              color="transparent"
-              text-color="gray-9"
-              :toggle-color="color"
-              toggle-text-color="white"
-              class="q-mt-sm q-mb-md"
-            />
-            <div class="q-my-sm">
-              <q-radio
-                v-model="monthlyMode"
-                :val="MonthlyMode.DayOfWeek"
-                :label="$t('onDayOfWeekTitle')"
-                :color="color"
-                dense
-              />
-            </div>
-            <div
-              v-if="monthlyMode == MonthlyMode.DayOfWeek"
-              class="row q-col-gutter-x-sm"
-            >
-              <q-select
-                v-model="positions"
-                :options="positionOptions"
-                dense
-                options-dense
-                :color="color"
-                options-cover
-                map-options
-                emit-value
-                :prefix="$t('everyDayPrefix')"
-                class="col"
-                style="min-width: 140px"
-              />
-              <q-select
-                v-model="singleDayOfTheWeek"
-                :options="singleDayOfTheWeekOptions"
-                dense
-                options-dense
-                :color="color"
-                options-cover
-                map-options
-                emit-value
-                class="col"
-                style="min-width: 140px"
-              />
-            </div>
-          </div>
 
-          <div v-if="frequency == RecurrenceFrequency.Yearly">
-            <toggle-button-group
-              v-model="monthsOfTheYear"
-              :options="monthsOfTheYearOptions"
-              color="transparent"
-              text-color="gray-9"
-              :toggle-color="color"
-              toggle-text-color="white"
-              class="q-mb-sm"
-            />
-            <div class="q-mt-md q-mb-sm">
-              <q-toggle
-                v-model="showYearlyDayOfWeek"
-                :label="$t('onDayOfWeekTitle')"
+            <div v-if="frequency == Frequency.DAILY">
+              <date-time-input
+                v-for="(time, index) in timesOfTheDay"
+                :key="index"
+                :value="time"
+                :format="$t('timeFormat')"
+                :placeholder="
+                  $t('addTimePlaceholder', {
+                    format: $t('timeFormatPlaceholder')
+                  })
+                "
                 :color="color"
+                class=""
                 dense
+                @input="timesOfTheDayInput($event, index)"
               />
             </div>
-            <div
-              v-if="showYearlyDayOfWeek"
-              class="row q-col-gutter-x-sm"
-            >
-              <q-select
-                v-model="positions"
-                :options="positionOptions"
-                dense
-                options-dense
-                :color="color"
-                options-cover
-                map-options
-                emit-value
-                :prefix="$t('everyDayPrefix')"
-                class="col"
-                style="min-width: 140px"
+
+            <div v-if="frequency == Frequency.WEEKLY">
+              <toggle-button-group
+                v-model="daysOfTheWeek"
+                :options="daysOfTheWeekOptions"
+                color="transparent"
+                text-color="gray-9"
+                :toggle-color="color"
+                toggle-text-color="white"
               />
-              <q-select
-                v-model="singleDayOfTheWeek"
-                :options="singleDayOfTheWeekOptions"
-                dense
-                options-dense
-                :color="color"
-                options-cover
-                map-options
-                emit-value
-                class="col"
-                style="min-width: 140px"
+            </div>
+
+            <div v-if="frequency == Frequency.MONTHLY">
+              <div>
+                <q-radio
+                  v-model="monthlyMode"
+                  val="DayOfMonth"
+                  :label="$t('onDayOfMonthTitle')"
+                  :color="color"
+                  dense
+                  class="q-mt-xs"
+                />
+              </div>
+              <toggle-button-group
+                v-if="monthlyMode == 'DayOfMonth'"
+                v-model="daysOfTheMonth"
+                :options="daysOfTheMonthOptions"
+                color="transparent"
+                text-color="gray-9"
+                :toggle-color="color"
+                toggle-text-color="white"
+                class="q-mt-sm q-mb-md"
               />
+              <div class="q-my-sm">
+                <q-radio
+                  v-model="monthlyMode"
+                  val="DayOfWeek"
+                  :label="$t('onDayOfWeekTitle')"
+                  :color="color"
+                  dense
+                />
+              </div>
+              <div
+                v-if="monthlyMode == 'DayOfWeek'"
+                class="row q-col-gutter-x-sm"
+              >
+                <q-select
+                  v-model="positions"
+                  :options="positionOptions"
+                  dense
+                  options-dense
+                  :color="color"
+                  options-cover
+                  map-options
+                  emit-value
+                  :prefix="$t('everyDayPrefix')"
+                  class="col"
+                  style="min-width: 140px"
+                />
+                <q-select
+                  v-model="singleDayOfTheWeek"
+                  :options="singleDayOfTheWeekOptions"
+                  dense
+                  options-dense
+                  :color="color"
+                  options-cover
+                  map-options
+                  emit-value
+                  class="col"
+                  style="min-width: 140px"
+                />
+              </div>
+            </div>
+
+            <div v-if="frequency == Frequency.YEARLY">
+              <toggle-button-group
+                v-model="monthsOfTheYear"
+                :options="monthsOfTheYearOptions"
+                color="transparent"
+                text-color="gray-9"
+                :toggle-color="color"
+                toggle-text-color="white"
+                class="q-mb-sm"
+              />
+              <div class="q-mt-md q-mb-sm">
+                <q-toggle
+                  v-model="showYearlyDayOfWeek"
+                  :label="$t('onDayOfWeekTitle')"
+                  :color="color"
+                  dense
+                />
+              </div>
+              <div
+                v-if="showYearlyDayOfWeek"
+                class="row q-col-gutter-x-sm"
+              >
+                <q-select
+                  v-model="positions"
+                  :options="positionOptions"
+                  dense
+                  options-dense
+                  :color="color"
+                  options-cover
+                  map-options
+                  emit-value
+                  :prefix="$t('everyDayPrefix')"
+                  class="col"
+                  style="min-width: 140px"
+                />
+                <q-select
+                  v-model="singleDayOfTheWeek"
+                  :options="singleDayOfTheWeekOptions"
+                  dense
+                  options-dense
+                  :color="color"
+                  options-cover
+                  map-options
+                  emit-value
+                  class="col"
+                  style="min-width: 140px"
+                />
+              </div>
             </div>
           </div>
         </div>
 
         <div
-          class="text-caption q-mt-md bg-grey-2 q-pa-sm"
-          v-if="!!description && false"
+          v-if="frequency != -1"
+          class="col-md-6 col-12"
         >
-          {{ description }}
-        </div>
-      </div>
-
-      <div
-        v-if="frequency != RecurrenceFrequency.Never"
-        class="col-md-6 col-12"
-      >
-        <q-select
-          v-model="recurrenceEndMode"
-          :options="recurrenceEndOptions"
-          :label="$t('recurrenceEndLabel')"
-          options-dense
-          :color="color"
-          options-cover
-          map-options
-          emit-value
-        />
-
-        <div v-if="recurrenceEndMode == RecurrenceEndMode.EndDate">
-          <date-time
-            v-model="recurrenceEndDate"
-            :format="$t('dateFormat')"
-            :min="new Date()"
-            :placeholder="$t('dateFormatPlaceholder')"
-            color="intervention"
-            class="q-mt-sm"
-            required
-            dense
-          />
-        </div>
-
-        <div v-if="recurrenceEndMode == RecurrenceEndMode.NumberOfOccurences">
-          <q-input
+          <q-select
+            v-model="recurrenceEndMode"
+            :options="recurrenceEndOptions"
+            :label="$t('recurrenceEndLabel')"
+            options-dense
             :color="color"
-            v-model.number="recurrenceEndCount"
-            type="number"
-            class="q-my-sm"
-            dense
-            step="1"
-            input-class="text-center"
-            :key="occurenceCountKey"
-          >
-            <template v-slot:prepend>
-              <div class="text-body2 text-black">{{ endAfterOccurenceCountLabels[0] }}</div>
-            </template>
-            <template v-slot:append>
-              <div class="text-body2 text-black">{{ endAfterOccurenceCountLabels[1] }}</div>
-            </template>
-          </q-input>
+            options-cover
+            map-options
+            emit-value
+          />
+
+          <div v-if="recurrenceEndMode == 'EndDate'">
+            <date-time-input
+              v-model="recurrenceEndDate"
+              :format="$t('datetimeFormat')"
+              :min="new Date()"
+              :placeholder="$t('dateFormatPlaceholder')"
+              :color="color"
+              class="q-mt-sm"
+              required
+              dense
+            />
+          </div>
+
+          <div v-if="recurrenceEndMode == 'NumberOfOccurences'">
+            <q-input
+              :color="color"
+              v-model.number="recurrenceEndCount"
+              type="number"
+              class="q-my-sm"
+              dense
+              step="1"
+              input-class="text-center"
+              :key="occurenceCountKey"
+            >
+              <template v-slot:prepend>
+                <div class="text-body2 text-black">
+                  {{ endAfterOccurenceCountLabels[0] }}
+                </div>
+              </template>
+              <template v-slot:append>
+                <div class="text-body2 text-black">
+                  {{ endAfterOccurenceCountLabels[1] }}
+                </div>
+              </template>
+            </q-input>
+          </div>
         </div>
       </div>
     </div>
@@ -240,39 +258,25 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import {
-  RecurrenceRule,
-  RecurrenceFrequency,
-  RecurrenceDayOfWeek,
-  RecurrenceEnd
-} from "../models/recurrenceRule";
+import { TranslateResult } from "vue-i18n";
+import { date } from "quasar";
+import { RRuleSet, RRule, Frequency, Options } from "../models/rrule";
 import SearchableOptionList from "./SearchableOptionList.vue";
 import ToggleButtonGroup from "./ToggleButtonGroup.vue";
-import DateTime from "../components/DateTime.vue";
+import DateTimeInput from "../components/DateTime.vue";
 
-const nameof = (name: keyof RecurrenceRule) => name;
-const nameofEnd = (name: keyof RecurrenceEnd) => name;
-const noRecurrenceRule = new RecurrenceRule(RecurrenceFrequency.Never);
+const { addToDate, adjustDate } = date;
+const isEmpty = (value: any) =>
+  value == null || (value instanceof Array && value.length == 0);
+const toArray = (value: number | undefined | null | number[]) =>
+  value instanceof Array || value == null ? value || [] : [value];
 
-enum MonthlyMode {
-  DayOfMonth = 1,
-  DayOfWeek
-}
-enum RecurrenceEndMode {
-  Never = 1,
-  EndDate,
-  NumberOfOccurences
-}
+type MonthlyMode = "DayOfMonth" | "DayOfWeek";
+type RecurrenceEndMode = "Never" | "EndDate" | "NumberOfOccurences";
 
 const ReminderEditorProps = Vue.extend({
   props: {
-    value: {
-      type: RecurrenceRule,
-      default: () => noRecurrenceRule
-    },
-    startDate: {
-      type: (Date as unknown) as () => Date // don't ask… typechecker madness
-    },
+    value: RRuleSet,
     color: {
       type: String,
       default: "primary"
@@ -284,157 +288,233 @@ const ReminderEditorProps = Vue.extend({
   components: {
     SearchableOptionList,
     ToggleButtonGroup,
-    DateTime
+    DateTimeInput
   }
 })
 export default class ReminderEditor extends ReminderEditorProps {
   hasOwnRecurrencePattern = false;
-  monthlyMode = MonthlyMode.DayOfMonth;
+  monthlyMode: MonthlyMode = "DayOfMonth";
   showYearlyDayOfWeek = false;
   intervalKey = Math.random();
   occurenceCountKey = Math.random();
 
+  get rule(): Options | undefined {
+    return this.value?.currentRule?.options;
+  }
+  get startDate() {
+    return this.value?.startDate;
+  }
+  set startDate(value) {
+    if (value) {
+      const recurrenceRules = this.value || RRuleSet.make();
+      this.$emit("input", recurrenceRules.updatingStartDate(value));
+    } else {
+      this.$emit("input", undefined);
+    }
+  }
   get frequency() {
-    return this.value.frequency;
+    return this.rule ? this.rule.freq : -1;
   }
   set frequency(value) {
-    if (value == RecurrenceFrequency.Never) {
-      this.$emit("input", undefined);
+    const rules = RRuleSet.make();
+    const startDate = RRuleSet.toUTC(this.value?.startDate);
+    const endDate = this.value?.endDate
+      ? RRuleSet.toUTC(this.value?.endDate)
+      : undefined;
+
+    if (value < 0) {
+      rules.rdate(startDate);
     } else {
-      const rule = new RecurrenceRule(value);
-      rule.recurrenceStart = this.startDate;
-      rule.recurrenceEnd = this.value.recurrenceEnd;
-
-      if (
-        value == RecurrenceFrequency.Daily &&
-        this.hasOwnRecurrencePattern &&
-        this.startDate
-      ) {
-        rule.timesOfTheDay = [this.startDate];
-      }
-
-      this.$emit("input", rule);
+      rules.rrule(
+        new RRule(
+          {
+            freq: value,
+            dtstart: startDate,
+            until: endDate,
+            count: this.rule?.count,
+            wkst: RRuleSet.weekstart,
+            tzid: RRuleSet.localTimezone
+          },
+          true
+        )
+      );
     }
+
+    this.$emit("input", rules);
     this.showYearlyDayOfWeek = false;
-    this.monthlyMode = MonthlyMode.DayOfMonth;
+    this.monthlyMode = "DayOfMonth";
   }
   get interval() {
-    return this.value.interval;
+    return this.rule?.interval || 0;
   }
   set interval(value) {
     if (!/^\d{1,3}$/.test("" + value) || value < 1) {
       value = 1;
       this.intervalKey = Math.random();
     }
-    this.updateRecurrenceRule(nameof("interval"), value);
+    this.updateRecurrenceRule({ interval: value });
+  }
+  get timesOfTheDay(): Array<Date | null> {
+    if (
+      this.rule &&
+      this.rule.byhour instanceof Array &&
+      this.rule.byminute instanceof Array
+    ) {
+      const byminute = this.rule.byminute;
+      return (this.rule.byhour.map((hour, index) =>
+        adjustDate(new Date(), {
+          hours: hour,
+          minutes: byminute[index] || 0,
+          seconds: 0
+        })
+      ) as Array<Date | null>).concat([null]);
+    } else {
+      return [null];
+    }
   }
   get daysOfTheWeek() {
-    return this.value.daysOfTheWeekOnlyDays;
+    return toArray(this.rule?.byweekday as any);
   }
   set daysOfTheWeek(value) {
-    this.updateRecurrenceRule(nameof("daysOfTheWeekOnlyDays"), value);
+    this.updateRecurrenceRule({ byweekday: value.length ? value : undefined });
   }
   get daysOfTheMonth() {
-    return this.value.daysOfTheMonth;
+    return toArray(this.rule?.bymonthday);
   }
   set daysOfTheMonth(value) {
-    this.updateRecurrenceRule(nameof("daysOfTheMonth"), value);
+    this.updateRecurrenceRule({ bymonthday: value.length ? value : undefined });
   }
   get monthsOfTheYear() {
-    return this.value.monthsOfTheYear;
+    return toArray(this.rule?.bymonth);
   }
   set monthsOfTheYear(value) {
-    this.updateRecurrenceRule(nameof("monthsOfTheYear"), value);
+    this.updateRecurrenceRule({ bymonth: value.length ? value : undefined });
   }
   get positions() {
-    return this.value.positions;
+    return toArray(this.rule?.bysetpos);
   }
   set positions(value) {
-    this.updateRecurrenceRule(nameof("positions"), value);
+    this.updateRecurrenceRule({ bysetpos: value.length ? value : undefined });
   }
-  get recurrenceEndMode() {
-    if (this.value.recurrenceEnd && this.value.recurrenceEnd.endDate) {
-      return RecurrenceEndMode.EndDate;
-    } else if (
-      this.value.recurrenceEnd &&
-      this.value.recurrenceEnd.occurenceCount
-    ) {
-      return RecurrenceEndMode.NumberOfOccurences;
+  get recurrenceEndMode(): RecurrenceEndMode {
+    if (this.recurrenceEndDate) {
+      return "EndDate";
+    } else if (this.recurrenceEndCount) {
+      return "NumberOfOccurences";
     } else {
-      return RecurrenceEndMode.Never;
+      return "Never";
     }
   }
   set recurrenceEndMode(value) {
-    let recurrenceEnd: RecurrenceEnd | undefined = undefined;
+    let count: number | undefined = undefined;
+    let until: Date | undefined = undefined;
 
-    if (value == RecurrenceEndMode.EndDate) {
-      recurrenceEnd = new RecurrenceEnd(new Date());
-    } else if (value == RecurrenceEndMode.NumberOfOccurences) {
-      recurrenceEnd = new RecurrenceEnd(undefined, 1);
+    if (value == "EndDate") {
+      until = new Date(
+        Math.max(this.startDate.getTime(), new Date().getTime())
+      );
+      count = undefined;
+    } else if (value == "NumberOfOccurences") {
+      until = undefined;
+      count = 1;
     }
 
-    this.updateRecurrenceRule(nameof("recurrenceEnd"), recurrenceEnd);
+    this.updateRecurrenceRule({ until: until, count: count });
   }
   get recurrenceEndDate() {
-    return this.value.recurrenceEnd?.endDate;
+    return this.value.endDate;
   }
   set recurrenceEndDate(value) {
-    this.updateRecurrenceEnd(nameofEnd("endDate"), value);
+    this.updateRecurrenceRule({ until: value });
   }
   get recurrenceEndCount() {
-    return this.value.recurrenceEnd?.occurenceCount || 0;
+    return this.rule?.count || 0;
   }
   set recurrenceEndCount(value) {
     if (
-      this.value.recurrenceEnd &&
+      this.recurrenceEndCount &&
       (!/^\d{1,3}$/.test("" + value) || value < 1)
     ) {
       value = 1;
       this.occurenceCountKey = Math.random();
     }
-    this.updateRecurrenceEnd(nameofEnd("occurenceCount"), value);
+    this.updateRecurrenceRule({ count: value });
   }
   get singleDayOfTheWeek() {
     if (this.daysOfTheWeek.length == 1) {
       return this.daysOfTheWeek[0];
     } else if (this.daysOfTheWeek.length == 2) {
-      return 10;
-    } else if (this.daysOfTheWeek.length == 5) {
       return 9;
-    } else if (this.daysOfTheWeek.length == 7) {
+    } else if (this.daysOfTheWeek.length == 5) {
       return 8;
+    } else if (this.daysOfTheWeek.length == 7) {
+      return 7;
     } else {
-      return 1;
+      return 6;
     }
   }
   set singleDayOfTheWeek(value: number) {
-    if (value <= 7) {
+    if (value <= 6) {
       this.daysOfTheWeek = [value];
+    } else if (value == 7) {
+      this.daysOfTheWeek = [0, 1, 2, 3, 4, 5, 6];
     } else if (value == 8) {
-      this.daysOfTheWeek = [1, 2, 3, 4, 5, 6, 7];
+      this.daysOfTheWeek = [0, 1, 2, 3, 4];
     } else if (value == 9) {
-      this.daysOfTheWeek = [2, 3, 4, 5, 6];
-    } else if (value == 10) {
-      this.daysOfTheWeek = [1, 7];
+      this.daysOfTheWeek = [5, 6];
     }
   }
+  get startDateOptions() {
+    const today = adjustDate(new Date(), { hours: 8, minutes: 0, seconds: 0 });
+    const tomorrow = addToDate(today, { days: 1 });
+    const nextWeek = addToDate(today, { days: 7 });
+    return [
+      {
+        label: this.$t("today"),
+        value: today
+      },
+      {
+        label: this.$t("tomorrow"),
+        value: tomorrow
+      },
+      {
+        label: this.$t("inOneWeek"),
+        value: nextWeek
+      }
+    ];
+  }
   get frequencyOptions() {
-    const entries = Object.entries(RecurrenceFrequency);
-    return entries.slice(entries.length / 2).map(entry => {
-      return { label: this.$t(entry[0]), value: entry[1] };
+    const values = [
+      -1,
+      Frequency.DAILY,
+      Frequency.WEEKLY,
+      Frequency.MONTHLY,
+      Frequency.YEARLY
+    ];
+    return values.map(value => {
+      const key = Frequency[value] || "Never";
+      const label = key.charAt(0) + key.slice(1).toLowerCase();
+      return { label: this.$t(label), value: value };
     });
   }
   get daysOfTheWeekOptions() {
-    return this.$q.lang.date.daysShort.map(this.toOption);
+    return this.$q.lang.date.daysShort.map((name, index) => {
+      return { label: name, value: index > 0 ? index - 1 : 6 };
+    });
   }
   get singleDayOfTheWeekOptions() {
     return this.$q.lang.date.days
       .concat([
-        this.$tc("day", 1),
-        this.$t("weekday") as string,
-        this.$t("weekendDay") as string
+        "" + this.$tc("day", 1),
+        "" + this.$t("weekday"),
+        "" + this.$t("weekendDay")
       ])
-      .map(this.toOption);
+      .map((name, index) => {
+        return {
+          label: name,
+          value: index > 0 ? (index > 6 ? index : index - 1) : 6
+        };
+      });
   }
   get daysOfTheMonthOptions() {
     return Array.from(new Array(31), (x, i) => "" + (i + 1)).map(this.toOption);
@@ -446,16 +526,30 @@ export default class ReminderEditor extends ReminderEditorProps {
     return ["firstDay", "secondDay", "thirdDay", "fourthDay", "fifthDay"]
       .map((key, index) => {
         return {
-          label: this.$t(key) as string,
+          label: this.$t(key),
           value: [index + 1]
         };
       })
-      .concat([{ label: this.$t("lastDay") as string, value: [-1] }]);
+      .concat([{ label: this.$t("lastDay"), value: [-1] }]);
   }
-  get recurrenceEndOptions() {
-    return ["never", "recurrenceEndDate"] // add "endAfterOccurenceCount" eventually later to keep things simpler at start
-      .map(key => this.$t(key) as string)
-      .map(this.toOption);
+  get recurrenceEndOptions(): {
+    label: TranslateResult;
+    value: RecurrenceEndMode;
+  }[] {
+    return [
+      {
+        label: this.$t("Never"),
+        value: "Never"
+      },
+      {
+        label: this.$t("recurrenceEndDate"),
+        value: "EndDate"
+      },
+      {
+        label: this.$t("endAfterOccurenceCount"),
+        value: "NumberOfOccurences"
+      }
+    ];
   }
   get endAfterOccurenceCountLabels() {
     return this.$tc(
@@ -463,102 +557,113 @@ export default class ReminderEditor extends ReminderEditorProps {
       this.recurrenceEndCount
     ).split(" " + this.recurrenceEndCount + " ");
   }
-  get description() {
-    let description = "";
-
-    if (this.value.frequencyUnit) {
-      description += this.$tc(
-        "every" + this.value.frequencyUnit,
-        this.value.interval
-      );
-    }
-
-    return description;
+  get intervalLabels() {
+    const frequency = ["Year", "Month", "Week", "Day"][this.frequency];
+    return this.$tc("every" + frequency, 5).split(" 5 ");
   }
-  get RecurrenceFrequency() {
-    return RecurrenceFrequency;
+  get Frequency() {
+    return Frequency;
   }
-  get MonthlyMode() {
-    return MonthlyMode;
-  }
-  get RecurrenceEndMode() {
-    return RecurrenceEndMode;
+  get recurrenceDescription() {
+    return this.value.toLocalizedText(
+      this.$root.$i18n.locale,
+      (this.$t("rrule") as unknown) as { [key: string]: string },
+      {
+        monthNames: this.$q.lang.date.months,
+        dayNames: this.$q.lang.date.days,
+        tokens: {}
+      }
+    );
   }
 
-  toOption(name: string, index: number) {
+  toOption(name: string | TranslateResult, index: number) {
     return { label: name, value: index + 1 };
   }
   timesOfTheDayInput(value: Date | null, index: number) {
-    const timesOfTheDay = this.value.timesOfTheDay.slice();
+    const byhour = toArray(this.rule?.byhour).slice();
+    const byminute = toArray(this.rule?.byminute).slice();
+
     if (value == null) {
-      timesOfTheDay.splice(index, 1);
+      byhour.splice(index, 1);
+      byminute.splice(index, 1);
     } else {
-      timesOfTheDay[index] = value;
+      byhour[index] = value.getHours();
+      byminute[index] = value.getMinutes();
     }
-    this.updateRecurrenceRule(nameof("timesOfTheDay"), timesOfTheDay);
+
+    this.updateRecurrenceRule({
+      byhour: byhour.length ? byhour : undefined,
+      byminute: byminute.length ? byminute : undefined,
+      bysecond: [0],
+      bysetpos: byhour.map((hour, index) => index * (byhour.length + 1) + 1)
+    });
   }
   resetOwnRecurrencePattern() {
-    this.frequency = this.value.frequency;
+    this.frequency = this.rule ? this.rule.freq : -1;
   }
   resetMonthlyMode() {
-    this.daysOfTheMonth = [];
-
-    if (this.monthlyMode == MonthlyMode.DayOfMonth) {
-      this.positions = [];
-      this.daysOfTheWeek = [];
+    if (this.monthlyMode == "DayOfMonth") {
+      this.updateRecurrenceRule({
+        bymonthday: undefined,
+        byweekday: undefined,
+        bysetpos: undefined
+      });
     } else {
-      this.positions = this.positionOptions[0].value;
-      this.daysOfTheWeek = [this.daysOfTheWeekOptions[0].value];
+      this.updateRecurrenceRule({
+        bymonthday: undefined,
+        byweekday: [this.daysOfTheWeekOptions[0].value],
+        bysetpos: this.positionOptions[0].value
+      });
     }
   }
   resetYearlyDayOfWeek() {
     if (this.showYearlyDayOfWeek) {
-      this.positions = this.positionOptions[0].value;
-      this.daysOfTheWeek = [this.daysOfTheWeekOptions[0].value];
+      this.updateRecurrenceRule({
+        byweekday: [this.daysOfTheWeekOptions[0].value],
+        bysetpos: this.positionOptions[0].value
+      });
     } else {
-      this.positions = [];
-      this.daysOfTheWeek = [];
+      this.updateRecurrenceRule({
+        byweekday: undefined,
+        bysetpos: undefined
+      });
     }
   }
-  setupFromRecurrenceRule(rule: RecurrenceRule) {
-    this.hasOwnRecurrencePattern = rule.hasOwnRecurrencePattern;
-    this.showYearlyDayOfWeek =
-      rule.frequency == RecurrenceFrequency.Yearly &&
-      rule.daysOfTheWeek.length > 0 &&
-      rule.positions.length > 0;
+  setupFromRecurrenceRule(rule: Partial<Options> | undefined) {
+    if (rule) {
+      this.hasOwnRecurrencePattern =
+        !isEmpty(rule.byhour) ||
+        !isEmpty(rule.byweekday) ||
+        !isEmpty(rule.bymonthday) ||
+        !isEmpty(rule.bymonth) ||
+        !isEmpty(rule.bysetpos);
+      this.showYearlyDayOfWeek =
+        rule.freq == Frequency.YEARLY &&
+        !isEmpty(rule.byweekday) &&
+        !isEmpty(rule.bysetpos);
 
-    if (
-      rule.frequency == RecurrenceFrequency.Monthly &&
-      rule.daysOfTheWeek.length > 0 &&
-      rule.positions.length > 0 &&
-      rule.daysOfTheMonth.length == 0
-    ) {
-      this.monthlyMode = MonthlyMode.DayOfWeek;
+      if (
+        rule.freq == Frequency.MONTHLY &&
+        !isEmpty(rule.byweekday) &&
+        !isEmpty(rule.bysetpos) &&
+        isEmpty(rule.bymonthday)
+      ) {
+        this.monthlyMode = "DayOfWeek";
+      } else {
+        this.monthlyMode = "DayOfMonth";
+      }
     } else {
-      this.monthlyMode = MonthlyMode.DayOfMonth;
+      this.hasOwnRecurrencePattern = false;
+      this.showYearlyDayOfWeek = false;
+      this.monthlyMode = "DayOfMonth";
     }
   }
-  updateRecurrenceRule(key: string, value: any) {
-    const changes: any = {};
-    changes[key] = value;
-
-    this.$store.direct.commit.updateObject({
-      target: this.value,
-      changes: changes
-    });
-  }
-  updateRecurrenceEnd(key: string, value: any) {
-    const changes: any = {};
-    changes[key] = value;
-
-    this.$store.direct.commit.updateObject({
-      target: this.value.recurrenceEnd,
-      changes: changes
-    });
+  updateRecurrenceRule(changes: Partial<Options>) {
+    this.$emit("input", this.value?.updatingCurrentRule(changes));
   }
 
   created() {
-    this.setupFromRecurrenceRule(this.value);
+    this.setupFromRecurrenceRule(this.value?.currentRule?.origOptions);
     this.$watch("hasOwnRecurrencePattern", this.resetOwnRecurrencePattern);
     this.$watch("monthlyMode", this.resetMonthlyMode);
     this.$watch("showYearlyDayOfWeek", this.resetYearlyDayOfWeek);

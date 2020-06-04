@@ -1,13 +1,17 @@
 <template>
   <div>
-    <div class="text-subtitle1 counter">{{ $t("selectInterventionCategory") }}</div>
+    <div class="text-subtitle1 counter">
+      {{ $t("selectInterventionCategory") }}
+    </div>
     <searchable-option-list
       color="intervention"
       :options="terminology.interventionScheme.categories"
       v-model="categoryCode"
     />
 
-    <div class="text-subtitle1 counter">{{ $t("selectInterventionTarget") }}</div>
+    <div class="text-subtitle1 counter">
+      {{ $t("selectInterventionTarget") }}
+    </div>
     <div v-if="usersGuideForProblem">
       <i18n
         path="frequentInterventionTargetsForProblem"
@@ -45,7 +49,9 @@
       />
     </div>
 
-    <div class="text-subtitle1 counter">{{ $t("describeClientSpecificIntervention") }}</div>
+    <div class="text-subtitle1 counter">
+      {{ $t("describeClientSpecificIntervention") }}
+    </div>
     <q-input
       v-model="details"
       :label="$t('clientSpecificInterventionsHint')"
@@ -81,25 +87,11 @@
 
     <div class="text-subtitle1 counter">{{ $t("planReminder") }}</div>
     <div class="q-mx-md">
-      <div class="row q-col-gutter-lg q-mb-md items-start">
-        <date-time
-          v-model="startDate"
-          :min="new Date()"
-          :format="$t('datetimeFormat')"
-          :label="$t('addReminderTime')"
-          :placeholder="$t('datetimeFormatPlaceholder')"
-          :options="startDateOptions"
-          color="intervention"
-          class="col-md-4 col-sm-6 col-12"
-        />
-        <reminder-editor
-          v-if="startDate"
-          v-model="recurrenceRule"
-          :startDate="startDate"
-          color="intervention"
-          class="col-md-8 col-sm-6 col-12"
-        />
-      </div>
+      <reminder-editor
+        v-model="recurrenceRules"
+        color="intervention"
+        class="q-mb-md"
+      />
     </div>
   </div>
 </template>
@@ -107,38 +99,27 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { date } from "quasar";
 import {
   TerminologyWithMaps,
   UsersGuide,
   sortByTitle
 } from "../helper/terminology";
+import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
-import { RecurrenceRule } from "../models/recurrenceRule";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
-import DateTime from "../components/DateTime.vue";
-
-const nameof = (name: keyof Intervention) => name;
 
 const InterventionEditorProps = Vue.extend({
   props: {
-    value: Intervention
+    value: Intervention,
+    problemRecord: ProblemRecord
   }
 });
 
 @Component({
   components: {
     SearchableOptionList,
-    ReminderEditor,
-    DateTime
-  },
-  watch: {
-    startDate(this: InterventionEditor, value: Date | null) {
-      if (!value) {
-        this.recurrenceRule = undefined;
-      }
-    }
+    ReminderEditor
   }
 })
 export default class InterventionEditor extends InterventionEditorProps {
@@ -146,71 +127,25 @@ export default class InterventionEditor extends InterventionEditorProps {
     return this.value.categoryCode;
   }
   set categoryCode(value) {
-    this.updateIntervention(nameof("categoryCode"), value);
+    this.updateIntervention("categoryCode", value);
   }
   get targetCode() {
     return this.value.targetCode;
   }
   set targetCode(value) {
-    this.updateIntervention(nameof("targetCode"), value);
+    this.updateIntervention("targetCode", value);
   }
   get details() {
     return this.value.details;
   }
   set details(value) {
-    this.updateIntervention(nameof("details"), value);
+    this.updateIntervention("details", value);
   }
-  get startDate() {
-    return this.value.startDate;
+  get recurrenceRules() {
+    return this.value.recurrenceRules;
   }
-  set startDate(value) {
-    this.updateIntervention(nameof("startDate"), value);
-  }
-  get recurrenceRule() {
-    // Always edit the last one. Fits most situations, but should be replaced with returning the currently valid one
-    // based on startDate and recurrenceEnd
-    const rules = this.value.recurrenceRules;
-    return rules[rules.length - 1] || undefined;
-  }
-  set recurrenceRule(value: RecurrenceRule | undefined) {
-    if (value == this.recurrenceRule) {
-      return;
-    }
-
-    const recurrenceRules = this.value.recurrenceRules.slice();
-
-    if (this.recurrenceRule) {
-      const index = recurrenceRules.indexOf(this.recurrenceRule);
-
-      if (value) {
-        recurrenceRules[index] = value;
-      } else {
-        recurrenceRules.splice(index, 1);
-      }
-    } else if (value) {
-      recurrenceRules.push(value);
-    }
-
-    this.updateIntervention(nameof("recurrenceRules"), recurrenceRules);
-  }
-  get startDateOptions() {
-    const today = date.startOfDate(new Date(), "day");
-    const tomorrow = date.addToDate(today, { days: 1 });
-    const nextWeek = date.addToDate(today, { days: 7 });
-    return [
-      {
-        label: this.$t("today"),
-        value: today
-      },
-      {
-        label: this.$t("tomorrow"),
-        value: tomorrow
-      },
-      {
-        label: this.$t("inOneWeek"),
-        value: nextWeek
-      }
-    ];
+  set recurrenceRules(value) {
+    this.updateIntervention("recurrenceRules", value);
   }
   get suggestedTargetCodes() {
     const suggestions = this.usersGuideForProblem?.interventionSuggestions;
@@ -273,10 +208,13 @@ export default class InterventionEditor extends InterventionEditorProps {
     return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
-    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
+    return (
+      this.problemRecord ||
+      this.$store.direct.getters.getProblemRecordById(this.$route.params)
+    );
   }
 
-  updateIntervention(key: string, value: any) {
+  updateIntervention(key: keyof Intervention, value: any) {
     const changes: any = {};
     changes[key] = value;
 
@@ -284,6 +222,7 @@ export default class InterventionEditor extends InterventionEditorProps {
       target: this.value,
       changes: changes
     });
+    this.$emit("input", this.value);
   }
 }
 </script>

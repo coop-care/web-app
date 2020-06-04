@@ -75,7 +75,10 @@ export default class StitchApi implements CoopCareApiInterface {
                 .find({}, {})
                 .toArray()
                 .then(data => {
-                    return Client.fromObject(data) as Client[];
+                    // console.log(JSON.stringify(data));
+                    const result = Client.fromObject(data) as Client[];
+                    // console.log(result);
+                    return result;
                 })
         );
     }
@@ -90,8 +93,10 @@ export default class StitchApi implements CoopCareApiInterface {
     saveClient(client: Client) {
         // eslint-disable-next-line @typescript-eslint/camelcase
         client.user_id = this.user?.id || "";
+        const data: any = client.toJSON();
+        data._id = client._id;
         return this.clients
-            .findOneAndReplace({ _id: client._id }, client)
+            .findOneAndReplace({ _id: client._id }, data)
             .then(() => client);
     }
 }

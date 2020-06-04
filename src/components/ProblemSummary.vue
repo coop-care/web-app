@@ -17,7 +17,8 @@
         class="text-h6"
       >
         <div class="row justify-between">
-          <div class="text-classification">{{ $t(problem.title) }}
+          <div class="text-classification">
+            {{ $t(problem.title) }}
             <q-btn
               v-if="isInteractive"
               :title="$t('editProblem')"
@@ -135,7 +136,7 @@
       </ul>
     </q-card-section>
     <q-card-section
-      v-if="interventions.length"
+      v-if="interventions.length || (isInteractive && problem.isHighPriority)"
       :class="sectionPadding"
     >
       <div class="text-subtitle1 text-weight-bold text-intervention q-mb-xs">
@@ -152,14 +153,22 @@
           class="on-right shadow-1"
         />
       </div>
-      <ul :class="'q-ma-none '">
+      <ul
+        v-if="interventions.length"
+        class="q-ma-none"
+      >
         <li
           v-for="(intervention, index) in interventions"
           v-bind:key="index"
           class="no-column-break"
         >
           <div>
-            {{ [intervention.category.title, intervention.target.title].filter(title => title).map(title => $t(title)).join(": ") || ""}}
+            {{
+              [intervention.category.title, intervention.target.title]
+                .filter(title => title)
+                .map(title => $t(title))
+                .join(": ") || ""
+            }}
           </div>
           <div class="text-weight-bold">
             {{ intervention.details || $t("newIntervention") }}
@@ -172,7 +181,8 @@
       :class="sectionPadding"
     >
       <div :class="
-          'text-outcome text-subtitle1 text-weight-bold ' + (!isSummary ? 'q-mb-sm' : '')
+          'text-outcome text-subtitle1 text-weight-bold ' +
+            (!isSummary ? 'q-mb-sm' : '')
         ">
         {{ $tc("outcome", 2) }}
         <q-btn
@@ -183,7 +193,7 @@
           round
           outline
           size="10.5px"
-          color="primary"
+          color="outcome"
           class="on-right shadow-1"
         />
       </div>
@@ -299,7 +309,7 @@ export default class ProblemSummary extends ProblemSummaryProps {
   }
   get outcomesForChart() {
     return this.$store.direct.getters.getOutcomeAsChartData({
-      expectation: this.$t("expectation"),
+      expectation: this.$t("expectedRating"),
       ratings: this.terminology.problemRatingScale.ratings,
       locale: this.$root.$i18n.locale,
       ...this.params
@@ -335,7 +345,9 @@ export default class ProblemSummary extends ProblemSummaryProps {
     return (this.$t("terminology") as unknown) as Terminology;
   }
   get clientName() {
-    return this.$store.direct.getters.getClient(this.params)?.name || "";
+    return (
+      this.$store.direct.getters.getClient(this.params)?.masterData.name || ""
+    );
   }
   get language() {
     return this.$root.$i18n.locale;

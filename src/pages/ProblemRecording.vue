@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="limit-page-width">
     <loading v-if="$store.direct.state.isLoadingClientList && !record" />
 
     <central-message

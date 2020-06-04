@@ -1,16 +1,16 @@
 import "reflect-metadata";
-import { Type, plainToClass } from "class-transformer";
+import { Type, plainToClass, classToPlain } from "class-transformer";
 import { ObjectID } from "bson";
 import { MasterData } from "./masterData";
 import { ProblemRecord } from "./problemRecord";
+import { Reminder } from "./reminder";
 
 export class Client {
     // optional properties need an initial value because Vue does not detect the addition or removal of a property
     _id?: ObjectID = undefined;
     user_id = "";
-    name = "";
     @Type(() => MasterData)
-    masterDataHistory: MasterData[] = [];
+    masterData: MasterData = new MasterData();
     @Type(() => ProblemRecord)
     problems: ProblemRecord[] = [];
     @Type(() => Date)
@@ -19,48 +19,86 @@ export class Client {
     leftAt?: Date = undefined;
 
     static fromObject(object: unknown): Client | Client[] {
-        // migration from database happens here:
-        const isArray = object instanceof Array;
-        object = isArray ? object : [object];
-        object = (object as any[]).map(object => {
-            object.problems = object.problems.map((problem: any) => {
-                if ((problem.interventions || []).length) {
-                    problem.reminders = problem.interventions.map(
-                        (intervention: any) => {
-                            return {
-                                startDate: intervention.startedAt,
-                                completionDate:
-                                    intervention.endedAt || undefined,
-                                categoryCode: intervention.categoryCode,
-                                targetCode: intervention.targetCode,
-                                details: intervention.details[0].text,
-                                __type: "intervention"
-                            };
-                        }
-                    );
-                    delete problem.interventions;
-                }
-                return problem;
-            });
-            return object;
-        });
-        object = isArray ? object : (object as any[])[0];
-        // – migration end
-
         return plainToClass(Client, object);
     }
 
-    constructor(userId: string, name: string) {
+    constructor(userId: string) {
         // eslint-disable-next-line @typescript-eslint/camelcase
         this.user_id = userId;
-        this.name = name;
+    }
+
+    get name() {
+        return this.masterData.name;
+    }
+    get dueTasksCount() {
+        let count = 0;
+        const before = Date.now();
+        this.forActiveReminders(reminder => {
+            count += reminder.occurrences.filter(
+                item => !item.completed && item.due.getTime() < before
+            ).length;
+        });
+        return count;
     }
 
     findProblemRecord(id: string) {
         return this.problems.find(problem => problem.id == id);
     }
 
+    findReminder(id: string) {
+        return this.problems
+            .flatMap(problem => problem.reminders)
+            .find(reminder => reminder.id == id);
+    }
+
+    forAllReminders(
+        method: (reminder: Reminder, problem: ProblemRecord) => any
+    ) {
+        this.problems.forEach(problem => {
+            if (!problem.createdAt) {
+                return;
+            }
+            problem.reminders.forEach(reminder => {
+                method(reminder, problem);
+            });
+        });
+    }
+
+    forActiveReminders(
+        method: (reminder: Reminder, problem: ProblemRecord) => any
+    ) {
+        this.problems.forEach(problem => {
+            if (
+                !problem.createdAt ||
+                problem.resolvedAt ||
+                !problem.problem.isHighPriority
+            ) {
+                return;
+            }
+
+            problem.reminders.forEach(reminder => {
+                if (reminder.isCompleted) {
+                    return;
+                }
+
+                method(reminder, problem);
+            });
+        });
+    }
+
+    calculateOccurrences() {
+        this.forActiveReminders((reminder, problem) =>
+            reminder.calculateOccurrences(
+                !!problem.resolvedAt || !problem.problem.isHighPriority
+            )
+        );
+    }
+
     equals(client: Client) {
         return this._id?.equals(client._id || "") || false;
+    }
+
+    toJSON() {
+        return classToPlain(this);
     }
 }

@@ -239,8 +239,6 @@ import { Problem } from "../models/problem";
 import TextWithHighlights from "./TextWithHighlights.vue";
 import TextWithTooltip from "./TextWithTooltip.vue";
 
-const nameof = (name: keyof Problem) => name;
-
 @Component({
   components: {
     ProblemSummary,
@@ -259,7 +257,7 @@ export default class ProblemClassification extends Vue {
     return this.problem.code;
   }
   set selectedProblem(value: string) {
-    this.updateProblem(nameof("code"), value);
+    this.updateProblem("code", value);
   }
   get selectedSymptoms() {
     return this.problem.signsAndSymptomsCodes;
@@ -269,37 +267,37 @@ export default class ProblemClassification extends Vue {
     const codes = this.symptomsForSelectedProblem
       .filter(symptom => values.includes(symptom.value))
       .map(symptom => symptom.value);
-    this.updateProblem(nameof("signsAndSymptomsCodes"), codes);
+    this.updateProblem("signsAndSymptomsCodes", codes);
   }
   get scope() {
     return this.problem.scopeCode;
   }
   set scope(value: number) {
-    this.updateProblem(nameof("scopeCode"), value);
+    this.updateProblem("scopeCode", value);
   }
   get severity() {
     return this.problem.severityCode;
   }
   set severity(value: number) {
-    this.updateProblem(nameof("severityCode"), value);
+    this.updateProblem("severityCode", value);
   }
   get priority() {
     return this.problem.isHighPriority;
   }
   set priority(value: boolean) {
-    this.updateProblem(nameof("isHighPriority"), value);
+    this.updateProblem("isHighPriority", value);
   }
   get details() {
     return this.problem.details;
   }
   set details(value: string) {
-    this.updateProblem(nameof("details"), value);
+    this.updateProblem("details", value);
   }
   get priorityDetails() {
     return this.problem.priorityDetails;
   }
   set priorityDetails(value: string) {
-    this.updateProblem(nameof("priorityDetails"), value);
+    this.updateProblem("priorityDetails", value);
   }
 
   get problems() {
@@ -363,15 +361,16 @@ export default class ProblemClassification extends Vue {
     return this.record!.problem;
   }
 
-  updateProblem(key: string, value: any) {
+  updateProblem(key: keyof Problem, value: any) {
+    const problemKey = (name: keyof Problem) => name;
     const changes: any = {};
     changes[key] = value;
 
     if (["code", "severityCode"].includes(key)) {
-      changes[nameof("signsAndSymptomsCodes")] = [];
-      changes[nameof("details")] = "";
+      changes[problemKey("signsAndSymptomsCodes")] = [];
+      changes[problemKey("details")] = "";
     } else if (key == "isHighPriority" && !!value) {
-      changes[nameof("priorityDetails")] = "";
+      changes[problemKey("priorityDetails")] = "";
     }
 
     this.$store.direct.commit.updateObject({

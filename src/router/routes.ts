@@ -16,11 +16,11 @@ const routes: RouteConfig[] = [
                 children: [
                     {
                         name: "clientReminders",
-                        path: "reminders"
+                        path: "reminders/:day?"
                     },
                     {
                         name: "clientReport",
-                        path: "report"
+                        path: "report/:problemId?"
                     },
                     {
                         name: "clientHistory",
@@ -54,6 +54,11 @@ const routes: RouteConfig[] = [
                 component: () => import("pages/Intervention.vue")
             },
             {
+                name: "newIntervention",
+                path: "/client/:clientId/intervention/new",
+                component: () => import("pages/NewIntervention.vue")
+            },
+            {
                 name: "problem",
                 path: "/client/:clientId/problem/:problemId/:step?",
                 component: () => import("pages/ProblemRecording.vue")
@@ -62,6 +67,11 @@ const routes: RouteConfig[] = [
                 name: "problemsByDiagnosis",
                 path: "/client/:clientId/diagnoses",
                 component: () => import("pages/ProblemsByDiagnosis.vue")
+            },
+            {
+                name: "proofOfPerformance",
+                path: "/client/:clientId/reports/execution",
+                component: () => import("pages/ProofOfPerformance.vue")
             },
             {
                 name: "login",

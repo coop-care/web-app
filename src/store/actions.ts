@@ -12,7 +12,8 @@ export default defineActions({
             ccApi
                 .getAllClients()
                 .then(clients => {
-                    commit.setClients((clients as unknown) as Client[]);
+                    clients.forEach(client => client.calculateOccurrences());
+                    commit.setClients(clients);
                     commit.isLoadingClientList(false);
                     resolve();
                 })
@@ -26,11 +27,12 @@ export default defineActions({
 
     saveClient(context, payload) {
         return new Promise((resolve, reject) => {
-            const client =
-                payload.client ||
-                rootActionContext(context).getters.getClient(payload);
+            const { commit, getters } = rootActionContext(context);
+            const client: Client | undefined =
+                payload.client || getters.getClient(payload);
 
             if (client) {
+                commit.calculateOccurences(client);
                 ccApi
                     .saveClient(client)
                     .then(resolve)
