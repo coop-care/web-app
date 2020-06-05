@@ -83,6 +83,7 @@
             href="https://github.com/coop-care/web-app"
             target="_blank"
             icon-right="far fa-heart"
+            v-close-popup
           />
           <q-btn
             :label="$t('aboutUs')"

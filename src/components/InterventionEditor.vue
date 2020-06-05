@@ -194,7 +194,8 @@ export default class InterventionEditor extends InterventionEditorProps {
     if (this.categoryCode && this.targetCode && this.usersGuideForProblem) {
       const intervention = this.usersGuideForProblem.interventionSuggestions;
       const category = intervention[this.categoryCode] || {};
-      return category[this.targetCode] || [];
+      const details = category[this.targetCode] || [];
+      return details.filter(text => text);
     } else {
       return [];
     }

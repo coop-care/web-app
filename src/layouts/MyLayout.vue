@@ -118,8 +118,6 @@ export default class MyLayout extends Vue {
       return this.$t(this.record.problem.title);
     } else if (route.name == "problemsByDiagnosis") {
       return this.$t("problemAdmissionByDiagnosis");
-    } else if (route.name == "proofOfPerformance") {
-      return this.$t("proofOfPerformance");
     } else {
       return "";
     }
