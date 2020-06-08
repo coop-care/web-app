@@ -1,11 +1,15 @@
 import { defineMutations } from "direct-vuex";
 import { store, StoreState } from ".";
-import { Client } from "../models/client";
-import { ProblemRecord } from "../models/problemRecord";
-import { Reminder } from "../models/reminder";
-import { Outcome } from "../models/outcome";
-import { Rating } from "src/models/rating";
-import { Task } from "src/models/task";
+import {
+    Client,
+    ProblemRecord,
+    Reminder,
+    Outcome,
+    Rating,
+    Task
+} from "../models";
+
+type Updatable<T> = { target: T; changes: Partial<T> };
 
 export default defineMutations<StoreState>()({
     setClients(state, clients: Client[]) {
@@ -34,10 +38,7 @@ export default defineMutations<StoreState>()({
             ?.problems.push(payload.problemRecord || new ProblemRecord());
     },
 
-    updateObject(
-        state,
-        { target, changes }: { target: any; changes: { [key: string]: any } }
-    ) {
+    updateObject<T>(state: StoreState, { target, changes }: Updatable<T>) {
         // maybe check for each key if new value is really differs first? And consider array equality at least for empty arrays?
         Object.assign(target, changes);
     },
