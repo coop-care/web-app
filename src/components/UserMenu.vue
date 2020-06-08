@@ -82,7 +82,7 @@
             type="a"
             href="https://github.com/coop-care/web-app"
             target="_blank"
-            icon-right="far fa-heart"
+            icon-right="fab fa-github"
             v-close-popup
           />
           <q-btn

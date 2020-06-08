@@ -1,31 +1,38 @@
 <template>
   <q-item tag="label">
-    <q-item-section side top>
+    <q-item-section
+      side
+      top
+    >
       <q-checkbox
-        :disable="!hasCheckbox"
+        :disable="!hasCheckbox || disabled"
         v-model="isCompleted"
-        :color="hasCheckbox ? color : 'grey-4'"
+        :color="hasCheckbox && !disabled ? color : 'grey-4'"
         keep-color
       />
     </q-item-section>
     <q-item-section>
-      <q-item-label
-        :class="'text-weight-medium ' + (isDue ? 'text-negative' : '')"
-      >
+      <q-item-label :class="'text-weight-medium ' + (isDue ? 'text-negative' : '')">
         {{ title }}
       </q-item-label>
-      <q-item-label caption v-if="description || timeAgo" lines="2">
+      <q-item-label
+        caption
+        v-if="description || timeAgo"
+        lines="2"
+      >
         <span
           v-if="timeAgo"
-          @click="navigateToDueDate"
+          @click.prevent="navigateToDueDate"
           class="link text-negative text-weight-medium"
-          >{{ timeAgo }}</span
-        >
+        >{{ timeAgo }}</span>
         <span v-if="timeAgo && description">, </span>
         <span v-if="description">{{ description }}</span>
       </q-item-label>
     </q-item-section>
-    <q-item-section v-if="primaryAction" side>
+    <q-item-section
+      v-if="primaryAction"
+      side
+    >
       <q-btn
         :icon="primaryAction.icon"
         :title="primaryAction.name"
@@ -38,12 +45,23 @@
     </q-item-section>
     <q-item-section
       side
-      v-if="reminderActionItems.filter(item => item.condition).length"
+      v-if="
+        !disabled && reminderActionItems.filter(item => item.condition).length
+      "
     >
-      <action-menu :items="reminderActionItems" :color="color" />
+      <action-menu
+        :items="reminderActionItems"
+        :color="color"
+      />
     </q-item-section>
-    <q-popup-proxy no-parent-event ref="dateProxy">
-      <date-time-popup :color="color" :value="task.due" />
+    <q-popup-proxy
+      no-parent-event
+      ref="dateProxy"
+    >
+      <date-time-popup
+        :color="color"
+        :value="task.due"
+      />
     </q-popup-proxy>
   </q-item>
 </template>
@@ -55,7 +73,6 @@ import { date, QPopupProxy } from "quasar";
 import { format } from "timeago.js";
 import { Client } from "../models/client";
 import { Task } from "../models/task";
-import { Reminder } from "../models/reminder";
 import { Intervention } from "../models/intervention";
 import { RatingReminder } from "../models/ratingReminder";
 import ActionMenu from "components/ActionMenu.vue";
@@ -81,6 +98,9 @@ const TaskViewProps = Vue.extend({
 export default class TaskView extends TaskViewProps {
   $refs!: { dateProxy: QPopupProxy };
 
+  get disabled() {
+    return !!this.client.leftAt;
+  }
   get isCompleted() {
     return !!this.task.completed;
   }
@@ -150,21 +170,24 @@ export default class TaskView extends TaskViewProps {
     return undefined;
   }
   get reminderActionItems() {
+    const isIntervention = this.reminder instanceof Intervention;
+    const isRatingReminder = this.reminder instanceof RatingReminder;
+    const isReminderUncompleted = !this.reminder.isCompleted;
+    const isTaskUncompleted = !this.task.completed;
+    const isUncompleted = isReminderUncompleted && isTaskUncompleted;
     return [
       {
         name: this.$t("newRating") + " …",
         icon: "far fa-comment-dots",
         action: () => this.routerPush("outcome"),
-        condition:
-          this.reminder instanceof RatingReminder && !this.task.completed
+        condition: isRatingReminder && isTaskUncompleted
       },
       {
         name: this.$t("skipTask"),
         icon: "redo",
         action: this.skipTask,
         condition:
-          !this.reminder.isCompleted &&
-          !this.task.completed &&
+          isUncompleted &&
           !!this.task.due &&
           this.reminder.recurrenceRules?.hasNext(this.task.due)
       },
@@ -172,19 +195,13 @@ export default class TaskView extends TaskViewProps {
         name: this.$t("moveSingleTask") + " …",
         icon: "fas fa-step-forward",
         action: this.moveSingleTask,
-        condition:
-          this.reminder.isScheduled &&
-          !this.reminder.isCompleted &&
-          !this.task.completed
+        condition: this.reminder.isScheduled && isUncompleted
       },
       {
         name: this.$t("moveFutureTasks") + " …",
         icon: "fas fa-fast-forward",
         action: this.moveFutureTasks,
-        condition:
-          this.reminder.isRecurring &&
-          !this.reminder.isCompleted &&
-          !this.task.completed
+        condition: this.reminder.isRecurring && isUncompleted
       },
       {
         name:
@@ -193,23 +210,20 @@ export default class TaskView extends TaskViewProps {
           }) + " …",
         icon: "far fa-arrow-right",
         action: () => this.routerPush("clientReport"),
-        condition:
-          this.reminder instanceof Intervention && !this.record?.resolvedAt
+        condition: isIntervention && !this.record?.resolvedAt
       },
       {
         name: this.$t("editIntervention") + " …",
         icon: "fas fa-pen",
         action: () => this.routerPush("intervention"),
-        condition:
-          this.reminder instanceof Intervention && !this.reminder.isCompleted
+        condition: isIntervention && isReminderUncompleted
       },
       {
         name: this.$t("stopRatingReminder"),
         icon: "fas fa-times-circle",
         isDestructive: true,
         action: this.endRatingReminder,
-        condition:
-          this.reminder instanceof RatingReminder && !this.reminder.isCompleted
+        condition: isRatingReminder && isReminderUncompleted
       },
       {
         name: !this.reminder.isRecurring
@@ -220,8 +234,7 @@ export default class TaskView extends TaskViewProps {
         icon: "fas fa-times-circle",
         isDestructive: true,
         action: this.endIntervention,
-        condition:
-          this.reminder instanceof Intervention && !this.reminder.isCompleted
+        condition: isIntervention && isReminderUncompleted
       }
     ];
   }
@@ -237,10 +250,8 @@ export default class TaskView extends TaskViewProps {
   }
 
   endRatingReminder() {
-    const changes: any = {};
-    const key: keyof RatingReminder = "interval";
-    changes[key] = 0;
-    this.updateReminderAndSave(changes);
+    this.updateRatingReminder({ interval: 0 });
+    this.save();
   }
 
   endIntervention() {
@@ -250,7 +261,7 @@ export default class TaskView extends TaskViewProps {
     const recurrenceRules = this.reminder.recurrenceRules?.updatingCurrentRule({
       until: date
     });
-    this.updateReminder("recurrenceRules", recurrenceRules);
+    this.updateIntervention({ recurrenceRules: recurrenceRules });
     this.$store.direct.commit.setReminderCompletedAt({
       reminder: this.reminder,
       completedAt: date
@@ -281,21 +292,18 @@ export default class TaskView extends TaskViewProps {
     });
   }
 
-  updateReminder(key: keyof Reminder, value: any) {
-    const changes: any = {};
-    changes[key] = value;
+  updateIntervention(changes: Partial<Intervention>) {
     this.$store.direct.commit.updateObject({
       target: this.reminder,
       changes: changes
     });
   }
 
-  updateReminderAndSave(changes: any) {
+  updateRatingReminder(changes: Partial<RatingReminder>) {
     this.$store.direct.commit.updateObject({
       target: this.reminder,
       changes: changes
     });
-    this.save();
   }
 
   save() {
