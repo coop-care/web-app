@@ -1,31 +1,31 @@
 <template>
   <q-item tag="label">
-    <q-item-section
-      side
-      top
-    >
+    <q-item-section side top>
       <q-checkbox
         :disable="!hasCheckbox"
         v-model="isCompleted"
-        :color="hasCheckbox? color : 'grey-4'"
+        :color="hasCheckbox ? color : 'grey-4'"
         keep-color
       />
     </q-item-section>
     <q-item-section>
-      <q-item-label class="text-weight-medium">
+      <q-item-label
+        :class="'text-weight-medium ' + (isDue ? 'text-negative' : '')"
+      >
         {{ title }}
       </q-item-label>
-      <q-item-label
-        caption
-        v-if="description"
-      >
-        {{ description }}
+      <q-item-label caption v-if="description || timeAgo" lines="2">
+        <span
+          v-if="timeAgo"
+          @click="navigateToDueDate"
+          class="link text-negative text-weight-medium"
+          >{{ timeAgo }}</span
+        >
+        <span v-if="timeAgo && description">, </span>
+        <span v-if="description">{{ description }}</span>
       </q-item-label>
     </q-item-section>
-    <q-item-section
-      v-if="primaryAction"
-      side
-    >
+    <q-item-section v-if="primaryAction" side>
       <q-btn
         :icon="primaryAction.icon"
         :title="primaryAction.name"
@@ -40,19 +40,10 @@
       side
       v-if="reminderActionItems.filter(item => item.condition).length"
     >
-      <action-menu
-        :items="reminderActionItems"
-        :color="color"
-      />
+      <action-menu :items="reminderActionItems" :color="color" />
     </q-item-section>
-    <q-popup-proxy
-      no-parent-event
-      ref="dateProxy"
-    >
-      <date-time-popup
-        :color="color"
-        :value="task.due"
-      />
+    <q-popup-proxy no-parent-event ref="dateProxy">
+      <date-time-popup :color="color" :value="task.due" />
     </q-popup-proxy>
   </q-item>
 </template>
@@ -61,6 +52,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { date, QPopupProxy } from "quasar";
+import { format } from "timeago.js";
 import { Client } from "../models/client";
 import { Task } from "../models/task";
 import { Reminder } from "../models/reminder";
@@ -110,18 +102,30 @@ export default class TaskView extends TaskViewProps {
     }
   }
   get description() {
+    let description: string;
     if (this.reminder instanceof Intervention) {
-      return (
+      description =
         this.$t(this.reminder.category.title) +
         ": " +
-        this.$t(this.reminder.target.title)
-      );
+        this.$t(this.reminder.target.title);
     } else if (this.reminder instanceof RatingReminder) {
-      return this.$t("forProblem", {
+      description = this.$t("forProblem", {
         problem: this.problemName
-      });
+      }).toString();
     } else {
-      return "";
+      description = "";
+    }
+
+    return description;
+  }
+  get isDue() {
+    return this.task.due && this.task.due.getTime() < Date.now();
+  }
+  get timeAgo() {
+    if (this.isDue && this.task.due) {
+      return format(this.task.due, this.$root.$i18n.locale);
+    } else {
+      return undefined;
     }
   }
   get color() {
@@ -252,6 +256,18 @@ export default class TaskView extends TaskViewProps {
       completedAt: date
     });
     this.save();
+  }
+
+  navigateToDueDate() {
+    if (this.task.due) {
+      this.$router.push({
+        name: "clientReminders",
+        params: {
+          day: "" + this.task.due.getTime(),
+          clientId: this.$route.params.clientId
+        }
+      });
+    }
   }
 
   routerPush(name: string) {
