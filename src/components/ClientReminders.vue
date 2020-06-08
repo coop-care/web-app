@@ -14,7 +14,12 @@
           size="18px"
           @click="gotoPreviousDay"
         />
-        <q-btn icon="event" round flat color="intervention">
+        <q-btn
+          icon="event"
+          round
+          flat
+          color="intervention"
+        >
           <q-popup-proxy
             ref="dateProxy"
             transition-show="scale"
@@ -37,7 +42,10 @@
           {{ formattedDate({ weekday: "long" }) }}
           {{ isToday ? $t("isTodayHint") : "" }}
         </div>
-        <div class="text-body2" style="margin-top:-3px">
+        <div
+          class="text-body2"
+          style="margin-top:-3px"
+        >
           {{
             formattedDate({ year: "numeric", month: "long", day: "numeric" })
           }}
@@ -56,7 +64,10 @@
         />
       </div>
     </div>
-    <div v-for="(visit, index) in tasks" v-bind:key="index">
+    <div
+      v-for="(visit, index) in tasks"
+      v-bind:key="index"
+    >
       <div class="text-subtitle1 text-weight-bold q-mt-lg">
         {{ visit.title }}
       </div>
@@ -74,6 +85,7 @@
       </div>
     </div>
     <q-page-sticky
+      v-if="!client.leftAt"
       position="bottom-left"
       :offset="$q.screen.lt.sm ? [16, 10] : [56, 10]"
     >
@@ -179,14 +191,18 @@ export default class ClientReminders extends Vue {
   }
 
   tasksForDay(day: Date) {
-    const startOfDayTimestamp = startOfDate(day, "day").getTime();
+    const startOfDay = startOfDate(day, "day");
+    const endOfDay = endOfDate(day, "day");
+    const startOfDayTimestamp = startOfDay.getTime();
+    const endOfDayTimestamp = endOfDay.getTime();
     const startOfTodayTimestamp = new Date().setHours(0, 0, 0, 0);
+    const endOfTodayTimestamp = new Date().setHours(23, 59, 59, 999);
     const pastDueTimestamp = Math.min(
       startOfDayTimestamp,
       startOfTodayTimestamp
     );
-    const showPastDue = startOfDayTimestamp <= startOfTodayTimestamp;
-    const endOfDay = endOfDate(day, "day");
+    const isFuture = endOfTodayTimestamp < startOfDayTimestamp;
+    const isPresentOrPast = startOfDayTimestamp <= startOfTodayTimestamp;
     const pastDueTasks: Task[] = [];
     const anytimeTasks: Task[] = [];
     let scheduledTasks: Task[] = [];
@@ -196,11 +212,12 @@ export default class ClientReminders extends Vue {
       const isReminderActiveAndUncompleted =
         !problem.resolvedAt &&
         problem.problem.isHighPriority &&
-        !reminder.isCompleted;
+        !reminder.isCompleted &&
+        !this.client?.leftAt;
 
       reminder.occurrences.forEach(item => {
         if (
-          showPastDue &&
+          isPresentOrPast &&
           isReminderActiveAndUncompleted &&
           !item.completed &&
           item.due.getTime() < pastDueTimestamp
@@ -208,7 +225,10 @@ export default class ClientReminders extends Vue {
           pastDueTasks.push(
             new Task(reminder, problem.id, item.due, item.completed)
           );
-        } else if (isBetweenDates(item.due, startOfDayTimestamp, endOfDay)) {
+        } else if (
+          (isReminderActiveAndUncompleted || item.completed) &&
+          isBetweenDates(item.due, startOfDayTimestamp, endOfDayTimestamp)
+        ) {
           scheduledTasks.push(
             new Task(reminder, problem.id, item.due, item.completed)
           );
@@ -216,25 +236,23 @@ export default class ClientReminders extends Vue {
       });
 
       if (reminder.recurrenceRules) {
-        if (isReminderActiveAndUncompleted) {
-          const start = new Date(
-            Math.max(
-              reminder.lastOccurrenceCalculationAt.getTime(),
-              startOfDayTimestamp
-            )
-          );
+        if (isReminderActiveAndUncompleted && isFuture) {
           scheduledTasks = scheduledTasks.concat(
             reminder.recurrenceRules
-              .between(start, endOfDay, true)
+              .between(startOfDay, endOfDay, true)
               .map(date => new Task(reminder, problem.id, date))
           );
         }
       } else {
         if (
           (isReminderActiveAndUncompleted &&
-            isBetweenDates(day, reminder.createdAt, endOfDay)) ||
+            reminder.createdAt.getTime() <= endOfDayTimestamp) ||
           (reminder.completedAt &&
-            isBetweenDates(reminder.completedAt, startOfDayTimestamp, endOfDay))
+            isBetweenDates(
+              reminder.completedAt,
+              startOfDayTimestamp,
+              endOfDayTimestamp
+            ))
         ) {
           anytimeTasks.push(
             new Task(reminder, problem.id, undefined, reminder.completedAt)

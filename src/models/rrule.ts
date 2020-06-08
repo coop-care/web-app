@@ -58,6 +58,38 @@ class RRuleSet extends RuleSet {
         return ruleSet;
     }
 
+    static fromJSON(json: any) {
+        const ruleSet = new RRuleSet(true);
+        ruleSet.tzid(json.tzid);
+        json.rrules?.forEach((options: any) =>
+            ruleSet.rrule(RRuleSet.makeRuleFromJSON(options))
+        );
+        json.exrules?.forEach((options: any) =>
+            ruleSet.exrule(RRuleSet.makeRuleFromJSON(options))
+        );
+        json.rdates?.forEach((dateString: string) =>
+            ruleSet.rdate(new Date(dateString))
+        );
+        json.exdates?.forEach((dateString: string) =>
+            ruleSet.exdate(new Date(dateString))
+        );
+
+        return ruleSet;
+    }
+
+    private static makeRuleFromJSON(json: any) {
+        if (json.dtstart != undefined) {
+            json.dtstart = new Date(json.dtstart);
+        }
+        if (json.until != undefined) {
+            json.until = new Date(json.until);
+        }
+        if (json.wkst != undefined && json.wkst.weekday != undefined) {
+            json.wkst = json.wkst.weekday;
+        }
+        return new RRule(json, true);
+    }
+
     static make() {
         const ruleSet = new RRuleSet(true);
         ruleSet.tzid(RRuleSet.localTimezone);
@@ -221,20 +253,37 @@ class RRuleSet extends RuleSet {
         iterator?: (d: Date, len: number) => boolean
     ): Date[] {
         return super
-            .between(after, before, inc, iterator)
+            .between(
+                RRuleSet.toUTC(after),
+                RRuleSet.toUTC(before),
+                inc,
+                iterator
+            )
             .map(RRuleSet.fromUTC);
     }
 
     previous(date: Date, inc?: boolean) {
-        return RRuleSet.optionalFromUTC(super.before(date, inc));
+        return RRuleSet.optionalFromUTC(
+            super.before(RRuleSet.toUTC(date), inc)
+        );
     }
 
     next(date: Date, inc?: boolean) {
-        return RRuleSet.optionalFromUTC(super.after(date, inc));
+        return RRuleSet.optionalFromUTC(super.after(RRuleSet.toUTC(date), inc));
     }
 
     hasNext(date?: Date) {
-        return !!super.after(date || new Date());
+        return !!super.after(RRuleSet.toUTC(date || new Date()));
+    }
+
+    toJSON() {
+        return {
+            rrules: this._rrule.map(rule => rule.origOptions),
+            exrules: this._exrule.map(rule => rule.origOptions),
+            rdates: this._rdate,
+            exdates: this._exdate,
+            tzid: this.tzid()
+        };
     }
 }
 

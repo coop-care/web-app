@@ -45,7 +45,7 @@ export class Reminder extends Base {
     get completedOccurrences() {
         return this.occurrences.filter(item => !!item.completed);
     }
-    get lastOccurrenceCalculationAt() {
+    get lastOccurrenceDate() {
         if (this.recurrenceRules) {
             const lastOccurrence = this.occurrences[
                 this.occurrences.length - 1
@@ -57,16 +57,15 @@ export class Reminder extends Base {
     }
 
     calculateOccurrences(isInactive: boolean) {
-        // console.log(this.details, isInactive, this.occurrences);
-        // this.occurrences = [];
         if (this.recurrenceRules) {
             const lastOccurrence = this.occurrences[
                 this.occurrences.length - 1
             ];
             const start = lastOccurrence?.due || this.recurrenceRules.startDate;
+            const end = new Date(new Date().setHours(23, 59, 59, 999));
             const due =
                 this.recurrenceRules
-                    .between(start, new Date(), !lastOccurrence)
+                    .between(start, end, !lastOccurrence)
                     .map(date => new Occurrence(date)) || [];
             this.occurrences = this.occurrences.concat(due);
         }
@@ -77,6 +76,42 @@ export class Reminder extends Base {
                 this.occurrences = completedOccurences;
             }
         }
-        // console.log(this.details, this.occurrences);
+    }
+
+    recalculateOccurencesAfterUpdate() {
+        if (this.recurrenceRules) {
+            const startOfToday = new Date().setHours(0, 0, 0, 0);
+            const endOfToday = new Date().setHours(23, 59, 59, 999);
+            const pastOccurrences = this.occurrences.filter(
+                item => item.due.getTime() < startOfToday
+            );
+
+            if (pastOccurrences.length == this.occurrences.length) {
+                return; // no merging required, can be solved by calculateOccurrences later
+            }
+
+            const completedTodayOccurences = this.occurrences.filter(
+                item => !!item.completed && item.due.getTime() > startOfToday
+            );
+
+            if (!completedTodayOccurences.length) {
+                return; // no merging required, can be solved by calculateOccurrences later
+            }
+
+            const dueTodayOccurences = this.recurrenceRules
+                .between(new Date(startOfToday), new Date(endOfToday), true)
+                .filter(
+                    date =>
+                        !completedTodayOccurences.find(
+                            item => item.due.getTime() == date.getTime()
+                        )
+                )
+                .map(date => new Occurrence(date));
+            const sortedTodayOccurences = completedTodayOccurences
+                .concat(dueTodayOccurences)
+                .sort((a, b) => a.due.getTime() - b.due.getTime());
+
+            this.occurrences = pastOccurrences.concat(sortedTodayOccurences);
+        }
     }
 }

@@ -127,25 +127,25 @@ export default class InterventionEditor extends InterventionEditorProps {
     return this.value.categoryCode;
   }
   set categoryCode(value) {
-    this.updateIntervention("categoryCode", value);
+    this.updateIntervention({ categoryCode: value });
   }
   get targetCode() {
     return this.value.targetCode;
   }
   set targetCode(value) {
-    this.updateIntervention("targetCode", value);
+    this.updateIntervention({ targetCode: value });
   }
   get details() {
     return this.value.details;
   }
   set details(value) {
-    this.updateIntervention("details", value);
+    this.updateIntervention({ details: value });
   }
   get recurrenceRules() {
     return this.value.recurrenceRules;
   }
   set recurrenceRules(value) {
-    this.updateIntervention("recurrenceRules", value);
+    this.updateIntervention({ recurrenceRules: value });
   }
   get suggestedTargetCodes() {
     const suggestions = this.usersGuideForProblem?.interventionSuggestions;
@@ -215,10 +215,7 @@ export default class InterventionEditor extends InterventionEditorProps {
     );
   }
 
-  updateIntervention(key: keyof Intervention, value: any) {
-    const changes: any = {};
-    changes[key] = value;
-
+  updateIntervention(changes: Partial<Intervention>) {
     this.$store.direct.commit.updateObject({
       target: this.value,
       changes: changes

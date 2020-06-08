@@ -70,7 +70,7 @@ export class Client {
         this.problems.forEach(problem => {
             if (
                 !problem.createdAt ||
-                problem.resolvedAt ||
+                !!problem.resolvedAt ||
                 !problem.problem.isHighPriority
             ) {
                 return;
@@ -87,9 +87,15 @@ export class Client {
     }
 
     calculateOccurrences() {
+        if (this.leftAt) {
+            return;
+        }
+
         this.forActiveReminders((reminder, problem) =>
             reminder.calculateOccurrences(
-                !!problem.resolvedAt || !problem.problem.isHighPriority
+                !!this.leftAt ||
+                    !!problem.resolvedAt ||
+                    !problem.problem.isHighPriority
             )
         );
     }

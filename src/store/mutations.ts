@@ -41,6 +41,13 @@ export default defineMutations<StoreState>()({
     updateObject<T>(state: StoreState, { target, changes }: Updatable<T>) {
         // maybe check for each key if new value is really differs first? And consider array equality at least for empty arrays?
         Object.assign(target, changes);
+
+        if (
+            target instanceof Reminder &&
+            ((key: keyof Reminder) => key)("recurrenceRules") in changes
+        ) {
+            target.recalculateOccurencesAfterUpdate();
+        }
     },
 
     toggleTaskCompletion(
@@ -88,7 +95,7 @@ export default defineMutations<StoreState>()({
         if (reminder.isScheduled) {
             const hasUncompleted =
                 reminder.occurrences.filter(item => !item.completed).length > 0;
-            const date = reminder.lastOccurrenceCalculationAt;
+            const date = reminder.lastOccurrenceDate;
 
             if (!hasUncompleted && !reminder.recurrenceRules?.hasNext(date)) {
                 reminder.completedAt = completedAt;
