@@ -14,12 +14,7 @@
           size="18px"
           @click="gotoPreviousDay"
         />
-        <q-btn
-          icon="event"
-          round
-          flat
-          color="intervention"
-        >
+        <q-btn icon="event" round flat color="intervention">
           <q-popup-proxy
             ref="dateProxy"
             transition-show="scale"
@@ -42,10 +37,7 @@
           {{ formattedDate({ weekday: "long" }) }}
           {{ isToday ? $t("isTodayHint") : "" }}
         </div>
-        <div
-          class="text-body2"
-          style="margin-top:-3px"
-        >
+        <div class="text-body2" style="margin-top:-3px">
           {{
             formattedDate({ year: "numeric", month: "long", day: "numeric" })
           }}
@@ -64,10 +56,7 @@
         />
       </div>
     </div>
-    <div
-      v-for="(visit, index) in tasks"
-      v-bind:key="index"
-    >
+    <div v-for="(visit, index) in tasks" v-bind:key="index">
       <div class="text-subtitle1 text-weight-bold q-mt-lg">
         {{ visit.title }}
       </div>
@@ -120,22 +109,23 @@ const {
 @Component({
   components: {
     TaskView
-  },
-  watch: {
-    selectedDate(this: ClientReminders, value: Date) {
-      this.$route.params.day = "" + value.getTime();
-      this.$router.replace({
-        name: this.$route.name || undefined,
-        params: this.$route.params
-      });
-    }
   }
 })
 export default class ClientReminders extends Vue {
-  selectedDate = parseInt(this.$root.$route.params.day)
-    ? new Date(parseInt(this.$root.$route.params.day))
-    : new Date();
-
+  get selectedDate() {
+    return parseInt(this.$root.$route.params.day)
+      ? new Date(parseInt(this.$root.$route.params.day))
+      : new Date();
+  }
+  set selectedDate(value) {
+    this.$router.push({
+      name: this.$route.name || undefined,
+      params: {
+        day: "" + value.getTime(),
+        clientId: this.$route.params.clientId
+      }
+    });
+  }
   get selectedDateString() {
     return this.selectedDate.toISOString();
   }

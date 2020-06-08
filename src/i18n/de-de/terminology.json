@@ -1352,7 +1352,7 @@
                 "code": "02"
               },
               {
-                "title": "Schwierigkeiten bei der Bewältigung der Menopause  oder  Andropause",
+                "title": "Schwierigkeiten bei der Bewältigung der Menopause oder Andropause",
                 "code": "03"
               },
               {
@@ -1792,7 +1792,7 @@
             "description": "Gebrauch oder Anwendung von rezeptfreien, verschriebenen oder empfohlenen Medikamenten und Infusionen gemäß den Vorgaben zur therapeutischen Wirkung, Sicherheit und Zeitablauf.",
             "signsAndSymptoms": [
               {
-                "title": "folgt nicht der empfohlenen Dosierung  oder  dem empfohlenen Zeitplan",
+                "title": "folgt nicht der empfohlenen Dosierung oder dem empfohlenen Zeitplan",
                 "code": "01"
               },
               {
@@ -2092,7 +2092,7 @@
       },
       {
         "title": "Medikamente verschreiben",
-        "description": "Eine formalisierte pharmazeutische Bestellung  oder  offizielle Anfrage für Medikamente.",
+        "description": "Eine formalisierte pharmazeutische Bestellung oder offizielle Anfrage für Medikamente.",
         "code": "74"
       },
       {
