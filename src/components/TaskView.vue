@@ -139,7 +139,11 @@ export default class TaskView extends TaskViewProps {
     return description;
   }
   get isDue() {
-    return this.task.due && this.task.due.getTime() < Date.now();
+    return (
+      this.task.due &&
+      !this.task.completed &&
+      this.task.due.getTime() < Date.now()
+    );
   }
   get timeAgo() {
     if (this.isDue && this.task.due) {
