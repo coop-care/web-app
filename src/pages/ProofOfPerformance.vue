@@ -75,7 +75,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { date } from "quasar";
-import { Intervention } from "../models/intervention";
+import { Intervention, Occurrence } from "../models";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import DateTimeInput from "../components/DateTime.vue";
@@ -105,17 +105,25 @@ export default class ProofOfPerformancePage extends Vue {
     const options = { inclusiveFrom: true, inclusiveTo: true, onlyDate: true };
 
     this.client?.forAllReminders(reminder => {
-      const completed = reminder.occurrences.filter(
+      let completed = reminder.occurrences.filter(
         item =>
           !!item.completed &&
           isBetweenDates(item.completed, this.startDate, this.endDate, options)
       );
 
-      if (completed.length && reminder instanceof Intervention) {
+      if (
+        reminder instanceof Intervention &&
+        (completed.length || (!reminder.isScheduled && !!reminder.completedAt))
+      ) {
         const description =
           this.$t(reminder.category.title) +
           ": " +
           this.$t(reminder.target.title);
+
+        if (!reminder.isScheduled && !!reminder.completedAt) {
+          completed = [new Occurrence(new Date(), reminder.completedAt)];
+        }
+
         const dates = completed
           .map(
             item =>
@@ -134,7 +142,7 @@ export default class ProofOfPerformancePage extends Vue {
           id: reminder.id,
           title: reminder.details,
           description: description,
-          count: completed.length,
+          count: completed.length || 1,
           dates: dates
         });
       }

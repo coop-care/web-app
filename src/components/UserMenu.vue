@@ -6,7 +6,10 @@
     stretch
     style="max-width:44px"
   >
-    <q-menu max-width="240px">
+    <q-menu
+      max-width="240px"
+      max-height="calc(96vh - 50px)"
+    >
       <q-list
         class="text-body2"
         style="width: 240px"

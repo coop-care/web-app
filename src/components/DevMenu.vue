@@ -6,7 +6,7 @@
     style="max-width:44px"
     v-if="$ccApi.isLoggedIn"
   >
-    <q-menu>
+    <q-menu max-height="calc(96vh - 50px)">
       <q-list
         class="text-body2"
         style="width: 240px"
