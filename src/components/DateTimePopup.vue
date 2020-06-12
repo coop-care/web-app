@@ -1,20 +1,70 @@
 <template>
-  <div>
-    <q-date
-      v-model="dateString"
-      :mask="format"
-      :color="color"
-      @input="onInputDate"
-      today-btn
-      flat
-      :options="dateOptions"
-    />
-    <q-time
-      v-model="dateString"
-      :mask="format"
-      :color="color"
-      flat
-    />
+  <div class="bg-white">
+    <q-tabs
+      v-model="selectedTab"
+      no-caps
+      inline-label
+      :class="'bg-' + color + ' text-white'"
+    >
+      <q-tab
+        name="date"
+        :label="$t('date')"
+        icon="event"
+      />
+      <q-tab
+        name="time"
+        :label="$t('time')"
+        icon="access_time"
+      />
+    </q-tabs>
+    <q-tab-panels
+      v-model="selectedTab"
+      animated
+    >
+      <q-tab-panel
+        name="date"
+        class="q-pa-none"
+      >
+        <q-date
+          v-model="dateString"
+          :mask="format"
+          :color="color"
+          today-btn
+          flat
+          :options="dateOptions"
+          class="no-border-radius"
+        />
+      </q-tab-panel>
+      <q-tab-panel
+        name="time"
+        class="q-pa-none"
+      >
+        <q-time
+          v-model="dateString"
+          :mask="format"
+          :color="color"
+          flat
+          class="no-border-radius"
+        />
+      </q-tab-panel>
+    </q-tab-panels>
+    <div class="row justify-between q-mb-md q-mx-lg">
+      <q-btn
+        :label="$t('cancel')"
+        flat
+        rounded
+        :color="color"
+        no-caps
+        v-close-popup
+      />
+      <q-btn
+        :label="$t('confirmDate')"
+        :color="color"
+        rounded
+        v-close-popup
+        @click="$emit('input', selectedDate)"
+      />
+    </div>
   </div>
 </template>
 
@@ -23,7 +73,6 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { date } from "quasar";
 
-const emptyDate = new Date(0, 0, 0, 0, 0, 0, 0).getTime();
 const { formatDate, extractDate, isBetweenDates } = date;
 
 const DateTimePopupProps = Vue.extend({
@@ -34,8 +83,6 @@ const DateTimePopupProps = Vue.extend({
       default: "YYYY-MM-DD HH:mm"
     },
     min: Date,
-    label: String,
-    defaultTime: String,
     color: {
       type: String,
       default: "primary"
@@ -45,13 +92,16 @@ const DateTimePopupProps = Vue.extend({
 
 @Component
 export default class DateTimePopup extends DateTimePopupProps {
-  get dateString(): string {
-    return formatDate(this.value || undefined, this.format);
+  selectedDate = new Date();
+  selectedTab = "date";
+
+  get dateString() {
+    return formatDate(this.selectedDate, this.format);
   }
-  set dateString(value: string) {
+  set dateString(value) {
     const result = extractDate(value, this.format);
 
-    if (!isNaN(result.getTime()) && result.getTime() != emptyDate) {
+    if (!isNaN(result.getTime())) {
       if (
         !this.min ||
         isBetweenDates(result, this.min, result, {
@@ -60,19 +110,18 @@ export default class DateTimePopup extends DateTimePopupProps {
           onlyDate: true
         })
       ) {
-        this.$emit("input", result);
+        this.selectedDate = result;
       } else {
-        this.$emit("input", this.min);
+        this.selectedDate = (this.min as unknown) as Date;
       }
     }
   }
   dateOptions(value: string) {
     return !this.min || value >= formatDate(this.min, "YYYY/MM/DD");
   }
-  onInputDate(value: string) {
-    if (!this.dateString && this.defaultTime) {
-      this.dateString = value.replace("00:00", this.defaultTime);
-    }
+
+  created() {
+    this.selectedDate = ((this.value as unknown) as Date) || this.selectedDate;
   }
 }
 </script>

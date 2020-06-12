@@ -222,5 +222,8 @@
   "contributeAndOpenSource": "Open Source / Mitmachen",
   "selectLanguage": "Sprache: {language}",
   "aboutUs": "Impressum",
-  "privacyPolicy": "Datenschutz"
+  "privacyPolicy": "Datenschutz",
+  "date": "Datum",
+  "time": "Uhrzeit",
+  "confirmDate": "Übernehmen"
 }

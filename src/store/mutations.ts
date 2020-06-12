@@ -41,12 +41,22 @@ export default defineMutations<StoreState>()({
     updateObject<T>(state: StoreState, { target, changes }: Updatable<T>) {
         // maybe check for each key if new value is really differs first? And consider array equality at least for empty arrays?
         Object.assign(target, changes);
+    },
+
+    updateReminder(
+        state: StoreState,
+        payload: {
+            target: Reminder;
+            changes: Partial<Reminder>;
+            updateFrom?: Date;
+        }
+    ) {
+        store.commit.updateObject(payload);
 
         if (
-            target instanceof Reminder &&
-            ((key: keyof Reminder) => key)("recurrenceRules") in changes
+            ((key: keyof Reminder) => key)("recurrenceRules") in payload.changes
         ) {
-            target.recalculateOccurencesAfterUpdate();
+            payload.target.recalculateOccurencesAfterUpdate(payload.updateFrom);
         }
     },
 

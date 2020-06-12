@@ -57,10 +57,16 @@
     <q-popup-proxy
       no-parent-event
       ref="dateProxy"
+      max-height="99vh"
+      anchor="center middle"
+      self="center middle"
     >
       <date-time-popup
-        :color="color"
         :value="task.due"
+        :format="$t('datetimeFormat')"
+        :min="new Date()"
+        :color="color"
+        @input="onTaskMove"
       />
     </q-popup-proxy>
   </q-item>
@@ -71,10 +77,14 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import { date, QPopupProxy } from "quasar";
 import { format } from "timeago.js";
-import { Client } from "../models/client";
-import { Task } from "../models/task";
-import { Intervention } from "../models/intervention";
-import { RatingReminder } from "../models/ratingReminder";
+import {
+  Client,
+  Task,
+  Reminder,
+  Intervention,
+  RatingReminder,
+  RRuleSet
+} from "../models";
 import ActionMenu from "components/ActionMenu.vue";
 import DateTimePopup from "components/DateTimePopup.vue";
 
@@ -96,6 +106,7 @@ const TaskViewProps = Vue.extend({
   }
 })
 export default class TaskView extends TaskViewProps {
+  moveTaskMode: "single" | "future" | "none" = "none";
   $refs!: { dateProxy: QPopupProxy };
 
   get disabled() {
@@ -190,10 +201,7 @@ export default class TaskView extends TaskViewProps {
         name: this.$t("skipTask"),
         icon: "redo",
         action: this.skipTask,
-        condition:
-          isUncompleted &&
-          !!this.task.due &&
-          this.reminder.recurrenceRules?.hasNext(this.task.due)
+        condition: isUncompleted && !!this.task.due
       },
       {
         name: this.$t("moveSingleTask") + " …",
@@ -237,20 +245,61 @@ export default class TaskView extends TaskViewProps {
             }),
         icon: "fas fa-times-circle",
         isDestructive: true,
-        action: this.endIntervention,
+        action: this.endReminder,
         condition: isIntervention && isReminderUncompleted
       }
     ];
   }
 
-  skipTask() {}
+  skipTask() {
+    const due = this.task.due;
+    const recurrenceRules = this.reminder.recurrenceRules;
+    const next = due ? recurrenceRules?.next(due, false) : undefined;
+
+    if (due && next) {
+      console.log(11);
+      this.updateReminder({
+        recurrenceRules: recurrenceRules?.movingRules(due, next)
+      });
+      console.log(12);
+      this.save();
+    } else {
+      console.log(13);
+      if (this.reminder instanceof RatingReminder) {
+        this.endRatingReminder();
+      } else {
+        this.endReminder();
+      }
+    }
+  }
 
   moveSingleTask() {
+    this.moveTaskMode = "single";
     this.$refs.dateProxy.show();
   }
 
   moveFutureTasks() {
+    this.moveTaskMode = "future";
     this.$refs.dateProxy.show();
+  }
+
+  endReminder() {
+    console.log(13);
+    const date = subtractFromDate(this.task.due || new Date(), {
+      milliseconds: 1
+    });
+    const recurrenceRules = this.reminder.isRecurring
+      ? this.reminder.recurrenceRules?.updatingCurrentRule({
+          until: date
+        })
+      : RRuleSet.make();
+    console.log(14, recurrenceRules);
+    this.updateReminder({ recurrenceRules: recurrenceRules });
+    this.$store.direct.commit.setReminderCompletedAt({
+      reminder: this.reminder,
+      completedAt: date
+    });
+    this.save();
   }
 
   endRatingReminder() {
@@ -258,19 +307,19 @@ export default class TaskView extends TaskViewProps {
     this.save();
   }
 
-  endIntervention() {
-    const date = subtractFromDate(this.task.due || new Date(), {
-      milliseconds: 1
-    });
-    const recurrenceRules = this.reminder.recurrenceRules?.updatingCurrentRule({
-      until: date
-    });
-    this.updateIntervention({ recurrenceRules: recurrenceRules });
-    this.$store.direct.commit.setReminderCompletedAt({
-      reminder: this.reminder,
-      completedAt: date
-    });
+  onTaskMove(date: Date) {
+    if (!this.task.due || this.moveTaskMode == "none") {
+      return;
+    }
+
+    const recurrenceRules = this.reminder.recurrenceRules?.movingRules(
+      this.task.due,
+      date,
+      this.moveTaskMode == "single"
+    );
+    this.updateReminder({ recurrenceRules: recurrenceRules });
     this.save();
+    this.moveTaskMode = "none";
   }
 
   navigateToDueDate() {
@@ -296,18 +345,16 @@ export default class TaskView extends TaskViewProps {
     });
   }
 
-  updateIntervention(changes: Partial<Intervention>) {
-    this.$store.direct.commit.updateObject({
+  updateReminder(changes: Partial<Reminder>) {
+    this.$store.direct.commit.updateReminder({
       target: this.reminder,
-      changes: changes
+      changes: changes,
+      updateFrom: this.task.due
     });
   }
 
   updateRatingReminder(changes: Partial<RatingReminder>) {
-    this.$store.direct.commit.updateObject({
-      target: this.reminder,
-      changes: changes
-    });
+    this.updateReminder(changes);
   }
 
   save() {

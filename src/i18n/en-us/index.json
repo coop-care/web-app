@@ -222,5 +222,8 @@
   "contributeAndOpenSource": "Open Source / Contribute",
   "selectLanguage": "Language: {language}",
   "aboutUs": "About Us",
-  "privacyPolicy": "Privacy Policy"
+  "privacyPolicy": "Privacy Policy",
+  "date": "Date",
+  "time": "Time",
+  "confirmDate": "Confirm"
 }

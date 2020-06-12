@@ -78,7 +78,7 @@ import { date } from "quasar";
 import { Intervention, Occurrence } from "../models";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
-import DateTimeInput from "../components/DateTime.vue";
+import DateTimeInput from "../components/DateTimeInput.vue";
 
 const { isBetweenDates, startOfDate, endOfDate } = date;
 

@@ -263,7 +263,7 @@ import { date } from "quasar";
 import { RRuleSet, RRule, Frequency, Options } from "../models/rrule";
 import SearchableOptionList from "./SearchableOptionList.vue";
 import ToggleButtonGroup from "./ToggleButtonGroup.vue";
-import DateTimeInput from "../components/DateTime.vue";
+import DateTimeInput from "../components/DateTimeInput.vue";
 
 const { addToDate, adjustDate } = date;
 const isEmpty = (value: any) =>

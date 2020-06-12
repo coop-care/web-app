@@ -117,6 +117,11 @@ const {
   startOfDate,
   endOfDate
 } = date;
+const allInclusive = {
+  inclusiveFrom: true,
+  inclusiveTo: true,
+  onlyDate: true
+};
 
 @Component({
   components: {
@@ -148,11 +153,12 @@ export default class ClientReminders extends Vue {
     return this.tasksForDay(this.selectedDate);
   }
   get canComplete() {
-    return isBetweenDates(this.selectedDate, this.selectedDate, new Date(), {
-      inclusiveFrom: true,
-      inclusiveTo: true,
-      onlyDate: true
-    });
+    return isBetweenDates(
+      this.selectedDate,
+      this.selectedDate,
+      new Date(),
+      allInclusive
+    );
   }
   get isToday() {
     return isSameDate(this.selectedDate, new Date(), "day");
@@ -227,7 +233,12 @@ export default class ClientReminders extends Vue {
           );
         } else if (
           (isReminderActiveAndUncompleted || item.completed) &&
-          isBetweenDates(item.due, startOfDayTimestamp, endOfDayTimestamp)
+          isBetweenDates(
+            item.due,
+            startOfDayTimestamp,
+            endOfDayTimestamp,
+            allInclusive
+          )
         ) {
           scheduledTasks.push(
             new Task(reminder, problem.id, item.due, item.completed)

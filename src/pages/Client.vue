@@ -2,9 +2,7 @@
   <q-page class="limit-page-width">
     <client-drawer ref="clientDrawer" />
 
-    <loading
-      v-if="$store.direct.state.isLoadingClientList && !clients.length"
-    />
+    <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
 
     <div
       v-else-if="
@@ -14,9 +12,7 @@
       "
       class="fit"
     >
-      <div
-        class="q-pa-md absolute-center vertical-middle column items-center full-width"
-      >
+      <div class="q-pa-md absolute-center vertical-middle column items-center full-width">
         <div class="text-center text-body2">{{ $t("noExistingClient") }}</div>
         <q-btn
           @click="$router.push({ name: 'client', params: { clientId: 'new' } })"
@@ -29,15 +25,19 @@
       </div>
     </div>
 
-    <div v-else-if="clients.length && !$route.params.clientId" class="fit">
-      <div
-        class="q-pa-md absolute-center full-width vertical-middle text-center text-body2 "
-      >
+    <div
+      v-else-if="clients.length && !$route.params.clientId"
+      class="fit"
+    >
+      <div class="q-pa-md absolute-center full-width vertical-middle text-center text-body2 ">
         {{ $t("noSelectedClient") }}
       </div>
     </div>
 
-    <div v-else-if="$route.params.clientId == 'new'" class="fit">
+    <div
+      v-else-if="$route.params.clientId == 'new'"
+      class="fit"
+    >
       <new-client
         class="q-py-xl q-px-lg"
         @save="addClient"
@@ -70,7 +70,10 @@
           />
         </div>
         <div>
-          <action-menu :items="clientActionItems" class="on-right q-mt-sm" />
+          <action-menu
+            :items="clientActionItems"
+            class="on-right q-mt-sm"
+          />
         </div>
       </div>
       <q-tabs
@@ -108,23 +111,39 @@
           :to="{ name: 'clientHistory', params: $route.params }"
         />
         <q-route-tab
+          v-if="false"
           name="masterData"
           :label="$t('masterDataTitle')"
           icon="fas fa-address-book"
           :to="{ name: 'clientMasterData', params: $route.params }"
         />
       </q-tabs>
-      <q-tab-panels animated v-model="selectedTab">
-        <q-tab-panel name="reminders" class="q-px-none">
+      <q-tab-panels
+        animated
+        v-model="selectedTab"
+      >
+        <q-tab-panel
+          name="reminders"
+          class="q-px-none"
+        >
           <client-reminders />
         </q-tab-panel>
-        <q-tab-panel name="report" class="q-px-none">
+        <q-tab-panel
+          name="report"
+          class="q-px-none"
+        >
           <client-problems />
         </q-tab-panel>
-        <q-tab-panel name="history" class="q-px-none">
+        <q-tab-panel
+          name="history"
+          class="q-px-none"
+        >
           <client-history />
         </q-tab-panel>
-        <q-tab-panel name="masterData" class="q-px-none">
+        <q-tab-panel
+          name="masterData"
+          class="q-px-none"
+        >
           <client-master-data />
         </q-tab-panel>
       </q-tab-panels>

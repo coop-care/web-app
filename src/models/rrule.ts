@@ -1,6 +1,7 @@
 import "reflect-metadata";
 import { RRuleSet as RuleSet, RRule, Frequency, Options, Weekday } from "rrule";
 import { DateTime } from "luxon";
+import { classToClass } from "class-transformer";
 
 type GetText = (id: string | number | Weekday) => string;
 interface Language {
@@ -144,7 +145,10 @@ class RRuleSet extends RuleSet {
     }
 
     get startDate() {
-        const date = this.rdates()[0] || this.currentRule?.options.dtstart;
+        const date =
+            this._rdate[0] ||
+            this.currentRule?.options.dtstart ||
+            RRuleSet.toUTC(new Date());
         return RRuleSet.fromUTC(date);
     }
 
@@ -158,7 +162,7 @@ class RRuleSet extends RuleSet {
     }
 
     updatingStartDate(value: Date): RRuleSet {
-        if (this.rrules().length) {
+        if (this._rrule.length) {
             return this.updatingCurrentRule({ dtstart: value });
         } else {
             const rules = new RRuleSet(!this._cache);
@@ -176,17 +180,11 @@ class RRuleSet extends RuleSet {
 
         const currentRuleString = currentRule.toString();
         const newRule = new RRule(options, !currentRule._cache);
-        const ruleSet = new RRuleSet(!this._cache);
-
-        this._rrule.forEach(rule =>
-            ruleSet.rrule(rule.toString() != currentRuleString ? rule : newRule)
+        const rules = this._rrule.map(rule =>
+            rule.toString() != currentRuleString ? rule : newRule
         );
-        this._exrule.forEach(rule => ruleSet.exrule(rule));
-        this._rdate.forEach(date => ruleSet.rdate(date));
-        this._exdate.forEach(date => ruleSet.exdate(date));
-        ruleSet.tzid(this.tzid());
 
-        return ruleSet;
+        return this.replacingRules(rules);
     }
 
     updatingCurrentRule(options: Partial<Options>): RRuleSet {
@@ -206,6 +204,85 @@ class RRuleSet extends RuleSet {
             (newOptions as any)[key] = value;
         }
         return this.replacingCurrentRule(newOptions);
+    }
+
+    movingRules(from: Date, to: Date, isSingleMove = false) {
+        if (this._rdate.length && !this._rrule.length) {
+            return this.updatingStartDate(to);
+        }
+
+        const fromAsUTC = RRuleSet.toUTC(from);
+        const ruleIndex = this._rrule.findIndex(rule => {
+            return !!rule.between(fromAsUTC, fromAsUTC, true);
+        });
+
+        if (ruleIndex < 0 || from.getTime() == to.getTime()) {
+            return this;
+        }
+
+        const rules = this.rrules();
+        const rule = rules[ruleIndex];
+        const count = rule.origOptions.count;
+        const next = isSingleMove ? rule.after(from, false) : undefined;
+        to = next || to;
+
+        if (count == undefined) {
+            const firstRule = this.updatingRule(rule, {
+                until: RRuleSet.toUTC(new Date(from.getTime() - 1))
+            });
+
+            if (to.getTime() <= (rule.origOptions.until || to).getTime()) {
+                const secondRule = this.updatingRule(rule, {
+                    dtstart: RRuleSet.toUTC(to)
+                });
+                rules.splice(ruleIndex, 1, firstRule, secondRule);
+            } else {
+                rules.splice(ruleIndex, 1, firstRule);
+            }
+        } else {
+            const pastCount =
+                rule.between(
+                    rule.origOptions.dtstart || new Date(0),
+                    RRuleSet.toUTC(from),
+                    true
+                ).length - 1;
+            const firstRule = this.updatingRule(rule, {
+                count: pastCount
+            });
+            const secondRule = this.updatingRule(rule, {
+                dtstart: RRuleSet.toUTC(to),
+                count: count - pastCount
+            });
+            rules.splice(ruleIndex, 1, firstRule, secondRule);
+        }
+
+        if (next) {
+            const thirdRule = this.updatingRule(rule, {
+                dtstart: RRuleSet.toUTC(to),
+                count: 1
+            });
+            rules.push(thirdRule);
+        }
+
+        return this.replacingRules(rules);
+    }
+
+    private updatingRule(rule: RRule, changes: Partial<Options>) {
+        const options = classToClass(rule.origOptions);
+        Object.assign(options, changes);
+        return new RRule(options, !rule._cache);
+    }
+
+    private replacingRules(newRules: RRule[]) {
+        const ruleSet = new RRuleSet(!this._cache);
+
+        newRules.forEach(rule => ruleSet.rrule(rule));
+        this._exrule.forEach(rule => ruleSet.exrule(rule));
+        this._rdate.forEach(date => ruleSet.rdate(date));
+        this._exdate.forEach(date => ruleSet.exdate(date));
+        ruleSet.tzid(this.tzid());
+
+        return ruleSet;
     }
 
     isFullyConvertibleToText() {
