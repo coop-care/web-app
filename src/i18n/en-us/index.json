@@ -170,7 +170,7 @@
   "interimRating": "Interim rating",
   "skipTask": "Skip single task",
   "moveSingleTask": "Shift single task",
-  "moveFutureTasks": "Shift this and future tasks",
+  "moveFutureTasks": "Shift this and following tasks",
   "stopRatingReminder": "Stop reminders",
   "deleteInterventionOnDate": "End intervention on {date}",
   "showProblem": "Show problem \"{problem}\"",
@@ -225,5 +225,6 @@
   "privacyPolicy": "Privacy Policy",
   "date": "Date",
   "time": "Time",
-  "confirmDate": "Confirm"
+  "confirmDate": "Confirm",
+  "offlineBanner": "No internet connection"
 }

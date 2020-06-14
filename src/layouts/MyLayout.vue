@@ -1,7 +1,10 @@
 <template>
   <q-layout view="hHh Lpr lff">
-    <q-header elevated>
-      <q-toolbar :class="$q.screen.lt.sm ? 'q-px-none' : ''">
+    <q-header class="bg-white">
+      <q-toolbar
+        :class="'shadow-3 bg-primary ' + ($q.screen.lt.sm ? 'q-px-none' : '')"
+        style="z-index: 1000"
+      >
         <q-btn
           v-if="$router.currentRoute.name.startsWith('client')  && $q.screen.lt.md"
           flat
@@ -39,6 +42,23 @@
           <language-menu />
         </q-btn>
       </q-toolbar>
+      <transition
+        enter-active-class="animated fadeInDown"
+        leave-active-class="animated fadeOutUp"
+      >
+        <q-banner
+          v-if="isOffline"
+          dense
+          class="bg-negative text-white text-center q-py-xs"
+          style="height: 32px"
+        >
+          <div class="text-caption text-weight-medium ellipsis">{{ $t("offlineBanner") }}</div>
+        </q-banner>
+      </transition>
+      <div
+        class="absolute-full overflow-hidden no-pointer-events"
+        style="bottom: -10px"
+      ></div>
     </q-header>
 
     <q-page-container>
@@ -85,6 +105,8 @@ import DevMenu from "../components/DevMenu.vue";
   }
 })
 export default class MyLayout extends Vue {
+  isOffline = !window.navigator.onLine;
+
   get title() {
     const route = this.$route;
 
@@ -127,6 +149,15 @@ export default class MyLayout extends Vue {
   }
   get record() {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
+  }
+
+  updateOfflineStatus() {
+    this.isOffline = !window.navigator.onLine;
+  }
+
+  mounted() {
+    window.addEventListener("online", this.updateOfflineStatus);
+    window.addEventListener("offline", this.updateOfflineStatus);
   }
 }
 </script>

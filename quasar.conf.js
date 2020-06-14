@@ -97,7 +97,8 @@ module.exports = function(ctx) {
         "QResizeObserver",
         "QColor",
         "QSpace",
-        "QPageSticky"
+        "QPageSticky",
+        "QBanner"
       ],
 
       directives: ["Ripple", "TouchSwipe", "ClosePopup"],
@@ -142,7 +143,7 @@ module.exports = function(ctx) {
 
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: [],
+    animations: ["fadeInDown", "fadeOutUp"],
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {

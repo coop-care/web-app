@@ -170,7 +170,7 @@
   "interimRating": "Zwischenbewertung",
   "skipTask": "Einzelne Aufgabe überspringen",
   "moveSingleTask": "Einzelne Aufgabe verschieben",
-  "moveFutureTasks": "Diese und zukünftige Aufgaben verschieben",
+  "moveFutureTasks": "Diese und folgende Aufgaben verschieben",
   "stopRatingReminder": "Erinnerungen stoppen",
   "deleteInterventionOnDate": "Intervention zum {date} beenden",
   "showProblem": "Problem „{problem}\" anzeigen",
@@ -225,5 +225,6 @@
   "privacyPolicy": "Datenschutz",
   "date": "Datum",
   "time": "Uhrzeit",
-  "confirmDate": "Übernehmen"
+  "confirmDate": "Übernehmen",
+  "offlineBanner": "Keine Internetverbindung"
 }
