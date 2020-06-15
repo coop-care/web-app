@@ -112,7 +112,8 @@ module.exports = function(ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      scopeHoisting: true
+      scopeHoisting: true,
+      devtool: "source-map"
       // vueRouterMode: 'history',
       // showProgress: false,
       // gzip: true,

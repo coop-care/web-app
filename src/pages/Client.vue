@@ -252,7 +252,8 @@ export default class PageIndex extends Vue {
   created() {
     this.$store.direct.dispatch
       .saveClient({ client: this.selectedClient, resolveOnError: true })
-      .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
+      .then(() => this.$store.direct.dispatch.fetchClientsFromDB())
+      .catch(() => 0);
   }
 
   addClient(masterData: MasterData) {

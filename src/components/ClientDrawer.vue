@@ -144,7 +144,7 @@ export default class ClientDrawer extends Vue {
       params: { clientId: client._id } as any
     });
     this.closeDrawerIfNeeded();
-    this.$store.direct.dispatch.fetchClientsFromDB();
+    this.$store.direct.dispatch.fetchClientsFromDB().catch(() => 0);
   }
 
   closeDrawerIfNeeded() {

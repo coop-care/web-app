@@ -6,6 +6,10 @@ import { ccApi } from "../api/apiProvider";
 
 export default defineActions({
     fetchClientsFromDB(context) {
+        if (!ccApi.isLoggedIn) {
+            return Promise.reject();
+        }
+
         const { commit } = rootActionContext(context);
         commit.isLoadingClientList(true);
         return new Promise((resolve, reject) => {
@@ -59,7 +63,7 @@ export default defineActions({
         ccApi
             .deleteClient(client)
             .then(() => {
-                return dispatch.fetchClientsFromDB();
+                return dispatch.fetchClientsFromDB().catch(() => 0);
             })
             .catch(err =>
                 console.error(`Save current client failed with error: ${err}`)
@@ -77,7 +81,7 @@ export default defineActions({
             })
         )
             .then(() => {
-                dispatch.fetchClientsFromDB();
+                dispatch.fetchClientsFromDB().catch(() => 0);
             })
             .catch(err => console.error(`Failed to insert documents: ${err}`));
     },
@@ -87,7 +91,7 @@ export default defineActions({
         ccApi
             .deleteAllClients()
             .then(() => {
-                dispatch.fetchClientsFromDB();
+                dispatch.fetchClientsFromDB().catch(() => 0);
             })
             .catch(err => console.error(`Delete failed with error: ${err}`));
     }
