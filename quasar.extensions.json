@@ -24,7 +24,10 @@
       },
       "build": {
         "spa": {
-          "iconHash": "1ff9fb554109270c1b5836c0c6a54c2d"
+          "iconHash": "458a070a1a5f0dc11abcb8ce345dc7a1"
+        },
+        "pwa": {
+          "iconHash": "458a070a1a5f0dc11abcb8ce345dc7a1"
         }
       }
     }

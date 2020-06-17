@@ -154,7 +154,10 @@ module.exports = function(ctx) {
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       // workboxPluginMode: 'InjectManifest',
-      // workboxOptions: {}, // only for NON InjectManifest
+      workboxOptions: {
+        include: [/.*/],
+        navigateFallback: "index.html"
+      }, // only for NON InjectManifest
       metaVariables: {
         appleMobileWebAppStatusBarStyle: "black" //"black-translucent"
       },
