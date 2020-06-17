@@ -14,55 +14,6 @@ interface Language {
 type DateFormatter = (year: number, month: string, day: number) => string;
 
 class RRuleSet extends RuleSet {
-    static fromString(str: string) {
-        const toDate = (str: string) =>
-            new Date(
-                str.substr(0, 4) +
-                    "-" +
-                    str.substr(4, 2) +
-                    "-" +
-                    str.substr(6, 5) +
-                    ":" +
-                    str.substr(11, 2) +
-                    ":" +
-                    str.substr(13, 2)
-            );
-        const ruleSet = new RRuleSet(true);
-        str.match(/^(DTSTART[^\n]*\n)?RRULE:[^\n]*/gm)?.forEach(match => {
-            const rule = RRule.fromString(match);
-            rule._cache = null;
-            ruleSet.rrule(rule);
-        });
-        str.match(/^EXRULE[^\n]*/gm)?.forEach(match => {
-            const rule = RRule.fromString(match);
-            rule._cache = null;
-            ruleSet.exrule(rule);
-        });
-        str.match(/^RDATE[^\n]*/gm)?.forEach(match => {
-            match.match(/TZID=[^\n]*:/)?.forEach(match => {
-                ruleSet.tzid(match.substring(5, match.length - 1));
-            });
-            match.match(/:[^\n]*/)?.forEach(match => {
-                match
-                    .substr(1)
-                    .split(",")
-                    .forEach(match => ruleSet.rdate(toDate(match)));
-            });
-        });
-        str.match(/^EXDATE[^\n]*/gm)?.forEach(match => {
-            match.match(/TZID=[^\n]*:/)?.forEach(match => {
-                ruleSet.tzid(match.substring(5, match.length - 1));
-            });
-            match.match(/:[^\n]*/)?.forEach(match => {
-                match
-                    .substr(1)
-                    .split(",")
-                    .forEach(match => ruleSet.exdate(toDate(match)));
-            });
-        });
-        return ruleSet;
-    }
-
     static fromJSON(json: any) {
         if (json == undefined) {
             return undefined;
