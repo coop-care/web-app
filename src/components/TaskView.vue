@@ -64,7 +64,7 @@
       <date-time-popup
         :value="task.due"
         :format="$t('datetimeFormat')"
-        :min="new Date()"
+        :min="new Date(new Date().setHours(0,0,0,0))"
         :color="color"
         @input="onTaskMove"
       />
@@ -82,8 +82,7 @@ import {
   Task,
   Reminder,
   Intervention,
-  RatingReminder,
-  RRuleSet
+  RatingReminder
 } from "../models";
 import ActionMenu from "components/ActionMenu.vue";
 import DateTimePopup from "components/DateTimePopup.vue";
@@ -241,7 +240,7 @@ export default class TaskView extends TaskViewProps {
         name: !this.reminder.isRecurring
           ? this.$t("deleteIntervention")
           : this.$t("deleteInterventionOnDate", {
-              date: formatDate(this.date, "" + this.$t("dateFormat"))
+              date: formatDate(this.task.due, "" + this.$t("datetimeFormat"))
             }),
         icon: "fas fa-times-circle",
         isDestructive: true,
@@ -257,14 +256,11 @@ export default class TaskView extends TaskViewProps {
     const next = due ? recurrenceRules?.next(due, false) : undefined;
 
     if (due && next) {
-      console.log(11);
       this.updateReminder({
         recurrenceRules: recurrenceRules?.movingRules(due, next)
       });
-      console.log(12);
       this.save();
     } else {
-      console.log(13);
       if (this.reminder instanceof RatingReminder) {
         this.endRatingReminder();
       } else {
@@ -284,20 +280,18 @@ export default class TaskView extends TaskViewProps {
   }
 
   endReminder() {
-    console.log(13);
-    const date = subtractFromDate(this.task.due || new Date(), {
-      milliseconds: 1
-    });
-    const recurrenceRules = this.reminder.isRecurring
-      ? this.reminder.recurrenceRules?.updatingCurrentRule({
-          until: date
-        })
-      : RRuleSet.make();
-    console.log(14, recurrenceRules);
-    this.updateReminder({ recurrenceRules: recurrenceRules });
+    const due = this.task.due || new Date();
+    const date = subtractFromDate(due, { milliseconds: 1 });
+
+    if (this.reminder.isRecurring) {
+      const recurrenceRules = this.reminder.recurrenceRules?.endingRules(date);
+      this.updateReminder({ recurrenceRules: recurrenceRules });
+    }
+
     this.$store.direct.commit.setReminderCompletedAt({
       reminder: this.reminder,
-      completedAt: date
+      completedAt: date,
+      recalculateOccurences: true
     });
     this.save();
   }

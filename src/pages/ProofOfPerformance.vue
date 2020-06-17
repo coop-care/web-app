@@ -75,7 +75,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { date } from "quasar";
-import { Intervention, Occurrence } from "../models";
+import { Intervention } from "../models";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
@@ -105,24 +105,17 @@ export default class ProofOfPerformancePage extends Vue {
     const options = { inclusiveFrom: true, inclusiveTo: true, onlyDate: true };
 
     this.client?.forAllReminders(reminder => {
-      let completed = reminder.occurrences.filter(
+      const completed = reminder.occurrences.filter(
         item =>
           !!item.completed &&
           isBetweenDates(item.completed, this.startDate, this.endDate, options)
       );
 
-      if (
-        reminder instanceof Intervention &&
-        (completed.length || (!reminder.isScheduled && !!reminder.completedAt))
-      ) {
+      if (reminder instanceof Intervention && completed.length > 0) {
         const description =
           this.$t(reminder.category.title) +
           ": " +
           this.$t(reminder.target.title);
-
-        if (!reminder.isScheduled && !!reminder.completedAt) {
-          completed = [new Occurrence(new Date(), reminder.completedAt)];
-        }
 
         const dates = completed
           .map(

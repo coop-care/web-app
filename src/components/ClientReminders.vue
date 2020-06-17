@@ -240,9 +240,12 @@ export default class ClientReminders extends Vue {
             allInclusive
           )
         ) {
-          scheduledTasks.push(
-            new Task(reminder, problem.id, item.due, item.completed)
-          );
+          const task = new Task(reminder, problem.id, item.due, item.completed);
+          if (reminder.isScheduled) {
+            scheduledTasks.push(task);
+          } else {
+            anytimeTasks.push(task);
+          }
         }
       });
 
@@ -256,14 +259,8 @@ export default class ClientReminders extends Vue {
         }
       } else {
         if (
-          (isReminderActiveAndUncompleted &&
-            reminder.createdAt.getTime() <= endOfDayTimestamp) ||
-          (reminder.completedAt &&
-            isBetweenDates(
-              reminder.completedAt,
-              startOfDayTimestamp,
-              endOfDayTimestamp
-            ))
+          isReminderActiveAndUncompleted &&
+          reminder.createdAt.getTime() <= endOfDayTimestamp
         ) {
           anytimeTasks.push(
             new Task(reminder, problem.id, undefined, reminder.completedAt)

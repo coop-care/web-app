@@ -8,6 +8,7 @@ export class Occurrence {
     due: Date;
     @Type(() => Date)
     completed?: Date;
+    user?: string;
 
     constructor(due: Date, completed?: Date) {
         this.due = due;
@@ -17,14 +18,8 @@ export class Occurrence {
 
 export class Reminder extends Base {
     id = this.generateId();
-    @Transform((value: RRuleSet | undefined) => value?.toString(), {
-        toPlainOnly: true
-    })
-    @Transform(
-        (value: string | undefined) =>
-            typeof value == "string" ? RRuleSet.fromString(value) : undefined,
-        { toClassOnly: true }
-    )
+    @Transform((value?: RRuleSet) => value?.toJSON(), { toPlainOnly: true })
+    @Transform((value: any) => RRuleSet.fromJSON(value), { toClassOnly: true })
     recurrenceRules?: RRuleSet = undefined;
     @Type(() => Occurrence)
     occurrences: Occurrence[] = [];
@@ -37,7 +32,7 @@ export class Reminder extends Base {
         return !!this.recurrenceRules;
     }
     get isRecurring() {
-        return !!this.recurrenceRules?.currentRule;
+        return this.recurrenceRules?.isRecurring || false;
     }
     get isCompleted() {
         return !!this.completedAt;
@@ -45,27 +40,27 @@ export class Reminder extends Base {
     get completedOccurrences() {
         return this.occurrences.filter(item => !!item.completed);
     }
-    get lastOccurrenceDate() {
+    get startDateOfRecurrenceRules() {
         if (this.recurrenceRules) {
             const lastOccurrence = this.occurrences[
                 this.occurrences.length - 1
             ];
-            return lastOccurrence?.due || this.recurrenceRules?.startDate;
-        } else {
-            return this.createdAt;
+            return lastOccurrence?.due || this.recurrenceRules.initialStartDate;
         }
+    }
+    get lastOccurrenceDate() {
+        return this.startDateOfRecurrenceRules || this.createdAt;
     }
 
     calculateOccurrences(isInactive: boolean) {
-        if (this.recurrenceRules) {
-            const lastOccurrence = this.occurrences[
-                this.occurrences.length - 1
-            ];
-            const start = lastOccurrence?.due || this.recurrenceRules.startDate;
+        const start = this.startDateOfRecurrenceRules;
+
+        if (start && this.recurrenceRules) {
+            const hasLastOccurence = this.occurrences.length > 0;
             const end = new Date(new Date().setHours(23, 59, 59, 999));
             const due =
                 this.recurrenceRules
-                    .between(start, end, !lastOccurrence)
+                    .between(start, end, !hasLastOccurence)
                     .map(date => new Occurrence(date)) || [];
             this.occurrences = this.occurrences.concat(due);
         }
@@ -80,7 +75,7 @@ export class Reminder extends Base {
 
     recalculateOccurencesAfterUpdate(from = new Date()) {
         if (this.recurrenceRules) {
-            const start = from.setHours(0, 0, 0, 0);
+            const start = new Date(from).setHours(0, 0, 0, 0);
             const endOfToday = new Date().setHours(23, 59, 59, 999);
             const pastOccurrences = this.occurrences.filter(
                 item => item.due.getTime() < start
@@ -113,6 +108,8 @@ export class Reminder extends Base {
                 .sort((a, b) => a.due.getTime() - b.due.getTime());
 
             this.occurrences = pastOccurrences.concat(sortedNewOccurences);
+        } else {
+            this.occurrences = this.completedOccurrences;
         }
     }
 }

@@ -172,7 +172,7 @@
   "moveSingleTask": "Einzelne Aufgabe verschieben",
   "moveFutureTasks": "Diese und folgende Aufgaben verschieben",
   "stopRatingReminder": "Erinnerungen stoppen",
-  "deleteInterventionOnDate": "Intervention zum {date} beenden",
+  "deleteInterventionOnDate": "Intervention beenden am {date}",
   "showProblem": "Problem „{problem}\" anzeigen",
   "rrule": {
     "every": "jede",

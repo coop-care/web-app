@@ -28,12 +28,16 @@ class RRuleSet extends RuleSet {
                     str.substr(13, 2)
             );
         const ruleSet = new RRuleSet(true);
-        str.match(/^(DTSTART[^\n]*\n)?RRULE:[^\n]*/gm)?.forEach(match =>
-            ruleSet.rrule(RRule.fromString(match))
-        );
-        str.match(/^EXRULE[^\n]*/gm)?.forEach(match =>
-            ruleSet.exrule(RRule.fromString(match))
-        );
+        str.match(/^(DTSTART[^\n]*\n)?RRULE:[^\n]*/gm)?.forEach(match => {
+            const rule = RRule.fromString(match);
+            rule._cache = null;
+            ruleSet.rrule(rule);
+        });
+        str.match(/^EXRULE[^\n]*/gm)?.forEach(match => {
+            const rule = RRule.fromString(match);
+            rule._cache = null;
+            ruleSet.exrule(rule);
+        });
         str.match(/^RDATE[^\n]*/gm)?.forEach(match => {
             match.match(/TZID=[^\n]*:/)?.forEach(match => {
                 ruleSet.tzid(match.substring(5, match.length - 1));
@@ -60,6 +64,10 @@ class RRuleSet extends RuleSet {
     }
 
     static fromJSON(json: any) {
+        if (json == undefined) {
+            return undefined;
+        }
+
         const ruleSet = new RRuleSet(true);
         ruleSet.tzid(json.tzid);
         json.rrules?.forEach((options: any) =>
@@ -144,133 +152,117 @@ class RRuleSet extends RuleSet {
         return 0;
     }
 
-    get startDate() {
-        const date =
-            this._rdate[0] ||
-            this.currentRule?.options.dtstart ||
-            RRuleSet.toUTC(new Date());
-        return RRuleSet.fromUTC(date);
+    private static updateRule(
+        rule: RRule,
+        changes: Partial<Options>,
+        overwriteAllValues = false
+    ) {
+        for (const key in changes) {
+            const value = changes[key as keyof Options];
+
+            if (value instanceof Date) {
+                (changes as any)[key] = RRuleSet.toUTC(value);
+            }
+        }
+
+        const options = overwriteAllValues
+            ? {
+                  tzid: rule.origOptions.tzid,
+                  wkst: classToClass(rule.origOptions.wkst)
+              }
+            : classToClass(rule.origOptions);
+        Object.assign(options, changes);
+        return new RRule(options, !rule._cache);
     }
 
-    get endDate() {
-        const date = this.currentRule?.origOptions.until;
+    get isRecurring() {
+        return this._rrule.length > 0;
+    }
+
+    get indicesOfActiveRules() {
+        if (this.isRecurring) {
+            const date = RRuleSet.toUTC(new Date());
+            const timestamp = date.getTime();
+            const result: number[] = [];
+            let ruleIndexForMaxStart = this._rrule.length - 1;
+
+            this._rrule.forEach((rule, index) => {
+                const until = rule.origOptions.until;
+                const count = rule.origOptions.count;
+
+                if (
+                    (until == undefined && count == undefined) ||
+                    (until != undefined && until.getTime() >= timestamp) ||
+                    (count != undefined && !!rule.after(date, true))
+                ) {
+                    result.push(index);
+                }
+
+                if (
+                    (this._rrule[
+                        ruleIndexForMaxStart
+                    ].origOptions.dtstart?.getTime() || 0) <
+                    (rule.origOptions.dtstart?.getTime() || 0)
+                ) {
+                    ruleIndexForMaxStart = index;
+                }
+            });
+
+            return result.length ? result : [ruleIndexForMaxStart];
+        } else {
+            return [-1];
+        }
+    }
+
+    get initialStartDate() {
+        const minTimestamp = Math.min(
+            ...this._rrule
+                .map(rule => rule.options.dtstart.getTime())
+                .concat(this._rdate.map(date => date.getTime()))
+        );
+        return minTimestamp != Infinity
+            ? RRuleSet.fromUTC(new Date(minTimestamp))
+            : undefined;
+    }
+
+    get firstRule(): RRule | undefined {
+        return this.rrules().shift();
+    }
+
+    startDate(ruleIndex: number) {
+        if (ruleIndex >= 0) {
+            return (
+                this.dateFromOption(ruleIndex, options => options.dtstart) ||
+                new Date()
+            );
+        } else {
+            return RRuleSet.fromUTC(
+                this._rdate[0] || RRuleSet.toUTC(new Date())
+            );
+        }
+    }
+
+    endDate(ruleIndex: number) {
+        return this.dateFromOption(ruleIndex, options => options.until);
+    }
+
+    dateFromOption(
+        ruleIndex: number,
+        valueGetter: (options: Partial<Options>) => Date | undefined | null
+    ) {
+        const date = valueGetter(this.rrules()[ruleIndex]?.origOptions || {});
         return date ? RRuleSet.fromUTC(date) : undefined;
     }
 
-    get currentRule(): RRule | undefined {
-        return this.rrules()[0];
-    }
-
-    updatingStartDate(value: Date): RRuleSet {
-        if (this._rrule.length) {
-            return this.updatingCurrentRule({ dtstart: value });
+    updatingStartDate(ruleIndex: number, value: Date): RRuleSet {
+        if (ruleIndex >= 0) {
+            return this.updatingRule(ruleIndex, { dtstart: value });
         } else {
             const rules = new RRuleSet(!this._cache);
             rules.tzid(this.tzid());
             rules.rdate(RRuleSet.toUTC(value));
             return rules;
         }
-    }
-
-    replacingCurrentRule(options: Partial<Options>): RRuleSet {
-        const currentRule = this.currentRule;
-        if (!currentRule) {
-            return this;
-        }
-
-        const currentRuleString = currentRule.toString();
-        const newRule = new RRule(options, !currentRule._cache);
-        const rules = this._rrule.map(rule =>
-            rule.toString() != currentRuleString ? rule : newRule
-        );
-
-        return this.replacingRules(rules);
-    }
-
-    updatingCurrentRule(options: Partial<Options>): RRuleSet {
-        const currentRule = this.currentRule;
-        if (!currentRule) {
-            return this;
-        }
-
-        const newOptions = currentRule.origOptions;
-        for (const key in options) {
-            let value = options[key as keyof Options];
-
-            if (value instanceof Date) {
-                value = RRuleSet.toUTC(value);
-            }
-
-            (newOptions as any)[key] = value;
-        }
-        return this.replacingCurrentRule(newOptions);
-    }
-
-    movingRules(from: Date, to: Date, isSingleMove = false) {
-        if (this._rdate.length && !this._rrule.length) {
-            return this.updatingStartDate(to);
-        }
-
-        const fromAsUTC = RRuleSet.toUTC(from);
-        const ruleIndex = this._rrule.findIndex(rule => {
-            return !!rule.between(fromAsUTC, fromAsUTC, true);
-        });
-
-        if (ruleIndex < 0 || from.getTime() == to.getTime()) {
-            return this;
-        }
-
-        const rules = this.rrules();
-        const rule = rules[ruleIndex];
-        const count = rule.origOptions.count;
-        const next = isSingleMove ? rule.after(from, false) : undefined;
-        to = next || to;
-
-        if (count == undefined) {
-            const firstRule = this.updatingRule(rule, {
-                until: RRuleSet.toUTC(new Date(from.getTime() - 1))
-            });
-
-            if (to.getTime() <= (rule.origOptions.until || to).getTime()) {
-                const secondRule = this.updatingRule(rule, {
-                    dtstart: RRuleSet.toUTC(to)
-                });
-                rules.splice(ruleIndex, 1, firstRule, secondRule);
-            } else {
-                rules.splice(ruleIndex, 1, firstRule);
-            }
-        } else {
-            const pastCount =
-                rule.between(
-                    rule.origOptions.dtstart || new Date(0),
-                    RRuleSet.toUTC(from),
-                    true
-                ).length - 1;
-            const firstRule = this.updatingRule(rule, {
-                count: pastCount
-            });
-            const secondRule = this.updatingRule(rule, {
-                dtstart: RRuleSet.toUTC(to),
-                count: count - pastCount
-            });
-            rules.splice(ruleIndex, 1, firstRule, secondRule);
-        }
-
-        if (next) {
-            const thirdRule = this.updatingRule(rule, {
-                dtstart: RRuleSet.toUTC(to),
-                count: 1
-            });
-            rules.push(thirdRule);
-        }
-
-        return this.replacingRules(rules);
-    }
-
-    private updatingRule(rule: RRule, changes: Partial<Options>) {
-        const options = classToClass(rule.origOptions);
-        Object.assign(options, changes);
-        return new RRule(options, !rule._cache);
     }
 
     private replacingRules(newRules: RRule[]) {
@@ -285,23 +277,155 @@ class RRuleSet extends RuleSet {
         return ruleSet;
     }
 
-    isFullyConvertibleToText() {
-        const currentRule = this.currentRule;
-        if (currentRule) {
-            return currentRule.isFullyConvertibleToText();
-        } else {
-            return true;
+    private ruleIndexMatchingDate(date = new Date()) {
+        const dateAsUTC = RRuleSet.toUTC(date);
+        return this._rrule.findIndex(
+            rule => rule.between(dateAsUTC, dateAsUTC, true).length > 0
+        );
+    }
+
+    private ruleIndexIncludingDate(date = new Date()) {
+        const dateAsUTC = RRuleSet.toUTC(date);
+        const timestamp = dateAsUTC.getTime();
+        return this._rrule.findIndex(rule => {
+            const until = rule.origOptions.until;
+            const count = rule.origOptions.count;
+            return (
+                (rule.origOptions.dtstart?.getTime() || 0) <= timestamp &&
+                ((until == undefined && count == undefined) ||
+                    (until != undefined && until.getTime() >= timestamp) ||
+                    (count != undefined && !!rule.after(dateAsUTC, true)))
+            );
+        });
+    }
+
+    updatingRule(
+        index: number,
+        options: Partial<Options>,
+        overwriteAllValues = false
+    ): RRuleSet {
+        const rules = this.rrules();
+        const rule = rules[index];
+
+        if (!rule) {
+            return this;
         }
+
+        rules.splice(
+            index,
+            1,
+            RRuleSet.updateRule(rule, options, overwriteAllValues)
+        );
+        return this.replacingRules(rules);
+    }
+
+    updatingAllRules(options: Partial<Options>): RRuleSet {
+        const rules = this.rrules().map(rule =>
+            RRuleSet.updateRule(rule, options)
+        );
+        return this.replacingRules(rules);
+    }
+
+    deletingRule(index: number): RRuleSet {
+        const rules = this.rrules();
+        rules.splice(index, 1);
+        return this.replacingRules(rules);
+    }
+
+    endingRules(endDate: Date) {
+        const endDateAsUTC = RRuleSet.toUTC(endDate);
+        const endDateTimestamp = endDateAsUTC.getTime();
+        const rules = this.rrules().map(rule => {
+            if (
+                !rule.origOptions.until ||
+                rule.origOptions.until.getTime() > endDateTimestamp
+            ) {
+                return RRuleSet.updateRule(rule, { until: endDate });
+            } else {
+                return rule;
+            }
+        });
+        return this.replacingRules(rules);
+    }
+
+    movingRules(from: Date, to: Date, isSingleMove = false) {
+        if (this._rdate.length && !this._rrule.length) {
+            return this.updatingStartDate(-1, to);
+        }
+
+        const ruleIndex = this.ruleIndexMatchingDate(from);
+
+        if (ruleIndex < 0 || from.getTime() == to.getTime()) {
+            return this;
+        }
+
+        const rules = this.rrules();
+        const rule = rules[ruleIndex];
+        const count = rule.origOptions.count;
+        const originalTo = to;
+        const next = isSingleMove
+            ? RRuleSet.optionalFromUTC(rule.after(RRuleSet.toUTC(from), false))
+            : undefined;
+        to = next || to;
+
+        if (count == undefined) {
+            const firstRule = RRuleSet.updateRule(rule, {
+                until: new Date(from.getTime() - 1)
+            });
+
+            if (
+                !rule.origOptions.until ||
+                to.getTime() <= rule.origOptions.until.getTime()
+            ) {
+                const secondRule = RRuleSet.updateRule(rule, {
+                    dtstart: to
+                });
+                rules.splice(ruleIndex, 1, firstRule, secondRule);
+            } else {
+                rules.splice(ruleIndex, 1, firstRule);
+            }
+        } else {
+            const pastCount =
+                rule.between(
+                    rule.origOptions.dtstart || new Date(0),
+                    RRuleSet.toUTC(from),
+                    true
+                ).length - 1;
+            const firstRule = RRuleSet.updateRule(rule, {
+                count: pastCount
+            });
+            const secondRule = RRuleSet.updateRule(rule, {
+                dtstart: to,
+                count: count - pastCount
+            });
+            rules.splice(ruleIndex, 1, firstRule, secondRule);
+        }
+
+        if (next) {
+            const thirdRule = RRuleSet.updateRule(
+                rule,
+                {
+                    dtstart: originalTo,
+                    count: 1
+                },
+                true
+            );
+            rules.push(thirdRule);
+        }
+
+        return this.replacingRules(rules);
     }
 
     toText(
         gettext?: GetText,
         language?: Language,
-        dateFormatter?: DateFormatter
+        dateFormatter?: DateFormatter,
+        ruleIndex = -1
     ) {
-        const currentRule = this.currentRule;
-        if (currentRule) {
-            return currentRule.toText(gettext, language, dateFormatter);
+        const rules = this.rrules();
+        const rule = rules[ruleIndex] || rules[this.ruleIndexIncludingDate()];
+        if (rule) {
+            return rule.toText(gettext, language, dateFormatter);
         } else {
             return "";
         }
@@ -310,7 +434,8 @@ class RRuleSet extends RuleSet {
     toLocalizedText(
         locale: string,
         translationDict: { [key: string]: string },
-        language: Language
+        language: Language,
+        ruleIndex = -1
     ) {
         return this.toText(
             key => translationDict[key.toString()] || key.toString(),
@@ -319,7 +444,8 @@ class RRuleSet extends RuleSet {
                 new Date([day, month, year].join(" ")).toLocaleString(
                     locale,
                     DateTime.DATE_MED
-                )
+                ),
+            ruleIndex
         );
     }
 

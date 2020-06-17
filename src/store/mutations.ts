@@ -6,7 +6,8 @@ import {
     Reminder,
     Outcome,
     Rating,
-    Task
+    Task,
+    Occurrence
 } from "../models";
 
 type Updatable<T> = { target: T; changes: Partial<T> };
@@ -73,7 +74,7 @@ export default defineMutations<StoreState>()({
 
         if (isCompleted) {
             completedAt = new Date(
-                date.setHours(
+                new Date(date).setHours(
                     now.getHours(),
                     now.getMinutes(),
                     now.getSeconds(),
@@ -82,7 +83,7 @@ export default defineMutations<StoreState>()({
             );
         }
 
-        if (task.due) {
+        if (task.reminder.isScheduled) {
             const occurence = task.reminder.occurrences.find(
                 item => item.due.getTime() == task.due?.getTime()
             );
@@ -90,6 +91,10 @@ export default defineMutations<StoreState>()({
             if (occurence) {
                 occurence.completed = completedAt;
             }
+        } else {
+            task.reminder.occurrences = completedAt
+                ? [new Occurrence(completedAt, completedAt)]
+                : [];
         }
 
         store.commit.setReminderCompletedAt({
@@ -100,17 +105,34 @@ export default defineMutations<StoreState>()({
 
     setReminderCompletedAt(
         state,
-        { reminder, completedAt }: { reminder: Reminder; completedAt?: Date }
+        {
+            reminder,
+            completedAt,
+            recalculateOccurences
+        }: {
+            reminder: Reminder;
+            completedAt?: Date;
+            recalculateOccurences?: boolean;
+        }
     ) {
         if (reminder.isScheduled) {
             const hasUncompleted =
-                reminder.occurrences.filter(item => !item.completed).length > 0;
+                reminder.occurrences.filter(
+                    item =>
+                        !item.completed &&
+                        (!completedAt ||
+                            item.due.getTime() <= completedAt?.getTime())
+                ).length > 0;
             const date = reminder.lastOccurrenceDate;
 
             if (!hasUncompleted && !reminder.recurrenceRules?.hasNext(date)) {
                 reminder.completedAt = completedAt;
             } else {
                 reminder.completedAt = undefined;
+            }
+
+            if (recalculateOccurences) {
+                reminder.recalculateOccurencesAfterUpdate(completedAt);
             }
         } else {
             reminder.completedAt = completedAt;

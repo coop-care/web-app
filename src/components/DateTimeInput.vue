@@ -163,7 +163,17 @@ export default class DateTimeInput extends DateTimeProps {
       ) {
         this.$emit("input", result);
       } else {
-        this.$emit("input", this.min);
+        this.$emit(
+          "input",
+          new Date(
+            new Date(this.min).setHours(
+              result.getHours(),
+              result.getMinutes(),
+              result.getSeconds(),
+              result.getMilliseconds()
+            )
+          )
+        );
       }
     }
   }

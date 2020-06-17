@@ -216,7 +216,7 @@ export default class InterventionEditor extends InterventionEditorProps {
   }
 
   updateIntervention(changes: Partial<Intervention>) {
-    this.$store.direct.commit.updateObject({
+    this.$store.direct.commit.updateReminder({
       target: this.value,
       changes: changes
     });

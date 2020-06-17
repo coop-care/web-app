@@ -126,13 +126,13 @@ export default class ProblemRating extends Vue {
       value = 1;
       this.intervalKey = Math.random();
     }
-    this.updateRatingReminder("interval", value);
+    this.updateRatingReminder({ interval: value });
   }
   get frequency() {
     return this.record?.ratingReminder.frequency || 0;
   }
   set frequency(value) {
-    this.updateRatingReminder("frequency", value);
+    this.updateRatingReminder({ frequency: value });
   }
   get nextRatingDate() {
     const date = this.record?.ratingReminder.nextRating;
@@ -178,15 +178,13 @@ export default class ProblemRating extends Vue {
     ];
   }
 
-  updateRatingReminder(key: keyof RatingReminder, value: number) {
+  updateRatingReminder(changes: Partial<RatingReminder>) {
     const reminder = this.record?.ratingReminder;
     if (!reminder) {
       return;
     }
 
-    const changes: any = {};
-    changes[key] = value;
-    this.$store.direct.commit.updateObject({
+    this.$store.direct.commit.updateReminder({
       target: reminder,
       changes: changes
     });
