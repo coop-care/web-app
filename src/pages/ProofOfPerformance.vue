@@ -52,7 +52,14 @@
               <td class="text-right">{{ task.count }}</td>
               <td>{{ task.description }}</td>
               <td>{{ task.title }}</td>
-              <td>{{ task.dates }}</td>
+              <td>
+                <ol class="no-bullet column-2-sm">
+                  <li
+                    v-for="(date, index) in task.dates"
+                    :key="index"
+                  >{{ date }}</li>
+                </ol>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -99,7 +106,7 @@ export default class ProofOfPerformancePage extends Vue {
       title: string;
       description: string;
       count: number;
-      dates: string;
+      dates: string[];
     }[] = [];
     const locale = this.$root.$i18n.locale;
     const options = { inclusiveFrom: true, inclusiveTo: true, onlyDate: true };
@@ -117,20 +124,19 @@ export default class ProofOfPerformancePage extends Vue {
           ": " +
           this.$t(reminder.target.title);
 
-        const dates = completed
-          .map(
-            item =>
-              item.completed?.toLocaleString(locale, {
-                day: "numeric",
-                month: "short"
-              }) +
-              " " +
-              item.completed?.toLocaleString(locale, {
-                hour: "numeric",
-                minute: "numeric"
-              })
-          )
-          .join(", ");
+        const dates = completed.map(
+          item =>
+            item.completed?.toLocaleString(locale, {
+              day: "numeric",
+              month: "short"
+            }) +
+            " " +
+            item.completed?.toLocaleString(locale, {
+              hour: "numeric",
+              minute: "numeric"
+            }) +
+            (item.signature ? " (" + item.signature + ")" : "")
+        );
         tasks.push({
           id: reminder.id,
           title: reminder.details,

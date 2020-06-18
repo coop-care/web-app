@@ -17,4 +17,5 @@ export class Rating extends Base {
 //     behaviour = 0;
 //     status = 0;
 //     comment = "";
+//     user = "";
 // }

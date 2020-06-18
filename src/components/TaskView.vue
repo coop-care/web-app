@@ -9,6 +9,8 @@
         v-model="isCompleted"
         :color="hasCheckbox && !disabled ? color : 'grey-4'"
         keep-color
+        :label="task.user"
+        class="text-intervention text-weight-medium"
       />
     </q-item-section>
     <q-item-section>

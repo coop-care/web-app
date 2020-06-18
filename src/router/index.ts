@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import routes from "./routes";
 import { ccApi } from "../api/apiProvider";
+import store from "../store";
 
 Vue.use(VueRouter);
 
@@ -25,7 +26,11 @@ export default function(/* { store, ssrContext } */) {
     Router.beforeEach((to, from, next) => {
         // console.log("before each. to:", to.name, "from:", from.name);
         if (ccApi.isLoggedIn) {
-            next();
+            if (store.state.signature.length > 1 || to.name == "userSettings") {
+                next();
+            } else {
+                next({ name: "userSettings" });
+            }
         } else {
             if (to.name === "login") {
                 next();

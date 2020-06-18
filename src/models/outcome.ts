@@ -13,6 +13,7 @@ export class Outcome extends Base {
     @Type(() => Rating)
     status = new Rating();
     personRatedInPlaceOfOwner = "";
+    user = "";
 }
 
 // preferred modeL:

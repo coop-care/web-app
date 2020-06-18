@@ -15,12 +15,14 @@ Vue.use(Vuex);
 export interface StoreState {
     clients: Client[];
     isLoadingClientList: boolean;
+    signature: string;
 }
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
         clients: [],
-        isLoadingClientList: false
+        isLoadingClientList: false,
+        signature: window.localStorage.getItem("signature") || ""
     } as StoreState,
     getters,
     mutations,

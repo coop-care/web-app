@@ -75,7 +75,7 @@
   "confirmationMessage": "Die Bestätigungsmail wurde versandt. Überprüfe bitte Deinen Posteingang und klick auf den Bestätigungslink!",
   "goToLogin": "Zum Einloggen",
   "confirmationInProgress": "Bestätigung in Arbeit...",
-  "accountWelcomeMessage": "Hallo! Du bist angemeldet als:",
+  "accountWelcomeMessage": "Hallo **{name}**!",
   "logout": "Abmelden",
   "databaseTestSettings": "Datenbank-Test-Einstellungen",
   "databaseInsertSamples": "Beispiel-Kunden anlegen",
@@ -213,7 +213,7 @@
   "occurence": "Häufigkeit",
   "category": "Kategorie",
   "interventionDetails": "Pflegemaßnahme",
-  "datesOfConduction": "Termine der Durchführung",
+  "datesOfConduction": "Durchführung: Termine und Handzeichen",
   "noCompletedTasksFound": "Keine durchgeführten Leistungen in diesem Zeitraum gefunden. 🧐",
   "from": "vom",
   "until": "bis zum",
@@ -226,5 +226,8 @@
   "date": "Datum",
   "time": "Uhrzeit",
   "confirmDate": "Übernehmen",
-  "offlineBanner": "Keine Internetverbindung"
+  "offlineBanner": "Keine Internetverbindung",
+  "signatureMark": "Handzeichen",
+  "done": "Fertig",
+  "signatureMarkHint": "Dein Namenskürzel, zum Beispiel deine Initialen, muss 2–3 Zeichen haben und im Team einzigartig sein"
 }

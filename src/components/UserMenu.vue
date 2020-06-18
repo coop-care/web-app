@@ -18,8 +18,8 @@
           header
           class="text-black"
         >
-          <div>{{ $t("accountWelcomeMessage") }}</div>
-          <div class="q-mt-xs text-weight-medium">
+          <simplified-markdown :text="$t('accountWelcomeMessage', {name: $store.direct.state.signature || ''})" />
+          <div class="q-mt-xs text-caption text-weight-medium">
             {{ $ccApi.username }}
           </div>
         </q-item-label>
@@ -110,10 +110,12 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import LanguageMenu from "./LanguageMenu.vue";
+import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 
 @Component({
   components: {
-    LanguageMenu
+    LanguageMenu,
+    SimplifiedMarkdown
   }
 })
 export default class UserMenu extends Vue {

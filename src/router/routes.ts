@@ -76,12 +76,12 @@ const routes: RouteConfig[] = [
             {
                 name: "userSettings",
                 path: "/settings/user",
-                component: () => import("pages/Settings.vue")
+                component: () => import("pages/UserSettings.vue")
             },
             {
                 name: "teamSettings",
                 path: "/settings/team",
-                component: () => import("pages/Settings.vue")
+                component: () => import("pages/TeamSettings.vue")
             },
             {
                 name: "login",

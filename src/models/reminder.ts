@@ -10,9 +10,14 @@ export class Occurrence {
     completed?: Date;
     user?: string;
 
-    constructor(due: Date, completed?: Date) {
+    constructor(due: Date, completed?: Date, user?: string) {
         this.due = due;
         this.completed = completed;
+        this.user = user;
+    }
+
+    get signature() {
+        return this.user;
     }
 }
 

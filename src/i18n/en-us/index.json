@@ -75,7 +75,7 @@
   "confirmationMessage": "Successfully sent confirmation mail. Check your inbox!",
   "goToLogin": "Go to login",
   "confirmationInProgress": "Confirmation in progress …",
-  "accountWelcomeMessage": "Hello! You are logged in as:",
+  "accountWelcomeMessage": "Hello **{name}**!",
   "logout": "Logout",
   "databaseTestSettings": "Database Test Settings",
   "databaseInsertSamples": "Insert sample clients",
@@ -213,7 +213,7 @@
   "occurence": "Occurence",
   "category": "Category",
   "interventionDetails": "Intervention details",
-  "datesOfConduction": "Dates of conduction",
+  "datesOfConduction": "Conduction: Dates and Signatures",
   "noCompletedTasksFound": "No completed tasks found in this time period. 🧐",
   "from": "from",
   "until": "until",
@@ -226,5 +226,8 @@
   "date": "Date",
   "time": "Time",
   "confirmDate": "Confirm",
-  "offlineBanner": "No internet connection"
+  "offlineBanner": "No internet connection",
+  "signatureMark": "Signature Mark",
+  "done": "Done",
+  "signatureMarkHint": "Your signature mark, for example your initials, must have 2–3 characters and be unique in the team"
 }

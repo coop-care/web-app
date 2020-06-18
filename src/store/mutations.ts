@@ -90,10 +90,11 @@ export default defineMutations<StoreState>()({
 
             if (occurence) {
                 occurence.completed = completedAt;
+                occurence.user = state.signature;
             }
         } else {
             task.reminder.occurrences = completedAt
-                ? [new Occurrence(completedAt, completedAt)]
+                ? [new Occurrence(completedAt, completedAt, state.signature)]
                 : [];
         }
 
@@ -200,6 +201,16 @@ export default defineMutations<StoreState>()({
 
         const now = new Date();
         problemRecord.createdAt = now;
-        (problemRecord.outcomes[0] || {}).createdAt = now;
+
+        const outcome = problemRecord.outcomes[0];
+        if (outcome) {
+            outcome.createdAt = now;
+            outcome.user = state.signature;
+        }
+    },
+
+    setSignature(state, { signature }: { signature: string }) {
+        window.localStorage.setItem("signature", signature);
+        state.signature = signature;
     }
 });

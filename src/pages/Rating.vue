@@ -28,9 +28,10 @@ export default class Rating extends Vue {
   }
 
   save() {
-    const changes: any = {};
-    const key: keyof Outcome = "createdAt";
-    changes[key] = new Date();
+    const changes: Partial<Outcome> = {
+      createdAt: new Date(),
+      user: this.$store.direct.state.signature
+    };
     this.$store.direct.commit.updateNewOutcome({
       changes: changes,
       ...this.$route.params

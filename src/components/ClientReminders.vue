@@ -1,19 +1,22 @@
 <template>
   <div
     v-touch-swipe.mouse.horizontal="swipeTasks"
-    style="max-width: 480px; min-height: 95vh"
+    class="client-reminders"
   >
     <div class="row">
+      <q-space />
       <div class="q-mt-xs">
         <q-btn
           icon="fas fa-caret-left"
           color="intervention"
           flat
-          round
           dense
           size="18px"
           @click="gotoPreviousDay"
+          class="text-left thin-button"
         />
+      </div>
+      <div class="q-mt-xs">
         <q-btn
           icon="event"
           round
@@ -37,32 +40,29 @@
           </q-popup-proxy>
         </q-btn>
       </div>
-      <div class="q-mx-xs">
-        <div class="text-h6">
+      <div class="q-mr-sm selected-date">
+        <div class="text-h6 ellipsis">
           {{ formattedDate({ weekday: "long" }) }}
           {{ isToday ? $t("isTodayHint") : "" }}
         </div>
-        <div
-          class="text-body2"
-          style="margin-top:-3px"
-        >
+        <div class="text-body2">
           {{
             formattedDate({ year: "numeric", month: "long", day: "numeric" })
           }}
         </div>
       </div>
-      <q-space />
       <div class="q-mt-xs">
         <q-btn
           icon="fas fa-caret-right"
           color="intervention"
           flat
-          round
           dense
           size="18px"
+          class="thin-button"
           @click="gotoNextDay"
         />
       </div>
+      <q-space />
     </div>
     <div
       v-for="(visit, index) in tasks"
@@ -100,7 +100,16 @@
   </div>
 </template>
 
-<style lang="sass"></style>
+<style lang="sass">
+.client-reminders
+  max-width: 540px; min-height: 95vh
+  .thin-button
+    width: 32px
+  .selected-date
+    width: 184px
+    div:first-of-type
+      margin-bottom: -5px
+</style>
 
 <script lang="ts">
 import Vue from "vue";
@@ -228,9 +237,7 @@ export default class ClientReminders extends Vue {
           !item.completed &&
           item.due.getTime() < pastDueTimestamp
         ) {
-          pastDueTasks.push(
-            new Task(reminder, problem.id, item.due, item.completed)
-          );
+          pastDueTasks.push(new Task(reminder, problem.id, item));
         } else if (
           (isReminderActiveAndUncompleted || item.completed) &&
           isBetweenDates(
@@ -240,7 +247,7 @@ export default class ClientReminders extends Vue {
             allInclusive
           )
         ) {
-          const task = new Task(reminder, problem.id, item.due, item.completed);
+          const task = new Task(reminder, problem.id, item);
           if (reminder.isScheduled) {
             scheduledTasks.push(task);
           } else {
@@ -262,9 +269,7 @@ export default class ClientReminders extends Vue {
           isReminderActiveAndUncompleted &&
           reminder.createdAt.getTime() <= endOfDayTimestamp
         ) {
-          anytimeTasks.push(
-            new Task(reminder, problem.id, undefined, reminder.completedAt)
-          );
+          anytimeTasks.push(new Task(reminder, problem.id));
         }
       }
     });

@@ -258,19 +258,19 @@ export default class RatingView extends RatingViewProps {
     return this.rating.observation || 0;
   }
   set observation(value: number) {
-    this.updateNewOutcome("observation", value);
+    this.updateNewOutcome({ observation: value });
   }
   get expectation() {
     return this.rating.expectation || 0;
   }
   set expectation(value: number) {
-    this.updateNewOutcome("expectation", value);
+    this.updateNewOutcome({ expectation: value });
   }
   get comment() {
     return this.rating.comment || "";
   }
   set comment(value: string) {
-    this.updateNewOutcome("comment", value);
+    this.updateNewOutcome({ comment: value });
   }
 
   get options() {
@@ -319,9 +319,7 @@ export default class RatingView extends RatingViewProps {
     }
   }
 
-  updateNewOutcome(key: keyof Rating, value: any) {
-    const changes: any = {};
-    changes[key] = value;
+  updateNewOutcome(changes: Partial<Rating>) {
     this.$store.direct.commit.updateNewOutcome({
       ratingType: this.type,
       changes: changes,
