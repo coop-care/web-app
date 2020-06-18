@@ -72,7 +72,7 @@
         <div>
           <action-menu
             :items="clientActionItems"
-            class="on-right q-mt-sm"
+            class="on-right q-mt-sm q-mr-sm"
           />
         </div>
       </div>

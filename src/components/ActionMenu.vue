@@ -24,7 +24,7 @@
         <q-item-section side>
           <q-icon
             :name="item.icon"
-            :color="color"
+            :color="item.isDestructive ? 'negative': color"
           />
         </q-item-section>
         <q-item-section>{{ item.name }}</q-item-section>
