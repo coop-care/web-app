@@ -132,20 +132,14 @@ class RRuleSet extends RuleSet {
 
     get indicesOfActiveRules() {
         if (this.isRecurring) {
-            const date = RRuleSet.toUTC(new Date());
-            const timestamp = date.getTime();
+            const startOfDay = new Date();
+            startOfDay.setHours(0, 0, 0, 0);
+            const date = RRuleSet.toUTC(startOfDay);
             const result: number[] = [];
             let ruleIndexForMaxStart = this._rrule.length - 1;
 
             this._rrule.forEach((rule, index) => {
-                const until = rule.origOptions.until;
-                const count = rule.origOptions.count;
-
-                if (
-                    (until == undefined && count == undefined) ||
-                    (until != undefined && until.getTime() >= timestamp) ||
-                    (count != undefined && !!rule.after(date, true))
-                ) {
+                if (rule.after(date, true)) {
                     result.push(index);
                 }
 
@@ -347,7 +341,7 @@ class RRuleSet extends RuleSet {
             });
             const secondRule = RRuleSet.updateRule(rule, {
                 dtstart: to,
-                count: count - pastCount
+                count: count - pastCount - (next ? 1 : 0)
             });
             rules.splice(ruleIndex, 1, firstRule, secondRule);
         }
