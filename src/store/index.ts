@@ -31,7 +31,19 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
     strict: (process.env.DEV as unknown) === true || process.env.DEV === "true"
 });
 
-store.dispatch.fetchClientsFromDB();
+store.dispatch.fetchClientsFromDB().catch(() => 0);
+
+let lastFetch = 0;
+window.addEventListener("focus", () => {
+    if (Date.now() > lastFetch + 3600 * 1000) {
+        store.dispatch.fetchClientsFromDB().catch(() => 0);
+        lastFetch = Date.now();
+    }
+});
+window.addEventListener("online", () => {
+    store.dispatch.fetchClientsFromDB().catch(() => 0);
+    lastFetch = Date.now();
+});
 
 setBrand("classification", "#f44336");
 setBrand("outcome", "#009688");
