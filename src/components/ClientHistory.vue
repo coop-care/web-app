@@ -1,5 +1,6 @@
 <template>
   <q-timeline
+    v-if="items.length"
     color="primary"
     :layout="$q.screen.gt.xs ? 'comfortable' : 'dense'"
   >
@@ -17,6 +18,10 @@
       </template>
     </q-timeline-entry>
   </q-timeline>
+  <div
+    v-else
+    class="text-body2 text-italic q-mt-lg"
+  >{{$t("noClientHistoryEntries")}}</div>
 </template>
 
 <style lang="sass">

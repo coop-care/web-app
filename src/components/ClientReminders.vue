@@ -64,26 +64,32 @@
       </div>
       <q-space />
     </div>
-    <div
-      v-for="(visit, index) in tasks"
-      v-bind:key="index"
-    >
-      <div class="text-subtitle1 text-weight-bold q-mt-lg">
-        {{ visit.title }}
-      </div>
-      <div>
-        <q-list dense>
-          <task-view
-            v-for="(task, index) in visit.tasks"
-            v-bind:key="index"
-            :client="client"
-            :task="task"
-            :date="selectedDate"
-            :hasCheckbox="canComplete"
-          />
-        </q-list>
+    <div v-if="tasks.length">
+      <div
+        v-for="(visit, index) in tasks"
+        v-bind:key="index"
+      >
+        <div class="text-subtitle1 text-weight-bold q-mt-lg">
+          {{ visit.title }}
+        </div>
+        <div>
+          <q-list dense>
+            <task-view
+              v-for="(task, index) in visit.tasks"
+              v-bind:key="index"
+              :client="client"
+              :task="task"
+              :date="selectedDate"
+              :hasCheckbox="canComplete"
+            />
+          </q-list>
+        </div>
       </div>
     </div>
+    <div
+      v-else
+      class="text-center text-body2 text-italic q-mt-xl"
+    >{{$t("noTasksPlanned")}}</div>
     <q-page-sticky
       v-if="!client.leftAt"
       position="bottom-left"

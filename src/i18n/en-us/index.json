@@ -229,5 +229,8 @@
   "offlineBanner": "No internet connection",
   "signatureMark": "Signature Mark",
   "done": "Done",
-  "signatureMarkHint": "Your signature mark, for example your initials, must have 2–3 characters and be unique in the team"
+  "signatureMarkHint": "Your signature mark, for example your initials, must have 2–3 characters and be unique in the team",
+  "noClientHistoryEntries": "No events so far",
+  "noClientProblemRecords": "No problems recorded yet",
+  "noTasksPlanned": "No tasks to do"
 }

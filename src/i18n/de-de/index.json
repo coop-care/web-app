@@ -229,5 +229,8 @@
   "offlineBanner": "Keine Internetverbindung",
   "signatureMark": "Handzeichen",
   "done": "Fertig",
-  "signatureMarkHint": "Dein Namenskürzel, zum Beispiel deine Initialen, muss 2–3 Zeichen haben und im Team einzigartig sein"
+  "signatureMarkHint": "Dein Namenskürzel, zum Beispiel deine Initialen, muss 2–3 Zeichen haben und im Team einzigartig sein",
+  "noClientHistoryEntries": "Keine Vorkommnisse bislang",
+  "noClientProblemRecords": "Noch keine Probleme aufgenommen",
+  "noTasksPlanned": "Keine Aufgaben zu erledigen"
 }

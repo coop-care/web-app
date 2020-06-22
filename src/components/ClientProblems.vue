@@ -24,7 +24,10 @@
         size="12.5px"
       />
     </div>
-    <div class="q-gutter-md q-mt-md">
+    <div
+      v-if="selectedClientProblems.length"
+      class="q-gutter-md q-mt-md"
+    >
       <problem-summary
         v-for="problemRecord in selectedClientProblems"
         v-bind:key="problemRecord.id"
@@ -36,6 +39,10 @@
         :isDisabled="isDisabled"
       />
     </div>
+    <div
+      v-else
+      class="text-body2 text-italic q-mt-lg"
+    >{{$t("noClientProblemRecords")}}</div>
   </div>
 </template>
 
