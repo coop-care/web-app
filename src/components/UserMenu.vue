@@ -7,12 +7,12 @@
     style="max-width:44px"
   >
     <q-menu
-      max-width="240px"
+      max-width="260px"
       max-height="calc(96vh - 50px)"
     >
       <q-list
         class="text-body2"
-        style="width: 240px"
+        style="width: 260px"
       >
         <q-item-label
           header
@@ -59,6 +59,21 @@
             <q-icon name="fas fa-users-cog" />
           </q-item-section>
           <q-item-section>{{ $t("teamSettings") }}</q-item-section>
+        </q-item>
+
+        <q-separator />
+
+        <q-item
+          clickable
+          v-close-popup
+          @click="openMail()"
+        >
+          <q-item-section side>
+            <q-icon name="feedback" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t('feedback') }}</q-item-label>
+          </q-item-section>
         </q-item>
 
         <q-separator />
@@ -119,6 +134,16 @@ import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
   }
 })
 export default class UserMenu extends Vue {
+  openMail() {
+    location.href =
+      "mailto:feedback@coopcare.de?subject=CoopCare Feedback&body=" +
+      encodeURIComponent("\n\n\n––––––––––––––––––––\n") +
+      "Einige freiwillige technische Angaben, die uns beim Nachvollziehen des Feedbacks helfen:" +
+      encodeURIComponent("\n\nBrowser: ") +
+      this.$q.platform.userAgent +
+      encodeURIComponent("\nRoute: ") +
+      this.$router.currentRoute.path;
+  }
   logout() {
     this.$ccApi.logout().then(() => this.$router.push({ name: "login" }));
   }

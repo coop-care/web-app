@@ -1,6 +1,6 @@
 <template>
   <q-btn
-    icon="feedback"
+    icon="fas fa-wrench"
     flat
     stretch
     style="max-width:44px"
@@ -11,21 +11,6 @@
         class="text-body2"
         style="width: 240px"
       >
-        <q-item
-          clickable
-          v-close-popup
-          @click="openMail()"
-        >
-          <q-item-section side>
-            <q-icon name="feedback" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{ $t('feedback') }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-separator />
-
         <q-item clickable>
           <q-item-section>Farbschema anpassen</q-item-section>
           <q-item-section side>
@@ -116,16 +101,6 @@ export default class DevMenu extends Vue {
   }
   setColor(name: string, value: string) {
     setBrand(name, value);
-  }
-  openMail() {
-    location.href =
-      "mailto:feedback@coopcare.de?subject=CoopCare Feedback&body=" +
-      encodeURIComponent("\n\n\n––––––––––––––––––––\n") +
-      "Einige freiwillige technische Angaben, die uns beim Nachvollziehen des Feedbacks helfen:" +
-      encodeURIComponent("\n\nBrowser: ") +
-      this.$q.platform.userAgent +
-      encodeURIComponent("\nRoute: ") +
-      this.$router.currentRoute.path;
   }
   addSamplesToDB() {
     this.$store.direct.dispatch.addSamplesToDB();
