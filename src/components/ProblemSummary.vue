@@ -144,8 +144,8 @@
         <q-btn
           v-if="isInteractive"
           :title="$t('editInterventions')"
-          icon="edit"
-          :to="{ name: 'interventions', params: params }"
+          icon="add"
+          :to="{ name: 'newIntervention', params: params }"
           round
           outline
           size="10.5px"
