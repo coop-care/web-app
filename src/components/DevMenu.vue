@@ -131,8 +131,24 @@ export default class DevMenu extends Vue {
     this.$store.direct.dispatch.addSamplesToDB();
   }
   clearDB() {
-    this.$store.direct.dispatch.clearDB();
-    this.$router.push({ name: "client" });
+    this.$q
+      .dialog({
+        title:
+          "Möchtest du wirklich die Daten <strong>aller</strong> Kunden löschen?",
+        message: "Diese Aktion kann nicht rückgängig gemacht werden.",
+        ok: {
+          label: this.$t("databaseClearAll"),
+          color: "negative",
+          flat: true
+        },
+        cancel: true,
+        persistent: true,
+        html: true
+      })
+      .onOk(() => {
+        this.$store.direct.dispatch.clearDB();
+        this.$router.push({ name: "client" });
+      });
   }
 }
 </script>

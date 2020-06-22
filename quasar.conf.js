@@ -104,7 +104,7 @@ module.exports = function(ctx) {
       directives: ["Ripple", "TouchSwipe", "ClosePopup"],
 
       // Quasar plugins
-      plugins: ["Meta"]
+      plugins: ["Meta", "Dialog"]
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
