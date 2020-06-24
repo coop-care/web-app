@@ -8,4 +8,5 @@ export { Reminder, Occurrence } from "./reminder";
 export { Intervention } from "./intervention";
 export { RatingReminder } from "./ratingReminder";
 export { Task } from "./task";
+export { ChangeRecord, ChangeRecordType } from "./changeRecord";
 export { RRuleSet, RRule, Frequency, Options } from "./rrule";

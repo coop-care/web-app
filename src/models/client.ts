@@ -1,9 +1,7 @@
 import "reflect-metadata";
 import { Type, plainToClass, classToPlain } from "class-transformer";
 import { ObjectID } from "bson";
-import { MasterData } from "./masterData";
-import { ProblemRecord } from "./problemRecord";
-import { Reminder } from "./reminder";
+import { MasterData, ProblemRecord, Reminder, ChangeRecord } from ".";
 
 export class Client {
     // optional properties need an initial value because Vue does not detect the addition or removal of a property
@@ -17,6 +15,8 @@ export class Client {
     createdAt = new Date();
     @Type(() => Date)
     leftAt?: Date = undefined;
+    @Type(() => ChangeRecord)
+    changeHistory: ChangeRecord[] = [];
 
     static fromObject(object: unknown): Client | Client[] {
         return plainToClass(Client, object);
