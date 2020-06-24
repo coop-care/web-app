@@ -45,6 +45,12 @@ export class Problem {
             );
         });
     }
+    get otherSignAndSymptom() {
+        return this.severityCode == 2 ? this.details : "";
+    }
+    get severityDetails() {
+        return this.severityCode < 2 ? this.details : "";
+    }
 
     scopeIcon(terminology: TerminologyWithMaps) {
         return terminology.icons.scope[this.scopeCode];

@@ -125,12 +125,8 @@
           class="no-column-break"
         >
           {{ $t(symptom.title)
-          }}<span v-if="
-              index == problem.signsAndSymptomsCodes.length - 1 &&
-                $t(symptom.title).toLowerCase() == $t('otherSymptom') &&
-                problem.details
-            ">:
-            <span class="text-italic">{{ problem.details }}</span>
+          }}<span v-if="index == problem.signsAndSymptomsCodes.length - 1 && problem.otherSignAndSymptom">:
+            <span class="text-italic">{{ problem.otherSignAndSymptom }}</span>
           </span>
         </li>
       </ul>
