@@ -323,6 +323,7 @@ export default class ProblemSummary extends ProblemSummaryProps {
         action: this.prioritizeProblemRecord
       },
       {
+        condition: !this.record.resolvedAt,
         name: this.$t("problemDismissal"),
         icon: "fas fa-check",
         action: () => {

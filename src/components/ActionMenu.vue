@@ -1,6 +1,6 @@
 <template>
   <q-btn-dropdown
-    v-if="items.filter(item => item.condition).length"
+    v-if="items.filter(item => item.condition !== false).length"
     :color="color"
     rounded
     outline
@@ -15,7 +15,7 @@
       <q-item
         v-for="(item, index) in items"
         v-bind:key="index"
-        v-if="item.condition || item.condition === undefined"
+        v-if="item.condition !== false"
         clickable
         v-ripple
         @click="item.action"
