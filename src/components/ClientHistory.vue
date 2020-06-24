@@ -28,7 +28,7 @@ import ClientHistoryEntry from "../components/ClientHistoryEntry.vue";
 })
 export default class ClientHistory extends Vue {
   get changeRecords() {
-    return this.client?.changeHistory || [];
+    return this.client?.changeHistory.slice().reverse() || [];
   }
   get client() {
     return this.$store.direct.getters.getClient(this.$route.params);
