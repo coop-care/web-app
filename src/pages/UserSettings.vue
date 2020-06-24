@@ -12,6 +12,7 @@
           :error-message="$t('signatureMarkHint')"
           :hint="$t('signatureMarkHint')"
           hide-bottom-space
+          :autofocus="signature.trim().length < 2"
           maxlength="3"
           style="max-width: 300px"
         />
