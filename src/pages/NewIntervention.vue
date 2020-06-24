@@ -123,7 +123,15 @@ export default class InterventionPage extends Vue {
       changes[key] = this.record.interventions.concat([this.intervention]);
       this.$store.direct.commit.updateObject({
         target: this.record,
-        changes: changes
+        changes: changes,
+        clientId: this.$route.params.clientId,
+        problemId: this.problemId
+      });
+      this.$store.direct.commit.addToClientHistory({
+        clientId: this.$route.params.clientId,
+        problemId: this.problemId,
+        changeType: "InterventionStarted",
+        newInstance: this.intervention
       });
     }
     this.$store.direct.dispatch

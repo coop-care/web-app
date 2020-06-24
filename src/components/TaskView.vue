@@ -120,7 +120,8 @@ export default class TaskView extends TaskViewProps {
     this.$store.direct.commit.toggleTaskCompletion({
       task: this.task,
       isCompleted: value,
-      date: (this.date as unknown) as Date
+      date: (this.date as unknown) as Date,
+      client: this.client
     });
     this.$store.direct.dispatch.saveClient({ client: this.client });
   }
@@ -293,7 +294,9 @@ export default class TaskView extends TaskViewProps {
     this.$store.direct.commit.setReminderCompletedAt({
       reminder: this.reminder,
       completedAt: date,
-      recalculateOccurences: true
+      recalculateOccurences: true,
+      client: this.client,
+      problemId: this.task.problemId
     });
     this.save();
   }

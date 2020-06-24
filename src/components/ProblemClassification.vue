@@ -375,7 +375,9 @@ export default class ProblemClassification extends Vue {
 
     this.$store.direct.commit.updateObject({
       target: this.problem,
-      changes: changes
+      changes: changes,
+      clientId: this.$route.params.clientId,
+      problemId: this.record?.id
     });
   }
 
