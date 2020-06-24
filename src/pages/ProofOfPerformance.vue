@@ -48,6 +48,7 @@
             <tr
               v-for="task in tasks"
               :key="task.id"
+              class="vertical-top"
             >
               <td class="text-right">{{ task.count }}</td>
               <td>{{ task.description }}</td>
@@ -74,8 +75,10 @@
 
 <style lang="sass">
 .proof-of-performance
+  -webkit-border-horizontal-spacing: 0px
   td, th
-    padding: 2px 10px
+    padding: 2px 11px
+    border-bottom: 1px solid #ccc
 </style>
 
 <script lang="ts">
