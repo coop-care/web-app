@@ -19,6 +19,8 @@ class RRuleSet extends RuleSet {
             return undefined;
         }
 
+        json = JSON.parse(JSON.stringify(json));
+
         const ruleSet = new RRuleSet(true);
         ruleSet.tzid(json.tzid);
         json.rrules?.forEach((options: any) =>
@@ -371,6 +373,13 @@ class RRuleSet extends RuleSet {
         const rule = rules[ruleIndex] || rules[this.ruleIndexIncludingDate()];
         if (rule) {
             return rule.toText(gettext, language, dateFormatter);
+        } else if (this._rdate.length && language && dateFormatter) {
+            const date = this.startDate(-1);
+            return dateFormatter(
+                date.getFullYear(),
+                language.monthNames[date.getMonth()] || "",
+                date.getDate()
+            );
         } else {
             return "";
         }
