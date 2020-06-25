@@ -13,7 +13,7 @@
         size="12.5px"
       />
       <q-btn
-        v-if="!isDisabled && $te('problemCodesByDiagnosis')"
+        v-if="!isDisabled && Object.keys($t('diagnosisNames')).length > 0"
         icon="playlist_add"
         color="primary"
         :label="$t('problemAdmissionByDiagnosis')"
