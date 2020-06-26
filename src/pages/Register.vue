@@ -1,6 +1,9 @@
 <template>
   <q-page class="window-height window-width row justify-center">
-    <div v-if="isForm" class="column">
+    <div
+      v-if="isForm"
+      class="column"
+    >
       <div class="row">
         <q-card class="credentials bg-grey-2 shadow-1 q-mt-xl">
           <q-card-section>
@@ -34,13 +37,22 @@
         </q-card>
       </div>
     </div>
-    <div v-else class="column">
-      <div v-if="isSuccess" class="row">
+    <div
+      v-else
+      class="column"
+    >
+      <div
+        v-if="isSuccess"
+        class="row"
+      >
         <h5 class="text-h5 q-my-md">
           {{ $t("confirmationMessage") }}
         </h5>
       </div>
-      <div v-else class="row">
+      <div
+        v-else
+        class="row"
+      >
         <h5 class="text-h5 q-my-md">
           An error has occured:<br />
           {{ errorMsg }}
@@ -58,7 +70,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { UserPasswordAuthProviderClient } from "mongodb-stitch-browser-sdk";
 
 enum State {
   Form,
@@ -82,11 +93,8 @@ export default class PageLogin extends Vue {
   }
 
   doRegister() {
-    const epclient = this.$stitchApi.stitch.auth.getProviderClient(
-      UserPasswordAuthProviderClient.factory
-    );
-    epclient
-      .registerWithEmail(this.email, this.password)
+    this.$ccApi
+      .registerUser(this.email, this.password)
       .then(() => (this.state = State.Success))
       .catch(err => {
         this.state = State.Error;

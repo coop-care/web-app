@@ -1,50 +1,44 @@
 <template>
-  <q-page padding>
-    <div class="text-h5 q-mb-lg">
-      {{ $t("newRating") }}
-    </div>
-    <problem-rating
-      :params="$route.params"
-      :isSummary="true"
-    />
-    <div class="flex justify-around q-mt-lg">
-      <q-btn
-        :label="$t('cancel')"
-        to="/"
-        flat
-        color="primary"
-      />
-      <q-btn
-        :label="$t('save')"
-        @click="save"
-        color="primary"
-      />
-    </div>
-  </q-page>
+  <editing-page-container
+    :title="$t('newRating')"
+    :is-data-available="!!record"
+    @cancel="$router.back()"
+    @save="save"
+  >
+    <problem-rating />
+  </editing-page-container>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import EditingPageContainer from "components/EditingPageContainer.vue";
 import ProblemRating from "components/ProblemRating.vue";
+import { Outcome } from "../models/outcome";
 
 @Component({
   components: {
-    ProblemRating
+    ProblemRating,
+    EditingPageContainer
   }
 })
 export default class Rating extends Vue {
-  get customer() {
-    return this.$store.getters.getCustomerById(this.$route.params);
+  get record() {
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
   save() {
-    this.$store.commit("updateNewOutcome", {
-      path: "createdAt",
-      value: new Date(),
+    const changes: Partial<Outcome> = {
+      createdAt: new Date(),
+      user: this.$store.direct.state.signature
+    };
+    this.$store.direct.commit.updateNewOutcome({
+      changes: changes,
       ...this.$route.params
     });
-    this.$router.push({ name: "index" });
+    this.$store.direct.dispatch
+      .saveClient(this.$route.params)
+      .then(() => this.$router.back());
   }
 }
 </script>

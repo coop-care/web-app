@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { Download } from "../helper/download";
+import { downloadJSON } from "../helper/download";
 import { colors } from "quasar";
-import { Customer, CoreCustomer } from "../helper/coreTypes";
+import { Client } from "../models/client";
 import { createDirectStore } from "direct-vuex";
 import getters from "./getters";
 import mutations from "./mutations";
@@ -13,20 +13,16 @@ const { setBrand } = colors;
 Vue.use(Vuex);
 
 export interface StoreState {
-    customers: CoreCustomer[];
-    selectedCustomer: Customer | null;
-    isLoadingCustomer: boolean;
-    isLoadingCustomerList: boolean;
+    clients: Client[];
+    isLoadingClientList: boolean;
+    signature: string;
 }
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
-        // customers: sampleData,
-        // selectedCustomerId: "",
-        customers: [],
-        selectedCustomer: null,
-        isLoadingCustomer: false,
-        isLoadingCustomerList: false
+        clients: [],
+        isLoadingClientList: false,
+        signature: window.localStorage.getItem("signature") || ""
     } as StoreState,
     getters,
     mutations,
@@ -34,23 +30,29 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV === "true"
+    strict: (process.env.DEV as unknown) === true || process.env.DEV === "true"
 });
 
-export function generateId() {
-    return Math.random()
-        .toString(36)
-        .substring(2, 10);
-}
+store.dispatch.fetchClientsFromDB().catch(() => 0);
+
+let lastFetch = 0;
+window.addEventListener("focus", () => {
+    if (Date.now() > lastFetch + 3600 * 1000) {
+        store.dispatch.fetchClientsFromDB().catch(() => 0);
+        lastFetch = Date.now();
+    }
+});
+window.addEventListener("online", () => {
+    store.dispatch.fetchClientsFromDB().catch(() => 0);
+    lastFetch = Date.now();
+});
 
 setBrand("classification", "#f44336");
 setBrand("outcome", "#009688");
 setBrand("intervention", "#ff6f00");
 
 // @ts-ignore
-window.download = () => {
-    Download.ts(store.state.customers, "sample1.ts");
-};
+window.download = () => downloadJSON(store.state.clients || [], "sample1.json");
 
 // Export the original Vuex store because of quasar
 export default store.original;

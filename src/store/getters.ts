@@ -1,60 +1,33 @@
-import { createGetters } from "direct-vuex";
+import { defineGetters } from "direct-vuex";
 import { store, StoreState } from ".";
-import {
-    Customer,
-    ProblemRecord,
-    Outcome,
-    CoreCustomer
-} from "../helper/coreTypes";
-import TerminologyData, {
-    Terminology,
-    HasTitleCode
-} from "../helper/terminology";
+import { Client } from "../models/client";
+import { ProblemRecord } from "../models/problemRecord";
+import { Outcome } from "../models/outcome";
 import { format } from "timeago.js";
 import { colors } from "quasar";
 import ApexCharts from "apexcharts";
 
 const { getBrand } = colors;
 
-export default createGetters<StoreState>()({
-    getCustomer: state => (payload: any): Customer | undefined => {
-        let customer = state.selectedCustomer;
-
-        if (customer && payload.terminology) {
-            customer.problems = TerminologyData.mergeProblemRecordsAndTerminology(
-                customer.problems,
-                payload.terminology
+export default defineGetters<StoreState>()({
+    getClient: state => (payload: any): Client | undefined => {
+        if (payload.clientId) {
+            return state.clients.find(
+                client => client._id?.equals(payload.clientId) || false
             );
-        }
-
-        if (customer) return customer;
-        else return undefined;
-    },
-
-    getProblemRecordById: state => (
-        payload: any
-    ): ProblemRecord | undefined => {
-        let customer = store.getters.getCustomer(payload);
-        if (!customer) {
+        } else {
             return;
         }
-
-        let problemRecord = customer.problems.find(
-            problemRecord => problemRecord.id === payload.problemId
-        );
-
-        if (problemRecord && payload.terminology) {
-            return TerminologyData.mergeProblemRecordsAndTerminology(
-                [problemRecord],
-                payload.terminology
-            )[0];
-        } else {
-            return problemRecord;
-        }
     },
 
-    getOutcomeAsChartData: state => (payload: any): any[] => {
-        let problemRecord = store.getters.getProblemRecordById(payload);
+    getProblemRecordById: () => (payload: any): ProblemRecord | undefined => {
+        return store.getters
+            .getClient(payload)
+            ?.findProblemRecord(payload.problemId);
+    },
+
+    getOutcomeAsChartData: () => (payload: any): any[] => {
+        const problemRecord = store.getters.getProblemRecordById(payload);
 
         if (
             !problemRecord ||
@@ -66,32 +39,35 @@ export default createGetters<StoreState>()({
         }
 
         // clone array because original needs to be preserved
-        let outcomes = problemRecord.outcomes.concat([]);
+        const outcomes = problemRecord.outcomes
+            .concat([])
+            .filter(outcome => outcome.createdAt);
 
         if (outcomes.length == 1) {
-            let clone = JSON.parse(JSON.stringify(outcomes[0]));
+            const clone = outcomes[0].clone();
+            clone.createdAt = new Date(
+                (clone.createdAt?.getTime() || 0) + 1000
+            );
             outcomes.push(clone);
         }
 
         return ["knowledge", "behaviour", "status"].map((key, index) => {
-            let series = [
+            const series = [
                 {
                     name: payload.ratings[index].title,
-                    data: outcomes
-                        .filter((outcome: Outcome) => outcome.createdAt)
-                        .map((outcome: Outcome) => {
-                            let value = (outcome as any)[key];
-                            return {
-                                x: outcome.createdAt,
-                                y: value.observation,
-                                comment: value.comment
-                            };
-                        })
+                    data: outcomes.map((outcome: Outcome) => {
+                        const value = (outcome as any)[key];
+                        return {
+                            x: outcome.createdAt,
+                            y: value.observation,
+                            comment: value.comment
+                        };
+                    })
                 },
                 {
                     name: payload.expectation,
                     data: outcomes.map((outcome: any) => {
-                        let value = outcome[key];
+                        const value = outcome[key];
                         return {
                             x: outcome.createdAt || new Date(),
                             y: value.expectation
@@ -100,25 +76,21 @@ export default createGetters<StoreState>()({
                 }
             ];
 
-            let group = ["summary", payload.customerId, payload.problemId].join(
+            const group = ["summary", payload.clientId, payload.problemId].join(
                 "."
             );
-            let id = [group, key].join(".");
+            const id = [group, key].join(".");
 
             let options: any = {
                 chart: {
                     id: id,
                     group: group,
                     events: {
-                        mounted: (chartContext: any, config: any) => {
+                        mounted: (chartContext: any) => {
                             chartContext.updateOptions({}, true, true, false);
                             ApexCharts.exec(id, "render", {});
                         },
-                        mouseMove: (
-                            event: MouseEvent,
-                            chartContext: any,
-                            config: any
-                        ) => {}
+                        mouseMove: () => {}
                     },
                     toolbar: {
                         show: false
@@ -149,9 +121,9 @@ export default createGetters<StoreState>()({
                     y: {
                         formatter: (
                             value: any,
-                            { series, seriesIndex, dataPointIndex, w }: any
+                            { seriesIndex, dataPointIndex, w }: any
                         ) => {
-                            let comment =
+                            const comment =
                                 w.config.series[seriesIndex].data[
                                     dataPointIndex
                                 ].comment;
@@ -189,7 +161,7 @@ export default createGetters<StoreState>()({
                         enabled: true
                     },
                     events: {
-                        mounted: (chartContext: any, config: any) => {
+                        mounted: (chartContext: any) => {
                             chartContext.updateOptions({}, true, true, false);
                             ApexCharts.exec(id, "render", {});
                         }
@@ -231,7 +203,7 @@ export default createGetters<StoreState>()({
                     tooltip: {
                         enabled: true,
                         offsetY: -35,
-                        formatter: function(val: number, opts: any) {
+                        formatter: function(val: number) {
                             return format(val, payload.locale);
                         }
                     }
@@ -246,25 +218,25 @@ export default createGetters<StoreState>()({
                 }
             };
 
-            let lastObservation = series[0].data[series[0].data.length - 1];
+            const lastObservation = series[0].data[series[0].data.length - 1];
 
             if (lastObservation.y == 0) {
                 return;
             }
 
-            let lastExpectation =
+            const lastExpectation =
                 ((series[1] || {}).data || [])[series[1].data.length - 1] || {};
-            let lastObservationTitle =
+            const lastObservationTitle =
                 payload.ratings[index].scale[lastObservation.y - 1].title;
-            let lastExpectationText = lastExpectation.y
+            const lastExpectationText = lastExpectation.y
                 ? " / " + lastExpectation.y
                 : "";
-            let title =
+            const title =
                 payload.ratings[index].title +
-                " " +
+                ": " +
                 lastObservation.y +
                 lastExpectationText;
-            let subtitle = lastObservationTitle;
+            const subtitle = lastObservationTitle;
 
             return {
                 series: series,
@@ -277,29 +249,15 @@ export default createGetters<StoreState>()({
         });
     },
 
-    symptomsForProblemCode: state => ({
-        problemCode,
-        terminology
-    }: {
-        problemCode: string;
-        terminology: Terminology;
-    }): any[] => {
-        let problemTerminology = TerminologyData.flattenedProblems(
-            terminology
-        ).find(problem => problem.code == problemCode);
-
-        if (!problemTerminology) {
-            return [];
+    getRouteParamsForLatestProblem: () => (payload: any): any => {
+        const client = store.getters.getClient(payload);
+        if (!client) {
+            return {};
         }
-        return problemTerminology.signsAndSymptoms.map(symptom => {
-            return { label: symptom.title, value: symptom.code };
-        });
-    },
 
-    otherSymptomForProblemCode: state => (payload: any) => {
-        let symptoms = store.getters.symptomsForProblemCode(
-            payload
-        ) as HasTitleCode[];
-        return symptoms[symptoms.length - 1];
+        return {
+            clientId: client._id,
+            problemId: client.problems[client.problems.length - 1].id
+        };
     }
 });

@@ -7,7 +7,10 @@
             <div class="text-h5 text-center">{{ $t("welcome") }}!</div>
           </q-card-section>
           <q-card-section>
-            <p v-if="errorMsg" class="text-red q-mt-md">{{ errorMsg }}</p>
+            <p
+              v-if="errorMsg"
+              class="text-red q-mt-md"
+            >{{ errorMsg }}</p>
             <q-form class="q-gutter-md">
               <q-input
                 clearable
@@ -56,7 +59,6 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { StitchUser, UserPasswordCredential } from "mongodb-stitch-browser-sdk";
 
 @Component
 export default class PageLogin extends Vue {
@@ -66,13 +68,10 @@ export default class PageLogin extends Vue {
   errorMsg = "";
 
   doLogin() {
-    // console.log('logging in...', this.email, this.password);
-    const credential = new UserPasswordCredential(this.email, this.password);
-    this.$stitchApi.stitch.auth
-      .loginWithCredential(credential)
-      .then(user => {
-        // console.log(`Logged in as user with id: ${user.id}`);
-        this.$router.push({ name: "index" });
+    this.$ccApi
+      .login(this.email, this.password)
+      .then(() => {
+        this.$router.push({ name: "client" });
       })
       .catch(err => {
         this.errorMsg = err.message;

@@ -53,7 +53,7 @@ module.exports = {
   rules: {
     "prefer-promise-reject-errors": "off",
     quotes: ["warn", "double"],
-    "@typescript-eslint/indent": ["warn", 2],
+    "@typescript-eslint/indent": "off",
 
     // allow console.log during development only
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",

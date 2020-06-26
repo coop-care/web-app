@@ -1,18 +1,19 @@
 <template>
   <q-layout view="hHh Lpr lff">
-    <q-header elevated>
-      <q-toolbar>
+    <q-header class="bg-white">
+      <q-toolbar
+        :class="'shadow-3 bg-primary ' + ($q.screen.lt.sm ? 'q-px-none' : '')"
+        style="z-index: 1000"
+      >
         <q-btn
-          v-if="$router.currentRoute.name == 'index' && $q.screen.lt.md"
-          dense
-          no-caps
+          v-if="$router.currentRoute.name.startsWith('client')  && $q.screen.lt.md"
           flat
           icon="menu"
           aria-label="menu"
-          @click="$root.$emit('toggleCustomerDrawer')"
+          @click="$root.$emit('toggleClientDrawer')"
         />
         <q-btn
-          v-if="!['index', 'login'].includes($router.currentRoute.name)"
+          v-if="!['client', 'clientReminders', 'clientReport', 'clientHistory', 'clientMasterData', 'login'].includes($router.currentRoute.name)"
           size="lg"
           dense
           no-caps
@@ -21,93 +22,43 @@
           :ripple="false"
           @click="$router.back()"
         />
-        <q-toolbar-title>
-          <q-btn
-            size="lg"
-            dense
-            no-caps
-            flat
-            label=""
-            :ripple="false"
-            to="/"
-            v-if="$q.screen.gt.xs"
-            class="hidden"
-          />
+
+        <q-toolbar-title class="text-center">
+          <div :class="'ellipsis title-text ' + (subtitle ? 'has-subtitle' : '')">{{ title }}</div>
+          <div class="ellipsis text-caption title-text">{{ subtitle }}</div>
         </q-toolbar-title>
 
-        <q-btn-dropdown
-          v-if="isLoggedIn()"
-          icon="account_circle"
-          no-caps
-          flat
-          dense
-          class="hide-arrow"
-        >
-          <q-list>
-            <q-item-label header
-              ><div>{{ $t("accountWelcomeMessage") }}</div>
-              <div class="q-mt-xs text-bold">
-                {{ username() }}
-              </div></q-item-label
-            >
-            <q-item clickable @click="logout">
-              <q-item-section>{{ $t("logout") }}</q-item-section>
-            </q-item>
-
-            <q-separator />
-
-            <q-item-label header>{{ $t("databaseTestSettings") }}</q-item-label>
-            <q-item clickable @click="addSamplesToDB">
-              <q-item-section>{{ $t("databaseInsertSamples") }}</q-item-section>
-            </q-item>
-            <q-item clickable @click="clearDB">
-              <q-item-section>{{ $t("databaseClearAll") }}</q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
-
-        <q-separator v-if="isLoggedIn()" vertical inset spaced dark />
-
-        <q-btn-dropdown
-          :label="$root.$i18n.locale.split('-')[0]"
-          icon="language"
-          dense
-          auto-close
-          flat
-          class="hide-arrow"
-        >
-          <q-list>
-            <q-item
-              clickable
-              v-for="(locale, index) in $root.$i18n.availableLocales"
-              :key="index"
-              :active="$root.$i18n.locale === locale"
-              @click="
-                $root.$i18n.locale = locale;
-                $root.$emit('didChangeLocale', locale);
-              "
-            >
-              <q-item-section>
-                <q-item-label>{{ $t(locale) }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-btn-dropdown>
-
-        <q-separator vertical inset spaced dark />
+        <user-menu v-if="$ccApi.isLoggedIn" />
+        <dev-menu v-if="$ccApi.isLoggedIn" />
 
         <q-btn
-          size="md"
-          dense
-          no-caps
+          v-else
+          :label="$root.$i18n.locale.split('-')[0]"
+          icon="fas fa-globe"
+          stretch
           flat
-          :label="$t('feedback')"
-          icon="feedback"
-          :ripple="false"
-          type="a"
-          :href="mailto"
-        />
+          class="hide-arrow"
+        >
+          <language-menu />
+        </q-btn>
       </q-toolbar>
+      <transition
+        enter-active-class="animated fadeInDown"
+        leave-active-class="animated fadeOutUp"
+      >
+        <q-banner
+          v-if="isOffline"
+          dense
+          class="bg-negative text-white text-center q-py-xs"
+          style="height: 32px"
+        >
+          <div class="text-caption text-weight-medium ellipsis">{{ $t("offlineBanner") }}</div>
+        </q-banner>
+      </transition>
+      <div
+        class="absolute-full overflow-hidden no-pointer-events"
+        style="bottom: -10px"
+      ></div>
     </q-header>
 
     <q-page-container>
@@ -120,53 +71,93 @@
 .q-btn-dropdown.hide-arrow
   .q-btn-dropdown__arrow
     display: none
+.title-text
+  line-height: 1.2rem
+  &.has-subtitle
+    font-size: 1.25rem
+  &.text-caption
+    font-size: 0.8rem
 </style>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import UserMenu from "../components/UserMenu.vue";
+import LanguageMenu from "../components/LanguageMenu.vue";
+import DevMenu from "../components/DevMenu.vue";
 
-@Component
+@Component({
+  components: {
+    UserMenu,
+    LanguageMenu,
+    DevMenu
+  },
+  meta() {
+    return {
+      meta: {
+        google: { name: "google", content: "notranslate" },
+        contentLanguage: {
+          "http-equiv": "Content-Language",
+          content: this.$root.$i18n.locale
+        }
+      }
+    };
+  }
+})
 export default class MyLayout extends Vue {
-  get mailto() {
-    return (
-      "mailto:feedback@cooperativecare.de?subject=CoopCare Feedback&body=" +
-      encodeURIComponent("\n\n\n––––––––––––––––––––\n") +
-      "Einige freiwillige technische Angaben, die uns beim Nachvollziehen des Feedbacks helfen:" +
-      encodeURIComponent("\n\nBrowser: ") +
-      this.$q.platform.userAgent +
-      encodeURIComponent("\nRoute: ") +
-      this.$router.currentRoute.path
-    );
-  }
+  isOffline = !window.navigator.onLine;
 
-  isLoggedIn() {
-    return this.$stitchApi.stitch.auth.isLoggedIn;
-  }
+  get title() {
+    const route = this.$route;
 
-  username() {
-    let name = undefined;
-    const user = this.$stitchApi.stitch.auth.user;
-    if (user) {
-      name = user.profile.email;
+    if (route.path.startsWith("/client")) {
+      if (this.selectedClient) {
+        return this.selectedClient.masterData.name;
+      } else if (route.params.clientId == "new") {
+        return this.$t("newClient");
+      } else {
+        return this.$tc("client", 2);
+      }
+    } else if (["userSettings", "teamSettings"].includes(route.name || "")) {
+      return this.$t(route.name || "");
+    } else {
+      return "";
     }
-    return name;
+  }
+  get subtitle() {
+    const route = this.$route;
+
+    if (
+      this.record &&
+      [
+        "problem",
+        "classification",
+        "outcome",
+        "intervention",
+        "interventions"
+      ].includes(route.name || "")
+    ) {
+      return this.$t(this.record.problem.title);
+    } else if (route.name == "problemsByDiagnosis") {
+      return this.$t("problemAdmissionByDiagnosis");
+    } else {
+      return "";
+    }
+  }
+  get selectedClient() {
+    return this.$store.direct.getters.getClient(this.$route.params);
+  }
+  get record() {
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
-  logout() {
-    // console.log('logging out...');
-    this.$store.commit("setCustomer", null);
-    this.$stitchApi.stitch.auth
-      .logout()
-      .then(() => this.$router.push({ name: "login" }));
+  updateOfflineStatus() {
+    this.isOffline = !window.navigator.onLine;
   }
 
-  addSamplesToDB() {
-    this.$store.dispatch("addSamplesToDB");
-  }
-
-  clearDB() {
-    this.$store.dispatch("clearDB");
+  mounted() {
+    window.addEventListener("online", this.updateOfflineStatus);
+    window.addEventListener("offline", this.updateOfflineStatus);
   }
 }
 </script>

@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueI18n from "vue-i18n";
 // @ts-ignore
-import messages from "src/i18n";
+import messages from "src/i18n/index";
 import Quasar from "quasar";
 
 Vue.use(VueI18n);
@@ -14,12 +14,10 @@ function matchLocale(
     let resultingLocale = locale;
 
     if (!availableLocales.includes(resultingLocale)) {
-        let shortLocale = locale.split("-")[0];
+        const shortLocale = locale.split("-")[0];
         resultingLocale = shortLocale;
 
         if (!availableLocales.includes(resultingLocale)) {
-            let shortToCompleteLocaleMap: { [key: string]: string } = {};
-
             resultingLocale =
                 availableLocales.find(locale => {
                     return shortLocale == locale.split("-")[0];
@@ -30,14 +28,17 @@ function matchLocale(
     return resultingLocale;
 }
 
+// @ts-ignore
+const defaultLocale = Quasar.lang.isoName;
+
 const i18n = new VueI18n({
     locale: matchLocale(
         // @ts-ignore
         Quasar.lang.getLocale(),
         Object.keys(messages),
-        "en-us"
+        defaultLocale
     ),
-    fallbackLocale: "en-us",
+    fallbackLocale: defaultLocale,
     messages
 });
 

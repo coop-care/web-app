@@ -1,42 +1,23 @@
-export module Download {
-    export function ts(data: any, filename: string) {
-        let json = JSON.stringify(
-            data,
-            (key, value) => {
-                if (
-                    ["title", "description", "titles", "descriptions"].includes(
-                        key
-                    )
-                ) {
-                    return undefined;
-                }
-                if (value === undefined) {
-                    return null;
-                }
-                return value;
-            },
-            2
-        );
-        json = json
-            .replace(/At\": (\".+\")/g, 'At": new Date($1)')
-            .replace(/\": null/g, '": undefined')
-            .replace(/\"(.+)\":/g, "$1:")
-            .replace(/assessment: \[\]/g, "assessment: [] as Store.Note[]")
-            .replace(/^\]$/m, "] as Store.Customer[];\n")
-            .replace(
-                /^\[$/m,
-                'import * as Store from "../store/index";\n\nexport default ['
-            );
-        let jsonUri =
-            "data:application/json;charset=utf-8," + encodeURIComponent(json);
-        let exportFileDefaultName = encodeURIComponent(filename);
-        generic(exportFileDefaultName, jsonUri);
-    }
+export function download(filename: string, dataUri: string) {
+    const linkElement = document.createElement("a");
+    linkElement.setAttribute("href", dataUri);
+    linkElement.setAttribute("download", filename);
+    linkElement.click();
+}
 
-    export function generic(filename: string, dataUri: string) {
-        let linkElement = document.createElement("a");
-        linkElement.setAttribute("href", dataUri);
-        linkElement.setAttribute("download", filename);
-        linkElement.click();
-    }
+export function downloadJSON(data: any, filename: string) {
+    const json = JSON.stringify(
+        data,
+        (key, value) => {
+            if (["_id", "user_id"].includes(key)) {
+                return undefined;
+            }
+            return value;
+        },
+        2
+    );
+    const jsonUri =
+        "data:application/json;charset=utf-8," + encodeURIComponent(json);
+    const exportFileDefaultName = encodeURIComponent(filename);
+    download(exportFileDefaultName, jsonUri);
 }

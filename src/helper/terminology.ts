@@ -1,5 +1,3 @@
-import * as Core from "../helper/coreTypes";
-
 export interface HasTitle {
     title: string;
 }
@@ -33,8 +31,11 @@ export interface Problem extends HasTitleDescriptionCode {
     signsAndSymptoms: HasTitleCode[];
 }
 export interface InterventionScheme extends HasTitle {
-    categories: HasTitleDescriptionCode[];
+    categories: Category[];
     targets: HasTitleDescriptionCode[];
+}
+export interface Category extends HasTitleDescriptionCode {
+    icon?: string;
 }
 export interface ProblemRatingScale extends HasTitle {
     ratings: Rating[];
@@ -42,156 +43,140 @@ export interface ProblemRatingScale extends HasTitle {
 export interface Rating extends HasTitleDescription {
     scale: HasTitle[];
 }
+export interface TerminologyWithMaps extends Terminology {
+    problemByCode: { [key: string]: Problem };
+    symptomByCode: { [key: string]: HasTitleCode };
+    categoryByCode: { [key: string]: HasTitleDescriptionCode };
+    targetByCode: { [key: string]: HasTitleDescriptionCode };
+    icons: {
+        severity: string[];
+        scope: string[];
+        priority: string[];
+        category: { [key: string]: string };
+    };
+}
 
-export default {
-    treeify: function(list: any[], key: string): any {
-        let lastIndex = list.length - 1;
-        return list.map((item, index) => {
-            let result: any = {
-                id: ["domains", "problems"].includes(key)
-                    ? key + "." + item.code
-                    : item.code,
-                title: item.title,
-                label: item.title,
-                value: item.code,
-                description: item.description,
-                type: key,
-                header: key,
-                body: key,
-                selectable: key == "problems"
+export interface UsersGuide {
+    [key: string]: {
+        interventionSuggestions: {
+            [key: string]: {
+                [key: string]: string[];
             };
+        };
+        problemRatingScaleExamples: {
+            ratings: {
+                scale: {
+                    title: string;
+                }[];
+            }[];
+        };
+        severityModifierExamples: string[];
+    };
+}
 
-            for (let key in item) {
-                let value = item[key];
-                if (Array.isArray(value)) {
-                    result.children = this.treeify(value, key);
-                }
+export function treeifyTerminology(
+    list: HasTitleDescriptionCode[],
+    key: string
+): any {
+    return list.map(item => {
+        const result: any = {
+            id: ["domains", "problems"].includes(key)
+                ? key + "." + item.code
+                : item.code,
+            title: item.title,
+            label: item.title,
+            value: item.code,
+            description: item.description,
+            type: key,
+            header: key,
+            body: key,
+            selectable: key == "problems"
+        };
+
+        for (const key in item) {
+            const value = (item as any)[key];
+            if (Array.isArray(value)) {
+                result.children = treeifyTerminology(value, key);
             }
+        }
 
-            return result;
-        });
-    },
+        return result;
+    });
+}
 
-    filter: function(node: HasTitleDescription, filter: string) {
-        let regex = new RegExp(
-            "(^|\\b)" + filter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
-            "gi"
+export function filterTerminology(node: HasTitleDescription, filter: string) {
+    const regex = new RegExp(
+        "(^|\\b)" + filter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
+        "gi"
+    );
+    return (
+        (!!node.title && node.title.match(regex)) ||
+        (!!node.description && node.description.match(regex))
+    );
+}
+
+export function sortByTitle(a: HasTitle, b: HasTitle): number {
+    return a.title.localeCompare(b.title);
+}
+
+export function flattenedProblems(terminology: Terminology): Problem[] {
+    return terminology.problemClassificationScheme.domains
+        .map(domain => domain.problems)
+        .reduce(
+            (previous, current) => previous.concat(current),
+            [] as Problem[]
         );
-        return (
-            (node.title && node.title.match(regex)) ||
-            (node.description && node.description.match(regex))
-        );
-    },
+}
 
-    sortByTitle: function(a: HasTitle, b: HasTitle): number {
-        return a.title.localeCompare(b.title);
-    },
+export function makeTerminologyWithMaps(terminology: Terminology) {
+    const result: TerminologyWithMaps = {
+        title: terminology.title,
+        problemClassificationScheme: terminology.problemClassificationScheme,
+        interventionScheme: terminology.interventionScheme,
+        problemRatingScale: terminology.problemRatingScale,
+        problemByCode: {},
+        symptomByCode: {},
+        categoryByCode: {},
+        targetByCode: {},
+        icons: {
+            severity: [],
+            scope: [],
+            priority: [],
+            category: {}
+        }
+    };
 
-    mergeProblemRecordsAndTerminology: function(
-        problemRecords: Core.ProblemRecord[],
-        terminology: Terminology
-    ): Core.ProblemRecord[] {
-        let problemsTerminology = this.flattenedProblems(terminology);
-        let modifiersTerminology =
-            terminology.problemClassificationScheme.modifiers;
-        let categoriesTerminology = terminology.interventionScheme.categories;
-        let targetsTerminology = terminology.interventionScheme.targets;
-        // let ratingsTerminology = terminology.problemRatingScale.ratings;
-        // let knowledgeTerminology = ratingsTerminology[0];
-        // let behaviourTerminology = ratingsTerminology[1];
-        // let statusTerminology = ratingsTerminology[2];
+    flattenedProblems(terminology).forEach(problem => {
+        result.problemByCode[problem.code] = problem;
 
-        return problemRecords.map(record => {
-            let problemTerminology = problemsTerminology.find(
-                problemTerminology =>
-                    problemTerminology.code == record.problem.id
-            );
-
-            if (problemTerminology) {
-                record.problem.title = problemTerminology.title;
-                record.problem.description = problemTerminology.description;
-
-                record.problem.signsAndSymptoms.map(symptom => {
-                    //@ts-ignore
-                    let symptomTerminology = problemTerminology.signsAndSymptoms.find(
-                        symptomTerminology =>
-                            symptomTerminology.code == symptom.id
-                    );
-
-                    if (symptomTerminology) {
-                        symptom.title = symptomTerminology.title;
-                    }
-                    return symptom;
-                });
-            }
-
-            record.problem.titles = {
-                scope: modifiersTerminology.scope[record.problem.scope].title,
-                severity:
-                    modifiersTerminology.severity[record.problem.severity]
-                        .title,
-                priorityKey: record.problem.isHighPriority
-                    ? "highPriorityTitle"
-                    : "lowPriorityTitle"
-            };
-            record.problem.descriptions = {
-                scope:
-                    modifiersTerminology.scope[record.problem.scope]
-                        .description,
-                severity:
-                    modifiersTerminology.severity[record.problem.severity]
-                        .description,
-                priorityKey: record.problem.isHighPriority
-                    ? "highPriorityDescription"
-                    : "lowPriorityDescription"
-            };
-
-            record.interventions = record.interventions.map(intervention => {
-                let categoryTerminology = categoriesTerminology.find(
-                    categoryTerminology =>
-                        categoryTerminology.code == intervention.category.id
-                );
-
-                if (categoryTerminology) {
-                    intervention.category.title = categoryTerminology.title;
-                    intervention.category.description =
-                        categoryTerminology.description;
-                }
-
-                let targetTerminology = targetsTerminology.find(
-                    targetTerminology =>
-                        targetTerminology.code == intervention.target.id
-                );
-
-                if (targetTerminology) {
-                    intervention.target.title = targetTerminology.title;
-                    intervention.target.description =
-                        targetTerminology.description;
-                }
-
-                return intervention;
-            });
-
-            // record.outcomes = record.outcomes.map(outcome => {
-            //   outcome.knowledge.title = knowledgeTerminology.title;
-            //   outcome.knowledge.description = knowledgeTerminology.description;
-            //   outcome.behaviour.title = behaviourTerminology.title;
-            //   outcome.behaviour.description = behaviourTerminology.description;
-            //   outcome.status.title = statusTerminology.title;
-            //   outcome.status.description = statusTerminology.description;
-            //   return outcome;
-            // });
-
-            return record;
+        problem.signsAndSymptoms.forEach(symptom => {
+            const code = problem.code + "_" + symptom.code;
+            result.symptomByCode[code] = symptom;
         });
-    },
+    });
 
-    flattenedProblems: function(terminology: Terminology): Problem[] {
-        return terminology.problemClassificationScheme.domains
-            .map(domain => domain.problems)
-            .reduce(
-                (previous, current) => previous.concat(current),
-                [] as Problem[]
-            );
-    }
-};
+    result.icons.category = {
+        "01": "fas fa-comment-medical",
+        "02": "fas fa-band-aid",
+        "03": "fas fa-project-diagram",
+        "04": "fas fa-eye"
+    };
+
+    terminology.interventionScheme.categories.forEach(category => {
+        category.icon = result.icons.category[category.code];
+        result.categoryByCode[category.code] = category;
+    });
+    terminology.interventionScheme.targets.forEach(target => {
+        result.targetByCode[target.code] = target;
+    });
+
+    result.icons.severity = [
+        "fas fa-grin-wink",
+        "fas fa-smile",
+        "fas fa-frown-open"
+    ];
+    result.icons.scope = ["fas fa-user", "fas fa-user-friends", "fas fa-users"];
+    result.icons.priority = ["fas fa-arrow-down", "fas fa-arrow-up"];
+
+    return result;
+}

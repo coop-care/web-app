@@ -11,7 +11,7 @@
           color="classification"
           filled
           v-model="problemsFilter"
-          :label="$t('selectProblem')"
+          :label="$t('findProblem')"
           dense
         >
           <template v-slot:prepend>
@@ -39,6 +39,7 @@
           :filter-method="filterTerminology"
           :no-results-label="$t('noProblemsFound')"
           color="classification"
+          ref="problems"
         >
           <template v-slot:header-domains="prop">
             <div class="row items-center text-white">
@@ -61,24 +62,35 @@
               />
               <div class="col">
                 <div class="text-weight-bold text-classification">
-                  {{ prop.node.title }}
+                  <text-with-highlights
+                    :text="prop.node.title"
+                    :regex="filterRegex"
+                    classesForMatches="text-underline text-weight-bolder"
+                  />
                 </div>
                 <div class="text-weight-light text-black">
-                  {{ prop.node.description }}
+                  <text-with-highlights
+                    :text="prop.node.description"
+                    :regex="filterRegex"
+                    classesForMatches="text-underline text-weight-bolder"
+                  />
                 </div>
               </div>
             </div>
           </template>
-          <template
-            v-slot:body-problems="prop"
-            class="symptom-body"
-          >
+          <template v-slot:body-problems>
             <div class="text-weight-light text-black">
               {{ $t("signsAndSymptoms") }}:
             </div>
           </template>
           <template v-slot:header-signsAndSymptoms="prop">
-            <div class="text-weight-light">{{ prop.node.title }}</div>
+            <div class="text-weight-light">
+              <text-with-highlights
+                :text="prop.node.title"
+                :regex="filterRegex"
+                classesForMatches="text-underline text-weight-bolder"
+              />
+            </div>
           </template>
         </q-tree>
       </div>
@@ -97,7 +109,7 @@
           class="q-mb-xs"
         />
         <div class="text-weight-light q-mb-md q-px-lg">
-          {{ record.problem.descriptions.scope }}
+          {{ $t(problem.scope.description) }}
         </div>
         <q-btn-toggle
           v-model="severity"
@@ -111,7 +123,11 @@
           class="q-mb-xs"
         />
         <div class="text-weight-light q-mb-md q-px-lg">
-          {{ record.problem.descriptions.severity }}
+          <text-with-tooltip
+            :text="$t(problem.severity.description)"
+            :tooltip="severityModifierExample ? $t('examplePrefix', {text: severityModifierExample}) : ''"
+            class="text-weight-light q-my-xs"
+          />
         </div>
 
         <h6
@@ -134,8 +150,6 @@
           color="classification"
           autogrow
           :autofocus="!details"
-          dense
-          filled
           :label="$t('otherSignsAndSymptoms')"
           class="q-ml-xl"
         />
@@ -143,15 +157,15 @@
         <q-input
           v-if="severity < 2"
           v-model="details"
-          :label="severity == 0 ? $t('customerRequestLabel') : $t('riskFactorLabel')"
+          :label="
+            severity == 0 ? $t('clientRequestLabel') : $t('riskFactorLabel')
+          "
           autogrow
           :autofocus="!details"
           color="classification"
-          filled
-          dense
         />
 
-        <h6 class="counter">{{ $t("priority") }}</h6>
+        <h6 class="counter">{{ $t("priorityTitle") }}</h6>
         <q-btn-toggle
           v-model="priority"
           spread
@@ -164,7 +178,7 @@
           class="q-mb-xs"
         />
         <div class="text-weight-light q-mb-md q-px-lg">
-          {{ $t(record.problem.descriptions.priorityKey) }}
+          {{ $t(problem.priority.description) }}
         </div>
         <q-input
           v-if="!priority"
@@ -173,8 +187,6 @@
           autogrow
           :autofocus="!priorityDetails"
           color="classification"
-          filled
-          dense
           bottom-slots
           :hint="$t('lowPriorityReasonHint')"
         />
@@ -198,12 +210,14 @@
 .problem-classification
   .q-tree > .q-tree__node > .q-tree__node-header
     background-color: $classification
+    background-color: var(--q-color-classification)
     color: #fff
   .q-tree__node .q-tree__node .q-tree__node .q-tree__node-header
     padding-top: 0
     padding-bottom: 0
   .q-btn-toggle
     border-color: $classification
+    border-color: var(--q-color-classification)
     button
       @media screen and (max-width: $breakpoint-xs-max)
         font-size: 13px
@@ -212,139 +226,200 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import TerminologyData, {
+import {
   HasTitleDescription,
-  Terminology
+  TerminologyWithMaps,
+  treeifyTerminology,
+  filterTerminology,
+  UsersGuide
 } from "../helper/terminology";
-import { QInput } from "quasar";
+import { QInput, QTree } from "quasar";
 import ProblemSummary from "../components/ProblemSummary.vue";
-import * as Core from "../helper/coreTypes";
+import { Problem } from "../models/problem";
+import TextWithHighlights from "./TextWithHighlights.vue";
+import TextWithTooltip from "./TextWithTooltip.vue";
 
 @Component({
   components: {
-    ProblemSummary
+    ProblemSummary,
+    TextWithHighlights,
+    TextWithTooltip
   }
 })
 export default class ProblemClassification extends Vue {
   problemsFilter = "";
+  $refs!: {
+    filter: QInput;
+    problems: QTree;
+  };
 
   get selectedProblem() {
-    return this.record.problem.id;
+    return this.problem.code;
   }
   set selectedProblem(value: string) {
-    this.updateProblemRecord("problem.id", value);
+    this.updateProblem("code", value);
   }
   get selectedSymptoms() {
-    return this.record.problem.signsAndSymptoms.map(
-      (symptom: any) => symptom.id
-    );
+    return this.problem.signsAndSymptomsCodes;
   }
-  set selectedSymptoms(value: string[]) {
+  set selectedSymptoms(values: string[]) {
     // preserving order of symptoms is super important because of "other" symptom
-    let symptoms = this.symptomsForSelectedProblem
-      .map((symptom: any) => {
-        return { id: symptom.value };
-      })
-      .filter((symptom: any) => value.includes(symptom.id));
-    this.updateProblemRecord("problem.signsAndSymptoms", symptoms);
+    const codes = this.symptomsForSelectedProblem
+      .filter(symptom => values.includes(symptom.value))
+      .map(symptom => symptom.value);
+    this.updateProblem("signsAndSymptomsCodes", codes);
   }
   get scope() {
-    return this.record.problem.scope;
+    return this.problem.scopeCode;
   }
   set scope(value: number) {
-    this.updateProblemRecord("problem.scope", value);
+    this.updateProblem("scopeCode", value);
   }
   get severity() {
-    return this.record.problem.severity;
+    return this.problem.severityCode;
   }
   set severity(value: number) {
-    this.updateProblemRecord("problem.severity", value);
+    this.updateProblem("severityCode", value);
   }
   get priority() {
-    return this.record.problem.isHighPriority;
+    return this.problem.isHighPriority;
   }
   set priority(value: boolean) {
-    this.updateProblemRecord("problem.isHighPriority", value);
+    this.updateProblem("isHighPriority", value);
   }
   get details() {
-    return this.record.problem.details;
+    return this.problem.details;
   }
   set details(value: string) {
-    this.updateProblemRecord("problem.details", value);
+    this.updateProblem("details", value);
   }
   get priorityDetails() {
-    return this.record.problem.priorityDetails;
+    return this.problem.priorityDetails;
   }
   set priorityDetails(value: string) {
-    this.updateProblemRecord("problem.priorityDetails", value);
+    this.updateProblem("priorityDetails", value);
   }
 
   get problems() {
-    let domains = this.terminology.problemClassificationScheme.domains;
-    return TerminologyData.treeify(domains, "domains");
+    const domains = this.terminology.problemClassificationScheme.domains;
+    return treeifyTerminology(domains, "domains");
   }
   get symptomsForSelectedProblem() {
-    return this.$store.getters.symptomsForProblemCode({
-      problemCode: this.selectedProblem,
-      terminology: this.terminology
+    const problem = this.terminology.problemByCode[this.selectedProblem] || {};
+    return (problem.signsAndSymptoms || []).map(symptom => {
+      return { label: symptom.title, value: symptom.code };
     });
   }
   get showSymptomsSection() {
     return this.selectedProblem && this.severity == 2;
   }
   get isOtherSymptomSelected() {
-    let otherSymptom = this.$store.getters.otherSymptomForProblemCode({
-      problemCode: this.selectedProblem,
-      terminology: this.terminology
-    });
+    const symptoms = this.symptomsForSelectedProblem;
+    const otherSymptom = symptoms[symptoms.length - 1];
     return this.selectedSymptoms.includes(otherSymptom.value);
   }
   get priorityOptions() {
     return [
-      { label: this.$t("lowPriorityTitle"), value: false },
-      { label: this.$t("highPriorityTitle"), value: true }
+      {
+        label: this.$t("lowPriority.title"),
+        value: false,
+        icon: this.terminology.icons.priority[0]
+      },
+      {
+        label: this.$t("highPriority.title"),
+        value: true,
+        icon: this.terminology.icons.priority[1]
+      }
     ];
+  }
+  get filterRegex() {
+    if (!this.problemsFilter) {
+      return undefined;
+    } else {
+      return new RegExp(
+        "(^|\\b)" +
+          this.problemsFilter.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&"),
+        "gi"
+      );
+    }
+  }
+  get severityModifierExample() {
+    const usersGuide = (this.$t("usersGuide") as unknown) as UsersGuide;
+    const usersGuideForProblem = usersGuide[this.problem?.code || ""];
+    const examples = usersGuideForProblem?.severityModifierExamples || [];
+    return examples[this.severity];
   }
 
   get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
+    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
-    return this.$store.getters.getProblemRecordById({
-      terminology: this.terminology,
-      ...this.$route.params
-    }) as Core.ProblemRecord;
+    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
+  }
+  get problem() {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return this.record!.problem;
   }
 
-  updateProblemRecord(path: string, value: any) {
-    this.$store.commit("updateProblemRecord", {
-      path: path,
-      value: value,
-      ...this.$route.params
+  updateProblem(key: keyof Problem, value: any) {
+    const problemKey = (name: keyof Problem) => name;
+    const changes: any = {};
+    changes[key] = value;
+
+    if (["code", "severityCode"].includes(key)) {
+      changes[problemKey("signsAndSymptomsCodes")] = [];
+      changes[problemKey("details")] = "";
+    } else if (key == "isHighPriority" && !!value) {
+      changes[problemKey("priorityDetails")] = "";
+    }
+
+    this.$store.direct.commit.updateObject({
+      target: this.problem,
+      changes: changes,
+      clientId: this.$route.params.clientId,
+      problemId: this.record?.id
     });
   }
 
   modifier(type: string) {
-    let modifiers = this.terminology.problemClassificationScheme
+    const modifiers = this.terminology.problemClassificationScheme
       .modifiers as any;
-    let modifier = (modifiers[type] || []) as HasTitleDescription[];
+    const modifier = (modifiers[type] || []) as HasTitleDescription[];
 
     return modifier.map((item, index) => {
       return {
         label: item.title,
         value: index,
-        description: item.description
+        description: item.description,
+        icon: (this.terminology.icons as any)[type][index]
       };
     });
   }
 
   resetProblemsFilter() {
     this.problemsFilter = "";
-    (this.$refs.filter as QInput).focus();
+    this.$refs.filter.focus();
   }
 
   filterTerminology(node: HasTitleDescription, filter: string) {
-    return TerminologyData.filter(node, filter);
+    return filterTerminology(node, filter);
+  }
+
+  expandDomainForSelectedProblem() {
+    if (this.selectedProblem) {
+      const domain = this.terminology.problemClassificationScheme.domains.find(
+        domain =>
+          domain.problems.find(problem => problem.code == this.selectedProblem)
+      );
+
+      if (domain) {
+        this.$refs.problems.setExpanded("domains." + domain.code, true);
+      }
+    }
+  }
+
+  mounted() {
+    this.expandDomainForSelectedProblem();
   }
 }
 </script>

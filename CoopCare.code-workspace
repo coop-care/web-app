@@ -1,0 +1,21 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "editor.tabSize": 2,
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "prettier.tabWidth": 2,
+    "prettier.printWidth": 80,
+    "vetur.format.defaultFormatter.html": "js-beautify-html",
+    "vetur.validation.template": false,
+    "vetur.format.defaultFormatter.js": "vscode-typescript",
+    "i18n-ally.localesPaths": "src/i18n",
+    "i18n-ally.pathMatcher": "{locale}/index.json",
+    "i18n-ally.sourceLanguage": "de-de",
+    "i18n-ally.keystyle": "nested"
+  }
+}

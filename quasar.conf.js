@@ -11,7 +11,7 @@ module.exports = function(ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
-    boot: ["i18n"],
+    boot: ["i18n", "quasar-lang-pack"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.sass"],
@@ -26,7 +26,8 @@ module.exports = function(ctx) {
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       "roboto-font", // optional, you are not bound to it
-      "material-icons" // optional, you are not bound to it
+      "material-icons", // optional, you are not bound to it
+      "fontawesome-v5"
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
@@ -77,13 +78,33 @@ module.exports = function(ctx) {
         "QPopupEdit",
         "QBtnDropdown",
         "QForm",
-        "QCardActions"
+        "QCardActions",
+        "QChip",
+        "QExpansionItem",
+        "QCheckbox",
+        "QTooltip",
+        "QBadge",
+        "QTimeline",
+        "QTimelineEntry",
+        "QSelect",
+        "QTime",
+        "QPopupProxy",
+        "QDate",
+        "QToggle",
+        "QSpinner",
+        "QRouteTab",
+        "QMenu",
+        "QResizeObserver",
+        "QColor",
+        "QSpace",
+        "QPageSticky",
+        "QBanner"
       ],
 
-      directives: ["Ripple"],
+      directives: ["Ripple", "TouchSwipe", "ClosePopup"],
 
       // Quasar plugins
-      plugins: []
+      plugins: ["Meta", "Dialog"]
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
@@ -91,7 +112,8 @@ module.exports = function(ctx) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      scopeHoisting: true
+      scopeHoisting: true,
+      devtool: "source-map"
       // vueRouterMode: 'history',
       // showProgress: false,
       // gzip: true,
@@ -122,7 +144,7 @@ module.exports = function(ctx) {
 
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: [],
+    animations: ["fadeInDown", "fadeOutUp"],
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
@@ -132,15 +154,23 @@ module.exports = function(ctx) {
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       // workboxPluginMode: 'InjectManifest',
-      // workboxOptions: {}, // only for NON InjectManifest
+      workboxOptions: {
+        include: [/.*/],
+        navigateFallback: "index.html"
+      }, // only for NON InjectManifest
+      metaVariables: {
+        appleMobileWebAppStatusBarStyle: "black" //"black-translucent"
+      },
       manifest: {
-        // name: 'CoopCare',
-        // short_name: 'CoopCare',
-        // description: 'Omaha System based open source software for cooperative care teams',
+        name: "CoopCare",
+        short_name: "CoopCare",
+        description:
+          "Omaha System based open source software for cooperative care teams",
         display: "standalone",
         orientation: "portrait",
-        background_color: "#ffffff",
-        theme_color: "#027be3",
+        background_color: "#009688",
+        theme_color: "#009688",
+        start_url: "/",
         icons: [
           {
             src: "statics/icons/icon-128x128.png",

@@ -7,8 +7,8 @@
     <div class="row custom-gutter">
       <div class="col-12 col-sm-9 col-md-7">
         <div class="row q-pb-sm q-pa-xxs-none">
-          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
-            {{ $t("observation") }}
+          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11">
+            {{ $t("observedRating") }}:
           </div>
           <div class="col-12-xxs col-9">
             <div class="row">
@@ -27,22 +27,69 @@
                 text-color="outcome"
                 :options="options"
                 class="q-mx-sm col"
-              />
+                style="border-width: 2px"
+              >
+                <template v-slot:1>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="observationMouseover = 0"
+                    @before-hide="observationMouseover = -1"
+                  />
+                </template>
+                <template v-slot:2>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="observationMouseover = 1"
+                    @before-hide="observationMouseover = -1"
+                  />
+                </template>
+                <template v-slot:3>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="observationMouseover = 2"
+                    @before-hide="observationMouseover = -1"
+                  />
+                </template>
+                <template v-slot:4>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="observationMouseover = 3"
+                    @before-hide="observationMouseover = -1"
+                  />
+                </template>
+                <template v-slot:5>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="observationMouseover = 4"
+                    @before-hide="observationMouseover = -1"
+                  />
+                </template>
+              </q-btn-toggle>
               <q-icon
                 name="sentiment_very_satisfied"
                 color="positive"
                 size="lg"
               />
             </div>
-            <div class="text-center text-weight-light q-my-xs">
-              {{ scale[observation - 1] || "&nbsp;" }}
-            </div>
+            <text-with-tooltip
+              :text="observationScale"
+              :tooltip="observationExample"
+              class="text-center text-weight-light q-my-xs"
+            />
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm">
-            {{ $t("expectation") }}
+        <div
+          class="row"
+          style="opacity: 0.7"
+        >
+          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11">
+            {{ $t("expectedRating") }}:
           </div>
           <div class="col-12-xxs col-9">
             <div class="row">
@@ -61,16 +108,59 @@
                 text-color="outcome"
                 :options="options"
                 class="q-mx-sm col"
-              />
+              >
+                <template v-slot:1>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="expectationMouseover = 0"
+                    @before-hide="expectationMouseover = -1"
+                  />
+                </template>
+                <template v-slot:2>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="expectationMouseover = 1"
+                    @before-hide="expectationMouseover = -1"
+                  />
+                </template>
+                <template v-slot:3>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="expectationMouseover = 2"
+                    @before-hide="expectationMouseover = -1"
+                  />
+                </template>
+                <template v-slot:4>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="expectationMouseover = 3"
+                    @before-hide="expectationMouseover = -1"
+                  />
+                </template>
+                <template v-slot:5>
+                  <q-tooltip
+                    v-if="$q.platform.is.desktop"
+                    content-class="hidden"
+                    @before-show="expectationMouseover = 4"
+                    @before-hide="expectationMouseover = -1"
+                  />
+                </template>
+              </q-btn-toggle>
               <q-icon
                 name="sentiment_very_satisfied"
                 color="positive"
                 size="lg"
               />
             </div>
-            <div class="text-center text-weight-light q-my-xs">
-              {{ scale[expectation - 1] || "&nbsp;" }}
-            </div>
+            <text-with-tooltip
+              :text="expectationScale"
+              :tooltip="expectationExample"
+              class="text-center text-weight-light q-my-xs"
+            />
           </div>
         </div>
       </div>
@@ -93,7 +183,6 @@
             autogrow
             :autofocus="showComment && !comment"
             color="outcome"
-            filled
             dense
           />
         </div>
@@ -105,6 +194,7 @@
 <style lang="sass">
 .q-btn-toggle
   border-color: $outcome
+  border-color: var(--q-color-outcome)
 .custom-gutter
   margin-top: -24px
   margin-left: -24px
@@ -137,48 +227,102 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import { Rating } from "../models/rating";
+import TextWithTooltip from "./TextWithTooltip.vue";
 
-@Component({
+const RatingViewProps = Vue.extend({
   props: {
     title: String,
     description: String,
     scale: Array,
     type: String,
-    rating: Object
+    rating: Object,
+    examples: {
+      type: Array,
+      default: () => []
+    }
+  }
+});
+
+@Component({
+  components: {
+    TextWithTooltip
   }
 })
-export default class Rating extends Vue {
+export default class RatingView extends RatingViewProps {
+  observationMouseover = -1;
+  expectationMouseover = -1;
   showComment = false;
 
   get observation() {
-    return this.$props.rating.observation || 0;
+    return this.rating.observation || 0;
   }
   set observation(value: number) {
-    this.updateNewOutcome("observation", value);
+    this.updateNewOutcome({ observation: value });
   }
   get expectation() {
-    return this.$props.rating.expectation || 0;
+    return this.rating.expectation || 0;
   }
   set expectation(value: number) {
-    this.updateNewOutcome("expectation", value);
+    this.updateNewOutcome({ expectation: value });
   }
   get comment() {
-    return this.$props.rating.comment || "";
+    return this.rating.comment || "";
   }
   set comment(value: string) {
-    this.updateNewOutcome("comment", value);
+    this.updateNewOutcome({ comment: value });
   }
 
   get options() {
     return [1, 2, 3, 4, 5].map(value => {
-      return { label: "" + value, value: value };
+      return { label: "" + value, value: value, slot: value };
     });
   }
+  get observationScale() {
+    if (this.observationMouseover < 0) {
+      return this.scale[this.observation - 1] || " ";
+    } else {
+      return this.scale[this.observationMouseover];
+    }
+  }
+  get expectationScale() {
+    if (this.expectationMouseover < 0) {
+      return this.scale[this.expectation - 1] || " ";
+    } else {
+      return this.scale[this.expectationMouseover];
+    }
+  }
+  get observationExample() {
+    if (
+      (this.observationMouseover < 0 ||
+        this.observationMouseover == this.observation - 1) &&
+      this.examples[this.observation - 1]
+    ) {
+      return this.$t("examplePrefix", {
+        text: this.examples[this.observation - 1]
+      });
+    } else {
+      return "";
+    }
+  }
+  get expectationExample() {
+    if (
+      (this.expectationMouseover < 0 ||
+        this.expectationMouseover == this.expectation - 1) &&
+      this.examples[this.expectation - 1]
+    ) {
+      return this.$t("examplePrefix", {
+        text: this.examples[this.expectation - 1]
+      });
+    } else {
+      return "";
+    }
+  }
 
-  updateNewOutcome(path: string, value: any) {
-    this.$store.commit("updateNewOutcome", {
-      path: this.$props.type + "." + path,
-      value: value,
+  updateNewOutcome(changes: Partial<Rating>) {
+    this.$store.direct.commit.updateNewOutcome({
+      ratingType: this.type,
+      changes: changes,
       ...this.$route.params
     });
   }

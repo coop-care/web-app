@@ -5,11 +5,21 @@
   -moz-user-select: none
   -ms-user-select: none
   user-select: none
+.text-underline
+  text-decoration: underline
 .q-btn-toggle
   border-width: 1px
   border-style: solid
+  .q-btn .q-icon
+    margin-left: 6px
+    margin-right: 6px
+    font-size: 1.5em
+.q-card__section+.q-card__section
+  padding-top: 0
 .q-stepper__step
   counter-reset: section
+.dense-avatar .q-item__section--avatar
+  min-width: inherit
 .problem-classification, .problem-rating, .intervention
   h6
     margin: 1.5em 0 .5em
@@ -18,10 +28,23 @@
     &.counter:before
       counter-increment: section
       content: counter(section) ". "
+.intervention
+  .editable-intervention
+    counter-reset: intervention
+  .counter
+    margin: 0.75em 0 0em
+  .counter:before
+    counter-increment: intervention
+    content: counter(intervention) ". "
 .column-2
   column-count: 2
   column-gap: 2em
   @media screen and (max-width: $breakpoint-xs-max)
+    column-count: 1
+.column-2-sm
+  column-count: 2
+  column-gap: 2em
+  @media screen and (max-width: $breakpoint-sm-max)
     column-count: 1
 .column-3
   column-count: 3
@@ -34,13 +57,64 @@
   break-inside: avoid-column // IE 11
 .text-classification
   color: $classification
+  color: var(--q-color-classification)
 .bg-classification
   background: $classification
+  background: var(--q-color-classification)
 .text-outcome
   color: $outcome
+  color: var(--q-color-outcome)
 .bg-outcome
   background: $outcome
+  background: var(--q-color-outcome)
 .text-intervention
   color: $intervention
+  color: var(--q-color-intervention)
 .bg-intervention
   background: $intervention
+  background: var(--q-color-intervention)
+.border-primary
+  border-color: $primary
+  border-color: var(--q-color-primary)
+.radius-xs
+  border-radius: 4px
+.radius-sm
+  border-radius: 8px
+.radius-md
+  border-radius: 12px
+.radius-lg
+  border-radius: 16px
+.line-height-11
+  line-height: 1.1rem
+.line-height-12
+  line-height: 1.2rem
+.line-height-15
+  line-height: 1.5rem
+.q-tab
+  @media screen and (max-width: $breakpoint-xs-max)
+    padding: 0 4px
+.q-field--standard .q-field--borderless .q-field__control:before
+  border-color: transparent
+.limit-page-width
+  max-width: 1600px
+  margin-left: auto
+  margin-right: auto
+.link
+  cursor: pointer
+  &:hover
+    text-decoration: underline
+.no-bullet
+  list-style-type: none
+  margin: 0
+  padding: 0
+.signature
+  border-radius: 50%
+  padding: 0 2px 0 0
+  text-align: center
+  line-height: 2em
+  width: 2em
+  height: 2em
+  font-weight: 500
+  font-style: italic
+  span
+    font-size: 80%

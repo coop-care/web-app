@@ -1,60 +1,108 @@
 <template>
-  <q-card class="overflow-hidden">
-    <q-card-section>
+  <q-card
+    flat
+    bordered
+    class="overflow-hidden border-primary radius-sm"
+    v-if="!!record"
+  >
+    <q-card-section :class="sectionPadding + (sectionPadding ? ' q-pt-sm' : '')">
       <div v-if="isSummary">
-        <div class="text-subtitle2 text-weight-normal">{{ customerName }}:</div>
+        <div class="text-subtitle2 text-weight-normal">{{ clientName }}:</div>
         <div class="text-h6 text-classification">
-          {{ problem.title || $t("unspecifiedProblem") }}
+          {{ $t(problem.title) }}
         </div>
       </div>
-      <div v-else class="text-h6">
-        <q-btn
-          v-if="isDraft"
-          :label="$t('editDraft')"
-          icon="edit"
-          :to="{ name: 'problem', params: params }"
-          rounded
-          unelevated
-          dense
-          size="sm"
-          color="negative"
-          class="q-mr-xs q-px-sm"
-          style="font-size: 56%"
-        />
-        <q-btn
-          v-if="isDraft"
-          :label="$t('delete')"
-          icon="close"
-          @click="$store.commit('deleteDraftProblemRecord', params)"
-          rounded
-          unelevated
-          dense
-          size="sm"
-          color="negative"
-          class="q-mr-sm q-px-sm"
-          style="font-size: 56%"
-        />
-        <span class="text-classification">{{
-          problem.title || $t("unspecifiedProblem")
-        }}</span>
-        <span class="text-subtitle2 text-weight-light q-ml-xs">
-          {{ $t((problem.titles || {}).priorityKey) }},
-          {{ (problem.titles || {}).scope }}
-        </span>
+      <div
+        v-else
+        class="text-h6"
+      >
+        <div class="row justify-between">
+          <div class="text-classification">
+            {{ $t(problem.title) }}
+            <q-btn
+              v-if="isInteractive"
+              :title="$t('editProblem')"
+              icon="edit"
+              :to="{ name: 'classification', params: params }"
+              round
+              outline
+              size="10.5px"
+              color="classification"
+              class="on-right shadow-1"
+            />
+          </div>
+          <div class="q-gutter-xs">
+            <q-btn
+              v-if="isDraft"
+              :label="$t('editDraft')"
+              icon="edit"
+              :to="{ name: 'problem', params: params }"
+              rounded
+              unelevated
+              dense
+              size="md"
+              color="negative"
+              class="shadow-1 q-px-xs"
+              :disable="isDisabled"
+            />
+            <q-btn
+              v-if="isDraft && !isDisabled"
+              icon="delete_forever"
+              :title="$t('delete')"
+              @click="deleteDraft"
+              dense
+              round
+              unelevated
+              size="13.5px"
+              color="negative"
+              class="shadow-1"
+            />
+            <action-menu
+              v-if="isInteractive"
+              :items="actionMenuItems"
+            />
+          </div>
+        </div>
+        <div class="text-subtitle2 text-weight-light q-mt-sm">
+          <q-chip
+            size="12px"
+            dense
+            color="transparent"
+            :icon="problem.priorityIcon(terminology)"
+            text-color="classification"
+            :label="$t(problem.priority.title)"
+            class="text-weight-medium"
+          />
+          <q-chip
+            size="12px"
+            dense
+            color="transparent"
+            :icon="problem.scopeIcon(terminology)"
+            text-color="classification"
+            :label="$t(problem.scope.title)"
+            class="text-weight-medium"
+          />
+        </div>
       </div>
     </q-card-section>
-    <q-card-section v-if="problem.priorityDetails">
+    <q-card-section
+      v-if="problem.priorityDetails"
+      :class="sectionPadding"
+    >
       <p class="q-pl-lg q-my-none">
-        {{ $t((problem.titles || {}).priorityKey) }}:
+        {{ $t(problem.priority.title) }}:
         <span class="text-italic">{{ problem.priorityDetails }}</span>
       </p>
     </q-card-section>
-    <q-card-section v-if="problem.severity < 2 && problem.details">
+    <q-card-section
+      v-if="problem.severityCode < 2 && problem.details"
+      :class="sectionPadding"
+    >
       <div class="text-subtitle1 text-weight-bold text-classification">
         {{
           $t(
-            problem.severity == 0
-              ? "customerRequestForHealthPromotionTitle"
+            problem.severityCode == 0
+              ? "clientRequestForHealthPromotionTitle"
               : "potentialRiskFactorsTitle"
           )
         }}
@@ -64,7 +112,8 @@
       </p>
     </q-card-section>
     <q-card-section
-      v-if="problem.severity == 2 && problem.signsAndSymptoms.length"
+      v-if="problem.severityCode == 2 && problem.signsAndSymptomsCodes.length"
+      :class="sectionPadding"
     >
       <div class="text-subtitle1 text-weight-bold text-classification">
         {{ $t("actualSignsAndSymptomsTitle") }}
@@ -75,61 +124,82 @@
           v-bind:key="index"
           class="no-column-break"
         >
-          {{ symptom.title
-          }}<span
-            v-if="
-              index == problem.signsAndSymptoms.length - 1 &&
-                symptom.title.toLowerCase() == $t('otherSymptom') &&
-                problem.details
-            "
-            >:
-            <span class="text-italic">{{ problem.details }}</span>
-          </span>
-        </li>
-      </ul>
-    </q-card-section>
-    <q-card-section v-if="interventions.length">
-      <div class="text-subtitle1 text-weight-bold text-intervention">
-        {{ $tc("intervention", 2) }}
-      </div>
-      <ul :class="'q-ma-none '">
-        <li
-          v-for="(intervention, index) in interventions"
-          v-bind:key="index"
-          class="no-column-break"
-        >
-          {{ intervention.category.title }}: {{ intervention.target.title }}
-          <span v-if="intervention.details.length">
-            <span
-              v-for="(detail, index) in intervention.details"
-              v-bind:key="index"
-              class="text-italic"
-            >
-              – {{ detail.text }}
-            </span>
+          {{ $t(symptom.title)
+          }}<span v-if="index == problem.signsAndSymptomsCodes.length - 1 && problem.otherSignAndSymptom">:
+            <span class="text-italic">{{ problem.otherSignAndSymptom }}</span>
           </span>
         </li>
       </ul>
     </q-card-section>
     <q-card-section
-      v-if="lastOutcome || (isInteractive && problem.isHighPriority)"
+      v-if="interventions.length || (isInteractive && problem.isHighPriority)"
+      :class="sectionPadding"
     >
-      <div class="text-subtitle1 text-weight-bold">
-        <span class="text-outcome">{{ $tc("outcome", 2) }}</span>
+      <div class="text-subtitle1 text-weight-bold text-intervention q-mb-xs">
+        {{ $tc("intervention", 2) }}
         <q-btn
           v-if="isInteractive"
-          :label="$t('newRating')"
+          :title="$t('editInterventions')"
+          icon="add"
+          :to="{ name: 'newIntervention', params: params }"
+          round
+          outline
+          size="10.5px"
+          color="intervention"
+          class="on-right shadow-1"
+        />
+      </div>
+      <ul
+        v-if="interventions.length"
+        class="q-ma-none"
+      >
+        <li
+          v-for="(intervention, index) in interventions"
+          v-bind:key="index"
+          class="no-column-break"
+        >
+          <div>
+            {{
+              [intervention.category.title, intervention.target.title]
+                .filter(title => title)
+                .map(title => $t(title))
+                .join(": ") || ""
+            }}
+          </div>
+          <div class="text-weight-bold">
+            {{ intervention.details || $t("newIntervention") }}
+          </div>
+        </li>
+      </ul>
+    </q-card-section>
+    <q-card-section
+      v-if="problem.isHighPriority && (lastOutcome || isInteractive)"
+      :class="sectionPadding"
+    >
+      <div :class="
+          'text-outcome text-subtitle1 text-weight-bold ' +
+            (!isSummary ? 'q-mb-sm' : '')
+        ">
+        {{ $tc("outcome", 2) }}
+        <q-btn
+          v-if="isInteractive"
+          :title="$t('newRating')"
+          icon="add"
           :to="{ name: 'outcome', params: params }"
-          color="primary"
-          flat
-          class="q-ml-xs"
+          round
+          outline
+          size="10.5px"
+          color="outcome"
+          class="on-right shadow-1"
         />
       </div>
       <div v-if="lastOutcome">
-        <div v-if="isInteractive" class="row q-col-gutter-md">
+        <div
+          v-if="!isSummary && !isDraft"
+          class="row q-col-gutter-md"
+        >
           <div
             class="col-12 col-sm-4"
-            style=""
             v-for="(outcome, index) in outcomesForChart"
             v-if="outcome"
             v-bind:key="index"
@@ -162,11 +232,12 @@
               }}
               ({{ rating.observation
               }}<span v-if="rating.expectation">
-                / {{ rating.expectation }}</span
-              >)
-              <span v-if="rating.comment" class="text-italic">
-                ({{ rating.comment }})</span
+                / {{ rating.expectation }}</span>)
+              <span
+                v-if="rating.comment"
+                class="text-italic"
               >
+                ({{ rating.comment }})</span>
             </li>
           </ul>
           <p
@@ -181,32 +252,34 @@
   </q-card>
 </template>
 
-<style lang="sass"></style>
-
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
+import ActionMenu from "../components/ActionMenu.vue";
 import VueApexCharts from "vue-apexcharts";
 import { Terminology } from "../helper/terminology";
+import { ProblemRecord } from "../models/problemRecord";
 
 Vue.use(VueApexCharts);
 
-@Component({
+const ProblemSummaryProps = Vue.extend({
   props: {
     params: Object,
-    problemRecord: Object,
-    isSummary: Boolean
-  },
+    problemRecord: ProblemRecord,
+    isSummary: Boolean,
+    isDisabled: Boolean
+  }
+});
+
+@Component({
   components: {
-    apexchart: VueApexCharts
+    apexchart: VueApexCharts,
+    ActionMenu
   }
 })
-export default class ProblemSummary extends Vue {
+export default class ProblemSummary extends ProblemSummaryProps {
   get problem() {
     return this.record.problem;
-  }
-  get signsAndSymptoms() {
-    return this.problem.signsAndSymptoms;
   }
   get interventions() {
     return this.record.interventions;
@@ -215,53 +288,94 @@ export default class ProblemSummary extends Vue {
     if (this.record.outcomes.length) {
       return this.record.outcomes[this.record.outcomes.length - 1];
     } else {
-      return null;
+      return undefined;
     }
   }
   get ratings() {
     return ["knowledge", "behaviour", "status"].map(
-      key => this.lastOutcome[key]
+      key => ((this.lastOutcome || {}) as any)[key]
     );
   }
   get isDraft() {
     return !this.record.createdAt;
   }
   get isInteractive() {
-    return !this.isDraft && !this.$props.isSummary;
+    return !this.isDraft && !this.isSummary && !this.isDisabled;
   }
   get outcomesForChart() {
-    return this.$store.getters.getOutcomeAsChartData({
-      expectation: this.$t("expectation"),
+    return this.$store.direct.getters.getOutcomeAsChartData({
+      expectation: this.$t("expectedRating"),
       ratings: this.terminology.problemRatingScale.ratings,
       locale: this.$root.$i18n.locale,
-      ...this.$props.params
+      ...this.params
     });
+  }
+  get actionMenuItems() {
+    return [
+      {
+        condition: !this.problem.isHighPriority,
+        name: this.$t("prioritizeProblem"),
+        icon: "fas fa-arrow-up",
+        action: this.prioritizeProblemRecord
+      },
+      {
+        condition: !this.record.resolvedAt,
+        name: this.$t("problemDismissal"),
+        icon: "fas fa-check",
+        action: () => {
+          this.$store.direct.commit.dismissProblemRecord(this.params);
+          this.$store.direct.dispatch.saveClient(this.params);
+        }
+      }
+    ];
+  }
+  get sectionPadding() {
+    if (this.$q.screen.lt.sm) {
+      return "q-px-sm";
+    } else {
+      return "";
+    }
   }
 
   get terminology() {
     return (this.$t("terminology") as unknown) as Terminology;
   }
-  get customerName() {
-    return this.$store.getters.getCustomer(this.$props.params).name;
+  get clientName() {
+    return (
+      this.$store.direct.getters.getClient(this.params)?.masterData.name || ""
+    );
   }
   get language() {
     return this.$root.$i18n.locale;
   }
   get record() {
-    return this.$props.problemRecord || this.getRecordFromStore();
+    return this.problemRecord || this.getRecordFromStore();
+  }
+
+  prioritizeProblemRecord() {
+    this.$store.direct.commit.prioritizeProblemRecord(this.params);
+    this.$router.push({
+      name: "problem",
+      params: this.$store.direct.getters.getRouteParamsForLatestProblem(
+        this.params
+      )
+    });
+    this.$store.direct.dispatch.saveClient(this.params);
   }
 
   updateLocale() {
-    if (this.$props.problemRecord) {
-      this.$props.problemRecord = this.getRecordFromStore();
+    if (this.problemRecord) {
+      this.problemRecord = this.getRecordFromStore() as ProblemRecord;
     }
   }
 
   getRecordFromStore() {
-    return this.$store.getters.getProblemRecordById({
-      terminology: this.terminology,
-      ...this.$props.params
-    });
+    return this.$store.direct.getters.getProblemRecordById(this.params);
+  }
+
+  deleteDraft() {
+    this.$store.direct.commit.deleteDraftProblemRecord(this.params);
+    this.$store.direct.dispatch.saveClient(this.params);
   }
 
   created() {
@@ -277,8 +391,8 @@ export default class ProblemSummary extends Vue {
     // which causes duplicate entries and therefore errors when the charts are drawn again for the same components
     // @ts-ignore
     const Apex = window.Apex;
-    const params = this.$props.params;
-    const group = ["summary", params.customerId, params.problemId].join(".");
+    const params = this.params;
+    const group = ["summary", params.clientId, params.problemId].join(".");
     if (!Apex._chartInstances) return; // I get an error that this is undefined
     const zombieChartIndices = Apex._chartInstances
       .map((chart: any, index: number) => {
