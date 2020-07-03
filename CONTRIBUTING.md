@@ -18,7 +18,7 @@ Please start by proposing new features or bugfixes in a [GitHub issue](https://g
 
 Please note that we ask you to **read and accept our Contributor License Agreement** so we can approve your contribution. You can find more information in the [related section](#cla) below.
 
-Start by forking the repository and checkout the branch named **dev** before you do your changes. Currently, most of the activity takes place on the dev branch, while the master branch is lagging behind at the level of the last release.
+Start by forking the repository and make your changes.
 
 After you have opened a pull request with your changes and [accepted the Contributor License Agreement](#cla-how), your code changes will be reviewed for approval. We will merge them on approval. Pease be aware that contributions that do not fit the project will not be approved.
 
