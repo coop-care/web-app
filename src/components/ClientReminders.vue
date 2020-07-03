@@ -1,7 +1,7 @@
 <template>
   <div
     v-touch-swipe.mouse.horizontal="swipeTasks"
-    class="client-reminders"
+    class="client-reminders min-height"
   >
     <div class="row">
       <q-space />
@@ -64,6 +64,7 @@
       </div>
       <q-space />
     </div>
+
     <div v-if="tasks.length">
       <div
         v-for="(visit, index) in tasks"
@@ -86,10 +87,12 @@
         </div>
       </div>
     </div>
+
     <div
       v-else
       class="text-center text-body2 text-italic q-mt-xl"
     >{{$t("noTasksPlanned")}}</div>
+
     <q-page-sticky
       v-if="!client.leftAt"
       position="bottom-left"
@@ -108,7 +111,7 @@
 
 <style lang="sass">
 .client-reminders
-  max-width: 540px; min-height: 95vh
+  max-width: 540px
   .thin-button
     width: 32px
   .selected-date

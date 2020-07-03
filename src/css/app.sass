@@ -56,25 +56,27 @@
   page-break-inside: avoid // Theoretically FF 20+
   break-inside: avoid-column // IE 11
 .text-classification
-  color: $classification
   color: var(--q-color-classification)
 .bg-classification
-  background: $classification
-  background: var(--q-color-classification)
+  background-color: var(--q-color-classification)
+.bg-classification-light
+  background-color: scale-color($classification, $lightness: 97%)
+  // background-image: linear-gradient(scale-color($classification, $lightness: 98%), scale-color($classification, $lightness: 94%))
 .text-outcome
-  color: $outcome
   color: var(--q-color-outcome)
 .bg-outcome
-  background: $outcome
-  background: var(--q-color-outcome)
+  background-color: var(--q-color-outcome)
 .text-intervention
-  color: $intervention
   color: var(--q-color-intervention)
 .bg-intervention
-  background: $intervention
-  background: var(--q-color-intervention)
+  background-color: var(--q-color-intervention)
+  background-image: linear-gradient(scale-color($intervention, $lightness: 25%), $intervention)
+.bg-intervention-light
+  background-color: scale-color($intervention, $lightness: 97%)
+  // background-image: linear-gradient(scale-color($intervention, $lightness: 98%), scale-color($intervention, $lightness: 94%))
+.bg-primary
+  background-image: linear-gradient(scale-color($primary, $lightness: 8%), $primary) !important
 .border-primary
-  border-color: $primary
   border-color: var(--q-color-primary)
 .radius-xs
   border-radius: 4px
@@ -99,6 +101,8 @@
   max-width: 1600px
   margin-left: auto
   margin-right: auto
+.min-height
+  min-height: 95vh
 .link
   cursor: pointer
   &:hover
@@ -118,3 +122,10 @@
   font-style: italic
   span
     font-size: 80%
+.no-bottom-border-radius
+  border-bottom-left-radius: 0
+  border-bottom-right-radius: 0
+.one-line
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis

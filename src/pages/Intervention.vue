@@ -6,7 +6,10 @@
     @save="save"
   >
     <problem-summary-container>
-      <intervention-editor :value="intervention" />
+      <intervention-editor
+        :value="intervention"
+        isSingleEditor
+      />
     </problem-summary-container>
   </editing-page-container>
 </template>
@@ -17,7 +20,7 @@ import Component from "vue-class-component";
 import { Reminder } from "../models";
 import EditingPageContainer from "components/EditingPageContainer.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
-import InterventionEditor from "components/InterventionEditor.vue";
+import InterventionEditor from "components/InterventionEditorV3.vue";
 
 let oldIntervention: Reminder | undefined;
 

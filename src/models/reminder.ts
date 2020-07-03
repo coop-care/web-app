@@ -117,4 +117,12 @@ export class Reminder extends Base {
             this.occurrences = this.completedOccurrences;
         }
     }
+
+    clone() {
+        const reminder = super.clone();
+        reminder.id = this.generateId();
+        reminder.createdAt = new Date();
+        reminder.occurrences = [];
+        return reminder;
+    }
 }

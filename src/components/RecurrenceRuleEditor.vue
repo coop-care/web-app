@@ -4,7 +4,7 @@
       v-model="startDate"
       :min="new Date(new Date().setHours(0,0,0,0))"
       :format="$t('datetimeFormat')"
-      :label="$t('addReminderTime')"
+      :label="$t('planReminder')"
       :placeholder="$t('datetimeFormatPlaceholder')"
       :options="startDateOptions"
       :color="color"

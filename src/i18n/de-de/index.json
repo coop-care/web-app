@@ -30,11 +30,11 @@
   "otherInterventionTargetSelection": "Andere Pflegemaßnahmen auswählen …",
   "describeClientSpecificIntervention": "Kundenspezifische Aktivität beschreiben",
   "planReminder": "Erinnerung planen",
-  "findTargets": "Pflegemaßnahmen finden",
-  "noTargetsFound": "Keine Pflege-Maßnahmen gefunden",
+  "findTargets": "Pflegemaßnahme finden",
+  "noTargetsFound": "Keine Pflegemaßnahmen gefunden",
   "clientSpecificInterventions": "Details zur Aktivität",
   "clientSpecificInterventionsHint": "Welche konkrete Aktivität wird geplant?",
-  "frequentInterventionTargetsForProblem": "Häufige Pflegemaßnahmen bei {problem}",
+  "frequentInterventionTargetsForProblem": "Häufige Pflegemaßnahmen bei **{problem}**",
   "unspecifiedProblem": "unbekanntes Problem",
   "priorityTitle": "Priorität festlegen",
   "lowPriorityReasonLabel": "Grund für niedrige Priorität",
@@ -250,5 +250,9 @@
   "reminderTitle": "Erinnerung",
   "interventionTargetTitle": "Pflegemaßnahme",
   "description": "Beschreibung",
-  "previously": "vorher"
+  "previously": "vorher",
+  "otherInterventionTargets": "Übrige Pflegemaßnahmen",
+  "interventionsForCategoryTitle": "Aktivitäten in der Kategorie **{category}** für das Problem **{problem}**",
+  "duplicate": "Duplizieren",
+  "noPlannedInterventionsForCategoryTitle": "Es sind noch keine Aktivitäten in der Kategorie **{category}** geplant."
 }

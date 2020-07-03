@@ -64,7 +64,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import InterventionEditor from "./InterventionEditor.vue";
+import InterventionEditor from "./InterventionEditorV2.vue";
 import { Intervention } from "../models/intervention";
 
 const EditableInterventionProps = Vue.extend({

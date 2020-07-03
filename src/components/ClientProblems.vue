@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="min-height">
     <div class="q-gutter-md q-mb-md">
       <q-btn
         v-if="!isDisabled"
         icon="add"
-        color="primary"
+        color="classification"
         :label="$t('problemAdmission')"
         rounded
         outline
@@ -15,7 +15,7 @@
       <q-btn
         v-if="!isDisabled && Object.keys($t('diagnosisNames')).length > 0"
         icon="playlist_add"
-        color="primary"
+        color="classification"
         :label="$t('problemAdmissionByDiagnosis')"
         rounded
         outline
@@ -24,12 +24,13 @@
         size="12.5px"
       />
     </div>
+
     <div
-      v-if="selectedClientProblems.length"
-      class="q-gutter-md q-mt-md"
+      v-if="clientProblems.length"
+      class="q-gutter-md q-my-md q-px-xs"
     >
       <problem-summary
-        v-for="problemRecord in selectedClientProblems"
+        v-for="problemRecord in clientProblems"
         v-bind:key="problemRecord.id"
         :problemRecord="problemRecord"
         :params="{
@@ -39,10 +40,25 @@
         :isDisabled="isDisabled"
       />
     </div>
+
     <div
       v-else
       class="text-body2 text-italic q-mt-lg"
     >{{$t("noClientProblemRecords")}}</div>
+
+    <q-page-sticky
+      v-if="!client.leftAt"
+      position="bottom-left"
+      :offset="$q.screen.lt.sm ? [16, 10] : [56, 10]"
+    >
+      <q-btn
+        fab
+        icon="add"
+        color="classification"
+        :title="$t('problemAdmission')"
+        @click="addProblem"
+      />
+    </q-page-sticky>
   </div>
 </template>
 
@@ -56,14 +72,14 @@ import ProblemSummary from "../components/ProblemSummary.vue";
 
 @Component({ components: { ProblemSummary } })
 export default class ClientProblems extends Vue {
-  get selectedClient() {
+  get client() {
     return this.$store.direct.getters.getClient(this.$route.params);
   }
   get isDisabled() {
-    return !!this.selectedClient?.leftAt;
+    return !!this.client?.leftAt;
   }
-  get selectedClientProblems() {
-    const client = this.selectedClient;
+  get clientProblems() {
+    const client = this.client;
     const problems = client ? client.problems : [];
     return problems
       .filter(problem => {
@@ -81,7 +97,7 @@ export default class ClientProblems extends Vue {
   }
 
   addProblem() {
-    const client = this.selectedClient;
+    const client = this.client;
     if (!client) {
       console.error("no client selected: this should not happen.");
       return;

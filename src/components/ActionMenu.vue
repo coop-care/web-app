@@ -6,9 +6,9 @@
     outline
     size="14px"
     dense
-    class="more-button shadow-1"
+    class="more-button shadow-1 bg-white"
     auto-close
-    content-class="text-primary"
+    :content-class="'radius-md shadow-5 text-' + color"
     :title="title || $t('moreActions')"
   >
     <q-list>
@@ -19,7 +19,7 @@
         clickable
         v-ripple
         @click="item.action"
-        :class="item.isDestructive ? 'text-negative' : 'text-' + color"
+        :class="item.isDestructive ? 'text-negative' : ''"
       >
         <q-item-section side>
           <q-icon

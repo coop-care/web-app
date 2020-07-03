@@ -1,8 +1,6 @@
 <template>
   <q-card
-    flat
-    bordered
-    class="overflow-hidden border-primary radius-sm"
+    class="radius-md bg-classification-light"
     v-if="!!record"
   >
     <q-card-section :class="sectionPadding + (sectionPadding ? ' q-pt-sm' : '')">
@@ -28,7 +26,7 @@
               outline
               size="10.5px"
               color="classification"
-              class="on-right shadow-1"
+              class="on-right shadow-1 bg-white"
             />
           </div>
           <div class="q-gutter-xs">
@@ -60,6 +58,7 @@
             <action-menu
               v-if="isInteractive"
               :items="actionMenuItems"
+              color="classification"
             />
           </div>
         </div>
@@ -146,7 +145,7 @@
           outline
           size="10.5px"
           color="intervention"
-          class="on-right shadow-1"
+          class="on-right shadow-1 bg-white"
         />
       </div>
       <ul
@@ -190,7 +189,7 @@
           outline
           size="10.5px"
           color="outcome"
-          class="on-right shadow-1"
+          class="on-right shadow-1 bg-white"
         />
       </div>
       <div v-if="lastOutcome">
