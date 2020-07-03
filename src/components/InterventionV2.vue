@@ -36,7 +36,7 @@ import Component from "vue-class-component";
 import { scroll } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
-import EditableIntervention from "./EditableIntervention.vue";
+import EditableIntervention from "./EditableInterventionV2.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 
 const { setScrollPosition } = scroll;
