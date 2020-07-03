@@ -15,14 +15,12 @@
           color="classification"
           map-options
           emit-value
-          style="max-width: 400px"
           autofocus
         >
           <template v-slot:option="scope">
             <q-item
               v-bind="scope.itemProps"
               v-on="scope.itemEvents"
-              style="max-width: 400px"
             >
               <q-item-section side>
                 <q-icon :name="scope.opt.icon" />
@@ -99,6 +97,7 @@ export default class InterventionPage extends Vue {
   }
   get problemOptions() {
     return (this.client?.problems || [])
+      .filter(record => !record.resolvedAt)
       .map(problemRecord => {
         return {
           label: "" + this.$t(problemRecord.problem.title),
