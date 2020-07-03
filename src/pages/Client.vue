@@ -78,10 +78,10 @@
       </div>
       <q-tabs
         v-model="selectedTab"
-        dense
         no-caps
-        class="text-primary q-mb-md"
+        class="bg-grey-1 q-mb-md"
         :inline-label="$q.screen.gt.xs"
+        :dense="!$q.screen.gt.xs"
         align="left"
       >
         <q-route-tab
@@ -89,6 +89,7 @@
           :label="$tc('task', 2)"
           icon="fas fa-tasks"
           :to="{ name: 'clientReminders', params: $route.params }"
+          class="text-intervention"
         >
           <q-badge
             color="intervention"
@@ -103,12 +104,14 @@
           :label="$t('reportTitle')"
           icon="fas fa-notes-medical"
           :to="{ name: 'clientReport', params: $route.params }"
+          class="text-classification"
         />
         <q-route-tab
           name="history"
           :label="$t('documentationHistory')"
           icon="fas fa-history"
           :to="{ name: 'clientHistory', params: $route.params }"
+          class="text-outcome"
         />
         <q-route-tab
           v-if="false"
@@ -116,6 +119,7 @@
           :label="$t('masterDataTitle')"
           icon="fas fa-address-book"
           :to="{ name: 'clientMasterData', params: $route.params }"
+          class="text-primary"
         />
       </q-tabs>
       <q-tab-panels
