@@ -13,7 +13,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import EditingPageContainer from "components/EditingPageContainer.vue";
-import InterventionView from "components/InterventionV2.vue";
+import InterventionView from "components/InterventionV3.vue";
 
 @Component({
   components: {

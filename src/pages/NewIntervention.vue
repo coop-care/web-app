@@ -41,6 +41,7 @@
       <intervention-editor
         v-model="intervention"
         :problemRecord="record"
+        isSingleEditor
       />
     </problem-summary-container>
   </editing-page-container>
@@ -51,7 +52,7 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import EditingPageContainer from "components/EditingPageContainer.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
-import InterventionEditor from "components/InterventionEditor.vue";
+import InterventionEditor from "components/InterventionEditorV3.vue";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 

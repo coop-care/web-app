@@ -30,11 +30,11 @@
   "otherInterventionTargetSelection": "Select other intervention target …",
   "describeClientSpecificIntervention": "Describe client-specific activity",
   "planReminder": "Plan reminder",
-  "findTargets": "Find targets",
+  "findTargets": "Find intervention target",
   "noTargetsFound": "No intervention targets found",
   "clientSpecificInterventions": "Details about the activity",
   "clientSpecificInterventionsHint": "What concrete activity is planned?",
-  "frequentInterventionTargetsForProblem": "Frequent intervention targets for {problem}",
+  "frequentInterventionTargetsForProblem": "Frequent intervention targets for **{problem}**",
   "unspecifiedProblem": "unknown problem",
   "priorityTitle": "Define Priority",
   "lowPriorityReasonLabel": "Reason for low priority",
@@ -250,5 +250,9 @@
   "reminderTitle": "Reminder",
   "interventionTargetTitle": "Target",
   "description": "Description",
-  "previously": "previously"
+  "previously": "previously",
+  "otherInterventionTargets": "Other intervention targets",
+  "interventionsForCategoryTitle": "Interventions for category **{category}** and problem **{problem}**",
+  "duplicate": "Duplicate",
+  "noPlannedInterventionsForCategoryTitle": "No interventions planned for category **{category}**."
 }
