@@ -1,14 +1,12 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import { downloadJSON } from "../helper/download";
-import { colors } from "quasar";
+import { setupColors } from "../helper/color";
 import { Client } from "../models/client";
 import { createDirectStore } from "direct-vuex";
 import getters from "./getters";
 import mutations from "./mutations";
 import actions from "./actions";
-
-const { setBrand } = colors;
 
 Vue.use(Vuex);
 
@@ -47,12 +45,10 @@ window.addEventListener("online", () => {
     lastFetch = Date.now();
 });
 
-setBrand("classification", "#f44336");
-setBrand("outcome", "#009688");
-setBrand("intervention", "#ff6f00");
-
 // @ts-ignore
 window.download = () => downloadJSON(store.state.clients || [], "sample1.json");
+
+setupColors();
 
 // Export the original Vuex store because of quasar
 export default store.original;

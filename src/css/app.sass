@@ -59,23 +59,25 @@
   color: var(--q-color-classification)
 .bg-classification
   background-color: var(--q-color-classification)
+  background-image: var(--q-color-classification-gd)
 .bg-classification-light
-  background-color: scale-color($classification, $lightness: 97%)
-  // background-image: linear-gradient(scale-color($classification, $lightness: 98%), scale-color($classification, $lightness: 94%))
+  background-color: var(--q-color-classification-bg)
 .text-outcome
   color: var(--q-color-outcome)
 .bg-outcome
   background-color: var(--q-color-outcome)
+  background-image: var(--q-color-outcome-gd)
+.bg-outcome-light
+  background-color: var(--q-color-outcome-bg)
 .text-intervention
   color: var(--q-color-intervention)
 .bg-intervention
   background-color: var(--q-color-intervention)
-  background-image: linear-gradient(scale-color($intervention, $lightness: 25%), $intervention)
+  background-image: var(--q-color-intervention-gd)
 .bg-intervention-light
-  background-color: scale-color($intervention, $lightness: 97%)
-  // background-image: linear-gradient(scale-color($intervention, $lightness: 98%), scale-color($intervention, $lightness: 94%))
+  background-color: var(--q-color-intervention-bg)
 .bg-primary
-  background-image: linear-gradient(scale-color($primary, $lightness: 8%), $primary) !important
+  background-image: var(--q-color-primary-gd) !important
 .border-primary
   border-color: var(--q-color-primary)
 .radius-xs
