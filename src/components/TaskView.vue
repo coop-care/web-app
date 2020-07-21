@@ -1,5 +1,8 @@
 <template>
-  <q-item tag="label">
+  <q-item
+    tag="label"
+    @click.prevent=""
+  >
     <q-item-section
       side
       top
