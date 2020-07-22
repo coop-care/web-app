@@ -10,17 +10,17 @@ export class Task {
     constructor(
         reminder: Reminder,
         problemId: string,
-        dueOrOccurence?: Date | Occurrence
+        dueOrOccurrence?: Date | Occurrence
     ) {
         this.reminder = reminder;
         this.problemId = problemId;
 
-        if (dueOrOccurence instanceof Date) {
-            this.due = dueOrOccurence;
-        } else if (dueOrOccurence instanceof Occurrence) {
-            this.due = dueOrOccurence.due;
-            this.completed = dueOrOccurence.completed;
-            this.user = dueOrOccurence.user;
+        if (dueOrOccurrence instanceof Date) {
+            this.due = dueOrOccurrence;
+        } else if (dueOrOccurrence instanceof Occurrence) {
+            this.due = dueOrOccurrence.due;
+            this.completed = dueOrOccurrence.completed;
+            this.user = dueOrOccurrence.user;
         }
     }
 

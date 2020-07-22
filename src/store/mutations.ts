@@ -38,7 +38,7 @@ export default defineMutations<StoreState>()({
         state.isLoadingClientList = isLoading;
     },
 
-    calculateOccurences(state, client: Client) {
+    calculateOccurrences(state, client: Client) {
         client.calculateOccurrences();
     },
 
@@ -102,7 +102,9 @@ export default defineMutations<StoreState>()({
         if (
             ((key: keyof Reminder) => key)("recurrenceRules") in payload.changes
         ) {
-            payload.target.recalculateOccurencesAfterUpdate(payload.updateFrom);
+            payload.target.recalculateOccurrencesAfterUpdate(
+                payload.updateFrom
+            );
         }
     },
 
@@ -158,13 +160,13 @@ export default defineMutations<StoreState>()({
         }
 
         if (task.reminder.isScheduled) {
-            const occurence = task.reminder.occurrences.find(
+            const occurrence = task.reminder.occurrences.find(
                 item => item.due.getTime() == task.due?.getTime()
             );
 
-            if (occurence) {
-                occurence.completed = completedAt;
-                occurence.user = state.signature;
+            if (occurrence) {
+                occurrence.completed = completedAt;
+                occurrence.user = state.signature;
             }
         } else {
             task.reminder.occurrences = completedAt
@@ -185,13 +187,13 @@ export default defineMutations<StoreState>()({
         {
             reminder,
             completedAt,
-            recalculateOccurences,
+            recalculateOccurrences,
             client,
             problemId
         }: {
             reminder: Reminder;
             completedAt?: Date;
-            recalculateOccurences?: boolean;
+            recalculateOccurrences?: boolean;
             client: Client;
             problemId: string;
         }
@@ -214,8 +216,8 @@ export default defineMutations<StoreState>()({
                 reminder.completedAt = undefined;
             }
 
-            if (recalculateOccurences) {
-                reminder.recalculateOccurencesAfterUpdate(completedAt);
+            if (recalculateOccurrences) {
+                reminder.recalculateOccurrencesAfterUpdate(completedAt);
             }
         } else {
             reminder.completedAt = completedAt;

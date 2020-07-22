@@ -2,7 +2,7 @@
   <div class="row q-col-gutter-lg q-mb-md items-start">
     <date-time-input
       v-model="startDate"
-      :min="new Date(new Date().setHours(0,0,0,0))"
+      :min="new Date(new Date().setHours(0, 0, 0, 0))"
       :format="$t('datetimeFormat')"
       :label="$t('planReminder')"
       :placeholder="$t('datetimeFormatPlaceholder')"
@@ -213,7 +213,7 @@
             <date-time-input
               v-model="endDate"
               :format="$t('datetimeFormat')"
-              :min="new Date(new Date().setHours(0,0,0,0))"
+              :min="new Date(new Date().setHours(0, 0, 0, 0))"
               :placeholder="$t('dateFormatPlaceholder')"
               :color="color"
               class="q-mt-sm"
@@ -222,7 +222,7 @@
             />
           </div>
 
-          <div v-if="recurrenceEndMode == 'NumberOfOccurences'">
+          <div v-if="recurrenceEndMode == 'NumberOfOccurrences'">
             <q-input
               :color="color"
               v-model.number="endCount"
@@ -231,16 +231,16 @@
               dense
               step="1"
               input-class="text-center"
-              :key="occurenceCountKey"
+              :key="occurrenceCountKey"
             >
               <template v-slot:prepend>
                 <div class="text-body2 text-black">
-                  {{ endAfterOccurenceCountLabels[0] }}
+                  {{ endAfterOccurrenceCountLabels[0] }}
                 </div>
               </template>
               <template v-slot:append>
                 <div class="text-body2 text-black">
-                  {{ endAfterOccurenceCountLabels[1] }}
+                  {{ endAfterOccurrenceCountLabels[1] }}
                 </div>
               </template>
             </q-input>
@@ -273,7 +273,7 @@ const toArray = (value: number | undefined | null | number[]) =>
   value instanceof Array || value == null ? value || [] : [value];
 
 type MonthlyMode = "DayOfMonth" | "DayOfWeek";
-type RecurrenceEndMode = "Never" | "EndDate" | "NumberOfOccurences";
+type RecurrenceEndMode = "Never" | "EndDate" | "NumberOfOccurrences";
 
 const RecurrenceRuleEditorProps = Vue.extend({
   props: {
@@ -298,7 +298,7 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
   monthlyMode: MonthlyMode = "DayOfMonth";
   showYearlyDayOfWeek = false;
   intervalKey = Math.random();
-  occurenceCountKey = Math.random();
+  occurrenceCountKey = Math.random();
 
   get rule(): Options | undefined {
     return this.value?.rrules()[this.ruleIndex]?.options;
@@ -425,7 +425,7 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
     if (this.endDate) {
       return "EndDate";
     } else if (this.endCount) {
-      return "NumberOfOccurences";
+      return "NumberOfOccurrences";
     } else {
       return "Never";
     }
@@ -439,7 +439,7 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
         Math.max(this.startDate.getTime(), new Date().getTime())
       );
       count = undefined;
-    } else if (value == "NumberOfOccurences") {
+    } else if (value == "NumberOfOccurrences") {
       until = undefined;
       count = 1;
     }
@@ -458,7 +458,7 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
   set endCount(value) {
     if (this.endCount && (!/^\d{1,3}$/.test("" + value) || value < 1)) {
       value = 1;
-      this.occurenceCountKey = Math.random();
+      this.occurrenceCountKey = Math.random();
     }
     this.updateRecurrenceRule({ count: value });
   }
@@ -571,13 +571,13 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
         value: "EndDate"
       },
       {
-        label: this.$t("endAfterOccurenceCount"),
-        value: "NumberOfOccurences"
+        label: this.$t("endAfterOccurrenceCount"),
+        value: "NumberOfOccurrences"
       }
     ];
   }
-  get endAfterOccurenceCountLabels() {
-    return this.$tc("endAfterOccurenceCountLabel", this.endCount).split(
+  get endAfterOccurrenceCountLabels() {
+    return this.$tc("endAfterOccurrenceCountLabel", this.endCount).split(
       " " + this.endCount + " "
     );
   }

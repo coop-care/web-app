@@ -36,7 +36,7 @@ export default defineActions({
                 payload.client || getters.getClient(payload);
 
             if (client) {
-                commit.calculateOccurences(client);
+                commit.calculateOccurrences(client);
                 ccApi
                     .saveClient(client)
                     .then(resolve)

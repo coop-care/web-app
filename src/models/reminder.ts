@@ -61,24 +61,24 @@ export class Reminder extends Base {
         const start = this.startDateOfRecurrenceRules;
 
         if (start && this.recurrenceRules) {
-            const hasLastOccurence = this.occurrences.length > 0;
+            const hasLastOccurrence = this.occurrences.length > 0;
             const end = new Date(new Date().setHours(23, 59, 59, 999));
             const due =
                 this.recurrenceRules
-                    .between(start, end, !hasLastOccurence)
+                    .between(start, end, !hasLastOccurrence)
                     .map(date => new Occurrence(date)) || [];
             this.occurrences = this.occurrences.concat(due);
         }
 
         if (isInactive || this.isCompleted) {
-            const completedOccurences = this.completedOccurrences;
-            if (completedOccurences.length < this.occurrences.length) {
-                this.occurrences = completedOccurences;
+            const completedOccurrences = this.completedOccurrences;
+            if (completedOccurrences.length < this.occurrences.length) {
+                this.occurrences = completedOccurrences;
             }
         }
     }
 
-    recalculateOccurencesAfterUpdate(from = new Date()) {
+    recalculateOccurrencesAfterUpdate(from = new Date()) {
         if (this.recurrenceRules) {
             const start = new Date(from).setHours(0, 0, 0, 0);
             const endOfToday = new Date().setHours(23, 59, 59, 999);
@@ -90,29 +90,29 @@ export class Reminder extends Base {
                 return this.calculateOccurrences(false);
             }
 
-            const completedSinceStartOccurences = this.occurrences.filter(
+            const completedSinceStartOccurrences = this.occurrences.filter(
                 item => !!item.completed && item.due.getTime() > start
             );
 
-            if (!completedSinceStartOccurences.length) {
+            if (!completedSinceStartOccurrences.length) {
                 this.occurrences = pastOccurrences;
                 return this.calculateOccurrences(false);
             }
 
-            const dueSinceStartOccurences = this.recurrenceRules
+            const dueSinceStartOccurrences = this.recurrenceRules
                 .between(new Date(start), new Date(endOfToday), true)
                 .filter(
                     date =>
-                        !completedSinceStartOccurences.find(
+                        !completedSinceStartOccurrences.find(
                             item => item.due.getTime() == date.getTime()
                         )
                 )
                 .map(date => new Occurrence(date));
-            const sortedNewOccurences = completedSinceStartOccurences
-                .concat(dueSinceStartOccurences)
+            const sortedNewOccurrences = completedSinceStartOccurrences
+                .concat(dueSinceStartOccurrences)
                 .sort((a, b) => a.due.getTime() - b.due.getTime());
 
-            this.occurrences = pastOccurrences.concat(sortedNewOccurences);
+            this.occurrences = pastOccurrences.concat(sortedNewOccurrences);
         } else {
             this.occurrences = this.completedOccurrences;
         }
