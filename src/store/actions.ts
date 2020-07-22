@@ -16,7 +16,9 @@ export default defineActions({
             ccApi
                 .getAllClients()
                 .then(clients => {
-                    clients.forEach(client => client.calculateOccurrences());
+                    clients.forEach(client =>
+                        commit.calculateOccurrences(client)
+                    );
                     commit.setClients(clients);
                     commit.isLoadingClientList(false);
                     resolve();

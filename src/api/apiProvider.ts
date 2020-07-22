@@ -1,6 +1,7 @@
 import Vue from "vue";
-import StitchApi from "./stitch";
 import CoopCareApiInterface from "./coopCareApiInterface";
+import DemoApi from "./demo";
+import StitchApi from "./stitch";
 
 declare module "vue/types/vue" {
     interface Vue {
@@ -8,6 +9,13 @@ declare module "vue/types/vue" {
     }
 }
 
-export const ccApi = new StitchApi("openomaha-elgvq", "openomaha", "clients");
+let ccApi: CoopCareApiInterface;
 
+if (process.env.BACKEND == "demo") {
+    ccApi = new DemoApi();
+} else {
+    ccApi = new StitchApi("openomaha-elgvq", "openomaha", "clients");
+}
+
+export { ccApi };
 Vue.prototype.$ccApi = ccApi;

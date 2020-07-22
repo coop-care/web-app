@@ -1,5 +1,6 @@
 import { RouteConfig } from "vue-router";
 
+const isDemo = process.env.BACKEND == "demo";
 const routes: RouteConfig[] = [
     {
         path: "/",
@@ -28,7 +29,7 @@ const routes: RouteConfig[] = [
                     },
                     {
                         name: "clientMasterData",
-                        path: "masterdata"
+                        path: "profile"
                     }
                 ]
             },
@@ -65,7 +66,7 @@ const routes: RouteConfig[] = [
             },
             {
                 name: "problemsByDiagnosis",
-                path: "/client/:clientId/diagnoses",
+                path: !isDemo ? "/client/:clientId/diagnoses" : "",
                 component: () => import("pages/ProblemsByDiagnosis.vue")
             },
             {
@@ -85,17 +86,17 @@ const routes: RouteConfig[] = [
             },
             {
                 name: "login",
-                path: "/login",
+                path: !isDemo ? "/login" : "",
                 component: () => import("pages/Login.vue")
             },
             {
                 name: "register",
-                path: "/register",
+                path: !isDemo ? "/register" : "",
                 component: () => import("pages/Register.vue")
             },
             {
                 name: "confirm",
-                path: "/confirm",
+                path: !isDemo ? "/confirm" : "",
                 component: () => import("pages/Confirm.vue")
             }
         ]

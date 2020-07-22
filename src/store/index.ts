@@ -12,16 +12,16 @@ import actions from "./actions";
 Vue.use(Vuex);
 
 export interface StoreState {
+    currentUser?: User;
     clients: Client[];
     isLoadingClientList: boolean;
-    currentUser?: User;
 }
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
+        currentUser: ccApi.user,
         clients: [],
-        isLoadingClientList: false,
-        currentUser: ccApi.user
+        isLoadingClientList: false
     } as StoreState,
     getters,
     mutations,

@@ -5,6 +5,7 @@ export class User extends Base {
     id: string;
     signature = "";
     email = "";
+    isOnboardingCompleted = false;
 
     constructor(id: string) {
         super();

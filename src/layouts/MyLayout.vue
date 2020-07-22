@@ -154,10 +154,24 @@ export default class MyLayout extends Vue {
   updateOfflineStatus() {
     this.isOffline = !window.navigator.onLine;
   }
+  showOnboardingForDemoVersion() {
+    if (
+      process.env.BACKEND == "demo" &&
+      !this.$store.direct.state.currentUser?.isOnboardingCompleted
+    ) {
+      import("../components/DemoOnboarding.vue").then(component => {
+        this.$q.dialog({
+          component: component.default,
+          parent: this
+        });
+      });
+    }
+  }
 
   mounted() {
     window.addEventListener("online", this.updateOfflineStatus);
     window.addEventListener("offline", this.updateOfflineStatus);
+    this.showOnboardingForDemoVersion();
   }
 }
 </script>
