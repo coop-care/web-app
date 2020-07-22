@@ -1,7 +1,7 @@
 import { defineActions } from "direct-vuex";
 import sampleData from "../data/sample1.json";
 import { rootActionContext } from ".";
-import { Client } from "../models/client";
+import { Client, User } from "../models";
 import { ccApi } from "../api/apiProvider";
 
 export default defineActions({
@@ -70,13 +70,48 @@ export default defineActions({
             );
     },
 
+    login(context, { email, password }: { email: string; password: string }) {
+        const { commit, dispatch } = rootActionContext(context);
+        return ccApi.login(email, password).then(() => {
+            commit.setCurrentUser(ccApi.user);
+            dispatch.fetchClientsFromDB();
+            return Promise.resolve();
+        });
+    },
+
+    logout(context) {
+        const { commit } = rootActionContext(context);
+        return ccApi.logout().then(() => {
+            commit.setCurrentUser(undefined);
+            commit.setClients([]);
+            return Promise.resolve();
+        });
+    },
+
+    saveUser(context, user?: User) {
+        const { commit } = rootActionContext(context);
+        commit.setCurrentUser(user);
+        if (user) {
+            ccApi
+                .saveUser(user)
+                .catch(err =>
+                    console.error(`Save current user failed with error: ${err}`)
+                );
+        }
+    },
+
     addSamplesToDB(context) {
-        const { dispatch } = rootActionContext(context);
+        const { state, dispatch } = rootActionContext(context);
         const samples = Client.fromObject(sampleData) as Client[];
+        const userId = state.currentUser?.id;
+        if (!userId) {
+            return;
+        }
+
         return Promise.all(
             samples.map(client => {
                 // eslint-disable-next-line @typescript-eslint/camelcase
-                client.user_id = ccApi.userId;
+                client.user_id = userId;
                 return ccApi.createClient(client);
             })
         )

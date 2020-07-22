@@ -1,3 +1,4 @@
+export { User } from "./user";
 export { Client } from "./client";
 export { MasterData } from "./masterData";
 export { ProblemRecord } from "./problemRecord";

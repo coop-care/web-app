@@ -7,7 +7,7 @@ import {
     UserPasswordCredential
 } from "mongodb-stitch-browser-sdk";
 import CoopCareApiInterface from "./coopCareApiInterface";
-import { Client } from "../models/client";
+import { Client, User } from "../models";
 import { ObjectID } from "bson";
 
 export default class StitchApi implements CoopCareApiInterface {
@@ -28,13 +28,15 @@ export default class StitchApi implements CoopCareApiInterface {
         return this.stitch.auth.isLoggedIn;
     }
     get user() {
-        return this.stitch.auth.user;
-    }
-    get userId() {
-        return this.user?.id || "";
-    }
-    get username() {
-        return this.user?.profile.email || "";
+        const stitchUser = this.stitch.auth.user;
+        if (stitchUser) {
+            const user = new User(stitchUser.id);
+            user.email = stitchUser.profile.email || "";
+            user.signature = window.localStorage.getItem("signature") || "";
+            return user;
+        } else {
+            return undefined;
+        }
     }
     login(username: string, password: string) {
         const credential = new UserPasswordCredential(username, password);
@@ -56,6 +58,10 @@ export default class StitchApi implements CoopCareApiInterface {
             UserPasswordAuthProviderClient.factory
         );
         return epclient.confirmUser(token, tokenId);
+    }
+    saveUser(user: User) {
+        window.localStorage.setItem("signature", user.signature);
+        return Promise.resolve(user);
     }
 
     createClient(client: Client) {

@@ -10,7 +10,8 @@ import {
     Occurrence,
     ChangeRecord,
     Problem,
-    ChangeRecordType
+    ChangeRecordType,
+    User
 } from "../models";
 import { classToPlain, ClassTransformOptions } from "class-transformer";
 
@@ -78,7 +79,7 @@ export default defineMutations<StoreState>()({
             if (problemRecord && problemRecord.createdAt) {
                 client.changeHistory.push(
                     new ChangeRecord(
-                        state.signature,
+                        store.getters.signature,
                         "ProblemModified",
                         problemId,
                         newValues,
@@ -127,7 +128,7 @@ export default defineMutations<StoreState>()({
         const client = store.getters.getClient({ clientId: clientId });
         client?.changeHistory.push(
             new ChangeRecord(
-                state.signature,
+                store.getters.signature,
                 changeType,
                 problemId,
                 classToPlain(newInstance, excludeForChangeRecord),
@@ -166,11 +167,17 @@ export default defineMutations<StoreState>()({
 
             if (occurrence) {
                 occurrence.completed = completedAt;
-                occurrence.user = state.signature;
+                occurrence.user = store.getters.signature;
             }
         } else {
             task.reminder.occurrences = completedAt
-                ? [new Occurrence(completedAt, completedAt, state.signature)]
+                ? [
+                      new Occurrence(
+                          completedAt,
+                          completedAt,
+                          store.getters.signature
+                      )
+                  ]
                 : [];
         }
 
@@ -229,7 +236,7 @@ export default defineMutations<StoreState>()({
                 : "InterventionStarted";
             client.changeHistory.push(
                 new ChangeRecord(
-                    state.signature,
+                    store.getters.signature,
                     type,
                     problemId,
                     classToPlain(reminder, excludeForChangeRecord)
@@ -251,7 +258,7 @@ export default defineMutations<StoreState>()({
 
         client.changeHistory.push(
             new ChangeRecord(
-                state.signature,
+                store.getters.signature,
                 "ProblemResolved",
                 problemRecord.id,
                 classToPlain(problemRecord.problem)
@@ -269,7 +276,7 @@ export default defineMutations<StoreState>()({
         problemRecord.resolvedAt = new Date();
         client?.changeHistory.push(
             new ChangeRecord(
-                state.signature,
+                store.getters.signature,
                 "ProblemResolved",
                 problemRecord.id,
                 classToPlain(problemRecord.problem)
@@ -314,7 +321,7 @@ export default defineMutations<StoreState>()({
                 .getClient(payload)
                 ?.changeHistory.push(
                     new ChangeRecord(
-                        state.signature,
+                        store.getters.signature,
                         "OutcomeRated",
                         problemRecord.id,
                         classToPlain(target)
@@ -335,7 +342,7 @@ export default defineMutations<StoreState>()({
 
         client?.changeHistory.push(
             new ChangeRecord(
-                state.signature,
+                store.getters.signature,
                 "ProblemCreated",
                 problemRecord.id,
                 classToPlain(problemRecord.problem)
@@ -345,10 +352,10 @@ export default defineMutations<StoreState>()({
         const outcome = problemRecord.outcomes[0];
         if (outcome) {
             outcome.createdAt = now;
-            outcome.user = state.signature;
+            outcome.user = store.getters.signature;
             client?.changeHistory.push(
                 new ChangeRecord(
-                    state.signature,
+                    store.getters.signature,
                     "OutcomeRated",
                     problemRecord.id,
                     classToPlain(outcome)
@@ -359,7 +366,7 @@ export default defineMutations<StoreState>()({
         problemRecord.interventions.forEach(intervention =>
             client?.changeHistory.push(
                 new ChangeRecord(
-                    state.signature,
+                    store.getters.signature,
                     "InterventionStarted",
                     problemRecord.id,
                     classToPlain(intervention, excludeForChangeRecord)
@@ -368,8 +375,7 @@ export default defineMutations<StoreState>()({
         );
     },
 
-    setSignature(state, { signature }: { signature: string }) {
-        window.localStorage.setItem("signature", signature);
-        state.signature = signature;
+    setCurrentUser(state, user?: User) {
+        state.currentUser = user;
     }
 });

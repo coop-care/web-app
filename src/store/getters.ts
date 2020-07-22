@@ -257,5 +257,9 @@ export default defineGetters<StoreState>()({
             clientId: client._id,
             problemId: client.problems[client.problems.length - 1].id
         };
+    },
+
+    signature: state => {
+        return state.currentUser?.signature || "";
     }
 });

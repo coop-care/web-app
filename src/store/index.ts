@@ -2,8 +2,9 @@ import Vue from "vue";
 import Vuex from "vuex";
 import { downloadJSON } from "../helper/download";
 import { setupColors } from "../helper/color";
-import { Client } from "../models/client";
+import { Client, User } from "../models";
 import { createDirectStore } from "direct-vuex";
+import { ccApi } from "../api/apiProvider";
 import getters from "./getters";
 import mutations from "./mutations";
 import actions from "./actions";
@@ -13,14 +14,14 @@ Vue.use(Vuex);
 export interface StoreState {
     clients: Client[];
     isLoadingClientList: boolean;
-    signature: string;
+    currentUser?: User;
 }
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
         clients: [],
         isLoadingClientList: false,
-        signature: window.localStorage.getItem("signature") || ""
+        currentUser: ccApi.user
     } as StoreState,
     getters,
     mutations,
