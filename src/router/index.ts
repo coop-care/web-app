@@ -26,7 +26,10 @@ export default function(/* { store, ssrContext } */) {
     Router.beforeEach((to, from, next) => {
         // console.log("before each. to:", to.name, "from:", from.name);
         if (ccApi.isLoggedIn) {
-            if (store.state.signature.length > 1 || to.name == "userSettings") {
+            if (
+                store.direct.getters.signature.length > 1 ||
+                to.name == "userSettings"
+            ) {
                 next();
             } else {
                 next({ name: "userSettings" });

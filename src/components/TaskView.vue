@@ -297,7 +297,7 @@ export default class TaskView extends TaskViewProps {
     this.$store.direct.commit.setReminderCompletedAt({
       reminder: this.reminder,
       completedAt: date,
-      recalculateOccurences: true,
+      recalculateOccurrences: true,
       client: this.client,
       problemId: this.task.problemId
     });

@@ -38,7 +38,7 @@
         >
           <thead>
             <tr>
-              <th>{{ $t("occurence") }}</th>
+              <th>{{ $t("occurrence") }}</th>
               <th>{{ $t("category") }}</th>
               <th>{{ $t("interventionDetails") }}</th>
               <th>{{ $t("datesOfConduction") }}</th>

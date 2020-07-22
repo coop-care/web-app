@@ -17,10 +17,11 @@
         <q-item-label
           header
           class="text-black"
+          v-if="user"
         >
-          <simplified-markdown :text="$t('accountWelcomeMessage', {name: $store.direct.state.signature || ''})" />
+          <simplified-markdown :text="$t('accountWelcomeMessage', {name: user.username })" />
           <div class="q-mt-xs text-caption text-weight-medium">
-            {{ $ccApi.username }}
+            {{ user.email }}
           </div>
         </q-item-label>
 
@@ -134,11 +135,17 @@ import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
   }
 })
 export default class UserMenu extends Vue {
+  get user() {
+    return this.$store.direct.state.currentUser;
+  }
   openMail() {
-    location.href = "mailto:feedback@coopcare.de?subject=CoopCare Feedback";
+    location.href = "mailto:feedback@coopcare.de?subject=Feedback";
   }
   logout() {
-    this.$ccApi.logout().then(() => this.$router.push({ name: "login" }));
+    this.$store.direct.dispatch
+      .logout()
+      .then(() => this.$router.push({ name: "login" }))
+      .catch(() => 0);
   }
 }
 </script>

@@ -4,7 +4,7 @@
     flat
     stretch
     style="max-width:44px"
-    v-if="$ccApi.isLoggedIn"
+    v-if="isVisible"
   >
     <q-menu max-height="calc(96vh - 50px)">
       <q-list
@@ -93,6 +93,9 @@ export default class DevMenu extends Vue {
       intervention: "Interventions-Farbe",
       outcome: "Bewertungs-Farbe"
     };
+  }
+  get isVisible() {
+    return this.$ccApi.isLoggedIn && process.env.BACKEND != "demo";
   }
   getColor(name: string) {
     return getColor(name);

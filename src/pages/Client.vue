@@ -261,7 +261,12 @@ export default class PageIndex extends Vue {
   }
 
   addClient(masterData: MasterData) {
-    const client = new Client(this.$ccApi.userId);
+    const userId = this.$store.direct.state.currentUser?.id;
+    if (!userId) {
+      return;
+    }
+
+    const client = new Client(userId);
     client.masterData = masterData;
     this.$ccApi
       .createClient(client)

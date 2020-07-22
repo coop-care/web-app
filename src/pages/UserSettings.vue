@@ -37,10 +37,14 @@ import Component from "vue-class-component";
 @Component
 export default class UserSettingsPage extends Vue {
   get signature() {
-    return this.$store.direct.state.signature;
+    return this.$store.direct.getters.signature;
   }
   set signature(value) {
-    this.$store.direct.commit.setSignature({ signature: value });
+    const user = this.$store.direct.state.currentUser?.clone();
+    if (user) {
+      user.signature = value;
+    }
+    this.$store.direct.dispatch.saveUser(user);
   }
   done() {
     this.$router.push("/");

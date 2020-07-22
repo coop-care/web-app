@@ -16,7 +16,7 @@
     />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; font-src 'self'; img-src 'self'; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' <%= process.env.DEV ? 'ws: wss:' : '' %> https://*.stitch.mongodb.com"
+      content="default-src 'none'; font-src 'self'; img-src 'self' data:; object-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; connect-src 'self' <%= process.env.DEV ? 'ws: wss:' : '' %> https://*.stitch.mongodb.com"
     />
 
     <link rel="icon" type="image/png" href="statics/app-logo-128x128.png" />

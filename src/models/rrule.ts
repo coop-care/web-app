@@ -444,4 +444,5 @@ class RRuleSet extends RuleSet {
     }
 }
 
-export { RRuleSet, RRule, Frequency, Options };
+export { RRuleSet, RRule, Frequency };
+export type { Options };

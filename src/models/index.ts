@@ -1,3 +1,4 @@
+export { User } from "./user";
 export { Client } from "./client";
 export { MasterData } from "./masterData";
 export { ProblemRecord } from "./problemRecord";
@@ -8,5 +9,7 @@ export { Reminder, Occurrence } from "./reminder";
 export { Intervention } from "./intervention";
 export { RatingReminder } from "./ratingReminder";
 export { Task } from "./task";
-export { ChangeRecord, ChangeRecordType } from "./changeRecord";
-export { RRuleSet, RRule, Frequency, Options } from "./rrule";
+export { ChangeRecord } from "./changeRecord";
+export type { ChangeRecordType } from "./changeRecord";
+export { RRuleSet, RRule, Frequency } from "./rrule";
+export type { Options } from "./rrule";

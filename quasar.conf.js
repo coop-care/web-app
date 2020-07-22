@@ -98,7 +98,8 @@ module.exports = function(ctx) {
         "QColor",
         "QSpace",
         "QPageSticky",
-        "QBanner"
+        "QBanner",
+        "QDialog"
       ],
 
       directives: ["Ripple", "TouchSwipe", "ClosePopup"],

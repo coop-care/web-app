@@ -68,8 +68,8 @@ export default class PageLogin extends Vue {
   errorMsg = "";
 
   doLogin() {
-    this.$ccApi
-      .login(this.email, this.password)
+    this.$store.direct.dispatch
+      .login({ email: this.email, password: this.password })
       .then(() => {
         this.$router.push({ name: "client" });
       })

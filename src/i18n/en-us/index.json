@@ -133,8 +133,8 @@
   "addReminderTime": "Add reminder date",
   "recurrenceEndLabel": "End",
   "recurrenceEndDate": "End date",
-  "endAfterOccurenceCount": "After number of occurences",
-  "endAfterOccurenceCountLabel": "After {count} occurence | After {count} occurences",
+  "endAfterOccurrenceCount": "After number of occurrences",
+  "endAfterOccurrenceCountLabel": "After {count} occurrence | After {count} occurrences",
   "editIntervention": "Edit intervention",
   "deleteIntervention": "End intervention",
   "dateFormat": "MM/DD/YYYY",
@@ -210,7 +210,7 @@
   },
   "proofOfPerformance": "Proof of Performance",
   "showProofOfPerformance": "Show Proof of Performance",
-  "occurence": "Occurence",
+  "occurrence": "Occurrence",
   "category": "Category",
   "interventionDetails": "Intervention details",
   "datesOfConduction": "Conduction: Dates and Signatures",
@@ -254,5 +254,8 @@
   "otherInterventionTargets": "Other intervention targets",
   "interventionsForCategoryTitle": "Interventions for category **{category}** and problem **{problem}**",
   "duplicate": "Duplicate",
-  "noPlannedInterventionsForCategoryTitle": "No interventions planned for category **{category}**."
+  "noPlannedInterventionsForCategoryTitle": "No interventions planned for category **{category}**.",
+  "onboardingDoneButton": "Let's go",
+  "demoOnboardingTitle": "Great that you try our demo version 🤩",
+  "demoOnboardingMessage": "<p>This version is different from the full app:</p>\n\n<ul>\n  <li>the demo does not save or send any data</li>\n  <li>your changes remain locally in your browser and are gone when reloading or closing</li>\n  <li>there is no login, no team functions and no synchronization</li>\n  <li>no offline usage</li>\n</ul>\n\n<p>If you want to test the complete software with all functions, please register for the <a href=\"mailto:mail@coopcare.de?subject=Beta program sign up&body=Hi, %0Awe wish to try the software with our team and would like to have access to the beta program.\">beta test program</a>.</p>\n\n<p>We are also always happy to receive <a href=\"mailto:feedback@coopcare.de?subject=Feedback\">feedback</a>!</p>"
 }
