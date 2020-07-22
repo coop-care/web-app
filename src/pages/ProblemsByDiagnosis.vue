@@ -173,6 +173,7 @@ export default class ProblemsByDiagnosis extends Vue {
     this.selectedProblemCodes.forEach(problemCode => {
       const problemRecord = new ProblemRecord();
       problemRecord.problem.code = problemCode;
+      problemRecord.tag = this.selectedDiagnosisCode;
       const payload = {
         problemRecord: problemRecord,
         ...this.$route.params

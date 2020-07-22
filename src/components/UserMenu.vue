@@ -135,14 +135,7 @@ import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 })
 export default class UserMenu extends Vue {
   openMail() {
-    location.href =
-      "mailto:feedback@coopcare.de?subject=CoopCare Feedback&body=" +
-      encodeURIComponent("\n\n\n––––––––––––––––––––\n") +
-      "Einige freiwillige technische Angaben, die uns beim Nachvollziehen des Feedbacks helfen:" +
-      encodeURIComponent("\n\nBrowser: ") +
-      this.$q.platform.userAgent +
-      encodeURIComponent("\nRoute: ") +
-      this.$router.currentRoute.path;
+    location.href = "mailto:feedback@coopcare.de?subject=CoopCare Feedback";
   }
   logout() {
     this.$ccApi.logout().then(() => this.$router.push({ name: "login" }));

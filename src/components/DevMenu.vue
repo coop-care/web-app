@@ -77,9 +77,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { colors } from "quasar";
-
-const { getBrand, setBrand } = colors;
+import { getColor, setColor } from "../helper/color";
 
 @Component
 export default class DevMenu extends Vue {
@@ -97,10 +95,10 @@ export default class DevMenu extends Vue {
     };
   }
   getColor(name: string) {
-    return getBrand(name);
+    return getColor(name);
   }
   setColor(name: string, value: string) {
-    setBrand(name, value);
+    setColor(name, value);
   }
   addSamplesToDB() {
     this.$store.direct.dispatch.addSamplesToDB();

@@ -4,10 +4,8 @@ import { Client } from "../models/client";
 import { ProblemRecord } from "../models/problemRecord";
 import { Outcome } from "../models/outcome";
 import { format } from "timeago.js";
-import { colors } from "quasar";
+import { getColor } from "../helper/color";
 import ApexCharts from "apexcharts";
-
-const { getBrand } = colors;
 
 export default defineGetters<StoreState>()({
     getClient: state => (payload: any): Client | undefined => {
@@ -167,7 +165,7 @@ export default defineGetters<StoreState>()({
                         }
                     }
                 },
-                colors: [getBrand("outcome"), getBrand("outcome")],
+                colors: [getColor("outcome"), getColor("outcome")],
                 grid: {
                     show: true,
                     padding: {
@@ -178,7 +176,7 @@ export default defineGetters<StoreState>()({
                     }
                 },
                 fill: {
-                    colors: [getBrand("outcome"), "#ffffff"],
+                    colors: [getColor("outcome"), "#ffffff"],
                     opacity: 0,
                     type: ["gradient", "solid"],
                     gradient: {

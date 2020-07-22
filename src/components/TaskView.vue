@@ -1,5 +1,8 @@
 <template>
-  <q-item tag="label">
+  <q-item
+    tag="label"
+    @click.prevent=""
+  >
     <q-item-section
       side
       top
@@ -10,7 +13,7 @@
         :color="hasCheckbox && !disabled ? color : 'grey-4'"
         keep-color
         :label="task.user"
-        class="text-intervention text-weight-medium"
+        :class="'text-' + color + ' text-weight-medium'"
       />
     </q-item-section>
     <q-item-section>
