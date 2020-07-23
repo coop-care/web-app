@@ -1,14 +1,8 @@
 <template>
-  <q-dialog
-    ref="dialog"
-    persistent
-  >
-    <q-card
-      class="q-dialog-plugin"
-      style="width: 600px"
-    >
+  <q-dialog ref="dialog" persistent>
+    <q-card class="q-dialog-plugin" style="width: 600px">
       <q-card-section>
-        <div class="text-h6">{{ $t('demoOnboardingTitle') }}</div>
+        <div class="text-h6">{{ $t("demoOnboardingTitle") }}</div>
       </q-card-section>
 
       <q-separator />
@@ -55,6 +49,7 @@ export default class DemoOnboarding extends Vue {
     }
     this.$emit("ok");
     this.hide();
+    this.$router.push({ name: "client" });
   }
 }
 </script>
