@@ -1,43 +1,40 @@
 <template>
-  <q-item
-    tag="label"
-    @click.prevent=""
-  >
-    <q-item-section
-      side
-      top
-    >
+  <q-item tag="label" @click.prevent="">
+    <q-item-section side top :class="task.user ? 'q-pr-xs' : ''">
       <q-checkbox
         :disable="!hasCheckbox || disabled"
         v-model="isCompleted"
         :color="hasCheckbox && !disabled ? color : 'grey-4'"
         keep-color
-        :label="task.user"
         :class="'text-' + color + ' text-weight-medium'"
       />
     </q-item-section>
+    <q-item-section v-if="task.user" side class="">
+      <div
+        :class="'signature bg-' + color + '-light text-' + color"
+        style="border: 1px solid; font-size:13.3px"
+      >
+        {{ task.user }}
+      </div>
+    </q-item-section>
     <q-item-section>
-      <q-item-label :class="'text-weight-medium ' + (isDue ? 'text-negative' : '')">
+      <q-item-label
+        :class="'text-weight-medium ' + (isDue ? 'text-negative' : '')"
+      >
         {{ title }}
       </q-item-label>
-      <q-item-label
-        caption
-        v-if="description || timeAgo"
-        lines="2"
-      >
+      <q-item-label caption v-if="description || timeAgo" lines="2">
         <span
           v-if="timeAgo"
           @click.prevent="navigateToDueDate"
           class="link text-negative text-weight-medium"
-        >{{ timeAgo }}</span>
+          >{{ timeAgo }}</span
+        >
         <span v-if="timeAgo && description">, </span>
         <span v-if="description">{{ description }}</span>
       </q-item-label>
     </q-item-section>
-    <q-item-section
-      v-if="primaryAction"
-      side
-    >
+    <q-item-section v-if="primaryAction" side>
       <q-btn
         :icon="primaryAction.icon"
         :title="primaryAction.name"
@@ -54,10 +51,7 @@
         !disabled && reminderActionItems.filter(item => item.condition).length
       "
     >
-      <action-menu
-        :items="reminderActionItems"
-        :color="color"
-      />
+      <action-menu :items="reminderActionItems" :color="color" />
     </q-item-section>
     <q-popup-proxy
       no-parent-event
@@ -69,7 +63,7 @@
       <date-time-popup
         :value="task.due"
         :format="$t('datetimeFormat')"
-        :min="new Date(new Date().setHours(0,0,0,0))"
+        :min="new Date(new Date().setHours(0, 0, 0, 0))"
         :color="color"
         @input="onTaskMove"
       />
