@@ -1,9 +1,6 @@
 <template>
   <div>
-    <div
-      v-if="isSingleEditor"
-      class="q-mb-sm"
-    >
+    <div v-if="isSingleEditor" class="q-mb-sm">
       <q-btn-toggle
         v-model="categoryCode"
         spread
@@ -13,25 +10,25 @@
         stack
         toggle-color="intervention"
         text-color="intervention"
-        class="intervention-category q-my-sm"
+        class="intervention-category q-my-sm border-intervention"
         :options="categoryOptions"
       />
       <div class="q-mx-md">
         <div
           v-if="$q.screen.lt.sm"
           class="text-center text-intervention text-subtitle2 text-weight-bold"
-        >{{ $t("terminology.categoryByCode[" + categoryCode + "].title") }}</div>
-        <div
-          v-if="categoryCode"
-          class="text-caption"
-        >{{ $t("terminology.categoryByCode[" + categoryCode + "].description") }}</div>
+        >
+          {{ $t("terminology.categoryByCode[" + categoryCode + "].title") }}
+        </div>
+        <div v-if="categoryCode" class="text-caption">
+          {{
+            $t("terminology.categoryByCode[" + categoryCode + "].description")
+          }}
+        </div>
       </div>
     </div>
 
-    <div
-      v-if="!isSingleEditor && $q.screen.lt.sm"
-      class="text-right"
-    >
+    <div v-if="!isSingleEditor && $q.screen.lt.sm" class="text-right">
       <q-btn
         icon="far fa-clone"
         flat
@@ -59,10 +56,7 @@
         :options="targets"
         color="intervention"
       >
-        <template
-          v-slot:after
-          v-if="!isSingleEditor && $q.screen.gt.xs"
-        >
+        <template v-slot:after v-if="!isSingleEditor && $q.screen.gt.xs">
           <q-btn
             icon="far fa-clone"
             flat
@@ -121,19 +115,13 @@
     </q-input>
 
     <div v-if="targetCode">
-      <reminder-editor
-        v-model="recurrenceRules"
-        color="intervention"
-      />
+      <reminder-editor v-model="recurrenceRules" color="intervention" />
     </div>
   </div>
 </template>
 
 <style lang="sass">
-.q-btn-toggle.intervention-category
-  border-color: $intervention
-  border-color: var(--q-color-intervention)
-  .q-btn__content
+.q-btn-toggle.intervention-category .q-btn__content
     .q-icon
       font-size: 24px
     div
