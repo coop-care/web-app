@@ -14,8 +14,10 @@ export default class DemoApi implements CoopCareApiInterface {
     }
     get user() {
         const user = new User("demo");
+        user.firstName = "Demo";
+        user.lastName = "Tester";
         user.email = "demo@coopcare.de";
-        user.signature = window.localStorage.getItem("signature") || "Hdz";
+        user.signature = window.localStorage.getItem("signature") || "DT";
         return user;
     }
     login() {
