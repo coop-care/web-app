@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="radius-md bg-classification-light"
+    class="radius-md bg-white"
     v-if="!!record"
   >
     <q-card-section :class="sectionPadding + (sectionPadding ? ' q-pt-sm' : '')">
@@ -266,15 +266,15 @@ const ProblemSummaryProps = Vue.extend({
     params: Object,
     problemRecord: ProblemRecord,
     isSummary: Boolean,
-    isDisabled: Boolean
-  }
+    isDisabled: Boolean,
+  },
 });
 
 @Component({
   components: {
     apexchart: VueApexCharts,
-    ActionMenu
-  }
+    ActionMenu,
+  },
 })
 export default class ProblemSummary extends ProblemSummaryProps {
   get problem() {
@@ -292,7 +292,7 @@ export default class ProblemSummary extends ProblemSummaryProps {
   }
   get ratings() {
     return ["knowledge", "behaviour", "status"].map(
-      key => ((this.lastOutcome || {}) as any)[key]
+      (key) => ((this.lastOutcome || {}) as any)[key]
     );
   }
   get isDraft() {
@@ -306,7 +306,7 @@ export default class ProblemSummary extends ProblemSummaryProps {
       expectation: this.$t("expectedRating"),
       ratings: this.terminology.problemRatingScale.ratings,
       locale: this.$root.$i18n.locale,
-      ...this.params
+      ...this.params,
     });
   }
   get actionMenuItems() {
@@ -315,7 +315,7 @@ export default class ProblemSummary extends ProblemSummaryProps {
         condition: !this.problem.isHighPriority,
         name: this.$t("prioritizeProblem"),
         icon: "fas fa-arrow-up",
-        action: this.prioritizeProblemRecord
+        action: this.prioritizeProblemRecord,
       },
       {
         condition: !this.record.resolvedAt,
@@ -324,8 +324,8 @@ export default class ProblemSummary extends ProblemSummaryProps {
         action: () => {
           this.$store.direct.commit.dismissProblemRecord(this.params);
           this.$store.direct.dispatch.saveClient(this.params);
-        }
-      }
+        },
+      },
     ];
   }
   get sectionPadding() {
@@ -357,7 +357,7 @@ export default class ProblemSummary extends ProblemSummaryProps {
       name: "problem",
       params: this.$store.direct.getters.getRouteParamsForLatestProblem(
         this.params
-      )
+      ),
     });
     this.$store.direct.dispatch.saveClient(this.params);
   }

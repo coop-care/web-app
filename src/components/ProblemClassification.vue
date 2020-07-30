@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="problem-classification"
-    v-if="record"
-  >
+  <div class="problem-classification" v-if="record">
     <div class="row q-col-gutter-lg">
       <div class="col-md-6">
         <h6 class="counter">{{ $t("selectProblem") }}</h6>
@@ -15,10 +12,7 @@
           dense
         >
           <template v-slot:prepend>
-            <q-icon
-              name="search"
-              color="classification"
-            />
+            <q-icon name="search" color="classification" />
           </template>
           <template v-slot:append>
             <q-icon
@@ -106,7 +100,7 @@
           toggle-color="classification"
           text-color="classification"
           :options="modifier('scope')"
-          class="q-mb-xs"
+          class="q-mb-xs border-classification"
         />
         <div class="text-weight-light q-mb-md q-px-lg">
           {{ $t(problem.scope.description) }}
@@ -120,20 +114,21 @@
           toggle-color="classification"
           text-color="classification"
           :options="modifier('severity')"
-          class="q-mb-xs"
+          class="q-mb-xs border-classification"
         />
         <div class="text-weight-light q-mb-md q-px-lg">
           <text-with-tooltip
             :text="$t(problem.severity.description)"
-            :tooltip="severityModifierExample ? $t('examplePrefix', {text: severityModifierExample}) : ''"
+            :tooltip="
+              severityModifierExample
+                ? $t('examplePrefix', { text: severityModifierExample })
+                : ''
+            "
             class="text-weight-light q-my-xs"
           />
         </div>
 
-        <h6
-          v-if="showSymptomsSection"
-          class="counter"
-        >
+        <h6 v-if="showSymptomsSection" class="counter">
           {{ $t("signsAndSymptoms") }}
         </h6>
         <q-option-group
@@ -175,7 +170,7 @@
           toggle-color="classification"
           text-color="classification"
           :options="priorityOptions"
-          class="q-mb-xs"
+          class="q-mb-xs border-classification"
         />
         <div class="text-weight-light q-mb-md q-px-lg">
           {{ $t(problem.priority.description) }}
@@ -209,16 +204,12 @@
     padding-right: 12px
 .problem-classification
   .q-tree > .q-tree__node > .q-tree__node-header
-    background-color: $classification
     background-color: var(--q-color-classification)
     color: #fff
   .q-tree__node .q-tree__node .q-tree__node .q-tree__node-header
     padding-top: 0
     padding-bottom: 0
-  .q-btn-toggle
-    border-color: $classification
-    border-color: var(--q-color-classification)
-    button
+  .q-btn-toggle button
       @media screen and (max-width: $breakpoint-xs-max)
         font-size: 13px
 </style>

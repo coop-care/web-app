@@ -7,7 +7,9 @@
     <div class="row custom-gutter">
       <div class="col-12 col-sm-9 col-md-7">
         <div class="row q-pb-sm q-pa-xxs-none">
-          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11">
+          <div
+            class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11"
+          >
             {{ $t("observedRating") }}:
           </div>
           <div class="col-12-xxs col-9">
@@ -26,7 +28,7 @@
                 rounded
                 text-color="outcome"
                 :options="options"
-                class="q-mx-sm col"
+                class="q-mx-sm col border-outcome"
                 style="border-width: 2px"
               >
                 <template v-slot:1>
@@ -84,11 +86,10 @@
           </div>
         </div>
 
-        <div
-          class="row"
-          style="opacity: 0.7"
-        >
-          <div class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11">
+        <div class="row" style="opacity: 0.7">
+          <div
+            class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11"
+          >
             {{ $t("expectedRating") }}:
           </div>
           <div class="col-12-xxs col-9">
@@ -107,7 +108,7 @@
                 rounded
                 text-color="outcome"
                 :options="options"
-                class="q-mx-sm col"
+                class="q-mx-sm col border-outcome"
               >
                 <template v-slot:1>
                   <q-tooltip
@@ -192,9 +193,6 @@
 </template>
 
 <style lang="sass">
-.q-btn-toggle
-  border-color: $outcome
-  border-color: var(--q-color-outcome)
 .custom-gutter
   margin-top: -24px
   margin-left: -24px

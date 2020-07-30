@@ -4,24 +4,18 @@
     :value="isExpanded"
     @input="expansionChanged"
     ref="expansionItem"
-    class="intervention-item rounded-borders q-mb-sm"
+    class="intervention-item bg-intervention-light rounded-borders q-mb-sm"
     expand-icon-class="text-intervention expand-icon"
   >
     <template v-slot:header>
       <q-item-section side>
-        <q-icon
-          :name="icon"
-          color="intervention"
-        />
+        <q-icon :name="icon" color="intervention" />
       </q-item-section>
       <q-item-section>
         <q-item-label class="text-weight-bold">{{ title }}</q-item-label>
         <q-item-label caption>{{ subtitle }}</q-item-label>
       </q-item-section>
-      <q-item-section
-        side
-        class="close-icon"
-      >
+      <q-item-section side class="close-icon">
         <q-btn
           icon="cancel"
           flat
@@ -31,17 +25,13 @@
         />
       </q-item-section>
     </template>
-    <intervention-editor
-      :value="value"
-      class="intervention-editor q-pb-md"
-    />
+    <intervention-editor :value="value" class="intervention-editor q-pb-md" />
   </q-expansion-item>
 </template>
 
 <style lang="sass">
 .intervention
   .intervention-item
-    background-color: scale-color($intervention, $lightness: 96%)
     .q-item
       @media (max-width: $breakpoint-xs-max)
         padding-right: 2px
