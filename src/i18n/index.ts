@@ -32,7 +32,7 @@ if (process.env.BACKEND != "demo") {
             deDE.diagnosisNames = data.diagnoses["de-de"];
             deDE.problemCodesByDiagnosis = data.problemCodesByDiagnosis;
         })
-        .catch(error => console.log(5, error));
+        .catch(() => 0);
     fetch("statics/usersguide_EN.sln")
         .then(responseHandler)
         .then(data => {

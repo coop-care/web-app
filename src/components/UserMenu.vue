@@ -104,19 +104,20 @@
             v-close-popup
           />
           <q-btn
-            :label="$t('aboutUs')"
-            flat
-            no-caps
-            class="text-caption"
-          />
-          <q-btn
             :label="$t('privacyPolicy')"
             flat
             no-caps
             class="text-caption"
+            @click="$router.push({ name: 'privacyPolicy' })"
+          />
+          <q-btn
+            :label="$t('legalNotice')"
+            flat
+            no-caps
+            class="text-caption"
+            @click="$router.push({ name: 'legalNotice' })"
           />
         </q-item>
-
       </q-list>
     </q-menu>
   </q-btn>

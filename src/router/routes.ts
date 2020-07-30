@@ -98,6 +98,16 @@ const routes: RouteConfig[] = [
                 name: "confirm",
                 path: !isDemo ? "/confirm" : "",
                 component: () => import("pages/Confirm.vue")
+            },
+            {
+                name: "legalNotice",
+                path: "/legal-notice",
+                component: () => import("pages/Markdown.vue")
+            },
+            {
+                name: "privacyPolicy",
+                path: "/privacy-policy",
+                component: () => import("pages/Markdown.vue")
             }
         ]
     }
