@@ -12,7 +12,7 @@
     <q-item-section v-if="task.user" side class="">
       <div
         :class="'signature bg-' + color + '-light text-' + color"
-        style="border: 1px solid; font-size:13.3px"
+        style="border: 1px solid; font-size: 11.7px"
       >
         {{ task.user }}
       </div>
