@@ -22,11 +22,15 @@ import Component from "vue-class-component";
 
 const pages = {
   "/legal-notice": {
+    // @ts-ignore
     "de-de": () => import("../markdown/de/impressum.md"),
+    // @ts-ignore
     "en-us": () => import("../markdown/en/legal-notice.md")
   },
   "/privacy-policy": {
+    // @ts-ignore
     "de-de": () => import("../markdown/de/datenschutz.md"),
+    // @ts-ignore
     "en-us": () => import("../markdown/en/privacy-policy.md")
   }
 };
