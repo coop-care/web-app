@@ -89,7 +89,7 @@
   .q-btn-dropdown__arrow
     display: none
 .title-text
-  line-height: 1.2rem
+  line-height: 1.4rem
   &.has-subtitle
     font-size: 1.25rem
   &.text-caption
