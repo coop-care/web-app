@@ -3,6 +3,8 @@ import { Base } from "./base";
 
 export class User extends Base {
     id: string;
+    firstName?: string;
+    lastName?: string;
     signature = "";
     email = "";
     isOnboardingCompleted = false;
@@ -13,6 +15,9 @@ export class User extends Base {
     }
 
     get username() {
-        return this.signature;
+        return (
+            [this.firstName, this.lastName].filter(name => name).join(" ") ||
+            this.signature
+        );
     }
 }

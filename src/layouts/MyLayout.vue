@@ -6,14 +6,25 @@
         style="z-index: 1000"
       >
         <q-btn
-          v-if="$router.currentRoute.name.startsWith('client')  && $q.screen.lt.md"
+          v-if="
+            $router.currentRoute.name.startsWith('client') && $q.screen.lt.md
+          "
           flat
           icon="menu"
           aria-label="menu"
           @click="$root.$emit('toggleClientDrawer')"
         />
         <q-btn
-          v-if="!['client', 'clientReminders', 'clientReport', 'clientHistory', 'clientMasterData', 'login'].includes($router.currentRoute.name)"
+          v-if="
+            ![
+              'client',
+              'clientReminders',
+              'clientReport',
+              'clientHistory',
+              'clientMasterData',
+              'login'
+            ].includes($router.currentRoute.name)
+          "
           size="lg"
           dense
           no-caps
@@ -24,7 +35,11 @@
         />
 
         <q-toolbar-title class="text-center">
-          <div :class="'ellipsis title-text ' + (subtitle ? 'has-subtitle' : '')">{{ title }}</div>
+          <div
+            :class="'ellipsis title-text ' + (subtitle ? 'has-subtitle' : '')"
+          >
+            {{ title }}
+          </div>
           <div class="ellipsis text-caption title-text">{{ subtitle }}</div>
         </q-toolbar-title>
 
@@ -52,7 +67,9 @@
           class="bg-negative text-white text-center q-py-xs"
           style="height: 32px"
         >
-          <div class="text-caption text-weight-medium ellipsis">{{ $t("offlineBanner") }}</div>
+          <div class="text-caption text-weight-medium ellipsis">
+            {{ $t("offlineBanner") }}
+          </div>
         </q-banner>
       </transition>
       <div
@@ -72,7 +89,7 @@
   .q-btn-dropdown__arrow
     display: none
 .title-text
-  line-height: 1.2rem
+  line-height: 1.4rem
   &.has-subtitle
     font-size: 1.25rem
   &.text-caption
@@ -118,7 +135,11 @@ export default class MyLayout extends Vue {
       } else {
         return this.$tc("client", 2);
       }
-    } else if (["userSettings", "teamSettings"].includes(route.name || "")) {
+    } else if (
+      ["userSettings", "teamSettings", "legalNotice", "privacyPolicy"].includes(
+        route.name || ""
+      )
+    ) {
       return this.$t(route.name || "");
     } else {
       return "";

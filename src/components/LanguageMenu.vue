@@ -13,6 +13,13 @@
         :active="$root.$i18n.locale === locale"
         @click="changeLocale(locale)"
       >
+        <q-item-section side>
+          <q-icon
+            :name="$root.$i18n.locale === locale ? 'fas fa-circle' : ''"
+            color="primary"
+            size="10px"
+          />
+        </q-item-section>
         <q-item-section>
           <q-item-label>{{ $t(locale) }}</q-item-label>
         </q-item-section>
@@ -28,8 +35,8 @@ const LanguageMenuProps = Vue.extend({
   props: {
     anchor: String,
     self: String,
-    fit: Boolean
-  }
+    fit: Boolean,
+  },
 });
 
 @Component

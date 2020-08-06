@@ -14,16 +14,24 @@
         class="text-body2"
         style="width: 260px"
       >
-        <q-item-label
-          header
-          class="text-black"
-          v-if="user"
-        >
-          <simplified-markdown :text="$t('accountWelcomeMessage', {name: user.username })" />
-          <div class="q-mt-xs text-caption text-weight-medium">
-            {{ user.email }}
-          </div>
-        </q-item-label>
+        <q-item v-if="user">
+          <q-item-section side>
+            <div
+              class="signature bg-grey-7 text-white"
+              style="font-size: 10px; line-height: 2.4em"
+            >
+              {{ user.signature }}
+            </div>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>
+              <simplified-markdown :text="$t('accountWelcomeMessage', { name: user.username })" />
+              <div class="q-mt-xs text-caption text-weight-medium">
+                {{ user.email }}
+              </div>
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 
         <q-separator />
 
@@ -31,7 +39,9 @@
           <q-item-section side>
             <q-icon name="fas fa-globe" />
           </q-item-section>
-          <q-item-section>{{ $t("selectLanguage", {language: $t($root.$i18n.locale)}) }}</q-item-section>
+          <q-item-section>{{
+            $t("selectLanguage", { language: $t($root.$i18n.locale) })
+          }}</q-item-section>
           <q-item-section side>
             <q-icon name="fas fa-angle-right" />
           </q-item-section>
@@ -44,7 +54,7 @@
         <q-item
           clickable
           v-close-popup
-          @click="$router.push({name: 'userSettings'})"
+          @click="$router.push({ name: 'userSettings' })"
         >
           <q-item-section side>
             <q-icon name="fas fa-user-cog" />
@@ -52,9 +62,10 @@
           <q-item-section>{{ $t("userSettings") }}</q-item-section>
         </q-item>
         <q-item
+          v-if="!isDemo"
           clickable
           v-close-popup
-          @click="$router.push({name: 'teamSettings'})"
+          @click="$router.push({ name: 'teamSettings' })"
         >
           <q-item-section side>
             <q-icon name="fas fa-users-cog" />
@@ -73,7 +84,7 @@
             <q-icon name="feedback" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ $t('feedback') }}</q-item-label>
+            <q-item-label>{{ $t("feedback") }}</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -101,23 +112,25 @@
             type="a"
             href="https://github.com/coop-care/web-app"
             target="_blank"
+            rel="noreferrer noopener"
             icon-right="fab fa-github"
             v-close-popup
-          />
-          <q-btn
-            :label="$t('aboutUs')"
-            flat
-            no-caps
-            class="text-caption"
           />
           <q-btn
             :label="$t('privacyPolicy')"
             flat
             no-caps
             class="text-caption"
+            @click="$router.push({ name: 'privacyPolicy' })"
+          />
+          <q-btn
+            :label="$t('legalNotice')"
+            flat
+            no-caps
+            class="text-caption"
+            @click="$router.push({ name: 'legalNotice' })"
           />
         </q-item>
-
       </q-list>
     </q-menu>
   </q-btn>
@@ -131,12 +144,15 @@ import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 @Component({
   components: {
     LanguageMenu,
-    SimplifiedMarkdown
-  }
+    SimplifiedMarkdown,
+  },
 })
 export default class UserMenu extends Vue {
   get user() {
     return this.$store.direct.state.currentUser;
+  }
+  get isDemo() {
+    return process.env.BACKEND == "demo";
   }
   openMail() {
     location.href = "mailto:feedback@coopcare.de?subject=Feedback";
