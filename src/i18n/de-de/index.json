@@ -257,5 +257,6 @@
   "onboardingDoneButton": "Auf geht's",
   "demoOnboardingTitle": "Prima, dass du unsere Demo-Version ausprobierst 🤩",
   "demoOnboardingMessage": "<p>Diese Version unterscheidet sich von der vollständigen App:</p>\n\n<ul>\n  <li>die Demo speichert und sendet keine Daten</li>\n  <li>deine Änderungen bleiben lokal in deinem Browser und sind beim Neuladen oder Schließen weg</li>\n  <li>es gibt keinen Login, keine Team-Funktionen und keine Synchronisation</li>\n  <li>keine Offline-Nutzung</li>\n</ul>\n\n<p>Wenn du die komplette Software mit allen Funktionen testen möchtest, melde dich gerne für das <a href=\"mailto:mail@coopcare.de?subject=Anmeldung fürs Beta-Programm&body=Hi, %0Awir möchten die Software mit unserem Team ausprobieren und hätten gern Zugang zum Beta-Programm.\">Beta-Test-Programm</a> an.</p>\n\n<p>Wir freuen uns auch immer über <a href=\"mailto:feedback@coopcare.de?subject=Feedback\">Feedback</a>!</p>",
-  "legalNotice": "Impressum"
+  "legalNotice": "Impressum",
+  "sinceDate": "seit {date}"
 }

@@ -75,7 +75,7 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { date, QPopupProxy } from "quasar";
-import { format } from "timeago.js";
+import { DateTime } from "luxon";
 import {
   Client,
   Task,
@@ -86,7 +86,7 @@ import {
 import ActionMenu from "components/ActionMenu.vue";
 import DateTimePopup from "components/DateTimePopup.vue";
 
-const { formatDate, subtractFromDate } = date;
+const { formatDate, subtractFromDate, isSameDate } = date;
 
 const TaskViewProps = Vue.extend({
   props: {
@@ -156,8 +156,27 @@ export default class TaskView extends TaskViewProps {
     );
   }
   get timeAgo() {
-    if (this.isDue && this.task.due) {
-      return format(this.task.due, this.$root.$i18n.locale);
+    const selectedDate = (this.date as unknown) as Date;
+
+    if (
+      this.isDue &&
+      this.task.due &&
+      !isSameDate(selectedDate, this.task.due, "day")
+    ) {
+      const locale = this.$root.$i18n.locale;
+      const startOfDayTimestamp = new Date().setHours(0, 0, 0, 0);
+      const sevenDaysAgo = subtractFromDate(startOfDayTimestamp, {
+        days: 7
+      }).getTime();
+      if (this.task.due.getTime() > sevenDaysAgo) {
+        return this.$t("sinceDate", {
+          date: this.task.due.toLocaleString(locale, { weekday: "long" })
+        });
+      } else {
+        return this.$t("sinceDate", {
+          date: this.task.due.toLocaleString(locale, DateTime.DATE_SHORT)
+        });
+      }
     } else {
       return undefined;
     }
