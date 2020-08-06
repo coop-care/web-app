@@ -218,7 +218,7 @@ export default defineGetters<StoreState>()({
 
             const lastObservation = series[0].data[series[0].data.length - 1];
 
-            if (lastObservation.y == 0) {
+            if (lastObservation.y == null || lastObservation.y == 0) {
                 return;
             }
 
