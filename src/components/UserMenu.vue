@@ -6,8 +6,14 @@
     stretch
     style="max-width:44px"
   >
-    <q-menu max-width="260px" max-height="calc(96vh - 50px)">
-      <q-list class="text-body2" style="width: 260px">
+    <q-menu
+      max-width="260px"
+      max-height="calc(96vh - 50px)"
+    >
+      <q-list
+        class="text-body2"
+        style="width: 260px"
+      >
         <q-item v-if="user">
           <q-item-section side>
             <div
@@ -19,9 +25,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>
-              <simplified-markdown
-                :text="$t('accountWelcomeMessage', { name: user.username })"
-              />
+              <simplified-markdown :text="$t('accountWelcomeMessage', { name: user.username })" />
               <div class="q-mt-xs text-caption text-weight-medium">
                 {{ user.email }}
               </div>
@@ -71,7 +75,11 @@
 
         <q-separator />
 
-        <q-item clickable v-close-popup @click="openMail()">
+        <q-item
+          clickable
+          v-close-popup
+          @click="openMail()"
+        >
           <q-item-section side>
             <q-icon name="feedback" />
           </q-item-section>
@@ -82,7 +90,11 @@
 
         <q-separator />
 
-        <q-item clickable v-close-popup @click="logout">
+        <q-item
+          clickable
+          v-close-popup
+          @click="logout"
+        >
           <q-item-section side>
             <q-icon name="fas fa-sign-out-alt" />
           </q-item-section>
@@ -100,6 +112,7 @@
             type="a"
             href="https://github.com/coop-care/web-app"
             target="_blank"
+            rel="noreferrer noopener"
             icon-right="fab fa-github"
             v-close-popup
           />
@@ -131,8 +144,8 @@ import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 @Component({
   components: {
     LanguageMenu,
-    SimplifiedMarkdown
-  }
+    SimplifiedMarkdown,
+  },
 })
 export default class UserMenu extends Vue {
   get user() {

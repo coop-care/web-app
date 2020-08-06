@@ -3,7 +3,6 @@ title: Datenschutzerklärung
 layout: default
 lang: de
 ---
-
 <h2>Datenschutzerklärung</h2>
 <p>Personenbezogene Daten (nachfolgend zumeist nur „Daten“ genannt) werden von uns nur im Rahmen der Erforderlichkeit
   sowie zum Zwecke der Bereitstellung eines funktionsfähigen und nutzerfreundlichen Internetauftritts, inklusive seiner
@@ -26,8 +25,8 @@ lang: de
 <h3>I. Informationen über uns als Verantwortliche</h3>
 <p>Verantwortlicher Anbieter dieses Internetauftritts im datenschutzrechtlichen Sinne ist:</p>
 <p>Michael Kamphausen<br>Friedrich-List-Str. 2d<br>21079 Hamburg<br>Deutschland</p>
-<p>E-Mail: mail@coopcare.de<br>
-  Telefon: 0176 48389121</p>
+<p>E-Mail: &#109;&#97;&#105;&#108;&#64;&#99;&#111;&#111;&#112;&#99;&#97;&#114;&#101;&#46;&#100;&#101;<br>
+  Telefon: &#48;&#49;&#55;&#54;&#32;&#52;&#56;&#51;&#56;&#57;&#49;&#50;&#49;</p>
 
 <h3>II. Rechte der Nutzer und Betroffenen</h3>
 <p>Mit Blick auf die nachfolgend noch näher beschriebene Datenverarbeitung haben die Nutzer und Betroffenen das Recht

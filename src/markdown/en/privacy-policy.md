@@ -14,7 +14,7 @@ lang: en
 <h3>I. Information about us as controllers of your data</h3>
 <p>The party responsible for this website (the "controller") for purposes of data protection law is:</p>
 <p>Michael Kamphausen<br>Friedrich-List-Str. 2d<br>21079 Hamburg<br>Germany</p>
-<p>E-Mail: mail@coopcare.de</p>
+<p>E-Mail: &#109;&#97;&#105;&#108;&#64;&#99;&#111;&#111;&#112;&#99;&#97;&#114;&#101;&#46;&#100;&#101;</p>
 
 <h3>II. The rights of users and data subjects</h3>
 <p>With regard to the data processing to be described in more detail below, users and data subjects have the right</p>
@@ -107,3 +107,4 @@ lang: en
     target="_blank" rel="noopener">Anwaltskanzlei Weiß &amp; Partner</a></p>
 
 <p>Customized by the website owner in the sections Server data, CoopCare App (User account / registration, Patient data, MongoDB Stitch, Encrypted data transmission, Cookies, Local and Session Storage), Newsletter Provider and General notes.</p>
+
