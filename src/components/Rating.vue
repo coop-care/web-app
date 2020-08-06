@@ -109,6 +109,7 @@
                 text-color="outcome"
                 :options="options"
                 class="q-mx-sm col border-outcome"
+                clearable
               >
                 <template v-slot:1>
                   <q-tooltip
