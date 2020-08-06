@@ -1,6 +1,12 @@
 <template>
-  <q-page padding class="limit-page-width">
-    <q-markdown :src="markdown" class="readable-line-length" />
+  <q-page
+    padding
+    class="limit-page-width"
+  >
+    <q-markdown
+      :src="markdown"
+      class="readable-line-length"
+    />
   </q-page>
 </template>
 
@@ -8,12 +14,6 @@
 .readable-line-length
   max-width: 800px
   margin: 0 auto
-.q-markdown--heading-h4
-  font-weight: 500
-  margin-bottom: .3rem
-.q-markdown--link-external
-  &:after
-    content: ''
 </style>
 
 <script lang="ts">
@@ -25,22 +25,22 @@ const pages = {
     // @ts-ignore
     "de-de": () => import("../markdown/de/impressum.md"),
     // @ts-ignore
-    "en-us": () => import("../markdown/en/legal-notice.md")
+    "en-us": () => import("../markdown/en/legal-notice.md"),
   },
   "/privacy-policy": {
     // @ts-ignore
     "de-de": () => import("../markdown/de/datenschutz.md"),
     // @ts-ignore
-    "en-us": () => import("../markdown/en/privacy-policy.md")
-  }
+    "en-us": () => import("../markdown/en/privacy-policy.md"),
+  },
 };
 
 @Component({
   watch: {
     $route(this: MarkdownPage) {
       this.loadMarkdown();
-    }
-  }
+    },
+  },
 })
 export default class MarkdownPage extends Vue {
   markdown = "";
@@ -58,10 +58,10 @@ export default class MarkdownPage extends Vue {
 
       if (module) {
         module()
-          .then(component => {
+          .then((component) => {
             this.markdown = component.default.replace(/^---[\s\S]*?---/m, "");
           })
-          .catch(error => console.error(error));
+          .catch((error) => console.error(error));
       }
     }
   }
