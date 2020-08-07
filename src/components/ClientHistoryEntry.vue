@@ -14,27 +14,21 @@
         :expand-icon-class="'expand-icon text-' + color"
       >
         <template v-slot:header>
-          <simplified-markdown
-            :text="title"
-            :class="'title text-' + color"
-          />
+          <simplified-markdown :text="title" :class="'title text-' + color" />
         </template>
-        <table
-          v-if="isExpanded"
-          class="text-body2"
-        >
+        <table v-if="isExpanded" class="text-body2">
           <tbody>
-            <tr
-              v-for="property in details"
-              :key="property.key"
-            >
-              <td class="text-no-wrap text-caption text-weight-medium text-right vertical-top">{{property.key}}:</td>
-              <td class="vertical-top">{{property.newValue}}</td>
+            <tr v-for="property in details" :key="property.key">
               <td
-                v-if="property.oldValue"
-                class="q-ml-md vertical-top"
+                class="text-no-wrap text-caption text-weight-medium text-right vertical-top"
               >
-                <span class="text-caption text-weight-medium">{{ $t("previously") }}:</span>
+                {{ property.key }}:
+              </td>
+              <td class="vertical-top">{{ property.newValue }}</td>
+              <td v-if="property.oldValue" class="q-ml-md vertical-top">
+                <span class="text-caption text-weight-medium"
+                  >{{ $t("previously") }}:</span
+                >
                 <span class="text-italic"> {{ property.oldValue }}</span>
               </td>
             </tr>
@@ -43,8 +37,8 @@
       </q-expansion-item>
     </template>
     <template v-slot:subtitle>
-      <div>{{date}}</div>
-      <div>{{username}}</div>
+      <div>{{ date }}</div>
+      <div>{{ username }}</div>
     </template>
   </q-timeline-entry>
 </template>
@@ -147,7 +141,6 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
     }
   }
   get details() {
-    console.log("make details");
     const type = this.changeRecord.type;
     const newValues = this.changeRecord.newValues;
     const oldValues = this.changeRecord.oldValues || {};
