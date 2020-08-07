@@ -89,29 +89,15 @@
       debounce="50"
       class="q-mb-sm"
       clearable
+      ref="detailsInput"
+      @keydown.up.down.enter.prevent="$refs.detailsMenu.navigateMenu"
     >
-      <q-menu
-        v-if="suggestedDetails.length"
-        auto-close
-        fit
-        anchor="bottom left"
-        self="top left"
-        square
-        no-focus
-      >
-        <q-list dense>
-          <q-item
-            v-for="text in suggestedDetails"
-            :key="text"
-            clickable
-            @click="details = text"
-            :active="details == text"
-            active-class="text-intervention"
-          >
-            <q-item-section>{{ text }}</q-item-section>
-          </q-item>
-        </q-list>
-      </q-menu>
+      <filterable-menu
+        v-model="details"
+        ref="detailsMenu"
+        :items="suggestedDetails"
+        @input="$refs.detailsInput.focus()"
+      />
     </q-input>
 
     <div v-if="targetCode">
@@ -142,6 +128,7 @@ import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 import InterventionTargetSelect from "../components/InterventionTargetSelect.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
+import FilterableMenu from "../components/FilterableMenu.vue";
 
 const InterventionEditorProps = Vue.extend({
   props: {
@@ -154,7 +141,8 @@ const InterventionEditorProps = Vue.extend({
 @Component({
   components: {
     InterventionTargetSelect,
-    ReminderEditor
+    ReminderEditor,
+    FilterableMenu
   }
 })
 export default class InterventionEditor extends InterventionEditorProps {
@@ -174,7 +162,7 @@ export default class InterventionEditor extends InterventionEditorProps {
     return this.value.details;
   }
   set details(value) {
-    this.updateIntervention({ details: value });
+    this.updateIntervention({ details: value || "" });
   }
   get recurrenceRules() {
     return this.value.recurrenceRules;
@@ -228,7 +216,8 @@ export default class InterventionEditor extends InterventionEditorProps {
       const intervention = this.usersGuideForProblem.interventionSuggestions;
       const category = intervention[this.categoryCode] || {};
       const details = category[this.targetCode] || [];
-      return details.filter(text => text);
+
+      return details;
     } else {
       return [];
     }
