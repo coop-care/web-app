@@ -302,12 +302,7 @@ export default class ProblemSummary extends ProblemSummaryProps {
     return !this.isDraft && !this.isSummary && !this.isDisabled;
   }
   get outcomesForChart() {
-    return this.$store.direct.getters.getOutcomeAsChartData({
-      expectation: this.$t("expectedRating"),
-      ratings: this.terminology.problemRatingScale.ratings,
-      locale: this.$root.$i18n.locale,
-      ...this.params,
-    });
+    return getOutcomeAsChartData(this.record, this);
   }
   get actionMenuItems() {
     return [
