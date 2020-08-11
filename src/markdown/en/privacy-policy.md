@@ -95,7 +95,7 @@ lang: en
 <h4>Objection to advertising mails</h4>
 <p>We hereby expressly object to the use of the contact data published on the basis of the legal obligations regarding privacy policy and legal notes and for the purpose of sending unsolicited advertising and information material, for example spam e-mails.</p>
 
-<h4>Date: 08/01/2020</h4>
+<h4>Date: 08/11/2020</h4>
 
 <p>
   <a href="https://www.ratgeberrecht.eu/leistungen/muster-datenschutzerklaerung.html" 

@@ -204,7 +204,7 @@ lang: de
   veröffentlichten Kontaktdaten zum Zweck der Zusendung von nicht angeforderter Werbung und
   Informationsmaterialien, zum Beispiel Spam-E-Mails, ausdrücklich widersprochen.</p>
 
-<h4>Stand: 01.08.2020</h4>
+<h4>Stand: 11.08.2020</h4>
 
 <p>
   <a target="_blank" rel="noopener"
