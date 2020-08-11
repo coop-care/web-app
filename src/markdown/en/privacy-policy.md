@@ -79,17 +79,14 @@ lang: en
 <p>The legal basis for this is Art. 6 Para. 1 lit. a) GDPR.</p>
 <p>You may revoke your prior consent to receive this newsletter under Art. 7 Para. 3 GDPR with future effect. All you have to do is inform us that you are revoking your consent or click on the unsubscribe link contained in each newsletter.</p>
 
-<h4>Sendinblue</h4>
+<h4>Rapidmail</h4>
 <p>We offer you the opportunity to register for our free newsletter on our website.</p>
-<p>We use Sendinblue to send newsletters. Sendinblue is a service provided by the company Sendinblue GmbH, Köpenicker Str. 126, 10179 Berlin, hereinafter referred to as "Sendinblue".</p>
-<p>If you sign up to receive our newsletter, the data requested during the registration process (your email address) will be processed by Sendinblue. For this your IP address and the date of your registration will be saved along with the time. As a further part of the registration process, your consent to the sending of the newsletter will be obtained, the content will be described in concrete terms and reference made to this data protection declaration.</p>
-<p>Sendinblue offers further data protection information at</p>
-<p><a href="https://www.sendinblue.com/legal/privacypolicy/" target="_blank" 
-  rel="noopener noreferrer nofollow">https://www.sendinblue.com/legal/privacypolicy/</a><br>
-<a href="https://www.sendinblue.com/information-for-email-recipients/" target="_blank" 
-  rel="noopener noreferrer nofollow">https://www.sendinblue.com/information-for-email-recipients/</a>
-.</p>
-<p>The newsletters sent by Sendinblue contain technologies by which we can analyse whether and when an email was opened and whether and which links contained in the newsletter were followed. We save this data in addition to the technical data (system data and IP address) so that the respective newsletter can be best tailored to your wishes and interests. The data thus collected is used to continuously improve the quality of our newsletters.</p>
+<p>We use Rapidmail to send newsletters. Rapidmail is a service provided by the company Rapidmail
+  GmbH, Augustinerplatz 2, 79098 Freiburg i.Br..</p>
+<p>If you sign up to receive our newsletter, the data requested during the registration process (your email address) will be processed by Rapidmail. For this your IP address and the date of your registration will be saved along with the time. As a further part of the registration process, your consent to the sending of the newsletter will be obtained, the content will be described in concrete terms and reference made to this data protection declaration.</p>
+<p>Rapidmail offers further data protection information at <a href="https://www.rapidmail.de/datenschutz" target="_blank"
+    rel="noopener noreferrer nofollow">https://www.rapidmail.de/datenschutz</a>.</p>
+<p>The newsletters sent by Rapidmail contain technologies by which we can analyse whether and when an email was opened and whether and which links contained in the newsletter were followed. We save this data in addition to the technical data (system data and IP address) so that the respective newsletter can be best tailored to your wishes and interests. The data thus collected is used to continuously improve the quality of our newsletters.</p>
 <p>The legal basis for sending the newsletter and the analysis is Art. 6 Para. 1 lit. a.) EU General Data Protection Regulation (GDPR).</p>
 <p>Consent to the newsletter being sent can be revoked at any time with future effect in accordance with Art. 7 Para. 3 GDPR. To do this, you only have to inform us of your revocation or click the unsubscribe link contained in each newsletter.</p>
 
@@ -107,4 +104,3 @@ lang: en
     target="_blank" rel="noopener">Anwaltskanzlei Weiß &amp; Partner</a></p>
 
 <p>Customized by the website owner in the sections Server data, CoopCare App (User account / registration, Patient data, MongoDB Stitch, Encrypted data transmission, Cookies, Local and Session Storage), Newsletter Provider and General notes.</p>
-

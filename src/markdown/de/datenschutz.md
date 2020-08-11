@@ -3,6 +3,7 @@ title: Datenschutzerklärung
 layout: default
 lang: de
 ---
+
 <h2>Datenschutzerklärung</h2>
 <p>Personenbezogene Daten (nachfolgend zumeist nur „Daten“ genannt) werden von uns nur im Rahmen der Erforderlichkeit
   sowie zum Zwecke der Bereitstellung eines funktionsfähigen und nutzerfreundlichen Internetauftritts, inklusive seiner
@@ -174,24 +175,19 @@ lang: de
   widerrufen. Hierzu müssen Sie uns lediglich über Ihren Widerruf in Kenntnis setzen oder den in jedem Newsletter
   enthaltenen Abmeldelink betätigen.</p>
 
-<h4>Sendinblue</h4>
+<h4>Rapidmail</h4>
 <p>Wir bieten Ihnen die Möglichkeit an, sich bei uns über unseren Internetauftritt für unsere kostenlosen Newsletter
   anmelden zu können.</p>
-<p>Zum Newsletterversand setzen wir Sendinblue ein. Bei Sendinblue handelt es sich um einen Dienst der Firma Sendinblue
-  GmbH, Köpenicker Str. 126, 10179 Berlin, nachfolgend nur „Sendinblue“ genannt.<br>Falls Sie sich zu unserem
+<p>Zum Newsletterversand setzen wir Rapidmail ein. Bei Rapidmail handelt es sich um einen Dienst der Firma Rapidmail
+  GmbH, Augustinerplatz 2, 79098 Freiburg i.Br..<br>Falls Sie sich zu unserem
   Newsletter-Versand anmelden, werden die während des Anmeldevorgangs abgefragten Daten (Ihre E-Mail-Adresse) durch
-  Sendinblue verarbeitet. Zudem werden Ihre IP-Adresse sowie das Datum Ihrer Anmeldung nebst Uhrzeit gespeichert. Im
+  Rapidmail verarbeitet. Zudem werden Ihre IP-Adresse sowie das Datum Ihrer Anmeldung nebst Uhrzeit gespeichert. Im
   Rahmen des weiteren Anmeldevorgangs wird Ihre Einwilligung in die Übersendung des Newsletters eingeholt, der Inhalt
   konkret beschreiben und auf diese Datenschutzerklärung verwiesen.</p>
-<p>Zudem bietet Sendinblue unter</p>
-<p><a href="https://www.newsletter2go.de/datenschutz/" target="_blank"
-  rel="noopener noreferrer nofollow">https://www.newsletter2go.de/datenschutz/</a><br>
-<a href="https://de.sendinblue.com/legal/privacypolicy/" target="_blank"
-  rel="noopener noreferrer nofollow">https://de.sendinblue.com/legal/privacypolicy/</a><br>
-<a href="https://de.sendinblue.com/informationen-newsletter-empfaenger/?rtype=n2go" target="_blank"
-  rel="noopener noreferrer nofollow">https://de.sendinblue.com/informationen-newsletter-empfaenger/</a></p>
-<p>weitergehende Datenschutzinformationen an.</p>
-<p>Die von Sendinblue versandten Newsletter enthalten Technologien anhand derer wir in den Analysen erkennen können, ob
+<p>Zudem bietet Rapidmail unter<a href="https://www.rapidmail.de/datenschutz" target="_blank"
+    rel="noopener noreferrer nofollow">https://www.rapidmail.de/datenschutz</a> weitergehende Datenschutzinformationen
+  an.</p>
+<p>Die von Rapidmail versandten Newsletter enthalten Technologien anhand derer wir in den Analysen erkennen können, ob
   und wann eine E-Mail geöffnet sowie ob und welchen in dem Newsletter etwaig enthaltenen Links gefolgt worden ist.
   Diese Daten speichern wir neben den technischen Daten (Systemdaten und IP-Adresse), damit der jeweilige Newsletter
   optimal auf Ihre Wünsche und Interessen ausgerichtet werden kann. Die somit erhobenen Daten werden also genutzt, um
