@@ -257,6 +257,7 @@ import Component from "vue-class-component";
 import ActionMenu from "../components/ActionMenu.vue";
 import VueApexCharts from "vue-apexcharts";
 import { Terminology } from "../helper/terminology";
+import { getOutcomeAsChartData } from "../helper/apexChartData";
 import { ProblemRecord } from "../models/problemRecord";
 
 Vue.use(VueApexCharts);
