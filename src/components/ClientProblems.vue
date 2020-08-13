@@ -1,42 +1,17 @@
 <template>
   <div class="min-height">
-    <div class="q-gutter-md q-mb-md">
-      <q-btn
-        v-if="!isDisabled"
-        icon="add"
-        color="classification"
-        :label="$t('problemAdmission')"
-        rounded
-        outline
-        class="shadow-1 q-mt-md"
-        @click="addProblem"
-        size="12.5px"
-      />
-      <q-btn
-        v-if="!isDisabled && Object.keys($t('diagnosisNames')).length > 0"
-        icon="playlist_add"
-        color="classification"
-        :label="$t('problemAdmissionByDiagnosis')"
-        rounded
-        outline
-        class="shadow-1 q-mt-md"
-        @click="addProblemsByDiagnosis"
-        size="12.5px"
-      />
-    </div>
-
     <div
       v-if="clientProblems.length"
-      class="q-gutter-md q-my-md q-px-xs"
+      class="flex q-gutter-md q-my-md q-px-xs"
     >
       <problem-summary
         v-for="problemRecord in clientProblems"
         v-bind:key="problemRecord.id"
         :problemRecord="problemRecord"
         :params="{
-            clientId: $route.params.clientId,
-            problemId: problemRecord.id
-          }"
+          clientId: $route.params.clientId,
+          problemId: problemRecord.id
+        }"
         :isDisabled="isDisabled"
       />
     </div>
@@ -44,7 +19,9 @@
     <div
       v-else
       class="text-body2 text-italic q-mt-lg"
-    >{{$t("noClientProblemRecords")}}</div>
+    >
+      {{ $t("noClientProblemRecords") }}
+    </div>
 
     <q-page-sticky
       v-if="!client.leftAt"
@@ -61,9 +38,6 @@
     </q-page-sticky>
   </div>
 </template>
-
-<style lang="sass">
-</style>
 
 <script lang="ts">
 import Vue from "vue";
@@ -82,7 +56,7 @@ export default class ClientProblems extends Vue {
     const client = this.client;
     const problems = client ? client.problems : [];
     return problems
-      .filter(problem => {
+      .filter((problem) => {
         return !problem.resolvedAt;
       })
       .reverse()
@@ -97,25 +71,9 @@ export default class ClientProblems extends Vue {
   }
 
   addProblem() {
-    const client = this.client;
-    if (!client) {
-      console.error("no client selected: this should not happen.");
-      return;
-    }
-
-    this.$store.direct.commit.createProblemRecord(this.$route.params);
     this.$router.push({
       name: "problem",
-      params: this.$store.direct.getters.getRouteParamsForLatestProblem(
-        this.$route.params
-      )
-    });
-  }
-
-  addProblemsByDiagnosis() {
-    this.$router.push({
-      name: "problemsByDiagnosis",
-      params: this.$route.params
+      params: { problemId: "new" },
     });
   }
 }

@@ -22,14 +22,25 @@ import { ProblemRecord } from "../models/problemRecord";
 
 const ProblemSummaryContainerProps = Vue.extend({
   props: {
-    problemRecord: ProblemRecord
-  }
+    problemRecord: ProblemRecord,
+  },
 });
 
 @Component({
   components: {
-    ProblemSummary
-  }
+    ProblemSummary,
+  },
 })
-export default class ProblemSummaryContainer extends ProblemSummaryContainerProps {}
+export default class ProblemSummaryContainer extends ProblemSummaryContainerProps {
+  get style() {
+    const style = "transition: .3s all ease; ";
+    if (this.$q.screen.gt.sm) {
+      const step = parseInt(this.$route.params.step || "1");
+      const margin = (step - 1) * 48;
+      return style + "margin-top: " + margin + "px";
+    } else {
+      return style + "margin-top: 0";
+    }
+  }
+}
 </script>
