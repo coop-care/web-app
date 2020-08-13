@@ -7,7 +7,8 @@
       <problem-summary
         :params="$route.params"
         :problemRecord="problemRecord"
-        :isSummary="true"
+        :isExpandable="false"
+        :style="style"
       />
     </div>
   </div>
