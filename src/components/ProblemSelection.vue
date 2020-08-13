@@ -169,7 +169,6 @@ export default class ProblemClassification extends Vue {
       signsAndSymptomsCodes: [],
       details: "",
     };
-    console.log(this.problem, changes);
 
     this.$store.direct.commit.updateObject({
       target: this.problem,

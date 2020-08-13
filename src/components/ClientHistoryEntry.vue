@@ -14,21 +14,29 @@
         :expand-icon-class="'expand-icon text-' + color"
       >
         <template v-slot:header>
-          <simplified-markdown :text="title" :class="'title text-' + color" />
+          <simplified-markdown
+            :text="title"
+            :class="'title text-' + color"
+          />
         </template>
-        <table v-if="isExpanded" class="text-body2">
+        <table
+          v-if="isExpanded"
+          class="text-body2"
+        >
           <tbody>
-            <tr v-for="property in details" :key="property.key">
-              <td
-                class="text-no-wrap text-caption text-weight-medium text-right vertical-top"
-              >
+            <tr
+              v-for="property in details"
+              :key="property.key"
+            >
+              <td class="text-no-wrap text-caption text-weight-medium text-right vertical-top">
                 {{ property.key }}:
               </td>
               <td class="vertical-top">{{ property.newValue }}</td>
-              <td v-if="property.oldValue" class="q-ml-md vertical-top">
-                <span class="text-caption text-weight-medium"
-                  >{{ $t("previously") }}:</span
-                >
+              <td
+                v-if="property.oldValue"
+                class="q-ml-md vertical-top"
+              >
+                <span class="text-caption text-weight-medium">{{ $t("previously") }}:</span>
                 <span class="text-italic"> {{ property.oldValue }}</span>
               </td>
             </tr>
@@ -80,14 +88,14 @@ import { Intervention, ChangeRecord, Problem, RRuleSet } from "../models";
 
 const ClientHistoryEntryProps = Vue.extend({
   props: {
-    changeRecord: ChangeRecord
-  }
+    changeRecord: ChangeRecord,
+  },
 });
 
 @Component({
   components: {
-    SimplifiedMarkdown
-  }
+    SimplifiedMarkdown,
+  },
 })
 export default class ClientHistoryEntry extends ClientHistoryEntryProps {
   isExpanded = false;
@@ -104,7 +112,7 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
       | undefined;
     return this.$t(type + "Title", {
       problem: problemTitle,
-      intervention: intervention?.details
+      intervention: intervention?.details,
     });
   }
   get date() {
@@ -146,7 +154,7 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
     const oldValues = this.changeRecord.oldValues || {};
 
     return Object.keys(newValues)
-      .map(key => {
+      .map((key) => {
         const newValue = newValues[key];
         const oldValue = oldValues[key];
 
@@ -162,10 +170,10 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
         return {
           key: localizableKey ? this.$t(localizableKey) : key,
           newValue: this.formattedValue(key, newValue, newValues),
-          oldValue: this.formattedValue(key, oldValue, oldValues)
+          oldValue: this.formattedValue(key, oldValue, oldValues),
         };
       })
-      .filter(item => item.newValue);
+      .filter((item) => item.newValue);
   }
   get localizableKeys(): Record<string, string> {
     return {
@@ -182,7 +190,7 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
       recurrenceRules: "reminderTitle",
       categoryCode: "category",
       targetCode: "interventionTargetTitle",
-      "intervention.details": "description"
+      "intervention.details": "description",
     };
   }
   get client() {
@@ -215,7 +223,7 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
           : "";
         return (
           problem.signsAndSymptoms
-            .map(item => this.$t(item.title).toString())
+            .map((item) => this.$t(item.title).toString())
             .join(", ") + otherSignAndSymptom
         );
       } else {
@@ -242,7 +250,7 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
             "terminology.problemRatingScale.ratings[" +
               indexForKey[key] +
               "].scale[" +
-              value.observation.toString() +
+              (value.observation - 1) +
               "].title"
           );
           texts.push(this.$t("observedRating") + ": " + rating);
@@ -252,7 +260,7 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
             "terminology.problemRatingScale.ratings[" +
               indexForKey[key] +
               "].scale[" +
-              value.expectation.toString() +
+              (value.expectation - 1) +
               "].title"
           );
           texts.push(this.$t("expectedRating") + ": " + rating);
@@ -271,7 +279,7 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
             {
               monthNames: this.$q.lang.date.months,
               dayNames: this.$q.lang.date.days,
-              tokens: {}
+              tokens: {},
             }
           )
         : value;
