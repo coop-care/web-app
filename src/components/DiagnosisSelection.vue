@@ -3,7 +3,7 @@
     <searchable-option-list
       color="primary"
       :options="diagnosisCodes"
-      optionListClass="column-2-sm q-my-xs"
+      optionListClass="diagnosis-list flex q-my-xs"
       :searchInputLabel="$t('findDiagnosis')"
       :value="value"
       @input="$emit('input', $event)"
@@ -13,6 +13,16 @@
     </div>
   </div>
 </template>
+
+<style lang="sass">
+.diagnosis-list
+  .q-item
+    width: 50%
+    @media (max-width: $breakpoint-xs-max)
+      width: 100%
+body.desktop .diagnosis-list .q-hoverable:hover > .q-focus-helper
+  background-color: var(--q-color-primary)
+</style>
 
 <script lang="ts">
 import Vue from "vue";
