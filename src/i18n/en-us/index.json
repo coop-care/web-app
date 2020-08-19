@@ -237,8 +237,8 @@
   "InterventionEndedTitle": "Stopped intervention **{intervention}** for ***{problem}***",
   "OutcomeRatedTitle": "New rating for ***{problem}***",
   "noClientHistoryEntries": "No events so far",
-  "noClientProblemRecords": "No problems recorded yet",
-  "noTasksPlanned": "No tasks to do",
+  "noClientProblemRecords": "No problems recorded yet.",
+  "noTasksPlanned": "No tasks to do.",
   "yes": "yes",
   "no": "no",
   "quotedText": "\"{quote}\"",
@@ -267,5 +267,6 @@
   "none": "none",
   "describeProblem": "Describe problem",
   "continueAnyway": "Continue anyway",
-  "saveAnyway": "Save anyway"
+  "saveAnyway": "Save anyway",
+  "noProblemForNewIntervention": "Tasks can only be added if a problem exists."
 }

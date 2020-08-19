@@ -237,8 +237,8 @@
   "InterventionEndedTitle": "Intervention **{intervention}** für ***{problem}*** beendet",
   "OutcomeRatedTitle": "Bewertung für ***{problem}*** vorgenommen",
   "noClientHistoryEntries": "Keine Vorkommnisse bislang",
-  "noClientProblemRecords": "Noch keine Probleme aufgenommen",
-  "noTasksPlanned": "Keine Aufgaben zu erledigen",
+  "noClientProblemRecords": "Noch keine Probleme aufgenommen.",
+  "noTasksPlanned": "Keine Aufgaben zu erledigen.",
   "yes": "ja",
   "no": "nein",
   "quotedText": "„{quote}”",
@@ -267,5 +267,6 @@
   "none": "keine",
   "describeProblem": "Problem beschreiben",
   "continueAnyway": "Trotzdem weiter",
-  "saveAnyway": "Trotzdem speichern"
+  "saveAnyway": "Trotzdem speichern",
+  "noProblemForNewIntervention": "Aufgaben können nur hinzugefügt werden, wenn ein Problem existiert."
 }

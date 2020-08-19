@@ -90,11 +90,28 @@
 
     <div
       v-else
-      class="text-center text-body2 text-italic q-mt-xl"
-    >{{$t("noTasksPlanned")}}</div>
+      class="text-center text-body2 q-mt-xl"
+    >
+      <div class="text-italic">{{$t("noTasksPlanned")}}</div>
+      <div
+        v-if="client.activeProblemCount  == 0"
+        class="q-mt-lg"
+      >
+        <div class="text-italic">{{ $t("noProblemForNewIntervention") }}</div>
+        <q-btn
+          :label="$t('problemAdmission')"
+          flat
+          no-caps
+          size="md"
+          color="classification"
+          class="q-mt-xs text-normal"
+          @click="addProblem"
+        />
+      </div>
+    </div>
 
     <q-page-sticky
-      v-if="!client.leftAt"
+      v-if="!client.leftAt && client.activeProblemCount > 0"
       position="bottom-left"
       :offset="$q.screen.lt.sm ? [16, 10] : [56, 10]"
     >
@@ -133,18 +150,18 @@ const {
   subtractFromDate,
   addToDate,
   startOfDate,
-  endOfDate
+  endOfDate,
 } = date;
 const allInclusive = {
   inclusiveFrom: true,
   inclusiveTo: true,
-  onlyDate: true
+  onlyDate: true,
 };
 
 @Component({
   components: {
-    TaskView
-  }
+    TaskView,
+  },
 })
 export default class ClientReminders extends Vue {
   get selectedDate() {
@@ -157,8 +174,8 @@ export default class ClientReminders extends Vue {
       name: this.$route.name || undefined,
       params: {
         day: "" + value.getTime(),
-        clientId: this.$route.params.clientId
-      }
+        clientId: this.$route.params.clientId,
+      },
     });
   }
   get selectedDateString() {
@@ -184,7 +201,7 @@ export default class ClientReminders extends Vue {
   get timeFormatter() {
     return new Intl.DateTimeFormat(this.$root.$i18n.locale, {
       hour: "numeric",
-      minute: "numeric"
+      minute: "numeric",
     });
   }
   get client() {
@@ -239,7 +256,7 @@ export default class ClientReminders extends Vue {
         !reminder.isCompleted &&
         !this.client?.leftAt;
 
-      reminder.occurrences.forEach(item => {
+      reminder.occurrences.forEach((item) => {
         if (
           isPresentOrPast &&
           isReminderActiveAndUncompleted &&
@@ -270,7 +287,7 @@ export default class ClientReminders extends Vue {
           scheduledTasks = scheduledTasks.concat(
             reminder.recurrenceRules
               .between(startOfDay, endOfDay, true)
-              .map(date => new Task(reminder, problem.id, date))
+              .map((date) => new Task(reminder, problem.id, date))
           );
         }
       } else {
@@ -297,9 +314,9 @@ export default class ClientReminders extends Vue {
 
     scheduledTasks
       .sort((a, b) => (a.due?.getTime() || 0) - (b.due?.getTime() || 0))
-      .forEach(task => {
+      .forEach((task) => {
         const title = this.timeFormatter.format(task.due);
-        const group = groupedTasks.find(group => group.title == title);
+        const group = groupedTasks.find((group) => group.title == title);
 
         if (group) {
           group.tasks.push(task);
@@ -312,22 +329,15 @@ export default class ClientReminders extends Vue {
   }
 
   addIntervention() {
-    let name: string;
-    let params = this.$route.params;
-
-    if (this.client?.problems.length) {
-      name = "newIntervention";
-    } else {
-      this.$store.direct.commit.createProblemRecord(this.$route.params);
-      name = "problem";
-      params = this.$store.direct.getters.getRouteParamsForLatestProblem(
-        params
-      );
-    }
-
     this.$router.push({
-      name: name,
-      params: params
+      name: "newIntervention",
+    });
+  }
+
+  addProblem() {
+    this.$router.push({
+      name: "problem",
+      params: { problemId: "new" },
     });
   }
 }
