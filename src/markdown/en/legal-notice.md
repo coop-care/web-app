@@ -1,10 +1,15 @@
 ---
 title: Legal Notice
-layout: default
+subtitle:
+description:
+featured_image:
+featured_image_alt:
 lang: en
+
+robots_nofollow: true
 ---
 
-## Legal Notice
+<h1 class="website__hidden">Legal Notice</h1>
 
 #### Information according to § 5 German Telemedia Act:
 

@@ -1,10 +1,15 @@
 ---
 title: Impressum
-layout: default
+subtitle:
+description:
+featured_image:
+featured_image_alt:
 lang: de
+
+robots_nofollow: true
 ---
 
-## Impressum
+<h1 class="website__hidden">Impressum</h1>
 
 #### Angaben gemäß § 5 Telemediengesetz:
 
