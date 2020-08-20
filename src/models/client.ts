@@ -40,6 +40,9 @@ export class Client {
         });
         return count;
     }
+    get activeProblemCount() {
+        return this.problems.filter(problem => !problem.resolvedAt).length;
+    }
 
     findProblemRecord(id: string) {
         return this.problems.find(problem => problem.id == id);
