@@ -5,7 +5,9 @@
     @cancel="$router.back()"
     @save="save"
   >
-    <problem-classification />
+    <problem-summary-container :problemRecord="record">
+      <problem-classification />
+    </problem-summary-container>
   </editing-page-container>
 </template>
 
@@ -13,13 +15,15 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import EditingPageContainer from "components/EditingPageContainer.vue";
+import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import ProblemClassification from "components/ProblemClassification.vue";
 
 @Component({
   components: {
+    ProblemSummaryContainer,
     ProblemClassification,
-    EditingPageContainer
-  }
+    EditingPageContainer,
+  },
 })
 export default class ClassificationPage extends Vue {
   get record() {

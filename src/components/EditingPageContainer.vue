@@ -1,7 +1,7 @@
 <template>
   <q-page
     padding
-    class="limit-page-width"
+    class="limit-page-width width-md"
   >
     <loading v-if="$store.direct.state.isLoadingClientList && !isDataAvailable" />
 
@@ -44,15 +44,15 @@ import CentralMessage from "components/CentralMessage.vue";
 const EditingPageContainerProps = Vue.extend({
   props: {
     isDataAvailable: Boolean,
-    title: String
-  }
+    title: String,
+  },
 });
 
 @Component({
   components: {
     Loading,
-    CentralMessage
-  }
+    CentralMessage,
+  },
 })
 export default class EditingPageContainer extends EditingPageContainerProps {}
 </script>

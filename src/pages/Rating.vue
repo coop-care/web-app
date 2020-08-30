@@ -5,7 +5,9 @@
     @cancel="$router.back()"
     @save="save"
   >
-    <problem-rating />
+    <problem-summary-container :problemRecord="record">
+      <problem-rating />
+    </problem-summary-container>
   </editing-page-container>
 </template>
 
@@ -13,14 +15,16 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import EditingPageContainer from "components/EditingPageContainer.vue";
+import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import { Outcome } from "../models/outcome";
 
 @Component({
   components: {
+    ProblemSummaryContainer,
     ProblemRating,
-    EditingPageContainer
-  }
+    EditingPageContainer,
+  },
 })
 export default class Rating extends Vue {
   get record() {
@@ -30,11 +34,11 @@ export default class Rating extends Vue {
   save() {
     const changes: Partial<Outcome> = {
       createdAt: new Date(),
-      user: this.$store.direct.getters.signature
+      user: this.$store.direct.getters.signature,
     };
     this.$store.direct.commit.updateNewOutcome({
       changes: changes,
-      ...this.$route.params
+      ...this.$route.params,
     });
     this.$store.direct.dispatch
       .saveClient(this.$route.params)
