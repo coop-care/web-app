@@ -159,6 +159,21 @@ robots_nofollow: true
   allerdings dazu führen, dass nicht
   sämtliche Funktionen unserer App vollumfänglich nutzbar sind.</p>
 
+<h3>YouTube</h3>
+<p>In unserem Internetauftritt setzen wir YouTube ein. Hierbei handelt es sich um ein Videoportal der YouTube LLC., 901 Cherry Ave., 94066 San Bruno, CA, USA, nachfolgend nur „YouTube“ genannt.</p>
+<p>YouTube ist ein Tochterunternehmen der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, nachfolgend nur „Google“ genannt.</p>
+<p>Durch die Zertifizierung nach dem EU-US-Datenschutzschild („EU-US Privacy Shield“)</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://www.privacyshield.gov/participant?id=a2zt000000001L5AAI&amp;status=Active">https://www.privacyshield.gov/participant?id=a2zt000000001L5AAI&amp;status=Active</a></p>
+<p>garantiert Google und damit auch das Tochterunternehmen YouTube, dass die Datenschutzvorgaben der EU auch bei der Verarbeitung von Daten in den USA eingehalten werden.</p>
+<p>Wir nutzen YouTube im Zusammenhang mit der Funktion „Erweiterter Datenschutzmodus“, um Ihnen Videos anzeigen zu können. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f) DSGVO. Unser berechtigtes Interesse liegt in der Qualitätsverbesserung unseres Internetauftritts. Die Funktion „Erweiterter Datenschutzmodus“ bewirkt laut Angaben von YouTube, dass die nachfolgend noch näher bezeichneten Daten nur dann an den Server von YouTube übermittelt werden, wenn Sie ein Video auch tatsächlich starten.</p>
+<p>Ohne diesen „Erweiterten Datenschutz“ wird eine Verbindung zum Server von YouTube in den USA hergestellt, sobald Sie eine unserer Internetseiten, auf der ein YouTube-Video eingebettet ist, aufrufen.</p>
+<p>Diese Verbindung ist erforderlich, um das jeweilige Video auf unserer Internetseite über Ihren Internet-Browser darstellen zu können. Im Zuge dessen wird YouTube zumindest Ihre IP-Adresse, das Datum nebst Uhrzeit sowie die von Ihnen besuchte Internetseite erfassen und verarbeiten. Zudem wird eine Verbindung zu dem Werbenetzwerk „DoubleClick“ von Google hergestellt.</p>
+<p>Sollten Sie gleichzeitig bei YouTube eingeloggt sein, weist YouTube die Verbindungsinformationen Ihrem YouTube-Konto zu. Wenn Sie das verhindern möchten, müssen Sie sich entweder vor dem Besuch unseres Internetauftritts bei YouTube ausloggen oder die entsprechenden Einstellungen in Ihrem YouTube-Benutzerkonto vornehmen.</p>
+<p>Zum Zwecke der Funktionalität sowie zur Analyse des Nutzungsverhaltens speichert YouTube dauerhaft Cookies über Ihren Internet-Browser auf Ihrem Endgerät. Falls Sie mit dieser Verarbeitung nicht einverstanden sind, haben Sie die Möglichkeit, die Speicherung der Cookies durch eine Einstellung in Ihrem Internet-Browsers zu verhindern. Nähere Informationen hierzu finden Sie vorstehend unter „Cookies“.</p>
+<p>Weitergehende Informationen über die Erhebung und Nutzung von Daten sowie Ihre diesbezüglichen Rechte und Schutzmöglichkeiten hält Google in den unter</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://policies.google.com/privacy">https://policies.google.com/privacy</a></p>
+<p>abrufbaren Datenschutzhinweisen bereit.</p>
+
 <h3>Kontaktanfragen / Kontaktmöglichkeit</h3>
 <p>Sofern Sie per Kontaktformular oder E-Mail mit uns in Kontakt treten, werden die dabei von Ihnen angegebenen Daten
   zur Bearbeitung Ihrer Anfrage genutzt. Die Angabe der Daten ist zur Bearbeitung und Beantwortung Ihre Anfrage
@@ -181,19 +196,24 @@ robots_nofollow: true
   widerrufen. Hierzu müssen Sie uns lediglich über Ihren Widerruf in Kenntnis setzen oder den in jedem Newsletter
   enthaltenen Abmeldelink betätigen.</p>
 
-<h3>Rapidmail</h3>
+<h3>Sendinblue</h3>
 <p>Wir bieten Ihnen die Möglichkeit an, sich bei uns über unseren Internetauftritt für unsere kostenlosen Newsletter
   anmelden zu können.</p>
-<p>Zum Newsletterversand setzen wir Rapidmail ein. Bei Rapidmail handelt es sich um einen Dienst der Firma Rapidmail
-  GmbH, Augustinerplatz 2, 79098 Freiburg i.Br..<br>Falls Sie sich zu unserem
+<p>Zum Newsletterversand setzen wir Sendinblue ein. Bei Sendinblue handelt es sich um einen Dienst der Firma Sendinblue
+  GmbH, Köpenicker Str. 126, 10179 Berlin, nachfolgend nur „Sendinblue“ genannt.<br>Falls Sie sich zu unserem
   Newsletter-Versand anmelden, werden die während des Anmeldevorgangs abgefragten Daten (Ihre E-Mail-Adresse) durch
-  Rapidmail verarbeitet. Zudem werden Ihre IP-Adresse sowie das Datum Ihrer Anmeldung nebst Uhrzeit gespeichert. Im
+  Sendinblue verarbeitet. Zudem werden Ihre IP-Adresse sowie das Datum Ihrer Anmeldung nebst Uhrzeit gespeichert. Im
   Rahmen des weiteren Anmeldevorgangs wird Ihre Einwilligung in die Übersendung des Newsletters eingeholt, der Inhalt
   konkret beschreiben und auf diese Datenschutzerklärung verwiesen.</p>
-<p>Zudem bietet Rapidmail unter<a href="https://www.rapidmail.de/datenschutz" target="_blank"
-    rel="noopener noreferrer nofollow">https://www.rapidmail.de/datenschutz</a> weitergehende Datenschutzinformationen
-  an.</p>
-<p>Die von Rapidmail versandten Newsletter enthalten Technologien anhand derer wir in den Analysen erkennen können, ob
+<p>Zudem bietet Sendinblue unter</p>
+<p><a href="https://www.newsletter2go.de/datenschutz/" target="_blank"
+  rel="noopener noreferrer nofollow">https://www.newsletter2go.de/datenschutz/</a><br>
+<a href="https://de.sendinblue.com/legal/privacypolicy/" target="_blank"
+  rel="noopener noreferrer nofollow">https://de.sendinblue.com/legal/privacypolicy/</a><br>
+<a href="https://de.sendinblue.com/informationen-newsletter-empfaenger/?rtype=n2go" target="_blank"
+  rel="noopener noreferrer nofollow">https://de.sendinblue.com/informationen-newsletter-empfaenger/</a></p>
+<p>weitergehende Datenschutzinformationen an.</p>
+<p>Die von Sendinblue versandten Newsletter enthalten Technologien anhand derer wir in den Analysen erkennen können, ob
   und wann eine E-Mail geöffnet sowie ob und welchen in dem Newsletter etwaig enthaltenen Links gefolgt worden ist.
   Diese Daten speichern wir neben den technischen Daten (Systemdaten und IP-Adresse), damit der jeweilige Newsletter
   optimal auf Ihre Wünsche und Interessen ausgerichtet werden kann. Die somit erhobenen Daten werden also genutzt, um
@@ -210,7 +230,7 @@ robots_nofollow: true
   veröffentlichten Kontaktdaten zum Zweck der Zusendung von nicht angeforderter Werbung und
   Informationsmaterialien, zum Beispiel Spam-E-Mails, ausdrücklich widersprochen.</p>
 
-<h3>Stand: 11.08.2020</h3>
+<h3>Stand: 31.08.2020</h3>
 
 <p>
   <a target="_blank" rel="noopener"

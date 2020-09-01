@@ -75,6 +75,20 @@ robots_nofollow: true
 <p>You can refuse the use of cookies, local or session storage by changing the settings of your browser. Likewise, you can use the browser to delete data that has already been stored. However, the steps and measures required vary, depending on the browser you use. If you have any questions, please use the help function or consult the documentation for your browser or contact its maker for support.</p>
 <p>If you prevent or restrict the installation of cookies, local or session storage, not all of the functions on our app may be fully usable.</p>
 
+<h3>YouTube</h3>
+<p>We use YouTube on our website. This is a video portal operated by YouTube LLC, 901 Cherry Ave, 94066 San Bruno, CA, USA, hereinafter referred to as "YouTube".</p>
+<p>YouTube is a subsidiary of Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, hereinafter referred to as "Google".</p>
+<p>Through certification according to the EU-US Privacy Shield</p>
+<p><a href="https://www.privacyshield.gov/participant?id=a2zt000000001L5AAI&amp;status=Active" target="_blank" rel="noopener noreferrer nofollow">https://www.privacyshield.gov/participant?id=a2zt000000001L5AAI&amp;status=Active</a></p>
+<p>Google and its subsidiary YouTube guarantee that they will follow the EU's data protection regulations when processing data in the United States.</p>
+<p>We use YouTube in its advanced privacy mode to show you videos. The legal basis is Art. 6 Para. 1 lit. f) GDPR. Our legitimate interest lies in improving the quality of our website. According to YouTube, the advanced privacy mode means that the data specified below will only be transmitted to the YouTube server if you actually start a video.</p>
+<p>Without this mode, a connection to the YouTube server in the USA will be established as soon as you access any of our webpages on which a YouTube video is embedded.</p>
+<p>This connection is required in order to be able to display the respective video on our website within your browser. YouTube will record and process at a minimum your IP address, the date and time the video was displayed, as well as the website you visited. In addition, a connection to the DoubleClick advertising network of Google is established.</p>
+<p>If you are logged in to YouTube when you access our site, YouTube will assign the connection information to your YouTube account. To prevent this, you must either log out of YouTube before visiting our site or make the appropriate settings in your YouTube account.</p>
+<p>For the purpose of functionality and analysis of usage behavior, YouTube permanently stores cookies on your device via your browser. If you do not agree to this processing, you have the option of preventing the installation of cookies by making the appropriate settings in your browser. Further details can be found in the section about cookies above.</p>
+<p>Further information about the collection and use of data as well as your rights and protection options in Google's privacy policy found at</p>
+<p><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer nofollow">https://policies.google.com/privacy</a></p>
+
 <h3>Contact</h3>
 <p>If you contact us via email or the contact form, the data you provide will be used for the purpose of processing your request. We must have this data in order to process and answer your inquiry; otherwise we will not be able to answer it in full or at all.</p>
 <p>The legal basis for this data processing is Art. 6 Para. 1 lit. b) GDPR.</p>
@@ -85,14 +99,17 @@ robots_nofollow: true
 <p>The legal basis for this is Art. 6 Para. 1 lit. a) GDPR.</p>
 <p>You may revoke your prior consent to receive this newsletter under Art. 7 Para. 3 GDPR with future effect. All you have to do is inform us that you are revoking your consent or click on the unsubscribe link contained in each newsletter.</p>
 
-<h3>Rapidmail</h3>
+<h3>Sendinblue</h3>
 <p>We offer you the opportunity to register for our free newsletter on our website.</p>
-<p>We use Rapidmail to send newsletters. Rapidmail is a service provided by the company Rapidmail
-  GmbH, Augustinerplatz 2, 79098 Freiburg i.Br..</p>
-<p>If you sign up to receive our newsletter, the data requested during the registration process (your email address) will be processed by Rapidmail. For this your IP address and the date of your registration will be saved along with the time. As a further part of the registration process, your consent to the sending of the newsletter will be obtained, the content will be described in concrete terms and reference made to this data protection declaration.</p>
-<p>Rapidmail offers further data protection information at <a href="https://www.rapidmail.de/datenschutz" target="_blank"
-    rel="noopener noreferrer nofollow">https://www.rapidmail.de/datenschutz</a>.</p>
-<p>The newsletters sent by Rapidmail contain technologies by which we can analyse whether and when an email was opened and whether and which links contained in the newsletter were followed. We save this data in addition to the technical data (system data and IP address) so that the respective newsletter can be best tailored to your wishes and interests. The data thus collected is used to continuously improve the quality of our newsletters.</p>
+<p>We use Sendinblue to send newsletters. Sendinblue is a service provided by the company Sendinblue GmbH, Köpenicker Str. 126, 10179 Berlin, hereinafter referred to as "Sendinblue".</p>
+<p>If you sign up to receive our newsletter, the data requested during the registration process (your email address) will be processed by Sendinblue. For this your IP address and the date of your registration will be saved along with the time. As a further part of the registration process, your consent to the sending of the newsletter will be obtained, the content will be described in concrete terms and reference made to this data protection declaration.</p>
+<p>Sendinblue offers further data protection information at</p>
+<p><a href="https://www.sendinblue.com/legal/privacypolicy/" target="_blank" 
+  rel="noopener noreferrer nofollow">https://www.sendinblue.com/legal/privacypolicy/</a><br>
+<a href="https://www.sendinblue.com/information-for-email-recipients/" target="_blank" 
+  rel="noopener noreferrer nofollow">https://www.sendinblue.com/information-for-email-recipients/</a>
+.</p>
+<p>The newsletters sent by Sendinblue contain technologies by which we can analyse whether and when an email was opened and whether and which links contained in the newsletter were followed. We save this data in addition to the technical data (system data and IP address) so that the respective newsletter can be best tailored to your wishes and interests. The data thus collected is used to continuously improve the quality of our newsletters.</p>
 <p>The legal basis for sending the newsletter and the analysis is Art. 6 Para. 1 lit. a.) EU General Data Protection Regulation (GDPR).</p>
 <p>Consent to the newsletter being sent can be revoked at any time with future effect in accordance with Art. 7 Para. 3 GDPR. To do this, you only have to inform us of your revocation or click the unsubscribe link contained in each newsletter.</p>
 
@@ -101,7 +118,7 @@ robots_nofollow: true
 <h3>Objection to advertising mails</h3>
 <p>We hereby expressly object to the use of the contact data published on the basis of the legal obligations regarding privacy policy and legal notes and for the purpose of sending unsolicited advertising and information material, for example spam e-mails.</p>
 
-<h3>Date: 08/11/2020</h3>
+<h3>Date: 08/31/2020</h3>
 
 <p>
   <a href="https://www.ratgeberrecht.eu/leistungen/muster-datenschutzerklaerung.html" 
