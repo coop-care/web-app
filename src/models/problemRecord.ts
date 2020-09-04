@@ -33,6 +33,9 @@ export class ProblemRecord extends Base {
             return this.interventions;
         }
     }
+    get diagnosisName() {
+        return this.tag ? "diagnosisNames." + this.tag : "noDiagnosis";
+    }
     get editableOutcome() {
         let lastOutcome = this.outcomes[this.outcomes.length - 1];
 

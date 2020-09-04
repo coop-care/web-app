@@ -50,7 +50,7 @@ export default class ProblemsByDiagnosis extends ProblemsByDiagnosisProps {
     };
   }
   get diagnosisCodes() {
-    return [{ code: "", title: this.$t("none") as string }].concat(
+    return [{ code: "", title: this.$t("noDiagnosis") as string }].concat(
       Object.keys(this.problemCodesByDiagnosis)
         .map((code) => {
           return {

@@ -35,6 +35,15 @@ export class Problem {
                 this.severityCode
         );
     }
+    get severityLongTitle() {
+        if (this.severityCode == 0) {
+            return "clientRequestForHealthPromotionTitle";
+        } else if (this.severityCode == 1) {
+            return "potentialRiskFactorsTitle";
+        } else {
+            return "actualSignsAndSymptomsTitle";
+        }
+    }
     get priority() {
         return new Term(this.isHighPriority ? "highPriority" : "lowPriority");
     }

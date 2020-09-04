@@ -27,14 +27,14 @@ export function setColorSet(colors: string[]) {
         setColor("outcome", colors[3]);
     }
     if (colors.length >= 5) {
-        setBrand("negative", colors[4]);
+        setColor("negative", colors[4]);
     } else {
-        setBrand("negative", "#C10015");
+        setColor("negative", "#C10015");
     }
     if (colors.length >= 6) {
-        setBrand("positive", colors[5]);
+        setColor("positive", colors[5]);
     } else {
-        setBrand("positive", "#21BA45");
+        setColor("positive", "#21BA45");
     }
 }
 

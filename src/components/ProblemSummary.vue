@@ -269,7 +269,7 @@
       <div v-if="!isExpanded">
         <simplified-markdown
           :text="
-            $t('numberOfInterventions', { count: record.interventions.length })
+            $tc('numberOfInterventions', record.interventions.length)
           "
           class="text-intervention"
         />
@@ -396,11 +396,6 @@ export default class ProblemSummary extends ProblemSummaryProps {
       return undefined;
     }
   }
-  get ratings() {
-    return ["knowledge", "behaviour", "status"].map(
-      (key) => ((this.lastOutcome || {}) as any)[key]
-    );
-  }
   get isDraft() {
     return !this.record.createdAt;
   }
@@ -418,26 +413,33 @@ export default class ProblemSummary extends ProblemSummaryProps {
     }
   }
   get ratingsSummary() {
-    return this.ratings
-      .filter((rating) => rating.observation)
-      .map((rating, index) => {
-        return {
-          label: this.terminology.problemRatingScale.ratings[index].scale[
-            rating.observation - 1
-          ].title,
-          colors: [0, 1, 2, 3, 4].map((value) => {
-            if (value < rating.observation) {
-              return "var(--q-color-outcome)";
-              // return "#ffffff";
-            } else if (value < rating.expectation || 0) {
-              return "#cccccc";
-              // return "#ff8888";
-            } else {
-              return "transparent";
-            }
-          }),
-        };
-      });
+    const outcome = this.lastOutcome;
+    const ratings = [outcome?.knowledge, outcome?.behaviour, outcome?.status];
+    const terminologyRatings = this.terminology.problemRatingScale.ratings;
+
+    return ratings.flatMap((rating, index) => {
+      if (rating && rating.observation) {
+        return [
+          {
+            label:
+              terminologyRatings[index].scale[rating.observation - 1].title,
+            colors: [0, 1, 2, 3, 4].map((value) => {
+              if (value < rating.observation) {
+                return "var(--q-color-outcome)";
+                // return "#ffffff";
+              } else if (value < rating.expectation || 0) {
+                return "#cccccc";
+                // return "#ff8888";
+              } else {
+                return "transparent";
+              }
+            }),
+          },
+        ];
+      } else {
+        return [];
+      }
+    });
   }
 
   get terminology() {
