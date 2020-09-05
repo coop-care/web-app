@@ -28,4 +28,4 @@ See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
 
 ## Contribute
 
-Please read our [Contributing Guide](Contributing.md).
+Please read our [Contributing Guide](CONTRIBUTING.md).
