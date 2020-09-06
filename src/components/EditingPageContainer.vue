@@ -11,26 +11,31 @@
     />
 
     <div v-else>
-      <div class="text-h5 q-mb-lg">
+      <div
+        v-if="title"
+        class="text-h5 q-mb-lg"
+      >
         {{ title }}
       </div>
       <slot />
-      <div class="flex justify-around q-mt-lg">
-        <q-btn
-          :label="$t('cancel')"
-          @click="$emit('cancel')"
-          color="primary"
-          rounded
-          flat
-          class="shadow-1"
-        />
-        <q-btn
-          :label="$t('save')"
-          @click="$emit('save')"
-          color="primary"
-          rounded
-        />
-      </div>
+      <slot name="footer">
+        <div class="flex justify-around q-mt-lg">
+          <q-btn
+            :label="$t('cancel')"
+            @click="$emit('cancel')"
+            color="primary"
+            rounded
+            flat
+            class="shadow-1"
+          />
+          <q-btn
+            :label="$t('save')"
+            @click="$emit('save')"
+            color="primary"
+            rounded
+          />
+        </div>
+      </slot>
     </div>
   </q-page>
 </template>

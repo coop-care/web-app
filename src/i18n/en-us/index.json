@@ -297,5 +297,6 @@
   "exceedingKnowledgeRatingWarning": "The knowledge goal should not be lower than the current observation.",
   "exceedingBehaviourRatingWarning": "The behavioral goal should not be lower than the current observation.",
   "exceedingStatusRatingWarning": "The health status goal should not be lower than the current observation.",
-  "unimprovableRatingsWarning": "If everything is rated as best as possible, it is usually unnecessary to document a problem."
+  "unimprovableRatingsWarning": "If everything is rated as best as possible, it is usually unnecessary to document a problem.",
+  "stepCaption": "Step {step} of {stepCount}"
 }

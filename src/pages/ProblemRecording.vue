@@ -1,171 +1,162 @@
 <template>
-  <q-page
-    padding
-    class="limit-page-width width-md"
-  >
-    <div v-if="$route.params.problemId != 'new' && !record">
-      <loading v-if="$store.direct.state.isLoadingClientList" />
-
-      <central-message
-        v-else-if="!$store.direct.state.isLoadingClientList"
-        :message="$t('clientNotFound')"
-      />
-    </div>
-
-    <div v-else>
-      <problem-summary-container>
-        <q-stepper
-          v-model="step"
-          ref="stepper"
-          color="primary"
-          header-nav
-          animated
-          flat
-          vertical
-          class="q-pa-none"
-          header-class="text-subtitle1 text-primary"
-          @before-transition="showWarning = false"
-        >
-          <q-step
-            :name="1"
-            v-if="hasDiagnosisNames"
-            :title="diagnosisTitle"
-            :caption="$t('optionalStep', {step: firstStepPrefix + 0, stepCount: stepCount})"
-            :prefix="firstStepPrefix + 0"
-            :done="step > 1"
-            :header-nav="step > 1"
-          >
-            <diagnosis-selection
-              v-model="newRecord.tag"
-              @input="nextStep"
-              class="q-mt-xs"
-            />
-            <q-btn
-              @click="nextStep"
-              color="primary"
-              rounded
-              no-caps
-              icon-right="fas fa-caret-right"
-              :label="continueButtonLabel"
-              class="q-mt-lg"
-            />
-          </q-step>
-          <q-step
-            :name="2"
-            :title="problemSelectionTitle"
-            :caption="$t('requiredStep', {step: firstStepPrefix + 1, stepCount: stepCount})"
-            :prefix="firstStepPrefix + 1"
-            :done="step > 2"
-            :error="!!problemSelectionValidationError && ((step > 2) || (step == 2 && showWarning ))"
-            :header-nav="step > 2 || !problemSelectionValidationError"
-            active-color="classification"
-          >
-            <problem-selection
-              @input="didSelectProblemCode"
-              class="q-mt-xs"
-            />
-            <warning
-              v-model="showWarning"
-              :messages="problemSelectionValidationError"
-            />
-            <q-btn
-              @click="validate(problemSelectionValidationError, createProblemAndContinue)"
-              color="primary"
-              rounded
-              no-caps
-              :outline="!!problemSelectionValidationError"
-              icon-right="fas fa-caret-right"
-              :label="problemSelectionButtonLabel"
-              class="q-mt-lg"
-            />
-          </q-step>
-          <q-step
-            :name="3"
-            :title="problemClassificationTitle"
-            :caption="$t('requiredStep', {step: firstStepPrefix + 2, stepCount: stepCount})"
-            :prefix="firstStepPrefix + 2"
-            :done="step > 3"
-            :error="!!problemClassificationValidationError && ((step > 3) || (step == 3 && showWarning ))"
-            :header-nav="step > 3 || !problemClassificationValidationError"
-            active-color="classification"
-          >
-            <problem-classification class="q-mt-xs" />
-            <warning
-              v-model="showWarning"
-              :messages="problemClassificationValidationError"
-            />
-            <q-btn
-              v-if="isHighPriority"
-              @click="validate(problemClassificationValidationError, nextStep)"
-              color="primary"
-              rounded
-              no-caps
-              :outline="!!problemClassificationValidationError"
-              icon-right="fas fa-caret-right"
-              :label="continueButtonLabel"
-              class="q-mt-lg"
-            />
-          </q-step>
-
-          <q-step
-            :name="4"
-            v-if="isHighPriority"
-            :title="ratingTitle"
-            :caption="$t('recommendedStep', {step: firstStepPrefix + 3, stepCount: stepCount})"
-            :prefix="firstStepPrefix + 3"
-            :done="step > 4"
-            :error="!!ratingValidationError && ((step > 4) || (step == 4 && showWarning ))"
-            :header-nav="step > 4 || !ratingValidationError"
-            active-color="outcome"
-          >
-            <problem-rating class="q-mt-xs" />
-            <warning
-              v-model="showWarning"
-              :messages="ratingValidationError"
-            />
-            <q-btn
-              @click="validate(ratingValidationError, nextStep)"
-              color="primary"
-              rounded
-              no-caps
-              :outline="!!ratingValidationError"
-              icon-right="fas fa-caret-right"
-              :label="continueButtonLabel"
-              class="q-mt-lg"
-            />
-          </q-step>
-
-          <q-step
-            :name="5"
-            v-if="isHighPriority"
-            :title="$t('planInterveneStep')"
-            :caption="$t('recommendedStep', {step: firstStepPrefix + 4, stepCount: stepCount})"
-            :prefix="firstStepPrefix + 4"
-            icon="add_comment"
-            :header-nav="step > 5 || !interventionValidationError"
-            active-color="intervention"
-          >
-            <intervention-view class="q-mt-xs" />
-            <warning
-              v-model="showWarning"
-              :messages="interventionValidationError"
-            />
-          </q-step>
-        </q-stepper>
-      </problem-summary-container>
-
-      <q-btn
-        v-if="step == stepCount"
-        @click="validate(isHighPriority ? interventionValidationError : problemClassificationValidationError, saveProblemRecord)"
+  <editing-page-container :is-data-available="isDataAvailable">
+    <problem-summary-container>
+      <q-stepper
+        v-model="step"
+        ref="stepper"
         color="primary"
-        rounded
-        no-caps
-        :outline="(isHighPriority && !!interventionValidationError) || (!isHighPriority && !!problemClassificationValidationError)"
-        :label="doneButtonLabel"
-        class="q-mt-lg problem-record-done-button"
-      />
-    </div>
-  </q-page>
+        header-nav
+        animated
+        flat
+        vertical
+        class="q-pa-none"
+        header-class="text-subtitle1 text-primary"
+        @before-transition="showWarning = false"
+      >
+        <q-step
+          :name="1"
+          v-if="hasDiagnosisNames"
+          :title="diagnosisTitle"
+          :caption="$t('optionalStep', {step: firstStepPrefix + 0, stepCount: stepCount})"
+          :prefix="firstStepPrefix + 0"
+          :done="step > 1"
+          :header-nav="step > 1"
+        >
+          <diagnosis-selection
+            v-model="newRecord.tag"
+            @input="nextStep"
+            class="q-mt-xs"
+          />
+          <q-btn
+            @click="nextStep"
+            color="primary"
+            rounded
+            no-caps
+            icon-right="fas fa-caret-right"
+            :label="continueButtonLabel"
+            class="q-mt-lg"
+          />
+        </q-step>
+        <q-step
+          :name="2"
+          :title="problemSelectionTitle"
+          :caption="$t('requiredStep', {step: firstStepPrefix + 1, stepCount: stepCount})"
+          :prefix="firstStepPrefix + 1"
+          :done="step > 2"
+          :error="!!warnings.problemSelection && ((step > 2) || (step == 2 && showWarning ))"
+          :header-nav="step > 2 || !warnings.problemSelection"
+          active-color="classification"
+        >
+          <problem-selection
+            :value="record || newRecord"
+            @input="validate(warnings.problemSelection, createProblemAndContinue)"
+            class="q-mt-xs"
+          />
+          <warning
+            v-model="showWarning"
+            :messages="warnings.problemSelection"
+          />
+          <q-btn
+            @click="validate(warnings.problemSelection, createProblemAndContinue)"
+            color="primary"
+            rounded
+            no-caps
+            :outline="!!warnings.problemSelection"
+            icon-right="fas fa-caret-right"
+            :label="problemSelectionButtonLabel"
+            class="q-mt-lg"
+          />
+        </q-step>
+        <q-step
+          :name="3"
+          :title="problemClassificationTitle"
+          :caption="$t('requiredStep', {step: firstStepPrefix + 2, stepCount: stepCount})"
+          :prefix="firstStepPrefix + 2"
+          :done="step > 3"
+          :error="!!warnings.problemClassification && ((step > 3) || (step == 3 && showWarning ))"
+          :header-nav="step > 3 || !(warnings.problemSelection || warnings.problemClassification)"
+          active-color="classification"
+        >
+          <problem-classification class="q-mt-xs" />
+          <warning
+            v-model="showWarning"
+            :messages="warnings.problemClassification"
+          />
+          <q-btn
+            v-if="isHighPriority"
+            @click="validate(warnings.problemClassification, nextStep)"
+            color="primary"
+            rounded
+            no-caps
+            :outline="!!warnings.problemClassification"
+            icon-right="fas fa-caret-right"
+            :label="continueButtonLabel"
+            class="q-mt-lg"
+          />
+        </q-step>
+
+        <q-step
+          :name="4"
+          v-if="isHighPriority"
+          :title="ratingTitle"
+          :caption="$t('recommendedStep', {step: firstStepPrefix + 3, stepCount: stepCount})"
+          :prefix="firstStepPrefix + 3"
+          :done="step > 4"
+          :error="!!warnings.rating && ((step > 4) || (step == 4 && showWarning ))"
+          :header-nav="step > 4 || !warnings.rating"
+          active-color="outcome"
+        >
+          <problem-rating class="q-mt-xs" />
+          <warning
+            v-model="showWarning"
+            :messages="warnings.rating"
+          />
+          <q-btn
+            @click="validate(warnings.rating, nextStep)"
+            color="primary"
+            rounded
+            no-caps
+            :outline="!!warnings.rating"
+            icon-right="fas fa-caret-right"
+            :label="continueButtonLabel"
+            class="q-mt-lg"
+          />
+        </q-step>
+
+        <q-step
+          :name="5"
+          v-if="isHighPriority"
+          :title="$t('planInterveneStep')"
+          :caption="$t('recommendedStep', {step: firstStepPrefix + 4, stepCount: stepCount})"
+          :prefix="firstStepPrefix + 4"
+          icon="add_comment"
+          :header-nav="step > 5 || !warnings.intervention"
+          active-color="intervention"
+        >
+          <intervention-view class="q-mt-xs" />
+          <warning
+            v-model="showWarning"
+            :messages="warnings.intervention"
+          />
+        </q-step>
+      </q-stepper>
+    </problem-summary-container>
+
+    <template v-slot:footer>
+      <div>
+        <q-btn
+          v-if="step - 1 + firstStepPrefix == stepCount"
+          @click="validate(isHighPriority ? warnings.intervention : warnings.problemClassification, saveProblemRecord)"
+          color="primary"
+          rounded
+          no-caps
+          :outline="(isHighPriority && !!warnings.intervention) || (!isHighPriority && !!warnings.problemClassification)"
+          :label="doneButtonLabel"
+          class="q-mt-lg problem-record-done-button"
+        />
+      </div>
+    </template>
+  </editing-page-container>
 </template>
 
 <style lang="sass">
@@ -187,32 +178,28 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
 import { QStepper } from "quasar";
-import { TranslateResult } from "vue-i18n";
-import { Terminology } from "../helper/terminology";
+import RecordValidator from "../mixins/RecordValidator";
 import { ProblemRecord } from "../models";
+import EditingPageContainer from "components/EditingPageContainer.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import DiagnosisSelection from "components/DiagnosisSelection.vue";
 import ProblemSelection from "components/ProblemSelection.vue";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import InterventionView from "components/InterventionV3.vue";
-import Loading from "components/Loading.vue";
-import CentralMessage from "components/CentralMessage.vue";
 import Warning from "components/Warning.vue";
 
 @Component({
   components: {
+    EditingPageContainer,
     ProblemSummaryContainer,
     DiagnosisSelection,
     ProblemSelection,
     ProblemClassification,
     ProblemRating,
     InterventionView,
-    Loading,
-    CentralMessage,
     Warning,
   },
   watch: {
@@ -225,19 +212,13 @@ import Warning from "components/Warning.vue";
     },
   },
 })
-export default class ProblemRecording extends Vue {
+export default class ProblemRecording extends mixins(RecordValidator) {
   $refs!: { stepper: QStepper };
   step = 2;
   newRecord = new ProblemRecord();
-  showWarning = false;
-  lastWarning = "";
 
   get isHighPriority() {
-    if (this.record) {
-      return this.record.problem.isHighPriority;
-    } else {
-      return true;
-    }
+    return (this.record || this.newRecord).problem.isHighPriority;
   }
   get hasDiagnosisNames() {
     return Object.keys(this.$t("diagnosisNames")).length > 0;
@@ -311,123 +292,6 @@ export default class ProblemRecording extends Vue {
       }
     }
   }
-  get problemSelectionValidationError() {
-    const code = (this.record || this.newRecord).problem.code;
-
-    if (!code) {
-      return this.$t("noProblemWarning") as string;
-    } else if (
-      this.client?.problems.find(
-        (record) =>
-          code == record.problem.code &&
-          record.id != this.record?.id &&
-          !record.resolvedAt
-      )
-    ) {
-      return this.$t("duplicateProblemWarning") as string;
-    } else {
-      return "";
-    }
-  }
-  get problemClassificationValidationError() {
-    const problem = this.record?.problem;
-    const warnings: TranslateResult[] = [];
-
-    if (
-      problem &&
-      problem.code &&
-      problem.severityCode == 2 &&
-      problem.signsAndSymptomsCodes.length == 0
-    ) {
-      warnings.push(this.$t("noSymptomsWarning"));
-    } else if (problem && problem.severityCode == 1 && !problem.details) {
-      warnings.push(this.$t("noPotentialRiskFactorsWarning"));
-    } else if (problem && problem.severityCode == 0 && !problem.details) {
-      warnings.push(this.$t("noClientWishForHealthPromotionWarning"));
-    }
-
-    if (problem && !problem.isHighPriority && !problem.priorityDetails) {
-      warnings.push(this.$t("noLowPriorityDetailsWarning"));
-    }
-
-    return warnings.join("\n");
-  }
-  get ratingValidationError() {
-    const outcome = this.record?.outcomes[0];
-    const warnings: TranslateResult[] = [];
-
-    if (!outcome || outcome.knowledge.observation == 0) {
-      warnings.push(this.$t("noKnowledgeRatingWarning"));
-    }
-    if (
-      outcome &&
-      outcome.knowledge.expectation &&
-      outcome.knowledge.observation > outcome.knowledge.expectation
-    ) {
-      warnings.push(this.$t("exceedingKnowledgeRatingWarning"));
-    }
-
-    if (!outcome || outcome.behaviour.observation == 0) {
-      warnings.push(this.$t("noBehaviourRatingWarning"));
-    }
-    if (
-      outcome &&
-      outcome.behaviour.expectation &&
-      outcome.behaviour.observation > outcome.behaviour.expectation
-    ) {
-      warnings.push(this.$t("exceedingBehaviourRatingWarning"));
-    }
-
-    if (!outcome || outcome.status.observation == 0) {
-      warnings.push(this.$t("noStatusRatingWarning"));
-    }
-    if (
-      outcome &&
-      outcome.status.expectation &&
-      outcome.status.observation > outcome.status.expectation
-    ) {
-      warnings.push(this.$t("exceedingStatusRatingWarning"));
-    }
-
-    if (
-      outcome &&
-      outcome.knowledge.observation == 5 &&
-      outcome.behaviour.observation == 5 &&
-      outcome.status.observation == 5
-    ) {
-      warnings.push(this.$t("unimprovableRatingsWarning"));
-    }
-
-    return warnings.join("\n");
-  }
-  get interventionValidationError() {
-    const interventions = this.record?.interventions || [];
-    const noCategoryCount = interventions.filter(
-      (intervention) => !intervention.categoryCode
-    ).length;
-    const noTargetCount = interventions.filter(
-      (intervention) => !intervention.targetCode
-    ).length;
-    const noDetailsCount = interventions.filter(
-      (intervention) => !intervention.details
-    ).length;
-    const warnings: TranslateResult[] = [];
-
-    if (interventions.length == 0) {
-      warnings.push(this.$t("noInterventionsWarning"));
-    }
-    if (noCategoryCount) {
-      warnings.push(this.$tc("noInterventionCategoryWarning", noCategoryCount));
-    }
-    if (noTargetCount) {
-      warnings.push(this.$tc("noInterventionTargetWarning", noTargetCount));
-    }
-    if (noDetailsCount) {
-      warnings.push(this.$tc("noInterventionDetailsWarning", noDetailsCount));
-    }
-
-    return warnings.join("\n");
-  }
   get continueButtonLabel() {
     return !this.showWarning ? this.$t("continue") : this.$t("continueAnyway");
   }
@@ -445,36 +309,15 @@ export default class ProblemRecording extends Vue {
       return this.$t("editProblemAnyway");
     }
   }
-  get client() {
-    return this.$store.direct.getters.getClient(this.$route.params);
+  get isDataAvailable() {
+    return this.$route.params.problemId == "new" || !!this.record;
   }
-  get record() {
-    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
-  }
-  get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
+  get temporaryRecord() {
+    return this.newRecord;
   }
 
-  validate(validationErrors: string, next: () => void) {
-    if (this.showWarning && this.lastWarning.includes(validationErrors)) {
-      this.showWarning = false;
-      next();
-    } else if (validationErrors) {
-      this.showWarning = true;
-      this.lastWarning = validationErrors;
-    } else {
-      next();
-    }
-  }
   nextStep() {
     this.$refs.stepper.next();
-  }
-  didSelectProblemCode(value: string) {
-    if (!this.record) {
-      this.newRecord.problem.code = value;
-    }
-    this.createProblem();
-    this.validate(this.problemSelectionValidationError, this.nextStep);
   }
   createProblem() {
     if (this.client && this.$route.params.problemId == "new") {

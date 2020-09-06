@@ -113,15 +113,21 @@ import {
   filterTerminology,
 } from "../helper/terminology";
 import { QInput, QTree } from "quasar";
-import { Problem } from "../models/problem";
+import { ProblemRecord, Problem } from "../models";
 import TextWithHighlights from "./TextWithHighlights.vue";
+
+const ProblemSelectionProps = Vue.extend({
+  props: {
+    value: ProblemRecord,
+  },
+});
 
 @Component({
   components: {
     TextWithHighlights,
   },
 })
-export default class ProblemClassification extends Vue {
+export default class ProblemSelection extends ProblemSelectionProps {
   problemsFilter = "";
   $refs!: {
     filter: QInput;
@@ -155,15 +161,16 @@ export default class ProblemClassification extends Vue {
     return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
-    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
+    return (
+      this.value ||
+      this.$store.direct.getters.getProblemRecordById(this.$route.params)
+    );
   }
   get problem() {
     return this.record?.problem;
   }
 
   updateProblem(code: string) {
-    this.$emit("input", code);
-
     const changes: Partial<Problem> = {
       code: code,
       signsAndSymptomsCodes: [],
@@ -176,6 +183,8 @@ export default class ProblemClassification extends Vue {
       clientId: this.$route.params.clientId,
       problemId: this.record?.id,
     });
+
+    this.$emit("input", this.record);
   }
 
   resetProblemsFilter() {

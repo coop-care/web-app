@@ -297,5 +297,6 @@
   "exceedingKnowledgeRatingWarning": "Das Wissens-Ziel sollte höher oder gleich groß wie die aktuelle Beobachtung sein.",
   "exceedingBehaviourRatingWarning": "Das Verhaltens-Ziel sollte höher oder gleich groß wie die aktuelle Beobachtung sein.",
   "exceedingStatusRatingWarning": "Das Zustands-Ziel sollte höher oder gleich groß wie die aktuelle Beobachtung sein.",
-  "unimprovableRatingsWarning": "Wenn alles bestmöglich bewertet ist, ist es in der Regel unnötig ein Problem zu dokumentieren."
+  "unimprovableRatingsWarning": "Wenn alles bestmöglich bewertet ist, ist es in der Regel unnötig ein Problem zu dokumentieren.",
+  "stepCaption": "Schritt {step} von {stepCount}"
 }
