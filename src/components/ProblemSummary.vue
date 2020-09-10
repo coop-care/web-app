@@ -20,7 +20,7 @@
             :name="isExpanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
             color="classification"
           />
-          {{ $t(problem.title) }}
+          {{ problemTitle }}
           <q-btn
             v-if="isInteractive"
             :title="$t('editProblem')"
@@ -220,7 +220,7 @@
             'text-outcome text-subtitle1 text-weight-bold ' +
               (isExpanded ? 'q-mb-sm' : '')
           ">
-          {{ $tc("outcome", 2) }}
+          {{ $t("outcomeTitle") }}
           <q-btn
             v-if="isInteractive"
             :title="$t('newRating')"
@@ -276,7 +276,7 @@
       </div>
       <div v-else-if="isInteractive && problem.isHighPriority">
         <div class="text-subtitle1 text-weight-bold text-intervention q-mb-xs">
-          {{ $tc("intervention", 2) }}
+          {{ $t("intervention") }}
           <q-btn
             v-if="isInteractive"
             :title="$t('editInterventions')"
@@ -385,6 +385,14 @@ export default class ProblemSummary extends ProblemSummaryProps {
 
   get problem() {
     return this.record.problem;
+  }
+  get problemTitle() {
+    const problemTitle = this.$t(this.problem.title);
+    if (!this.isExpanded) {
+      return problemTitle;
+    } else {
+      return this.$t("selectedProblem", { problem: problemTitle });
+    }
   }
   get interventions() {
     return this.record.interventions;

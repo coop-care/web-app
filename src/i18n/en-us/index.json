@@ -211,8 +211,7 @@
   "proofOfPerformance": "Proof of Performance",
   "showProofOfPerformance": "Show Proof of Performance",
   "occurrence": "Occurrence",
-  "category": "Category",
-  "interventionDetails": "Intervention details",
+  "interventionDetails": "Details",
   "datesOfConduction": "Conduction: Dates and Signatures",
   "noCompletedTasksFound": "No completed tasks found in this time period. 🧐",
   "from": "from",
@@ -298,5 +297,7 @@
   "exceedingBehaviourRatingWarning": "The behavioral goal should not be lower than the current observation.",
   "exceedingStatusRatingWarning": "The health status goal should not be lower than the current observation.",
   "unimprovableRatingsWarning": "If everything is rated as best as possible, it is usually unnecessary to document a problem.",
-  "stepCaption": "Step {step} of {stepCount}"
+  "stepCaption": "Step {step} of {stepCount}",
+  "outcomeTitle": "Verlauf und Ziele",
+  "interventionCategoryAndTarget": "Intervention Category and Target"
 }
