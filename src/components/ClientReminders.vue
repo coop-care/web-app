@@ -8,7 +8,7 @@
       <div class="q-mt-xs">
         <q-btn
           icon="fas fa-caret-left"
-          color="intervention"
+          color="primary"
           flat
           dense
           size="18px"
@@ -21,7 +21,7 @@
           icon="event"
           round
           flat
-          color="intervention"
+          color="primary"
         >
           <q-popup-proxy
             ref="dateProxy"
@@ -32,8 +32,8 @@
               v-model="selectedDateString"
               @input="$refs.dateProxy.hide()"
               :events="[]"
-              color="intervention"
-              event-color="intervention"
+              color="primary"
+              event-color="primary"
               mask="YYYY-MM-DDTHH:mm:ss.sssZ"
               today-btn
             />
@@ -54,7 +54,7 @@
       <div class="q-mt-xs">
         <q-btn
           icon="fas fa-caret-right"
-          color="intervention"
+          color="primary"
           flat
           dense
           size="18px"

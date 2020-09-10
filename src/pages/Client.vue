@@ -79,7 +79,7 @@
       <q-tabs
         v-model="selectedTab"
         no-caps
-        class="bg-grey-1 q-mb-md"
+        class="bg-grey-1 q-mb-md text-primary"
         :inline-label="$q.screen.gt.xs"
         :dense="!$q.screen.gt.xs"
         align="left"
@@ -188,8 +188,8 @@ import CentralMessage from "components/CentralMessage.vue";
     ClientHistory,
     ClientMasterData,
     Loading,
-    CentralMessage
-  }
+    CentralMessage,
+  },
 })
 export default class PageIndex extends Vue {
   selectedTab = null;
@@ -220,27 +220,27 @@ export default class PageIndex extends Vue {
       {
         name: this.$t("showProofOfPerformance") + " …",
         icon: "fas fa-clipboard",
-        action: () => this.pushRoute("proofOfPerformance")
+        action: () => this.pushRoute("proofOfPerformance"),
       },
       {
         name: this.$t("clientDischarge"),
         icon: "fas fa-archive",
         action: this.archiveClient,
-        condition: !client.leftAt
+        condition: !client.leftAt,
       },
       {
         name: this.$t("clientReadmission"),
         icon: "fas fa-folder-open",
         action: this.unarchiveClient,
-        condition: !!client.leftAt
+        condition: !!client.leftAt,
       },
       {
         name: this.$t("deleteClient"),
         icon: "delete_forever",
         action: this.deleteClient,
         condition: !!client.leftAt || !client.problems.length,
-        isDestructive: true
-      }
+        isDestructive: true,
+      },
     ];
   }
   get dueTaskCount() {
@@ -270,11 +270,11 @@ export default class PageIndex extends Vue {
     client.masterData = masterData;
     this.$ccApi
       .createClient(client)
-      .then(client => {
+      .then((client) => {
         this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
           this.$router.push({
             name: "clientReport",
-            params: { clientId: client._id?.toString() || "" }
+            params: { clientId: client._id?.toString() || "" },
           });
         });
       })
@@ -282,25 +282,25 @@ export default class PageIndex extends Vue {
   }
 
   updateMasterData(key: keyof MasterData, value: any) {
-    this.updateClient(client => {
+    this.updateClient((client) => {
       const changes: any = {};
       changes[key] = value;
       this.$store.direct.commit.updateObject({
         target: client.masterData,
-        changes: changes
+        changes: changes,
       });
     });
   }
 
   archiveClient() {
-    this.updateClient(client =>
+    this.updateClient((client) =>
       this.$store.direct.commit.archiveClient(client)
     );
     this.$refs.clientDrawer.archivedClientsExpansionState = true;
   }
 
   unarchiveClient() {
-    this.updateClient(client =>
+    this.updateClient((client) =>
       this.$store.direct.commit.unarchiveClient(client)
     );
     this.$refs.clientDrawer.activeClientsExpansionState = true;
@@ -315,7 +315,7 @@ export default class PageIndex extends Vue {
 
       mutate(client);
       this.$store.direct.dispatch.saveClient({
-        client: this.selectedClient
+        client: this.selectedClient,
       });
     }, 0);
   }
@@ -330,7 +330,7 @@ export default class PageIndex extends Vue {
   pushRoute(name: string) {
     this.$router.push({
       name: name,
-      params: this.$route.params
+      params: this.$route.params,
     });
   }
 }
