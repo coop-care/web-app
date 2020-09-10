@@ -276,7 +276,7 @@
       </div>
       <div v-else-if="isInteractive && problem.isHighPriority">
         <div class="text-subtitle1 text-weight-bold text-intervention q-mb-xs">
-          {{ $t("intervention") }}
+          {{ $tc("intervention", 2) }}
           <q-btn
             v-if="isInteractive"
             :title="$t('editInterventions')"
