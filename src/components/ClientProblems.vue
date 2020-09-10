@@ -18,9 +18,18 @@
 
     <div
       v-else
-      class="text-body2 text-italic q-mt-lg"
+      class="q-mt-lg q-px-lg"
     >
-      {{ $t("noClientProblemRecords") }}
+      <div class="text-body2 text-italic">{{ $t("noClientProblemRecords") }}</div>
+      <q-btn
+        :label="$t('problemAdmission')"
+        flat
+        no-caps
+        size="md"
+        color="classification"
+        class="q-ml-lg q-mt-xs text-normal"
+        @click="addProblem"
+      />
     </div>
 
     <q-page-sticky
