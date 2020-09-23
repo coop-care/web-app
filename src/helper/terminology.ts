@@ -128,7 +128,93 @@ export function flattenedProblems(terminology: Terminology): Problem[] {
         );
 }
 
-export function makeTerminologyWithMaps(terminology: Terminology) {
+export function arraysToObjects(terminology: Terminology): any {
+    const replace = (useCode: boolean, list: any[]) => {
+        return list.reduce((object, item, index) => {
+            object[useCode ? item.code : index] = item;
+            delete item.code;
+            return object;
+        }, {});
+    };
+    const result = JSON.parse(JSON.stringify(terminology));
+    const classification = result.problemClassificationScheme;
+    const modifiers = classification.modifiers;
+    const intervention = result.interventionScheme;
+    const rating = result.problemRatingScale;
+
+    classification.domains = replace(
+        true,
+        classification.domains.map((domain: any) => {
+            domain.problems = replace(
+                true,
+                domain.problems.map((problem: any) => {
+                    problem.signsAndSymptoms = replace(
+                        true,
+                        problem.signsAndSymptoms
+                    );
+                    return problem;
+                })
+            );
+            return domain;
+        })
+    );
+    modifiers.severity = replace(false, modifiers.severity);
+    modifiers.scope = replace(false, modifiers.scope);
+    intervention.categories = replace(true, intervention.categories);
+    intervention.targets = replace(true, intervention.targets);
+    rating.ratings = replace(
+        false,
+        rating.ratings.map((rating: any) => {
+            rating.scale = replace(false, rating.scale);
+            return rating;
+        })
+    );
+    return result;
+}
+
+export function objectsToArrays(json: any): Terminology {
+    const replace = (useCode: boolean, object: any) => {
+        return Object.keys(object).map(key => {
+            const item = object[key];
+            if (useCode) {
+                item.code = key;
+            }
+            return item;
+        });
+    };
+    const result = JSON.parse(JSON.stringify(json));
+    const classification = result.problemClassificationScheme;
+    const modifiers = classification.modifiers;
+    const intervention = result.interventionScheme;
+    const rating = result.problemRatingScale;
+
+    classification.domains = replace(true, classification.domains).map(
+        (domain: any) => {
+            domain.problems = replace(true, domain.problems).map(
+                (problem: any) => {
+                    problem.signsAndSymptoms = replace(
+                        true,
+                        problem.signsAndSymptoms
+                    );
+                    return problem;
+                }
+            );
+            return domain;
+        }
+    );
+    modifiers.severity = replace(false, modifiers.severity);
+    modifiers.scope = replace(false, modifiers.scope);
+    intervention.categories = replace(true, intervention.categories);
+    intervention.targets = replace(true, intervention.targets);
+    rating.ratings = replace(false, rating.ratings).map((rating: any) => {
+        rating.scale = replace(false, rating.scale);
+        return rating;
+    });
+    return result as Terminology;
+}
+
+export function makeTerminologyWithMaps(terminologyJSON: any) {
+    const terminology = objectsToArrays(terminologyJSON);
     const result: TerminologyWithMaps = {
         title: terminology.title,
         problemClassificationScheme: terminology.problemClassificationScheme,
