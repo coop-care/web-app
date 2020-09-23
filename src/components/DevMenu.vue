@@ -189,7 +189,7 @@ export default class DevMenu extends Vue {
         colors: ["#28406F", "#ed0251", "#ff9900", "#7E3781"],
       },
       {
-        name: "sunrise 12 (sys)",
+        name: "sunrise 12 (sys)", // https://developer.apple.com/design/human-interface-guidelines/macos/visual-design/color/
         colors: [
           "#960372",
           "#FF2C55",

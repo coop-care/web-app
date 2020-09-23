@@ -100,7 +100,7 @@
   border: 1px solid
 .task-type
   width: 3px
-  height: calc(100% - 6px)
+  height: calc(100% - 8px)
 </style>
 
 <script lang="ts">
