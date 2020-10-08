@@ -299,5 +299,9 @@
   "unimprovableRatingsWarning": "If everything is rated as best as possible, it is usually unnecessary to document a problem.",
   "stepCaption": "Step {step} of {stepCount}",
   "outcomeTitle": "Verlauf und Ziele",
-  "interventionCategoryAndTarget": "Intervention Category and Target"
+  "interventionCategoryAndTarget": "Intervention Category and Target",
+  "noInterventionCategorySpecificWarning": "The intervention has no category.",
+  "noInterventionTargetSpecificWarning": "The intervention has no intervention target selected.",
+  "noInterventionDetailsSpecificWarning": "The intervention has no client-specific description.",
+  "newInterventionForProblem": "New Intervention for {problem}"
 }

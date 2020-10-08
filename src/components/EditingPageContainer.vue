@@ -11,15 +11,17 @@
     />
 
     <div v-else>
-      <div
+      <simplified-markdown
         v-if="title"
+        :text="title"
         class="text-h5 q-mb-lg"
-      >
-        {{ title }}
-      </div>
+      />
       <slot />
       <slot name="footer">
-        <div class="flex justify-around q-mt-lg">
+        <div
+          v-if="!hideDefaultFooter"
+          class="flex justify-around q-mt-lg"
+        >
           <q-btn
             :label="$t('cancel')"
             @click="$emit('cancel')"
@@ -45,11 +47,13 @@ import Vue from "vue";
 import Component from "vue-class-component";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
+import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
 
 const EditingPageContainerProps = Vue.extend({
   props: {
     isDataAvailable: Boolean,
     title: String,
+    hideDefaultFooter: Boolean,
   },
 });
 
@@ -57,6 +61,7 @@ const EditingPageContainerProps = Vue.extend({
   components: {
     Loading,
     CentralMessage,
+    SimplifiedMarkdown,
   },
 })
 export default class EditingPageContainer extends EditingPageContainerProps {}

@@ -36,6 +36,11 @@
   .counter:before
     counter-increment: intervention
     content: counter(intervention) ". "
+body
+  counter-reset: always
+.counter:before
+  counter-increment: always
+  content: counter(always) ". "
 .column-2
   column-count: 2
   column-gap: 2em

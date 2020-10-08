@@ -281,7 +281,7 @@
             v-if="isInteractive"
             :title="$t('editInterventions')"
             icon="add"
-            :to="{ name: 'newIntervention', params: params }"
+            :to="{ name: 'newInterventionForProblem', params: params }"
             round
             outline
             size="10.5px"

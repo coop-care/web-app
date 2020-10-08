@@ -1,7 +1,7 @@
 import Component from "vue-class-component";
 import { TranslateResult } from "vue-i18n";
 import RecordMixin from "./RecordMixin";
-import { ProblemRecord } from "../models";
+import { ProblemRecord, Intervention } from "../models";
 
 @Component
 export default class RecordValidator extends RecordMixin {
@@ -18,6 +18,14 @@ export default class RecordValidator extends RecordMixin {
     }
     get temporaryRecord(): ProblemRecord | undefined {
         return undefined;
+    }
+    get continueButtonLabel() {
+        return !this.showWarning
+            ? this.$t("continue")
+            : this.$t("continueAnyway");
+    }
+    get doneButtonLabel() {
+        return !this.showWarning ? this.$t("done") : this.$t("finishAnyway");
     }
 
     private get problemSelectionWarnings() {
@@ -157,5 +165,21 @@ export default class RecordValidator extends RecordMixin {
         } else {
             next();
         }
+    }
+
+    warningsForIntervention(intervention: Intervention) {
+        const warnings: TranslateResult[] = [];
+
+        if (!intervention.categoryCode) {
+            warnings.push(this.$t("noInterventionCategorySpecificWarning"));
+        }
+        if (!intervention.targetCode) {
+            warnings.push(this.$t("noInterventionTargetSpecificWarning"));
+        }
+        if (!intervention.details) {
+            warnings.push(this.$t("noInterventionDetailsSpecificWarning"));
+        }
+
+        return warnings.join("\n");
     }
 }

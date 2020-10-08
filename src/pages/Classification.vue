@@ -2,8 +2,7 @@
   <editing-page-container
     :title="$t('editProblem')"
     :is-data-available="!!record"
-    @cancel="$router.back()"
-    @save="save"
+    hide-default-footer
   >
     <problem-summary-container :problemRecord="record">
       <q-stepper
@@ -63,6 +62,7 @@
             :messages="warnings.problemClassification"
           />
           <q-btn
+            v-if="step == 2"
             @click="validate(warnings.problemClassification, save)"
             color="primary"
             rounded
@@ -75,10 +75,6 @@
         </q-step>
       </q-stepper>
     </problem-summary-container>
-    <template v-slot:footer>
-      <div>
-      </div>
-    </template>
   </editing-page-container>
 </template>
 
@@ -119,9 +115,6 @@ export default class ClassificationPage extends RecordValidator {
     } else {
       return this.$t("editProblemAnyway");
     }
-  }
-  get doneButtonLabel() {
-    return !this.showWarning ? this.$t("done") : this.$t("finishAnyway");
   }
 
   nextStep() {

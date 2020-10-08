@@ -1,5 +1,8 @@
 <template>
-  <editing-page-container :is-data-available="isDataAvailable">
+  <editing-page-container
+    :is-data-available="isDataAvailable"
+    hide-default-footer
+  >
     <problem-summary-container>
       <q-stepper
         v-model="step"
@@ -138,24 +141,18 @@
             v-model="showWarning"
             :messages="warnings.intervention"
           />
+          <q-btn
+            @click="validate(isHighPriority ? warnings.intervention : warnings.problemClassification, saveProblemRecord)"
+            color="primary"
+            rounded
+            no-caps
+            :outline="(isHighPriority && !!warnings.intervention) || (!isHighPriority && !!warnings.problemClassification)"
+            :label="doneButtonLabel"
+            class="q-mt-lg"
+          />
         </q-step>
       </q-stepper>
     </problem-summary-container>
-
-    <template v-slot:footer>
-      <div>
-        <q-btn
-          v-if="step - 1 + firstStepPrefix == stepCount"
-          @click="validate(isHighPriority ? warnings.intervention : warnings.problemClassification, saveProblemRecord)"
-          color="primary"
-          rounded
-          no-caps
-          :outline="(isHighPriority && !!warnings.intervention) || (!isHighPriority && !!warnings.problemClassification)"
-          :label="doneButtonLabel"
-          class="q-mt-lg problem-record-done-button"
-        />
-      </div>
-    </template>
   </editing-page-container>
 </template>
 
@@ -173,8 +170,6 @@
 .q-stepper--vertical .q-stepper__step-inner
   padding-left: 40px
   padding-right: 0
-.problem-record-done-button
-  margin-left: 36px
 </style>
 
 <script lang="ts">
@@ -291,12 +286,6 @@ export default class ProblemRecording extends mixins(RecordValidator) {
         return title + this.$t("noRatingShort");
       }
     }
-  }
-  get continueButtonLabel() {
-    return !this.showWarning ? this.$t("continue") : this.$t("continueAnyway");
-  }
-  get doneButtonLabel() {
-    return !this.showWarning ? this.$t("done") : this.$t("finishAnyway");
   }
   get problemSelectionButtonLabel() {
     if (!this.record && !this.showWarning) {

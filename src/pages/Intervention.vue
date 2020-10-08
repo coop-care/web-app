@@ -2,25 +2,39 @@
   <editing-page-container
     :title="$t('editIntervention')"
     :is-data-available="!!(client && intervention)"
-    @cancel="$router.back()"
-    @save="save"
+    hide-default-footer
   >
     <problem-summary-container>
       <intervention-editor
         :value="intervention"
         isSingleEditor
       />
+      <warning
+        v-model="showWarning"
+        :messages="warningsForIntervention(intervention)"
+      />
+      <q-btn
+        @click="validate(warningsForIntervention(intervention), save)"
+        color="primary"
+        rounded
+        no-caps
+        :outline="!!warningsForIntervention(intervention)"
+        icon-right="fas fa-caret-right"
+        :label="doneButtonLabel"
+        class="q-mt-lg"
+      />
     </problem-summary-container>
   </editing-page-container>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
 import Component from "vue-class-component";
+import RecordValidator from "../mixins/RecordValidator";
 import { Reminder } from "../models";
 import EditingPageContainer from "components/EditingPageContainer.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import InterventionEditor from "components/InterventionEditorV3.vue";
+import Warning from "components/Warning.vue";
 
 let oldIntervention: Reminder | undefined;
 
@@ -28,13 +42,11 @@ let oldIntervention: Reminder | undefined;
   components: {
     InterventionEditor,
     EditingPageContainer,
-    ProblemSummaryContainer
-  }
+    ProblemSummaryContainer,
+    Warning,
+  },
 })
-export default class InterventionPage extends Vue {
-  get client() {
-    return this.$store.direct.getters.getClient(this.$route.params);
-  }
+export default class InterventionPage extends RecordValidator {
   get intervention() {
     return this.client?.findReminder(this.$route.params.interventionId);
   }
@@ -46,7 +58,7 @@ export default class InterventionPage extends Vue {
         problemId: this.$route.params.problemId,
         changeType: "InterventionModified",
         newInstance: this.intervention,
-        oldInstance: oldIntervention
+        oldInstance: oldIntervention,
       });
     }
     this.$store.direct.dispatch

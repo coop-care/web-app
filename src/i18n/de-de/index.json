@@ -299,5 +299,9 @@
   "unimprovableRatingsWarning": "Wenn alles bestmöglich bewertet ist, ist es in der Regel unnötig ein Problem zu dokumentieren.",
   "stepCaption": "Schritt {step} von {stepCount}",
   "outcomeTitle": "Verlauf und Ziele",
-  "interventionCategoryAndTarget": "Kategorie und Pflegemaßnahme"
+  "interventionCategoryAndTarget": "Kategorie und Pflegemaßnahme",
+  "noInterventionCategorySpecificWarning": "Die Pflegeintervention hat keine Kategorie.",
+  "noInterventionTargetSpecificWarning": "Für die Pflegeintervention ist keine Pflegemaßnahme ausgewählt.",
+  "noInterventionDetailsSpecificWarning": "Bei der Pflegeintervention fehlt die klientenspezifische Beschreibung.",
+  "newInterventionForProblem": "Neue Pflegeintervention für {problem}"
 }

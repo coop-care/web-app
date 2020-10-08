@@ -18,7 +18,11 @@ export class Problem {
         }
     }
     get description() {
-        return "terminology.problemByCode." + this.code + ".description";
+        if (this.code) {
+            return "terminology.problemByCode." + this.code + ".description";
+        } else {
+            return "";
+        }
     }
     get terminology() {
         return "terminology.problemByCode." + this.code;
