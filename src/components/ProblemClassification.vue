@@ -112,7 +112,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
+import WarningMixin from "../mixins/WarningMixin";
 import {
   HasTitleDescription,
   TerminologyWithMaps,
@@ -122,12 +123,21 @@ import {
 import { Problem } from "../models/problem";
 import TextWithTooltip from "./TextWithTooltip.vue";
 
+const ProblemClassificationProps = Vue.extend({
+  props: {
+    editMode: Boolean,
+  },
+});
+
 @Component({
   components: {
     TextWithTooltip,
   },
 })
-export default class ProblemClassification extends Vue {
+export default class ProblemClassification extends mixins(
+  ProblemClassificationProps,
+  WarningMixin
+) {
   get selectedProblem() {
     return this.problem.code;
   }
@@ -151,13 +161,38 @@ export default class ProblemClassification extends Vue {
     return this.problem.severityCode;
   }
   set severity(value: number) {
-    this.updateProblem({ severityCode: value });
+    if (
+      this.editMode &&
+      (this.problem.signsAndSymptoms.length || this.problem.details)
+    ) {
+      this.showWarning(
+        this.$t("changingSeverityWarningMessage") as string
+      ).onOk(() => {
+        this.updateProblem({ severityCode: value });
+      });
+    } else {
+      this.updateProblem({ severityCode: value });
+    }
   }
   get priority() {
     return this.problem.isHighPriority;
   }
   set priority(value: boolean) {
-    this.updateProblem({ isHighPriority: value });
+    if (
+      this.editMode &&
+      !value &&
+      this.record?.interventions.filter(
+        (intervention) => !intervention.completedAt
+      ).length
+    ) {
+      this.showWarning(
+        this.$t("reducingPriorityWarningMessage") as string
+      ).onOk(() => {
+        this.updateProblem({ isHighPriority: value });
+      });
+    } else {
+      this.updateProblem({ isHighPriority: value });
+    }
   }
   get details() {
     return this.problem.details;

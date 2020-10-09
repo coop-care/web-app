@@ -105,7 +105,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
+import WarningMixin from "../mixins/WarningMixin";
 import {
   HasTitleDescription,
   TerminologyWithMaps,
@@ -119,6 +120,7 @@ import TextWithHighlights from "./TextWithHighlights.vue";
 const ProblemSelectionProps = Vue.extend({
   props: {
     value: ProblemRecord,
+    editMode: Boolean,
   },
 });
 
@@ -127,7 +129,10 @@ const ProblemSelectionProps = Vue.extend({
     TextWithHighlights,
   },
 })
-export default class ProblemSelection extends ProblemSelectionProps {
+export default class ProblemSelection extends mixins(
+  ProblemSelectionProps,
+  WarningMixin
+) {
   problemsFilter = "";
   $refs!: {
     filter: QInput;
@@ -138,7 +143,38 @@ export default class ProblemSelection extends ProblemSelectionProps {
     return this.problem?.code || "";
   }
   set selectedProblem(value: string) {
-    this.updateProblem(value);
+    const hasOutcomesOrInterventions =
+      this.record.outcomes.length || this.record.interventions.length;
+
+    if (
+      this.editMode &&
+      !!this.selectedProblem &&
+      (this.problem.signsAndSymptoms.length ||
+        this.problems.details ||
+        hasOutcomesOrInterventions)
+    ) {
+      const consequences = [];
+      if (this.problem.signsAndSymptoms.length) {
+        consequences.push(this.$t("existingSignsAndSymptomsWarning"));
+      }
+      if (this.problem.details) {
+        consequences.push(this.$t("existingProblemDetailsWarning"));
+      }
+      if (hasOutcomesOrInterventions) {
+        consequences.push(this.$t("existingOutcomesOrInterventionsWarning"));
+      }
+      const message = this.$t("problemChangeWarningMessage", {
+        consequences: consequences.join("\n"),
+        oldName: this.$t(this.problem.title),
+        newName: this.$t("terminology.problemByCode." + value + ".title"),
+      }) as string;
+
+      this.showWarning(message).onOk(() => {
+        this.updateProblem(value);
+      });
+    } else {
+      this.updateProblem(value);
+    }
   }
 
   get problems() {

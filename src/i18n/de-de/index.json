@@ -303,5 +303,13 @@
   "noInterventionCategorySpecificWarning": "Die Pflegeintervention hat keine Kategorie.",
   "noInterventionTargetSpecificWarning": "Für die Pflegeintervention ist keine Pflegemaßnahme ausgewählt.",
   "noInterventionDetailsSpecificWarning": "Bei der Pflegeintervention fehlt die klientenspezifische Beschreibung.",
-  "newInterventionForProblem": "Neue Pflegeintervention für {problem}"
+  "newInterventionForProblem": "Neue Pflegeintervention für {problem}",
+  "warningTitle": "Warnung",
+  "existingSignsAndSymptomsWarning": "Die bereits ausgewählten Symptome werden entfernt.",
+  "existingProblemDetailsWarning": "Die bereits angegebenen Risikofaktoren oder Vorsorgewünsche werden entfernt.",
+  "existingOutcomesOrInterventionsWarning": "Die bereits vorgenommenen Bewertungen oder geplanten Interventionen bleiben erhalten, ihre Bedeutung könnte allerdings nicht mehr stimmig zum Problem werden.",
+  "problemChangeWarningMessage": "Die Bezeichnung dieses Problems zu ändern hat weitreichende Auswirkungen.\n{consequences}\n\nBist du dir sicher, dass du das Problem trotzdem von „{oldName}” nach „{newName}” umbenennen möchtest?",
+  "reducingPriorityWarningMessage": "Die Priorität auf niedrig zu setzen, bedeutet dass mindestens eine aktive Pflegeintervention für dieses Problem gestoppt wird.\n\nBist du dir sicher, dass du die Priorität trotzdem ändern möchtest?",
+  "changingSeverityWarningMessage": "Den Schweregrad zu verändern bedeutet gleichzeitig, die dokumentierten Symptome, Risikofaktoren oder Vorsorgewünsche zu entfernen.\n\nBist du dir sicher, dass du den Schweregrad trotzdem ändern möchtest?",
+  "changingInterventionCategoryWarningMessage": "Die Kategorie nachträglich zu ändern, verändert gleichzeitig die Bedeutung der Pflegemaßnahme und der Beschreibung, auch für die bereits durchgeführten Aufgaben. Es könnte sinnvoller sein, eine ganz neue Pflegeintervention zu erstellen.\n\nBist du dir sicher, dass du die Kategorie trotzdem ändern möchtest?"
 }

@@ -303,5 +303,13 @@
   "noInterventionCategorySpecificWarning": "The intervention has no category.",
   "noInterventionTargetSpecificWarning": "The intervention has no intervention target selected.",
   "noInterventionDetailsSpecificWarning": "The intervention has no client-specific description.",
-  "newInterventionForProblem": "New Intervention for {problem}"
+  "newInterventionForProblem": "New Intervention for {problem}",
+  "warningTitle": "Warning",
+  "existingSignsAndSymptomsWarning": "The already selected signs and symptoms are removed.",
+  "existingProblemDetailsWarning": "The already specified risk factors or health promotion wishes will be removed.",
+  "existingOutcomesOrInterventionsWarning": "Evaluations already made or planned interventions will be retained, but their meaning may no longer be coherently related to the problem.",
+  "problemChangeWarningMessage": "Changing the name of this problem has far-reaching implications.\n{consequences}\n\nAre you sure you want to rename the problem from \"{oldName}\" to \"{newName}\" anyway?",
+  "reducingPriorityWarningMessage": "Setting the priority to low means that at least one active intervention for this problem will be stopped.\n\nAre you sure you want to change the priority anyway?",
+  "changingSeverityWarningMessage": "Changing the problem severity also means removing the documented signs and symptoms, risk factors or health promotion wishes.\n\nAre you sure you want to change the severity anyway?",
+  "changingInterventionCategoryWarningMessage": "Changing the category afterwards will also change the meaning of the intervention target and description, even for the tasks already performed. It might be more sensible to create a completely new intervention.\n\nAre you sure you want to change the category anyway?"
 }

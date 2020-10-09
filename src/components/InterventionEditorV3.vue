@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="isSingleEditor" class="q-mb-sm">
+    <div
+      v-if="isSingleEditor"
+      class="q-mb-sm"
+    >
       <q-btn-toggle
         v-model="categoryCode"
         spread
@@ -20,7 +23,10 @@
         >
           {{ $t("terminology.categoryByCode[" + categoryCode + "].title") }}
         </div>
-        <div v-if="categoryCode" class="text-caption">
+        <div
+          v-if="categoryCode"
+          class="text-caption"
+        >
           {{
             $t("terminology.categoryByCode[" + categoryCode + "].description")
           }}
@@ -28,7 +34,10 @@
       </div>
     </div>
 
-    <div v-if="!isSingleEditor && $q.screen.lt.sm" class="text-right">
+    <div
+      v-if="!isSingleEditor && $q.screen.lt.sm"
+      class="text-right"
+    >
       <q-btn
         icon="far fa-clone"
         flat
@@ -56,7 +65,10 @@
         :options="targets"
         color="intervention"
       >
-        <template v-slot:after v-if="!isSingleEditor && $q.screen.gt.xs">
+        <template
+          v-slot:after
+          v-if="!isSingleEditor && $q.screen.gt.xs"
+        >
           <q-btn
             icon="far fa-clone"
             flat
@@ -101,28 +113,32 @@
     </q-input>
 
     <div v-if="targetCode">
-      <reminder-editor v-model="recurrenceRules" color="intervention" />
+      <reminder-editor
+        v-model="recurrenceRules"
+        color="intervention"
+      />
     </div>
   </div>
 </template>
 
 <style lang="sass">
 .q-btn-toggle.intervention-category .q-btn__content
-    .q-icon
-      font-size: 24px
-    div
-      margin-top: 2px
-      font-size: 12px
-      line-height: .9rem
+  .q-icon
+    font-size: 24px
+  div
+    margin-top: 2px
+    font-size: 12px
+    line-height: .9rem
 </style>
 
 <script lang="ts">
 import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
+import WarningMixin from "../mixins/WarningMixin";
 import {
   TerminologyWithMaps,
   UsersGuide,
-  sortByTitle
+  sortByTitle,
 } from "../helper/terminology";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
@@ -134,23 +150,35 @@ const InterventionEditorProps = Vue.extend({
   props: {
     value: Intervention,
     problemRecord: ProblemRecord,
-    isSingleEditor: Boolean
-  }
+    isSingleEditor: Boolean,
+    editMode: Boolean,
+  },
 });
 
 @Component({
   components: {
     InterventionTargetSelect,
     ReminderEditor,
-    FilterableMenu
-  }
+    FilterableMenu,
+  },
 })
-export default class InterventionEditor extends InterventionEditorProps {
+export default class InterventionEditor extends mixins(
+  InterventionEditorProps,
+  WarningMixin
+) {
   get categoryCode() {
     return this.value.categoryCode;
   }
   set categoryCode(value) {
-    this.updateIntervention({ categoryCode: value });
+    if (this.editMode && (this.value.targetCode || this.value.details)) {
+      this.showWarning(
+        this.$t("changingInterventionCategoryWarningMessage") as string
+      ).onOk(() => {
+        this.updateIntervention({ categoryCode: value });
+      });
+    } else {
+      this.updateIntervention({ categoryCode: value });
+    }
   }
   get targetCode() {
     return this.value.targetCode;
@@ -179,20 +207,20 @@ export default class InterventionEditor extends InterventionEditorProps {
         suggestions[this.categoryCode] || {}
       );
       const suggestedTargets: Record<string, any>[] = suggestedTargetCodes
-        .map(code => targetByCode[code])
+        .map((code) => targetByCode[code])
         .sort(sortByTitle)
         .concat(this.terminology.targetByCode["63"]);
       const notSuggestedTargets: Record<string, any>[] = Object.values(
         targetByCode
       )
         .filter(
-          target =>
+          (target) =>
             !suggestedTargetCodes.includes(target.code) && target.code != "63"
         )
         .sort(sortByTitle);
       const suggestedTitle =
         this.$t("frequentInterventionTargetsForProblem", {
-          problem: this.$t(this.record.problem.title)
+          problem: this.$t(this.record.problem.title),
         }) + ":";
       const notSuggestedTitle = this.$t("otherInterventionTargets") + ":";
 
@@ -228,11 +256,11 @@ export default class InterventionEditor extends InterventionEditorProps {
     ];
   }
   get categoryOptions() {
-    return this.terminology.interventionScheme.categories.map(item => {
+    return this.terminology.interventionScheme.categories.map((item) => {
       return {
         label: this.$q.screen.gt.xs ? item.title : "",
         value: item.code,
-        icon: item.icon
+        icon: item.icon,
       };
     });
   }
@@ -249,7 +277,7 @@ export default class InterventionEditor extends InterventionEditorProps {
   updateIntervention(changes: Partial<Intervention>) {
     this.$store.direct.commit.updateReminder({
       target: this.value,
-      changes: changes
+      changes: changes,
     });
     this.$emit("input", this.value);
   }

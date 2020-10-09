@@ -28,6 +28,7 @@
           active-color="classification"
         >
           <problem-selection
+            edit-mode
             @input="validate(warnings.problemSelection, nextStep)"
             class="q-mt-xs"
           />
@@ -56,7 +57,10 @@
           :header-nav="step > 2 || !(warnings.problemSelection || warnings.problemClassification)"
           active-color="classification"
         >
-          <problem-classification class="q-mt-xs" />
+          <problem-classification
+            edit-mode
+            class="q-mt-xs"
+          />
           <warning
             v-model="showWarning"
             :messages="warnings.problemClassification"

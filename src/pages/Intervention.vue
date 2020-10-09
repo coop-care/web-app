@@ -8,6 +8,7 @@
       <intervention-editor
         :value="intervention"
         isSingleEditor
+        editMode
       />
       <warning
         v-model="showWarning"
