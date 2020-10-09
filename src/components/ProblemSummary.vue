@@ -55,10 +55,7 @@
             v-if="!record.resolvedAt"
             :label="$t('problemDismissal')"
             icon="fas fa-check"
-            @click="
-              $store.direct.commit.dismissProblemRecord(params);
-              $store.direct.dispatch.saveClient(params);
-            "
+            @click="dismissProblemRecord"
             rounded
             outline
             no-caps
@@ -342,7 +339,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import Component from "vue-class-component";
+import Component, { mixins } from "vue-class-component";
+import WarningMixin from "../mixins/WarningMixin";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import VueApexCharts from "vue-apexcharts";
 import { Terminology } from "../helper/terminology";
@@ -380,7 +378,10 @@ const ProblemSummaryProps = Vue.extend({
     },
   },
 })
-export default class ProblemSummary extends ProblemSummaryProps {
+export default class ProblemSummary extends mixins(
+  ProblemSummaryProps,
+  WarningMixin
+) {
   isExpanded = false;
 
   get problem() {
@@ -480,6 +481,35 @@ export default class ProblemSummary extends ProblemSummaryProps {
       ),
     });
     this.$store.direct.dispatch.saveClient(this.params);
+  }
+
+  dismissProblemRecord() {
+    const dismiss = () => {
+      const store = this.$store.direct;
+      store.commit.dismissProblemRecord(this.params);
+      store.dispatch.saveClient(this.params);
+    };
+    const outcome = this.lastOutcome;
+    const didNotAchieveExpectations =
+      outcome &&
+      (outcome.createdAt?.getTime() || 0) < Date.now() - 1000 * 60 * 60 * 6 &&
+      (outcome.knowledge.observation < outcome.knowledge.expectation ||
+        outcome.behaviour.observation < outcome.behaviour.expectation ||
+        outcome.status.observation < outcome.status.expectation);
+
+    if (didNotAchieveExpectations) {
+      this.showWarning(
+        this.$t("problemDismissalOutcomeWarningMessage") as string
+      )
+        .onOk(() => {
+          this.$router.push({ name: "outcome", params: this.params });
+        })
+        .onCancel(() => {
+          dismiss();
+        });
+    } else {
+      dismiss();
+    }
   }
 
   updateLocale() {
