@@ -492,8 +492,9 @@ export default class ProblemSummary extends mixins(
     const outcome = this.lastOutcome;
     const didNotAchieveExpectations =
       outcome &&
-      (outcome.createdAt?.getTime() || 0) < Date.now() - 1000 * 60 * 60 * 6 &&
-      (outcome.knowledge.observation < outcome.knowledge.expectation ||
+      ((outcome.createdAt?.getTime() || 0) <
+        Date.now() - 1000 * 60 * 60 * 24 * 6 ||
+        outcome.knowledge.observation < outcome.knowledge.expectation ||
         outcome.behaviour.observation < outcome.behaviour.expectation ||
         outcome.status.observation < outcome.status.expectation);
 

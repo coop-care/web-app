@@ -312,5 +312,5 @@
   "reducingPriorityWarningMessage": "Setting the priority to low means that at least one active intervention for this problem will be stopped.\n\nAre you sure you want to change the priority anyway?",
   "changingSeverityWarningMessage": "Changing the problem severity also means removing the documented signs and symptoms, risk factors or health promotion wishes.\n\nAre you sure you want to change the severity anyway?",
   "changingInterventionCategoryWarningMessage": "Changing the category afterwards will also change the meaning of the intervention target and description, even for the tasks already performed. It might be more sensible to create a completely new intervention.\n\nAre you sure you want to change the category anyway?",
-  "problemDismissalOutcomeWarningMessage": "The ratings for this problem have remained below the expected targets and it has been a while since the last rating.\n\nWould you like to do a final rating before you close the problem?"
+  "problemDismissalOutcomeWarningMessage": "The last rating for this problem was either a while ago or remained below the expected goals.\n\nWould you like to do a final rating before you close the problem?"
 }
