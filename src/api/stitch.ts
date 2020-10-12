@@ -68,7 +68,9 @@ export default class StitchApi implements CoopCareApiInterface {
         return this.clients.insertOne(client).then(() => client);
     }
     deleteClient(client: Client) {
-        return this.clients.deleteOne(client).then(() => undefined);
+        return this.clients
+            .deleteOne({ _id: client._id })
+            .then(() => undefined);
     }
     deleteAllClients() {
         return this.clients.deleteMany({}).then(() => undefined);

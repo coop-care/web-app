@@ -1,5 +1,5 @@
 <template>
-  <problem-summary-container class="problem-rating">
+  <div class="problem-rating">
     <div class="q-gutter-md">
       <rating-view
         v-for="(rating, index) in ratings"
@@ -22,18 +22,15 @@
           size="md"
           color="outcome"
         />
-        <div
-          v-else
-          class="q-mt-xs q-mb-md"
-        >
+        <div v-else class="q-mt-xs q-mb-md">
           <q-input
             v-model="personRatedInPlaceOfOwner"
             :label="$t('personRatedInPlaceOfOwnerLabel')"
             dense
             autogrow
             :autofocus="
-                showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
-              "
+              showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
+            "
             color="outcome"
           />
         </div>
@@ -41,7 +38,9 @@
       <div>
         <div class="row custom-gutter">
           <div class="row col-12 col-sm-9 col-md-7">
-            <div class="text-subtitle2 q-pr-md q-pt-sm q-mt-xs">{{ $t("remindOfInterimRatingEvery") }}</div>
+            <div class="text-subtitle2 q-pr-md q-pt-sm q-mt-xs">
+              {{ $t("remindOfInterimRatingEvery") }}
+            </div>
             <div class="row col-sm col-12">
               <q-input
                 color="outcome"
@@ -68,17 +67,25 @@
               >
                 <template v-slot:selected>
                   <div class="text-center full-width">
-                    {{ (frequencyOptions.find(option => option.value == frequency) || {}).label || "" }}
+                    {{
+                      (
+                        frequencyOptions.find(
+                          option => option.value == frequency
+                        ) || {}
+                      ).label || ""
+                    }}
                   </div>
                 </template>
               </q-select>
             </div>
           </div>
-          <div class="text-caption text-italic q-pt-md q-mt-sm line-height-15">{{ nextRatingDate }}</div>
+          <div class="text-caption text-italic q-pt-md q-mt-sm line-height-15">
+            {{ nextRatingDate }}
+          </div>
         </div>
       </div>
     </div>
-  </problem-summary-container>
+  </div>
 </template>
 
 <style lang="sass"></style>
@@ -90,7 +97,6 @@ import { date } from "quasar";
 import { Frequency } from "../models/rrule";
 import { RatingReminder } from "../models/ratingReminder";
 import RatingView from "components/Rating.vue";
-import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import { Terminology, UsersGuide } from "../helper/terminology";
 import { Outcome } from "../models/outcome";
 
@@ -98,8 +104,7 @@ const { formatDate } = date;
 
 @Component({
   components: {
-    RatingView,
-    ProblemSummaryContainer
+    RatingView
   }
 })
 export default class ProblemRating extends Vue {

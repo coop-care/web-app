@@ -18,7 +18,11 @@ export class Problem {
         }
     }
     get description() {
-        return "terminology.problemByCode." + this.code + ".description";
+        if (this.code) {
+            return "terminology.problemByCode." + this.code + ".description";
+        } else {
+            return "";
+        }
     }
     get terminology() {
         return "terminology.problemByCode." + this.code;
@@ -34,6 +38,15 @@ export class Problem {
             "terminology.problemClassificationScheme.modifiers.severity." +
                 this.severityCode
         );
+    }
+    get severityLongTitle() {
+        if (this.severityCode == 0) {
+            return "clientRequestForHealthPromotionTitle";
+        } else if (this.severityCode == 1) {
+            return "potentialRiskFactorsTitle";
+        } else {
+            return "actualSignsAndSymptomsTitle";
+        }
     }
     get priority() {
         return new Term(this.isHighPriority ? "highPriority" : "lowPriority");

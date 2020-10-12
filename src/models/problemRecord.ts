@@ -1,11 +1,7 @@
 import "reflect-metadata";
 import { Type } from "class-transformer";
 import { Base } from "./base";
-import { Problem } from "./problem";
-import { Reminder } from "./reminder";
-import { Outcome } from "./outcome";
-import { Intervention } from "./intervention";
-import { RatingReminder } from "./ratingReminder";
+import { Problem, Reminder, Outcome, Intervention, RatingReminder } from ".";
 
 export class ProblemRecord extends Base {
     id = this.generateId();
@@ -32,6 +28,9 @@ export class ProblemRecord extends Base {
         } else {
             return this.interventions;
         }
+    }
+    get diagnosisName() {
+        return this.tag ? "diagnosisNames." + this.tag : "noDiagnosis";
     }
     get editableOutcome() {
         let lastOutcome = this.outcomes[this.outcomes.length - 1];

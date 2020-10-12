@@ -25,7 +25,10 @@
         />
       </template>
     </q-input>
-    <q-list :dense="dense">
+    <q-list
+      :dense="dense"
+      :class="optionListClass"
+    >
       <q-item
         tag="label"
         v-for="(option, index) in filteredOptions"
@@ -38,16 +41,16 @@
         >
           <q-checkbox
             v-if="allowMultipleSelection"
-            v-bind:value="value"
-            v-on:input="$emit('input', $event)"
+            :value="value"
+            @input="$emit('input', $event)"
             :val="option.code"
             :color="color"
             keep-color
           />
           <q-radio
             v-else
-            v-bind:value="value"
-            v-on:input="$emit('input', $event)"
+            :value="value"
+            @input="$emit('input', $event)"
             :val="option.code"
             :color="color"
             keep-color
@@ -97,14 +100,15 @@ const SearchableOptionListProps = Vue.extend({
     options: Array as () => HasTitleDescriptionCode[],
     value: [String, Array],
     allowMultipleSelection: Boolean,
-    dense: Boolean
-  }
+    dense: Boolean,
+    optionListClass: String,
+  },
 });
 
 @Component({
   components: {
-    TextWithHighlights
-  }
+    TextWithHighlights,
+  },
 })
 export default class SearchableOptionList extends SearchableOptionListProps {
   filter = "";
@@ -124,7 +128,7 @@ export default class SearchableOptionList extends SearchableOptionListProps {
     if (!this.filter) {
       return this.options;
     } else {
-      return this.options.filter(option => {
+      return this.options.filter((option) => {
         return (
           !this.filterRegex ||
           (option.title && option.title.match(this.filterRegex)) ||

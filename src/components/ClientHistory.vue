@@ -12,7 +12,7 @@
   </q-timeline>
   <div
     v-else
-    class="text-body2 text-italic q-mt-lg"
+    class="text-body2 text-italic q-mt-lg q-px-lg"
   >{{$t("noClientHistoryEntries")}}</div>
 </template>
 
@@ -23,8 +23,8 @@ import ClientHistoryEntry from "../components/ClientHistoryEntry.vue";
 
 @Component({
   components: {
-    ClientHistoryEntry
-  }
+    ClientHistoryEntry,
+  },
 })
 export default class ClientHistory extends Vue {
   get changeRecords() {

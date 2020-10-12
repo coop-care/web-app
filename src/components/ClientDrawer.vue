@@ -38,7 +38,7 @@
           v-ripple
           :active="isSelected(client)"
           active-class="text-primary"
-          @click="selectClient(client, 'clientReminders')"
+          @click="selectClient(client)"
           class="q-pl-xl"
         >
           <q-item-section>
@@ -68,7 +68,7 @@
           v-ripple
           :active="isSelected(client)"
           active-class="text-primary"
-          @click="selectClient(client, 'clientReport')"
+          @click="selectClient(client)"
           class="q-pl-xl"
         >
           <q-item-section>
@@ -103,14 +103,14 @@ export default class ClientDrawer extends Vue {
   }
   get activeClients() {
     return this.clients
-      .filter(client => !client.leftAt)
+      .filter((client) => !client.leftAt)
       .sort((a: any, b: any) =>
         a.masterData.name.localeCompare(b.masterData.name)
       );
   }
   get archivedClients() {
     return this.clients
-      .filter(client => !!client.leftAt)
+      .filter((client) => !!client.leftAt)
       .sort((a: any, b: any) =>
         a.masterData.name.localeCompare(b.masterData.name)
       );
@@ -133,15 +133,21 @@ export default class ClientDrawer extends Vue {
   addClient() {
     this.$router.push({
       name: "client",
-      params: { clientId: "new" } as any
+      params: { clientId: "new" } as any,
     });
     this.closeDrawerIfNeeded();
   }
 
-  selectClient(client: Client, name = "client") {
+  selectClient(client: Client) {
+    let name: string;
+    if (!!client.leftAt || client.activeProblemCount == 0) {
+      name = "clientReport";
+    } else {
+      name = "clientReminders";
+    }
     this.$router.push({
       name: name,
-      params: { clientId: client._id } as any
+      params: { clientId: client._id } as any,
     });
     this.closeDrawerIfNeeded();
     this.$store.direct.dispatch.fetchClientsFromDB().catch(() => 0);

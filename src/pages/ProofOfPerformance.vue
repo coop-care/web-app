@@ -39,7 +39,7 @@
           <thead>
             <tr>
               <th>{{ $t("occurrence") }}</th>
-              <th>{{ $t("category") }}</th>
+              <th>{{ $t("interventionCategoryAndTarget") }}</th>
               <th>{{ $t("interventionDetails") }}</th>
               <th>{{ $t("datesOfConduction") }}</th>
             </tr>
@@ -96,8 +96,8 @@ const { isBetweenDates, startOfDate, endOfDate } = date;
   components: {
     Loading,
     CentralMessage,
-    DateTimeInput
-  }
+    DateTimeInput,
+  },
 })
 export default class ProofOfPerformancePage extends Vue {
   startDate = startOfDate(new Date(), "month");
@@ -114,9 +114,9 @@ export default class ProofOfPerformancePage extends Vue {
     const locale = this.$root.$i18n.locale;
     const options = { inclusiveFrom: true, inclusiveTo: true, onlyDate: true };
 
-    this.client?.forAllReminders(reminder => {
+    this.client?.forAllReminders((reminder) => {
       const completed = reminder.occurrences.filter(
-        item =>
+        (item) =>
           !!item.completed &&
           isBetweenDates(item.completed, this.startDate, this.endDate, options)
       );
@@ -128,15 +128,15 @@ export default class ProofOfPerformancePage extends Vue {
           this.$t(reminder.target.title);
 
         const dates = completed.map(
-          item =>
+          (item) =>
             item.completed?.toLocaleString(locale, {
               day: "numeric",
-              month: "short"
+              month: "short",
             }) +
             " " +
             item.completed?.toLocaleString(locale, {
               hour: "numeric",
-              minute: "numeric"
+              minute: "numeric",
             }) +
             (item.signature ? " (" + item.signature + ")" : "")
         );
@@ -145,7 +145,7 @@ export default class ProofOfPerformancePage extends Vue {
           title: reminder.details,
           description: description,
           count: completed.length || 1,
-          dates: dates
+          dates: dates,
         });
       }
     });

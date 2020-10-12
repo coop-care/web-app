@@ -44,10 +44,15 @@ const routes: RouteConfig[] = [
                 component: () => import("pages/Rating.vue")
             },
             {
-                name: "interventions",
-                path: "/client/:clientId/problem/:problemId/intervention",
-                component: () => import("pages/InterventionList.vue")
+                name: "newInterventionForProblem",
+                path: "/client/:clientId/problem/:problemId/intervention/new",
+                component: () => import("pages/NewIntervention.vue")
             },
+            // {
+            //     name: "interventions",
+            //     path: "/client/:clientId/problem/:problemId/intervention",
+            //     component: () => import("pages/InterventionList.vue")
+            // },
             {
                 name: "intervention",
                 path:

@@ -34,9 +34,14 @@
                   style="flex-direction: row; align-items: center"
                 >
                   <div
-                    v-for="(color, index) in colorSet.colors"
+                    v-for="(color, index) in colorSet.colors.filter(
+                      (_, index) => index < 4
+                    )"
                     :key="colorSet.name + index"
-                    :style="'width: 1.2rem; height: 1.2rem; border-radius: .6rem; background-color: ' + color"
+                    :style="
+                      'width: 1.2rem; height: 1.2rem; border-radius: .6rem; background-color: ' +
+                        color
+                    "
                   ></div>
                 </q-item-section>
               </q-item>
@@ -112,7 +117,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { getColor, setColor } from "../helper/color";
+import { getColor, setColor, setColorSet } from "../helper/color";
 
 @Component
 export default class DevMenu extends Vue {
@@ -184,8 +189,15 @@ export default class DevMenu extends Vue {
         colors: ["#28406F", "#ed0251", "#ff9900", "#7E3781"],
       },
       {
-        name: "sunrise 12 (sys)",
-        colors: ["#960372", "#FF2C55", "#FF9500", "#AF52DE"],
+        name: "sunrise 12 (sys)", // https://developer.apple.com/design/human-interface-guidelines/macos/visual-design/color/
+        colors: [
+          "#960372",
+          "#FF2C55",
+          "#FF9500",
+          "#AF52DE",
+          "#ff3b30",
+          "#28CD41",
+        ],
       },
       {
         name: "intense 1",
@@ -240,7 +252,7 @@ export default class DevMenu extends Vue {
   }
   setColorSet(index: number) {
     const colors = this.colorSets[index].colors;
-    this.colors.forEach((name, index) => this.setColor(name, colors[index]));
+    setColorSet(colors);
   }
   addSamplesToDB() {
     this.$store.direct.dispatch.addSamplesToDB();
@@ -249,7 +261,7 @@ export default class DevMenu extends Vue {
     this.$q
       .dialog({
         title:
-          "Möchtest du wirklich die Daten <strong>aller</strong> Kunden löschen?",
+          "Möchtest du wirklich die Daten <strong>aller</strong> Klienten löschen?",
         message: "Diese Aktion kann nicht rückgängig gemacht werden.",
         ok: {
           label: this.$t("databaseClearAll"),

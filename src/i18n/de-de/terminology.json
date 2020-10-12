@@ -1852,15 +1852,15 @@
       "severity": [
         {
           "title": "Vorsorge",
-          "description": "Vorbeugender Kundenwunsch das eigene gesundheitliche Wissen, Verhalten und Prognosen zu verbessern und mit geeigneten Mitteln das persönliche Wohlergehen zu erhalten oder zu steigern, ohne dass konkrete Risikofaktoren, Anzeichen oder Symptome vorliegen."
+          "description": "Vorbeugender Klientenwunsch das eigene gesundheitliche Wissen, Verhalten und Prognosen zu verbessern und mit geeigneten Mitteln das persönliche Wohlergehen zu erhalten oder zu steigern, ohne dass konkrete Risikofaktoren oder Symptome vorliegen."
         },
         {
           "title": "Potentiell",
-          "description": "Beim Kunden sind bestimmte gesundheitliche Muster, Verhaltensweisen oder Risikofaktoren vorhanden, die eine optimale Gesundheit ausschließen können, ohne dass bereits erkennbare Anzeichen und Symptomen vorliegen."
+          "description": "Beim Klienten sind bestimmte gesundheitliche Muster, Verhaltensweisen oder Risikofaktoren vorhanden, die eine optimale Gesundheit ausschließen können, ohne dass bereits erkennbare Symptome vorliegen."
         },
         {
           "title": "Tatsächlich",
-          "description": "Beim Kunden sind ein oder mehrere Anzeichen und Symptome vorhanden, die eine optimale Gesundheit verhindern."
+          "description": "Beim Klienten sind ein oder mehrere Symptome vorhanden, die eine optimale Gesundheit verhindern."
         }
       ]
     }
@@ -1869,23 +1869,23 @@
     "title": "Interventionsschema",
     "categories": [
       {
-        "title": "Lehre, Anleitung und Beratung",
-        "description": "Aktivitäten wie die Bereitstellung von Informationen und Materialien, die Ermutigung zur Übernahme von Verantwortung und Handeln zur Selbsthilfe und Problembewältigung, sowie Unterstützung des Einzelnen, der Familie oder der Gemeinschaft Entscheidungen zu treffen und Probleme zu lösen.",
+        "title": "Information, Beratung, Anleitung",
+        "description": "Aktivitäten wie Informationen und Material anbieten, zum Handeln ermutigen und dazu Verantwortung zur Selbsthilfe und Problembewältigung zu übernehmen, sowie Unterstützung Entscheidungen zu treffen und Probleme zu lösen.",
         "code": "01"
       },
       {
-        "title": "Behandlungen und Verfahrensweisen",
-        "description": "Technische Aktivitäten wie Wundversorgung, Probenentnahme, Widerstandsübungen und Medikamentenverschreibung, die Anzeichen und Symptome für den Einzelnen, die Familie oder die Gemeinschaft verhindern, verringern oder lindern sollen.",
+        "title": "Behandlung und Pflegemaßnahmen",
+        "description": "Fachspezifische Aktivitäten wie Wundversorgung, Probenentnahme, Krafttraining und Medikamentenverschreibung, die Symptome verhindern, verringern oder lindern sollen.",
         "code": "02"
       },
       {
-        "title": "Fall-Management",
-        "description": "Aktivitäten wie Koordination, Fürsprache und Überweisung, die die Erbringung von Dienstleistungen erleichtern, die Durchsetzungsfähigkeit fördern, den Einzelnen, die Familie oder die Gemeinschaft zur Nutzung geeigneter Hilfsmittel führen und die Kommunikation zwischen allen Gesundheits- und weiteren Dienstleistern verbessern.",
+        "title": "Fallmanagement",
+        "description": "Aktivitäten wie Koordination, Überweisung und Interessenvertretung, die die Dienstbereitstellung erleichtern, die Selbstbehauptung fördern, zur Nutzung geeigneter Hilfsmittel führen und die Kommunikation zwischen allen Anbietern von Gesundheits- und sozialen Diensten verbessern.",
         "code": "03"
       },
       {
-        "title": "Überwachung",
-        "description": "Aktivitäten wie Erkennung, Messung, kritische Analyse und Überwachung um den Status der Person, Familie oder Gemeinschaft in Bezug auf einen bestimmten Zustand oder ein bestimmtes Phänomen wahrzunehmen.",
+        "title": "Beobachtung",
+        "description": "Aktivitäten wie Erkennung, Messung, kritische Analyse und Überwachung um den Status der Person, Familie oder Gemeinschaft bezüglich eines bestimmten Zustands oder eines Phänomens wahrzunehmen.",
         "code": "04"
       }
     ],
@@ -2052,7 +2052,7 @@
       },
       {
         "title": "Interaktion",
-        "description": "Gegenseitiges Handeln oder Einfluss unter Menschen wie Eltern-Kind, Eltern-Lehrer und Pflegekraft-Kunde.",
+        "description": "Gegenseitiges Handeln oder Einfluss unter Menschen wie Eltern-Kind, Eltern-Lehrer und Pflegekraft-Klient.",
         "code": "28"
       },
       {
@@ -2082,7 +2082,7 @@
       },
       {
         "title": "Medikamente verabreichen",
-        "description": "Aktivitäten, die die Anwendung oder Verabreichung von Medikamenten beinhalten und die von Kunden, Eltern, Betreuern oder medizinischen Fachkräften durchgeführt werden.",
+        "description": "Aktivitäten, die die Anwendung oder Verabreichung von Medikamenten beinhalten und die von Klienten, Eltern, Betreuern oder medizinischen Fachkräften durchgeführt werden.",
         "code": "33"
       },
       {
@@ -2191,12 +2191,12 @@
         "code": "48"
       },
       {
-        "title": "Anzeichen und Symptome – geistig und emotional",
+        "title": "Symptome geistiger und emotionaler Art",
         "description": "Objektiver oder subjektiver Nachweis von psychischen oder emotionalen Gesundheitsproblemen wie Depressionen, Verwirrung oder Unruhe.",
         "code": "49"
       },
       {
-        "title": "Anzeichen und Symptome – körperlich",
+        "title": "Symptome körperlicher Art",
         "description": "Objektiver oder subjektiver Nachweis von körperlichen Gesundheitsproblemen wie Fieber, plötzlicher Gewichtsabnahme oder Schmerzäußerung.",
         "code": "50"
       },
@@ -2273,32 +2273,32 @@
     ]
   },
   "problemRatingScale": {
-    "title": "Problembewertungsskala für Ergebnisse",
+    "title": "Bewertungsskala für Wirksamkeit der Problembewältigung",
     "ratings": [
       {
         "title": "Wissen",
-        "description": "Fähigkeit des Kunden, sich an gesundheitsbezogenes Wissen zu erinnern und es richtig zu deuten.",
+        "description": "Fähigkeit des Klienten, sich an gesundheitsbezogenes Wissen zu erinnern und es richtig zu deuten.",
         "scale": [
           {
-            "title": "Keine Kenntnisse"
+            "title": "Kein Wissen"
           },
           {
-            "title": "Minimale Kenntnisse"
+            "title": "Minimales Wissen"
           },
           {
-            "title": "Grundkenntnisse"
+            "title": "Grundwissen"
           },
           {
-            "title": "Angemessene Kenntnisse"
+            "title": "Angemessenes Wissen"
           },
           {
-            "title": "Überlegenes Wissen"
+            "title": "Herausragendes Wissen"
           }
         ]
       },
       {
         "title": "Verhalten",
-        "description": "Beobachtbare Reaktionen, Handlungen oder Aktivitäten des Kunden, die dem Anlass oder Zweck entsprechen.",
+        "description": "Beobachtbare Reaktionen, Handlungen oder Aktivitäten des Klienten, die dem Anlass oder Zweck entsprechen.",
         "scale": [
           {
             "title": "Nicht angemessenes Verhalten"
@@ -2307,10 +2307,10 @@
             "title": "Selten angemessenes Verhalten"
           },
           {
-            "title": "Inkonsistentes angemessenes Verhalten"
+            "title": "Inkonsequent angemessenes Verhalten"
           },
           {
-            "title": "In der Regel angemessenes Verhalten"
+            "title": "Meistens angemessenes Verhalten"
           },
           {
             "title": "Durchgängig angemessenes Verhalten"
@@ -2319,22 +2319,22 @@
       },
       {
         "title": "Zustand",
-        "description": "Zustand des Kunden in Bezug auf objektive und subjektive Merkmale.",
+        "description": "Verfassung des Klienten hinsichtlich objektiv und subjektiv wahrnehmbarer Symptome.",
         "scale": [
           {
-            "title": "Extreme Anzeichen oder Symptome"
+            "title": "Extreme Symptome"
           },
           {
-            "title": "Schwerwiegende Anzeichen oder Symptome"
+            "title": "Schwerwiegende Symptome"
           },
           {
-            "title": "Mäßige Anzeichen oder Symptome"
+            "title": "Mäßige Symptome"
           },
           {
-            "title": "Minimale Anzeichen oder Symptome"
+            "title": "Minimale Symptome"
           },
           {
-            "title": "Keine Anzeichen oder Symptome"
+            "title": "Keine Symptome"
           }
         ]
       }

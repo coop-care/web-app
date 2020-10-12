@@ -1,5 +1,5 @@
 <template>
-  <problem-summary-container class="intervention">
+  <div class="intervention">
     <q-tabs
       v-model="selectedCategory"
       no-caps
@@ -7,7 +7,12 @@
     >
       <q-tab
         :name="category.code"
-        :label="($q.screen.gt.xs ? category.title : '') + (false && interventionsInCategory(category.code).length ? ' (' + interventionsInCategory(category.code).length + ')' : '')"
+        :label="
+          ($q.screen.gt.xs ? category.title : '') +
+            (false && interventionsInCategory(category.code).length
+              ? ' (' + interventionsInCategory(category.code).length + ')'
+              : '')
+        "
         :icon="category.icon"
         v-for="(category, index) in categories"
         v-bind:key="index"
@@ -21,10 +26,7 @@
         />
       </q-tab>
     </q-tabs>
-    <q-tab-panels
-      v-model="selectedCategory"
-      animated
-    >
+    <q-tab-panels v-model="selectedCategory" animated>
       <q-tab-panel
         :name="category.code"
         v-for="(category, index) in categories"
@@ -34,11 +36,20 @@
           <div class="text-subtitle1 text-center category-header">
             <simplified-markdown
               v-if="interventionsInSelectedCategory.length"
-              :text="$t('interventionsForCategoryTitle', {category: category.title, problem: $t(record.problem.title)}) + ':'"
+              :text="
+                $t('interventionsForCategoryTitle', {
+                  category: category.title,
+                  problem: $t(record.problem.title)
+                }) + ':'
+              "
             />
             <simplified-markdown
               v-else
-              :text="$t('noPlannedInterventionsForCategoryTitle', {category: category.title})"
+              :text="
+                $t('noPlannedInterventionsForCategoryTitle', {
+                  category: category.title
+                })
+              "
               class="text-body2"
             />
           </div>
@@ -63,7 +74,7 @@
         </div>
       </q-tab-panel>
     </q-tab-panels>
-  </problem-summary-container>
+  </div>
 </template>
 
 <style lang="sass">
@@ -99,13 +110,11 @@ import { TerminologyWithMaps } from "../helper/terminology";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 import InterventionEditor from "./InterventionEditorV3.vue";
-import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
 
 @Component({
   components: {
     InterventionEditor,
-    ProblemSummaryContainer,
     SimplifiedMarkdown
   }
 })

@@ -1,9 +1,16 @@
 ---
 title: Datenschutzerklärung
-layout: default
+subtitle:
+description:
+featured_image:
+featured_image_alt:
 lang: de
+
+robots_nofollow: true
 ---
-<h2>Datenschutzerklärung</h2>
+
+<h1 class="website__hidden">Datenschutzerklärung</h1>
+
 <p>Personenbezogene Daten (nachfolgend zumeist nur „Daten“ genannt) werden von uns nur im Rahmen der Erforderlichkeit
   sowie zum Zwecke der Bereitstellung eines funktionsfähigen und nutzerfreundlichen Internetauftritts, inklusive seiner
   Inhalte und der dort angebotenen Leistungen, verarbeitet.</p>
@@ -22,13 +29,13 @@ lang: de
 <p>I. Informationen über uns als Verantwortliche<br>II. Rechte der Nutzer und Betroffenen<br>III. Informationen zur
   Datenverarbeitung<br>IV. Allgemeine Hinweise</p>
 
-<h3>I. Informationen über uns als Verantwortliche</h3>
+<h2>I. Informationen über uns als Verantwortliche</h2>
 <p>Verantwortlicher Anbieter dieses Internetauftritts im datenschutzrechtlichen Sinne ist:</p>
 <p>Michael Kamphausen<br>Friedrich-List-Str. 2d<br>21079 Hamburg<br>Deutschland</p>
 <p>E-Mail: &#109;&#97;&#105;&#108;&#64;&#99;&#111;&#111;&#112;&#99;&#97;&#114;&#101;&#46;&#100;&#101;<br>
   Telefon: &#48;&#49;&#55;&#54;&#32;&#52;&#56;&#51;&#56;&#57;&#49;&#50;&#49;</p>
 
-<h3>II. Rechte der Nutzer und Betroffenen</h3>
+<h2>II. Rechte der Nutzer und Betroffenen</h2>
 <p>Mit Blick auf die nachfolgend noch näher beschriebene Datenverarbeitung haben die Nutzer und Betroffenen das Recht
 </p>
 <ul>
@@ -54,12 +61,12 @@ lang: de
     DSGVO verarbeitet werden. Insbesondere ist ein Widerspruch gegen die Datenverarbeitung zum Zwecke der Direktwerbung
     statthaft.</strong></p>
 
-<h3>III. Informationen zur Datenverarbeitung</h3>
+<h2>III. Informationen zur Datenverarbeitung</h2>
 <p>Ihre bei Nutzung unseres Internetauftritts verarbeiteten Daten werden gelöscht oder gesperrt, sobald der Zweck der
   Speicherung entfällt, der Löschung der Daten keine gesetzlichen Aufbewahrungspflichten entgegenstehen und nachfolgend
   keine anderslautenden Angaben zu einzelnen Verarbeitungsverfahren gemacht werden.</p>
 
-<h4>Serverdaten</h4>
+<h3>Serverdaten</h3>
 <p>Aus technischen Gründen, insbesondere zur Gewährleistung eines sicheren und stabilen Internetauftritts, werden Daten
   durch Ihren Internet-Browser an uns bzw. an unseren Webspace-Provider übermittelt. Mit diesen sog. Server-Logfiles
   werden u.a. Typ und Version Ihres Internetbrowsers, das Betriebssystem, die Website, von der aus Sie auf unseren
@@ -74,9 +81,9 @@ lang: de
   erforderlich ist. Andernfalls sind die Daten bis zur endgültigen Klärung eines Vorfalls ganz oder teilweise von der
   Löschung ausgenommen.</p>
 
-<h4>CoopCare App</h4>
+<h3>CoopCare App</h3>
 
-<h5>Nutzerkonto / Registrierungsfunktion</h5>
+<h4>Nutzerkonto / Registrierungsfunktion</h4>
 <p>Falls Sie über unsere App ein Nutzerkonto bei uns anlegen, werden wir die von Ihnen bei der
   Registrierung eingegebenen Daten (also bspw. Ihren Namen oder Ihre E-Mail-Adresse) ausschließlich für
   vorvertragliche Leistungen, für die Vertragserfüllung oder zum Zwecke der Kundenpflege erheben und speichern.
@@ -95,7 +102,7 @@ lang: de
 <p>Die insoweit erhobenen Daten werden gelöscht, sobald die Verarbeitung nicht mehr erforderlich ist. Hierbei müssen wir
   aber steuer- und handelsrechtliche Aufbewahrungsfristen beachten.</p>
 
-<h5>Patientendaten</h5>
+<h4>Patientendaten</h4>
 <p>Falls Sie in unserer App CoopCare Daten Ihrer Patienten eingeben, einschließlich Daten über die Gesundheit Ihrer
   Patienten, sind auch Ihre Patienten von der Datenverarbeitung in CoopCare betroffen. Wir erheben und speichern die von
   Ihnen eingegebenen Patientendaten ausschließlich für vorvertragliche Leistungen oder für die Vertragserfüllung, damit
@@ -119,7 +126,7 @@ lang: de
   werden, ist auch Art. 6 Abs. 1 lit. d) DSGVO Rechtsgrundlage dieser Verarbeitung.</p>
 <p>Die verarbeiteten Patientiendaten können Sie in der App CoopCare jederzeit einsehen, berichtigen und wenn die Verarbeitung nicht mehr erforderlich ist, löschen.</p>
 
-<h5>MongoDB Stitch</h5>
+<h4>MongoDB Stitch</h4>
 <p>Für die Speicherung der in der App CoopCare über die Registrierungsfunktion eingegebenen Daten, als auch der von
   Ihnen eingegebenen Patientendaten zur Pflegedokumentation- und Planung, verwenden wir den Internetdienst Stitch der
   Firma MongoDB Inc.. Es handelt sich hierbei um einen Internetdienst, der eine Datenbank mit Registrierungsfunktion und
@@ -128,12 +135,12 @@ lang: de
   DSGVO. Weitere Datenschutzinformationen bietet MongoDB unter <a href="https://www.mongodb.com/legal/privacy-policy"
     target="_blank" rel="noopener noreferrer nofollow">https://www.mongodb.com/legal/privacy-policy</a>.</p>
 
-<h5>Verschlüsselte Datenübertragung</h5>
+<h4>Verschlüsselte Datenübertragung</h4>
 <p>Sowohl die Kommunikation zwischen Ihrem Browser und unserem Webserver, von der Sie die CoopCare-App abrufen, als auch
   zwischen der CoopCare-App in Ihrem Browser und der Datenbank des MongoDB Stitch Dienstes, erfolgt verschlüsselt über
   eine SSL- bzw. TLS-Verschlüsselung, so dass die übertragenen Daten nicht von Dritten mitgelesen werden können.</p>
 
-<h5>Cookies, Local Storage und Session Storage</h5>
+<h4>Cookies, Local Storage und Session Storage</h4>
 <p>Wir verwenden in der CoopCare App den sogenannten Local Storage. Das ist eine
   Speichertechnologie, durch die Textinformationen in den von Ihnen eingesetzten Internet-Browser auf Ihrem Endgerät
   ablegt und gespeichert werden. Durch diese Textinformationen wird ihr Login-Status und ihr Handzeichen verarbeitet und
@@ -152,7 +159,22 @@ lang: de
   allerdings dazu führen, dass nicht
   sämtliche Funktionen unserer App vollumfänglich nutzbar sind.</p>
 
-<h4>Kontaktanfragen / Kontaktmöglichkeit</h4>
+<h3>YouTube</h3>
+<p>In unserem Internetauftritt setzen wir YouTube ein. Hierbei handelt es sich um ein Videoportal der YouTube LLC., 901 Cherry Ave., 94066 San Bruno, CA, USA, nachfolgend nur „YouTube“ genannt.</p>
+<p>YouTube ist ein Tochterunternehmen der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland, nachfolgend nur „Google“ genannt.</p>
+<p>Durch die Zertifizierung nach dem EU-US-Datenschutzschild („EU-US Privacy Shield“)</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://www.privacyshield.gov/participant?id=a2zt000000001L5AAI&amp;status=Active">https://www.privacyshield.gov/participant?id=a2zt000000001L5AAI&amp;status=Active</a></p>
+<p>garantiert Google und damit auch das Tochterunternehmen YouTube, dass die Datenschutzvorgaben der EU auch bei der Verarbeitung von Daten in den USA eingehalten werden.</p>
+<p>Wir nutzen YouTube im Zusammenhang mit der Funktion „Erweiterter Datenschutzmodus“, um Ihnen Videos anzeigen zu können. Rechtsgrundlage ist Art. 6 Abs. 1 lit. f) DSGVO. Unser berechtigtes Interesse liegt in der Qualitätsverbesserung unseres Internetauftritts. Die Funktion „Erweiterter Datenschutzmodus“ bewirkt laut Angaben von YouTube, dass die nachfolgend noch näher bezeichneten Daten nur dann an den Server von YouTube übermittelt werden, wenn Sie ein Video auch tatsächlich starten.</p>
+<p>Ohne diesen „Erweiterten Datenschutz“ wird eine Verbindung zum Server von YouTube in den USA hergestellt, sobald Sie eine unserer Internetseiten, auf der ein YouTube-Video eingebettet ist, aufrufen.</p>
+<p>Diese Verbindung ist erforderlich, um das jeweilige Video auf unserer Internetseite über Ihren Internet-Browser darstellen zu können. Im Zuge dessen wird YouTube zumindest Ihre IP-Adresse, das Datum nebst Uhrzeit sowie die von Ihnen besuchte Internetseite erfassen und verarbeiten. Zudem wird eine Verbindung zu dem Werbenetzwerk „DoubleClick“ von Google hergestellt.</p>
+<p>Sollten Sie gleichzeitig bei YouTube eingeloggt sein, weist YouTube die Verbindungsinformationen Ihrem YouTube-Konto zu. Wenn Sie das verhindern möchten, müssen Sie sich entweder vor dem Besuch unseres Internetauftritts bei YouTube ausloggen oder die entsprechenden Einstellungen in Ihrem YouTube-Benutzerkonto vornehmen.</p>
+<p>Zum Zwecke der Funktionalität sowie zur Analyse des Nutzungsverhaltens speichert YouTube dauerhaft Cookies über Ihren Internet-Browser auf Ihrem Endgerät. Falls Sie mit dieser Verarbeitung nicht einverstanden sind, haben Sie die Möglichkeit, die Speicherung der Cookies durch eine Einstellung in Ihrem Internet-Browsers zu verhindern. Nähere Informationen hierzu finden Sie vorstehend unter „Cookies“.</p>
+<p>Weitergehende Informationen über die Erhebung und Nutzung von Daten sowie Ihre diesbezüglichen Rechte und Schutzmöglichkeiten hält Google in den unter</p>
+<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://policies.google.com/privacy">https://policies.google.com/privacy</a></p>
+<p>abrufbaren Datenschutzhinweisen bereit.</p>
+
+<h3>Kontaktanfragen / Kontaktmöglichkeit</h3>
 <p>Sofern Sie per Kontaktformular oder E-Mail mit uns in Kontakt treten, werden die dabei von Ihnen angegebenen Daten
   zur Bearbeitung Ihrer Anfrage genutzt. Die Angabe der Daten ist zur Bearbeitung und Beantwortung Ihre Anfrage
   erforderlich - ohne deren Bereitstellung können wir Ihre Anfrage nicht oder allenfalls eingeschränkt beantworten.</p>
@@ -161,7 +183,7 @@ lang: de
   gesetzlichen Aufbewahrungspflichten entgegenstehen, wie bspw. bei einer sich etwaig anschließenden Vertragsabwicklung.
 </p>
 
-<h4>Newsletter</h4>
+<h3>Newsletter</h3>
 <p>Falls Sie sich für unseren kostenlosen Newsletter anmelden, werden die von Ihnen hierzu abgefragten Daten, also Ihre
   E-Mail-Adresse sowie - optional - Ihr Name und Ihre Anschrift, an uns übermittelt. Gleichzeitig speichern wir die
   IP-Adresse des Internetanschlusses von dem aus Sie auf unseren Internetauftritt zugreifen sowie Datum und Uhrzeit
@@ -174,7 +196,7 @@ lang: de
   widerrufen. Hierzu müssen Sie uns lediglich über Ihren Widerruf in Kenntnis setzen oder den in jedem Newsletter
   enthaltenen Abmeldelink betätigen.</p>
 
-<h4>Sendinblue</h4>
+<h3>Sendinblue</h3>
 <p>Wir bieten Ihnen die Möglichkeit an, sich bei uns über unseren Internetauftritt für unsere kostenlosen Newsletter
   anmelden zu können.</p>
 <p>Zum Newsletterversand setzen wir Sendinblue ein. Bei Sendinblue handelt es sich um einen Dienst der Firma Sendinblue
@@ -201,14 +223,14 @@ lang: de
   widerrufen. Hierzu müssen Sie uns lediglich über Ihren Widerruf in Kenntnis setzen oder den in jedem Newsletter
   enthaltenen Abmeldelink betätigen.</p>
 
-<h3>IV. Allgemeine Hinweise</h3>
+<h2>IV. Allgemeine Hinweise</h2>
 
-<h4>Widerspruch gegen Werbe-Mails</h4>
+<h3>Widerspruch gegen Werbe-Mails</h3>
 <p>Hiermit wird der Nutzung der aufgrund der rechtlichtlichen Pflichten bezüglich Impressum und Datenschutzerklärung
   veröffentlichten Kontaktdaten zum Zweck der Zusendung von nicht angeforderter Werbung und
   Informationsmaterialien, zum Beispiel Spam-E-Mails, ausdrücklich widersprochen.</p>
 
-<h4>Stand: 01.08.2020</h4>
+<h3>Stand: 31.08.2020</h3>
 
 <p>
   <a target="_blank" rel="noopener"
