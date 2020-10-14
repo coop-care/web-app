@@ -200,7 +200,7 @@ import Warning from "components/Warning.vue";
   watch: {
     step(this: ProblemRecording, value: number) {
       this.$route.params.step = "" + value;
-      this.$router.replace({
+      void this.$router.replace({
         name: this.$route.name || undefined,
         params: this.$route.params,
       });
@@ -325,7 +325,7 @@ export default class ProblemRecording extends mixins(RecordValidator) {
   }
   saveProblemRecord() {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

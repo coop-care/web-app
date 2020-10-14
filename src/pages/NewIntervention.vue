@@ -91,13 +91,13 @@ export default class InterventionPage extends RecordValidator {
   set problemId(value) {
     if (value == "new") {
       this.$store.direct.commit.createProblemRecord(this.$route.params);
-      this.$router
+      void this.$router
         .replace({
           name: "clientReport",
           params: this.$route.params,
         })
         .then(() => {
-          this.$router.push({
+          void this.$router.push({
             name: "problem",
             params: this.$store.direct.getters.getRouteParamsForLatestProblem(
               this.$route.params
@@ -162,7 +162,7 @@ export default class InterventionPage extends RecordValidator {
         newInstance: this.intervention,
       });
     }
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

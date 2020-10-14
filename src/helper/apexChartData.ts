@@ -64,7 +64,9 @@ export function getOutcomeAsChartData(
                         chartContext.updateOptions({}, true, true, false);
                         ApexCharts.exec(id, "render", {});
                     },
-                    mouseMove: () => {}
+                    mouseMove: () => {
+                        return 0
+                    }
                 },
                 toolbar: {
                     show: false
@@ -100,7 +102,7 @@ export function getOutcomeAsChartData(
                         const comment =
                             w.config.series[seriesIndex].data[dataPointIndex]
                                 .comment;
-                        if (false) {
+                        if (comment) {
                             return "" + value + ": " + comment;
                         } else {
                             return value;
@@ -176,7 +178,7 @@ export function getOutcomeAsChartData(
                 tooltip: {
                     enabled: true,
                     offsetY: -35,
-                    formatter: function(val: number) {
+                    formatter: function (val: number) {
                         return format(val, component.$root.$i18n.locale);
                     }
                 }

@@ -38,20 +38,20 @@
   margin: 0
 </style>
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 
-const ActionMenuProps = Vue.extend({
-  props: {
-    title: String,
-    items: Array,
-    color: {
-      type: String,
-      default: "primary"
-    }
-  }
-});
+interface ActionItem  {
+  name: string;
+  icon?: string;
+  action: () => void;
+  condition: boolean;
+  isDestructive: boolean;
+}
 
 @Component
-export default class ActionMenu extends ActionMenuProps {}
+export default class ActionMenu extends Vue {
+  @Prop({ type: String, default: ""}) readonly title!: string;
+  @Prop({ type: Array, default: () => [] }) readonly items!: ActionItem[];
+  @Prop({ type: String, default: "primary" }) readonly color!: string;
+}
 </script>

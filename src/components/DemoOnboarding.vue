@@ -45,11 +45,11 @@ export default class DemoOnboarding extends Vue {
     const user = this.$store.direct.state.currentUser?.clone();
     if (user) {
       user.isOnboardingCompleted = true;
-      this.$store.direct.dispatch.saveUser(user);
+      void this.$store.direct.dispatch.saveUser(user);
     }
     this.$emit("ok");
     this.hide();
-    this.$router.push({ name: "client" });
+    void this.$router.push({ name: "client" });
   }
 }
 </script>

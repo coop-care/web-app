@@ -138,8 +138,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import { date } from "quasar";
 import { Task, TaskGroup } from "../models/task";
 import TaskView from "components/TaskView.vue";
@@ -170,7 +169,7 @@ export default class ClientReminders extends Vue {
       : new Date();
   }
   set selectedDate(value) {
-    this.$router.push({
+    void this.$router.push({
       name: this.$route.name || undefined,
       params: {
         day: "" + value.getTime(),
@@ -329,13 +328,13 @@ export default class ClientReminders extends Vue {
   }
 
   addIntervention() {
-    this.$router.push({
+    void this.$router.push({
       name: "newIntervention",
     });
   }
 
   addProblem() {
-    this.$router.push({
+    void this.$router.push({
       name: "problem",
       params: { problemId: "new" },
     });

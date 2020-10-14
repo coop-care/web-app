@@ -93,7 +93,7 @@ export default class FilterableMenu extends FilterableMenuProps {
 
     if (this.filterRegExp) {
       const regexp = this.filterRegExp;
-      return this.items.filter(text => text.match(regexp));
+      return this.items.filter(text => regexp.exec(text));
     } else {
       return this.items;
     }

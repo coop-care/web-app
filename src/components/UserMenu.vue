@@ -158,10 +158,9 @@ export default class UserMenu extends Vue {
     location.href = "mailto:feedback@coopcare.de?subject=Feedback";
   }
   logout() {
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .logout()
       .then(() => this.$router.push({ name: "login" }))
-      .catch(() => 0);
   }
 }
 </script>

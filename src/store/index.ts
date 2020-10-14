@@ -11,7 +11,7 @@ import actions from "./actions";
 
 Vue.use(Vuex);
 
-export interface StoreState {
+export interface StateInterface {
     currentUser?: User;
     clients: Client[];
     isLoadingClientList: boolean;
@@ -22,7 +22,7 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
         currentUser: ccApi.user,
         clients: [],
         isLoadingClientList: false
-    } as StoreState,
+    } as StateInterface,
     getters,
     mutations,
     actions,
@@ -32,17 +32,17 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
     strict: (process.env.DEV as unknown) === true || process.env.DEV === "true"
 });
 
-store.dispatch.fetchClientsFromDB().catch(() => 0);
+void store.dispatch.fetchClientsFromDB();
 
 let lastFetch = 0;
 window.addEventListener("focus", () => {
     if (Date.now() > lastFetch + 3600 * 1000) {
-        store.dispatch.fetchClientsFromDB().catch(() => 0);
+        void store.dispatch.fetchClientsFromDB();
         lastFetch = Date.now();
     }
 });
 window.addEventListener("online", () => {
-    store.dispatch.fetchClientsFromDB().catch(() => 0);
+    void store.dispatch.fetchClientsFromDB();
     lastFetch = Date.now();
 });
 

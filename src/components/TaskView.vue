@@ -152,7 +152,7 @@ export default class TaskView extends TaskViewProps {
       date: (this.date as unknown) as Date,
       client: this.client,
     });
-    this.$store.direct.dispatch.saveClient({ client: this.client });
+    void this.$store.direct.dispatch.saveClient({ client: this.client });
   }
   get title() {
     if (this.reminder instanceof Intervention) {
@@ -371,7 +371,7 @@ export default class TaskView extends TaskViewProps {
 
   navigateToDueDate() {
     if (this.task.due) {
-      this.$router.push({
+      void this.$router.push({
         name: "clientReminders",
         params: {
           day: "" + this.task.due.getTime(),
@@ -382,7 +382,7 @@ export default class TaskView extends TaskViewProps {
   }
 
   routerPush(name: string) {
-    this.$router.push({
+    void this.$router.push({
       name: name,
       params: {
         clientId: this.client._id,
@@ -405,7 +405,7 @@ export default class TaskView extends TaskViewProps {
   }
 
   save() {
-    this.$store.direct.dispatch.saveClient({
+    void this.$store.direct.dispatch.saveClient({
       client: this.client,
       resolveOnError: true,
     });

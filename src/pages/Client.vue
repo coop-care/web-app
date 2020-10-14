@@ -254,10 +254,9 @@ export default class PageIndex extends Vue {
   }
 
   created() {
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient({ client: this.selectedClient, resolveOnError: true })
       .then(() => this.$store.direct.dispatch.fetchClientsFromDB())
-      .catch(() => 0);
   }
 
   addClient(masterData: MasterData) {
@@ -271,8 +270,8 @@ export default class PageIndex extends Vue {
     this.$ccApi
       .createClient(client)
       .then((client) => {
-        this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
-          this.$router.push({
+        void this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
+          void this.$router.push({
             name: "clientReport",
             params: { clientId: client._id?.toString() || "" },
           });
@@ -314,7 +313,7 @@ export default class PageIndex extends Vue {
       }
 
       mutate(client);
-      this.$store.direct.dispatch.saveClient({
+      void this.$store.direct.dispatch.saveClient({
         client: this.selectedClient,
       });
     }, 0);
@@ -322,13 +321,13 @@ export default class PageIndex extends Vue {
 
   deleteClient() {
     if (this.selectedClient) {
-      this.$store.direct.dispatch.deleteClient(this.selectedClient);
-      this.$router.push({ name: "client" });
+      void this.$store.direct.dispatch.deleteClient(this.selectedClient);
+      void this.$router.push({ name: "client" });
     }
   }
 
   pushRoute(name: string) {
-    this.$router.push({
+    void this.$router.push({
       name: name,
       params: this.$route.params,
     });

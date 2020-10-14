@@ -1,2 +1,8 @@
 /dist
-quasar.conf.js
+/src-bex/www
+/src-capacitor
+/src-cordova
+/.quasar
+/node_modules
+/src-ssr
+/stitch/hosting/files

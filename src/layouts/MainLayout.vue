@@ -121,7 +121,7 @@ import DevMenu from "../components/DevMenu.vue";
     };
   }
 })
-export default class MyLayout extends Vue {
+export default class MainLayout extends Vue {
   isOffline = !window.navigator.onLine;
 
   get title() {
@@ -180,7 +180,7 @@ export default class MyLayout extends Vue {
       process.env.BACKEND == "demo" &&
       !this.$store.direct.state.currentUser?.isOnboardingCompleted
     ) {
-      import("../components/DemoOnboarding.vue").then(component => {
+      void import("../components/DemoOnboarding.vue").then(component => {
         this.$q.dialog({
           component: component.default,
           parent: this

@@ -180,7 +180,7 @@ export default class ProblemsByDiagnosis extends Vue {
       };
       this.$store.direct.commit.createProblemRecord(payload);
     });
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

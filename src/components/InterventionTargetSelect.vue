@@ -20,7 +20,7 @@
     @input="$emit('input', $event)"
     @filter="filterOptions"
   >
-    <q-resize-observer @resize="maxWidth = $refs.select.$el.offsetWidth" />
+    <q-resize-observer @resize="onResize" />
     <template v-slot:option="scope">
       <q-item
         v-if="!scope.opt.isHeader"
@@ -144,8 +144,8 @@ export default class InterventionTargetSelect extends InterventionTargetSelectPr
         this.filteredOptions = this.options
           .filter(
             option =>
-              (option.title && option.title.match(regExp)) ||
-              (option.description && option.description.match(regExp)) ||
+              (option.title && regExp.exec(option.title)) ||
+              (option.description && regExp.exec(option.description)) ||
               option.isHeader
           )
           .filter(
@@ -157,6 +157,10 @@ export default class InterventionTargetSelect extends InterventionTargetSelectPr
         this.filteredOptions = this.options;
       }
     });
+  }
+
+  onResize() {
+    this.maxWidth = (this.$refs.select.$el as HTMLElement).offsetWidth
   }
 
   mounted() {

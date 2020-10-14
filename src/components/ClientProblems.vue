@@ -33,7 +33,7 @@
     </div>
 
     <q-page-sticky
-      v-if="!client.leftAt"
+      v-if="!isDisabled"
       position="bottom-left"
       :offset="$q.screen.lt.sm ? [16, 10] : [56, 10]"
     >
@@ -49,8 +49,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import ProblemSummary from "../components/ProblemSummary.vue";
 
 @Component({ components: { ProblemSummary } })
@@ -80,7 +79,7 @@ export default class ClientProblems extends Vue {
   }
 
   addProblem() {
-    this.$router.push({
+    void this.$router.push({
       name: "problem",
       params: { problemId: "new" },
     });

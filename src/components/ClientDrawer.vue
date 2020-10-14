@@ -44,15 +44,17 @@
           <q-item-section>
             <q-item-label class="q-pl-sm">{{ client.name }}</q-item-label>
           </q-item-section>
-          <q-item-section
-            side
-            v-if="client.dueTasksCount"
-          >
-            <q-item-label class="text-white text-weight-medium bg-grey-6 q-px-sm q-py-xs radius-lg">{{ client.dueTasksCount }}</q-item-label>
+          <q-item-section side v-if="client.dueTasksCount">
+            <q-item-label
+              class="text-white text-weight-medium bg-grey-6 q-px-sm q-py-xs radius-lg"
+              >{{ client.dueTasksCount }}</q-item-label
+            >
           </q-item-section>
         </q-item>
       </q-expansion-item>
-      <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
+      <loading
+        v-if="$store.direct.state.isLoadingClientList && !clients.length"
+      />
 
       <q-expansion-item
         v-if="archivedClients.length"
@@ -84,8 +86,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import { Client } from "../models/client";
 import Loading from "./Loading.vue";
 
@@ -131,7 +132,7 @@ export default class ClientDrawer extends Vue {
   }
 
   addClient() {
-    this.$router.push({
+    void this.$router.push({
       name: "client",
       params: { clientId: "new" } as any,
     });
@@ -145,12 +146,12 @@ export default class ClientDrawer extends Vue {
     } else {
       name = "clientReminders";
     }
-    this.$router.push({
+    void this.$router.push({
       name: name,
       params: { clientId: client._id } as any,
     });
     this.closeDrawerIfNeeded();
-    this.$store.direct.dispatch.fetchClientsFromDB().catch(() => 0);
+    void this.$store.direct.dispatch.fetchClientsFromDB();
   }
 
   closeDrawerIfNeeded() {

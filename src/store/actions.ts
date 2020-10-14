@@ -76,7 +76,7 @@ export default defineActions({
         const { commit, dispatch } = rootActionContext(context);
         return ccApi.login(email, password).then(() => {
             commit.setCurrentUser(ccApi.user);
-            dispatch.fetchClientsFromDB();
+            void dispatch.fetchClientsFromDB();
             return Promise.resolve();
         });
     },
@@ -112,7 +112,6 @@ export default defineActions({
 
         return Promise.all(
             samples.map(client => {
-                // eslint-disable-next-line @typescript-eslint/camelcase
                 client.user_id = userId;
                 return ccApi.createClient(client);
             })

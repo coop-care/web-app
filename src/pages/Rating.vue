@@ -51,7 +51,7 @@ export default class Rating extends RecordValidator {
       changes: changes,
       ...this.$route.params,
     });
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

@@ -125,7 +125,7 @@ export default class ClassificationPage extends RecordValidator {
     this.$refs.stepper.next();
   }
   save() {
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

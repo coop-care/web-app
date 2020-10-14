@@ -31,8 +31,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 
 @Component
 export default class UserSettingsPage extends Vue {
@@ -44,10 +43,10 @@ export default class UserSettingsPage extends Vue {
     if (user) {
       user.signature = value;
     }
-    this.$store.direct.dispatch.saveUser(user);
+    void this.$store.direct.dispatch.saveUser(user);
   }
   done() {
-    this.$router.push("/");
+    void this.$router.push("/");
   }
 }
 </script>

@@ -343,7 +343,7 @@ import Component, { mixins } from "vue-class-component";
 import WarningMixin from "../mixins/WarningMixin";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import VueApexCharts from "vue-apexcharts";
-import { Terminology } from "../helper/terminology";
+import { TerminologyWithMaps } from "../helper/terminology";
 import { getOutcomeAsChartData } from "../helper/apexChartData";
 import { ProblemRecord } from "../models/problemRecord";
 
@@ -452,7 +452,7 @@ export default class ProblemSummary extends mixins(
   }
 
   get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
+    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
   get clientName() {
     return (
@@ -474,20 +474,20 @@ export default class ProblemSummary extends mixins(
 
   prioritizeProblemRecord() {
     this.$store.direct.commit.prioritizeProblemRecord(this.params);
-    this.$router.push({
+    void this.$router.push({
       name: "problem",
       params: this.$store.direct.getters.getRouteParamsForLatestProblem(
         this.params
       ),
     });
-    this.$store.direct.dispatch.saveClient(this.params);
+    void this.$store.direct.dispatch.saveClient(this.params);
   }
 
   dismissProblemRecord() {
     const dismiss = () => {
       const store = this.$store.direct;
       store.commit.dismissProblemRecord(this.params);
-      store.dispatch.saveClient(this.params);
+      void store.dispatch.saveClient(this.params);
     };
     const outcome = this.lastOutcome;
     const didNotAchieveExpectations =
@@ -503,7 +503,7 @@ export default class ProblemSummary extends mixins(
         this.$t("problemDismissalOutcomeWarningMessage") as string
       )
         .onOk(() => {
-          this.$router.push({ name: "outcome", params: this.params });
+          void this.$router.push({ name: "outcome", params: this.params });
         })
         .onCancel(() => {
           dismiss();
@@ -525,7 +525,7 @@ export default class ProblemSummary extends mixins(
 
   deleteDraft() {
     this.$store.direct.commit.deleteDraftProblemRecord(this.params);
-    this.$store.direct.dispatch.saveClient(this.params);
+    void this.$store.direct.dispatch.saveClient(this.params);
   }
 
   created() {

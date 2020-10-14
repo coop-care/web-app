@@ -1,5 +1,5 @@
 import { defineMutations } from "direct-vuex";
-import { store, StoreState } from ".";
+import { store, StateInterface } from ".";
 import {
     Client,
     ProblemRecord,
@@ -30,7 +30,7 @@ const excludeForChangeRecord: ClassTransformOptions = {
     ]
 };
 
-export default defineMutations<StoreState>()({
+export default defineMutations<StateInterface>()({
     setClients(state, clients: Client[]) {
         state.clients = clients;
     },
@@ -58,7 +58,7 @@ export default defineMutations<StoreState>()({
     },
 
     updateObject<T>(
-        state: StoreState,
+        state: StateInterface,
         { target, changes, clientId, problemId }: Updatable<T>
     ) {
         const newValues: Record<string, any> = {};
@@ -91,7 +91,7 @@ export default defineMutations<StoreState>()({
     },
 
     updateReminder(
-        state: StoreState,
+        state: StateInterface,
         payload: {
             target: Reminder;
             changes: Partial<Reminder>;
@@ -172,12 +172,12 @@ export default defineMutations<StoreState>()({
         } else {
             task.reminder.occurrences = completedAt
                 ? [
-                      new Occurrence(
-                          completedAt,
-                          completedAt,
-                          store.getters.signature
-                      )
-                  ]
+                    new Occurrence(
+                        completedAt,
+                        completedAt,
+                        store.getters.signature
+                    )
+                ]
                 : [];
         }
 

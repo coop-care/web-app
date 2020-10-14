@@ -90,14 +90,14 @@
 import Vue from "vue";
 import Component from "vue-class-component";
 import { QInput } from "quasar";
-import { HasTitleDescriptionCode } from "../helper/terminology";
+import { Category } from "../helper/terminology";
 import TextWithHighlights from "./TextWithHighlights.vue";
 
 const SearchableOptionListProps = Vue.extend({
   props: {
     searchInputLabel: String,
     color: String,
-    options: Array as () => HasTitleDescriptionCode[],
+    options: Array as () => Category[],
     value: [String, Array],
     allowMultipleSelection: Boolean,
     dense: Boolean,
@@ -128,11 +128,12 @@ export default class SearchableOptionList extends SearchableOptionListProps {
     if (!this.filter) {
       return this.options;
     } else {
+      const regexp = this.filterRegex
       return this.options.filter((option) => {
         return (
-          !this.filterRegex ||
-          (option.title && option.title.match(this.filterRegex)) ||
-          (option.description && option.description.match(this.filterRegex))
+          !regexp ||
+          (option.title && regexp.exec(option.title)) ||
+          (option.description && regexp.exec(option.description))
         );
       });
     }

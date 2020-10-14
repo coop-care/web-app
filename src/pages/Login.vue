@@ -71,7 +71,7 @@ export default class PageLogin extends Vue {
     this.$store.direct.dispatch
       .login({ email: this.email, password: this.password })
       .then(() => {
-        this.$router.push({ name: "client" });
+        void this.$router.push({ name: "client" });
       })
       .catch(err => {
         this.errorMsg = err.message;

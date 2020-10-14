@@ -1,4 +1,4 @@
-import Quasar from "quasar";
+import { Quasar } from "quasar";
 
 declare module "vue/types/vue" {
     interface Vue {
@@ -9,7 +9,7 @@ declare module "vue/types/vue" {
 // @ts-ignore
 export default async ({ app, Vue }) => {
     Vue.prototype.$loadLangPack = async (locale: string) => {
-        let lang = app.i18n.fallbackLocale;
+        let lang: string = app.i18n.fallbackLocale;
 
         if (
             [

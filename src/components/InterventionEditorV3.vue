@@ -125,7 +125,7 @@
 .q-btn-toggle.intervention-category .q-btn__content
   .q-icon
     font-size: 24px
-  div
+  span
     margin-top: 2px
     font-size: 12px
     line-height: .9rem

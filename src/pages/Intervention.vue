@@ -62,7 +62,7 @@ export default class InterventionPage extends RecordValidator {
         oldInstance: oldIntervention,
       });
     }
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

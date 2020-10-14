@@ -24,27 +24,24 @@ if (process.env.BACKEND != "demo") {
             throw new Error("no data");
         }
     };
-    fetch("statics/diagnoses.sln")
+    void fetch("diagnoses.sln")
         .then(responseHandler)
         .then(data => {
             enUS.diagnosisNames = data.diagnoses["en-us"];
             enUS.problemCodesByDiagnosis = data.problemCodesByDiagnosis;
             deDE.diagnosisNames = data.diagnoses["de-de"];
             deDE.problemCodesByDiagnosis = data.problemCodesByDiagnosis;
-        })
-        .catch(() => 0);
-    fetch("statics/usersguide_EN.sln")
+        });
+    void fetch("usersguide_EN.sln")
         .then(responseHandler)
         .then(data => {
             enUS.usersGuide = data;
-        })
-        .catch(() => 0);
-    fetch("statics/usersguide_DE.sln")
+        });
+    void fetch("usersguide_DE.sln")
         .then(responseHandler)
         .then(data => {
             deDE.usersGuide = data;
-        })
-        .catch(() => 0);
+        });
 }
 
 register("de-de", timeagoDE);

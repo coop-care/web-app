@@ -236,10 +236,7 @@ const RatingViewProps = Vue.extend({
     scale: Array,
     type: String,
     rating: Object,
-    examples: {
-      type: Array,
-      default: () => []
-    }
+    examples: Array
   }
 });
 
