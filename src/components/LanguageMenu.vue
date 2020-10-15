@@ -44,7 +44,7 @@ export default class LanguageMenu extends LanguageMenuProps {
   changeLocale(locale: string) {
     this.$root.$i18n.locale = locale;
     this.$loadLangPack(locale);
-    this.$root.$emit("didChangeLocale", locale);
+    this.$root.$emit("did-change-locale", locale);
   }
 }
 </script>

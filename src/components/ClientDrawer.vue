@@ -118,13 +118,13 @@ export default class ClientDrawer extends Vue {
   }
 
   created() {
-    this.$root.$on("toggleClientDrawer", () => {
+    this.$root.$on("toggle-client-drawer", () => {
       this.isVisible = !this.isVisible;
     });
   }
 
   beforeDestroy() {
-    this.$root.$off("toggleClientDrawer");
+    this.$root.$off("toggle-client-drawer");
   }
 
   isSelected(client: Client) {

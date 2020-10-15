@@ -529,11 +529,11 @@ export default class ProblemSummary extends mixins(
   }
 
   created() {
-    this.$root.$on("didChangeLocale", this.updateLocale);
+    this.$root.$on("did-change-locale", this.updateLocale);
   }
 
   beforeDestroy() {
-    this.$root.$off("didChangeLocale", this.updateLocale);
+    this.$root.$off("did-change-locale", this.updateLocale);
   }
 
   destroyed() {

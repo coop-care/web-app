@@ -21,7 +21,7 @@
           flat
           round
           dense
-          @click.stop="$emit('deleteIntervention')"
+          @click.stop="$emit('delete-intervention')"
         />
       </q-item-section>
     </template>
@@ -85,7 +85,7 @@ export default class EditableIntervention extends EditableInterventionProps {
     );
   }
   expansionChanged(expanded: boolean) {
-    this.$emit(expanded ? "didExpand" : "didCollapse");
+    this.$emit(expanded ? "did-expand" : "did-collapse");
   }
 }
 </script>

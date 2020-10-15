@@ -12,7 +12,7 @@
           flat
           icon="menu"
           aria-label="menu"
-          @click="$root.$emit('toggleClientDrawer')"
+          @click="$root.$emit('toggle-client-drawer')"
         />
         <q-btn
           v-if="

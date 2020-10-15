@@ -6,9 +6,9 @@
         :key="intervention.id"
         :value="intervention"
         :isExpanded="index == editedIntervention"
-        @didExpand="didExpand(index)"
-        @didCollapse="didCollapse"
-        @deleteIntervention="deleteIntervention(index)"
+        @did-expand="didExpand(index)"
+        @did-collapse="didCollapse"
+        @delete-intervention="deleteIntervention(index)"
         class="editable-intervention"
       />
     </div>
