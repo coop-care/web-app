@@ -8,9 +8,9 @@ export interface HasCode {
     code: string;
     id?: string;
 }
-export interface HasTitleDescription extends HasTitle, HasDescription {}
-export interface HasTitleCode extends HasTitle, HasCode {}
-export interface HasTitleDescriptionCode extends HasTitleDescription, HasCode {}
+export interface HasTitleDescription extends HasTitle, HasDescription { }
+export interface HasTitleCode extends HasTitle, HasCode { }
+export interface HasTitleDescriptionCode extends HasTitleDescription, HasCode { }
 
 export interface Terminology extends HasTitle {
     problemClassificationScheme: ProblemClassificationScheme;
@@ -110,8 +110,8 @@ export function filterTerminology(node: HasTitleDescription, filter: string) {
         "gi"
     );
     return (
-        (!!node.title && node.title.match(regex)) ||
-        (!!node.description && node.description.match(regex))
+        (!!node.title && regex.exec(node.title)) ||
+        (!!node.description && regex.exec(node.description))
     );
 }
 

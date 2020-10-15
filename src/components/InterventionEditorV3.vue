@@ -102,13 +102,13 @@
       class="q-mb-sm"
       clearable
       ref="detailsInput"
-      @keydown.up.down.enter.prevent="$refs.detailsMenu.navigateMenu"
+      @keydown.up.down.enter.prevent="detailsMenu.navigateMenu"
     >
       <filterable-menu
         v-model="details"
         ref="detailsMenu"
         :items="suggestedDetails"
-        @input="$refs.detailsInput.focus()"
+        @input="detailsInput.focus()"
       />
     </q-input>
 
@@ -125,35 +125,25 @@
 .q-btn-toggle.intervention-category .q-btn__content
   .q-icon
     font-size: 24px
-  div
+  span
     margin-top: 2px
     font-size: 12px
     line-height: .9rem
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component, { mixins } from "vue-class-component";
+import { Component, Prop, Ref } from "vue-property-decorator";
 import WarningMixin from "../mixins/WarningMixin";
+import { QInput } from "quasar";
 import {
   TerminologyWithMaps,
   UsersGuide,
   sortByTitle,
 } from "../helper/terminology";
-import { ProblemRecord } from "../models/problemRecord";
-import { Intervention } from "../models/intervention";
+import { ProblemRecord, Intervention } from "../models";
 import InterventionTargetSelect from "../components/InterventionTargetSelect.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
 import FilterableMenu from "../components/FilterableMenu.vue";
-
-const InterventionEditorProps = Vue.extend({
-  props: {
-    value: Intervention,
-    problemRecord: ProblemRecord,
-    isSingleEditor: Boolean,
-    editMode: Boolean,
-  },
-});
 
 @Component({
   components: {
@@ -162,10 +152,14 @@ const InterventionEditorProps = Vue.extend({
     FilterableMenu,
   },
 })
-export default class InterventionEditor extends mixins(
-  InterventionEditorProps,
-  WarningMixin
-) {
+export default class InterventionEditor extends WarningMixin {
+  @Prop({ type: Object, required: true}) readonly value!: Intervention;
+  @Prop(ProblemRecord) readonly problemRecord: ProblemRecord | undefined;
+  @Prop(Boolean) readonly isSingleEditor!: boolean;
+  @Prop(Boolean) readonly editMode!: boolean;
+  @Ref() readonly  detailsInput!: QInput;
+  @Ref() readonly  detailsMenu!: FilterableMenu;
+
   get categoryCode() {
     return this.value.categoryCode;
   }
@@ -201,7 +195,7 @@ export default class InterventionEditor extends mixins(
   get targets() {
     const suggestions = this.usersGuideForProblem?.interventionSuggestions;
 
-    if (suggestions && this.categoryCode) {
+    if (suggestions && this.categoryCode && this.record) {
       const targetByCode = this.terminology.targetByCode;
       const suggestedTargetCodes = Object.keys(
         suggestions[this.categoryCode] || {}

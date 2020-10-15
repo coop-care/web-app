@@ -162,8 +162,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Ref } from "vue-property-decorator";
 import ClientDrawer from "../components/ClientDrawer.vue";
 import ContentEditable from "../components/ContentEditable.vue";
 import NewClient from "../components/NewClient.vue";
@@ -172,8 +171,7 @@ import ClientProblems from "../components/ClientProblems.vue";
 import ClientReminders from "../components/ClientReminders.vue";
 import ClientHistory from "../components/ClientHistory.vue";
 import ClientMasterData from "../components/ClientMasterData.vue";
-import { Client } from "../models/client";
-import { MasterData } from "../models/masterData";
+import { Client, MasterData } from "../models";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 
@@ -192,8 +190,9 @@ import CentralMessage from "components/CentralMessage.vue";
   },
 })
 export default class PageIndex extends Vue {
+  @Ref() readonly  clientDrawer!: ClientDrawer;
+
   selectedTab = null;
-  $refs!: { clientDrawer: ClientDrawer };
 
   get firstName() {
     return this.selectedClient?.masterData.firstName || "";
@@ -254,10 +253,9 @@ export default class PageIndex extends Vue {
   }
 
   created() {
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient({ client: this.selectedClient, resolveOnError: true })
       .then(() => this.$store.direct.dispatch.fetchClientsFromDB())
-      .catch(() => 0);
   }
 
   addClient(masterData: MasterData) {
@@ -271,8 +269,8 @@ export default class PageIndex extends Vue {
     this.$ccApi
       .createClient(client)
       .then((client) => {
-        this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
-          this.$router.push({
+        void this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
+          void this.$router.push({
             name: "clientReport",
             params: { clientId: client._id?.toString() || "" },
           });
@@ -296,14 +294,14 @@ export default class PageIndex extends Vue {
     this.updateClient((client) =>
       this.$store.direct.commit.archiveClient(client)
     );
-    this.$refs.clientDrawer.archivedClientsExpansionState = true;
+    this.clientDrawer.archivedClientsExpansionState = true;
   }
 
   unarchiveClient() {
     this.updateClient((client) =>
       this.$store.direct.commit.unarchiveClient(client)
     );
-    this.$refs.clientDrawer.activeClientsExpansionState = true;
+    this.clientDrawer.activeClientsExpansionState = true;
   }
 
   updateClient(mutate: (client: Client) => void) {
@@ -314,7 +312,7 @@ export default class PageIndex extends Vue {
       }
 
       mutate(client);
-      this.$store.direct.dispatch.saveClient({
+      void this.$store.direct.dispatch.saveClient({
         client: this.selectedClient,
       });
     }, 0);
@@ -322,13 +320,13 @@ export default class PageIndex extends Vue {
 
   deleteClient() {
     if (this.selectedClient) {
-      this.$store.direct.dispatch.deleteClient(this.selectedClient);
-      this.$router.push({ name: "client" });
+      void this.$store.direct.dispatch.deleteClient(this.selectedClient);
+      void this.$router.push({ name: "client" });
     }
   }
 
   pushRoute(name: string) {
-    this.$router.push({
+    void this.$router.push({
       name: name,
       params: this.$route.params,
     });

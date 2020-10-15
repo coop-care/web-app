@@ -43,19 +43,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
-
-const EditingPageContainerProps = Vue.extend({
-  props: {
-    isDataAvailable: Boolean,
-    title: String,
-    hideDefaultFooter: Boolean,
-  },
-});
 
 @Component({
   components: {
@@ -64,5 +55,9 @@ const EditingPageContainerProps = Vue.extend({
     SimplifiedMarkdown,
   },
 })
-export default class EditingPageContainer extends EditingPageContainerProps {}
+export default class EditingPageContainer extends Vue {
+  @Prop(Boolean) readonly isDataAvailable!: boolean;
+  @Prop({ type: String, default: ""}) readonly title!: string;
+  @Prop(Boolean) readonly hideDefaultFooter!: boolean;
+}
 </script>

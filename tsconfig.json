@@ -1,18 +1,15 @@
 {
+  "extends": "@quasar/app/tsconfig-preset",
   "compilerOptions": {
-    "allowJs": false,
-    "sourceMap": true,
-    "target": "es6",
-    "strict": true,
-    "experimentalDecorators": true,
-    "lib": ["es2019", "dom"],
-    "module": "esnext",
-    "moduleResolution": "node",
     "baseUrl": ".",
-    "types": ["quasar", "node"],
-    "resolveJsonModule": true,
-    "esModuleInterop": true
-  },
-  "include": ["./src/**/*"],
-  "exclude": ["node_modules", "dist"]
+    "experimentalDecorators": true,
+    "lib": [
+      "es2019",
+      "dom"
+    ],
+    "types": [
+      "quasar",
+      "node"
+    ],
+  }
 }

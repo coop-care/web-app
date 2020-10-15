@@ -298,7 +298,7 @@
   "exceedingStatusRatingWarning": "The health status goal should not be lower than the current observation.",
   "unimprovableRatingsWarning": "If everything is rated as best as possible, it is usually unnecessary to document a problem.",
   "stepCaption": "Step {step} of {stepCount}",
-  "outcomeTitle": "Verlauf und Ziele",
+  "outcomeTitle": "History and Goals",
   "interventionCategoryAndTarget": "Intervention Category and Target",
   "noInterventionCategorySpecificWarning": "The intervention has no category.",
   "noInterventionTargetSpecificWarning": "The intervention has no intervention target selected.",

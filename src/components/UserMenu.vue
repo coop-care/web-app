@@ -136,8 +136,7 @@
   </q-btn>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import LanguageMenu from "./LanguageMenu.vue";
 import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 
@@ -158,10 +157,9 @@ export default class UserMenu extends Vue {
     location.href = "mailto:feedback@coopcare.de?subject=Feedback";
   }
   logout() {
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .logout()
       .then(() => this.$router.push({ name: "login" }))
-      .catch(() => 0);
   }
 }
 </script>

@@ -1,10 +1,8 @@
 # CoopCare
 
-Omaha System based open source software for self-organized care teams.
+We relieve nurses in documentation and planning by using the Omaha System and support care teams in cooperation and in strengthening their clients.
 
-## Setup
-
-### Install the dependencies
+## Install the dependencies
 ```bash
 npm install
 ```
@@ -17,13 +15,17 @@ Including hot-code reloading, error reporting, etc.
 quasar dev
 ```
 
+### Lint the files
+```bash
+npm run lint
+```
+
 ### Build the app for production
 ```bash
 quasar build
 ```
 
 ### Customize the configuration
-
 See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
 
 ## Contribute

@@ -28,23 +28,18 @@
   </q-menu>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-
-const LanguageMenuProps = Vue.extend({
-  props: {
-    anchor: String,
-    self: String,
-    fit: Boolean,
-  },
-});
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class LanguageMenu extends LanguageMenuProps {
+export default class LanguageMenu extends Vue {
+  @Prop(String) readonly anchor: string | undefined;
+  @Prop(String) readonly self: string | undefined;
+  @Prop(Boolean) readonly fit!: boolean;
+
   changeLocale(locale: string) {
     this.$root.$i18n.locale = locale;
     this.$loadLangPack(locale);
-    this.$root.$emit("didChangeLocale", locale);
+    this.$root.$emit("did-change-locale", locale);
   }
 }
 </script>

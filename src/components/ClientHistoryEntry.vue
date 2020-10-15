@@ -80,25 +80,21 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { DateTime } from "luxon";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import { Intervention, ChangeRecord, Problem, RRuleSet } from "../models";
-
-const ClientHistoryEntryProps = Vue.extend({
-  props: {
-    changeRecord: ChangeRecord,
-  },
-});
 
 @Component({
   components: {
     SimplifiedMarkdown,
   },
 })
-export default class ClientHistoryEntry extends ClientHistoryEntryProps {
+export default class ClientHistoryEntry extends Vue {
+  @Prop({ type: Object, required: true }) readonly changeRecord!: ChangeRecord;
+
   isExpanded = false;
+
   get title() {
     const type = this.changeRecord.type;
     const problemTitle = this.record
@@ -127,10 +123,9 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
   }
   get color() {
     return (
-      (this.changeRecord.type
+      (/(intervention)|(classification)|(outcome)/.exec(this.changeRecord.type
         .toLowerCase()
-        .replace("problem", "classification")
-        .match(/(intervention)|(classification)|(outcome)/) || [])[0] ||
+        .replace("problem", "classification")) || [])[0] ||
       "primary"
     );
   }
@@ -243,7 +238,7 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
         const indexForKey = { knowledge: 0, behaviour: 1, status: 2 };
         const texts: string[] = [];
         if (value.comment) {
-          texts.push("" + this.$t("quotedText", { quote: value.comment }));
+          texts.push(this.$t("quotedText", { quote: value.comment }) as string);
         }
         if (value.observation) {
           const rating = this.$t(
@@ -252,8 +247,8 @@ export default class ClientHistoryEntry extends ClientHistoryEntryProps {
               "].scale[" +
               (value.observation - 1) +
               "].title"
-          );
-          texts.push(this.$t("observedRating") + ": " + rating);
+          ) as string;
+          texts.push((this.$t("observedRating") as string) + ": " + rating);
         }
         if (value.expectation) {
           const rating = this.$t(

@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { Type } from "class-transformer";
+// import { Type } from "class-transformer";
 import { Base } from "./base";
 
 export class Rating extends Base {

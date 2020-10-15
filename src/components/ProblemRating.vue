@@ -9,7 +9,7 @@
         :scale="rating.scale"
         :examples="rating.scaleExamples"
         :type="rating.type"
-        :rating="(outcome || {})[rating.type] || {}"
+        :rating="ratingForType(rating.type)"
       />
       <div>
         <q-btn
@@ -91,14 +91,11 @@
 <style lang="sass"></style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import { date } from "quasar";
-import { Frequency } from "../models/rrule";
-import { RatingReminder } from "../models/ratingReminder";
+import { Frequency, RatingReminder, Outcome } from "../models";
 import RatingView from "components/Rating.vue";
 import { Terminology, UsersGuide } from "../helper/terminology";
-import { Outcome } from "../models/outcome";
 
 const { formatDate } = date;
 
@@ -181,6 +178,14 @@ export default class ProblemRating extends Vue {
       { label: this.$tc("month", 2), value: Frequency.MONTHLY },
       { label: this.$tc("year", 2), value: Frequency.YEARLY }
     ];
+  }
+
+  ratingForType(type: string) {
+    if (this.outcome) {
+      return (this.outcome as any)[type];
+    } else {
+      return undefined
+    }
   }
 
   updateRatingReminder(changes: Partial<RatingReminder>) {

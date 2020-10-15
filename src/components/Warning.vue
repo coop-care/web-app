@@ -28,24 +28,18 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 
-const WarningProps = Vue.extend({
-  props: {
-    value: Boolean,
-    messages: String,
-  },
-});
+@Component
+export default class Warning extends Vue {
+  @Prop(Boolean) readonly value!: boolean;
+  @Prop({ type: String, default: ""}) readonly messages!: string;
 
-@Component({
-  watch: {
-    messages(this: Warning, value: string) {
-      if (!value) {
-        this.$emit("input", false);
-      }
-    },
-  },
-})
-export default class Warning extends WarningProps {}
+  @Watch("messages")
+  onMessagesChanged(value: string) {
+    if (!value) {
+      this.$emit("input", false);
+    }
+  }
+}
 </script>

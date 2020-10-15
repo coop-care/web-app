@@ -83,7 +83,7 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
+import { Component, Ref } from "vue-property-decorator";
 import { QStepper } from "quasar";
 import RecordValidator from "../mixins/RecordValidator";
 import EditingPageContainer from "components/EditingPageContainer.vue";
@@ -102,7 +102,7 @@ import Warning from "components/Warning.vue";
   },
 })
 export default class ClassificationPage extends RecordValidator {
-  $refs!: { stepper: QStepper };
+  @Ref() readonly  stepper!: QStepper;
   step = 2;
 
   get problemSelectionTitle() {
@@ -122,10 +122,10 @@ export default class ClassificationPage extends RecordValidator {
   }
 
   nextStep() {
-    this.$refs.stepper.next();
+    this.stepper.next();
   }
   save() {
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

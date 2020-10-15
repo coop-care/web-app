@@ -257,8 +257,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { TranslateResult } from "vue-i18n";
 import { date } from "quasar";
 import { RRuleSet, RRule, Frequency, Options } from "../models/rrule";
@@ -275,17 +274,6 @@ const toArray = (value: number | undefined | null | number[]) =>
 type MonthlyMode = "DayOfMonth" | "DayOfWeek";
 type RecurrenceEndMode = "Never" | "EndDate" | "NumberOfOccurrences";
 
-const RecurrenceRuleEditorProps = Vue.extend({
-  props: {
-    value: RRuleSet,
-    ruleIndex: Number,
-    color: {
-      type: String,
-      default: "primary"
-    }
-  }
-});
-
 @Component({
   components: {
     SearchableOptionList,
@@ -293,7 +281,11 @@ const RecurrenceRuleEditorProps = Vue.extend({
     DateTimeInput
   }
 })
-export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
+export default class RecurrenceRuleEditor extends Vue {
+  @Prop(Object) readonly value: RRuleSet | undefined;
+  @Prop({ type: Number, required: true}) readonly ruleIndex!: number;
+  @Prop({ type: String, default: "primary"}) readonly color!: string;
+
   hasOwnRecurrencePattern = false;
   monthlyMode: MonthlyMode = "DayOfMonth";
   showYearlyDayOfWeek = false;
@@ -343,10 +335,12 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
       );
     } else {
       rules = RRuleSet.make();
-      const startDate = RRuleSet.toUTC(this.startDate);
+      const startDate = this.startDate ? RRuleSet.toUTC(this.startDate) : undefined;
 
       if (value < 0) {
-        rules.rdate(startDate);
+        if (startDate) {
+          rules.rdate(startDate);
+        }
       } else {
         const endDate = this.endDate ? RRuleSet.toUTC(this.endDate) : undefined;
         rules.rrule(
@@ -436,7 +430,7 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
 
     if (value == "EndDate") {
       until = new Date(
-        Math.max(this.startDate.getTime(), new Date().getTime())
+        Math.max(this.startDate?.getTime() || 0, new Date().getTime())
       );
       count = undefined;
     } else if (value == "NumberOfOccurrences") {
@@ -463,7 +457,7 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
     this.updateRecurrenceRule({ count: value });
   }
   get hasMultipleActiveRules() {
-    return this.value?.indicesOfActiveRules.length > 1;
+    return this.value && this.value.indicesOfActiveRules.length > 1;
   }
   get singleDayOfTheWeek() {
     if (this.daysOfTheWeek.length == 1) {
@@ -589,7 +583,7 @@ export default class RecurrenceRuleEditor extends RecurrenceRuleEditorProps {
     return Frequency;
   }
   get recurrenceDescription() {
-    return this.value.toLocalizedText(
+    return this.value?.toLocalizedText(
       this.$root.$i18n.locale,
       (this.$t("rrule") as unknown) as { [key: string]: string },
       {

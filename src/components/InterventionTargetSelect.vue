@@ -20,7 +20,7 @@
     @input="$emit('input', $event)"
     @filter="filterOptions"
   >
-    <q-resize-observer @resize="maxWidth = $refs.select.$el.offsetWidth" />
+    <q-resize-observer @resize="onResize" />
     <template v-slot:option="scope">
       <q-item
         v-if="!scope.opt.isHeader"
@@ -89,8 +89,7 @@ body.desktop .intervention-target-option.q-manual-focusable--focused > .q-focus-
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop, Ref } from "vue-property-decorator";
 import { QSelect } from "quasar";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
 import TextWithHighlights from "components/TextWithHighlights.vue";
@@ -102,25 +101,21 @@ export type InterventionTargetOption = {
   isHeader?: boolean;
 };
 
-const InterventionTargetSelectProps = Vue.extend({
-  props: {
-    value: String,
-    options: Array as () => InterventionTargetOption[],
-    color: String
-  }
-});
-
 @Component({
   components: {
     SimplifiedMarkdown,
     TextWithHighlights
   }
 })
-export default class InterventionTargetSelect extends InterventionTargetSelectProps {
+export default class InterventionTargetSelect extends Vue {
+  @Prop(String) readonly value: string | undefined;
+  @Prop({ type: Array, default: []}) readonly options!: InterventionTargetOption[];
+  @Prop(String) readonly color: string | undefined;
+  @Ref() readonly  select!: QSelect;
+
   filterRegExp: RegExp | undefined = undefined;
   filteredOptions: InterventionTargetOption[] = [];
   maxWidth = 300;
-  $refs!: { select: QSelect };
 
   get hint() {
     return this.value
@@ -144,8 +139,8 @@ export default class InterventionTargetSelect extends InterventionTargetSelectPr
         this.filteredOptions = this.options
           .filter(
             option =>
-              (option.title && option.title.match(regExp)) ||
-              (option.description && option.description.match(regExp)) ||
+              (option.title && regExp.exec(option.title)) ||
+              (option.description && regExp.exec(option.description)) ||
               option.isHeader
           )
           .filter(
@@ -159,9 +154,13 @@ export default class InterventionTargetSelect extends InterventionTargetSelectPr
     });
   }
 
+  onResize() {
+    this.maxWidth = (this.select.$el as HTMLElement).offsetWidth
+  }
+
   mounted() {
     this.filteredOptions = this.options;
-    this.maxWidth = (this.$refs.select.$el as HTMLElement).offsetWidth;
+    this.maxWidth = (this.select.$el as HTMLElement).offsetWidth;
   }
 }
 </script>

@@ -97,8 +97,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import {
   TerminologyWithMaps,
   UsersGuide,
@@ -109,20 +108,16 @@ import { Intervention } from "../models/intervention";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
 
-const InterventionEditorProps = Vue.extend({
-  props: {
-    value: Intervention,
-    problemRecord: ProblemRecord
-  }
-});
-
 @Component({
   components: {
     SearchableOptionList,
     ReminderEditor
   }
 })
-export default class InterventionEditor extends InterventionEditorProps {
+export default class InterventionEditor extends Vue {
+  @Prop({ type: Object, required: true}) readonly value!: Intervention;
+  @Prop(ProblemRecord) readonly problemRecord: ProblemRecord | undefined;
+
   get categoryCode() {
     return this.value.categoryCode;
   }

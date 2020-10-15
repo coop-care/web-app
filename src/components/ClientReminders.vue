@@ -30,7 +30,7 @@
           >
             <q-date
               v-model="selectedDateString"
-              @input="$refs.dateProxy.hide()"
+              @input="dateProxy.hide()"
               :events="[]"
               color="primary"
               event-color="primary"
@@ -94,7 +94,7 @@
     >
       <div class="text-italic">{{$t("noTasksPlanned")}}</div>
       <div
-        v-if="client.activeProblemCount  == 0"
+        v-if="!hasActiveProblems"
         class="q-mt-lg"
       >
         <div class="text-italic">{{ $t("noProblemForNewIntervention") }}</div>
@@ -111,7 +111,7 @@
     </div>
 
     <q-page-sticky
-      v-if="!client.leftAt && client.activeProblemCount > 0"
+      v-if="isActiveClient && hasActiveProblems"
       position="bottom-left"
       :offset="$q.screen.lt.sm ? [16, 10] : [56, 10]"
     >
@@ -138,9 +138,8 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { date } from "quasar";
+import { Vue, Component, Ref } from "vue-property-decorator";
+import { date, QPopupProxy } from "quasar";
 import { Task, TaskGroup } from "../models/task";
 import TaskView from "components/TaskView.vue";
 
@@ -164,13 +163,15 @@ const allInclusive = {
   },
 })
 export default class ClientReminders extends Vue {
+  @Ref() readonly dateProxy!: QPopupProxy;
+
   get selectedDate() {
     return parseInt(this.$root.$route.params.day)
       ? new Date(parseInt(this.$root.$route.params.day))
       : new Date();
   }
   set selectedDate(value) {
-    this.$router.push({
+    void this.$router.push({
       name: this.$route.name || undefined,
       params: {
         day: "" + value.getTime(),
@@ -203,6 +204,12 @@ export default class ClientReminders extends Vue {
       hour: "numeric",
       minute: "numeric",
     });
+  }
+  get hasActiveProblems() {
+    return this.client && this.client.activeProblemCount > 0
+  }
+  get isActiveClient() {
+    return !this.client?.leftAt
   }
   get client() {
     return this.$store.direct.getters.getClient(this.$route.params);
@@ -329,13 +336,13 @@ export default class ClientReminders extends Vue {
   }
 
   addIntervention() {
-    this.$router.push({
+    void this.$router.push({
       name: "newIntervention",
     });
   }
 
   addProblem() {
-    this.$router.push({
+    void this.$router.push({
       name: "problem",
       params: { problemId: "new" },
     });

@@ -5,15 +5,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-
-const CentralMessageProps = Vue.extend({
-  props: {
-    message: String
-  }
-});
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class CentralMessage extends CentralMessageProps {}
+export default class CentralMessage extends Vue {
+  @Prop({ type: String, required: true}) readonly message!: string;
+}
 </script>

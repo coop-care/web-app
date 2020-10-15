@@ -10,8 +10,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import EditingPageContainer from "components/EditingPageContainer.vue";
 import InterventionView from "components/InterventionV3.vue";
 
@@ -27,7 +26,7 @@ export default class ClassificationPage extends Vue {
   }
 
   save() {
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

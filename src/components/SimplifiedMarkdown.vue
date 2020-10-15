@@ -9,17 +9,12 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-
-const SimplifiedMarkdownProps = Vue.extend({
-  props: {
-    text: String
-  }
-});
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class SimplifiedMarkdown extends SimplifiedMarkdownProps {
+export default class SimplifiedMarkdown extends Vue {
+  @Prop({ type: String, default: ""}) readonly text!: string;
+
   classes(text: string) {
     let classes = "";
     if (text.startsWith("**")) {

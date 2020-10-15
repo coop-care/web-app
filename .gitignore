@@ -1,26 +1,41 @@
-.quasar
 .DS_Store
 .thumbs.db
 node_modules
+
+# Quasar core related directories
+.quasar
 /dist
-/stitch/hosting/files
+
+# Cordova related directories and files
 /src-cordova/node_modules
 /src-cordova/platforms
 /src-cordova/plugins
 /src-cordova/www
-/src/statics/app-logo-*.png
-/src/statics/icons
+
+# Capacitor related directories and files
+/src-capacitor/www
+/src-capacitor/node_modules
+
+# BEX related directories and files
+/src-bex/www
+/src-bex/js/core
+
+# Log files
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-*.env
-.quasar.env.json
-deploy.sh
 
 # Editor directories and files
 .idea
-.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
+
+.quasar.env.json
+
+*.env
+/stitch/hosting/files
+/public/icons
+/public/favicon.ico
+deploy.sh

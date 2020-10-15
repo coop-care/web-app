@@ -173,7 +173,7 @@
 </style>
 
 <script lang="ts">
-import Component, { mixins } from "vue-class-component";
+import { Component, Watch, Ref } from "vue-property-decorator";
 import { QStepper } from "quasar";
 import RecordValidator from "../mixins/RecordValidator";
 import { ProblemRecord } from "../models";
@@ -196,21 +196,21 @@ import Warning from "components/Warning.vue";
     ProblemRating,
     InterventionView,
     Warning,
-  },
-  watch: {
-    step(this: ProblemRecording, value: number) {
-      this.$route.params.step = "" + value;
-      this.$router.replace({
-        name: this.$route.name || undefined,
-        params: this.$route.params,
-      });
-    },
-  },
+  }
 })
-export default class ProblemRecording extends mixins(RecordValidator) {
-  $refs!: { stepper: QStepper };
+export default class ProblemRecording extends RecordValidator {
+  @Ref() readonly  stepper!: QStepper;
   step = 2;
   newRecord = new ProblemRecord();
+
+  @Watch("step")
+  onStepChanged(value: number) {
+    this.$route.params.step = "" + value;
+    void this.$router.replace({
+      name: this.$route.name || undefined,
+      params: this.$route.params,
+    });
+  }
 
   get isHighPriority() {
     return (this.record || this.newRecord).problem.isHighPriority;
@@ -306,7 +306,7 @@ export default class ProblemRecording extends mixins(RecordValidator) {
   }
 
   nextStep() {
-    this.$refs.stepper.next();
+    this.stepper.next();
   }
   createProblem() {
     if (this.client && this.$route.params.problemId == "new") {
@@ -325,7 +325,7 @@ export default class ProblemRecording extends mixins(RecordValidator) {
   }
   saveProblemRecord() {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

@@ -69,29 +69,18 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { date } from "quasar";
 
 const { formatDate, extractDate, isBetweenDates } = date;
 
-const DateTimePopupProps = Vue.extend({
-  props: {
-    value: Date,
-    format: {
-      type: String,
-      default: "YYYY-MM-DD HH:mm"
-    },
-    min: Date,
-    color: {
-      type: String,
-      default: "primary"
-    }
-  }
-});
-
 @Component
-export default class DateTimePopup extends DateTimePopupProps {
+export default class DateTimePopup extends Vue {
+  @Prop({ type: Date, required: true}) readonly value!: Date;
+  @Prop({ type: String, default: "YYYY-MM-DD HH:mm"}) readonly format!: string;
+  @Prop(Date) readonly min: Date | undefined;
+  @Prop({ type: String, default: "primary"}) readonly color!: string;
+
   selectedDate = new Date();
   selectedTab = "date";
 

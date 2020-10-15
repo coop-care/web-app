@@ -1,37 +1,4 @@
 {
-  "@quasar/typescript": {
-    "webpack": "plugin",
-    "rename": true,
-    "vscode": true,
-    "prettier": false
-  },
-  "@quasar/icon-genie": {
-    "minify_dev": "pngquant",
-    "minify_build": "optipng",
-    "cordova": {
-      "background_color": "#ffffff",
-      "splashscreen_type": "pure"
-    },
-    "build_always": false,
-    "__internal": {
-      "dev": {
-        "spa": {
-          "iconHash": "458a070a1a5f0dc11abcb8ce345dc7a1"
-        },
-        "pwa": {
-          "iconHash": "458a070a1a5f0dc11abcb8ce345dc7a1"
-        }
-      },
-      "build": {
-        "spa": {
-          "iconHash": "458a070a1a5f0dc11abcb8ce345dc7a1"
-        },
-        "pwa": {
-          "iconHash": "458a070a1a5f0dc11abcb8ce345dc7a1"
-        }
-      }
-    }
-  },
   "@quasar/qenv": {
     "common_root_object": "none",
     "add_qenv_to_gitignore": true

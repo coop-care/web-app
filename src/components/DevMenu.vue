@@ -115,8 +115,7 @@
   </q-btn>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import { getColor, setColor, setColorSet } from "../helper/color";
 
 @Component
@@ -239,7 +238,7 @@ export default class DevMenu extends Vue {
       classification: "Problemklassifikations-Farbe",
       intervention: "Interventions-Farbe",
       outcome: "Bewertungs-Farbe",
-    };
+    } as { [key: string]: string };
   }
   get isVisible() {
     return this.$ccApi.isLoggedIn && process.env.BACKEND != "demo";
@@ -255,7 +254,7 @@ export default class DevMenu extends Vue {
     setColorSet(colors);
   }
   addSamplesToDB() {
-    this.$store.direct.dispatch.addSamplesToDB();
+    void this.$store.direct.dispatch.addSamplesToDB();
   }
   clearDB() {
     this.$q
@@ -273,8 +272,8 @@ export default class DevMenu extends Vue {
         html: true,
       })
       .onOk(() => {
-        this.$store.direct.dispatch.clearDB();
-        this.$router.push({ name: "client" });
+        void this.$store.direct.dispatch.clearDB();
+        void this.$router.push({ name: "client" });
       });
   }
 }

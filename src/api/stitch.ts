@@ -99,7 +99,6 @@ export default class StitchApi implements CoopCareApiInterface {
             });
     }
     saveClient(client: Client) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         client.user_id = this.user?.id || "";
         const data: any = client.toJSON();
         data._id = client._id;

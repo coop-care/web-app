@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
+import { Component } from "vue-property-decorator";
 import RecordValidator from "../mixins/RecordValidator";
 import EditingPageContainer from "components/EditingPageContainer.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
@@ -51,7 +51,7 @@ export default class Rating extends RecordValidator {
       changes: changes,
       ...this.$route.params,
     });
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

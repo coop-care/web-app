@@ -1,9 +1,9 @@
 import { defineGetters } from "direct-vuex";
-import { store, StoreState } from ".";
+import { store, StateInterface } from ".";
 import { Client } from "../models/client";
 import { ProblemRecord } from "../models/problemRecord";
 
-export default defineGetters<StoreState>()({
+export default defineGetters<StateInterface>()({
     getClient: state => (payload: any): Client | undefined => {
         if (payload.clientId) {
             return state.clients.find(

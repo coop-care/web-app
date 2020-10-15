@@ -12,14 +12,14 @@
       />
       <warning
         v-model="showWarning"
-        :messages="warningsForIntervention(intervention)"
+        :messages="customWarnings"
       />
       <q-btn
-        @click="validate(warningsForIntervention(intervention), save)"
+        @click="validate(customWarnings, save)"
         color="primary"
         rounded
         no-caps
-        :outline="!!warningsForIntervention(intervention)"
+        :outline="!!customWarnings"
         icon-right="fas fa-caret-right"
         :label="doneButtonLabel"
         class="q-mt-lg"
@@ -29,9 +29,9 @@
 </template>
 
 <script lang="ts">
-import Component from "vue-class-component";
+import { Component } from "vue-property-decorator";
 import RecordValidator from "../mixins/RecordValidator";
-import { Reminder } from "../models";
+import { Reminder, Intervention } from "../models";
 import EditingPageContainer from "components/EditingPageContainer.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import InterventionEditor from "components/InterventionEditorV3.vue";
@@ -51,6 +51,13 @@ export default class InterventionPage extends RecordValidator {
   get intervention() {
     return this.client?.findReminder(this.$route.params.interventionId);
   }
+  get customWarnings() {
+    if (this.intervention) {
+      return this.warningsForIntervention(this.intervention as Intervention)
+    } else {
+      return ""
+    }
+  }
 
   save() {
     if (this.intervention) {
@@ -62,7 +69,7 @@ export default class InterventionPage extends RecordValidator {
         oldInstance: oldIntervention,
       });
     }
-    this.$store.direct.dispatch
+    void this.$store.direct.dispatch
       .saveClient(this.$route.params)
       .then(() => this.$router.back());
   }

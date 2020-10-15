@@ -22,26 +22,23 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 
-const ToggleButtonGroupProps = Vue.extend({
-  props: {
-    options: Array,
-    color: String,
-    textColor: String,
-    toggleColor: String,
-    toggleTextColor: String,
-    value: Array,
-    size: {
-      type: String,
-      default: "md"
-    }
-  }
-});
+interface Option {
+  label: string;
+  value: string;
+}
 
 @Component
-export default class ToggleButtonGroup extends ToggleButtonGroupProps {
+export default class ToggleButtonGroup extends Vue {
+  @Prop({ type: Array, default: []}) readonly options!: Option[];
+  @Prop(String) readonly color: string | undefined;
+  @Prop(String) readonly textColor: string | undefined;
+  @Prop(String) readonly toggleColor: string | undefined;
+  @Prop(String) readonly toggleTextColor: string | undefined;
+  @Prop({ type: Array, default: []}) readonly value!: string[];
+  @Prop({ type: String, default: "md"}) readonly size!: string;
+
   toggle(value: any) {
     if (this.value.includes(value)) {
       this.$emit(

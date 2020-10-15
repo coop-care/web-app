@@ -1,74 +1,115 @@
+const { resolve } = require('path');
 module.exports = {
+  // https://eslint.org/docs/user-guide/configuring#configuration-cascading-and-hierarchy
+  // This option interrupts the configuration hierarchy at this file
+  // Remove this if you have an higher level ESLint config file (it usually happens into a monorepos)
   root: true,
 
-  // Rules order is important, please avoid shuffling them
-  extends: [
-    // Base ESLint recommended rules
-    "eslint:recommended",
-
-    // ESLint typescript rules
-    // See https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#usage
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-
-    // `plugin:vue/essential` by default, consider switching to `plugin:vue/strongly-recommended`
-    //  or `plugin:vue/recommended` for stricter rules.
-    // See https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
-    "plugin:vue/essential"
-  ],
-
-  plugins: [
-    // Required to apply rules which need type information
-    "@typescript-eslint",
-    // Required to lint *.vue files
-    // See https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-file
-    "vue"
-    // Prettier has not been included as plugin to avoid performance impact
-    // See https://github.com/typescript-eslint/typescript-eslint/issues/389#issuecomment-509292674
-    // Add it as an extension
-  ],
-
+  // https://eslint.vuejs.org/user-guide/#how-to-use-custom-parser
   // Must use parserOptions instead of "parser" to allow vue-eslint-parser to keep working
-  // See https://eslint.vuejs.org/user-guide/#how-to-use-custom-parser
   // `parser: 'vue-eslint-parser'` is already included with any 'plugin:vue/**' config and should be omitted
   parserOptions: {
-    parser: "@typescript-eslint/parser",
-    sourceType: "module",
-    project: "./tsconfig.json",
-    extraFileExtensions: [".vue"]
+    // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/parser#configuration
+    // https://github.com/TypeStrong/fork-ts-checker-webpack-plugin#eslint
+    // Needed to make the parser take into account 'vue' files
+    extraFileExtensions: ['.vue'],
+    parser: '@typescript-eslint/parser',
+    project: resolve(__dirname, './tsconfig.json'),
+    tsconfigRootDir: __dirname,
+    ecmaVersion: 2018, // Allows for the parsing of modern ECMAScript features
+    sourceType: 'module' // Allows for the use of imports
   },
 
   env: {
     browser: true
   },
 
+  // Rules order is important, please avoid shuffling them
+  extends: [
+    // Base ESLint recommended rules
+    // 'eslint:recommended',
+
+    // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#usage
+    // ESLint typescript rules
+    'plugin:@typescript-eslint/recommended',
+    // consider disabling this class of rules if linting takes too long
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+
+    // Uncomment any of the lines below to choose desired strictness,
+    // but leave only one uncommented!
+    // See https://eslint.vuejs.org/rules/#available-rules
+    'plugin:vue/essential', // Priority A: Essential (Error Prevention)
+    // 'plugin:vue/strongly-recommended', // Priority B: Strongly Recommended (Improving Readability)
+    // 'plugin:vue/recommended', // Priority C: Recommended (Minimizing Arbitrary Choices and Cognitive Overhead)
+
+    // https://github.com/prettier/eslint-config-prettier#installation
+    // usage with Prettier, provided by 'eslint-config-prettier'.
+    'prettier',
+    'prettier/@typescript-eslint',
+    'prettier/vue'
+  ],
+
+  plugins: [
+    // required to apply rules which need type information
+    '@typescript-eslint',
+
+    // https://eslint.vuejs.org/user-guide/#why-doesn-t-it-work-on-vue-file
+    // required to lint *.vue files
+    'vue',
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/389#issuecomment-509292674
+    // Prettier has not been included as plugin to avoid performance impact
+    // add it as an extension for your IDE
+    'import'
+  ],
+
   globals: {
     ga: true, // Google Analytics
     cordova: true,
     __statics: true,
-    process: true
+    process: true,
+    Capacitor: true,
+    chrome: true
   },
 
   // add your custom rules here
   rules: {
-    "prefer-promise-reject-errors": "off",
-    quotes: ["warn", "double"],
-    "@typescript-eslint/indent": "off",
+    // allow async-await
+    'generator-star-spacing': 'off',
+    // allow paren-less arrow functions
+    'arrow-parens': 'off',
+    'one-var': 'off',
 
-    // allow console.log during development only
-    "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    // allow debugger during development only
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    'import/first': 'off',
+    'import/named': 'error',
+    'import/namespace': 'error',
+    'import/default': 'error',
+    'import/export': 'error',
+    'import/extensions': 'off',
+    'import/no-unresolved': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    'prefer-promise-reject-errors': 'off',
+
+    // TypeScript
+    quotes: ['warn', 'double', { avoidEscape: true }],
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
 
     // Custom
     "vue/component-name-in-template-casing": ["error", "kebab-case"],
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
+    "@typescript-eslint/no-unsafe-return": "off",
+    "@typescript-eslint/unbound-method": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/restrict-plus-operands": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
     "vue/no-use-v-if-with-v-for": "off",
 
-    // Correct typescript linting until at least 2.0.0 major release
-    // See https://github.com/typescript-eslint/typescript-eslint/issues/501
-    // See https://github.com/typescript-eslint/typescript-eslint/issues/493
-    "@typescript-eslint/explicit-function-return-type": "off"
+    // allow debugger during development only
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
   }
-};
+}

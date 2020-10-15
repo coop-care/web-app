@@ -23,7 +23,6 @@ export class Client {
     }
 
     constructor(userId: string) {
-        // eslint-disable-next-line @typescript-eslint/camelcase
         this.user_id = userId;
     }
 
@@ -97,8 +96,8 @@ export class Client {
         this.forActiveReminders((reminder, problem) =>
             reminder.calculateOccurrences(
                 !!this.leftAt ||
-                    !!problem.resolvedAt ||
-                    !problem.problem.isHighPriority
+                !!problem.resolvedAt ||
+                !problem.problem.isHighPriority
             )
         );
     }

@@ -120,8 +120,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Ref } from "vue-property-decorator";
 import {
   HasTitleDescription,
   Terminology,
@@ -140,9 +139,10 @@ import { Intervention } from "../models/intervention";
   }
 })
 export default class InterventionView extends Vue {
+  @Ref() readonly filter!: QInput[];
+
   categorySelected = null;
   targetsFilter = "";
-  $refs!: { filter: QInput[] };
 
   get interventions() {
     return this.unsavedInterventions.map(intervention => intervention.code);
@@ -257,7 +257,7 @@ export default class InterventionView extends Vue {
 
   resetTargetsFilter() {
     this.targetsFilter = "";
-    this.$refs.filter[0].focus();
+    this.filter[0].focus();
   }
 
   filterTerminology(node: HasTitleDescription, filter: string) {

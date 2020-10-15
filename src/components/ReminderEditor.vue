@@ -12,27 +12,19 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { RRuleSet } from "../models";
 import RecurrenceRuleEditor from "./RecurrenceRuleEditor.vue";
-
-const ReminderEditorProps = Vue.extend({
-  props: {
-    value: RRuleSet,
-    color: {
-      type: String,
-      default: "primary"
-    }
-  }
-});
 
 @Component({
   components: {
     RecurrenceRuleEditor
   }
 })
-export default class ReminderEditor extends ReminderEditorProps {
+export default class ReminderEditor extends Vue {
+  @Prop(Object) readonly value: RRuleSet | undefined;
+  @Prop({ type: String, default: "primary"}) readonly color!: string;
+
   get indicesOfActiveRules() {
     return this.value?.indicesOfActiveRules || [-1];
   }

@@ -7,12 +7,12 @@
       >
         <q-btn
           v-if="
-            $router.currentRoute.name.startsWith('client') && $q.screen.lt.md
+            ($router.currentRoute.name || '').startsWith('client') && $q.screen.lt.md
           "
           flat
           icon="menu"
           aria-label="menu"
-          @click="$root.$emit('toggleClientDrawer')"
+          @click="$root.$emit('toggle-client-drawer')"
         />
         <q-btn
           v-if="
@@ -23,7 +23,7 @@
               'clientHistory',
               'clientMasterData',
               'login'
-            ].includes($router.currentRoute.name)
+            ].includes($router.currentRoute.name || '')
           "
           size="lg"
           dense
@@ -97,8 +97,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import UserMenu from "../components/UserMenu.vue";
 import LanguageMenu from "../components/LanguageMenu.vue";
 import DevMenu from "../components/DevMenu.vue";
@@ -121,7 +120,7 @@ import DevMenu from "../components/DevMenu.vue";
     };
   }
 })
-export default class MyLayout extends Vue {
+export default class MainLayout extends Vue {
   isOffline = !window.navigator.onLine;
 
   get title() {
@@ -180,7 +179,7 @@ export default class MyLayout extends Vue {
       process.env.BACKEND == "demo" &&
       !this.$store.direct.state.currentUser?.isOnboardingCompleted
     ) {
-      import("../components/DemoOnboarding.vue").then(component => {
+      void import("../components/DemoOnboarding.vue").then(component => {
         this.$q.dialog({
           component: component.default,
           parent: this

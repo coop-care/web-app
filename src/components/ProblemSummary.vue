@@ -338,36 +338,31 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component, { mixins } from "vue-class-component";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import WarningMixin from "../mixins/WarningMixin";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import VueApexCharts from "vue-apexcharts";
-import { Terminology } from "../helper/terminology";
+import { TerminologyWithMaps } from "../helper/terminology";
 import { getOutcomeAsChartData } from "../helper/apexChartData";
-import { ProblemRecord } from "../models/problemRecord";
+import { ProblemRecord, Problem } from "../models";
 
 Vue.use(VueApexCharts);
-
-const ProblemSummaryProps = Vue.extend({
-  props: {
-    params: Object,
-    problemRecord: ProblemRecord,
-    isExpandable: {
-      type: Boolean,
-      default: true,
-    },
-    isDisabled: Boolean,
-  },
-});
 
 @Component({
   components: {
     apexchart: VueApexCharts,
     SimplifiedMarkdown,
-  },
-  watch: {
-    isExpanded(this: ProblemSummary, value: boolean) {
+  }
+})
+export default class ProblemSummary extends WarningMixin {
+  @Prop({type: Object, default: {}}) readonly params!: Record<string, string>;
+  @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
+  @Prop({type: Boolean, default: true}) readonly isExpandable!: boolean;
+  @Prop(Boolean) readonly isDisabled!: boolean;
+  isExpanded = false;
+
+  @Watch("isExpanded")
+  onIsExpandedChanged(value: boolean) {
       if (value) {
         setTimeout(() => {
           const top = this.$el.getBoundingClientRect().top;
@@ -375,17 +370,10 @@ const ProblemSummaryProps = Vue.extend({
           window.scrollTo({ top: y, behavior: "smooth" });
         });
       }
-    },
-  },
-})
-export default class ProblemSummary extends mixins(
-  ProblemSummaryProps,
-  WarningMixin
-) {
-  isExpanded = false;
+  }
 
   get problem() {
-    return this.record.problem;
+    return this.record?.problem || new Problem();
   }
   get problemTitle() {
     const problemTitle = this.$t(this.problem.title);
@@ -396,23 +384,27 @@ export default class ProblemSummary extends mixins(
     }
   }
   get interventions() {
-    return this.record.interventions;
+    return this.record?.interventions || [];
   }
   get lastOutcome() {
-    if (this.record.outcomes.length) {
+    if (this.record?.outcomes.length) {
       return this.record.outcomes[this.record.outcomes.length - 1];
     } else {
       return undefined;
     }
   }
   get isDraft() {
-    return !this.record.createdAt;
+    return !this.record?.createdAt;
   }
   get isInteractive() {
     return !this.isDraft && this.isExpanded && !this.isDisabled;
   }
   get outcomesForChart() {
-    return getOutcomeAsChartData(this.record, this);
+    if (this.record) {
+      return getOutcomeAsChartData(this.record, this);
+    } else {
+      return [];
+    }
   }
   get sectionPadding() {
     if (this.$q.screen.lt.sm) {
@@ -452,7 +444,7 @@ export default class ProblemSummary extends mixins(
   }
 
   get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
+    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
   get clientName() {
     return (
@@ -474,20 +466,20 @@ export default class ProblemSummary extends mixins(
 
   prioritizeProblemRecord() {
     this.$store.direct.commit.prioritizeProblemRecord(this.params);
-    this.$router.push({
+    void this.$router.push({
       name: "problem",
       params: this.$store.direct.getters.getRouteParamsForLatestProblem(
         this.params
       ),
     });
-    this.$store.direct.dispatch.saveClient(this.params);
+    void this.$store.direct.dispatch.saveClient(this.params);
   }
 
   dismissProblemRecord() {
     const dismiss = () => {
       const store = this.$store.direct;
       store.commit.dismissProblemRecord(this.params);
-      store.dispatch.saveClient(this.params);
+      void store.dispatch.saveClient(this.params);
     };
     const outcome = this.lastOutcome;
     const didNotAchieveExpectations =
@@ -503,7 +495,7 @@ export default class ProblemSummary extends mixins(
         this.$t("problemDismissalOutcomeWarningMessage") as string
       )
         .onOk(() => {
-          this.$router.push({ name: "outcome", params: this.params });
+          void this.$router.push({ name: "outcome", params: this.params });
         })
         .onCancel(() => {
           dismiss();
@@ -513,27 +505,13 @@ export default class ProblemSummary extends mixins(
     }
   }
 
-  updateLocale() {
-    if (this.problemRecord) {
-      this.problemRecord = this.getRecordFromStore() as ProblemRecord;
-    }
-  }
-
   getRecordFromStore() {
     return this.$store.direct.getters.getProblemRecordById(this.params);
   }
 
   deleteDraft() {
     this.$store.direct.commit.deleteDraftProblemRecord(this.params);
-    this.$store.direct.dispatch.saveClient(this.params);
-  }
-
-  created() {
-    this.$root.$on("didChangeLocale", this.updateLocale);
-  }
-
-  beforeDestroy() {
-    this.$root.$off("didChangeLocale", this.updateLocale);
+    void this.$store.direct.dispatch.saveClient(this.params);
   }
 
   destroyed() {

@@ -37,42 +37,41 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop, Ref, Watch } from "vue-property-decorator";
 import { QMenu } from "quasar";
 import TextWithHighlights from "../components/TextWithHighlights.vue";
-
-const FilterableMenuProps = Vue.extend({
-  props: {
-    value: String,
-    items: Array as () => string[]
-  }
-});
 
 @Component({
   components: {
     TextWithHighlights
-  },
-  watch: {
-    isVisible(this: FilterableMenu, value: boolean) {
-      if (!value) {
-        this.selectedItem = -1;
-      }
-    },
-    filteredItems(this: FilterableMenu, values: string[]) {
-      if (values.length == 0) {
-        this.selectedItem = -1;
-      }
-    },
-    value(this: FilterableMenu) {
+  }
+})
+export default class FilterableMenu extends Vue {
+  @Prop({ type: String, required: true}) readonly value!: string;
+  @Prop({ type: Array, default: []}) readonly items!: string[];
+  @Ref() readonly  menu: QMenu | undefined;
+
+  isVisible = false;
+  selectedItem = -1;
+
+  @Watch("isVisible")
+  onIsVisibleChanged(value: boolean) {
+    if (!value) {
       this.selectedItem = -1;
     }
   }
-})
-export default class FilterableMenu extends FilterableMenuProps {
-  $refs!: { menu: QMenu };
-  isVisible = false;
-  selectedItem = -1;
+
+  @Watch("filteredItems")
+  onFilteredItemsChanged(values: string[]) {
+    if (values.length == 0) {
+      this.selectedItem = -1;
+    }
+  }
+
+  @Watch("value")
+  onValueChanged() {
+    this.selectedItem = -1;
+  }
 
   get filterRegExp() {
     if (this.value) {
@@ -88,12 +87,12 @@ export default class FilterableMenu extends FilterableMenuProps {
   }
   get filteredItems() {
     setTimeout(() => {
-      this.$refs.menu?.updatePosition();
+      this.menu?.updatePosition();
     }, 0);
 
     if (this.filterRegExp) {
       const regexp = this.filterRegExp;
-      return this.items.filter(text => text.match(regexp));
+      return this.items.filter(text => regexp.exec(text));
     } else {
       return this.items;
     }
@@ -105,7 +104,7 @@ export default class FilterableMenu extends FilterableMenuProps {
     }
 
     if (this.selectedItem < 0) {
-      const element = this.$refs.menu?.$children[0]?.$el || document;
+      const element = this.menu?.$children[0]?.$el || document;
       const hoveredItem = element.querySelector(".q-item:hover");
       const siblings = hoveredItem?.parentElement?.children || [];
 

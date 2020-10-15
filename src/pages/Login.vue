@@ -57,21 +57,19 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 
 @Component
 export default class PageLogin extends Vue {
   email = "";
   password = "";
-
   errorMsg = "";
 
   doLogin() {
     this.$store.direct.dispatch
       .login({ email: this.email, password: this.password })
       .then(() => {
-        this.$router.push({ name: "client" });
+        void this.$router.push({ name: "client" });
       })
       .catch(err => {
         this.errorMsg = err.message;
