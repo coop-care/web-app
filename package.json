@@ -9,6 +9,10 @@
     "Michael Kamphausen"
   ],
   "license": "AGPL-3.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/coop-care/web-app.git"
+  },
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
@@ -33,7 +37,7 @@
   "devDependencies": {
     "@quasar/app": "^2.1.1",
     "@quasar/quasar-app-extension-qenv": "^1.0.3",
-    "@quasar/quasar-app-extension-qmarkdown": "^1.0.33",
+    "@quasar/quasar-app-extension-qmarkdown": "^1.0.34",
     "@types/bson": "^4.0.2",
     "@types/luxon": "^1.25.0",
     "@types/node": "^10.17.39",
