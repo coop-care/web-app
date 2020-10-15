@@ -23,23 +23,18 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
-
-const TextWithTooltipProps = Vue.extend({
-  props: {
-    text: String,
-    tooltip: String
-  }
-});
 
 @Component({
   components: {
     SimplifiedMarkdown
   }
 })
-export default class TextWithTooltip extends TextWithTooltipProps {
+export default class TextWithTooltip extends Vue {
+  @Prop({ type: String, default: ""}) readonly text!: string;
+  @Prop({ type: String, default: ""}) readonly tooltip!: string;
+
   width = "100%";
 }
 </script>

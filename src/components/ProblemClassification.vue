@@ -111,8 +111,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component, { mixins } from "vue-class-component";
+import { Component, Prop } from "vue-property-decorator";
 import WarningMixin from "../mixins/WarningMixin";
 import {
   HasTitleDescription,
@@ -123,21 +122,14 @@ import {
 import { Problem } from "../models/problem";
 import TextWithTooltip from "./TextWithTooltip.vue";
 
-const ProblemClassificationProps = Vue.extend({
-  props: {
-    editMode: Boolean,
-  },
-});
-
 @Component({
   components: {
     TextWithTooltip,
   },
 })
-export default class ProblemClassification extends mixins(
-  ProblemClassificationProps,
-  WarningMixin
-) {
+export default class ProblemClassification extends WarningMixin {
+  @Prop(Boolean) readonly editMode!: boolean;
+
   get selectedProblem() {
     return this.problem.code;
   }

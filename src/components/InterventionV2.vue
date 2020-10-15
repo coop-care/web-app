@@ -31,8 +31,7 @@
   </problem-summary-container>
 </template>
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Ref } from "vue-property-decorator";
 import { scroll } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
@@ -48,6 +47,8 @@ const { setScrollPosition } = scroll;
   }
 })
 export default class InterventionView extends Vue {
+  @Ref() readonly interventionList!: HTMLElement;
+
   editedIntervention = -1;
 
   get interventions() {
@@ -102,9 +103,8 @@ export default class InterventionView extends Vue {
     setTimeout(() => window.scrollTo(scrollX, scrollY), 0);
   }
   scroll() {
-    const interventionList = this.$refs.interventionList as HTMLElement;
-    const offsetParent = interventionList.offsetParent as HTMLElement;
-    const firstItem = interventionList.firstChild as HTMLElement;
+    const offsetParent = this.interventionList.offsetParent as HTMLElement;
+    const firstItem = this.interventionList.firstChild as HTMLElement;
     const firstItemHeader = firstItem?.querySelector(".q-item") as HTMLElement;
     const offsetTop =
       (offsetParent?.offsetTop || 0) + (firstItem?.offsetTop || 0);

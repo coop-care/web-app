@@ -4,29 +4,35 @@
     <span
       v-for="(part, index) in separatedText"
       v-bind:key="index"
-      :class="regex.test(part) ? classesForMatches : ''"
+      :class="classesForPart(part)"
     >{{ part }}</span>
   </span>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-
-const TextWithHighlightsProps = Vue.extend({
-  props: {
-    text: String,
-    regex: RegExp,
-    classesForMatches: String
-  }
-});
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
-export default class TextWithHighlights extends TextWithHighlightsProps {
+export default class TextWithHighlights extends Vue {
+  @Prop({ type: String, default: ""}) readonly text!: string;
+  @Prop(Object) readonly regex: RegExp | undefined;
+  @Prop({ type: String, default: ""}) readonly classesForMatches!: string;
+
   get separatedText() {
-    return this.text
-      .replace(this.regex, (text: string) => "|" + text + "|")
-      .split("|");
+    if (this.regex) {
+      return this.text
+        .replace(this.regex, (text: string) => "|" + text + "|")
+        .split("|");
+    } else {
+      return []
+    }
+  }
+  classesForPart(part: string) {
+    if (this.regex && this.regex.test(part)) {
+      return this.classesForMatches
+    } else {
+      return ""
+    }
   }
 }
 </script>

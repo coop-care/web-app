@@ -1,4 +1,4 @@
-import Component from "vue-class-component";
+import { Component } from "vue-property-decorator";
 import { TranslateResult } from "vue-i18n";
 import RecordMixin from "./RecordMixin";
 import { ProblemRecord, Intervention } from "../models";

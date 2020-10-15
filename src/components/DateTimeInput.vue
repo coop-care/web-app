@@ -73,7 +73,7 @@
             v-model="dateString"
             :mask="format"
             :color="color"
-            @input="$refs.timeProxy.hide()"
+            @input="timeProxy.hide()"
           />
         </q-popup-proxy>
       </q-icon>
@@ -102,7 +102,7 @@
             v-model="dateString"
             :mask="format"
             :color="color"
-            @input="$refs.timeProxy.hide()"
+            @input="timeProxy.hide()"
           />
         </q-popup-proxy>
       </q-icon>
@@ -111,40 +111,36 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop, Ref } from "vue-property-decorator";
 import { date, QInput, QPopupProxy } from "quasar";
 
 const emptyDate = new Date(0, 0, 0, 0, 0, 0, 0).getTime();
 const { formatDate, extractDate, isBetweenDates } = date;
 
-const DateTimeProps = Vue.extend({
-  props: {
-    value: Date,
-    format: {
-      type: String,
-      default: "YYYY-MM-DD HH:mm"
-    },
-    min: Date,
-    label: String,
-    placeholder: String,
-    defaultTime: String,
-    color: {
-      type: String,
-      default: "primary"
-    },
-    required: Boolean,
-    dense: Boolean,
-    options: Array,
-    hint: String
-  }
-});
+interface DateSelectionOption {
+  label: string;
+  value: Date;
+}
 
 @Component
-export default class DateTimeInput extends DateTimeProps {
+export default class DateTimeInput extends Vue {
+  @Prop(Date) readonly value: Date | undefined;
+  @Prop({ type: String, default: "YYYY-MM-DD HH:mm"}) readonly format!: string;
+  @Prop(Date) readonly min: Date | undefined;
+  @Prop(String) readonly label: string | undefined;
+  @Prop(String) readonly placeholder: string | undefined;
+  @Prop(String) readonly defaultTime: string | undefined;
+  @Prop({ type: String, default: "primary"}) readonly color!: string;
+  @Prop(Boolean) readonly required!: boolean;
+  @Prop(Boolean) readonly dense!: boolean;
+  @Prop({ type: Array, default: []}) readonly options!: DateSelectionOption[];
+  @Prop(String) readonly hint: string | undefined;
+  @Ref() readonly dateInput!: QInput;
+  @Ref() readonly dateProxy!: QPopupProxy;
+  @Ref() readonly timeProxy!: QPopupProxy;
+
   dateKey = Math.random();
   showOptions = false;
-  $refs!: { dateInput: QInput; dateProxy: QPopupProxy };
 
   get dateString(): string {
     return formatDate(this.value || undefined, this.format);
@@ -207,11 +203,11 @@ export default class DateTimeInput extends DateTimeProps {
     if (!this.dateString && this.defaultTime) {
       this.dateString = value.replace("00:00", this.defaultTime);
     }
-    this.$refs.dateProxy.hide();
+    this.dateProxy.hide();
   }
   clear(event: Event) {
     this.$emit("input", null);
-    this.$refs.dateInput.$emit("blur", event);
+    this.dateInput.$emit("blur", event);
     this.showOptions = false;
   }
 }

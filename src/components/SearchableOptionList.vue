@@ -87,32 +87,27 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop, Ref } from "vue-property-decorator";
 import { QInput } from "quasar";
 import { Category } from "../helper/terminology";
 import TextWithHighlights from "./TextWithHighlights.vue";
-
-const SearchableOptionListProps = Vue.extend({
-  props: {
-    searchInputLabel: String,
-    color: String,
-    options: Array as () => Category[],
-    value: [String, Array],
-    allowMultipleSelection: Boolean,
-    dense: Boolean,
-    optionListClass: String,
-  },
-});
 
 @Component({
   components: {
     TextWithHighlights,
   },
 })
-export default class SearchableOptionList extends SearchableOptionListProps {
+export default class SearchableOptionList extends Vue {
+  @Prop(String) readonly searchInputLabel: string | undefined;
+  @Prop(String) readonly color: string | undefined;
+  @Prop({ type: Array, default: []}) readonly options!: Category[];
+  @Prop([String, Array]) readonly value!: string | string[];
+  @Prop(Boolean) readonly allowMultipleSelection!: boolean;
+  @Prop(Boolean) readonly dense!: boolean;
+  @Prop(String) readonly optionListClass: string | undefined;
+  @Ref() readonly filterInput!: QInput;
+
   filter = "";
-  $refs!: { filter: QInput };
 
   get filterRegex() {
     if (!this.filter) {
@@ -141,7 +136,7 @@ export default class SearchableOptionList extends SearchableOptionListProps {
 
   resetFilter() {
     this.filter = "";
-    this.$refs.filter.focus();
+    this.filterInput.focus();
   }
 }
 </script>

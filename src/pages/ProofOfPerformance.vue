@@ -82,8 +82,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import { date } from "quasar";
 import { Intervention } from "../models";
 import Loading from "components/Loading.vue";

@@ -52,17 +52,19 @@
       </q-item-label>
     </q-item-section>
     <q-item-section
-      v-if="primaryAction"
+      v-if="extraButtons.length"
       side
     >
       <q-btn
-        :icon="primaryAction.icon"
-        :title="primaryAction.name"
+        v-for="(button, index) in extraButtons"
+        :key="'action' + index"
+        :icon="button.icon"
+        :title="button.name"
         round
         color="primary"
         size="13px"
         dense
-        @click.prevent="primaryAction.action"
+        @click.prevent="button.action"
       />
     </q-item-section>
     <q-item-section
@@ -104,8 +106,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop, Ref } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
 import { DateTime } from "luxon";
 import {
@@ -115,19 +116,10 @@ import {
   Intervention,
   RatingReminder,
 } from "../models";
-import ActionMenu from "components/ActionMenu.vue";
+import ActionMenu, { ActionItem } from "components/ActionMenu.vue";
 import DateTimePopup from "components/DateTimePopup.vue";
 
 const { formatDate, subtractFromDate, isSameDate } = date;
-
-const TaskViewProps = Vue.extend({
-  props: {
-    client: Client,
-    task: Task,
-    date: Date,
-    hasCheckbox: Boolean,
-  },
-});
 
 @Component({
   components: {
@@ -135,9 +127,14 @@ const TaskViewProps = Vue.extend({
     DateTimePopup,
   },
 })
-export default class TaskView extends TaskViewProps {
+export default class TaskView extends Vue {
+  @Prop({ type: Object, required: true}) readonly client!: Client;
+  @Prop({ type: Object, required: true}) readonly task!: Task;
+  @Prop({ type: Date, required: true}) readonly date!: Date;
+  @Prop(Boolean) readonly hasCheckbox!: boolean;
+  @Ref() readonly dateProxy!: QPopupProxy;
+
   moveTaskMode: "single" | "future" | "none" = "none";
-  $refs!: { dateProxy: QPopupProxy };
 
   get disabled() {
     return !!this.client.leftAt;
@@ -149,7 +146,7 @@ export default class TaskView extends TaskViewProps {
     this.$store.direct.commit.toggleTaskCompletion({
       task: this.task,
       isCompleted: value,
-      date: (this.date as unknown) as Date,
+      date: this.date,
       client: this.client,
     });
     void this.$store.direct.dispatch.saveClient({ client: this.client });
@@ -231,8 +228,8 @@ export default class TaskView extends TaskViewProps {
   get record() {
     return this.client.findProblemRecord(this.task.problemId);
   }
-  get primaryAction() {
-    return undefined;
+  get extraButtons() {
+    return [] as ActionItem[];
   }
   get reminderActionItems() {
     const isIntervention = this.reminder instanceof Intervention;
@@ -322,12 +319,12 @@ export default class TaskView extends TaskViewProps {
 
   moveSingleTask() {
     this.moveTaskMode = "single";
-    this.$refs.dateProxy.show();
+    this.dateProxy.show();
   }
 
   moveFutureTasks() {
     this.moveTaskMode = "future";
-    this.$refs.dateProxy.show();
+    this.dateProxy.show();
   }
 
   endReminder() {

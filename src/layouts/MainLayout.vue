@@ -7,7 +7,7 @@
       >
         <q-btn
           v-if="
-            $router.currentRoute.name.startsWith('client') && $q.screen.lt.md
+            ($router.currentRoute.name || '').startsWith('client') && $q.screen.lt.md
           "
           flat
           icon="menu"
@@ -23,7 +23,7 @@
               'clientHistory',
               'clientMasterData',
               'login'
-            ].includes($router.currentRoute.name)
+            ].includes($router.currentRoute.name || '')
           "
           size="lg"
           dense
@@ -97,8 +97,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import UserMenu from "../components/UserMenu.vue";
 import LanguageMenu from "../components/LanguageMenu.vue";
 import DevMenu from "../components/DevMenu.vue";

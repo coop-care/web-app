@@ -25,17 +25,10 @@ body.desktop .diagnosis-list .q-hoverable:hover > .q-focus-helper
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { sortByTitle } from "../helper/terminology";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
-
-const ProblemsByDiagnosisProps = Vue.extend({
-  props: {
-    value: String,
-  },
-});
 
 @Component({
   components: {
@@ -43,7 +36,9 @@ const ProblemsByDiagnosisProps = Vue.extend({
     SimplifiedMarkdown,
   },
 })
-export default class ProblemsByDiagnosis extends ProblemsByDiagnosisProps {
+export default class ProblemsByDiagnosis extends Vue {
+  @Prop({ type: String, required: true }) readonly value!: string;
+
   get problemCodesByDiagnosis() {
     return (this.$t("problemCodesByDiagnosis") as unknown) as {
       [id: string]: string[];

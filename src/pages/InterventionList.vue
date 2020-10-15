@@ -10,8 +10,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import EditingPageContainer from "components/EditingPageContainer.vue";
 import InterventionView from "components/InterventionV3.vue";
 

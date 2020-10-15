@@ -110,22 +110,13 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Watch } from "vue-property-decorator";
 import { ProblemRecord } from "../models/problemRecord";
 import { sortByTitle } from "../helper/terminology";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 
 @Component({
-  watch: {
-    selectedDiagnosisCode(this: ProblemsByDiagnosis, value: string) {
-      if (value) {
-        this.step += 1;
-      }
-      this.selectedProblemCodes = [];
-    }
-  },
   components: {
     SearchableOptionList,
     SimplifiedMarkdown
@@ -135,6 +126,14 @@ export default class ProblemsByDiagnosis extends Vue {
   step = 1;
   selectedDiagnosisCode = "";
   selectedProblemCodes = [];
+
+  @Watch("isVisible")
+  onSelectedDiagnosisCodeChanged(value: string) {
+    if (value) {
+      this.step += 1;
+    }
+    this.selectedProblemCodes = [];
+  }
 
   get problemCodesByDiagnosis() {
     return (this.$t("problemCodesByDiagnosis") as unknown) as {

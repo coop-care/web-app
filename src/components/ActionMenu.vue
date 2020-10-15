@@ -40,7 +40,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 
-interface ActionItem  {
+export interface ActionItem  {
   name: string;
   icon?: string;
   action: () => void;

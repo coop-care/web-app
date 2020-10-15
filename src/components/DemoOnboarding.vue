@@ -27,19 +27,18 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Ref } from "vue-property-decorator";
 import { QDialog } from "quasar";
 
 @Component
 export default class DemoOnboarding extends Vue {
-  $refs!: { dialog: QDialog };
+  @Ref() readonly  dialog!: QDialog;
 
   show() {
-    this.$refs.dialog.show();
+    this.dialog.show();
   }
   hide() {
-    this.$refs.dialog.hide();
+    this.dialog.hide();
   }
   onOKClick() {
     const user = this.$store.direct.state.currentUser?.clone();

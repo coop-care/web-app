@@ -15,23 +15,18 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { ProblemRecord } from "../models/problemRecord";
-
-const ProblemSummaryContainerProps = Vue.extend({
-  props: {
-    problemRecord: ProblemRecord,
-  },
-});
 
 @Component({
   components: {
     ProblemSummary,
   },
 })
-export default class ProblemSummaryContainer extends ProblemSummaryContainerProps {
+export default class ProblemSummaryContainer extends Vue {
+  @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
+
   get style() {
     const style = "transition: .3s all ease; ";
     if (this.$q.screen.gt.sm) {

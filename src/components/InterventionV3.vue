@@ -36,12 +36,7 @@
           <div class="text-subtitle1 text-center category-header">
             <simplified-markdown
               v-if="interventionsInSelectedCategory.length"
-              :text="
-                $t('interventionsForCategoryTitle', {
-                  category: category.title,
-                  problem: $t(record.problem.title)
-                }) + ':'
-              "
+              :text="titleForCategory(category.title)"
             />
             <simplified-markdown
               v-else
@@ -104,8 +99,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component } from "vue-property-decorator";
 import { TerminologyWithMaps } from "../helper/terminology";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
@@ -146,6 +140,16 @@ export default class InterventionView extends Vue {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
+  titleForCategory(categoryTitle: string) {
+    if (this.record) {
+      return this.$t("interventionsForCategoryTitle", {
+          category: categoryTitle,
+          problem: this.$t(this.record.problem.title)
+        }) as string + ":";
+    } else {
+      return ""
+    }
+  }
   interventionsInCategory(categoryCode: string) {
     return this.interventions.filter(
       intervention => intervention.categoryCode == categoryCode

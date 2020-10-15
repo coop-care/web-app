@@ -224,46 +224,41 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
-import { Rating } from "../models/rating";
+import { Vue, Component, Prop } from "vue-property-decorator";
+import { Rating } from "../models";
 import TextWithTooltip from "./TextWithTooltip.vue";
-
-const RatingViewProps = Vue.extend({
-  props: {
-    title: String,
-    description: String,
-    scale: Array,
-    type: String,
-    rating: Object,
-    examples: Array
-  }
-});
 
 @Component({
   components: {
     TextWithTooltip
   }
 })
-export default class RatingView extends RatingViewProps {
+export default class RatingView extends Vue {
+  @Prop({ type: String, required: true}) readonly title!: string;
+  @Prop({ type: String, required: true}) readonly description!: string;
+  @Prop({ type: String, required: true}) readonly type!: string;
+  @Prop({ type: Array, required: true}) readonly scale!: string[];
+  @Prop(Object) readonly rating: Rating | undefined;
+  @Prop({ type: Array, default: []}) readonly examples!: string[];
+
   observationMouseover = -1;
   expectationMouseover = -1;
   showComment = false;
 
   get observation() {
-    return this.rating.observation || 0;
+    return this.rating?.observation || 0;
   }
   set observation(value: number) {
     this.updateNewOutcome({ observation: value });
   }
   get expectation() {
-    return this.rating.expectation || 0;
+    return this.rating?.expectation || 0;
   }
   set expectation(value: number) {
     this.updateNewOutcome({ expectation: value });
   }
   get comment() {
-    return this.rating.comment || "";
+    return this.rating?.comment || "";
   }
   set comment(value: string) {
     this.updateNewOutcome({ comment: value });

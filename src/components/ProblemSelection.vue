@@ -104,8 +104,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component, { mixins } from "vue-class-component";
+import { Component, Prop, Ref } from "vue-property-decorator";
 import WarningMixin from "../mixins/WarningMixin";
 import {
   HasTitleDescription,
@@ -117,38 +116,30 @@ import { QInput, QTree } from "quasar";
 import { ProblemRecord, Problem } from "../models";
 import TextWithHighlights from "./TextWithHighlights.vue";
 
-const ProblemSelectionProps = Vue.extend({
-  props: {
-    value: ProblemRecord,
-    editMode: Boolean,
-  },
-});
-
 @Component({
   components: {
     TextWithHighlights,
   },
 })
-export default class ProblemSelection extends mixins(
-  ProblemSelectionProps,
-  WarningMixin
-) {
+export default class ProblemSelection extends WarningMixin {
+  @Prop(Object) readonly value: ProblemRecord | undefined;
+  @Prop(Boolean) readonly editMode!: boolean;
+  @Ref() readonly filter!: QInput;
+  @Ref() readonly problemTree!: QTree;
+
   problemsFilter = "";
-  $refs!: {
-    filter: QInput;
-    problems: QTree;
-  };
 
   get selectedProblem() {
     return this.problem?.code || "";
   }
   set selectedProblem(value: string) {
     const hasOutcomesOrInterventions =
-      this.record.outcomes.length || this.record.interventions.length;
+      this.record?.outcomes.length || this.record?.interventions.length || false;
 
     if (
       this.editMode &&
       !!this.selectedProblem &&
+      !!this.problem &&
       (this.problem.signsAndSymptoms.length ||
         this.problems.details ||
         hasOutcomesOrInterventions)
@@ -225,7 +216,7 @@ export default class ProblemSelection extends mixins(
 
   resetProblemsFilter() {
     this.problemsFilter = "";
-    this.$refs.filter.focus();
+    this.filter.focus();
   }
 
   filterTerminology(node: HasTitleDescription, filter: string) {
@@ -242,7 +233,7 @@ export default class ProblemSelection extends mixins(
       );
 
       if (domain) {
-        this.$refs.problems.setExpanded("domains." + domain.code, true);
+        this.problemTree.setExpanded("domains." + domain.code, true);
       }
     }
   }

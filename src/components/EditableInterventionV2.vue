@@ -52,24 +52,19 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import InterventionEditor from "./InterventionEditorV2.vue";
 import { Intervention } from "../models/intervention";
-
-const EditableInterventionProps = Vue.extend({
-  props: {
-    value: Intervention,
-    isExpanded: Boolean
-  }
-});
 
 @Component({
   components: {
     InterventionEditor
   }
 })
-export default class EditableIntervention extends EditableInterventionProps {
+export default class EditableIntervention extends Vue {
+  @Prop({ type: Object, required: true}) readonly value!: Intervention;
+  @Prop(Boolean) readonly isExpanded!: boolean;
+
   get icon() {
     return this.$t(this.value.category.icon) || "fas fa-question";
   }

@@ -17,8 +17,7 @@
 </style>
 
 <script lang="ts">
-import Vue from "vue";
-import Component from "vue-class-component";
+import { Vue, Component, Watch } from "vue-property-decorator";
 
 const pages = {
   "/legal-notice": {
@@ -35,15 +34,14 @@ const pages = {
   },
 };
 
-@Component({
-  watch: {
-    $route(this: MarkdownPage) {
-      this.loadMarkdown();
-    },
-  },
-})
+@Component
 export default class MarkdownPage extends Vue {
   markdown = "";
+
+  @Watch("$route")
+  onRouteChanged() {
+      this.loadMarkdown();
+  }
 
   loadMarkdown() {
     this.markdown = "";
