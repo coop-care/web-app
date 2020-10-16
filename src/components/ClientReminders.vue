@@ -73,7 +73,7 @@
         <div class="text-subtitle1 text-weight-bold q-mt-lg">
           {{ visit.title }}
         </div>
-        <div>
+        <div class="task-list">
           <q-list dense>
             <task-view
               v-for="(task, index) in visit.tasks"
@@ -135,6 +135,8 @@
     width: 184px
     div:first-of-type
       margin-bottom: -5px
+body.desktop .task-list .q-hoverable:hover > .q-focus-helper
+  background-color: var(--q-color-primary)
 </style>
 
 <script lang="ts">
