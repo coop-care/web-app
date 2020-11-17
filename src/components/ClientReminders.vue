@@ -43,7 +43,7 @@
       <div class="q-mr-sm selected-date">
         <div class="text-h6 ellipsis">
           {{ formattedDate({ weekday: "long" }) }}
-          {{ isToday ? $t("isTodayHint") : "" }}
+          {{ todayHint }}
         </div>
         <div class="text-body2">
           {{
@@ -167,9 +167,14 @@ const allInclusive = {
 export default class ClientReminders extends Vue {
   @Ref() readonly dateProxy!: QPopupProxy;
 
+  recompute = Math.random();
+
   get selectedDate() {
-    return parseInt(this.$root.$route.params.day)
-      ? new Date(parseInt(this.$root.$route.params.day))
+    const timestamp = parseInt(this.$root.$route.params.day)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const recompute = this.recompute
+    return !isNaN(timestamp)
+      ? new Date(timestamp)
       : new Date();
   }
   set selectedDate(value) {
@@ -198,14 +203,18 @@ export default class ClientReminders extends Vue {
       allInclusive
     );
   }
-  get isToday() {
-    return isSameDate(this.selectedDate, new Date(), "day");
-  }
   get timeFormatter() {
     return new Intl.DateTimeFormat(this.$root.$i18n.locale, {
       hour: "numeric",
       minute: "numeric",
     });
+  }
+  get todayHint() {
+    if (isSameDate(this.selectedDate, new Date(), "day")) {
+      return this.$t("isTodayHint");
+    } else {
+      return "";
+    }
   }
   get hasActiveProblems() {
     return this.client && this.client.activeProblemCount > 0
@@ -348,6 +357,20 @@ export default class ClientReminders extends Vue {
       name: "problem",
       params: { problemId: "new" },
     });
+  }
+
+  visibilityDidChange() {
+    if (document.visibilityState == "visible") {
+      this.recompute = Math.random();
+    }
+  }
+
+  created() {
+    window.addEventListener("visibilitychange", this.visibilityDidChange);
+  }
+
+  beforeDestroy() {
+    window.removeEventListener("visibilitychange", this.visibilityDidChange);
   }
 }
 </script>
