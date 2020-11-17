@@ -1,10 +1,18 @@
 <template>
   <span>
-    <span
-      v-for="(fragment, index) in text.replace(/(\*+)([^*]+)(\*+)/g, '|$1$2$3|').split('|')"
-      v-bind:key="index"
-      :class="classes(fragment)"
-    >{{ fragment.replace(/\*/g, "") }}</span>
+    <span 
+      v-for="(line, lineIndex) in text.split('\n')"
+      v-bind:key="lineIndex"
+    >
+      <br v-if="lineIndex > 0">
+      <span
+        v-for="(fragment, index) in line.replace(/(\*+)([^*]+)(\*+)/g, '|$1$2$3|').split('|')"
+        v-bind:key="lineIndex + '.' + index"
+        :class="classes(fragment)"
+      >
+        {{ fragment.replace(/\*/g, "") }}
+      </span>
+    </span>
   </span>
 </template>
 
