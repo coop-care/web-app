@@ -12,10 +12,17 @@
     :title="title || $t('moreActions')"
   >
     <q-list>
-      <q-item
+      <div
         v-for="(item, index) in items"
         v-bind:key="index"
         v-if="item.condition !== false"
+      >
+      <slot
+        v-if="item.customType"
+        :name="item.customType"
+      />
+      <q-item
+        v-else
         clickable
         v-ripple
         @click="item.action"
@@ -27,8 +34,11 @@
             :color="item.isDestructive ? 'negative': color"
           />
         </q-item-section>
-        <q-item-section>{{ item.name }}</q-item-section>
+        <q-item-section>
+          {{ item.name }}
+        </q-item-section>
       </q-item>
+      </div>
     </q-list>
   </q-btn-dropdown>
 </template>
@@ -46,6 +56,7 @@ export interface ActionItem  {
   action: () => void;
   condition: boolean;
   isDestructive: boolean;
+  customType?: string;
 }
 
 @Component
