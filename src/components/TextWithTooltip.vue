@@ -1,24 +1,25 @@
 <template>
-  <div>
+  <div class="cursor-help">
     {{ text }}
     <q-icon
       v-if="tooltip"
-      name="far fa-comment-alt"
-      size="0.85em"
+      name="fas fa-info-circle"
+      size=".85rem"
       class="q-ml-xs"
+      style="vertical-align: baseline"
     />
     <q-tooltip
       :offset="$q.platform.is.mobile ? [0,10] : [0,4]"
       v-if="tooltip"
-      :max-width="width"
+      :max-width="maxWidth"
       :anchor="($q.platform.is.mobile ? 'top' : 'bottom') + ' middle'"
       :self="($q.platform.is.mobile ? 'bottom' : 'top') + ' middle'"
       content-class="text-center"
-      content-style="font-size: 0.9em"
+      content-style="font-size: 0.8rem"
     >
       <simplified-markdown :text="tooltip" />
     </q-tooltip>
-    <q-resize-observer @resize="width = $event.width + 'px'" />
+    <q-resize-observer @resize="parentWidth = $event.width + 'px'" />
   </div>
 </template>
 
@@ -34,7 +35,12 @@ import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 export default class TextWithTooltip extends Vue {
   @Prop({ type: String, default: ""}) readonly text!: string;
   @Prop({ type: String, default: ""}) readonly tooltip!: string;
+  @Prop({ type: String, default: ""}) readonly width!: string;
 
-  width = "100%";
+  parentWidth = "100%";
+
+  get maxWidth() {
+    return this.width || this.parentWidth;
+  }
 }
 </script>
