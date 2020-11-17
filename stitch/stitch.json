@@ -14,7 +14,7 @@
     "custom_user_data_config": {
         "enabled": false
     },
-    "realm_config": {
+    "sync": {
         "development_mode_enabled": false
     }
 }

@@ -38,6 +38,11 @@ export default class StitchApi implements CoopCareApiInterface {
             return undefined;
         }
     }
+    private get epclient() {
+        return this.stitch.auth.getProviderClient(
+            UserPasswordAuthProviderClient.factory
+        );
+    }
     login(username: string, password: string) {
         const credential = new UserPasswordCredential(username, password);
         return this.stitch.auth
@@ -48,16 +53,20 @@ export default class StitchApi implements CoopCareApiInterface {
         return this.stitch.auth.logout();
     }
     registerUser(username: string, password: string) {
-        const epclient = this.stitch.auth.getProviderClient(
-            UserPasswordAuthProviderClient.factory
-        );
-        return epclient.registerWithEmail(username, password);
+        return this.epclient.registerWithEmail(username, password);
     }
     confirmUser(token: string, tokenId: string) {
-        const epclient = this.stitch.auth.getProviderClient(
-            UserPasswordAuthProviderClient.factory
-        );
-        return epclient.confirmUser(token, tokenId);
+        return this.epclient.confirmUser(token, tokenId);
+    }
+    resendConfirmationEmail(email: string) {
+        return this.epclient.resendConfirmationEmail(email)
+    }
+    sendResetPasswordEmail(email: string) {
+        return this.epclient.sendResetPasswordEmail(email)
+    }
+    resetPassword(token: string, tokenId: string, password: string) {
+        return this.epclient.resetPassword(token, tokenId, password)
+    }
     }
     saveUser(user: User) {
         window.localStorage.setItem("signature", user.signature);

@@ -105,6 +105,16 @@ const routes: RouteConfig[] = [
         component: () => import("pages/Confirm.vue")
       },
       {
+        name: "requestPasswordReset",
+        path: !isDemo ? "/requestpasswordreset" : "",
+        component: () => import("pages/RequestPasswordReset.vue")
+      },
+      {
+        name: "resetPassword",
+        path: !isDemo ? "/passwordreset" : "",
+        component: () => import("pages/PasswordReset.vue")
+      },
+      {
         name: "legalNotice",
         path: "/legal-notice",
         component: () => import("pages/Markdown.vue")

@@ -1,13 +1,14 @@
 <template>
   <q-page class="window-height window-width row justify-center">
-    <div
-      v-if="isForm"
-      class="column"
-    >
+    <div class="column">
       <div class="row">
-        <q-card class="credentials bg-grey-2 shadow-1 q-mt-xl">
+
+        <q-card
+          v-if="isForm"
+          class="credentials bg-grey-2 shadow-1 q-mt-xl"
+        >
           <q-card-section>
-            <div class="text-h5 text-center">{{ $t("createAccount") }}</div>
+            <div class="text-h5 text-center">{{ $t("newPasswordTitle") }}</div>
           </q-card-section>
           <q-card-section>
             <p
@@ -17,15 +18,9 @@
             <q-form class="q-gutter-md">
               <q-input
                 clearable
-                v-model="email"
-                type="email"
-                :label="$t('email')"
-              />
-              <q-input
-                clearable
                 v-model="password"
                 type="password"
-                :label="$t('password')"
+                :label="$t('newPassword')"
               />
             </q-form>
           </q-card-section>
@@ -35,21 +30,34 @@
               no-caps
               color="primary"
               class="full-width"
-              :label="$t('create')"
-              @click="doRegister"
+              :label="$t('save')"
+              @click="resetPassword"
             />
           </q-card-actions>
         </q-card>
-      </div>
-    </div>
-    <div
-      v-else-if="isSuccess"
-      class="column"
-    >
-      <div class="row">
-        <h5 class="text-h5 q-my-md">
-          {{ $t("confirmationMessage") }}
-        </h5>
+
+        <q-card 
+          v-else-if="isSuccess"
+          class="credentials bg-grey-2 shadow-1 q-mt-xl"
+        >
+          <q-card-section>
+            <div class="text-h5 text-center">{{ $t("newPasswordTitle") }}</div>
+          </q-card-section>
+          <q-card-section>
+            <p class="q-mt-md text-center">{{ $t("passwordResetSuccessfulMessage") }}</p>
+          </q-card-section>
+          <q-card-actions class="q-px-md q-pb-md">
+            <q-btn
+              unelevated
+              no-caps
+              color="primary"
+              class="full-width"
+              :label="$t('gotoLoginButton')"
+              @click="$router.push({ name: 'login' })"
+            />
+          </q-card-actions>
+        </q-card>
+
       </div>
     </div>
   </q-page>
@@ -69,11 +77,9 @@ enum State {
 }
 
 @Component
-export default class PageLogin extends Vue {
+export default class PagePasswordReset extends Vue {
   state = State.Form;
   errorMsg = "";
-
-  email = "";
   password = "";
 
   get isForm() {
@@ -83,9 +89,11 @@ export default class PageLogin extends Vue {
     return this.state === State.Success;
   }
 
-  doRegister() {
+  resetPassword() {
+    const token = String(this.$route.query.token);
+    const tokenId = String(this.$route.query.tokenId);
     this.$ccApi
-      .registerUser(this.email, this.password)
+      .resetPassword(token, tokenId, this.password)
       .then(() => (this.state = State.Success))
       .catch(err => {
         this.errorMsg = this.$t("errorMessage", {message: err.message}) as string;

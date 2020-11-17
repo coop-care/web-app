@@ -32,6 +32,15 @@ export default class DemoApi implements CoopCareApiInterface {
     confirmUser() {
         return Promise.resolve();
     }
+    resendConfirmationEmail() {
+        return Promise.resolve();
+    }
+    sendResetPasswordEmail() {
+        return Promise.resolve();
+    }
+    resetPassword() {
+        return Promise.resolve();
+    }
     saveUser(user: User) {
         window.localStorage.setItem("signature", user.signature);
         return Promise.resolve(user);

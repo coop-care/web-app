@@ -4,10 +4,10 @@
     "type": "local-userpass",
     "config": {
         "autoConfirm": false,
-        "confirmEmailSubject": "Confirm your OpenOmaha account",
-        "emailConfirmationUrl": "https://openomaha-elgvq.mongodbstitch.com/#/confirm",
-        "resetPasswordSubject": "Reset your OpenOmaha password",
-        "resetPasswordUrl": "https://openomaha-elgvq.mongodbstitch.com/#/reset",
+        "confirmEmailSubject": "Confirm your CoopCare account",
+        "emailConfirmationUrl": "https://beta.coopcare.de/#/confirm",
+        "resetPasswordSubject": "Reset your CoopCare password",
+        "resetPasswordUrl": "https://beta.coopcare.de/#/passwordreset",
         "runConfirmationFunction": false,
         "runResetFunction": ""
     },

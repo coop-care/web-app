@@ -37,11 +37,9 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
         next({ name: "userSettings" });
       }
     } else {
-      if (to.name === "login") {
-        next();
-      } else if (to.name === "register") {
-        next();
-      } else if (to.name === "confirm") {
+      if (["login", "register", "confirm", "requestPasswordReset", "resetPassword"]
+        .includes(to.name || "")
+      ) {
         next();
       } else {
         next({ name: "login" });

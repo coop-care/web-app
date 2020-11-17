@@ -7,6 +7,9 @@ export default interface CoopCareApiInterface {
     logout(): Promise<void>;
     registerUser(username: string, password: string): Promise<void>;
     confirmUser(token: string, tokenId: string): Promise<void>;
+    resendConfirmationEmail(email: string): Promise<void>;
+    sendResetPasswordEmail(email: string): Promise<void>;
+    resetPassword(token: string, tokenId: string, password: string): Promise<void>;
     saveUser(user: User): Promise<User>;
 
     getAllClients(): Promise<Client[]>;

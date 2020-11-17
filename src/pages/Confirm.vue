@@ -14,7 +14,7 @@
         class="row"
       >
         <h5 class="text-h5 q-my-md">
-          Your email has been confirmed.
+          {{ $t("didConfirmEmailAddress") }}
           <router-link :to="{ name: 'login' }">
             {{ $t('goToLogin') }}
           </router-link>
@@ -25,7 +25,6 @@
         class="row"
       >
         <h5 class="text-h5 q-my-md">
-          An error has occured:<br>
           {{ errorMsg }}
         </h5>
       </div>
@@ -62,7 +61,7 @@ export default class PageConfirm extends Vue {
       .then(() => (this.state = State.Confirmed))
       .catch(err => {
         this.state = State.Error;
-        this.errorMsg = err.message;
+        this.errorMsg = this.$t("errorMessage", {message: err.message}) as string;
       });
   }
 }

@@ -312,5 +312,16 @@
   "reducingPriorityWarningMessage": "Setting the priority to low means that at least one active intervention for this problem will be stopped.\n\nAre you sure you want to change the priority anyway?",
   "changingSeverityWarningMessage": "Changing the problem severity also means removing the documented signs and symptoms, risk factors or health promotion wishes.\n\nAre you sure you want to change the severity anyway?",
   "changingInterventionCategoryWarningMessage": "Changing the category afterwards will also change the meaning of the intervention target and description, even for the tasks already performed. It might be more sensible to create a completely new intervention.\n\nAre you sure you want to change the category anyway?",
-  "problemDismissalOutcomeWarningMessage": "The last rating for this problem was either a while ago or remained below the expected goals.\n\nWould you like to do a final rating before you close the problem?"
+  "errorMessage": "Error: {message}",
+  "forgotPassword": "Forgot password?",
+  "didConfirmEmailAddress": "Your email address is now confirmed.",
+  "passwordResetTitle": "Reset password",
+  "newPasswordTitle": "Set new password",
+  "newPassword": "New password",
+  "passwordResetSuccessfulMessage": "The new password has been saved successfully.",
+  "gotoLoginButton": "To the login",
+  "requestPasswordResetHint": "We will send you an email with a link with which you can set a new password.",
+  "requestPasswordResetSuccessfulMessage": "The email has been sent. Please click on the link in the email to set a new password.",
+  "requestEmailAgainButton": "Request email again",
+  "requestEmailButton": "Request email"
 }

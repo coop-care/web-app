@@ -97,7 +97,7 @@
   "additionalProblemSelection": "Weitere Probleme auswählen …",
   "createDraftProblemRecords": "0 Probleme als Entwurf anlegen | 1 Problem als Entwurf anlegen | {count} Probleme als Entwurf anlegen",
   "task": "Aufgabe | Aufgaben",
-  "documentationHistory": "Verlauf",
+  "documentationHistory": "Historie",
   "omahaSystemBookCopyrightNotice": "Mit Genehmigung reproduziert und übersetzt: Martin KS. (2005). *The Omaha System: A Key to Practice, Documentation, and Information Management* (Reprinted 2nd ed.). Omaha, NE: Health Connections Press.",
   "recurrence": "Wiederholen",
   "Never": "Niemals",
@@ -312,5 +312,16 @@
   "reducingPriorityWarningMessage": "Die Priorität auf niedrig zu setzen, bedeutet dass mindestens eine aktive Pflegeintervention für dieses Problem gestoppt wird.\n\nBist du dir sicher, dass du die Priorität trotzdem ändern möchtest?",
   "changingSeverityWarningMessage": "Den Schweregrad zu verändern bedeutet gleichzeitig, die dokumentierten Symptome, Risikofaktoren oder Vorsorgewünsche zu entfernen.\n\nBist du dir sicher, dass du den Schweregrad trotzdem ändern möchtest?",
   "changingInterventionCategoryWarningMessage": "Die Kategorie nachträglich zu ändern, verändert gleichzeitig die Bedeutung der Pflegemaßnahme und der Beschreibung, auch für die bereits durchgeführten Aufgaben. Es könnte sinnvoller sein, eine ganz neue Pflegeintervention zu erstellen.\n\nBist du dir sicher, dass du die Kategorie trotzdem ändern möchtest?",
-  "problemDismissalOutcomeWarningMessage": "Die letzte Bewertung für dieses Problems ist entweder bereits eine Weile her oder unterhalb der erwarteten Ziele geblieben.\n\nMöchtest du erst eine Abschlussbewertung vornehmen, bevor du das Problem abschließt?"
+  "errorMessage": "Fehler: {message}",
+  "forgotPassword": "Passwort vergessen?",
+  "didConfirmEmailAddress": "Deine E-Mail-Adresse ist jetzt bestätigt.",
+  "passwordResetTitle": "Passwort zurücksetzen",
+  "newPasswordTitle": "Neues Passwort setzen",
+  "newPassword": "Neues Passwort",
+  "passwordResetSuccessfulMessage": "Das neue Passwort wurde erfolgreich gespeichert.",
+  "gotoLoginButton": "Zum Login",
+  "requestPasswordResetHint": "Wir werden dir eine E-Mail senden mit einem Link, mit dem du ein neues Passwort setzen kannst.",
+  "requestPasswordResetSuccessfulMessage": "Die E-Mail wurde verschickt. Bitte klicke auf den Link in der E-Mail um ein neues Passwort zu setzen.",
+  "requestEmailAgainButton": "Anfrage erneut senden",
+  "requestEmailButton": "Anfrage absenden"
 }
