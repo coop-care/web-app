@@ -31,12 +31,12 @@ interface Option {
 
 @Component
 export default class ToggleButtonGroup extends Vue {
-  @Prop({ type: Array, default: []}) readonly options!: Option[];
+  @Prop({ type: Array, default: () => []}) readonly options!: Option[];
   @Prop(String) readonly color: string | undefined;
   @Prop(String) readonly textColor: string | undefined;
   @Prop(String) readonly toggleColor: string | undefined;
   @Prop(String) readonly toggleTextColor: string | undefined;
-  @Prop({ type: Array, default: []}) readonly value!: string[];
+  @Prop({ type: Array, default: () => []}) readonly value!: string[];
   @Prop({ type: String, default: "md"}) readonly size!: string;
 
   toggle(value: any) {

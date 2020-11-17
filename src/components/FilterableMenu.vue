@@ -48,7 +48,7 @@ import TextWithHighlights from "../components/TextWithHighlights.vue";
 })
 export default class FilterableMenu extends Vue {
   @Prop({ type: String, required: true}) readonly value!: string;
-  @Prop({ type: Array, default: []}) readonly items!: string[];
+  @Prop({ type: Array, default: () => []}) readonly items!: string[];
   @Ref() readonly  menu: QMenu | undefined;
 
   isVisible = false;

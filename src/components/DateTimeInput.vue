@@ -133,7 +133,7 @@ export default class DateTimeInput extends Vue {
   @Prop({ type: String, default: "primary"}) readonly color!: string;
   @Prop(Boolean) readonly required!: boolean;
   @Prop(Boolean) readonly dense!: boolean;
-  @Prop({ type: Array, default: []}) readonly options!: DateSelectionOption[];
+  @Prop({ type: Array, default: () => []}) readonly options!: DateSelectionOption[];
   @Prop(String) readonly hint: string | undefined;
   @Ref() readonly dateInput!: QInput;
   @Ref() readonly dateProxy!: QPopupProxy;
