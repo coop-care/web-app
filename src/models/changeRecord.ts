@@ -32,8 +32,4 @@ export class ChangeRecord {
         this.newValues = newValues;
         this.oldValues = oldValues;
     }
-
-    get username() {
-        return this.user;
-    }
 }

@@ -69,6 +69,8 @@
 .q-timeline--comfortable .change-record
   .q-timeline__title table
     margin-left: 40px
+.change-record .q-timeline__subtitle div:nth-of-type(2)
+  text-transform: none
 .q-timeline--dense .change-record
   margin-left: 8px
   .q-timeline__subtitle div
@@ -119,7 +121,7 @@ export default class ClientHistoryEntry extends Vue {
     );
   }
   get username() {
-    return this.changeRecord.username;
+    return this.$store.direct.state.teamMembers[this.changeRecord.user]?.username;
   }
   get color() {
     return (

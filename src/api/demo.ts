@@ -1,5 +1,5 @@
 import CoopCareApiInterface from "./coopCareApiInterface";
-import { Client, User } from "../models";
+import { Client, User, Team } from "../models";
 import { ObjectID } from "bson";
 import sampleData from "../data/sample1.json";
 
@@ -8,17 +8,25 @@ export default class DemoApi implements CoopCareApiInterface {
         client._id = new ObjectID();
         return client;
     });
+    user = (() => {
+        const user = new User(this.userId, this.userEmail);
+        user.firstName = "Demo";
+        user.lastName = "Tester";
+        user.signature = "DT";
+        return user;
+    })()
+    team = (() => {
+        return new Team("Superspreader", this.userId);
+    })()
 
     get isLoggedIn() {
         return true;
     }
-    get user() {
-        const user = new User("demo");
-        user.firstName = "Demo";
-        user.lastName = "Tester";
-        user.email = "demo@coopcare.de";
-        user.signature = window.localStorage.getItem("signature") || "DT";
-        return user;
+    get userId() {
+        return "demo";
+    }
+    get userEmail() {
+        return "demo@coopcare.de";
     }
     login() {
         return Promise.resolve();
@@ -41,9 +49,21 @@ export default class DemoApi implements CoopCareApiInterface {
     resetPassword() {
         return Promise.resolve();
     }
-    saveUser(user: User) {
-        window.localStorage.setItem("signature", user.signature);
+
+    getUser() {
+        return Promise.resolve(this.user);
+    }
+    createUser(user: User) {
         return Promise.resolve(user);
+    }
+    saveUser(user: User) {
+        return Promise.resolve(user);
+    }
+    deleteUser() {
+        return Promise.resolve();
+    }
+    getTeamMembers() {
+        return Promise.resolve([]);
     }
 
     createClient(client: Client) {
@@ -58,10 +78,26 @@ export default class DemoApi implements CoopCareApiInterface {
     deleteAllClients() {
         return Promise.reject();
     }
-    getAllClients(): Promise<Client[]> {
+    getClients(clientIds: string[]): Promise<Client[]> {
+        return Promise.resolve(this.clients.filter(client => clientIds.includes(client._id?.toHexString() || "")));
+    }
+    getMyClients(): Promise<Client[]> {
         return Promise.resolve(this.clients.slice());
     }
     saveClient(client: Client) {
         return Promise.resolve(client);
+    }
+
+    getMyTeams() {
+        return Promise.resolve([this.team]);
+    }
+    createTeam(team: Team) {
+        return Promise.resolve(team);
+    }
+    saveTeam(team: Team) {
+        return Promise.resolve(team);
+    }
+    deleteTeam() {
+        return Promise.resolve();
     }
 }

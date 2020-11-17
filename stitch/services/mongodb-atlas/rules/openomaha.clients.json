@@ -1,19 +1,41 @@
 {
-  "id": "5dee470ca96a577ca5c50b4d",
-  "database": "openomaha",
-  "collection": "clients",
-  "roles": [
-    {
-      "name": "owner",
-      "apply_when": {
-        "user_id": "%%user.id"
-      },
-      "read": true,
-      "write": true,
-      "insert": true,
-      "delete": true,
-      "additional_fields": {}
-    }
-  ],
-  "schema": {}
+    "collection": "clients",
+    "database": "openomaha",
+    "id": "5dee470ca96a577ca5c50b4d",
+    "roles": [
+        {
+            "name": "teamMember",
+            "apply_when": {
+                "%%true": {
+                    "%function": {
+                        "arguments": [
+                            "%%root._id"
+                        ],
+                        "name": "isClientInTeam"
+                    }
+                }
+            },
+            "read": true,
+            "write": true,
+            "insert": true,
+            "delete": true,
+            "search": true,
+            "additional_fields": {}
+        },
+        {
+            "name": "insertOnly",
+            "apply_when": {},
+            "read": false,
+            "write": {
+                "%%prevRoot": {
+                    "$exists": false
+                }
+            },
+            "insert": true,
+            "delete": false,
+            "search": false,
+            "additional_fields": {}
+        }
+    ],
+    "schema": {}
 }

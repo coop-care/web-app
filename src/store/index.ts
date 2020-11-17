@@ -1,10 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { downloadJSON } from "../helper/download";
-import { setupColors } from "../helper/color";
-import { Client, User } from "../models";
+import { Client, User, Team, TeamMember } from "../models";
 import { createDirectStore } from "direct-vuex";
-import { ccApi } from "../api/apiProvider";
 import getters from "./getters";
 import mutations from "./mutations";
 import actions from "./actions";
@@ -13,13 +10,17 @@ Vue.use(Vuex);
 
 export interface StateInterface {
     currentUser?: User;
+    teams: Team[];
+    teamMembers: Record<string, TeamMember>;
     clients: Client[];
     isLoadingClientList: boolean;
 }
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
-        currentUser: ccApi.user,
+        currentUser: undefined,
+        teams: [],
+        teamMembers: {},
         clients: [],
         isLoadingClientList: false
     } as StateInterface,
@@ -31,25 +32,6 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
     // for dev mode only
     strict: (process.env.DEV as unknown) === true || process.env.DEV === "true"
 });
-
-void store.dispatch.fetchClientsFromDB();
-
-let lastFetch = 0;
-window.addEventListener("focus", () => {
-    if (Date.now() > lastFetch + 3600 * 1000) {
-        void store.dispatch.fetchClientsFromDB();
-        lastFetch = Date.now();
-    }
-});
-window.addEventListener("online", () => {
-    void store.dispatch.fetchClientsFromDB();
-    lastFetch = Date.now();
-});
-
-// @ts-ignore
-window.download = () => downloadJSON(store.state.clients || [], "sample1.json");
-
-setupColors();
 
 // Export the original Vuex store because of quasar
 export default store.original;

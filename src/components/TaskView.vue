@@ -18,11 +18,13 @@
     </q-item-section>
     <q-item-section
       side
-      class=""
     >
-      <div :class="'signature task-signature text-' + (task.user ? 'black' : 'grey-4')">
-        {{ task.user || " " }}
-      </div>
+      <signature
+        :userId="task.user"
+        :description="completionDate"
+        has-tooltip
+        class="task-signature"
+      />
     </q-item-section>
     <q-item-section
       side
@@ -99,7 +101,6 @@
 <style lang="sass">
 .task-signature
   font-size: 11.7px
-  border: 1px solid
 .task-type
   width: 3px
   height: calc(100% - 8px)
@@ -118,6 +119,7 @@ import {
 } from "../models";
 import ActionMenu, { ActionItem } from "components/ActionMenu.vue";
 import DateTimePopup from "components/DateTimePopup.vue";
+import Signature from "../components/Signature.vue";
 
 const { formatDate, subtractFromDate, isSameDate } = date;
 
@@ -125,6 +127,7 @@ const { formatDate, subtractFromDate, isSameDate } = date;
   components: {
     ActionMenu,
     DateTimePopup,
+    Signature
   },
 })
 export default class TaskView extends Vue {
@@ -150,6 +153,10 @@ export default class TaskView extends Vue {
       client: this.client,
     });
     void this.$store.direct.dispatch.saveClient({ client: this.client });
+  }
+  get completionDate() {
+    const locale = this.$root.$i18n.locale;
+    return this.task.completed?.toLocaleString(locale, DateTime.DATETIME_SHORT);
   }
   get title() {
     if (this.reminder instanceof Intervention) {

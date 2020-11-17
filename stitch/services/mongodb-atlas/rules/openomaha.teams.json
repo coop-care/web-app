@@ -1,0 +1,30 @@
+{
+    "collection": "teams",
+    "database": "openomaha",
+    "id": "5f8f1a86b4dffe18c60c0e4e",
+    "roles": [
+        {
+            "name": "member",
+            "apply_when": {
+                "members": "%%user.id"
+            },
+            "write": true,
+            "insert": false,
+            "delete": false,
+            "search": true,
+            "additional_fields": {}
+        },
+        {
+            "name": "admin",
+            "apply_when": {
+                "admins": "%%user.id"
+            },
+            "write": true,
+            "insert": true,
+            "delete": true,
+            "search": true,
+            "additional_fields": {}
+        }
+    ],
+    "schema": {}
+}

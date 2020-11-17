@@ -1,12 +1,8 @@
 import "reflect-metadata";
-import { Type, plainToClass, classToPlain } from "class-transformer";
-import { ObjectID } from "bson";
-import { MasterData, ProblemRecord, Reminder, ChangeRecord } from ".";
+import { Type, plainToClass } from "class-transformer";
+import { MasterData, ProblemRecord, Reminder, ChangeRecord, IdentifiableObject } from ".";
 
-export class Client {
-    // optional properties need an initial value because Vue does not detect the addition or removal of a property
-    _id?: ObjectID = undefined;
-    user_id = "";
+export class Client extends IdentifiableObject {
     @Type(() => MasterData)
     masterData: MasterData = new MasterData();
     @Type(() => ProblemRecord)
@@ -18,12 +14,8 @@ export class Client {
     @Type(() => ChangeRecord)
     changeHistory: ChangeRecord[] = [];
 
-    static fromObject(object: unknown): Client | Client[] {
+    static fromObject(object: any): Client | Client[] {
         return plainToClass(Client, object);
-    }
-
-    constructor(userId: string) {
-        this.user_id = userId;
     }
 
     get name() {
@@ -100,13 +92,5 @@ export class Client {
                 !problem.problem.isHighPriority
             )
         );
-    }
-
-    equals(client: Client) {
-        return this._id?.equals(client._id || "") || false;
-    }
-
-    toJSON() {
-        return classToPlain(this);
     }
 }

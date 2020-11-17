@@ -16,12 +16,11 @@
       >
         <q-item v-if="user">
           <q-item-section side>
-            <div
-              class="signature bg-grey-7 text-white"
-              style="font-size: 10px; line-height: 2.4em"
-            >
-              {{ user.signature }}
-            </div>
+            <signature
+              :user="user"
+              color="white"
+              class="usermenu-signature bg-grey-7"
+            />
           </q-item-section>
           <q-item-section>
             <q-item-label>
@@ -135,15 +134,25 @@
     </q-menu>
   </q-btn>
 </template>
+
+<style lang="sass">
+.usermenu-signature
+  font-size: 10px
+  line-height: 2.4em
+  border: 0 none
+</style>
+
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import LanguageMenu from "./LanguageMenu.vue";
 import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
+import Signature from "./Signature.vue";
 
 @Component({
   components: {
     LanguageMenu,
     SimplifiedMarkdown,
+    Signature
   },
 })
 export default class UserMenu extends Vue {

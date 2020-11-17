@@ -37,9 +37,17 @@ export default class LanguageMenu extends Vue {
   @Prop(Boolean) readonly fit!: boolean;
 
   changeLocale(locale: string) {
-    this.$root.$i18n.locale = locale;
-    this.$loadLangPack(locale);
-    this.$root.$emit("did-change-locale", locale);
+    if (this.$store.direct.state.currentUser) {
+      void this.$store.direct.dispatch.saveCurrentUser((user) => {
+        user.locale = locale;
+      }).then(() => {
+        this.$root.$emit("did-change-locale", locale);
+      })
+    } else {
+      this.$root.$i18n.locale = locale;
+      this.$root.$loadLangPack(locale);
+      this.$root.$emit("did-change-locale", locale);
+    }
   }
 }
 </script>

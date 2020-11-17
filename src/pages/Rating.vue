@@ -45,7 +45,7 @@ export default class Rating extends RecordValidator {
   save() {
     const changes: Partial<Outcome> = {
       createdAt: new Date(),
-      user: this.$store.direct.getters.signature,
+      user: this.$store.direct.getters.userId,
     };
     this.$store.direct.commit.updateNewOutcome({
       changes: changes,

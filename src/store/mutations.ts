@@ -11,7 +11,9 @@ import {
     ChangeRecord,
     Problem,
     ChangeRecordType,
-    User
+    User,
+    Team,
+    TeamMember
 } from "../models";
 import { classToPlain, ClassTransformOptions } from "class-transformer";
 
@@ -31,8 +33,60 @@ const excludeForChangeRecord: ClassTransformOptions = {
 };
 
 export default defineMutations<StateInterface>()({
+
+    setCurrentUser(state, user?: User) {
+        state.currentUser = user;
+    },
+
+    updateCurrentUser(state, updater: (user: User) => void) {
+        if (state.currentUser) {
+            updater(state.currentUser)
+        }
+    },
+
+    setTeams(state, teams: Team[]) {
+        state.teams = teams;
+    },
+
+    setTeam(state, updatedTeam: Team) {
+        state.teams = state.teams.map(team => {
+            if (team.equals(updatedTeam)) {
+                return updatedTeam;
+            } else {
+                return team;
+            }
+        });
+    },
+
+    setTeamMembers(state, teamMembers: TeamMember[]) {
+        state.teamMembers = state.teams
+            .flatMap(team => team.alumni)
+            .concat(teamMembers)
+            .reduce((result: Record<string, TeamMember>, member) => {
+                result[member.userId] = member
+                return result;
+            }, {});
+    },
+
+    updateTeamMember(state, teamMember: TeamMember) {
+        const id = teamMember._id?.toHexString();
+        if (id) {
+            state.teamMembers[id] = teamMember;
+        }
+    },
+
     setClients(state, clients: Client[]) {
         state.clients = clients;
+    },
+
+    updateClient(state, updatedClient: Client) {
+        state.clients = state.clients.map(client => {
+            if (client.equals(updatedClient)) {
+                return updatedClient;
+            } else {
+                return client;
+            }
+        });
     },
 
     isLoadingClientList(state, isLoading: boolean) {
@@ -79,7 +133,7 @@ export default defineMutations<StateInterface>()({
             if (problemRecord && problemRecord.createdAt) {
                 client.changeHistory.push(
                     new ChangeRecord(
-                        store.getters.signature,
+                        store.getters.userId,
                         "ProblemModified",
                         problemId,
                         newValues,
@@ -128,7 +182,7 @@ export default defineMutations<StateInterface>()({
         const client = store.getters.getClient({ clientId: clientId });
         client?.changeHistory.push(
             new ChangeRecord(
-                store.getters.signature,
+                store.getters.userId,
                 changeType,
                 problemId,
                 classToPlain(newInstance, excludeForChangeRecord),
@@ -167,7 +221,7 @@ export default defineMutations<StateInterface>()({
 
             if (occurrence) {
                 occurrence.completed = completedAt;
-                occurrence.user = store.getters.signature;
+                occurrence.user = store.getters.userId;
             }
         } else {
             task.reminder.occurrences = completedAt
@@ -175,7 +229,7 @@ export default defineMutations<StateInterface>()({
                     new Occurrence(
                         completedAt,
                         completedAt,
-                        store.getters.signature
+                        store.getters.userId
                     )
                 ]
                 : [];
@@ -236,7 +290,7 @@ export default defineMutations<StateInterface>()({
                 : "InterventionStarted";
             client.changeHistory.push(
                 new ChangeRecord(
-                    store.getters.signature,
+                    store.getters.userId,
                     type,
                     problemId,
                     classToPlain(reminder, excludeForChangeRecord)
@@ -258,7 +312,7 @@ export default defineMutations<StateInterface>()({
 
         client.changeHistory.push(
             new ChangeRecord(
-                store.getters.signature,
+                store.getters.userId,
                 "ProblemResolved",
                 problemRecord.id,
                 classToPlain(problemRecord.problem)
@@ -276,7 +330,7 @@ export default defineMutations<StateInterface>()({
         problemRecord.resolvedAt = new Date();
         client?.changeHistory.push(
             new ChangeRecord(
-                store.getters.signature,
+                store.getters.userId,
                 "ProblemResolved",
                 problemRecord.id,
                 classToPlain(problemRecord.problem)
@@ -321,7 +375,7 @@ export default defineMutations<StateInterface>()({
                 .getClient(payload)
                 ?.changeHistory.push(
                     new ChangeRecord(
-                        store.getters.signature,
+                        store.getters.userId,
                         "OutcomeRated",
                         problemRecord.id,
                         classToPlain(target)
@@ -342,7 +396,7 @@ export default defineMutations<StateInterface>()({
 
         client?.changeHistory.push(
             new ChangeRecord(
-                store.getters.signature,
+                store.getters.userId,
                 "ProblemCreated",
                 problemRecord.id,
                 classToPlain(problemRecord.problem)
@@ -352,10 +406,10 @@ export default defineMutations<StateInterface>()({
         const outcome = problemRecord.outcomes[0];
         if (outcome) {
             outcome.createdAt = now;
-            outcome.user = store.getters.signature;
+            outcome.user = store.getters.userId;
             client?.changeHistory.push(
                 new ChangeRecord(
-                    store.getters.signature,
+                    store.getters.userId,
                     "OutcomeRated",
                     problemRecord.id,
                     classToPlain(outcome)
@@ -366,16 +420,12 @@ export default defineMutations<StateInterface>()({
         problemRecord.interventions.forEach(intervention =>
             client?.changeHistory.push(
                 new ChangeRecord(
-                    store.getters.signature,
+                    store.getters.userId,
                     "InterventionStarted",
                     problemRecord.id,
                     classToPlain(intervention, excludeForChangeRecord)
                 )
             )
         );
-    },
-
-    setCurrentUser(state, user?: User) {
-        state.currentUser = user;
     }
 });

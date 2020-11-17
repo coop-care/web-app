@@ -41,11 +41,9 @@ export default class DemoOnboarding extends Vue {
     this.dialog.hide();
   }
   onOKClick() {
-    const user = this.$store.direct.state.currentUser?.clone();
-    if (user) {
+    void this.$store.direct.dispatch.saveCurrentUser(user => {
       user.isOnboardingCompleted = true;
-      void this.$store.direct.dispatch.saveUser(user);
-    }
+    });
     this.$emit("ok");
     this.hide();
     void this.$router.push({ name: "client" });

@@ -259,21 +259,14 @@ export default class PageIndex extends Vue {
   }
 
   addClient(masterData: MasterData) {
-    const userId = this.$store.direct.state.currentUser?.id;
-    if (!userId) {
-      return;
-    }
-
-    const client = new Client(userId);
+    const client = new Client();
     client.masterData = masterData;
-    this.$ccApi
-      .createClient(client)
+    this.$store.direct.dispatch
+      .addClient(client)
       .then((client) => {
-        void this.$store.direct.dispatch.fetchClientsFromDB().then(() => {
-          void this.$router.push({
-            name: "clientReport",
-            params: { clientId: client._id?.toString() || "" },
-          });
+        void this.$router.push({
+          name: "clientReport",
+          params: { clientId: client._id?.toString() || "" },
         });
       })
       .catch(console.error);

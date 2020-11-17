@@ -32,7 +32,7 @@ export default defineGetters<StateInterface>()({
         };
     },
 
-    signature: state => {
-        return state.currentUser?.signature || "";
+    userId: state => {
+        return state.currentUser?.userId || "";
     }
 });

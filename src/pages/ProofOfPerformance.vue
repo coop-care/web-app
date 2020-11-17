@@ -112,6 +112,7 @@ export default class ProofOfPerformancePage extends Vue {
     }[] = [];
     const locale = this.$root.$i18n.locale;
     const options = { inclusiveFrom: true, inclusiveTo: true, onlyDate: true };
+    const teamMembers = this.$store.direct.state.teamMembers;
 
     this.client?.forAllReminders((reminder) => {
       const completed = reminder.occurrences.filter(
@@ -127,8 +128,9 @@ export default class ProofOfPerformancePage extends Vue {
           this.$t(reminder.target.title);
 
         const dates = completed.map(
-          (item) =>
-            item.completed?.toLocaleString(locale, {
+          (item) => {
+            const signature = teamMembers[item.user || ""]?.signature;
+            return item.completed?.toLocaleString(locale, {
               day: "numeric",
               month: "short",
             }) +
@@ -137,8 +139,8 @@ export default class ProofOfPerformancePage extends Vue {
               hour: "numeric",
               minute: "numeric",
             }) +
-            (item.signature ? " (" + item.signature + ")" : "")
-        );
+            (signature ? " (" + signature + ")" : "");
+        });
         tasks.push({
           id: reminder.id,
           title: reminder.details,

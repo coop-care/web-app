@@ -3,6 +3,7 @@ import messages from "src/i18n"
 import Vue from "vue"
 import VueI18n from "vue-i18n"
 import { Quasar } from "quasar"
+import { StateInterface } from "src/store"
 
 declare module "vue/types/vue" {
   interface Vue {
@@ -34,19 +35,32 @@ function matchLocale(
   return resultingLocale
 }
 
-const defaultLocale = Quasar.lang.isoName
+const defaultLocale = Quasar.lang.isoName;
+const availableLocales = Object.keys(messages);
 
 const i18n = new VueI18n({
   locale: matchLocale(
     Quasar.lang.getLocale(),
-    Object.keys(messages),
+    availableLocales,
     defaultLocale
   ),
   fallbackLocale: defaultLocale,
   messages
 })
 
-export default boot(({ app }) => {
+export default boot(({ app, Vue }) => {
   // Set i18n instance on app
-  app.i18n = i18n
+  app.i18n = i18n;
+
+  app.store?.subscribe((mutation, state: StateInterface) => {
+    if (mutation.type == "setCurrentUser" || mutation.type == "updateCurrentUser") {
+      const newLocale = state.currentUser?.locale ||
+        matchLocale(Quasar.lang.getLocale(), availableLocales, defaultLocale);
+
+      if (newLocale != i18n.locale) {
+        i18n.locale = newLocale;
+        Vue.prototype.$loadLangPack(newLocale);
+      }
+    }
+  })
 })
