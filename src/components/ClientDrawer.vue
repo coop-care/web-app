@@ -4,81 +4,83 @@
     content-class="bg-grey-2 dense-avatar"
     show-if-above
   >
-    <q-list>
-      <q-expansion-item
-        switch-toggle-side
-        v-model="activeClientsExpansionState"
-        expand-separator
-        header-class="q-pt-md text-subtitle1"
-      >
-        <template v-slot:header>
-          <q-item-section>
-            <q-item-label class="q-pl-none">{{
-              $tc("client", 2)
-            }}</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-btn
-              icon="add"
-              round
-              outline
-              size="10.5px"
-              color="primary"
-              @click.stop="addClient"
-              :title="$t('newClient')"
-              class="shadow-1"
-            />
-          </q-item-section>
-        </template>
-
-        <q-item
-          clickable
-          v-for="(client, index) in activeClients"
-          :key="'active' + index"
-          v-ripple
-          :active="isSelected(client)"
-          active-class="text-primary"
-          @click="selectClient(client)"
-          class="q-pl-xl"
+    <pull-to-refresh>
+      <q-list>
+        <q-expansion-item
+          switch-toggle-side
+          v-model="activeClientsExpansionState"
+          expand-separator
+          header-class="q-pt-md text-subtitle1"
         >
-          <q-item-section>
-            <q-item-label class="q-pl-sm">{{ client.name }}</q-item-label>
-          </q-item-section>
-          <q-item-section side v-if="client.dueTasksCount">
-            <q-item-label
-              class="text-white text-weight-medium bg-grey-6 q-px-sm q-py-xs radius-lg"
-              >{{ client.dueTasksCount }}</q-item-label
-            >
-          </q-item-section>
-        </q-item>
-      </q-expansion-item>
-      <loading
-        v-if="$store.direct.state.isLoadingClientList && !clients.length"
-      />
+          <template v-slot:header>
+            <q-item-section>
+              <q-item-label class="q-pl-none">{{
+                $tc("client", 2)
+              }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-btn
+                icon="add"
+                round
+                outline
+                size="10.5px"
+                color="primary"
+                @click.stop="addClient"
+                :title="$t('newClient')"
+                class="shadow-1"
+              />
+            </q-item-section>
+          </template>
 
-      <q-expansion-item
-        v-if="archivedClients.length"
-        v-model="archivedClientsExpansionState"
-        switch-toggle-side
-        :label="$t('clientArchive')"
-        header-class="text-subtitle1"
-      >
-        <q-item
-          clickable
-          v-for="(client, index) in archivedClients"
-          :key="'archived' + index"
-          v-ripple
-          :active="isSelected(client)"
-          active-class="text-primary"
-          @click="selectClient(client)"
-          class="q-pl-xl"
+          <q-item
+            clickable
+            v-for="(client, index) in activeClients"
+            :key="'active' + index"
+            v-ripple
+            :active="isSelected(client)"
+            active-class="text-primary"
+            @click="selectClient(client)"
+            class="q-pl-xl"
+          >
+            <q-item-section>
+              <q-item-label class="q-pl-sm">{{ client.name }}</q-item-label>
+            </q-item-section>
+            <q-item-section side v-if="client.dueTasksCount">
+              <q-item-label
+                class="text-white text-weight-medium bg-grey-6 q-px-sm q-py-xs radius-lg"
+                >{{ client.dueTasksCount }}</q-item-label
+              >
+            </q-item-section>
+          </q-item>
+        </q-expansion-item>
+        <loading
+          v-if="$store.direct.state.isLoadingClientList && !clients.length"
+        />
+
+        <q-expansion-item
+          v-if="archivedClients.length"
+          v-model="archivedClientsExpansionState"
+          switch-toggle-side
+          :label="$t('clientArchive')"
+          header-class="text-subtitle1"
         >
-          <q-item-section>
-            <q-item-label class="q-pl-sm">{{ client.name }}</q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-expansion-item>
-    </q-list>
+          <q-item
+            clickable
+            v-for="(client, index) in archivedClients"
+            :key="'archived' + index"
+            v-ripple
+            :active="isSelected(client)"
+            active-class="text-primary"
+            @click="selectClient(client)"
+            class="q-pl-xl"
+          >
+            <q-item-section>
+              <q-item-label class="q-pl-sm">{{ client.name }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-expansion-item>
+      </q-list>
+    </pull-to-refresh>
   </q-drawer>
 </template>
 
@@ -89,8 +91,14 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Client } from "../models/client";
 import Loading from "./Loading.vue";
+import PullToRefresh from "components/PullToRefresh.vue";
 
-@Component({ components: { Loading } })
+@Component({
+  components: {
+    Loading,
+    PullToRefresh
+  }
+})
 export default class ClientDrawer extends Vue {
   isVisible = this.$q.screen.gt.sm;
   activeClientsExpansionState = true;
