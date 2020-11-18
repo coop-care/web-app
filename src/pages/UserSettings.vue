@@ -3,98 +3,100 @@
     padding
     class="limit-page-width width-sm"
   >
-    <div v-if="user">
-      <div class="section-heading q-mt-none">{{ $t("personalUserDetails") }}</div>
-      <div class="row q-col-gutter-md">
-        <q-input
-          v-model="firstName"
-          :label="$t('firstName')"
-          :autofocus="firstName.trim().length == 0"
-          @change="save"
-          class="col-sm-6 col-12"
-        />
-        <q-input
-          v-model="lastName"
-          :label="$t('lastName')"
-          @change="save"
-          class="col-sm-6 col-12"
-        />
-        <q-input
-          v-model="signature"
-          :label="$t('signatureMark')"
-          :error="signature.trim().length < 2"
-          :error-message="$t('signatureMarkHint')"
-          :hint="$t('signatureMarkHint')"
-          hide-bottom-space
-          maxlength="3"
-          class="col-sm-6 col-12"
-        />
-      </div>
-      <div class="section-heading">{{ $t("appSettings") }}</div>
-      <div class="col q-col-gutter-md">
-        <q-select
-          v-model="locale"
-          :label="$t('appLanguageSetting')"
-          :options="localeOptions"
-          emit-value
-          map-options
-        />
-        <q-select
-          v-model="colorScheme"
-          :label="$t('colorScheme')"
-          :options="colorOptions"
-          emit-value
-          map-options
-        >
-          <template v-slot:option="scope">
-            <q-item
-              v-bind="scope.itemProps"
-              v-on="scope.itemEvents"
-            >
-              <q-item-section>{{ scope.opt.label }}</q-item-section>
-              <q-item-section
-                side
-                class="color-bullets"
+    <pull-to-refresh>
+      <div v-if="user">
+        <div class="section-heading q-mt-none">{{ $t("personalUserDetails") }}</div>
+        <div class="row q-col-gutter-md">
+          <q-input
+            v-model="firstName"
+            :label="$t('firstName')"
+            :autofocus="firstName.trim().length == 0"
+            @change="save"
+            class="col-sm-6 col-12"
+          />
+          <q-input
+            v-model="lastName"
+            :label="$t('lastName')"
+            @change="save"
+            class="col-sm-6 col-12"
+          />
+          <q-input
+            v-model="signature"
+            :label="$t('signatureMark')"
+            :error="signature.trim().length < 2"
+            :error-message="$t('signatureMarkHint')"
+            :hint="$t('signatureMarkHint')"
+            hide-bottom-space
+            maxlength="3"
+            class="col-sm-6 col-12"
+          />
+        </div>
+        <div class="section-heading">{{ $t("appSettings") }}</div>
+        <div class="col q-col-gutter-md">
+          <q-select
+            v-model="locale"
+            :label="$t('appLanguageSetting')"
+            :options="localeOptions"
+            emit-value
+            map-options
+          />
+          <q-select
+            v-model="colorScheme"
+            :label="$t('colorScheme')"
+            :options="colorOptions"
+            emit-value
+            map-options
+          >
+            <template v-slot:option="scope">
+              <q-item
+                v-bind="scope.itemProps"
+                v-on="scope.itemEvents"
               >
-                <div
-                  v-for="(color, index) in scope.opt.value || scope.opt.colors"
-                  :key="scope.opt.label + index"
-                  :style="'background-color: ' + color"
-                ></div>
-              </q-item-section>
-            </q-item>
-          </template>
-          <template v-slot:selected-item="scope">
-            <q-item
-              v-bind="scope.itemProps"
-              v-on="scope.itemEvents"
-              class="color-bullets-selected"
-            >
-              <q-item-section>{{ scope.opt.label }}</q-item-section>
-              <q-item-section
-                side
-                class="color-bullets"
+                <q-item-section>{{ scope.opt.label }}</q-item-section>
+                <q-item-section
+                  side
+                  class="color-bullets"
+                >
+                  <div
+                    v-for="(color, index) in scope.opt.value || scope.opt.colors"
+                    :key="scope.opt.label + index"
+                    :style="'background-color: ' + color"
+                  ></div>
+                </q-item-section>
+              </q-item>
+            </template>
+            <template v-slot:selected-item="scope">
+              <q-item
+                v-bind="scope.itemProps"
+                v-on="scope.itemEvents"
+                class="color-bullets-selected"
               >
-                <div
-                  v-for="(color, index) in scope.opt.value || scope.opt.colors"
-                  :key="scope.opt.label + index + 'selected'"
-                  :style="'background-color: ' + color"
-                ></div>
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
+                <q-item-section>{{ scope.opt.label }}</q-item-section>
+                <q-item-section
+                  side
+                  class="color-bullets"
+                >
+                  <div
+                    v-for="(color, index) in scope.opt.value || scope.opt.colors"
+                    :key="scope.opt.label + index + 'selected'"
+                    :style="'background-color: ' + color"
+                  ></div>
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+        </div>
+        <div class="row justify-end q-mt-xl">
+          <q-btn
+            :disable="signature.trim().length < 2"
+            :label="$t('done')"
+            color="primary"
+            rounded
+            @click="done"
+          />
+        </div>
       </div>
-      <div class="row justify-end q-mt-xl">
-        <q-btn
-          :disable="signature.trim().length < 2"
-          :label="$t('done')"
-          color="primary"
-          rounded
-          @click="done"
-        />
-      </div>
-    </div>
+    </pull-to-refresh>
   </q-page>
 </template>
 
@@ -123,8 +125,13 @@
 import { Vue, Component, Watch } from "vue-property-decorator";
 import { User } from "../models";
 import { defaultColors, setColorSet } from "../helper/color";
+import PullToRefresh from "components/PullToRefresh.vue";
 
-@Component
+@Component({
+  components: {
+    PullToRefresh
+  }
+})
 export default class UserSettingsPage extends Vue {
   @Watch("canSuggestSignature")
   onCanSuggestSignatureChanged(value: boolean) {

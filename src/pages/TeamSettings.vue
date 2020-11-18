@@ -3,132 +3,134 @@
     padding
     class="limit-page-width width-sm"
   >
-    <div
-      v-if="teamOptions.length == 1"
-      class="q-mt-lg"
-    >
-      <div>{{ $t("noExistingTeams") }}</div>
-      <q-btn 
-        :label="$t('addTeam')"
-        rounded
-        no-caps
-        color="primary"
-        class="q-mt-md"
-        @click="teamId = 'new'"
-      />
-    </div>
-    <div v-else>
-      <q-select
-        v-model="teamId"
-        :options="teamOptions"
-        emit-value
-        map-options
-        class="text-h5"
+    <pull-to-refresh>
+      <div
+        v-if="teamOptions.length == 1"
+        class="q-mt-lg"
       >
-        <template v-slot:before>
-          <span class="text-black">{{ $t("team") }}: </span>
-        </template>
-      </q-select>
-
-      <div v-if="!team">
-        {{ $t("teamNotFound") }}
+        <div>{{ $t("noExistingTeams") }}</div>
+        <q-btn 
+          :label="$t('addTeam')"
+          rounded
+          no-caps
+          color="primary"
+          class="q-mt-md"
+          @click="teamId = 'new'"
+        />
       </div>
       <div v-else>
-
-        <q-expansion-item
-          v-if="isAdmin"
-          v-model="expandedSettings"
-          :label="$t('settingsTitle')"
-          header-class="section-heading q-mt-md q-mb-sm q-px-none dense-avatar"
-          switch-toggle-side
-          :default-opened="false"
+        <q-select
+          v-model="teamId"
+          :options="teamOptions"
+          emit-value
+          map-options
+          class="text-h5"
         >
-          <q-input
-            :value="teamName"
-            :label="$t('teamName')"
-            @change="teamName = $event.target.value"
-          />
-          <q-btn
-            :label="$t('deleteTeam')"
-            outline
-            rounded
-            no-caps
-            color="negative"
-            class="q-mt-md"
-            @click="deleteTeam"
-          />
-        </q-expansion-item>
+          <template v-slot:before>
+            <span class="text-black">{{ $t("team") }}: </span>
+          </template>
+        </q-select>
 
-        <q-expansion-item
-          v-model="expandedMembers"
-          :label="$t('membersTitle') + ' (' + allMembers.length + ')'"
-          header-class="section-heading q-mt-md q-mb-sm q-px-none dense-avatar"
-          switch-toggle-side
-        >
-        <q-list style="max-width: 500px">
-          <q-item v-for="member in allMembers" :key="member.userId" class="q-pl-none">
-            <q-item-section side>
-              <signature :user="member"/>
-            </q-item-section>
-            <q-item-section>
-              <q-item-label :class="isCurrentUser(member) ? 'text-weight-medium' : ''">
-                {{ member.username }} {{ isCurrentUserText(member) }}
-              </q-item-label>
-              <q-item-label
-                v-if="hasAdminRole(member)"
-                caption
-              >
-                <text-with-tooltip 
-                  :text="$t('hasTeamAdminRole')"
-                  :tooltip="$t('teamRolesDescription')"
-                />
-              </q-item-label>
-            </q-item-section>
-            <q-item-section 
-              v-if="isAdmin || isCurrentUser(member)"
-              side
-            >
-              <action-menu :items="userActionItems(member)">
-                <template v-slot:admin-toggle>
-                  <div>
-                    <q-item>
-                      <q-item-section>
-                        <q-item-label>
-                          <text-with-tooltip 
-                            :text="hasAdminRole(member) ? $t('hasAdminRole') : $t('hasNoAdminRole')"
-                            :tooltip="$t('teamRolesDescription')"
-                            width="320px"
-                          />
-                        </q-item-label>
-                      </q-item-section>
-                      <q-item-section side>
-                        <q-toggle 
-                          :value="hasAdminRole(member)" 
-                          @input="toggleAdminRole(member)"
-                          :disable="!isAdmin"
-                        />
-                      </q-item-section>
-                    </q-item>
-                  </div>
-                </template>
-              </action-menu>
-            </q-item-section>
-          </q-item>
-          <q-btn
+        <div v-if="!team">
+          {{ $t("teamNotFound") }}
+        </div>
+        <div v-else>
+
+          <q-expansion-item
             v-if="isAdmin"
-            :label="$t('addTeamMember')"
-            icon="add"
-            outline
-            rounded
-            no-caps
-            color="primary"
-            class="q-mt-md"
-          />
-        </q-list>
-        </q-expansion-item>
+            v-model="expandedSettings"
+            :label="$t('settingsTitle')"
+            header-class="section-heading q-mt-md q-mb-sm q-px-none dense-avatar"
+            switch-toggle-side
+            :default-opened="false"
+          >
+            <q-input
+              :value="teamName"
+              :label="$t('teamName')"
+              @change="teamName = $event.target.value"
+            />
+            <q-btn
+              :label="$t('deleteTeam')"
+              outline
+              rounded
+              no-caps
+              color="negative"
+              class="q-mt-md"
+              @click="deleteTeam"
+            />
+          </q-expansion-item>
 
+          <q-expansion-item
+            v-model="expandedMembers"
+            :label="$t('membersTitle') + ' (' + allMembers.length + ')'"
+            header-class="section-heading q-mt-md q-mb-sm q-px-none dense-avatar"
+            switch-toggle-side
+          >
+          <q-list style="max-width: 500px">
+            <q-item v-for="member in allMembers" :key="member.userId" class="q-pl-none">
+              <q-item-section side>
+                <signature :user="member"/>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label :class="isCurrentUser(member) ? 'text-weight-medium' : ''">
+                  {{ member.username }} {{ isCurrentUserText(member) }}
+                </q-item-label>
+                <q-item-label
+                  v-if="hasAdminRole(member)"
+                  caption
+                >
+                  <text-with-tooltip 
+                    :text="$t('hasTeamAdminRole')"
+                    :tooltip="$t('teamRolesDescription')"
+                  />
+                </q-item-label>
+              </q-item-section>
+              <q-item-section 
+                v-if="isAdmin || isCurrentUser(member)"
+                side
+              >
+                <action-menu :items="userActionItems(member)">
+                  <template v-slot:admin-toggle>
+                    <div>
+                      <q-item>
+                        <q-item-section>
+                          <q-item-label>
+                            <text-with-tooltip 
+                              :text="hasAdminRole(member) ? $t('hasAdminRole') : $t('hasNoAdminRole')"
+                              :tooltip="$t('teamRolesDescription')"
+                              width="320px"
+                            />
+                          </q-item-label>
+                        </q-item-section>
+                        <q-item-section side>
+                          <q-toggle 
+                            :value="hasAdminRole(member)" 
+                            @input="toggleAdminRole(member)"
+                            :disable="!isAdmin"
+                          />
+                        </q-item-section>
+                      </q-item>
+                    </div>
+                  </template>
+                </action-menu>
+              </q-item-section>
+            </q-item>
+            <q-btn
+              v-if="isAdmin"
+              :label="$t('addTeamMember')"
+              icon="add"
+              outline
+              rounded
+              no-caps
+              color="primary"
+              class="q-mt-md"
+            />
+          </q-list>
+          </q-expansion-item>
+
+        </div>
       </div>
-    </div>
+    </pull-to-refresh>
   </q-page>
 </template>
 
@@ -138,12 +140,14 @@ import { TeamMember, Team } from "../models";
 import Signature from "../components/Signature.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import TextWithTooltip from "../components/TextWithTooltip.vue";
+import PullToRefresh from "components/PullToRefresh.vue";
 
 @Component({
   components: {
     Signature,
     ActionMenu,
-    TextWithTooltip
+    TextWithTooltip,
+    PullToRefresh
   },
 })
 export default class TeamSettingsPage extends Vue {
