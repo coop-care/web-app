@@ -96,6 +96,16 @@
             :label="continueButtonLabel"
             class="q-mt-lg"
           />
+          <q-btn
+            v-else
+            @click="validate(warnings.problemClassification, saveProblemRecord)"
+            color="primary"
+            rounded
+            no-caps
+            :outline="!!warnings.problemClassification"
+            :label="doneButtonLabel"
+            class="q-mt-lg"
+          />
         </q-step>
 
         <q-step
@@ -142,11 +152,11 @@
             :messages="warnings.intervention"
           />
           <q-btn
-            @click="validate(isHighPriority ? warnings.intervention : warnings.problemClassification, saveProblemRecord)"
+            @click="validate(warnings.intervention, saveProblemRecord)"
             color="primary"
             rounded
             no-caps
-            :outline="(isHighPriority && !!warnings.intervention) || (!isHighPriority && !!warnings.problemClassification)"
+            :outline="!!warnings.intervention"
             :label="doneButtonLabel"
             class="q-mt-lg"
           />

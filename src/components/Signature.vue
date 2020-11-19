@@ -1,11 +1,11 @@
 <template>
   <div 
     :class="'signature text-' + (signature ? color : 'grey-4') + ' ' + 
-      (hasTooltip ? 'cursor-help' : '')"
+      (hasTooltip && teamMember ? 'cursor-help' : '')"
   >
     {{ signature || " " }}
     <q-tooltip
-      v-if="hasTooltip"
+      v-if="hasTooltip && teamMember"
       anchor="top middle"
       self="bottom middle"
       transition-show="jump-up"

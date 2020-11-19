@@ -31,7 +31,10 @@
           </template>
         </q-select>
 
-        <div v-if="!team">
+        <div 
+          v-if="!team" 
+          class="q-mt-md"
+        >
           {{ $t("teamNotFound") }}
         </div>
         <div v-else>
@@ -47,6 +50,7 @@
             <q-input
               :value="teamName"
               :label="$t('teamName')"
+              ref="teamNameInput"
               @change="teamName = $event.target.value"
             />
             <q-btn
@@ -135,7 +139,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Ref } from "vue-property-decorator";
+import { QInput } from "quasar";
 import { TeamMember, Team } from "../models";
 import Signature from "../components/Signature.vue";
 import ActionMenu from "../components/ActionMenu.vue";
@@ -151,6 +156,8 @@ import PullToRefresh from "components/PullToRefresh.vue";
   },
 })
 export default class TeamSettingsPage extends Vue {
+  @Ref() readonly teamNameInput!: QInput;
+
   expandedSettings = false;
   expandedMembers = true;
 
@@ -165,6 +172,9 @@ export default class TeamSettingsPage extends Vue {
         const name = "\"" + names[Math.floor(Math.random() * names.length)] + "\”";
         const team = new Team(name, this.currentUser.userId);
         void this.$store.direct.dispatch.addTeam(team);
+        this.expandedSettings = true;
+        this.expandedMembers = true;
+        setTimeout(() => this.teamNameInput.focus(), 100);
       }
     } else {
       void this.$store.direct.dispatch.saveCurrentUser(user => {
@@ -176,7 +186,9 @@ export default class TeamSettingsPage extends Vue {
     return this.team?.name || "";
   }
   set teamName(value) {
-    this.saveTeam({name: value});
+    if (value) {
+      this.saveTeam({name: value});
+    }
   }
 
   get teamOptions() {

@@ -4,20 +4,26 @@ import { ObjectID } from "bson";
 import sampleData from "../data/sample1.json";
 
 export default class DemoApi implements CoopCareApiInterface {
+    user = (() => {
+        const user = new User(this.userId, this.userEmail);
+        user._id = new ObjectID();
+        user.firstName = "Demo";
+        user.lastName = "Tester";
+        user.signature = "DT";
+        user.activeTeam = ""
+        return user;
+    })();
     clients = (Client.fromObject(sampleData) as Client[]).map(client => {
         client._id = new ObjectID();
         return client;
     });
-    user = (() => {
-        const user = new User(this.userId, this.userEmail);
-        user.firstName = "Demo";
-        user.lastName = "Tester";
-        user.signature = "DT";
-        return user;
-    })()
-    team = (() => {
-        return new Team("Superspreader", this.userId);
-    })()
+    teams = (() => {
+        const team = new Team("Team CoopCare", this.userId);
+        team._id = new ObjectID();
+        this.user.activeTeam = team._id.toHexString();
+        team.clients = this.clients.map(client => client._id?.toHexString() || "");
+        return [team];
+    })();
 
     get isLoggedIn() {
         return true;
@@ -63,7 +69,7 @@ export default class DemoApi implements CoopCareApiInterface {
         return Promise.resolve();
     }
     getTeamMembers() {
-        return Promise.resolve([]);
+        return Promise.resolve([this.user]);
     }
 
     createClient(client: Client) {
@@ -81,23 +87,23 @@ export default class DemoApi implements CoopCareApiInterface {
     getClients(clientIds: string[]): Promise<Client[]> {
         return Promise.resolve(this.clients.filter(client => clientIds.includes(client._id?.toHexString() || "")));
     }
-    getMyClients(): Promise<Client[]> {
-        return Promise.resolve(this.clients.slice());
-    }
     saveClient(client: Client) {
         return Promise.resolve(client);
     }
 
     getMyTeams() {
-        return Promise.resolve([this.team]);
+        return Promise.resolve(this.teams.slice());
     }
     createTeam(team: Team) {
+        team._id = new ObjectID();
+        this.teams.push(team);
         return Promise.resolve(team);
     }
     saveTeam(team: Team) {
         return Promise.resolve(team);
     }
-    deleteTeam() {
+    deleteTeam(team: Team) {
+        this.teams = this.teams.filter(item => !item.equals(team));
         return Promise.resolve();
     }
 }

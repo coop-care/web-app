@@ -25,7 +25,6 @@ export default interface CoopCareApiInterface {
     deleteUser(): Promise<void>;
     getTeamMembers(): Promise<TeamMember[]>;
 
-    getMyClients(): Promise<Client[]>;
     getClients(clientIds: string[]): Promise<Client[]>;
     createClient(client: Client): Promise<Client>;
     saveClient(client: Client): Promise<Client>;

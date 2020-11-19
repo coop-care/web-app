@@ -61,7 +61,6 @@
           <q-item-section>{{ $t("userSettings") }}</q-item-section>
         </q-item>
         <q-item
-          v-if="!isDemo"
           clickable
           v-close-popup
           @click="$router.push({ name: 'teamSettings' })"
@@ -90,6 +89,7 @@
         <q-separator />
 
         <q-item
+          v-if="!isDemo"
           clickable
           v-close-popup
           @click="logout"

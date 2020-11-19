@@ -195,19 +195,6 @@ export default class StitchApi implements CoopCareApiInterface {
                 })
         );
     }
-    getMyClients(): Promise<Client[]> {
-        return (
-            this.clients
-                // limiting the fetched properties to name and leftAt causes bugs
-                // where details of selected client cannot be displayed in client view
-                .find({}, {})
-                .toArray()
-                .then(data => {
-                    const result = Client.fromObject(data) as Client[];
-                    return result;
-                })
-        );
-    }
     getClient(id: ObjectID) {
         return this.clients
             .find({ _id: id }, {})
