@@ -80,6 +80,7 @@ export default defineActions({
         const clientIds = state.teams.find(team => team._id?.toHexString() == activeTeam)?.clients || [];
 
         if (!activeTeam || !clientIds) {
+            commit.setClients([]);
             return Promise.resolve();
         }
 
@@ -248,7 +249,8 @@ export default defineActions({
                     user.activeTeam = state.teams[0]?._id?.toHexString() || "";
                 })
             })
-            .then(() => undefined);
+            .then(() => dispatch.fetchTeamMembersFromDB())
+            .then(() => dispatch.fetchClientsFromDB());
     },
 
     addSamplesToDB(context): Promise<void> {

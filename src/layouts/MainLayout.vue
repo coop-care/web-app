@@ -166,12 +166,12 @@ export default class MainLayout extends Vue {
 
   hasBackButton(routeName: string | null | undefined) {
     return ![
-      'client',
-      'clientReminders',
-      'clientReport',
-      'clientContacts',
-      'clientMasterData',
-      'login'
+      "client",
+      "clientReminders",
+      "clientReport",
+      "clientContacts",
+      "clientMasterData",
+      "login"
     ].includes(routeName || "");
   }
   updateOfflineStatus() {
