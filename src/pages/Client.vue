@@ -108,17 +108,18 @@
             class="text-classification"
           />
           <q-route-tab
-            name="history"
-            :label="$t('documentationHistory')"
-            icon="fas fa-history"
-            :to="{ name: 'clientHistory', params: $route.params }"
-            class="text-outcome"
+            v-if="false"
+            name="contacts"
+            :label="$t('contacts')"
+            icon="fas fa-address-book"
+            :to="{ name: 'clientContacts', params: $route.params }"
+            class="text-primary"
           />
           <q-route-tab
             v-if="false"
             name="masterData"
             :label="$t('masterDataTitle')"
-            icon="fas fa-address-book"
+            icon="fas fa-id-card"
             :to="{ name: 'clientMasterData', params: $route.params }"
             class="text-primary"
           />
@@ -140,10 +141,10 @@
             <client-problems />
           </q-tab-panel>
           <q-tab-panel
-            name="history"
+            name="contacts"
             class="q-px-none"
           >
-            <client-history />
+            <client-master-data />
           </q-tab-panel>
           <q-tab-panel
             name="masterData"
@@ -171,7 +172,7 @@ import NewClient from "../components/NewClient.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import ClientProblems from "../components/ClientProblems.vue";
 import ClientReminders from "../components/ClientReminders.vue";
-import ClientHistory from "../components/ClientHistory.vue";
+import ClientContacts from "../components/ClientContacts.vue";
 import ClientMasterData from "../components/ClientMasterData.vue";
 import { Client, MasterData } from "../models";
 import Loading from "components/Loading.vue";
@@ -186,7 +187,7 @@ import PullToRefresh from "components/PullToRefresh.vue";
     ClientDrawer,
     ClientProblems,
     ClientReminders,
-    ClientHistory,
+    ClientContacts,
     ClientMasterData,
     Loading,
     CentralMessage,
@@ -224,6 +225,11 @@ export default class PageIndex extends Vue {
         name: this.$t("showProofOfPerformance") + " …",
         icon: "fas fa-clipboard",
         action: () => this.pushRoute("proofOfPerformance"),
+      },
+      {
+        name: this.$t("documentationHistory") + " …",
+        icon: "fas fa-history",
+        action: () => this.pushRoute("clientHistory"),
       },
       {
         name: this.$t("clientDischarge"),

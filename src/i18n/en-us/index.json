@@ -97,7 +97,7 @@
   "additionalProblemSelection": "Select additional problems …",
   "createDraftProblemRecords": "create 0 problems as draft | create 1 problem as draft | create {count} problems as draft",
   "task": "Task | Tasks",
-  "documentationHistory": "History",
+  "documentationHistory": "Show modification history",
   "omahaSystemBookCopyrightNotice": "Reprinted and translated with permission: Martin KS. (2005). *The Omaha System: A Key to Practice, Documentation, and Information Management* (Reprinted 2nd ed.). Omaha, NE: Health Connections Press.",
   "recurrence": "Recurrence",
   "Never": "Never",
@@ -347,5 +347,6 @@
   "requestPasswordResetHint": "We will send you an email with a link with which you can set a new password.",
   "requestPasswordResetSuccessfulMessage": "The email has been sent. Please click on the link in the email to set a new password.",
   "requestEmailAgainButton": "Request email again",
-  "requestEmailButton": "Request email"
+  "requestEmailButton": "Request email",
+  "contacts": "Contacts"
 }

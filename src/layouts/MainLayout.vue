@@ -15,16 +15,7 @@
           @click="$root.$emit('toggle-client-drawer')"
         />
         <q-btn
-          v-if="
-            ![
-              'client',
-              'clientReminders',
-              'clientReport',
-              'clientHistory',
-              'clientMasterData',
-              'login'
-            ].includes($router.currentRoute.name || '')
-          "
+          v-if="hasBackButton(this.$router.currentRoute.name)"
           size="lg"
           dense
           no-caps
@@ -173,6 +164,16 @@ export default class MainLayout extends Vue {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
+  hasBackButton(routeName: string | null | undefined) {
+    return ![
+      'client',
+      'clientReminders',
+      'clientReport',
+      'clientContacts',
+      'clientMasterData',
+      'login'
+    ].includes(routeName || "");
+  }
   updateOfflineStatus() {
     this.isOffline = !window.navigator.onLine;
   }

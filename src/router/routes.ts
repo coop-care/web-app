@@ -24,8 +24,8 @@ const routes: RouteConfig[] = [
             path: "report/:problemId?"
           },
           {
-            name: "clientHistory",
-            path: "history"
+            name: "clientContacts",
+            path: "contacts"
           },
           {
             name: "clientMasterData",
@@ -78,6 +78,11 @@ const routes: RouteConfig[] = [
         name: "proofOfPerformance",
         path: "/client/:clientId/reports/execution",
         component: () => import("pages/ProofOfPerformance.vue")
+      },
+      {
+        name: "clientHistory",
+        path: "/client/:clientId/history",
+        component: () => import("pages/ClientHistory.vue")
       },
       {
         name: "userSettings",
