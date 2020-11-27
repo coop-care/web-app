@@ -164,9 +164,21 @@ export default defineActions({
     },
 
     deleteClient(context, client: Client): Promise<void> {
-        const { dispatch } = rootActionContext(context);
+        const { state, dispatch } = rootActionContext(context);
         return ccApi
             .deleteClient(client)
+            .then(() => {
+                const clientId = client._id?.toHexString() || "";
+                const teams = state.teams.filter(team => team.clients.includes(clientId));
+                return Promise.all(
+                    teams.map(team => dispatch.saveTeam({
+                        target: team,
+                        changes: {
+                            clients: team.clients.filter(id => id != clientId)
+                        }
+                    }))
+                );
+            })
             .then(() => {
                 return dispatch.fetchClientsFromDB();
             })
