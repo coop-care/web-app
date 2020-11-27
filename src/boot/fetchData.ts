@@ -26,16 +26,18 @@ export default boot(({ app }) => {
     });
   }
 
-  // @ts-ignore
-  window.download = () => downloadJSON(store.state.clients || [], "sample1.json");
-  // @ts-ignore
-  window.api = ccApi
-  // @ts-ignore
-  window.store = store
-  // @ts-ignore
-  window.ObjectID = ObjectID
-  // @ts-ignore
-  window.Team = Team
+  if ((process.env.DEV as unknown) === true || process.env.DEV === "true") {
+    // @ts-ignore
+    window.download = () => downloadJSON(store.state.clients || [], "sample1.json");
+    // @ts-ignore
+    window.api = ccApi
+    // @ts-ignore
+    window.store = store
+    // @ts-ignore
+    window.ObjectID = ObjectID
+    // @ts-ignore
+    window.Team = Team
+  }
 
   setColorSet(store?.state.currentUser?.colorScheme || defaultColors);
 
