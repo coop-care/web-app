@@ -15,7 +15,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class TextWithHighlights extends Vue {
   @Prop({ type: String, default: ""}) readonly text!: string;
-  @Prop(Object) readonly regex: RegExp | undefined;
+  @Prop(RegExp) readonly regex: RegExp | undefined;
   @Prop({ type: String, default: ""}) readonly classesForMatches!: string;
 
   get separatedText() {

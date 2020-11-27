@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh Lpr lff">
-    <q-header class="bg-white z-megatop">
+    <q-header class="bg-white">
       <q-toolbar
         :class="'shadow-3 bg-primary ' + ($q.screen.lt.sm ? 'q-px-none' : '')"
         style="z-index: 1000"
@@ -76,8 +76,6 @@
 </template>
 
 <style lang="sass">
-.z-megatop
-  z-index: 8000
 .q-btn-dropdown.hide-arrow
   .q-btn-dropdown__arrow
     display: none

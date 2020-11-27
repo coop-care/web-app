@@ -1,5 +1,5 @@
 <template>
-  <div class="cursor-help">
+  <div :class="tooltip ? 'cursor-help' : ''">
     {{ text }}
     <q-icon
       v-if="tooltip"
