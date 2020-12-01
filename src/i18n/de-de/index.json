@@ -348,5 +348,6 @@
   "requestPasswordResetSuccessfulMessage": "Die E-Mail wurde verschickt. Bitte klicke auf den Link in der E-Mail um ein neues Passwort zu setzen.",
   "requestEmailAgainButton": "Anfrage erneut senden",
   "requestEmailButton": "Anfrage absenden",
-  "contacts": "Kontakte"
+  "contacts": "Kontakte",
+  "category": "Kategorie"
 }

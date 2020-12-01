@@ -1,10 +1,10 @@
 import CoopCareApiInterface from "./coopCareApiInterface";
 import { Client, User, Team } from "../models";
 import { ObjectID } from "bson";
-import sampleData from "../data/sample1.json";
+import { importSamplesV2, sampleClientIds } from "../data/sampleImporter";
 
 export default class DemoApi implements CoopCareApiInterface {
-    user = (() => {
+    private user = (() => {
         const user = new User(this.userId, this.userEmail);
         user._id = new ObjectID();
         user.firstName = "Demo";
@@ -13,17 +13,15 @@ export default class DemoApi implements CoopCareApiInterface {
         user.activeTeam = ""
         return user;
     })();
-    clients = (Client.fromObject(sampleData) as Client[]).map(client => {
-        client._id = new ObjectID();
-        return client;
-    });
-    teams = (() => {
+    private clients: Client[] = [];
+    private teams = (() => {
         const team = new Team("Team CoopCare", this.userId);
         team._id = new ObjectID();
         this.user.activeTeam = team._id.toHexString();
-        team.clients = this.clients.map(client => client._id?.toHexString() || "");
+        team.clients = sampleClientIds().map(id => id.toHexString());
         return [team];
     })();
+    private didImportSampleClients = false;
 
     get isLoggedIn() {
         return true;
@@ -85,7 +83,15 @@ export default class DemoApi implements CoopCareApiInterface {
         return Promise.reject();
     }
     getClients(clientIds: string[]): Promise<Client[]> {
-        return Promise.resolve(this.clients.filter(client => clientIds.includes(client._id?.toHexString() || "")));
+        if (!this.didImportSampleClients) {
+            this.clients = this.clients.concat(importSamplesV2());
+            this.clients.forEach((client, index) => client._id = new ObjectID(clientIds[index]))
+            this.didImportSampleClients = true;
+        }
+        return Promise.resolve(
+            this.clients.filter(client =>
+                clientIds.includes(client._id?.toHexString() || ""))
+        );
     }
     saveClient(client: Client) {
         return Promise.resolve(client);

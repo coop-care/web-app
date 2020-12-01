@@ -163,9 +163,8 @@ export default class ClientHistoryEntry extends Vue {
           }
         }
 
-        const localizableKey = this.localizableKeys[key];
         return {
-          key: localizableKey ? this.$t(localizableKey) : key,
+          key: this.localizableKeys[key] || key,
           newValue: this.formattedValue(key, newValue, newValues),
           oldValue: this.formattedValue(key, oldValue, oldValues),
         };
@@ -174,20 +173,20 @@ export default class ClientHistoryEntry extends Vue {
   }
   get localizableKeys(): Record<string, string> {
     return {
-      scopeCode: "scopeTitle",
-      severityCode: "severityTitle",
-      signsAndSymptomsCodes: "signsAndSymptoms",
-      isHighPriority: "highPriority.title",
-      "problem.details": "notice",
-      priorityDetails: "lowPriorityReasonLabel",
-      knowledge: "terminology.problemRatingScale.ratings[0].title",
-      behaviour: "terminology.problemRatingScale.ratings[1].title",
-      status: "terminology.problemRatingScale.ratings[2].title",
-      personRatedInPlaceOfOwner: "personRatedInPlaceOfOwnerTitle",
-      recurrenceRules: "reminderTitle",
-      categoryCode: "category",
-      targetCode: "interventionTargetTitle",
-      "intervention.details": "description",
+      scopeCode: this.$t("scopeTitle") as string,
+      severityCode: this.$t("severityTitle") as string,
+      signsAndSymptomsCodes: this.$t("signsAndSymptoms") as string,
+      isHighPriority: this.$t("highPriority.title") as string,
+      "problem.details": this.$t("notice") as string,
+      priorityDetails: this.$t("lowPriorityReasonLabel") as string,
+      knowledge: this.$t("terminology.problemRatingScale.ratings[0].title") as string,
+      behaviour: this.$t("terminology.problemRatingScale.ratings[1].title") as string,
+      status: this.$t("terminology.problemRatingScale.ratings[2].title") as string,
+      personRatedInPlaceOfOwner: this.$t("personRatedInPlaceOfOwnerTitle") as string,
+      recurrenceRules: this.$t("reminderTitle") as string,
+      categoryCode: this.$t("category") as string,
+      targetCode: this.$t("interventionTargetTitle") as string,
+      "intervention.details": this.$t("description") as string,
     };
   }
   get client() {

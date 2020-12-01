@@ -293,7 +293,9 @@ export default defineMutations<StateInterface>()({
                     store.getters.userId,
                     type,
                     problemId,
-                    classToPlain(reminder, excludeForChangeRecord)
+                    classToPlain(reminder, excludeForChangeRecord),
+                    undefined,
+                    reminder.completedAt
                 )
             );
         }
@@ -378,7 +380,9 @@ export default defineMutations<StateInterface>()({
                         store.getters.userId,
                         "OutcomeRated",
                         problemRecord.id,
-                        classToPlain(target)
+                        classToPlain(target),
+                        undefined,
+                        payload.changes.createdAt
                     )
                 );
         }
@@ -391,7 +395,7 @@ export default defineMutations<StateInterface>()({
             return;
         }
 
-        const now = new Date();
+        const now = payload.now as Date || new Date();
         problemRecord.createdAt = now;
 
         client?.changeHistory.push(
@@ -399,7 +403,9 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 "ProblemCreated",
                 problemRecord.id,
-                classToPlain(problemRecord.problem)
+                classToPlain(problemRecord.problem),
+                undefined,
+                now
             )
         );
 
@@ -412,20 +418,25 @@ export default defineMutations<StateInterface>()({
                     store.getters.userId,
                     "OutcomeRated",
                     problemRecord.id,
-                    classToPlain(outcome)
+                    classToPlain(outcome),
+                    undefined,
+                    now
                 )
             );
         }
 
-        problemRecord.interventions.forEach(intervention =>
+        problemRecord.interventions.forEach(intervention => {
+            intervention.createdAt = now;
             client?.changeHistory.push(
                 new ChangeRecord(
                     store.getters.userId,
                     "InterventionStarted",
                     problemRecord.id,
-                    classToPlain(intervention, excludeForChangeRecord)
+                    classToPlain(intervention, excludeForChangeRecord),
+                    undefined,
+                    now
                 )
-            )
-        );
+            );
+        });
     }
 });

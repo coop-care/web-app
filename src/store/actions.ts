@@ -1,5 +1,5 @@
 import { defineActions } from "direct-vuex";
-import sampleData from "../data/sample1.json";
+import { addSamples } from "../data/sampleImporter";
 import { rootActionContext } from ".";
 import { Client, User, Team } from "../models";
 import { ccApi } from "../api/apiProvider";
@@ -265,23 +265,9 @@ export default defineActions({
             .then(() => dispatch.fetchClientsFromDB());
     },
 
-    addSamplesToDB(context): Promise<void> {
-        const { state, dispatch } = rootActionContext(context);
-        const samples = Client.fromObject(sampleData) as Client[];
-        const userId = state.currentUser?.id;
-        if (!userId) {
-            return Promise.resolve();
-        }
 
-        return Promise.all(
-            samples.map(client => {
-                return dispatch.addClient(client);
-            })
-        )
-            .then(() => {
-                dispatch.fetchClientsFromDB().catch(() => 0);
-            })
-            .catch(err => console.error(`Failed to insert documents: ${err}`));
+    addSamplesToDB(): Promise<void> {
+        return addSamples();
     },
 
     clearDB(context): Promise<void> {
