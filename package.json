@@ -45,11 +45,11 @@
     "@typescript-eslint/parser": "^4.11.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^7.16.0",
-    "eslint-config-prettier": "^6.15.0",
+    "eslint-config-prettier": "^7.1.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^7.3.0",
-    "workbox-webpack-plugin": "^5.1.4"
+    "workbox-webpack-plugin": "^6.0.2"
   },
   "browserslist": [
     "last 10 Chrome versions",
