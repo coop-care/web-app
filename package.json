@@ -19,9 +19,9 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.9.12",
-    "apexcharts": "^3.22.2",
+    "apexcharts": "^3.23.0",
     "class-transformer": "^0.3.1",
-    "core-js": "^3.7.0",
+    "core-js": "^3.8.1",
     "direct-vuex": "^0.12.0",
     "luxon": "^1.25.0",
     "mongodb-stitch-browser-sdk": "^4.8.0",
@@ -31,8 +31,8 @@
     "timeago.js": "^4.0.2",
     "vue-apexcharts": "^1.6.0",
     "vue-class-component": "^7.2.6",
-    "vue-i18n": "^8.22.1",
-    "vue-property-decorator": "^9.0.2"
+    "vue-i18n": "^8.22.2",
+    "vue-property-decorator": "^9.1.2"
   },
   "devDependencies": {
     "@quasar/app": "^2.1.13",
@@ -40,15 +40,15 @@
     "@quasar/quasar-app-extension-qmarkdown": "^1.4.0",
     "@types/bson": "^4.0.3",
     "@types/luxon": "^1.25.0",
-    "@types/node": "^14.14.7",
-    "@typescript-eslint/eslint-plugin": "^4.8.1",
-    "@typescript-eslint/parser": "^4.8.1",
+    "@types/node": "^14.14.14",
+    "@typescript-eslint/eslint-plugin": "^4.11.0",
+    "@typescript-eslint/parser": "^4.11.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^7.13.0",
+    "eslint": "^7.16.0",
     "eslint-config-prettier": "^6.15.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-vue": "^7.1.0",
+    "eslint-plugin-vue": "^7.3.0",
     "workbox-webpack-plugin": "^5.1.4"
   },
   "browserslist": [
