@@ -30,6 +30,7 @@ export default interface CoopCareApiInterface {
     saveClient(client: Client): Promise<Client>;
     deleteClient(client: Client): Promise<void>;
     deleteAllClients(): Promise<void>;
+    getClientsInAdditionalTeams(clientIds: string[], teamIds: string[]): Promise<string[]>
 
     getMyTeams(): Promise<Team[]>;
     createTeam(team: Team): Promise<Team>;

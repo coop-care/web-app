@@ -9,7 +9,7 @@ import {
 } from "mongodb-stitch-browser-sdk";
 import { ChangeEvent } from "mongodb-stitch-core-services-mongodb-remote"
 import CoopCareApiInterface, { CoopCareApiListener } from "./coopCareApiInterface";
-import { Client, User, UserData, Team, TeamMember } from "../models";
+import { Client, User, Team, TeamMember } from "../models";
 import { ObjectID } from "bson";
 
 export default class StitchApi implements CoopCareApiInterface {
@@ -131,8 +131,7 @@ export default class StitchApi implements CoopCareApiInterface {
             return Promise.reject("not logged in");
         }
 
-        const userData = UserData.fromUser(user)
-        return this.users.insertOne(userData).then(result => {
+        return this.users.insertOne(user).then(result => {
             user._id = new ObjectID(result.insertedId);
             return user;
         });
@@ -209,6 +208,12 @@ export default class StitchApi implements CoopCareApiInterface {
         return this.clients
             .findOneAndReplace({ _id: client._id }, data)
             .then(() => client);
+    }
+    getClientsInAdditionalTeams(clientIds: string[], teamIds: string[]) {
+        return this.stitch.callFunction(
+            "getClientsInAdditionalTeams",
+            [clientIds, teamIds]
+        );
     }
 
     createTeam(team: Team) {

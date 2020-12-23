@@ -2,7 +2,7 @@
   <q-page class="limit-page-width">
     <client-drawer ref="clientDrawer" />
 
-    <pull-to-refresh>
+    <pull-to-refresh @refresh="updateClientsInAdditionalTeams">
       <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
 
       <div
@@ -165,7 +165,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Component, Ref } from "vue-property-decorator";
 import ClientDrawer from "../components/ClientDrawer.vue";
 import ContentEditable from "../components/ContentEditable.vue";
 import NewClient from "../components/NewClient.vue";
@@ -178,6 +178,7 @@ import { Client, MasterData } from "../models";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
+import ClientActionMixin from "../mixins/ClientActionMixin";
 
 @Component({
   components: {
@@ -194,7 +195,7 @@ import PullToRefresh from "components/PullToRefresh.vue";
     PullToRefresh,
   },
 })
-export default class PageIndex extends Vue {
+export default class ClientPage extends ClientActionMixin {
   @Ref() readonly  clientDrawer!: ClientDrawer;
 
   selectedTab = null;
@@ -203,13 +204,13 @@ export default class PageIndex extends Vue {
     return this.selectedClient?.masterData.firstName || "";
   }
   set firstName(value) {
-    this.updateMasterData("firstName", value);
+    this.updateMasterData({ firstName: value });
   }
   get lastName() {
     return this.selectedClient?.masterData.lastName || "";
   }
   set lastName(value) {
-    this.updateMasterData("lastName", value);
+    this.updateMasterData({ lastName: value });
   }
   get clients() {
     return this.$store.direct.state.clients;
@@ -232,24 +233,10 @@ export default class PageIndex extends Vue {
         action: () => this.pushRoute("clientHistory"),
       },
       {
-        name: this.$t("clientDischarge"),
-        icon: "fas fa-archive",
-        action: this.archiveClient,
-        condition: !client.leftAt,
+        name: "-",
+        action: () => undefined
       },
-      {
-        name: this.$t("clientReadmission"),
-        icon: "fas fa-folder-open",
-        action: this.unarchiveClient,
-        condition: !!client.leftAt,
-      },
-      {
-        name: this.$t("deleteClient"),
-        icon: "delete_forever",
-        action: this.deleteClient,
-        condition: !!client.leftAt || !client.problems.length,
-        isDestructive: true,
-      },
+      ...this.clientActions(client)
     ];
   }
   get dueTaskCount() {
@@ -263,9 +250,35 @@ export default class PageIndex extends Vue {
   }
 
   created() {
+    if (this.team) {
+      this.updateClientsInAdditionalTeams();
+    }
+
     void this.$store.direct.dispatch
       .saveClient({ client: this.selectedClient, resolveOnError: true })
-      .then(() => this.$store.direct.dispatch.fetchClientsFromDB())
+      .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
+
+    this.$on("did-archive-client", () => 
+      this.clientDrawer.archivedClientsExpansionState = true
+    );
+    this.$on("did-unarchive-client", () => 
+      this.clientDrawer.activeClientsExpansionState = true
+    );
+    this.$on("did-delete-client", this.deselectClient);
+    this.$on("did-remove-client-from-team", this.deselectClient);
+    this.$on("did-move-client-to-team", this.deselectClient);
+  }
+
+  beforeDestroy() {
+    this.$off("did-archive-client");
+    this.$off("did-unarchive-client");
+    this.$off("did-delete-client");
+    this.$off("did-remove-client-from-team");
+    this.$off("did-move-client-to-team");
+  }
+
+  deselectClient() {
+    void this.$router.push({ name: "client" });
   }
 
   addClient(masterData: MasterData) {
@@ -282,50 +295,18 @@ export default class PageIndex extends Vue {
       .catch(console.error);
   }
 
-  updateMasterData(key: keyof MasterData, value: any) {
-    this.updateClient((client) => {
-      const changes: any = {};
-      changes[key] = value;
-      this.$store.direct.commit.updateObject({
-        target: client.masterData,
-        changes: changes,
-      });
-    });
-  }
-
-  archiveClient() {
-    this.updateClient((client) =>
-      this.$store.direct.commit.archiveClient(client)
-    );
-    this.clientDrawer.archivedClientsExpansionState = true;
-  }
-
-  unarchiveClient() {
-    this.updateClient((client) =>
-      this.$store.direct.commit.unarchiveClient(client)
-    );
-    this.clientDrawer.activeClientsExpansionState = true;
-  }
-
-  updateClient(mutate: (client: Client) => void) {
-    setTimeout(() => {
-      const client = this.selectedClient;
-      if (!client) {
+  updateMasterData(changes: Partial<MasterData>) {
+      if (!this.selectedClient) {
         return;
       }
 
-      mutate(client);
+      this.$store.direct.commit.updateObject({
+        target: this.selectedClient.masterData,
+        changes: changes,
+      });
       void this.$store.direct.dispatch.saveClient({
         client: this.selectedClient,
       });
-    }, 0);
-  }
-
-  deleteClient() {
-    if (this.selectedClient) {
-      void this.$store.direct.dispatch.deleteClient(this.selectedClient);
-      void this.$router.push({ name: "client" });
-    }
   }
 
   pushRoute(name: string) {

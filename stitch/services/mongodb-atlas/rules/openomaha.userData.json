@@ -32,6 +32,10 @@
                     "write": false,
                     "read": true
                 },
+                "email": {
+                    "write": false,
+                    "read": true
+                },
                 "firstName": {
                     "write": false,
                     "read": true

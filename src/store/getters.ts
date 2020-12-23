@@ -34,5 +34,10 @@ export default defineGetters<StateInterface>()({
 
     userId: state => {
         return state.currentUser?.userId || "";
+    },
+
+    currentTeam: state => {
+        const teamId = state.currentUser?.activeTeam;
+        return state.teams.find(team => teamId && team._id?.equals(teamId));
     }
 });

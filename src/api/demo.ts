@@ -96,6 +96,13 @@ export default class DemoApi implements CoopCareApiInterface {
     saveClient(client: Client) {
         return Promise.resolve(client);
     }
+    getClientsInAdditionalTeams(clientIds: string[], teamIds: string[]) {
+        return Promise.resolve(
+            this.teams
+                .flatMap(team => teamIds.indexOf(team._id?.toString() || "") < 0 ? team.clients : [])
+                .filter(clientId => clientIds.indexOf(clientId) >= 0)
+        );
+    }
 
     getMyTeams() {
         return Promise.resolve(this.teams.slice());

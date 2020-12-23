@@ -18,6 +18,11 @@ export class Client extends IdentifiableObject {
         return plainToClass(Client, object);
     }
 
+    static sortByLastName(a: Client, b: Client) {
+        return a.masterData.lastName.localeCompare(b.masterData.lastName) ||
+            a.masterData.firstName.localeCompare(b.masterData.firstName);
+    }
+
     get name() {
         return this.masterData.name;
     }

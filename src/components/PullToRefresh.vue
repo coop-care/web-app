@@ -12,7 +12,10 @@ export default class PullToRefreshControl extends Vue {
   refresh(done: () => void) {
     this.$store.direct.dispatch
       .fetchEssentialDataFromDB({locale: this.$root.$i18n.locale})
-      .finally(done);
+      .finally(() => {
+        this.$emit("refresh");
+        done();
+      });
   }
 }
 </script>

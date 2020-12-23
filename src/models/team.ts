@@ -7,7 +7,8 @@ export class Team extends IdentifiableObject {
   members: string[] = [];
   admins: string[] = [];
   clients: string[] = [];
-  invites: string[] = [];
+  @Type(() => TeamInvitation)
+  invites: TeamInvitation[] = [];
   @Type(() => TeamMember)
   alumni: TeamMember[] = [];
 
@@ -15,13 +16,33 @@ export class Team extends IdentifiableObject {
     return plainToClass(Team, object);
   }
 
-  constructor(name: string, userId: string) {
+  constructor(name: string, userId?: string) {
     super();
     this.name = name;
-    this.admins.push(userId);
+    if (userId) {
+      this.admins.push(userId);
+    }
   }
 
   get allMembers() {
     return this.admins.concat(this.members)
+  }
+}
+
+export class TeamInvitation {
+  invitee: string;
+  invitedBy: string;
+  @Type(() => Date)
+  invitedAt: Date;
+  @Type(() => Date)
+  acceptedAt?: Date;
+  locale: string;
+  assignAdminRole = false;
+
+  constructor(invitee: string, invitedBy: string, locale: string) {
+    this.invitee = invitee;
+    this.invitedBy = invitedBy;
+    this.invitedAt = new Date();
+    this.locale = locale;
   }
 }

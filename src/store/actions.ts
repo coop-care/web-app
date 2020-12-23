@@ -1,7 +1,7 @@
 import { defineActions } from "direct-vuex";
 import { addSamples } from "../data/sampleImporter";
 import { rootActionContext } from ".";
-import { Client, User, Team } from "../models";
+import { Client, User, Team, TeamInvitation } from "../models";
 import { ccApi } from "../api/apiProvider";
 import { defaultColors, setColorSet } from "../helper/color";
 
@@ -187,6 +187,23 @@ export default defineActions({
             );
     },
 
+    updateAndSaveClient(context, payload: { target: Client; changes: Partial<Client> }): Promise<void> {
+        const { commit, dispatch } = rootActionContext(context);
+        commit.updateClientObject(payload);
+        return dispatch.saveClient({ client: payload.target });
+    },
+
+    getClientsInAdditionalTeams(context, clientIds: string[]): Promise<string[]> {
+        const { state } = rootActionContext(context);
+        const user = state.currentUser;
+
+        if (user && clientIds.length) {
+            return ccApi.getClientsInAdditionalTeams(clientIds, [user.activeTeam]);
+        } else {
+            return Promise.resolve([]);
+        }
+    },
+
     login(context, { email, password, locale }: { email: string; password: string; locale: string }): Promise<void> {
         const { dispatch } = rootActionContext(context);
         return ccApi.login(email, password).then(() => {
@@ -231,14 +248,21 @@ export default defineActions({
                 return dispatch.saveCurrentUser(user => {
                     user.activeTeam = team._id?.toHexString() || user.activeTeam;
                 });
-            }).then(() => team);
+            })
+            .then(() => dispatch.fetchClientsFromDB())
+            .then(() => team);
     },
 
     saveTeam(context, payload: { target: Team, changes: Partial<Team> }): Promise<Team | void> {
-        const { commit, state } = rootActionContext(context);
+        const { commit, dispatch, state } = rootActionContext(context);
 
         if (state.currentUser) {
             commit.updateObject(payload);
+
+            if (payload.changes.clients) {
+                void dispatch.fetchClientsFromDB();
+            }
+
             return ccApi
                 .saveTeam(payload.target)
                 .catch(err =>
@@ -265,6 +289,50 @@ export default defineActions({
             .then(() => dispatch.fetchClientsFromDB());
     },
 
+    inviteTeamMember(context, { team, invitation, name }: { team: Team, invitation: TeamInvitation, name: string }): Promise<void> {
+        const { dispatch } = rootActionContext(context);
+        const url = process.env.WEBAPI_URL;
+        let promise: Promise<any> = Promise.resolve();
+
+        if (!team.invites.find(invite => invite.invitee == invitation.invitee)) {
+            promise = promise.then(() => dispatch.saveTeam({
+                target: team,
+                changes: {
+                    invites: team.invites.concat([invitation])
+                }
+            }));
+        }
+
+        if (url && process.env.WEBAPI_FROM) {
+            promise = promise.then(() => {
+                return fetch(url + "/mail", {
+                    method: "POST",
+                    cache: "no-cache",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "to": invitation.invitee,
+                        "from": process.env.WEBAPI_FROM,
+                        "template": "coopcareInvite",
+                        "locale": invitation.locale,
+                        "environment": window.location.hostname.replace(".coopcare.de", ""),
+                        "name": name
+                    })
+                });
+            }).then(response => {
+                return response.text().then(text => {
+                    if (response.ok && JSON.parse(text)?.success == true) {
+                        return undefined;
+                    } else {
+                        throw new Error(text);
+                    }
+                });
+            });
+        }
+
+        return promise;
+    },
 
     addSamplesToDB(): Promise<void> {
         return addSamples();

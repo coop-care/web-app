@@ -139,8 +139,8 @@ export default class InterventionTargetSelect extends Vue {
         this.filteredOptions = this.options
           .filter(
             option =>
-              (option.title && regExp.exec(option.title)) ||
-              (option.description && regExp.exec(option.description)) ||
+              (option.title && new RegExp(regExp).test(option.title)) ||
+              (option.description && new RegExp(regExp).test(option.description)) ||
               option.isHeader
           )
           .filter(

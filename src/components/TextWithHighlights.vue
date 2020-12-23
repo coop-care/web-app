@@ -28,7 +28,7 @@ export default class TextWithHighlights extends Vue {
     }
   }
   classesForPart(part: string) {
-    if (this.regex && this.regex.test(part)) {
+    if (this.regex && new RegExp(this.regex).test(part)) {
       return this.classesForMatches
     } else {
       return ""

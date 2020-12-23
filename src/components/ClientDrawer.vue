@@ -113,16 +113,12 @@ export default class ClientDrawer extends Vue {
   get activeClients() {
     return this.clients
       .filter((client) => !client.leftAt)
-      .sort((a: any, b: any) =>
-        a.masterData.name.localeCompare(b.masterData.name)
-      );
+      .sort(Client.sortByLastName);
   }
   get archivedClients() {
     return this.clients
       .filter((client) => !!client.leftAt)
-      .sort((a: any, b: any) =>
-        a.masterData.name.localeCompare(b.masterData.name)
-      );
+      .sort(Client.sortByLastName);
   }
 
   created() {

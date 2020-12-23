@@ -3,7 +3,7 @@
     padding
     class="limit-page-width width-sm"
   >
-    <pull-to-refresh>
+    <pull-to-refresh @refresh="updateClientsInAdditionalTeams">
       <div
         v-if="teamOptions.length == 1"
         class="q-mt-lg"
@@ -70,66 +70,144 @@
             header-class="section-heading q-mt-md q-mb-sm q-px-none dense-avatar"
             switch-toggle-side
           >
-          <q-list style="max-width: 500px">
-            <q-item v-for="member in allMembers" :key="member.userId" class="q-pl-none">
-              <q-item-section side>
-                <signature :user="member"/>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label :class="isCurrentUser(member) ? 'text-weight-medium' : ''">
-                  {{ member.username }} {{ isCurrentUserText(member) }}
-                </q-item-label>
-                <q-item-label
-                  v-if="hasAdminRole(member)"
-                  caption
+            <q-list style="max-width: 500px">
+              <q-item v-for="member in allMembers" :key="member.userId" class="q-pl-none">
+                <q-item-section side>
+                  <signature :user="member"/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label :class="isCurrentUser(member) ? 'text-weight-medium' : ''">
+                    {{ member.username || $t('unknownMember') }} {{ isCurrentUserText(member) }}
+                  </q-item-label>
+                  <q-item-label
+                    v-if="hasAdminRole(member)"
+                    caption
+                  >
+                    <text-with-tooltip 
+                      :text="$t('hasTeamAdminRole')"
+                      :tooltip="$t('teamRolesDescription')"
+                    />
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section 
+                  v-if="isAdmin || isCurrentUser(member)"
+                  side
                 >
-                  <text-with-tooltip 
-                    :text="$t('hasTeamAdminRole')"
-                    :tooltip="$t('teamRolesDescription')"
-                  />
-                </q-item-label>
-              </q-item-section>
-              <q-item-section 
-                v-if="isAdmin || isCurrentUser(member)"
-                side
-              >
-                <action-menu :items="userActionItems(member)">
-                  <template v-slot:admin-toggle>
-                    <div>
-                      <q-item>
-                        <q-item-section>
-                          <q-item-label>
-                            <text-with-tooltip 
-                              :text="hasAdminRole(member) ? $t('hasAdminRole') : $t('hasNoAdminRole')"
-                              :tooltip="$t('teamRolesDescription')"
-                              width="320px"
+                  <action-menu :items="userActionItems(member)">
+                    <template v-slot:admin-toggle>
+                      <div>
+                        <q-item>
+                          <q-item-section>
+                            <q-item-label>
+                              <text-with-tooltip 
+                                :text="hasAdminRole(member) ? $t('hasAdminRole') : $t('hasNoAdminRole')"
+                                :tooltip="$t('teamRolesDescription')"
+                                width="320px"
+                              />
+                            </q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-toggle 
+                              :value="hasAdminRole(member)" 
+                              @input="toggleAdminRole(member)"
+                              :disable="!isAdmin"
                             />
-                          </q-item-label>
-                        </q-item-section>
-                        <q-item-section side>
-                          <q-toggle 
-                            :value="hasAdminRole(member)" 
-                            @input="toggleAdminRole(member)"
-                            :disable="!isAdmin"
-                          />
-                        </q-item-section>
-                      </q-item>
-                    </div>
-                  </template>
-                </action-menu>
-              </q-item-section>
-            </q-item>
-            <q-btn
-              v-if="isAdmin"
-              :label="$t('addTeamMember')"
-              icon="add"
-              outline
-              rounded
-              no-caps
-              color="primary"
-              class="q-mt-md"
-            />
-          </q-list>
+                          </q-item-section>
+                        </q-item>
+                      </div>
+                    </template>
+                  </action-menu>
+                </q-item-section>
+              </q-item>
+              <q-item v-for="invitation in invitations" :key="invitation.invitee" class="q-pl-none">
+                <q-item-section side>
+                  <signature/>
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-grey-7 text-italic">
+                    {{ invitation.invitee }}
+                  </q-item-label>
+                  <q-item-label caption>
+                    <span v-if="!invitation.assignAdminRole">{{ $t("invitedPersonCaption") }}</span>
+                    <text-with-tooltip 
+                      v-else
+                      :text="$t('invitedPersonCaption') + '; ' + $t('hasTeamAdminRole')"
+                      :tooltip="$t('teamRolesDescription')"
+                    />
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section 
+                  v-if="isAdmin"
+                  side
+                >
+                  <action-menu :items="invitationActionItems(invitation)">
+                    <template v-slot:admin-toggle>
+                      <div>
+                        <q-item>
+                          <q-item-section>
+                            <q-item-label>
+                              <text-with-tooltip 
+                                :text="invitation.assignAdminRole ? $t('willBecomeAdminRole') : $t('hasNoAdminRole')"
+                                :tooltip="$t('teamRolesDescription')"
+                                width="320px"
+                              />
+                            </q-item-label>
+                          </q-item-section>
+                          <q-item-section side>
+                            <q-toggle 
+                              :value="invitation.assignAdminRole" 
+                              @input="toggleInvitationAdminRole(invitation)"
+                              :disable="!isAdmin"
+                            />
+                          </q-item-section>
+                        </q-item>
+                      </div>
+                    </template>
+                  </action-menu>
+                </q-item-section>
+              </q-item>
+              <q-btn
+                v-if="isAdmin && !isDemo"
+                :label="$t('addTeamMember')"
+                icon="add"
+                outline
+                rounded
+                no-caps
+                color="primary"
+                class="q-mt-md"
+                @click="inviteTeamMember"
+              />
+            </q-list>
+          </q-expansion-item>
+          
+          <q-expansion-item
+            v-model="expandedClients"
+            :label="$tc('client', 2) + ' (' + clients.length + ')'"
+            header-class="section-heading q-mt-md q-mb-sm q-px-none dense-avatar"
+            switch-toggle-side
+          >
+            <q-list style="max-width: 500px">
+              <q-item 
+                v-for="(client, index) in clients"
+                :key="'client' + index"
+                :class="'q-pl-none ' + (!!client.leftAt ? 'text-grey-7 text-italic' : '')"
+              >
+                <q-item-section>
+                  <q-item-label>
+                    {{ client.masterData.name }}
+                  </q-item-label>
+                  <q-item-label 
+                    v-if="captionForClient(client)"
+                    caption
+                  >
+                    <span>{{ captionForClient(client) }}</span>
+                  </q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  <action-menu :items="clientActionItems(client)" />
+                </q-item-section>
+              </q-item>
+            </q-list>
           </q-expansion-item>
 
         </div>
@@ -139,13 +217,16 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Component, Ref } from "vue-property-decorator";
 import { QInput } from "quasar";
-import { TeamMember, Team } from "../models";
+import VueI18n from "vue-i18n";
+import { TeamMember, Team, TeamInvitation, Client } from "../models";
 import Signature from "../components/Signature.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import TextWithTooltip from "../components/TextWithTooltip.vue";
-import PullToRefresh from "components/PullToRefresh.vue";
+import PullToRefresh from "../components/PullToRefresh.vue";
+import TeamInvitationDialog from "../components/TeamInvitationDialog.vue";
+import ClientActionMixin from "../mixins/ClientActionMixin";
 
 @Component({
   components: {
@@ -155,11 +236,12 @@ import PullToRefresh from "components/PullToRefresh.vue";
     PullToRefresh
   },
 })
-export default class TeamSettingsPage extends Vue {
+export default class TeamSettingsPage extends ClientActionMixin {
   @Ref() readonly teamNameInput!: QInput;
 
   expandedSettings = false;
   expandedMembers = true;
+  expandedClients = true;
 
   get teamId() {
     return this.currentUser?.activeTeam || "";
@@ -174,12 +256,17 @@ export default class TeamSettingsPage extends Vue {
         void this.$store.direct.dispatch.addTeam(team);
         this.expandedSettings = true;
         this.expandedMembers = true;
+        this.expandedClients = true;
         setTimeout(() => this.teamNameInput.focus(), 100);
       }
     } else {
-      void this.$store.direct.dispatch.saveCurrentUser(user => {
-        user.activeTeam = value;
-      }).then(() => this.$store.direct.dispatch.fetchEssentialDataFromDB({ locale: this.$root.$i18n.locale }));
+      void this.$store.direct.dispatch.saveCurrentUser(user => 
+        user.activeTeam = value
+      ).then(() => 
+        this.$store.direct.dispatch.fetchEssentialDataFromDB({ locale: this.$root.$i18n.locale })
+      ).then(() => 
+        this.updateClientsInAdditionalTeams()
+      );
     }
   }
   get teamName() {
@@ -187,7 +274,7 @@ export default class TeamSettingsPage extends Vue {
   }
   set teamName(value) {
     if (value) {
-      this.saveTeam({name: value});
+      void this.saveTeam({name: value});
     }
   }
 
@@ -202,31 +289,47 @@ export default class TeamSettingsPage extends Vue {
       value: "new"
     })
   }
-  get currentUser() {
-    return this.$store.direct.state.currentUser;
-  }
-  get team() {
-    return this.$store.direct.state.teams.find(team => team._id?.equals(this.teamId));
-  }
   get allMembers() {
     return this.team?.allMembers
-      .map(id => this.$store.direct.state.teamMembers[id])
-      .filter(member => !!member)
-      .sort((a, b) => a.username.localeCompare(b.username)) || [];
+      .map(id => this.$store.direct.state.teamMembers[id] || {})
+      .sort((a, b) => a.username?.localeCompare(b.username)) || [];
   }
-  get isAdmin() {
-    return !!this.currentUser && !!this.team && 
-      this.team.admins.includes(this.currentUser?.userId)
+  get clients() {
+    return this.$store.direct.state.clients
+      .slice()
+      .sort((a, b) => {
+        if (!!a.leftAt && !b.leftAt) {
+          return 1;
+        } else if (!a.leftAt && !!b.leftAt) {
+          return -1;
+        } else {
+          return Client.sortByLastName(a, b);
+        }
+      }) || [];
+  }
+  get invitations() {
+    return this.team?.invites.filter(invitation => !invitation.acceptedAt) || [];
+  }
+  get isDemo() {
+    return process.env.BACKEND == "demo";
+  }
+  get infoDialog() {
+    return {
+      persistent: true,
+      ok: {
+        rounded: true
+      }
+    }
   }
 
   isCurrentUser(member: TeamMember) {
-    return this.currentUser?.equals(member) || false
+    return this.currentUser?.equals(member) || false;
   }
   isCurrentUserText(member: TeamMember) {
     if (this.isCurrentUser(member)) {
-      return this.$t("isCurrentUser") as string
+      return this.$t("isCurrentUser") as string;
     } else {
-      return ""
+      return "";
     }
   }
   hasAdminRole(member: TeamMember) {
@@ -251,6 +354,42 @@ export default class TeamSettingsPage extends Vue {
       },
     ];
   }
+  invitationActionItems(invitation: TeamInvitation) {
+    return [
+      {
+        customType: "admin-toggle",
+        condition: this.isAdmin
+      },
+      {
+        name: this.$t("resendInvitation"),
+        icon: "fas fa-paper-plane",
+        action: () => this.sendInvitation(invitation),
+        condition: this.isAdmin
+      },
+      {
+        name: this.$t("withdrawInvitation"),
+        icon: "fas fa-user-minus",
+        isDestructive: true,
+        action: this.removeInvitation(invitation.invitee),
+        condition: this.isAdmin
+      },
+    ];
+  }
+  clientActionItems(client: Client) {
+    return this.clientActions(client);
+  }
+  captionForClient(client: Client) {
+    const fragments: VueI18n.TranslateResult[] = [];
+
+    if (!!client.leftAt) {
+      fragments.push(this.$t("isArchived"));
+    }
+    if (this.isClientInAdditionalTeam(client)) {
+      fragments.push(this.$t("isSharedWithAdditionalTeams"));
+    }
+
+    return fragments.join(", ")
+  }
   removeFromTeam(member: TeamMember) {
     return () => {
       if (!this.team) {
@@ -261,9 +400,10 @@ export default class TeamSettingsPage extends Vue {
           return this.presentSingleAdminError();
       }
 
-      this.saveTeam({
+      void this.saveTeam({
         admins: this.team.admins.filter(id => id != member.userId),
-        members: this.team.members.filter(id => id != member.userId)
+        members: this.team.members.filter(id => id != member.userId),
+        alumni: this.team.alumni.concat([member.makeAlumnus()])
       });
     };
   }
@@ -277,12 +417,12 @@ export default class TeamSettingsPage extends Vue {
     }
 
     if (this.hasAdminRole(member)) {
-      this.saveTeam({
+      void this.saveTeam({
         admins: this.team.admins.filter(id => id != member.userId),
         members: this.team.members.concat([member.userId])
       });
     } else {
-      this.saveTeam({
+      void this.saveTeam({
         admins: this.team.admins.concat([member.userId]),
         members: this.team.members.filter(id => id != member.userId)
       });
@@ -292,18 +432,115 @@ export default class TeamSettingsPage extends Vue {
     this.$q.dialog({
       title: this.$t("oneAdminRequiredErrorTitle") as string,
       message: this.$t("oneAdminRequiredErrorMessage") as string,
-      persistent: true
+      ...this.infoDialog
     });
   }
-  deleteTeam() {
+  inviteTeamMember() {
+    this.$q.dialog({
+      component: TeamInvitationDialog,
+      parent: this
+    }).onOk((email: string) => {
+      const currentUserId = this.currentUser?.userId;
+      const invitee = email.toLowerCase();
+      const inviteeAsMember = this.team?.allMembers
+        .map(userId => this.$store.direct.state.teamMembers[userId])
+        .find(member => member?.email?.toLowerCase() == invitee);
+
+      if (!!inviteeAsMember) {
+        this.presentInvitationError(
+          undefined,
+          this.$t("teamMemberAlreadyExistsErrorMessage", { name: inviteeAsMember.username })
+        );
+      } else if (currentUserId && invitee) {
+        const invitation = new TeamInvitation(invitee, currentUserId, this.$root.$i18n.locale);
+        this.sendInvitation(invitation);
+      } else {
+        this.presentInvitationError();
+      }
+    });
+  }
+  sendInvitation(invitation: TeamInvitation) {
     if (this.team) {
-      // todo: more checks
-      void this.$store.direct.dispatch.deleteTeam(this.team);
+      this.$store.direct.dispatch
+        .inviteTeamMember({
+          team: this.team, 
+          invitation: invitation, 
+          name: this.currentUser?.username || this.$t("someone", invitation.locale) as string
+        })
+        .catch(this.presentInvitationError)
+    } else {
+      this.presentInvitationError();
     }
   }
-  saveTeam(changes: Partial<Team>) {
+  presentInvitationError(error?: any, message = this.$t("teamMemberInvitationFailed")) {
+    this.$q.dialog({
+      title: this.$t("genericErrorTitle") as string,
+      message: message as string,
+      ...this.infoDialog
+    });
+  }
+  toggleInvitationAdminRole(invitation: TeamInvitation) {
     if (this.team) {
-      void this.$store.direct.dispatch.saveTeam({target: this.team, changes: changes});
+      this.$store.direct.commit.updateObject({
+        target: invitation, 
+        changes: {
+          assignAdminRole: !invitation.assignAdminRole
+        }
+      });
+      void this.saveTeam({});
+    }
+  }
+  removeInvitation(invitee: string) {
+    return () => {
+      if (this.team) {
+        void this.saveTeam({
+          invites: this.team.invites.filter(invitation => invitation.invitee != invitee)
+        });
+      }
+    }
+  }
+  deleteTeam() {
+    const team = this.team;
+    if (team) {
+      const state = this.$store.direct.state;
+      const clientIds = state.isLoadingClientList ? 
+        team.clients : 
+        state.clients.map(client => client._id?.toHexString() || "");
+      const clientIdsNotShared = clientIds.filter(id => !this.clientsInAdditionalTeams.includes(id))
+
+      if (clientIdsNotShared.length) {
+        this.$q.dialog({
+          title: this.$t("teamHasClientsErrorTitle") as string,
+          message: this.$t("teamHasClientsMessage") as string,
+          ...this.infoDialog
+        });
+      } else {
+        this.$q.dialog({
+          title: this.$t("confirmDeletionTitle") as string,
+          message: this.$t("confirmTeamDeletionMessage", {name: team.name}) as string,
+          persistent: true,
+          ok: {
+            label: this.$t("delete"),
+            rounded: true,
+            flat: true,
+            noCaps: true,
+            color: "negative"
+          },
+          cancel: {
+            rounded: true,
+            flat: true,
+            noCaps: true
+          }
+        }).onOk(() =>
+          void this.$store.direct.dispatch.deleteTeam(team)
+        );
+      }
+    }
+  }
+
+  mounted() {
+    if (this.team) {
+      this.updateClientsInAdditionalTeams();
     }
   }
 }

@@ -8,6 +8,7 @@
             "apply_when": {
                 "members": "%%user.id"
             },
+            "read": true,
             "write": true,
             "insert": false,
             "delete": false,
@@ -19,10 +20,30 @@
             "apply_when": {
                 "admins": "%%user.id"
             },
+            "read": true,
             "write": true,
             "insert": true,
             "delete": true,
             "search": true,
+            "additional_fields": {}
+        },
+        {
+            "name": "invitation",
+            "apply_when": {
+                "%%true": {
+                    "%function": {
+                        "arguments": [
+                            "%%root.invites"
+                        ],
+                        "name": "isInvited"
+                    }
+                }
+            },
+            "read": true,
+            "write": true,
+            "insert": false,
+            "delete": false,
+            "search": false,
             "additional_fields": {}
         }
     ],

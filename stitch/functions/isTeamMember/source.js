@@ -1,19 +1,21 @@
 exports = function (teamMemberUserId) {
   const teams = context.services.get("mongodb-atlas")
     .db("openomaha").collection("teams");
+  const email = (context.user.data.email || "").toLowerCase();
 
   return teams
     .find({
       $or: [
-        { admins: context.user.id },
-        { members: context.user.id },
+        { admins: teamMemberUserId },
+        { members: teamMemberUserId }
       ]
     }, {})
     .toArray()
     .then(teams => {
-      return teams
-        .flatMap(team => team.admins.concat(team.members))
-        .indexOf(teamMemberUserId) > -1;
+      return !!teams.find(team =>
+        team.admins.concat(team.members).indexOf(context.user.id) >= 0 ||
+        !!team.invites.find(invitation => invitation.invitee == email)
+      );
     }).catch(e => {
       console.log(e);
       return false;

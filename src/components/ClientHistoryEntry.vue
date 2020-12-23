@@ -124,12 +124,10 @@ export default class ClientHistoryEntry extends Vue {
     return this.$store.direct.state.teamMembers[this.changeRecord.user]?.username;
   }
   get color() {
-    return (
-      (/(intervention)|(classification)|(outcome)/.exec(this.changeRecord.type
-        .toLowerCase()
-        .replace("problem", "classification")) || [])[0] ||
-      "primary"
-    );
+    const type = this.changeRecord.type.toLowerCase()
+      .replace("problem", "classification");
+    const result = /(intervention)|(classification)|(outcome)/.exec(type) || []
+    return result[0] || "primary";
   }
   get icon() {
     const type = this.changeRecord.type;

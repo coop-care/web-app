@@ -21,6 +21,7 @@
         v-if="item.customType"
         :name="item.customType"
       />
+      <q-separator v-else-if="item.name == '-'" />
       <q-item
         v-else
         clickable

@@ -13,7 +13,8 @@ import {
     ChangeRecordType,
     User,
     Team,
-    TeamMember
+    TeamMember,
+    TeamInvitation
 } from "../models";
 import { classToPlain, ClassTransformOptions } from "class-transformer";
 
@@ -97,14 +98,6 @@ export default defineMutations<StateInterface>()({
         client.calculateOccurrences();
     },
 
-    archiveClient(state, client: Client) {
-        client.leftAt = new Date();
-    },
-
-    unarchiveClient(state, client: Client) {
-        client.leftAt = undefined;
-    },
-
     createProblemRecord(state, payload) {
         store.getters
             .getClient(payload)
@@ -144,6 +137,16 @@ export default defineMutations<StateInterface>()({
         }
     },
 
+    updateClientObject(
+        state: StateInterface,
+        payload: {
+            target: Client;
+            changes: Partial<Client>;
+        }
+    ) {
+        store.commit.updateObject(payload);
+    },
+
     updateReminder(
         state: StateInterface,
         payload: {
@@ -161,6 +164,15 @@ export default defineMutations<StateInterface>()({
                 payload.updateFrom
             );
         }
+    },
+
+    acceptTeamInvitation(state, payload: TeamInvitation) {
+        store.commit.updateObject({
+            target: payload,
+            changes: {
+                acceptedAt: new Date()
+            }
+        });
     },
 
     addToClientHistory(

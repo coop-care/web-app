@@ -1,9 +1,10 @@
 import "reflect-metadata";
-import { plainToClass, classToPlain, Exclude } from "class-transformer";
+import { plainToClass, classToClass } from "class-transformer";
 import { IdentifiableObject } from ".";
 
 export class TeamMember extends IdentifiableObject {
     userId: string;
+    email?: string;
     firstName = "";
     lastName = "";
     signature = "";
@@ -12,9 +13,10 @@ export class TeamMember extends IdentifiableObject {
         return plainToClass(TeamMember, object);
     }
 
-    constructor(userId: string) {
+    constructor(userId: string, email?: string) {
         super();
         this.userId = userId;
+        this.email = email?.toLowerCase();
     }
 
     get id() {
@@ -26,30 +28,22 @@ export class TeamMember extends IdentifiableObject {
             this.signature
         );
     }
+
+    makeAlumnus() {
+        const clone = classToClass(this);
+        delete clone._id;
+        delete clone.email;
+        return clone;
+    }
 }
 
-export class UserData extends TeamMember {
+export class User extends TeamMember {
     activeTeam = "";
     locale = "";
     colorScheme: string[] | undefined = undefined
     isOnboardingCompleted = false;
 
-    static fromUser(user: User): UserData {
-        const userData = classToPlain(user);
-        return plainToClass(UserData, userData);
-    }
-}
-
-export class User extends UserData {
-    @Exclude()
-    email: string;
-
     static fromObject(object: any): User | User[] {
         return plainToClass(User, object);
-    }
-
-    constructor(userId: string, email: string) {
-        super(userId);
-        this.email = email;
     }
 }
