@@ -12,7 +12,7 @@ export type ChangeRecordType =
 
 export class ChangeRecord {
     @Type(() => Date)
-    createdAt = new Date();
+    createdAt: Date;
     user: string;
     type: ChangeRecordType;
     problemId: string;
@@ -24,16 +24,14 @@ export class ChangeRecord {
         type: ChangeRecordType,
         problemId: string,
         newValues: Record<string, any>,
-        oldValues?: Record<string, any>
+        oldValues?: Record<string, any>,
+        createdAt = new Date()
     ) {
         this.user = user;
         this.type = type;
         this.problemId = problemId;
         this.newValues = newValues;
         this.oldValues = oldValues;
-    }
-
-    get username() {
-        return this.user;
+        this.createdAt = createdAt;
     }
 }

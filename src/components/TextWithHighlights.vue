@@ -15,7 +15,7 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class TextWithHighlights extends Vue {
   @Prop({ type: String, default: ""}) readonly text!: string;
-  @Prop(Object) readonly regex: RegExp | undefined;
+  @Prop(RegExp) readonly regex: RegExp | undefined;
   @Prop({ type: String, default: ""}) readonly classesForMatches!: string;
 
   get separatedText() {
@@ -28,7 +28,7 @@ export default class TextWithHighlights extends Vue {
     }
   }
   classesForPart(part: string) {
-    if (this.regex && this.regex.test(part)) {
+    if (this.regex && new RegExp(this.regex).test(part)) {
       return this.classesForMatches
     } else {
       return ""

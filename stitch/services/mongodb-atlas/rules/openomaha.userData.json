@@ -1,0 +1,67 @@
+{
+    "collection": "userData",
+    "database": "openomaha",
+    "id": "5fa17459d3888e02605d2703",
+    "roles": [
+        {
+            "name": "owner",
+            "apply_when": {
+                "userId": "%%user.id"
+            },
+            "read": true,
+            "write": true,
+            "insert": true,
+            "delete": true,
+            "search": true,
+            "additional_fields": {}
+        },
+        {
+            "name": "teamMembers",
+            "apply_when": {
+                "%%true": {
+                    "%function": {
+                        "arguments": [
+                            "%%root.userId"
+                        ],
+                        "name": "isTeamMember"
+                    }
+                }
+            },
+            "fields": {
+                "_id": {
+                    "write": false,
+                    "read": true
+                },
+                "email": {
+                    "write": false,
+                    "read": true
+                },
+                "firstName": {
+                    "write": false,
+                    "read": true
+                },
+                "lastName": {
+                    "write": false,
+                    "read": true
+                },
+                "signature": {
+                    "write": false,
+                    "read": true
+                },
+                "userId": {
+                    "write": false,
+                    "read": true
+                }
+            },
+            "write": false,
+            "insert": false,
+            "delete": false,
+            "search": false,
+            "additional_fields": {
+                "write": false,
+                "read": false
+            }
+        }
+    ],
+    "schema": {}
+}

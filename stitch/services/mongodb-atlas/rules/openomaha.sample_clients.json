@@ -1,7 +1,7 @@
 {
-    "id": "5dee551276591ae1e3cddaa3",
-    "database": "openomaha",
     "collection": "sample_clients",
+    "database": "openomaha",
+    "id": "5dee551276591ae1e3cddaa3",
     "roles": [
         {
             "name": "default",
@@ -9,6 +9,7 @@
             "write": true,
             "insert": true,
             "delete": true,
+            "search": true,
             "additional_fields": {}
         }
     ],

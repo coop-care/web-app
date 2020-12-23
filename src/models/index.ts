@@ -1,5 +1,8 @@
-export { User } from "./user";
+export { IdentifiableObject } from "./identifiableObject";
+export { User, TeamMember } from "./user";
+export { Team, TeamInvitation } from "./team";
 export { Client } from "./client";
+export { Base } from "./base";
 export { MasterData } from "./masterData";
 export { ProblemRecord } from "./problemRecord";
 export { Problem } from "./problem";

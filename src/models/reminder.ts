@@ -15,10 +15,6 @@ export class Occurrence {
         this.completed = completed;
         this.user = user;
     }
-
-    get signature() {
-        return this.user;
-    }
 }
 
 export class Reminder extends Base {

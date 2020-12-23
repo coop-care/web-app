@@ -11,10 +11,10 @@ export function setColor(name: string, value: string) {
     setBrand(
         name + "-gd",
         "linear-gradient(" +
-            lighten(value, 10) +
-            ", " +
-            lighten(value, -5) +
-            ")"
+        lighten(value, 10) +
+        ", " +
+        lighten(value, -5) +
+        ")"
     );
     setBrand(name + "-bg", lighten(value, 97));
 }
@@ -38,13 +38,13 @@ export function setColorSet(colors: string[]) {
     }
 }
 
-export function setupColors() {
-    setColorSet([
-        "#960372",
-        "#FF2C55",
-        "#FF9500",
-        "#AF52DE",
-        "#ff3b30",
-        "#28CD41"
-    ]);
-}
+// value at index 0 is unique, values at indices 1 - 5 are apple system colors:
+// https://developer.apple.com/design/human-interface-guidelines/macos/visual-design/color/
+export const defaultColors = [
+    "#960372",
+    "#FF2C55",
+    "#FF9500",
+    "#AF52DE",
+    "#ff3b30",
+    "#28CD41"
+];

@@ -11,22 +11,34 @@
   >
     <q-list dense @mousemove="selectedItem = -1">
       <q-item
-        v-for="(text, index) in filteredItems"
-        :key="text"
+        v-for="(item, index) in filteredItems"
+        :key="item.value"
         clickable
-        @click="$emit('input', text)"
-        :active="value == text"
-        active-class="text-intervention"
+        @click="$emit('input', item.value)"
+        :active="value == item.value"
+        :active-class="'text-' + color"
         :manual-focus="selectedItem >= 0"
         :focused="selectedItem == index"
       >
         <q-item-section>
           <q-item-label>
             <text-with-highlights
-              :text="text"
+              :text="item.displayValue || item.value"
               :regex="filterRegExp"
               :classesForMatches="
-                value != text ? 'text-underline text-weight-bolder' : ''
+                value != item.value ? 'text-underline text-weight-bolder' : ''
+              "
+            />
+          </q-item-label>
+          <q-item-label
+            v-if="item.displayValue"
+            caption
+          >
+            <text-with-highlights
+              :text="item.value"
+              :regex="filterRegExp"
+              :classesForMatches="
+                value != item.value ? 'text-underline text-weight-bolder' : ''
               "
             />
           </q-item-label>
@@ -41,6 +53,8 @@ import { Vue, Component, Prop, Ref, Watch } from "vue-property-decorator";
 import { QMenu } from "quasar";
 import TextWithHighlights from "../components/TextWithHighlights.vue";
 
+type TitleCaption = { value: string; displayValue?: string; };
+
 @Component({
   components: {
     TextWithHighlights
@@ -48,7 +62,8 @@ import TextWithHighlights from "../components/TextWithHighlights.vue";
 })
 export default class FilterableMenu extends Vue {
   @Prop({ type: String, required: true}) readonly value!: string;
-  @Prop({ type: Array, default: []}) readonly items!: string[];
+  @Prop({ type: Array, default: () => []}) readonly items!: string[] | TitleCaption[];
+  @Prop({ type: String, default: "primary"}) readonly color!: string;
   @Ref() readonly  menu: QMenu | undefined;
 
   isVisible = false;
@@ -86,15 +101,19 @@ export default class FilterableMenu extends Vue {
     }
   }
   get filteredItems() {
-    setTimeout(() => {
-      this.menu?.updatePosition();
-    }, 0);
+    // @ts-ignore
+    const items: TitleCaption[] = this.items.map((item: string | TitleCaption) => 
+      typeof item == "string" ? { value: item } : item
+    )
 
     if (this.filterRegExp) {
       const regexp = this.filterRegExp;
-      return this.items.filter(text => regexp.exec(text));
+      return items.filter(item => {
+        const value = item.value + " " + (item.displayValue || "");
+        return new RegExp(regexp).test(value);
+      });
     } else {
-      return this.items;
+      return items;
     }
   }
 
@@ -125,8 +144,12 @@ export default class FilterableMenu extends Vue {
       this.selectedItem >= 0 &&
       this.selectedItem < this.filteredItems.length
     ) {
-      this.$emit("input", this.filteredItems[this.selectedItem]);
+      this.$emit("input", this.filteredItems[this.selectedItem]?.value);
     }
+  }
+
+  show() {
+    this.menu?.show();
   }
 }
 </script>

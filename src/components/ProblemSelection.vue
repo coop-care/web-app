@@ -36,7 +36,7 @@
       :filter-method="filterTerminology"
       :no-results-label="$t('noProblemsFound')"
       color="classification"
-      ref="problems"
+      ref="problemTree"
       no-connectors
     >
       <template v-slot:header-domains="prop">

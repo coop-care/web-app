@@ -109,7 +109,7 @@ export type InterventionTargetOption = {
 })
 export default class InterventionTargetSelect extends Vue {
   @Prop(String) readonly value: string | undefined;
-  @Prop({ type: Array, default: []}) readonly options!: InterventionTargetOption[];
+  @Prop({ type: Array, default: () => []}) readonly options!: InterventionTargetOption[];
   @Prop(String) readonly color: string | undefined;
   @Ref() readonly  select!: QSelect;
 
@@ -139,8 +139,8 @@ export default class InterventionTargetSelect extends Vue {
         this.filteredOptions = this.options
           .filter(
             option =>
-              (option.title && regExp.exec(option.title)) ||
-              (option.description && regExp.exec(option.description)) ||
+              (option.title && new RegExp(regExp).test(option.title)) ||
+              (option.description && new RegExp(regExp).test(option.description)) ||
               option.isHeader
           )
           .filter(

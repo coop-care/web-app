@@ -1,3 +1,5 @@
+import order from "./terminologyOrder.json"
+
 export interface HasTitle {
     title: string;
 }
@@ -110,8 +112,8 @@ export function filterTerminology(node: HasTitleDescription, filter: string) {
         "gi"
     );
     return (
-        (!!node.title && regex.exec(node.title)) ||
-        (!!node.description && regex.exec(node.description))
+        (!!node.title && new RegExp(regex).test(node.title)) ||
+        (!!node.description && new RegExp(regex).test(node.description))
     );
 }
 
@@ -128,7 +130,7 @@ export function flattenedProblems(terminology: Terminology): Problem[] {
         );
 }
 
-export function arraysToObjects(terminology: Terminology): any {
+export function arraysToObjects(terminology: Terminology): { result: any, order: any } {
     const replace = (useCode: boolean, list: any[]) => {
         return list.reduce((object, item, index) => {
             object[useCode ? item.code : index] = item;
@@ -141,6 +143,30 @@ export function arraysToObjects(terminology: Terminology): any {
     const modifiers = classification.modifiers;
     const intervention = result.interventionScheme;
     const rating = result.problemRatingScale;
+
+    const order = {
+        domains: terminology.problemClassificationScheme.domains
+            .map(domain => domain.code),
+        problems: terminology.problemClassificationScheme.domains
+            .reduce((result, domain) => {
+                result[domain.code] = domain.problems.map(problem => problem.code)
+                return result;
+            }, {} as Record<string, string[]>),
+        signsAndSymptoms: terminology.problemClassificationScheme.domains
+            .flatMap(domain => {
+                return domain.problems.map(problem => {
+                    return {
+                        code: domain.code + "." + problem.code,
+                        symptoms: problem.signsAndSymptoms.map(symptom => symptom.code)
+                    }
+                });
+            }).reduce((result, problem) => {
+                result[problem.code] = problem.symptoms;
+                return result;
+            }, {} as Record<string, string[]>),
+        categories: terminology.interventionScheme.categories.map(item => item.code),
+        targets: terminology.interventionScheme.targets.map(item => item.code)
+    }
 
     classification.domains = replace(
         true,
@@ -169,14 +195,17 @@ export function arraysToObjects(terminology: Terminology): any {
             return rating;
         })
     );
-    return result;
+    return {
+        result: result,
+        order: order
+    };
 }
 
 export function objectsToArrays(json: any): Terminology {
-    const replace = (useCode: boolean, object: any) => {
-        return Object.keys(object).map(key => {
+    const replace = (object: any, order?: string[]) => {
+        return (order || Object.keys(object)).map(key => {
             const item = object[key];
-            if (useCode) {
+            if (order) {
                 item.code = key;
             }
             return item;
@@ -188,13 +217,16 @@ export function objectsToArrays(json: any): Terminology {
     const intervention = result.interventionScheme;
     const rating = result.problemRatingScale;
 
-    classification.domains = replace(true, classification.domains).map(
+    classification.domains = replace(classification.domains, order.domains).map(
         (domain: any) => {
-            domain.problems = replace(true, domain.problems).map(
+            const problemOrder = (order.problems as any)[domain.code];
+            domain.problems = replace(domain.problems, problemOrder).map(
                 (problem: any) => {
+                    const symptomsOrder = (order.signsAndSymptoms as any)
+                    [domain.code + "." + problem.code];
                     problem.signsAndSymptoms = replace(
-                        true,
-                        problem.signsAndSymptoms
+                        problem.signsAndSymptoms,
+                        symptomsOrder
                     );
                     return problem;
                 }
@@ -202,12 +234,12 @@ export function objectsToArrays(json: any): Terminology {
             return domain;
         }
     );
-    modifiers.severity = replace(false, modifiers.severity);
-    modifiers.scope = replace(false, modifiers.scope);
-    intervention.categories = replace(true, intervention.categories);
-    intervention.targets = replace(true, intervention.targets);
-    rating.ratings = replace(false, rating.ratings).map((rating: any) => {
-        rating.scale = replace(false, rating.scale);
+    modifiers.severity = replace(modifiers.severity);
+    modifiers.scope = replace(modifiers.scope);
+    intervention.categories = replace(intervention.categories, order.categories);
+    intervention.targets = replace(intervention.targets, order.targets);
+    rating.ratings = replace(rating.ratings).map((rating: any) => {
+        rating.scale = replace(rating.scale);
         return rating;
     });
     return result as Terminology;

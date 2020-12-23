@@ -108,6 +108,7 @@
         v-model="details"
         ref="detailsMenu"
         :items="suggestedDetails"
+        color="intervention"
         @input="detailsInput.focus()"
       />
     </q-input>

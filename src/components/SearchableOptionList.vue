@@ -100,7 +100,7 @@ import TextWithHighlights from "./TextWithHighlights.vue";
 export default class SearchableOptionList extends Vue {
   @Prop(String) readonly searchInputLabel: string | undefined;
   @Prop(String) readonly color: string | undefined;
-  @Prop({ type: Array, default: []}) readonly options!: Category[];
+  @Prop({ type: Array, default: () => []}) readonly options!: Category[];
   @Prop([String, Array]) readonly value!: string | string[];
   @Prop(Boolean) readonly allowMultipleSelection!: boolean;
   @Prop(Boolean) readonly dense!: boolean;
@@ -127,8 +127,8 @@ export default class SearchableOptionList extends Vue {
       return this.options.filter((option) => {
         return (
           !regexp ||
-          (option.title && regexp.exec(option.title)) ||
-          (option.description && regexp.exec(option.description))
+          (option.title && new RegExp(regexp).test(option.title)) ||
+          (option.description && new RegExp(regexp).test(option.description))
         );
       });
     }

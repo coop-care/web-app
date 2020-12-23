@@ -7,6 +7,20 @@
   user-select: none
 .text-underline
   text-decoration: underline
+.section-heading
+  font-size: 1.25rem
+  font-weight: 500
+  line-height: 2.5rem
+  letter-spacing: 0.00937em
+  border-bottom: 1px solid #ccc
+  margin-top: 2rem
+  margin-bottom: .5rem
+  &.q-mt-none
+    margin-top: 0
+  &+ div
+    padding-left: 40px
+    @media screen and (max-width: $breakpoint-sm-max)
+      padding-left: 16px
 .q-btn-toggle
   border-width: 1px
   border-style: solid
@@ -116,6 +130,8 @@ body
   margin-right: auto
   &.width-md
     max-width: 1280px
+  &.width-sm
+    max-width: 1024px
 .min-height
   min-height: 95vh
 .link
@@ -135,6 +151,7 @@ body
   height: 2.4em
   font-weight: 500
   font-style: italic
+  border: 1px solid
 .no-bottom-border-radius
   border-bottom-left-radius: 0
   border-bottom-right-radius: 0
@@ -142,6 +159,12 @@ body
   white-space: nowrap
   overflow: hidden
   text-overflow: ellipsis
+.cursor-help
+  cursor: help
+.q-pull-to-refresh .fit > .vertical-middle
+  margin-top: 40vh
+  padding-top: 20vh
+  padding-bottom: 20vh
 .q-markdown
   h1
     font-size: 2rem

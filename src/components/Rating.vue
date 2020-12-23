@@ -239,7 +239,7 @@ export default class RatingView extends Vue {
   @Prop({ type: String, required: true}) readonly type!: string;
   @Prop({ type: Array, required: true}) readonly scale!: string[];
   @Prop(Object) readonly rating: Rating | undefined;
-  @Prop({ type: Array, default: []}) readonly examples!: string[];
+  @Prop({ type: Array, default: () => []}) readonly examples!: string[];
 
   observationMouseover = -1;
   expectationMouseover = -1;

@@ -28,20 +28,15 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
   Router.beforeEach((to, from, next) => {
     // console.log("before each. to:", to.name, "from:", from.name);
     if (ccApi.isLoggedIn) {
-      if (
-        store.direct.getters.signature.length > 1 ||
-        to.name == "userSettings"
-      ) {
-        next();
-      } else {
+      if (store.state.currentUser?.signature == "" && to.name != "userSettings") {
         next({ name: "userSettings" });
+      } else {
+        next();
       }
     } else {
-      if (to.name === "login") {
-        next();
-      } else if (to.name === "register") {
-        next();
-      } else if (to.name === "confirm") {
+      if (["login", "register", "confirm", "requestPasswordReset", "resetPassword"]
+        .includes(to.name || "")
+      ) {
         next();
       } else {
         next({ name: "login" });

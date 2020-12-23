@@ -24,8 +24,8 @@ const routes: RouteConfig[] = [
             path: "report/:problemId?"
           },
           {
-            name: "clientHistory",
-            path: "history"
+            name: "clientContacts",
+            path: "contacts"
           },
           {
             name: "clientMasterData",
@@ -80,6 +80,11 @@ const routes: RouteConfig[] = [
         component: () => import("pages/ProofOfPerformance.vue")
       },
       {
+        name: "clientHistory",
+        path: "/client/:clientId/history",
+        component: () => import("pages/ClientHistory.vue")
+      },
+      {
         name: "userSettings",
         path: "/settings/user",
         component: () => import("pages/UserSettings.vue")
@@ -103,6 +108,16 @@ const routes: RouteConfig[] = [
         name: "confirm",
         path: !isDemo ? "/confirm" : "",
         component: () => import("pages/Confirm.vue")
+      },
+      {
+        name: "requestPasswordReset",
+        path: !isDemo ? "/requestpasswordreset" : "",
+        component: () => import("pages/RequestPasswordReset.vue")
+      },
+      {
+        name: "resetPassword",
+        path: !isDemo ? "/passwordreset" : "",
+        component: () => import("pages/PasswordReset.vue")
       },
       {
         name: "legalNotice",

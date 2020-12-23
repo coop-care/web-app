@@ -29,6 +29,7 @@
           <q-card-actions class="q-px-md">
             <q-btn
               unelevated
+              no-caps
               color="primary"
               class="full-width"
               :label="$t('login')"
@@ -40,9 +41,19 @@
               no-caps
               size="md"
               color="primary"
-              class="text-center full-width q-mt-sm"
+              class="text-center full-width q-mt-lg"
               :label="$t('notRegistered') + ' ' + $t('createAccount')"
               :to="{ name: 'register' }"
+            />
+            <q-btn
+              flat
+              dense
+              no-caps
+              size="md"
+              color="primary"
+              class="text-center full-width"
+              :label="$t('forgotPassword')"
+              :to="{ name: 'requestPasswordReset' }"
             />
           </q-card-actions>
         </q-card>
@@ -67,12 +78,12 @@ export default class PageLogin extends Vue {
 
   doLogin() {
     this.$store.direct.dispatch
-      .login({ email: this.email, password: this.password })
+      .login({ email: this.email, password: this.password, locale: this.$root.$i18n.locale })
       .then(() => {
         void this.$router.push({ name: "client" });
       })
       .catch(err => {
-        this.errorMsg = err.message;
+        this.errorMsg = this.$t("errorMessage", {message: err.message}) as string;
       });
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="fit">
-    <div class="q-pa-md absolute-center vertical-middle">
+    <div class="absolute-center vertical-middle full-width column items-center">
       <q-spinner
         size="5em"
         color="primary"

@@ -15,16 +15,7 @@
           @click="$root.$emit('toggle-client-drawer')"
         />
         <q-btn
-          v-if="
-            ![
-              'client',
-              'clientReminders',
-              'clientReport',
-              'clientHistory',
-              'clientMasterData',
-              'login'
-            ].includes($router.currentRoute.name || '')
-          "
+          v-if="hasBackButton(this.$router.currentRoute.name)"
           size="lg"
           dense
           no-caps
@@ -57,21 +48,7 @@
           <language-menu />
         </q-btn>
       </q-toolbar>
-      <transition
-        enter-active-class="animated fadeInDown"
-        leave-active-class="animated fadeOutUp"
-      >
-        <q-banner
-          v-if="isOffline"
-          dense
-          class="bg-negative text-white text-center q-py-xs"
-          style="height: 32px"
-        >
-          <div class="text-caption text-weight-medium ellipsis">
-            {{ $t("offlineBanner") }}
-          </div>
-        </q-banner>
-      </transition>
+      <banner />
       <div
         class="absolute-full overflow-hidden no-pointer-events"
         style="bottom: -10px"
@@ -101,12 +78,14 @@ import { Vue, Component } from "vue-property-decorator";
 import UserMenu from "../components/UserMenu.vue";
 import LanguageMenu from "../components/LanguageMenu.vue";
 import DevMenu from "../components/DevMenu.vue";
+import Banner from "../components/Banner.vue";
 
 @Component({
   components: {
     UserMenu,
     LanguageMenu,
-    DevMenu
+    DevMenu,
+    Banner
   },
   meta() {
     return {
@@ -121,8 +100,6 @@ import DevMenu from "../components/DevMenu.vue";
   }
 })
 export default class MainLayout extends Vue {
-  isOffline = !window.navigator.onLine;
-
   get title() {
     const route = this.$route;
 
@@ -171,8 +148,15 @@ export default class MainLayout extends Vue {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
-  updateOfflineStatus() {
-    this.isOffline = !window.navigator.onLine;
+  hasBackButton(routeName: string | null | undefined) {
+    return ![
+      "client",
+      "clientReminders",
+      "clientReport",
+      "clientContacts",
+      "clientMasterData",
+      "login"
+    ].includes(routeName || "");
   }
   showOnboardingForDemoVersion() {
     if (
@@ -189,8 +173,6 @@ export default class MainLayout extends Vue {
   }
 
   mounted() {
-    window.addEventListener("online", this.updateOfflineStatus);
-    window.addEventListener("offline", this.updateOfflineStatus);
     this.showOnboardingForDemoVersion();
   }
 }

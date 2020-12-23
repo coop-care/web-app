@@ -10,6 +10,10 @@
             <div class="text-h5 text-center">{{ $t("createAccount") }}</div>
           </q-card-section>
           <q-card-section>
+            <p
+              v-if="errorMsg"
+              class="text-red q-mt-md"
+            >{{ errorMsg }}</p>
             <q-form class="q-gutter-md">
               <q-input
                 clearable
@@ -28,6 +32,7 @@
           <q-card-actions class="q-px-md q-pb-md">
             <q-btn
               unelevated
+              no-caps
               color="primary"
               class="full-width"
               :label="$t('create')"
@@ -38,24 +43,12 @@
       </div>
     </div>
     <div
-      v-else
+      v-else-if="isSuccess"
       class="column"
     >
-      <div
-        v-if="isSuccess"
-        class="row"
-      >
+      <div class="row">
         <h5 class="text-h5 q-my-md">
           {{ $t("confirmationMessage") }}
-        </h5>
-      </div>
-      <div
-        v-else
-        class="row"
-      >
-        <h5 class="text-h5 q-my-md">
-          An error has occured:<br />
-          {{ errorMsg }}
         </h5>
       </div>
     </div>
@@ -72,8 +65,7 @@ import { Vue, Component } from "vue-property-decorator";
 
 enum State {
   Form,
-  Success,
-  Error
+  Success
 }
 
 @Component
@@ -96,8 +88,7 @@ export default class PageLogin extends Vue {
       .registerUser(this.email, this.password)
       .then(() => (this.state = State.Success))
       .catch(err => {
-        this.state = State.Error;
-        this.errorMsg = err.message;
+        this.errorMsg = this.$t("errorMessage", {message: err.message}) as string;
       });
   }
 }
