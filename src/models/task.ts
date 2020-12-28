@@ -1,3 +1,4 @@
+import { classToClass } from "class-transformer";
 import { Reminder, Occurrence } from "../models";
 
 export class Task {
@@ -27,8 +28,20 @@ export class Task {
     get signature() {
         return this.user;
     }
-}
+    get id() {
+        return this.reminder.id + (this.due?.getTime() || "");
+    }
+    get isDue() {
+        return !!this.due && !this.completed && this.due.getTime() < Date.now();
+    }
 
+    isPastDue(date: Date) {
+        return !!this.due && this.due.getTime() < new Date(date).setHours(0, 0, 0, 0);
+    }
+    clone() {
+        return classToClass(this);
+    }
+}
 export class TaskGroup {
     title: string;
     tasks: Task[];
@@ -37,4 +50,20 @@ export class TaskGroup {
         this.title = title;
         this.tasks = tasks;
     }
+
+    get titleAndTasks(): GroupedTask[] {
+        return [{
+            title: this.title
+        }].concat(this.tasks.map(task => {
+            return {
+                title: task.id,
+                task: task
+            }
+        }));
+    }
+}
+
+type GroupedTask = {
+    title: string;
+    task?: Task;
 }

@@ -65,28 +65,39 @@
       <q-space />
     </div>
 
-    <div v-if="tasks.length">
-      <div
-        v-for="(visit, index) in tasks"
-        v-bind:key="index"
+    <q-list 
+      v-if="tasks.length"
+      dense
+    >
+      <transition-group 
+        name="task-list" 
+        tag="div"
+        :key="selectedDate.getTime()"
+        class="task-list"
+        @before-leave="beforeLeaveTaskList"
       >
-        <div class="text-subtitle1 text-weight-bold q-mt-lg">
-          {{ visit.title }}
+        <div
+          v-for="(taskOrTitle, index) in tasks"
+          :key="taskOrTitle.title"
+          :class="['full-width', pastDueClass(taskOrTitle, tasks[index + 1])]"
+        >
+          <task-view
+            v-if="taskOrTitle.task"
+            :client="client"
+            :task="taskOrTitle.task"
+            :date="selectedDate"
+            :hasCheckbox="canComplete"
+            @force-update="recompute = Math.random()"
+          />
+          <div
+            v-else
+            class="text-subtitle1 text-weight-bold q-pt-lg"
+          >
+            {{ taskOrTitle.title }}
+          </div>
         </div>
-        <div class="task-list">
-          <q-list dense>
-            <task-view
-              v-for="(task, index) in visit.tasks"
-              v-bind:key="index"
-              :client="client"
-              :task="task"
-              :date="selectedDate"
-              :hasCheckbox="canComplete"
-            />
-          </q-list>
-        </div>
-      </div>
-    </div>
+      </transition-group>
+    </q-list>
 
     <div
       v-else
@@ -137,13 +148,24 @@
       margin-bottom: -5px
 body.desktop .task-list .q-hoverable:hover > .q-focus-helper
   background-color: var(--q-color-primary)
+.task-list
+  position: relative
+.past-due, .past-due-header
+  transition: opacity 1s ease-in-out
+  &.task-list-leave-active
+    position: absolute
+  &.task-list-leave-to
+    opacity: 0
+.task-list-move
+  transition: opacity 1s ease-in-out, transform .3s ease-in-out .7s
+
 </style>
 
 <script lang="ts">
 import { Vue, Component, Ref } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
 import { Task, TaskGroup } from "../models/task";
-import TaskView from "components/TaskView.vue";
+import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
 
 const {
   isSameDate,
@@ -260,6 +282,7 @@ export default class ClientReminders extends Vue {
       startOfDayTimestamp,
       startOfTodayTimestamp
     );
+    const pastDueCompletedTimestamp = Date.now() - UpdateTimeoutMilliseconds;
     const isFuture = endOfTodayTimestamp < startOfDayTimestamp;
     const isPresentOrPast = startOfDayTimestamp <= startOfTodayTimestamp;
     const pastDueTasks: Task[] = [];
@@ -278,8 +301,8 @@ export default class ClientReminders extends Vue {
         if (
           isPresentOrPast &&
           isReminderActiveAndUncompleted &&
-          !item.completed &&
-          item.due.getTime() < pastDueTimestamp
+          item.due.getTime() < pastDueTimestamp &&
+          (!item.completed || (pastDueCompletedTimestamp < item.completed.getTime()))
         ) {
           pastDueTasks.push(new Task(reminder, problem.id, item));
         } else if (
@@ -343,7 +366,22 @@ export default class ClientReminders extends Vue {
         }
       });
 
-    return groupedTasks;
+    return groupedTasks.flatMap(group => group.titleAndTasks);
+  }
+
+  pastDueClass(maybeTask: {task?: Task}, nextMaybeTask?: {task?: Task}) {
+    if (maybeTask.task?.isPastDue(this.selectedDate)) {
+        return "past-due";
+    } else if (!maybeTask.task && nextMaybeTask?.task?.isPastDue(this.selectedDate)) {
+        return "past-due-header";
+    } else {
+      return "";
+    }
+  }
+
+  beforeLeaveTaskList(el: HTMLElement) {
+    const {marginTop} = window.getComputedStyle(el);
+    el.style.top = el.offsetTop - parseFloat(marginTop) + "px";
   }
 
   addIntervention() {

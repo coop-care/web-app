@@ -224,6 +224,7 @@ export default defineMutations<StateInterface>()({
                     now.getMilliseconds()
                 )
             );
+            task.completed = completedAt;
         }
 
         if (task.reminder.isScheduled) {

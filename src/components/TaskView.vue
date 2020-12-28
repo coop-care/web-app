@@ -1,7 +1,8 @@
 <template>
   <q-item
-    tag="label"
+    tag="div"
     @click.prevent=""
+    dense
     class="cursor-inherit"
   >
     <q-item-section
@@ -35,7 +36,7 @@
     <q-item-section>
       <q-item-label
         v-if="title"
-        :class="'text-weight-medium ' + (isDue ? 'text-negative' : '')"
+        :class="'text-weight-medium ' + (task.isDue ? 'text-negative' : '')"
       >
         {{ title }}
       </q-item-label>
@@ -123,6 +124,8 @@ import Signature from "../components/Signature.vue";
 
 const { formatDate, subtractFromDate, isSameDate } = date;
 
+export const UpdateTimeoutMilliseconds = 2000;
+
 @Component({
   components: {
     ActionMenu,
@@ -138,6 +141,7 @@ export default class TaskView extends Vue {
   @Ref() readonly dateProxy!: QPopupProxy;
 
   moveTaskMode: "single" | "future" | "none" = "none";
+  forceUpdateTimeoutHandler = 0;
 
   get disabled() {
     return !!this.client.leftAt;
@@ -153,6 +157,13 @@ export default class TaskView extends Vue {
       client: this.client,
     });
     void this.$store.direct.dispatch.saveClient({ client: this.client });
+
+    if (this.task.isPastDue(this.date)) {
+      window.clearTimeout(this.forceUpdateTimeoutHandler || undefined);
+      this.forceUpdateTimeoutHandler = window.setTimeout(() => 
+        this.$emit("force-update"),
+      UpdateTimeoutMilliseconds);
+    }
   }
   get completionDate() {
     const locale = this.$root.$i18n.locale;
@@ -184,18 +195,11 @@ export default class TaskView extends Vue {
 
     return description;
   }
-  get isDue() {
-    return (
-      this.task.due &&
-      !this.task.completed &&
-      this.task.due.getTime() < Date.now()
-    );
-  }
   get timeAgo() {
     const selectedDate = (this.date as unknown) as Date;
 
     if (
-      this.isDue &&
+      this.task.isDue &&
       this.task.due &&
       !isSameDate(selectedDate, this.task.due, "day")
     ) {
