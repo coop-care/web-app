@@ -158,12 +158,16 @@ export default class TaskView extends Vue {
     });
     void this.$store.direct.dispatch.saveClient({ client: this.client });
 
-    if (this.task.isPastDue(this.date)) {
+    if (this.isPastDue) {
       window.clearTimeout(this.forceUpdateTimeoutHandler || undefined);
       this.forceUpdateTimeoutHandler = window.setTimeout(() => 
         this.$emit("force-update"),
       UpdateTimeoutMilliseconds);
     }
+  }
+  get isPastDue() {
+      return !!this.task.due && 
+        this.task.due.getTime() < new Date(this.date).setHours(0, 0, 0, 0);
   }
   get completionDate() {
     const locale = this.$root.$i18n.locale;

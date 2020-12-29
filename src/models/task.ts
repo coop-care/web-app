@@ -35,9 +35,6 @@ export class Task {
         return !!this.due && !this.completed && this.due.getTime() < Date.now();
     }
 
-    isPastDue(date: Date) {
-        return !!this.due && this.due.getTime() < new Date(date).setHours(0, 0, 0, 0);
-    }
     clone() {
         return classToClass(this);
     }

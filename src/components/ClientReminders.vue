@@ -77,9 +77,9 @@
         @before-leave="beforeLeaveTaskList"
       >
         <div
-          v-for="(taskOrTitle, index) in tasks"
+          v-for="taskOrTitle in tasks"
           :key="taskOrTitle.title"
-          :class="['full-width', pastDueClass(taskOrTitle, tasks[index + 1])]"
+          class="task-list-item full-width"
         >
           <task-view
             v-if="taskOrTitle.task"
@@ -150,12 +150,12 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
   background-color: var(--q-color-primary)
 .task-list
   position: relative
-.past-due, .past-due-header
+.task-list-item
   transition: opacity 1s ease-in-out
-  &.task-list-leave-active
-    position: absolute
-  &.task-list-leave-to
-    opacity: 0
+.task-list-leave-active
+  position: absolute
+.task-list-leave-to
+  opacity: 0
 .task-list-move
   transition: opacity 1s ease-in-out, transform .3s ease-in-out .7s
 
@@ -367,16 +367,6 @@ export default class ClientReminders extends Vue {
       });
 
     return groupedTasks.flatMap(group => group.titleAndTasks);
-  }
-
-  pastDueClass(maybeTask: {task?: Task}, nextMaybeTask?: {task?: Task}) {
-    if (maybeTask.task?.isPastDue(this.selectedDate)) {
-        return "past-due";
-    } else if (!maybeTask.task && nextMaybeTask?.task?.isPastDue(this.selectedDate)) {
-        return "past-due-header";
-    } else {
-      return "";
-    }
   }
 
   beforeLeaveTaskList(el: HTMLElement) {
