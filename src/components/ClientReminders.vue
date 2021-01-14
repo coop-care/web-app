@@ -272,8 +272,8 @@ export default class ClientReminders extends Vue {
   }
 
   tasksForDay(day: Date) {
-    const startOfDay = startOfDate(day, "day");
-    const endOfDay = endOfDate(day, "day");
+    const startOfDay = startOfDate(day, "day", false);
+    const endOfDay = endOfDate(day, "day", false);
     const startOfDayTimestamp = startOfDay.getTime();
     const endOfDayTimestamp = endOfDay.getTime();
     const startOfTodayTimestamp = new Date().setHours(0, 0, 0, 0);

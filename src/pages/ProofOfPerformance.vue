@@ -103,8 +103,8 @@ const { isBetweenDates, startOfDate, endOfDate } = date;
   },
 })
 export default class ProofOfPerformancePage extends Vue {
-  startDate = startOfDate(new Date(), "month");
-  endDate = endOfDate(new Date(), "month");
+  startDate = startOfDate(new Date(), "month", false);
+  endDate = endOfDate(new Date(), "month", false);
 
   get tasks() {
     const tasks: {

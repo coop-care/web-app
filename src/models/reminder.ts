@@ -19,7 +19,7 @@ export class Occurrence {
 
 export class Reminder extends Base {
     id = this.generateId();
-    @Transform((value?: RRuleSet) => value?.toJSON(), { toPlainOnly: true })
+    @Transform((value?: any) => (value as RRuleSet)?.toJSON(), { toPlainOnly: true })
     @Transform((value: any) => RRuleSet.fromJSON(value), { toClassOnly: true })
     recurrenceRules?: RRuleSet = undefined;
     @Type(() => Occurrence)
