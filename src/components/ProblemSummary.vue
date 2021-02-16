@@ -245,7 +245,7 @@
                 :series="outcome.series"
                 width="100%"
                 height="160"
-                class="q-pa-none unselectable"
+                class="q-pa-none non-selectable"
               />
               <div class="text-subtitle2">{{ outcome.title }}</div>
               <div class="text-weight-light">{{ outcome.subtitle }}</div>

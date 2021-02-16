@@ -15,4 +15,25 @@ export default class RecordMixin extends Vue {
     get terminology() {
         return (this.$t("terminology") as unknown) as TerminologyWithMaps;
     }
+    get isDisabled() {
+        return !!this.client?.leftAt;
+    }
+
+    updateAndSave<T>(target: T, changes: Partial<T>) {
+        this.update(target, changes);
+        void this.saveClient();
+    }
+    update<T>(target: T, changes: Partial<T>) {
+        if (target && changes) {
+            this.$store.direct.commit.updateObject({
+                target: target,
+                changes: changes
+            });
+        }
+    }
+    saveClient() {
+        return this.$store.direct.dispatch.saveClient({
+            client: this.client
+        });
+    }
 }

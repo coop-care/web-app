@@ -1,6 +1,7 @@
 <template>
   <div class="row q-col-gutter-lg q-mb-md items-start">
     <date-time-input
+      v-if="!hideStart"
       v-model="startDate"
       :min="new Date(new Date().setHours(0, 0, 0, 0))"
       :format="$t('datetimeFormat')"
@@ -8,15 +9,26 @@
       :placeholder="$t('datetimeFormatPlaceholder')"
       :options="startDateOptions"
       :color="color"
-      class="col-md-4 col-sm-6 col-12"
+      :class="[
+        !hideFrequency && !hideEnd ? 'col-md-4' : '', 
+        !hideFrequency || !hideEnd ? 'col-sm-6' : '',
+        'col-12'
+      ]"
       default-time="08:00"
     />
-    <div class="col-md-8 col-sm-6 col-12">
+    <div :class="[
+      !hideStart && !hideFrequency && !hideEnd ? 'col-md-8' : '', 
+      !hideStart && (!hideFrequency || !hideEnd) ? 'col-sm-6' : '', 
+      'col-12'
+    ]">
       <div
-        v-if="startDate"
+        v-if="(startDate || hideStart) && (!hideFrequency || !hideEnd)"
         class="row q-col-gutter-lg items-start"
       >
-        <div class="col-md-6 col-12">
+        <div
+          v-if="!hideFrequency"
+          :class="[!hideEnd ? 'col-md-6' : '', 'col-12']"
+        >
           <q-select
             v-model="frequency"
             :options="frequencyOptions"
@@ -195,8 +207,8 @@
         </div>
 
         <div
-          v-if="frequency != -1"
-          class="col-md-6 col-12"
+          v-if="(frequency != -1) && !hideEnd"
+          :class="[!hideFrequency ? 'col-md-6' : '', 'col-12']"
         >
           <q-select
             v-model="recurrenceEndMode"
@@ -257,10 +269,11 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import { TranslateResult } from "vue-i18n";
 import { date } from "quasar";
 import { RRuleSet, RRule, Frequency, Options } from "../models/rrule";
+import InterventionMixin from "../mixins/InterventionMixin";
 import SearchableOptionList from "./SearchableOptionList.vue";
 import ToggleButtonGroup from "./ToggleButtonGroup.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
@@ -281,10 +294,13 @@ type RecurrenceEndMode = "Never" | "EndDate" | "NumberOfOccurrences";
     DateTimeInput
   }
 })
-export default class RecurrenceRuleEditor extends Vue {
+export default class RecurrenceRuleEditor extends InterventionMixin {
   @Prop(Object) readonly value: RRuleSet | undefined;
   @Prop({ type: Number, required: true}) readonly ruleIndex!: number;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
+  @Prop(Boolean) readonly hideStart!: boolean;
+  @Prop(Boolean) readonly hideFrequency!: boolean;
+  @Prop(Boolean) readonly hideEnd!: boolean;
 
   hasOwnRecurrencePattern = false;
   monthlyMode: MonthlyMode = "DayOfMonth";
@@ -583,16 +599,7 @@ export default class RecurrenceRuleEditor extends Vue {
     return Frequency;
   }
   get recurrenceDescription() {
-    return this.value?.toLocalizedText(
-      this.$root.$i18n.locale,
-      (this.$t("rrule") as unknown) as { [key: string]: string },
-      {
-        monthNames: this.$q.lang.date.months,
-        dayNames: this.$q.lang.date.days,
-        tokens: {}
-      },
-      this.ruleIndex
-    );
+    return this.localizeRecurrenceRule(this.value, this.ruleIndex);
   }
 
   toOption(name: string | TranslateResult, index: number) {

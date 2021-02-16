@@ -45,8 +45,8 @@
             <q-icon name="fas fa-angle-right" />
           </q-item-section>
           <language-menu
-            :anchor="$q.screen.gt.xs ? 'top left' : ''"
-            :self="$q.screen.gt.xs ? 'top right' : ''"
+            :anchor="$q.screen.gt.xs ? 'top left' : 'bottom middle'"
+            :self="$q.screen.gt.xs ? 'top right' : 'top middle'"
             :fit="true"
           />
         </q-item>

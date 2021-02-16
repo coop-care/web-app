@@ -12,6 +12,9 @@ export class TeamMember extends IdentifiableObject {
     static fromObject(object: any): TeamMember | TeamMember[] {
         return plainToClass(TeamMember, object);
     }
+    static sortByName(a: TeamMember, b: TeamMember) {
+        return a.username?.localeCompare(b.username);
+    }
 
     constructor(userId: string, email?: string) {
         super();

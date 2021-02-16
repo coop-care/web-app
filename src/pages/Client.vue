@@ -47,13 +47,13 @@
       </div>
 
       <central-message
-        v-else-if="$route.params.clientId && !selectedClient"
+        v-else-if="$route.params.clientId && !client"
         :message="$t('clientNotFound')"
       />
 
       <div
-        class="client-overview q-pt-lg q-px-xl q-pb-xl"
-        v-else-if="selectedClient"
+        class="client-overview q-pt-lg q-px-xl"
+        v-else-if="client"
       >
         <div class="row">
           <div class="col row q-mt-sm q-mb-xl">
@@ -83,7 +83,7 @@
           class="bg-grey-1 q-mb-md text-primary"
           :inline-label="$q.screen.gt.xs"
           :dense="!$q.screen.gt.xs"
-          align="left"
+          align="center"
         >
           <q-route-tab
             name="reminders"
@@ -108,7 +108,7 @@
             class="text-classification"
           />
           <q-route-tab
-            v-if="false"
+            v-if="true"
             name="contacts"
             :label="$t('contacts')"
             icon="fas fa-address-book"
@@ -130,21 +130,21 @@
         >
           <q-tab-panel
             name="reminders"
-            class="q-px-none"
+            class="q-px-none q-pt-xs"
           >
             <client-reminders />
           </q-tab-panel>
           <q-tab-panel
             name="report"
-            class="q-px-none"
+            class="q-px-none q-pt-md"
           >
             <client-problems />
           </q-tab-panel>
           <q-tab-panel
             name="contacts"
-            class="q-px-none"
+            class="q-px-none q-pt-none"
           >
-            <client-master-data />
+            <client-contacts />
           </q-tab-panel>
           <q-tab-panel
             name="masterData"
@@ -165,7 +165,9 @@
 </style>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Mixins } from "vue-property-decorator";
+import RecordMixin from "../mixins/RecordMixin";
+import ClientActionMixin from "../mixins/ClientActionMixin";
 import ClientDrawer from "../components/ClientDrawer.vue";
 import ContentEditable from "../components/ContentEditable.vue";
 import NewClient from "../components/NewClient.vue";
@@ -178,7 +180,6 @@ import { Client, MasterData } from "../models";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
-import ClientActionMixin from "../mixins/ClientActionMixin";
 
 @Component({
   components: {
@@ -195,19 +196,19 @@ import ClientActionMixin from "../mixins/ClientActionMixin";
     PullToRefresh,
   },
 })
-export default class ClientPage extends ClientActionMixin {
+export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
   @Ref() readonly  clientDrawer!: ClientDrawer;
 
-  selectedTab = null;
+  selectedTab: string | null = null;
 
   get firstName() {
-    return this.selectedClient?.masterData.firstName || "";
+    return this.client?.masterData.firstName || "";
   }
   set firstName(value) {
     this.updateMasterData({ firstName: value });
   }
   get lastName() {
-    return this.selectedClient?.masterData.lastName || "";
+    return this.client?.masterData.lastName || "";
   }
   set lastName(value) {
     this.updateMasterData({ lastName: value });
@@ -216,8 +217,7 @@ export default class ClientPage extends ClientActionMixin {
     return this.$store.direct.state.clients;
   }
   get clientActionItems() {
-    const client = this.selectedClient;
-    if (!client) {
+    if (!this.client) {
       return [];
     }
 
@@ -236,17 +236,11 @@ export default class ClientPage extends ClientActionMixin {
         name: "-",
         action: () => undefined
       },
-      ...this.clientActions(client)
+      ...this.clientActions(this.client)
     ];
   }
   get dueTaskCount() {
-    return this.selectedClient?.dueTasksCount || 0;
-  }
-  get selectedClient() {
-    return this.$store.direct.getters.getClient(this.$root.$route.params);
-  }
-  get isDisabled() {
-    return !!this.selectedClient?.leftAt;
+    return this.client?.dueTasksCount || 0;
   }
 
   created() {
@@ -254,8 +248,7 @@ export default class ClientPage extends ClientActionMixin {
       this.updateClientsInAdditionalTeams();
     }
 
-    void this.$store.direct.dispatch
-      .saveClient({ client: this.selectedClient, resolveOnError: true })
+    void this.saveClient()
       .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
 
     this.$on("did-archive-client", () => 
@@ -296,17 +289,7 @@ export default class ClientPage extends ClientActionMixin {
   }
 
   updateMasterData(changes: Partial<MasterData>) {
-      if (!this.selectedClient) {
-        return;
-      }
-
-      this.$store.direct.commit.updateObject({
-        target: this.selectedClient.masterData,
-        changes: changes,
-      });
-      void this.$store.direct.dispatch.saveClient({
-        client: this.selectedClient,
-      });
+    this.updateAndSave(this.client?.masterData, changes);
   }
 
   pushRoute(name: string) {

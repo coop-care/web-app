@@ -12,6 +12,8 @@ export { Reminder, Occurrence } from "./reminder";
 export { Intervention } from "./intervention";
 export { RatingReminder } from "./ratingReminder";
 export type { CustomField, LabeledValue } from "./types";
+export { Contact } from "./contact";
+export type { PostalAddress } from "./contact";
 export { Task, TaskGroup } from "./task";
 export { ChangeRecord } from "./changeRecord";
 export type { ChangeRecordType } from "./changeRecord";

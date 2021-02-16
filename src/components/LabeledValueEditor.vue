@@ -53,19 +53,6 @@
   border-bottom: 1px solid #cccccc
 .unlabeled-selectable-input.q-field--auto-height.q-field--dense.q-field--labeled .q-field__control-container
   padding-top: 2px
-.contact-add-button
-  &.can-hover:hover
-    position: relative
-    &::before
-      content: ''
-      position: absolute
-      width: 100%
-      height: 100%
-      top: 0
-      left: 0
-      z-index: -1
-      background-color: currentColor
-      opacity: .1
 </style>
 
 <script lang="ts">

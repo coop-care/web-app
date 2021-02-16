@@ -1,7 +1,6 @@
 import { defineGetters } from "direct-vuex";
 import { store, StateInterface } from ".";
-import { Client } from "../models/client";
-import { ProblemRecord } from "../models/problemRecord";
+import { Client, ProblemRecord, Contact } from "../models";
 
 export default defineGetters<StateInterface>()({
     getClient: state => (payload: any): Client | undefined => {
@@ -39,5 +38,52 @@ export default defineGetters<StateInterface>()({
     currentTeam: state => {
         const teamId = state.currentUser?.activeTeam;
         return state.teams.find(team => teamId && team._id?.equals(teamId));
-    }
+    },
+
+    relationshipLabels: state => {
+        return [... new Set(
+            Contact.relationshipTypes.concat(state.clients
+                .flatMap(client => client.contacts)
+                .flatMap(contact =>
+                    contact.relationship ? [contact.relationship] : []
+                )
+            )
+        )];
+    },
+
+    phoneLabels: state => {
+        return [... new Set(
+            Contact.phoneLabels.concat(state.clients
+                .flatMap(client => client.contacts)
+                .flatMap(contact => contact.phoneNumbers)
+                .flatMap(item =>
+                    item.label ? [item.label] : []
+                )
+            )
+        )];
+    },
+
+    emailLabels: state => {
+        return [... new Set(
+            Contact.emailLabels.concat(state.clients
+                .flatMap(client => client.contacts)
+                .flatMap(contact => contact.emailAddresses)
+                .flatMap(item =>
+                    item.label ? [item.label] : []
+                )
+            )
+        )];
+    },
+
+    addressLabels: state => {
+        return [... new Set(
+            Contact.postalLabels.concat(state.clients
+                .flatMap(client => client.contacts)
+                .flatMap(contact => contact.postalAddresses)
+                .flatMap(item =>
+                    item.label ? [item.label] : []
+                )
+            )
+        )];
+    },
 });

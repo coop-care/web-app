@@ -209,7 +209,7 @@ export default defineMutations<StateInterface>()({
             task,
             isCompleted,
             client
-        }: { task: Task; isCompleted: boolean; date: Date; client: Client }
+        }: { task: Task<Reminder>; isCompleted: boolean; date: Date; client: Client }
     ) {
         const now = new Date();
         let completedAt: Date | undefined = undefined;
@@ -240,70 +240,91 @@ export default defineMutations<StateInterface>()({
                 : [];
         }
 
-        store.commit.setReminderCompletedAt({
+        store.commit.setReminderFinishedAt({
             reminder: task.reminder,
-            completedAt: completedAt,
+            finishedAt: completedAt,
             client: client,
             problemId: task.problemId
         });
     },
 
-    setReminderCompletedAt(
+    setReminderFinishedAt(
         state,
         {
             reminder,
-            completedAt,
+            finishedAt,
             recalculateOccurrences,
             client,
             problemId
         }: {
             reminder: Reminder;
-            completedAt?: Date;
+            finishedAt?: Date;
             recalculateOccurrences?: boolean;
             client: Client;
-            problemId: string;
+            problemId?: string;
         }
     ) {
-        const wasCompletedAt = reminder.completedAt;
+        const wasFinishedAt = reminder.finishedAt;
 
         if (reminder.isScheduled) {
             const hasUncompleted =
                 reminder.occurrences.filter(
                     item =>
                         !item.completed &&
-                        (!completedAt ||
-                            item.due.getTime() <= completedAt?.getTime())
+                        (!finishedAt ||
+                            item.due.getTime() <= finishedAt?.getTime())
                 ).length > 0;
             const date = reminder.lastOccurrenceDate;
 
             if (!hasUncompleted && !reminder.recurrenceRules?.hasNext(date)) {
-                reminder.completedAt = completedAt;
+                reminder.finishedAt = finishedAt;
             } else {
-                reminder.completedAt = undefined;
+                reminder.finishedAt = undefined;
             }
 
             if (recalculateOccurrences) {
-                reminder.recalculateOccurrencesAfterUpdate(completedAt);
+                reminder.recalculateOccurrencesAfterUpdate(finishedAt);
             }
         } else {
-            reminder.completedAt = completedAt;
+            reminder.finishedAt = finishedAt;
         }
 
-        if (reminder.completedAt != wasCompletedAt) {
-            const type = reminder.completedAt
+        if (reminder.finishedAt != wasFinishedAt) {
+            const type = reminder.finishedAt
                 ? "InterventionEnded"
                 : "InterventionStarted";
             client.changeHistory.push(
                 new ChangeRecord(
                     store.getters.userId,
                     type,
-                    problemId,
+                    problemId || "",
                     classToPlain(reminder, excludeForChangeRecord),
                     undefined,
-                    reminder.completedAt
+                    reminder.finishedAt
                 )
             );
         }
+    },
+
+    endReminder(state, { task, client }: { task: Task<Reminder>; client: Client }) {
+        const due = task.due || new Date();
+        const date = new Date(due.getTime() - 1);
+
+        if (task.reminder.isRecurring) {
+            const recurrenceRules = task.reminder.recurrenceRules?.endingRules(date);
+            store.commit.updateReminder({
+                target: task.reminder,
+                changes: { recurrenceRules: recurrenceRules }
+            });
+        }
+
+        store.commit.setReminderFinishedAt({
+            reminder: task.reminder,
+            finishedAt: date,
+            recalculateOccurrences: true,
+            client: client,
+            problemId: task.problemId,
+        });
     },
 
     prioritizeProblemRecord(state, payload) {

@@ -20,6 +20,13 @@ export class ProblemRecord extends Base {
     resolvedAt?: Date = undefined;
     tag = "";
 
+    static sortByPriorityAndCreatedAt(a: ProblemRecord, b: ProblemRecord) {
+        // sort order: draft first, then high priority followed by low priority, then latest creation first
+        return Number(!!a.createdAt) - Number(!!b.createdAt) ||
+            Number(!a.problem.isHighPriority) - Number(!b.problem.isHighPriority) ||
+            (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0);
+    }
+
     get reminders(): Reminder[] {
         if (this.ratingReminder) {
             return (this.interventions as Reminder[]).concat([

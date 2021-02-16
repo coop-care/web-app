@@ -72,7 +72,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:10:13.502Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "49",
             "detailsCode": "",
@@ -135,7 +135,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:03:35.797Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "_additionalRatingsKBS": [
           [
@@ -219,7 +219,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:16:44.484Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "41",
             "detailsCode": "",
@@ -296,7 +296,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:12:05.029Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:17:32.777Z",
         "resolvedAt": null,
@@ -372,7 +372,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:23:27.284Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "33",
             "detailsCode": "",
@@ -462,7 +462,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:19:22.135Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:25:22.022Z",
         "resolvedAt": null,
@@ -512,7 +512,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:30:28.265Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:32:21.000Z",
         "resolvedAt": null,
@@ -552,7 +552,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:32:22.889Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:33:56.199Z",
         "resolvedAt": null,
@@ -632,7 +632,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:42:49.424Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "50",
             "detailsCode": "",
@@ -712,7 +712,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:33:58.994Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:43:48.673Z",
         "resolvedAt": null,
@@ -771,7 +771,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:47:23.697Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "32",
             "detailsCode": "",
@@ -847,7 +847,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:43:55.858Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:48:08.383Z",
         "resolvedAt": null,

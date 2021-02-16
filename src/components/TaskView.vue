@@ -22,7 +22,7 @@
     >
       <signature
         :userId="task.user"
-        :description="completionDate"
+        :description="localizedSignature"
         has-tooltip
         class="task-signature"
       />
@@ -35,23 +35,24 @@
     </q-item-section>
     <q-item-section>
       <q-item-label
-        v-if="title"
-        :class="'text-weight-medium ' + (task.isDue ? 'text-negative' : '')"
+        caption
+        v-if="description"
+        lines="1"
       >
-        {{ title }}
+        {{ description }}
       </q-item-label>
       <q-item-label
-        caption
-        v-if="description || timeAgo"
-        lines="3"
+        v-if="title"
+        :class="[task.isDue ? 'text-negative' : '']"
       >
+        <span :class="[hasDetails ? '': 'text-italic']">{{ title }}</span>
         <span
           v-if="timeAgo"
           @click.prevent="navigateToDueDate"
-          class="link text-negative text-weight-medium"
-        >{{ timeAgo }}</span>
-        <span v-if="timeAgo && description">, </span>
-        <span v-if="description">{{ description }}</span>
+          class="text-caption text-weight-medium link"
+        >
+          ({{ timeAgo }})
+        </span>
       </q-item-label>
     </q-item-section>
     <q-item-section
@@ -108,9 +109,10 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
+import { Component, Prop, Ref } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
 import { DateTime } from "luxon";
+import { TranslateResult } from "vue-i18n";
 import {
   Client,
   Task,
@@ -118,6 +120,7 @@ import {
   Intervention,
   RatingReminder,
 } from "../models";
+import InterventionMixin from "../mixins/InterventionMixin";
 import ActionMenu, { ActionItem } from "components/ActionMenu.vue";
 import DateTimePopup from "components/DateTimePopup.vue";
 import Signature from "../components/Signature.vue";
@@ -133,9 +136,9 @@ export const UpdateTimeoutMilliseconds = 2000;
     Signature
   },
 })
-export default class TaskView extends Vue {
+export default class TaskView extends InterventionMixin {
   @Prop({ type: Object, required: true}) readonly client!: Client;
-  @Prop({ type: Object, required: true}) readonly task!: Task;
+  @Prop({ type: Object, required: true}) readonly task!: Task<Reminder>;
   @Prop({ type: Date, required: true}) readonly date!: Date;
   @Prop(Boolean) readonly hasCheckbox!: boolean;
   @Ref() readonly dateProxy!: QPopupProxy;
@@ -173,31 +176,67 @@ export default class TaskView extends Vue {
     const locale = this.$root.$i18n.locale;
     return this.task.completed?.toLocaleString(locale, DateTime.DATETIME_SHORT);
   }
+  get localizedSignature() {
+    if (!this.intervention?.receiver) {
+      return this.completionDate;
+    } else {
+      const values = {
+        date: this.completionDate,
+        name: this.receiverName
+      }
+
+      if (this.intervention.arrangedIntervention) {
+        return this.$t("agreementWithNameAndDate", values);
+      } else {
+        return this.$t("receivingWithNameAndDate", values);
+      }
+    }
+  }
+  get hasDetails() {
+    return !this.intervention || !!this.intervention.intervention.details;
+  }
   get title() {
     if (this.reminder instanceof Intervention) {
-      return this.reminder.details;
+      const details = this.reminder.intervention.details || this.$t("notSpecified");
+
+      if (!this.receiverName) {
+        return details;
+      } else {
+        let prefix: TranslateResult;
+        let suffix = "";
+        const arrangedIntervention = this.intervention?.arrangedIntervention;
+        const values = {name: this.receiverName};
+
+        if (arrangedIntervention) {
+          if (this.isCompleted) {
+            prefix = this.$t("agreementWithContact", values);
+          } else {
+            prefix = this.$t("requestInterventionFromContact", values);
+          }
+
+          suffix = this.localizeRecurrenceRule(arrangedIntervention.recurrenceRules);
+          
+          if (suffix) {
+            suffix = " (" + suffix + ")"
+          }
+        } else {
+          prefix = this.$t("supportForContact", values);
+        }
+        return [prefix, details + suffix].filter(Boolean).join(": ");
+      }
     } else if (this.reminder instanceof RatingReminder) {
-      return this.$t("interimRating");
+      return this.$t("interimRating") + " " + 
+        this.$t("forProblem", {problem: this.problemName});
     } else {
-      return "";
+      return this.$t("notSpecified");
     }
   }
   get description() {
-    let description: string;
     if (this.reminder instanceof Intervention) {
-      description =
-        this.$t(this.reminder.category.title) +
-        ": " +
-        this.$t(this.reminder.target.title);
-    } else if (this.reminder instanceof RatingReminder) {
-      description = this.$t("forProblem", {
-        problem: this.problemName,
-      }).toString();
+      return this.interventionDescription(this.reminder);
     } else {
-      description = "";
+      return "";
     }
-
-    return description;
   }
   get timeAgo() {
     const selectedDate = (this.date as unknown) as Date;
@@ -237,8 +276,18 @@ export default class TaskView extends Vue {
   get reminder() {
     return this.task.reminder;
   }
+  get intervention() {
+    if (this.reminder instanceof Intervention) {
+      return this.reminder;
+    } else {
+      return undefined;
+    }
+  }
   get problemName() {
     return this.$t(this.record?.problem.title || "");
+  }
+  get receiverName() {
+    return this.findContactName(this.intervention?.receiver, this.client);
   }
   get record() {
     return this.client.findProblemRecord(this.task.problemId);
@@ -249,9 +298,23 @@ export default class TaskView extends Vue {
   get reminderActionItems() {
     const isIntervention = this.reminder instanceof Intervention;
     const isRatingReminder = this.reminder instanceof RatingReminder;
-    const isReminderUncompleted = !this.reminder.isCompleted;
+    const isReminderUnfinished = !this.reminder.isFinished;
     const isTaskUncompleted = !this.task.completed;
-    const isUncompleted = isReminderUncompleted && isTaskUncompleted;
+    const isUncompleted = isReminderUnfinished && isTaskUncompleted;
+    let endInterventionLabel: TranslateResult;
+
+    if (!!this.intervention?.receiver) {
+      endInterventionLabel = this.$t("cancelRequest");
+    } else {
+      if (this.reminder.isRecurring) {
+        endInterventionLabel = this.$t("deleteInterventionOnDate", {
+          date: formatDate(this.task.due, "" + this.$t("datetimeFormat")),
+        });
+      } else {
+        endInterventionLabel = this.$t("deleteIntervention")
+      }
+    }
+
     return [
       {
         name: this.$t("newRating") + " …",
@@ -278,37 +341,32 @@ export default class TaskView extends Vue {
         condition: this.reminder.isRecurring && isUncompleted,
       },
       {
-        name:
-          this.$t("showProblem", {
+        name: this.$t("showProblem", {
             problem: this.problemName,
           }) + " …",
         icon: "far fa-arrow-right",
         action: () => this.routerPush("clientReport"),
-        condition: isIntervention && !this.record?.resolvedAt,
+        condition: isIntervention && !!this.record && !this.record.resolvedAt,
       },
       {
         name: this.$t("editIntervention") + " …",
         icon: "fas fa-pen",
         action: () => this.routerPush("intervention"),
-        condition: isIntervention && isReminderUncompleted,
+        condition: isIntervention && isReminderUnfinished,
       },
       {
         name: this.$t("stopRatingReminder"),
-        icon: "fas fa-times-circle",
+        icon: "far fa-stop-circle",
         isDestructive: true,
         action: this.endRatingReminder,
-        condition: isRatingReminder && isReminderUncompleted,
+        condition: isRatingReminder && isReminderUnfinished,
       },
       {
-        name: !this.reminder.isRecurring
-          ? this.$t("deleteIntervention")
-          : this.$t("deleteInterventionOnDate", {
-              date: formatDate(this.task.due, "" + this.$t("datetimeFormat")),
-            }),
-        icon: "fas fa-times-circle",
+        name: endInterventionLabel,
+        icon: "far fa-stop-circle",
         isDestructive: true,
-        action: this.endReminder,
-        condition: isIntervention && isReminderUncompleted,
+        action: this.endIntervention,
+        condition: isIntervention && isReminderUnfinished,
       },
     ];
   }
@@ -327,7 +385,7 @@ export default class TaskView extends Vue {
       if (this.reminder instanceof RatingReminder) {
         this.endRatingReminder();
       } else {
-        this.endReminder();
+        this.endIntervention();
       }
     }
   }
@@ -342,21 +400,10 @@ export default class TaskView extends Vue {
     this.dateProxy.show();
   }
 
-  endReminder() {
-    const due = this.task.due || new Date();
-    const date = subtractFromDate(due, { milliseconds: 1 });
-
-    if (this.reminder.isRecurring) {
-      const recurrenceRules = this.reminder.recurrenceRules?.endingRules(date);
-      this.updateReminder({ recurrenceRules: recurrenceRules });
-    }
-
-    this.$store.direct.commit.setReminderCompletedAt({
-      reminder: this.reminder,
-      completedAt: date,
-      recalculateOccurrences: true,
-      client: this.client,
-      problemId: this.task.problemId,
+  endIntervention() {
+    this.$store.direct.commit.endReminder({
+      task: this.task,
+      client: this.client
     });
     this.save();
   }
@@ -398,7 +445,7 @@ export default class TaskView extends Vue {
       name: name,
       params: {
         clientId: this.client._id,
-        problemId: this.task.problemId,
+        problemId: this.task.problemId || "0",
         interventionId: this.reminder.id,
       } as any,
     });

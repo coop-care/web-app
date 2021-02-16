@@ -3,6 +3,7 @@ export class Term {
     title = "";
     description = "";
     icon = "";
+    shortTitle = "";
 
     constructor(path: string) {
         if (path) {

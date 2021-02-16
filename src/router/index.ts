@@ -15,7 +15,15 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
   Vue.use(VueRouter)
 
   const Router = new VueRouter({
-    scrollBehavior: () => ({ x: 0, y: 0 }),
+    scrollBehavior: (to, from, savedPosition) => {
+      if (savedPosition) {
+        return savedPosition;
+      } else if (["clientContacts", "clientReminders"].includes(to.name || "")) {
+        return undefined;
+      } else {
+        return { x: 0, y: 0 };
+      }
+    },
     routes,
 
     // Leave these as is and change from quasar.conf.js instead!

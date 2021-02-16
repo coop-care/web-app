@@ -1,7 +1,7 @@
 <template>
   <q-item
     v-if="value && messages"
-    class="warning text-body2 q-pa-md q-mt-lg radius-sm"
+    :class="['warning text-body2 q-pa-md radius-sm', margin]"
   >
     <q-item-section side>
       <q-icon
@@ -34,6 +34,7 @@ import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 export default class Warning extends Vue {
   @Prop(Boolean) readonly value!: boolean;
   @Prop({ type: String, default: ""}) readonly messages!: string;
+  @Prop({ type: String, default: "q-mt-lg"}) readonly margin!: string;
 
   @Watch("messages")
   onMessagesChanged(value: string) {

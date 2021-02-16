@@ -84,9 +84,10 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import { date } from "quasar";
 import { Intervention } from "../models";
+import InterventionMixin from "../mixins/InterventionMixin";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
@@ -102,7 +103,7 @@ const { isBetweenDates, startOfDate, endOfDate } = date;
     PullToRefresh
   },
 })
-export default class ProofOfPerformancePage extends Vue {
+export default class ProofOfPerformancePage extends InterventionMixin {
   startDate = startOfDate(new Date(), "month", false);
   endDate = endOfDate(new Date(), "month", false);
 
@@ -126,11 +127,21 @@ export default class ProofOfPerformancePage extends Vue {
       );
 
       if (reminder instanceof Intervention && completed.length > 0) {
-        const description =
-          this.$t(reminder.category.title) +
-          ": " +
-          this.$t(reminder.target.title);
+        let prefix = "";
+        const receiverName = this.findContactName(reminder.receiver, this.client);
 
+        if (receiverName) {
+          const arrangedIntervention = reminder.arrangedIntervention;
+          const values = {name: receiverName};
+
+          if (arrangedIntervention) {
+            prefix = this.$t("agreementWithContact", values) as string;
+          } else {
+            prefix = this.$t("supportForContact", values) as string;
+          }
+        }
+
+        const title = [prefix, reminder.intervention.details].filter(Boolean).join(": ");
         const dates = completed.map(
           (item) => {
             const signature = teamMembers[item.user || ""]?.signature;
@@ -145,10 +156,11 @@ export default class ProofOfPerformancePage extends Vue {
             }) +
             (signature ? " (" + signature + ")" : "");
         });
+
         tasks.push({
           id: reminder.id,
-          title: reminder.details,
-          description: description,
+          title: title,
+          description: this.interventionDescription(reminder),
           count: completed.length || 1,
           dates: dates,
         });

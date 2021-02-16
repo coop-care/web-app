@@ -25,7 +25,7 @@ const routes: RouteConfig[] = [
           },
           {
             name: "clientContacts",
-            path: "contacts"
+            path: "contacts/:contactId?"
           },
           {
             name: "clientMasterData",

@@ -10,6 +10,10 @@ export class Occurrence {
     completed?: Date;
     user?: string;
 
+    static sortByDueDate(a: Occurrence, b: Occurrence) {
+        return (a.due?.getTime() || 0) - (b.due?.getTime() || 0);
+    }
+
     constructor(due: Date, completed?: Date, user?: string) {
         this.due = due;
         this.completed = completed;
@@ -27,7 +31,7 @@ export class Reminder extends Base {
     @Type(() => Date)
     createdAt = new Date();
     @Type(() => Date)
-    completedAt?: Date = undefined;
+    finishedAt?: Date = undefined;
 
     get isScheduled() {
         return !!this.recurrenceRules;
@@ -35,11 +39,14 @@ export class Reminder extends Base {
     get isRecurring() {
         return this.recurrenceRules?.isRecurring || false;
     }
-    get isCompleted() {
-        return !!this.completedAt;
+    get isFinished() {
+        return !!this.finishedAt;
     }
     get completedOccurrences() {
         return this.occurrences.filter(item => !!item.completed);
+    }
+    get hasCompletedOccurences() {
+        return this.completedOccurrences.length > 0;
     }
     get startDateOfRecurrenceRules() {
         if (this.recurrenceRules) {
@@ -66,7 +73,7 @@ export class Reminder extends Base {
             this.occurrences = this.occurrences.concat(due);
         }
 
-        if (isInactive || this.isCompleted) {
+        if (isInactive || this.isFinished) {
             const completedOccurrences = this.completedOccurrences;
             if (completedOccurrences.length < this.occurrences.length) {
                 this.occurrences = completedOccurrences;
@@ -106,7 +113,7 @@ export class Reminder extends Base {
                 .map(date => new Occurrence(date));
             const sortedNewOccurrences = completedSinceStartOccurrences
                 .concat(dueSinceStartOccurrences)
-                .sort((a, b) => a.due.getTime() - b.due.getTime());
+                .sort(Occurrence.sortByDueDate);
 
             this.occurrences = pastOccurrences.concat(sortedNewOccurrences);
         } else {

@@ -10,7 +10,7 @@
     @mousedown="mousedown"
     @mouseup="mouseup"
   >
-    <div :class="['col', layoutClasses]">
+    <div :class="['col text-black', layoutClasses]">
       <q-item-label 
         caption 
         class="col-4 ellipsis"
@@ -43,8 +43,6 @@
   padding-bottom: 6px
   .show-on-hover
     display: none
-  &.can-hover:hover
-    background-color: #eeeeee
   &.compact-layout
     padding-left: 0
     padding-right: 0

@@ -1,7 +1,7 @@
 <template>
   <div
     v-touch-swipe.mouse.horizontal="swipeTasks"
-    class="client-reminders min-height"
+    class="client-reminders min-height column items-center"
   >
     <div class="row">
       <q-space />
@@ -67,19 +67,20 @@
 
     <q-list 
       v-if="tasks.length"
+      class="q-mb-xl full-width"
       dense
     >
       <transition-group 
         name="task-list" 
         tag="div"
-        :key="selectedDate.getTime()"
+        :key="taskListTransitionGroupKey"
         class="task-list"
         @before-leave="beforeLeaveTaskList"
       >
         <div
           v-for="taskOrTitle in tasks"
           :key="taskOrTitle.title"
-          class="task-list-item full-width"
+          class="task-list-item no-padding-xs full-width"
         >
           <task-view
             v-if="taskOrTitle.task"
@@ -122,7 +123,7 @@
     </div>
 
     <q-page-sticky
-      v-if="isActiveClient && hasActiveProblems"
+      v-if="!isDisabled && hasActiveProblems"
       position="bottom-left"
       :offset="$q.screen.lt.sm ? [16, 10] : [56, 10]"
     >
@@ -139,7 +140,8 @@
 
 <style lang="sass">
 .client-reminders
-  max-width: 540px
+  &> *
+    max-width: 560px
   .thin-button
     width: 32px
   .selected-date
@@ -158,13 +160,13 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
   opacity: 0
 .task-list-move
   transition: opacity 1s ease-in-out, transform .3s ease-in-out .7s
-
 </style>
 
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Component, Ref } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
-import { Task, TaskGroup } from "../models/task";
+import { Task, TaskGroup, Reminder } from "../models";
+import RecordMixin from "../mixins/RecordMixin";
 import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
 
 const {
@@ -186,7 +188,7 @@ const allInclusive = {
     TaskView,
   },
 })
-export default class ClientReminders extends Vue {
+export default class ClientReminders extends RecordMixin {
   @Ref() readonly dateProxy!: QPopupProxy;
 
   recompute = Math.random();
@@ -241,11 +243,12 @@ export default class ClientReminders extends Vue {
   get hasActiveProblems() {
     return this.client && this.client.activeProblemCount > 0
   }
-  get isActiveClient() {
-    return !this.client?.leftAt
-  }
-  get client() {
-    return this.$store.direct.getters.getClient(this.$route.params);
+  get taskListTransitionGroupKey() {
+    return [
+      "task.list", 
+      this.client?._id?.toHexString() || "no-client-id", 
+      this.$root.$route.params.day || "today"
+    ].join(".");
   }
 
   formattedDate(options: Intl.DateTimeFormatOptions) {
@@ -285,16 +288,16 @@ export default class ClientReminders extends Vue {
     const pastDueCompletedTimestamp = Date.now() - UpdateTimeoutMilliseconds;
     const isFuture = endOfTodayTimestamp < startOfDayTimestamp;
     const isPresentOrPast = startOfDayTimestamp <= startOfTodayTimestamp;
-    const pastDueTasks: Task[] = [];
-    const anytimeTasks: Task[] = [];
-    let scheduledTasks: Task[] = [];
+    const pastDueTasks: Task<Reminder>[] = [];
+    const anytimeTasks: Task<Reminder>[] = [];
+    let scheduledTasks: Task<Reminder>[] = [];
     const groupedTasks: TaskGroup[] = [];
 
     this.client?.forAllReminders((reminder, problem) => {
       const isReminderActiveAndUncompleted =
-        !problem.resolvedAt &&
-        problem.problem.isHighPriority &&
-        !reminder.isCompleted &&
+        (!problem || !problem.resolvedAt) &&
+        (!problem || problem.problem.isHighPriority) &&
+        !reminder.isFinished &&
         !this.client?.leftAt;
 
       reminder.occurrences.forEach((item) => {
@@ -304,7 +307,7 @@ export default class ClientReminders extends Vue {
           item.due.getTime() < pastDueTimestamp &&
           (!item.completed || (pastDueCompletedTimestamp < item.completed.getTime()))
         ) {
-          pastDueTasks.push(new Task(reminder, problem.id, item));
+          pastDueTasks.push(new Task(reminder, problem?.id, item));
         } else if (
           (isReminderActiveAndUncompleted || item.completed) &&
           isBetweenDates(
@@ -314,7 +317,7 @@ export default class ClientReminders extends Vue {
             allInclusive
           )
         ) {
-          const task = new Task(reminder, problem.id, item);
+          const task = new Task(reminder, problem?.id, item);
           if (reminder.isScheduled) {
             scheduledTasks.push(task);
           } else {
@@ -328,7 +331,7 @@ export default class ClientReminders extends Vue {
           scheduledTasks = scheduledTasks.concat(
             reminder.recurrenceRules
               .between(startOfDay, endOfDay, true)
-              .map((date) => new Task(reminder, problem.id, date))
+              .map((date) => new Task(reminder, problem?.id, date))
           );
         }
       } else {
@@ -336,12 +339,13 @@ export default class ClientReminders extends Vue {
           isReminderActiveAndUncompleted &&
           reminder.createdAt.getTime() <= endOfDayTimestamp
         ) {
-          anytimeTasks.push(new Task(reminder, problem.id));
+          anytimeTasks.push(new Task(reminder, problem?.id));
         }
       }
     });
 
     if (pastDueTasks.length) {
+      pastDueTasks.sort(Task.sortByDueDate);
       groupedTasks.push(
         new TaskGroup("" + this.$t("pastDueTitle"), pastDueTasks)
       );
@@ -354,7 +358,7 @@ export default class ClientReminders extends Vue {
     }
 
     scheduledTasks
-      .sort((a, b) => (a.due?.getTime() || 0) - (b.due?.getTime() || 0))
+      .sort(Task.sortByDueDate)
       .forEach((task) => {
         const title = this.timeFormatter.format(task.due);
         const group = groupedTasks.find((group) => group.title == title);

@@ -1,5 +1,6 @@
 import "reflect-metadata";
-import { Reminder } from "./reminder";
+import { Type } from "class-transformer";
+import { Reminder } from ".";
 import { Term } from "./term";
 
 export class Intervention extends Reminder {
@@ -7,6 +8,11 @@ export class Intervention extends Reminder {
     targetCode = "";
     detailsCode = "";
     details = "";
+    comment?: string;
+    assignee?: string;
+    receiver?: string;
+    @Type(() => Intervention)
+    arrangedIntervention?: Intervention;
 
     static fromCode(code: string) {
         const codes = code.split(".");
@@ -26,7 +32,9 @@ export class Intervention extends Reminder {
     }
     get category() {
         if (this.categoryCode) {
-            return new Term("terminology.categoryByCode." + this.categoryCode);
+            const term = new Term("terminology.categoryByCode." + this.categoryCode);
+            term.shortTitle = "categoryShortTitle" + this.categoryCode;
+            return term;
         } else {
             return new Term("");
         }
@@ -37,5 +45,8 @@ export class Intervention extends Reminder {
         } else {
             return new Term("");
         }
+    }
+    get intervention() {
+        return this.arrangedIntervention || this;
     }
 }

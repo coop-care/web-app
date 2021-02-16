@@ -174,7 +174,7 @@ export default class ProblemClassification extends WarningMixin {
       this.editMode &&
       !value &&
       this.record?.interventions.filter(
-        (intervention) => !intervention.completedAt
+        (intervention) => !intervention.finishedAt
       ).length
     ) {
       this.showWarning(

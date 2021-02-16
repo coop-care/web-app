@@ -73,7 +73,7 @@ export function importSamplesV2() {
     client.forAllReminders((reminder, problem) => {
       reminder.occurrences.forEach(occurrence => {
         store.commit.toggleTaskCompletion({
-          task: new Task(reminder, problem.id, occurrence),
+          task: new Task(reminder, problem?.id, occurrence),
           isCompleted: true,
           date: occurrence.due,
           client: client

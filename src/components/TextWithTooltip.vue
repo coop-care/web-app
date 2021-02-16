@@ -5,7 +5,7 @@
       v-if="tooltip"
       name="fas fa-info-circle"
       size=".85rem"
-      class="q-ml-xs"
+      :class="['q-ml-xs', iconClass]"
       style="vertical-align: baseline"
     />
     <q-tooltip
@@ -36,6 +36,7 @@ export default class TextWithTooltip extends Vue {
   @Prop({ type: String, default: ""}) readonly text!: string;
   @Prop({ type: String, default: ""}) readonly tooltip!: string;
   @Prop({ type: String, default: ""}) readonly width!: string;
+  @Prop({ type: String, default: ""}) readonly iconClass!: string;
 
   parentWidth = "100%";
 

@@ -82,17 +82,18 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import { DateTime } from "luxon";
+import InterventionMixin from "../mixins/InterventionMixin";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
-import { Intervention, ChangeRecord, Problem, RRuleSet } from "../models";
+import { Intervention, ChangeRecord, Problem } from "../models";
 
 @Component({
   components: {
     SimplifiedMarkdown,
   },
 })
-export default class ClientHistoryEntry extends Vue {
+export default class ClientHistoryEntry extends InterventionMixin {
   @Prop({ type: Object, required: true }) readonly changeRecord!: ChangeRecord;
 
   isExpanded = false;
@@ -266,17 +267,7 @@ export default class ClientHistoryEntry extends Vue {
     } else if (key == "personRatedInPlaceOfOwner") {
       return value;
     } else if (key == "recurrenceRules") {
-      return value
-        ? RRuleSet.fromJSON(value)?.toLocalizedText(
-            this.$root.$i18n.locale,
-            (this.$t("rrule") as unknown) as Record<string, string>,
-            {
-              monthNames: this.$q.lang.date.months,
-              dayNames: this.$q.lang.date.days,
-              tokens: {},
-            }
-          )
-        : value;
+      return value ? this.localizeRecurrenceRule(value) : value;
     } else if (key == "categoryCode") {
       const intervention = new Intervention();
       intervention[key] = value;

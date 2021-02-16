@@ -1,12 +1,16 @@
 import "reflect-metadata";
 import { Type, plainToClass } from "class-transformer";
-import { MasterData, ProblemRecord, Reminder, ChangeRecord, IdentifiableObject } from ".";
+import { MasterData, ProblemRecord, Intervention, Contact, Reminder, ChangeRecord, IdentifiableObject } from ".";
 
 export class Client extends IdentifiableObject {
     @Type(() => MasterData)
     masterData: MasterData = new MasterData();
     @Type(() => ProblemRecord)
     problems: ProblemRecord[] = [];
+    @Type(() => Intervention)
+    unrelatedReminders: Intervention[] = [];
+    @Type(() => Contact)
+    contacts: Contact[] = [];
     @Type(() => Date)
     createdAt = new Date();
     @Type(() => Date)
@@ -21,6 +25,15 @@ export class Client extends IdentifiableObject {
     static sortByLastName(a: Client, b: Client) {
         return a.masterData.lastName.localeCompare(b.masterData.lastName) ||
             a.masterData.firstName.localeCompare(b.masterData.firstName);
+    }
+    static sortByActiveAndLastName(a: Client, b: Client) {
+        if (!!a.leftAt && !b.leftAt) {
+            return 1;
+        } else if (!a.leftAt && !!b.leftAt) {
+            return -1;
+        } else {
+            return this.sortByLastName(a, b);
+        }
     }
 
     get name() {
@@ -40,18 +53,23 @@ export class Client extends IdentifiableObject {
         return this.problems.filter(problem => !problem.resolvedAt).length;
     }
 
-    findProblemRecord(id: string) {
-        return this.problems.find(problem => problem.id == id);
+    findProblemRecord(id?: string) {
+        return !!id ? this.problems.find(problem => problem.id == id) : undefined;
+    }
+
+    findContact(id?: string) {
+        return !!id ? this.contacts.find(contact => contact.id == id) : undefined;
     }
 
     findReminder(id: string) {
         return this.problems
             .flatMap(problem => problem.reminders)
+            .concat(this.unrelatedReminders)
             .find(reminder => reminder.id == id);
     }
 
     forAllReminders(
-        method: (reminder: Reminder, problem: ProblemRecord) => any
+        method: (reminder: Reminder, problem?: ProblemRecord) => any
     ) {
         this.problems.forEach(problem => {
             if (!problem.createdAt) {
@@ -61,10 +79,11 @@ export class Client extends IdentifiableObject {
                 method(reminder, problem);
             });
         });
+        this.unrelatedReminders.forEach(reminder => method(reminder));
     }
 
     forActiveReminders(
-        method: (reminder: Reminder, problem: ProblemRecord) => any
+        method: (reminder: Reminder, problem?: ProblemRecord) => any
     ) {
         this.problems.forEach(problem => {
             if (
@@ -76,12 +95,15 @@ export class Client extends IdentifiableObject {
             }
 
             problem.reminders.forEach(reminder => {
-                if (reminder.isCompleted) {
-                    return;
+                if (!reminder.isFinished) {
+                    method(reminder, problem);
                 }
-
-                method(reminder, problem);
             });
+        });
+        this.unrelatedReminders.forEach(reminder => {
+            if (!reminder.isFinished) {
+                method(reminder);
+            }
         });
     }
 
@@ -93,8 +115,9 @@ export class Client extends IdentifiableObject {
         this.forActiveReminders((reminder, problem) =>
             reminder.calculateOccurrences(
                 !!this.leftAt ||
-                !!problem.resolvedAt ||
-                !problem.problem.isHighPriority
+                (!!problem &&
+                    (!!problem.resolvedAt ||
+                        !problem.problem.isHighPriority))
             )
         );
     }

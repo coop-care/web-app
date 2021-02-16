@@ -2,7 +2,7 @@
   <div class="min-height">
     <div
       v-if="clientProblems.length"
-      class="flex q-gutter-md q-my-md q-px-xs"
+      class="flex q-gutter-md q-mb-xl q-px-xs justify-center"
     >
       <problem-summary
         v-for="problemRecord in clientProblems"
@@ -49,17 +49,13 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
+import { ProblemRecord } from "../models";
+import RecordMixin from "../mixins/RecordMixin";
 import ProblemSummary from "../components/ProblemSummary.vue";
 
 @Component({ components: { ProblemSummary } })
-export default class ClientProblems extends Vue {
-  get client() {
-    return this.$store.direct.getters.getClient(this.$route.params);
-  }
-  get isDisabled() {
-    return !!this.client?.leftAt;
-  }
+export default class ClientProblems extends RecordMixin {
   get clientProblems() {
     const client = this.client;
     const problems = client ? client.problems : [];
@@ -67,15 +63,7 @@ export default class ClientProblems extends Vue {
       .filter((problem) => {
         return !problem.resolvedAt;
       })
-      .reverse()
-      .sort(
-        (first, second) =>
-          // sort order: draft first, then high priority followed by low priority
-          //@ts-ignore
-          !second.createdAt - !first.createdAt ||
-          //@ts-ignore
-          second.problem.isHighPriority - first.problem.isHighPriority
-      );
+      .sort(ProblemRecord.sortByPriorityAndCreatedAt);
   }
 
   addProblem() {
