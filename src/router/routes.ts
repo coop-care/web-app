@@ -8,11 +8,16 @@ const routes: RouteConfig[] = [
     children: [
       {
         path: "",
-        redirect: "client"
+        redirect: { name: "clientNoneSelected" }
+      },
+      {
+        name: "clientNoneSelected",
+        path: "/client",
+        component: () => import("pages/Client.vue")
       },
       {
         name: "client",
-        path: "/client/:clientId?",
+        path: "/client/:clientId",
         redirect: { name: "clientMasterData" },
         component: () => import("pages/Client.vue"),
         children: [

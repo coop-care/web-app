@@ -80,7 +80,7 @@ export default class PageLogin extends Vue {
     this.$store.direct.dispatch
       .login({ email: this.email, password: this.password, locale: this.$root.$i18n.locale })
       .then(() => {
-        void this.$router.push({ name: "client" });
+        void this.$router.push({ name: "clientNoneSelected" });
       })
       .catch(err => {
         this.errorMsg = this.$t("errorMessage", {message: err.message}) as string;

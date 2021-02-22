@@ -125,7 +125,7 @@ export default class DevMenu extends Vue {
       })
       .onOk(() => {
         void this.$store.direct.dispatch.clearDB();
-        void this.$router.push({ name: "client" });
+        void this.$router.push({ name: "clientNoneSelected" });
       });
   }
 }

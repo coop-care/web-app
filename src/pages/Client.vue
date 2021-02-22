@@ -42,7 +42,7 @@
         <new-client
           class="q-py-xl q-px-lg"
           @save="addClient"
-          @cancel="$router.push({ name: 'client' })"
+          @cancel="$router.push({ name: 'clientNoneSelected' })"
         />
       </div>
 
@@ -187,7 +187,7 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
   }
 
   deselectClient() {
-    void this.$router.push({ name: "client" });
+    void this.$router.push({ name: "clientNoneSelected" });
   }
 
   addClient(contact: Contact) {
