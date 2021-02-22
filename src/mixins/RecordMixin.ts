@@ -32,8 +32,12 @@ export default class RecordMixin extends Vue {
         }
     }
     saveClient() {
-        return this.$store.direct.dispatch.saveClient({
-            client: this.client
-        });
+        if (this.client) {
+            return this.$store.direct.dispatch.saveClient({
+                client: this.client
+            });
+        } else {
+            return Promise.resolve();
+        }
     }
 }
