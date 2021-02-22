@@ -15,7 +15,7 @@
           @click="$root.$emit('toggle-client-drawer')"
         />
         <q-btn
-          v-if="hasBackButton(this.$router.currentRoute.name)"
+          v-if="hasBackButton($router.currentRoute.name || '')"
           size="lg"
           dense
           no-caps
@@ -148,20 +148,9 @@ export default class MainLayout extends Vue {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
-  hasBackButton(routeName: string | null | undefined) {
-    return ![
-      "client",
-      "clientReminders",
-      "clientReport",
-      "clientContacts",
-      "clientMasterData",
-      "clientHealthInformation",
-      "clientAgreements",
-      "clientContactData",
-      "clientInformalContact",
-      "clientFormalContact",
-      "login"
-    ].includes(routeName || "");
+  hasBackButton(routeName: string) {
+    return (!routeName.startsWith("client") || routeName == "clientHistory") && 
+      (routeName != "login");
   }
   showOnboardingForDemoVersion() {
     if (

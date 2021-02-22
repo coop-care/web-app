@@ -18,7 +18,7 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
     scrollBehavior: (to, from, savedPosition) => {
       if (savedPosition) {
         return savedPosition;
-      } else if (["clientContacts", "clientReminders"].includes(to.name || "")) {
+      } else if (to.name?.startsWith("client") && to.name != "clientHistory") {
         return undefined;
       } else {
         return { x: 0, y: 0 };
