@@ -18,16 +18,18 @@
 
     <div
       v-else
-      class="q-mt-lg q-px-lg"
+      class="q-mt-lg q-px-lg column items-center"
     >
-      <div class="text-body2 text-italic">{{ $t("noClientProblemRecords") }}</div>
+      <div class="text-body2 text-italic text-center">{{ $t("noClientProblemRecords") }}</div>
       <q-btn
+        v-if="!isDisabled"
         :label="$t('problemAdmission')"
         flat
         no-caps
+        rounded
         size="md"
         color="classification"
-        class="q-ml-lg q-mt-xs text-normal"
+        class="q-ml-lg q-mt-xs text-normal self-center"
         @click="addProblem"
       />
     </div>

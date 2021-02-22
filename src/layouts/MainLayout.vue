@@ -6,9 +6,7 @@
         style="z-index: 1000"
       >
         <q-btn
-          v-if="
-            ($router.currentRoute.name || '').startsWith('client') && $q.screen.lt.md
-          "
+          v-if="hasMenuButton($router.currentRoute.name || '')"
           flat
           icon="menu"
           aria-label="menu"
@@ -148,6 +146,10 @@ export default class MainLayout extends Vue {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
+  hasMenuButton(routeName: string) {
+    return (routeName.startsWith("client") && routeName != "clientHistory") && 
+      this.$q.screen.lt.md;
+  }
   hasBackButton(routeName: string) {
     return (!routeName.startsWith("client") || routeName == "clientHistory") && 
       (routeName != "login");

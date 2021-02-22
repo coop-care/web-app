@@ -197,7 +197,7 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
       .addClient(client)
       .then((client) => {
         void this.$router.push({
-          name: "clientReport",
+          name: "client",
           params: { clientId: client._id?.toString() || "" },
         });
       })

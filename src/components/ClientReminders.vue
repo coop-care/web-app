@@ -111,9 +111,11 @@
       >
         <div class="text-italic">{{ $t("noProblemForNewIntervention") }}</div>
         <q-btn
+          v-if="!isDisabled"
           :label="$t('problemAdmission')"
           flat
           no-caps
+          rounded
           size="md"
           color="classification"
           class="q-mt-xs text-normal"
