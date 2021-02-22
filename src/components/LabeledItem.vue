@@ -2,7 +2,7 @@
   <q-item
     :class="[
       'labeled-item items-center non-selectable', 
-      item.action ? 'cursor-pointer' : '', 
+      item.action ? 'can-hover cursor-pointer' : '', 
       compactLayout ? 'compact-layout' : '', 
       item.classes || ''
     ]"

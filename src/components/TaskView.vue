@@ -444,10 +444,10 @@ export default class TaskView extends InterventionMixin {
     void this.$router.push({
       name: name,
       params: {
-        clientId: this.client._id,
+        clientId: this.client._id?.toHexString() || "",
         problemId: this.task.problemId || "0",
         interventionId: this.reminder.id,
-      } as any,
+      },
     });
   }
 

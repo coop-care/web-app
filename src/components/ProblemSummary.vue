@@ -448,7 +448,7 @@ export default class ProblemSummary extends WarningMixin {
   }
   get clientName() {
     return (
-      this.$store.direct.getters.getClient(this.params)?.masterData.name || ""
+      this.$store.direct.getters.getClient(this.params)?.contact.name || ""
     );
   }
   get language() {

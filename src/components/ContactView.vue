@@ -16,7 +16,7 @@
           size="10.5px"
           @click="isEditing = true"
           :title="$t('editContact')"
-          class="shadow-1"
+          :class="['shadow-1', $q.screen.gt.xs ? '' : 'q-mr-sm']"
         />
       </div>
 
@@ -24,7 +24,7 @@
         {{ contact.name || $t("withoutNames") }}
       </div>
       <div 
-        v-if="contact.relationship" 
+        v-if="contact.relationship && !noRelationship" 
         class="text-body1 text-grey-7 text-center"
       >
         {{ localizeLabel(contact.relationship) }}
@@ -78,7 +78,7 @@
           :key="'contactItem' + index"
           :item="item"
           :compactLayout="compactLayout"
-          class="can-hover text-primary"
+          class="text-primary"
         />
       </q-list>
     </div>
@@ -97,26 +97,35 @@
       </div>
 
       <div class="column text-size-adjust-md">
-        <q-input
-          :value="contact.firstName"
-          @input="updateContact({firstName: $event})"
-          @change="save"
-          :label="$t('firstName')"
-        />
-        <q-input
-          :value="contact.lastName"
-          @input="updateContact({lastName: $event})"
-          @change="save"
-          :label="$t('lastName')"
-        />
-        <selectable-input
-          :value="contact.relationship"
-          :label="$t('relationshipToClient')"
-          :options="$store.direct.getters.relationshipLabels.map(makeOption)"
-          clearable
-          class="mb-row-dense"
-          @input="saveContact({relationship: $event})"
-        />
+        <div class="mb-row-dense">
+          <q-input
+            :value="contact.firstName"
+            @input="updateContact({firstName: $event})"
+            @change="save"
+            :label="$t('firstName')"
+          />
+          <q-input
+            :value="contact.lastName"
+            @input="updateContact({lastName: $event})"
+            @change="save"
+            :label="$t('lastName')"
+          />
+          <date-time-input
+            v-if="!noBirthday"
+            :value="contact.birthday"
+            @input="saveContact({birthday: $event})"
+            :label="$t('birthday')"
+            :format="$t('dateFormat')"
+          />
+          <selectable-input
+            v-if="!noRelationship"
+            :value="contact.relationship"
+            :label="$t('relationshipToClient')"
+            :options="$store.direct.getters.relationshipLabels.map(makeOption)"
+            clearable
+            @input="saveContact({relationship: $event})"
+          />
+        </div>
 
         <labeled-value-editor
           :items="contact.phoneNumbers"
@@ -218,7 +227,10 @@
           class="mb-row-dense"
         />
 
-        <div class="row justify-center q-mb-xl">
+        <div 
+          v-if="!noDelete"
+          class="row justify-center q-mb-xl"
+        >
           <q-btn
             :label="$t('deleteContact')"
             rounded
@@ -244,12 +256,14 @@
 
 <script lang="ts">
 import { Component, Prop, Watch } from "vue-property-decorator";
+import { DateTime } from "luxon";
 import RecordMixin from "../mixins/RecordMixin";
 import { Contact, LabeledValue, PostalAddress} from "../models";
 import NoDataItem from "../components/NoDataItem.vue";
 import LabeledItem, { LabeledItemType } from "../components/LabeledItem.vue";
 import SelectableInput from "../components/SelectableInput.vue";
 import LabeledValueEditor from "../components/LabeledValueEditor.vue";
+import DateTimeInput from "../components/DateTimeInput.vue";
 
 @Component({
   components: {
@@ -257,21 +271,38 @@ import LabeledValueEditor from "../components/LabeledValueEditor.vue";
     LabeledItem,
     SelectableInput,
     LabeledValueEditor,
+    DateTimeInput
   }
 })
 export default class ContactView extends RecordMixin {
   @Prop(Object) readonly contact!: Contact;
+  @Prop(Boolean) readonly noDegree!: boolean; // todo
+  @Prop(Boolean) readonly noBirthday!: boolean; 
+  @Prop(Boolean) readonly noProfession!: boolean; // todo
+  @Prop(Boolean) readonly noRelationship!: boolean;
+  @Prop(Boolean) readonly noOrganization!: boolean; // todo
+  @Prop(Boolean) readonly noDelete!: boolean;
 
   isEditing = false;
   width = Infinity;
 
   @Watch("contact")
   onContactChanged() {
-    this.isEditing = false;
+    if (this.$route.query.edit == "1" && !this.isDisabled) {
+      void this.$router.replace({
+        name: this.$route.name || undefined,
+        params: this.$route.params
+      });
+      this.isEditing = true;
+    } else {
+      this.isEditing = false;
+    }
   }
 
   get contactDetails() {
     const result: LabeledItemType[] = [];
+    const locale = this.$root.$i18n.locale;
+
     return result.concat(this.contact.phoneNumbers.map((item, index, list) => {
       return {
         label: this.localizeLabel(item.label),
@@ -296,7 +327,12 @@ export default class ContactView extends RecordMixin {
         classes: this.contactGroupClassIfNeeded(index, list),
         action: () => this.showMap(item)
       }
-    })).concat(this.contact.notes ? [
+    })).concat(this.contact.birthday ? [
+      {
+        label: this.$t("birthday") as string,
+        value: this.contact.birthday.toLocaleString(locale, DateTime.DATE_FULL)
+      }
+    ] : []).concat(this.contact.notes ? [
       {
         label: this.$t("contactNotes") as string,
         value: this.contact.notes
@@ -402,6 +438,10 @@ export default class ContactView extends RecordMixin {
   }
   save() {
     void this.saveClient();
+  }
+
+  mounted() {
+    this.onContactChanged();
   }
 }
 </script>

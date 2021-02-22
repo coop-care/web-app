@@ -41,7 +41,7 @@ export function importSamplesV2() {
     const client = new Client();
     client._id = new ObjectID();
     client.createdAt = createdAt;
-    Object.assign(client.masterData, json.masterData);
+    Object.assign(client.contact, json.contact);
     store.commit.setClients(originalClients.concat(client));
     const params = { clientId: client._id.toHexString() };
 

@@ -13,6 +13,7 @@ export type PostalAddress = {
 export class Contact extends Base {
   id = this.generateId();
   userId?: string;
+  referenceId?: string;
   externalSourceURL?: string;
 
   sex = "";
@@ -22,17 +23,18 @@ export class Contact extends Base {
   relationship = "";
   profession = "";
   degree = "";
+  organization = "";
+  isOrganization = false;
   phoneNumbers: LabeledValue<string>[] = [];
   emailAddresses: LabeledValue<string>[] = [];
   postalAddresses: LabeledValue<PostalAddress>[] = [];
   notes = "";
-  customFields: CustomField<string>[] = [];
+  customFields: CustomField<any>[] = [];
 
   static readonly emailLabels = ["privateLabel", "workLabel", "schoolLabel", "otherLabel"];
   static readonly phoneLabels = ["privateLabel", "mobileLabel", "workLabel", "centralOfficeLabel", "hospitalLabel", "schoolLabel", "faxLabel", "otherLabel"];
   static readonly postalLabels = ["privateLabel", "workLabel", "hospitalLabel", "schoolLabel", "invoiceAddress", "deliveryAddress"];
   static readonly sexTypes = ["femaleSex", "maleSex", "otherSex"];
-  static readonly degreeTypes = ["medicalDoctorDegree", "philosophiaeDoctorDegree"];
   static readonly relationshipTypes = ["partner", "child", "parent", "sibling", "friend", "neighbour", "grandchild", "grandparent", "parentInLaw", "childInLaw"]
     .map(value => value + "Relationship");
   static readonly professionTypes = ["generalPractitioner"]
@@ -43,7 +45,6 @@ export class Contact extends Base {
       .concat(Contact.postalLabels)
       .concat(Contact.relationshipTypes)
       .concat(Contact.professionTypes)
-      .concat(Contact.degreeTypes)
   )]
   static postalAddressAsSearchString(address: PostalAddress) {
     return encodeURI(Object.values(address).filter(Boolean).join(",").replace(" ", "+"));

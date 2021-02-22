@@ -61,8 +61,13 @@ export default class SplitViewView extends Vue {
 
   private onResize() {
     this.width = (this.$el as HTMLElement).offsetWidth;
+    const wasCollapsed = this.isCollapsed;
     this.isCollapsed = this.width <= this.minSlotWidth * 2;
     this.showVisible(false);
+
+    if (wasCollapsed != this.isCollapsed) {
+      this.$emit("update:is-collapsed", this.isCollapsed);
+    }
   }
   showVisible(animate: boolean) {
     if (this.isCollapsed) {
@@ -94,9 +99,9 @@ export default class SplitViewView extends Vue {
     this.isBeforeVisible = true;
     this.showVisible(true);
   }
-  showAfter() {
+  showAfter(animate = true) {
     this.isBeforeVisible = false;
-    this.showVisible(true);
+    this.showVisible(animate);
   }
   animate(from: number, to: number, duration: number, easing: (progress: number) => number = t => t,  handler: (value: number) => void) {
     let start: DOMHighResTimeStamp;

@@ -13,23 +13,55 @@ const routes: RouteConfig[] = [
       {
         name: "client",
         path: "/client/:clientId?",
+        redirect: { name: "clientMasterData" },
         component: () => import("pages/Client.vue"),
         children: [
           {
+            name: "clientMasterData",
+            path: "profile",
+            component: () => import("components/ClientMasterData.vue"),
+            children: [
+              {
+                name: "clientHealthInformation",
+                path: "health",
+                component: () => import("components/ClientHealthInformation.vue")
+              },
+              {
+                name: "clientAgreements",
+                path: "agreements",
+                component: () => import("components/ClientAgreements.vue")
+              },
+              {
+                name: "clientContactData",
+                path: "contacts/client",
+                component: () => import("components/ClientContactData.vue")
+              },
+              {
+                name: "clientInformalContact",
+                path: "contacts/informal/:informalContactId",
+                component: () => import("components/ClientInformalContact.vue")
+              },
+              {
+                name: "clientFormalContact",
+                path: "contacts/formal/:formalContactId",
+                component: () => import("components/ClientAgreements.vue")
+              }
+            ]
+          },
+          {
             name: "clientReminders",
-            path: "reminders/:day?"
+            path: "reminders/:day?",
+            component: () => import("components/ClientReminders.vue")
           },
           {
             name: "clientReport",
-            path: "report/:problemId?"
+            path: "report/:problemId?",
+            component: () => import("components/ClientProblems.vue")
           },
           {
             name: "clientContacts",
-            path: "contacts/:contactId?"
-          },
-          {
-            name: "clientMasterData",
-            path: "profile"
+            path: "contacts/:contactId?",
+            component: () => import("components/ClientContacts.vue")
           }
         ]
       },

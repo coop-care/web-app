@@ -202,12 +202,10 @@ export default class ClientReminders extends RecordMixin {
       : new Date();
   }
   set selectedDate(value) {
+    this.$route.params.day = "" + value.getTime();
     void this.$router.push({
       name: this.$route.name || undefined,
-      params: {
-        day: "" + value.getTime(),
-        clientId: this.$route.params.clientId,
-      },
+      params: this.$route.params,
     });
   }
   get selectedDateString() {

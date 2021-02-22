@@ -77,82 +77,8 @@
             />
           </div>
         </div>
-        <q-tabs
-          v-model="selectedTab"
-          no-caps
-          class="bg-grey-1 q-mb-md text-primary"
-          :inline-label="$q.screen.gt.xs"
-          :dense="!$q.screen.gt.xs"
-          align="center"
-        >
-          <q-route-tab
-            name="reminders"
-            :label="$tc('task', 2)"
-            icon="fas fa-tasks"
-            :to="{ name: 'clientReminders', params: $route.params }"
-            class="text-intervention"
-          >
-            <q-badge
-              color="intervention"
-              floating
-              :label="dueTaskCount"
-              v-if="dueTaskCount"
-              class="radius-lg text-weight-medium"
-            />
-          </q-route-tab>
-          <q-route-tab
-            name="report"
-            :label="$t('reportTitle')"
-            icon="fas fa-notes-medical"
-            :to="{ name: 'clientReport', params: $route.params }"
-            class="text-classification"
-          />
-          <q-route-tab
-            v-if="true"
-            name="contacts"
-            :label="$t('contacts')"
-            icon="fas fa-address-book"
-            :to="{ name: 'clientContacts', params: $route.params }"
-            class="text-primary"
-          />
-          <q-route-tab
-            v-if="false"
-            name="masterData"
-            :label="$t('masterDataTitle')"
-            icon="fas fa-id-card"
-            :to="{ name: 'clientMasterData', params: $route.params }"
-            class="text-primary"
-          />
-        </q-tabs>
-        <q-tab-panels
-          animated
-          v-model="selectedTab"
-        >
-          <q-tab-panel
-            name="reminders"
-            class="q-px-none q-pt-xs"
-          >
-            <client-reminders />
-          </q-tab-panel>
-          <q-tab-panel
-            name="report"
-            class="q-px-none q-pt-md"
-          >
-            <client-problems />
-          </q-tab-panel>
-          <q-tab-panel
-            name="contacts"
-            class="q-px-none q-pt-none"
-          >
-            <client-contacts />
-          </q-tab-panel>
-          <q-tab-panel
-            name="masterData"
-            class="q-px-none"
-          >
-            <client-master-data />
-          </q-tab-panel>
-        </q-tab-panels>
+        
+        <client-tab-view :key="$route.params.clientId || ''" />
       </div>
     </pull-to-refresh>
   </q-page>
@@ -172,14 +98,12 @@ import ClientDrawer from "../components/ClientDrawer.vue";
 import ContentEditable from "../components/ContentEditable.vue";
 import NewClient from "../components/NewClient.vue";
 import ActionMenu from "../components/ActionMenu.vue";
-import ClientProblems from "../components/ClientProblems.vue";
-import ClientReminders from "../components/ClientReminders.vue";
-import ClientContacts from "../components/ClientContacts.vue";
-import ClientMasterData from "../components/ClientMasterData.vue";
-import { Client, MasterData } from "../models";
+import { Client, Contact } from "../models";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
+import ClientTabView from "../components/ClientTabView.vue";
+
 
 @Component({
   components: {
@@ -187,31 +111,26 @@ import PullToRefresh from "components/PullToRefresh.vue";
     NewClient,
     ActionMenu,
     ClientDrawer,
-    ClientProblems,
-    ClientReminders,
-    ClientContacts,
-    ClientMasterData,
     Loading,
     CentralMessage,
     PullToRefresh,
+    ClientTabView
   },
 })
 export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
   @Ref() readonly  clientDrawer!: ClientDrawer;
 
-  selectedTab: string | null = null;
-
   get firstName() {
-    return this.client?.masterData.firstName || "";
+    return this.client?.contact.firstName || "";
   }
   set firstName(value) {
-    this.updateMasterData({ firstName: value });
+    this.updateContact({ firstName: value });
   }
   get lastName() {
-    return this.client?.masterData.lastName || "";
+    return this.client?.contact.lastName || "";
   }
   set lastName(value) {
-    this.updateMasterData({ lastName: value });
+    this.updateContact({ lastName: value });
   }
   get clients() {
     return this.$store.direct.state.clients;
@@ -238,9 +157,6 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
       },
       ...this.clientActions(this.client)
     ];
-  }
-  get dueTaskCount() {
-    return this.client?.dueTasksCount || 0;
   }
 
   created() {
@@ -274,9 +190,9 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
     void this.$router.push({ name: "client" });
   }
 
-  addClient(masterData: MasterData) {
+  addClient(contact: Contact) {
     const client = new Client();
-    client.masterData = masterData;
+    client.contact = contact;
     this.$store.direct.dispatch
       .addClient(client)
       .then((client) => {
@@ -288,8 +204,8 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
       .catch(console.error);
   }
 
-  updateMasterData(changes: Partial<MasterData>) {
-    this.updateAndSave(this.client?.masterData, changes);
+  updateContact(changes: Partial<Contact>) {
+    this.updateAndSave(this.client?.contact, changes);
   }
 
   pushRoute(name: string) {

@@ -105,7 +105,7 @@ export default class MainLayout extends Vue {
 
     if (route.path.startsWith("/client")) {
       if (this.selectedClient) {
-        return this.selectedClient.masterData.name;
+        return this.selectedClient.contact.name;
       } else if (route.params.clientId == "new") {
         return this.$t("newClient");
       } else {
@@ -155,6 +155,11 @@ export default class MainLayout extends Vue {
       "clientReport",
       "clientContacts",
       "clientMasterData",
+      "clientHealthInformation",
+      "clientAgreements",
+      "clientContactData",
+      "clientInformalContact",
+      "clientFormalContact",
       "login"
     ].includes(routeName || "");
   }

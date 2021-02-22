@@ -144,15 +144,9 @@ export default class ClientDrawer extends Vue {
   }
 
   selectClient(client: Client) {
-    let name: string;
-    if (!!client.leftAt || client.activeProblemCount == 0) {
-      name = "clientReport";
-    } else {
-      name = "clientReminders";
-    }
     void this.$router.push({
-      name: name,
-      params: { clientId: client._id } as any,
+      name: "clientMasterData",
+      params: { clientId: client._id?.toHexString() || "" },
     });
     this.closeDrawerIfNeeded();
     void this.$store.direct.dispatch.fetchClientsFromDB();

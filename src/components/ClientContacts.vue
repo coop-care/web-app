@@ -47,8 +47,7 @@
         />
         <contact-intervention-list
           v-if="selectedContact"
-          :contact="selectedContact" 
-          ref="contactInterventionList"
+          :contact="selectedContact"
         />
       </template>
     </split-view>
@@ -69,17 +68,14 @@
   </div>
 </template>
 
-<style lang="sass">
-</style>
-
 <script lang="ts">
 import { Component, Ref } from "vue-property-decorator";
+import { Contact, Intervention, Task } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import SplitView from "../components/SplitView.vue";
 import NoDataItem from "../components/NoDataItem.vue";
 import ContactView from "../components/ContactView.vue";
 import ContactInterventionList from "../components/ContactInterventionList.vue";
-import { Contact, Intervention, Task } from "../models"
 
 @Component({
   components: {
@@ -96,7 +92,7 @@ export default class ClientContactsView extends RecordMixin {
   isMounted = false;
 
   get contacts() {
-    return this.client?.contacts || [];
+    return this.client?.informalContacts || [];
   }
   get selectedContact() {
     const contactId = this.$route.params.contactId;
@@ -174,7 +170,7 @@ export default class ClientContactsView extends RecordMixin {
       this.$store.direct.commit.updateClientObject({
         target: this.client,
         changes: {
-          contacts: this.contacts.concat([newContact])
+          informalContacts: this.contacts.concat([newContact])
         }
       });
       this.save();
@@ -198,7 +194,7 @@ export default class ClientContactsView extends RecordMixin {
       this.$store.direct.commit.updateClientObject({
         target: client,
         changes: {
-          contacts: client.contacts.filter(contact => contact.id != contactId)
+          informalContacts: client.informalContacts.filter(contact => contact.id != contactId)
         }
       });
       this.save();

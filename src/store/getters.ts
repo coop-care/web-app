@@ -26,7 +26,7 @@ export default defineGetters<StateInterface>()({
         }
 
         return {
-            clientId: client._id,
+            clientId: client._id?.toHexString() || "",
             problemId: client.problems[client.problems.length - 1].id
         };
     },
@@ -43,7 +43,7 @@ export default defineGetters<StateInterface>()({
     relationshipLabels: state => {
         return [... new Set(
             Contact.relationshipTypes.concat(state.clients
-                .flatMap(client => client.contacts)
+                .flatMap(client => client.informalContacts)
                 .flatMap(contact =>
                     contact.relationship ? [contact.relationship] : []
                 )
@@ -54,7 +54,7 @@ export default defineGetters<StateInterface>()({
     phoneLabels: state => {
         return [... new Set(
             Contact.phoneLabels.concat(state.clients
-                .flatMap(client => client.contacts)
+                .flatMap(client => client.informalContacts)
                 .flatMap(contact => contact.phoneNumbers)
                 .flatMap(item =>
                     item.label ? [item.label] : []
@@ -66,7 +66,7 @@ export default defineGetters<StateInterface>()({
     emailLabels: state => {
         return [... new Set(
             Contact.emailLabels.concat(state.clients
-                .flatMap(client => client.contacts)
+                .flatMap(client => client.informalContacts)
                 .flatMap(contact => contact.emailAddresses)
                 .flatMap(item =>
                     item.label ? [item.label] : []
@@ -78,7 +78,7 @@ export default defineGetters<StateInterface>()({
     addressLabels: state => {
         return [... new Set(
             Contact.postalLabels.concat(state.clients
-                .flatMap(client => client.contacts)
+                .flatMap(client => client.informalContacts)
                 .flatMap(contact => contact.postalAddresses)
                 .flatMap(item =>
                     item.label ? [item.label] : []

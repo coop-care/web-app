@@ -194,7 +194,7 @@
               >
                 <q-item-section>
                   <q-item-label>
-                    {{ client.masterData.name }}
+                    {{ client.contact.name }}
                   </q-item-label>
                   <q-item-label 
                     v-if="captionForClient(client)"

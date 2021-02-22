@@ -2,16 +2,16 @@
   <div>
     <div class="row q-col-gutter-md q-mb-md">
       <q-input
-        v-model="masterData.firstName"
+        v-model="contact.firstName"
         :label="$t('firstName')"
         class="col-sm col-12"
         autofocus
       />
       <q-input
-        v-model="masterData.lastName"
+        v-model="contact.lastName"
         :label="$t('lastName')"
         class="col-sm col-12"
-        @keyup.enter="$emit('save', masterData)"
+        @keyup.enter="$emit('save', contact)"
       />
     </div>
     <q-btn
@@ -24,20 +24,20 @@
     />
     <q-btn
       :label="$t('save')"
-      :disable="masterData.name.trim().length === 0"
+      :disable="contact.name.trim().length === 0"
       color="primary"
       rounded
-      @click="$emit('save', masterData)"
+      @click="$emit('save', contact)"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
-import { MasterData } from "../models/masterData";
+import { Contact } from "../models";
 
 @Component
 export default class App extends Vue {
-  masterData = new MasterData();
+  contact = new Contact();
 }
 </script>

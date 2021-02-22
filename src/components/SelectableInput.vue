@@ -12,6 +12,7 @@
     fill-input
     input-debounce="0"
     :clearable="clearable"
+    :hide-dropdown-icon="hideDropdownIcon"
     @input="$emit('input', $event || '')"
     @input-value="inputValue = $event;"
     @keydown.enter.tab="selectInputValue"
@@ -35,6 +36,7 @@ export default class SelectableInput extends Vue {
   @Prop({ type: Array, default: () => [] }) readonly options!: LabeledValue<string>[];
   @Prop(Boolean) readonly dense!: boolean;
   @Prop(Boolean) readonly clearable!: boolean;
+  @Prop(Boolean) readonly hideDropdownIcon!: boolean;
   @Ref() readonly select!: QSelect;
 
   filteredOptions: LabeledValue<string>[] = this.options;

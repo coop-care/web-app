@@ -20,6 +20,13 @@
     -moz-size-adjust: auto
     -ms-size-adjust: auto
     text-size-adjust: auto
+.break-word
+  word-wrap: break-word
+.hyphen
+  word-wrap: break-word
+  -webkit-hyphens: auto
+  -ms-hyphens: auto
+  hyphens: auto
 .auto-height
   height: auto
   min-height: auto
@@ -141,7 +148,7 @@ body
   line-height: 1.5rem
 body.desktop .hover-primary .q-hoverable:hover > .q-focus-helper
   background-color: var(--q-color-primary)
-.can-hover:hover
+.can-hover:hover, .active-background.q-item--active
   position: relative
   &::before
     content: ''

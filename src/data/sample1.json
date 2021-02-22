@@ -1,6 +1,6 @@
 [
   {
-    "masterData": {
+    "contact": {
       "firstName": "Erika",
       "lastName": "Bauer"
     },
@@ -473,7 +473,7 @@
     "leftAt": null
   },
   {
-    "masterData": {
+    "contact": {
       "firstName": "Frida",
       "lastName": "Richter"
     },

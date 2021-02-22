@@ -1,8 +1,8 @@
 <template>
-  <div class="min-height">
+  <div class="min-height overflow-auto">
     <div
       v-if="clientProblems.length"
-      class="flex q-gutter-md q-mb-xl q-px-xs justify-center"
+      class="flex q-gutter-md q-mb-xl q-pa-xs justify-center"
     >
       <problem-summary
         v-for="problemRecord in clientProblems"
