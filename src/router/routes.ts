@@ -57,11 +57,6 @@ const routes: RouteConfig[] = [
             name: "clientReport",
             path: "report/:problemId?",
             component: () => import("components/ClientProblems.vue")
-          },
-          {
-            name: "clientContacts",
-            path: "contacts/:contactId?",
-            component: () => import("components/ClientContacts.vue")
           }
         ]
       },

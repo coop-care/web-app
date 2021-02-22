@@ -9,6 +9,7 @@
       align="center"
     >
       <q-route-tab
+        v-if="routesPerTab.length > 0"
         :name="0"
         :label="$t('masterDataTitle')"
         icon="fas fa-id-card"
@@ -16,6 +17,7 @@
         class="text-primary"
       />
       <q-route-tab
+        v-if="routesPerTab.length > 1"
         :name="1"
         :label="$tc('task', 2)"
         icon="fas fa-tasks"
@@ -31,19 +33,12 @@
         />
       </q-route-tab>
       <q-route-tab
+        v-if="routesPerTab.length > 2"
         :name="2"
         :label="$t('reportTitle')"
         icon="fas fa-notes-medical"
         :to="routesPerTab[2]"
         class="text-classification"
-      />
-      <q-route-tab
-        v-if="true"
-        :name="3"
-        :label="$t('contacts')"
-        icon="fas fa-address-book"
-        :to="routesPerTab[3]"
-        class="text-primary"
       />
     </q-tabs>
     <div class="overflow-hidden">
@@ -100,7 +95,7 @@ export default class ClientPage extends RecordMixin {
     return this.client?.dueTasksCount || 0;
   }
   get childrenRouteNames() {
-    return ["clientMasterData", "clientReminders", "clientReport", "clientContacts"];
+    return ["clientMasterData", "clientReminders", "clientReport"];
   }
 }
 </script>
