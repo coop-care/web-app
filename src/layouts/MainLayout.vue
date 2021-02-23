@@ -86,8 +86,11 @@ import Banner from "../components/Banner.vue";
     Banner
   },
   meta() {
+    const isDemo = process.env.BACKEND == "demo";
     return {
+      title: "CoopCare" + (isDemo ? " – " + this.$t("demoAppTitle") : " App" ),
       meta: {
+        description: { name: "description", content: this.$t("appDescription") },
         google: { name: "google", content: "notranslate" },
         contentLanguage: {
           "http-equiv": "Content-Language",

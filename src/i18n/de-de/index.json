@@ -484,5 +484,7 @@
   "existingInitialPrescription": "Erstverordnung vorhanden",
   "keyHandoverRequired": "Schlüsselübergabe erforderlich (mit Protokoll)",
   "clientLeftAt": "Klientendaten archiviert",
-  "clientCreatedAt": "Daten aufgenommen"
+  "clientCreatedAt": "Daten aufgenommen",
+  "demoAppTitle": "Demo-Version ausprobieren",
+  "appDescription": "Wir entlasten mit unserer App Pflegekräfte bei Dokumentation, Planung und Evaluation und unterstützen Pflege-Teams in Kooperation und bei der Stärkung ihrer Klienten durch das Omaha-System."
 }

@@ -484,5 +484,7 @@
   "existingInitialPrescription": "Initial prescription exists",
   "keyHandoverRequired": "Key handover required (with protocol)",
   "clientLeftAt": "Client data archived",
-  "clientCreatedAt": "Client data created"
+  "clientCreatedAt": "Client data created",
+  "demoAppTitle": "Try the demo version",
+  "appDescription": "With our app we relieve nurses in documentation, planning and evaluation and support care teams in cooperation and in strengthening their clients by using the Omaha System."
 }
