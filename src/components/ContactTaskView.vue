@@ -245,7 +245,6 @@ export default class ContactTaskView extends Mixins(InterventionMixin, RecordMix
     this.$store.direct.commit.toggleTaskCompletion({
       task: this.task,
       isCompleted: value,
-      date: new Date(),
       client: this.client
     });
     void this.saveClient();

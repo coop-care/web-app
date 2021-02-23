@@ -156,7 +156,6 @@ export default class TaskView extends InterventionMixin {
     this.$store.direct.commit.toggleTaskCompletion({
       task: this.task,
       isCompleted: value,
-      date: this.date,
       client: this.client,
     });
     void this.$store.direct.dispatch.saveClient({ client: this.client });

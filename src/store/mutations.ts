@@ -208,14 +208,14 @@ export default defineMutations<StateInterface>()({
         {
             task,
             isCompleted,
+            date = new Date(),
             client
-        }: { task: Task<Reminder>; isCompleted: boolean; date: Date; client: Client }
+        }: { task: Task<Reminder>; isCompleted: boolean; date?: Date; client: Client }
     ) {
-        const now = new Date();
         let completedAt: Date | undefined = undefined;
 
         if (isCompleted) {
-            completedAt = now;
+            completedAt = date;
             task.completed = completedAt;
         }
 
