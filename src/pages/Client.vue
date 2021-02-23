@@ -55,27 +55,11 @@
         class="client-overview q-pt-lg q-px-xl"
         v-else-if="client"
       >
-        <div class="row">
-          <div class="col row q-mt-sm q-mb-xl">
-            <content-editable
-              class="q-py-sm q-mr-md text-h2"
-              v-text="firstName"
-              :contenteditable="!isDisabled"
-              @change="firstName = $event.value"
-            />
-            <content-editable
-              class="q-py-sm text-h2"
-              v-text="lastName"
-              :contenteditable="!isDisabled"
-              @change="lastName = $event.value"
-            />
-          </div>
-          <div>
-            <action-menu
-              :items="clientActionItems"
-              class="on-right q-mt-sm q-mr-sm"
-            />
-          </div>
+        <div class="row q-pb-sm justify-end">
+          <action-menu
+            :items="clientActionItems"
+            class="q-mr-sm"
+          />
         </div>
         
         <client-tab-view :key="$route.params.clientId || ''" />
@@ -95,7 +79,6 @@ import { Component, Ref, Mixins } from "vue-property-decorator";
 import RecordMixin from "../mixins/RecordMixin";
 import ClientActionMixin from "../mixins/ClientActionMixin";
 import ClientDrawer from "../components/ClientDrawer.vue";
-import ContentEditable from "../components/ContentEditable.vue";
 import NewClient from "../components/NewClient.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import { Client, Contact } from "../models";
@@ -107,7 +90,6 @@ import ClientTabView from "../components/ClientTabView.vue";
 
 @Component({
   components: {
-    ContentEditable,
     NewClient,
     ActionMenu,
     ClientDrawer,
@@ -120,18 +102,6 @@ import ClientTabView from "../components/ClientTabView.vue";
 export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
   @Ref() readonly  clientDrawer!: ClientDrawer;
 
-  get firstName() {
-    return this.client?.contact.firstName || "";
-  }
-  set firstName(value) {
-    this.updateContact({ firstName: value });
-  }
-  get lastName() {
-    return this.client?.contact.lastName || "";
-  }
-  set lastName(value) {
-    this.updateContact({ lastName: value });
-  }
   get clients() {
     return this.$store.direct.state.clients;
   }
@@ -197,10 +167,6 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
         });
       })
       .catch(console.error);
-  }
-
-  updateContact(changes: Partial<Contact>) {
-    this.updateAndSave(this.client?.contact, changes);
   }
 
   pushRoute(name: string) {
