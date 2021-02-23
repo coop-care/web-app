@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import { Type } from "class-transformer";
 import { Base, LabeledValue, CustomField } from ".";
 
 export type PostalAddress = {
@@ -19,6 +20,7 @@ export class Contact extends Base {
   sex = "";
   firstName = "";
   lastName = "";
+  @Type(() => Date)
   birthday?: Date = undefined;
   relationship = "";
   profession = "";
