@@ -46,7 +46,6 @@ export default class DemoOnboarding extends Vue {
     });
     this.$emit("ok");
     this.hide();
-    void this.$router.push({ name: "client" });
   }
 }
 </script>

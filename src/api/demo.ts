@@ -6,18 +6,17 @@ import { importSamplesV2, sampleClientIds } from "../data/sampleImporter";
 export default class DemoApi implements CoopCareApiInterface {
     private user = (() => {
         const user = new User(this.userId, this.userEmail);
-        user._id = new ObjectID();
+        user._id = new ObjectID("6033c10377b850dbb17c7d20");
         user.firstName = "Demo";
         user.lastName = "Tester";
         user.signature = "DT";
-        user.activeTeam = ""
+        user.activeTeam = "6033c10377b850dbb17c7d30"
         return user;
     })();
     private clients: Client[] = [];
     private teams = (() => {
         const team = new Team("Team CoopCare", this.userId);
-        team._id = new ObjectID();
-        this.user.activeTeam = team._id.toHexString();
+        team._id = new ObjectID("6033c10377b850dbb17c7d30");
         team.clients = sampleClientIds().map(id => id.toHexString());
         return [team];
     })();
@@ -71,7 +70,9 @@ export default class DemoApi implements CoopCareApiInterface {
     }
 
     createClient(client: Client) {
-        client._id = new ObjectID();
+        if (client._id == undefined) {
+            client._id = new ObjectID();
+        }
         this.clients.push(client);
         return Promise.resolve(client);
     }
@@ -108,7 +109,9 @@ export default class DemoApi implements CoopCareApiInterface {
         return Promise.resolve(this.teams.slice());
     }
     createTeam(team: Team) {
-        team._id = new ObjectID();
+        if (!team._id) {
+            team._id = new ObjectID();
+        }
         this.teams.push(team);
         return Promise.resolve(team);
     }

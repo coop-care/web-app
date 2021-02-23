@@ -20,7 +20,7 @@ export function addSamples() {
 }
 
 export function sampleClientIds() {
-  return sampleData.map(() => new ObjectID());
+  return sampleData.map(json => new ObjectID(json._id));
 }
 
 export function importSamplesV1() {
