@@ -10,9 +10,14 @@
         <q-list 
           class="text-size-adjust-md q-mb-xl"
         >
-          <q-item class="q-pl-sm q-pb-none text-subtitle1 text-weight-bold">
+          <q-item class="q-px-sm q-pb-none text-subtitle1 text-weight-bold">
             <q-item-section>
               <q-item-label class="ellipsis">{{ client.contact.name }}</q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <action-menu
+                :items="clientActions(client)"
+              />
             </q-item-section>
           </q-item>
           <q-item 
@@ -145,19 +150,22 @@
 </style>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Mixins } from "vue-property-decorator";
 import { Contact, Intervention } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
+import ClientActionMixin from "../mixins/ClientActionMixin";
+import ActionMenu from "../components/ActionMenu.vue";
 import ClientHealthInformation from "../components/ClientHealthInformation.vue";
 import SplitView from "../components/SplitView.vue";
 
 @Component({
   components: {
+    ActionMenu,
     ClientHealthInformation,
     SplitView
   }
 })
-export default class ClientMasterData extends RecordMixin {
+export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMixin) {
   isCollapsed = false;
   @Ref() readonly splitView!: SplitView;
 
@@ -241,6 +249,11 @@ export default class ClientMasterData extends RecordMixin {
     }
   }
 
+  created() {
+    if (this.team) {
+      this.updateClientsInAdditionalTeams();
+    }
+  }
   mounted() {
     if (!this.isDefaultRoute) {
       this.splitView.showAfter(false);

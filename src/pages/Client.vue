@@ -154,36 +154,31 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
       {
         name: "-",
         action: () => undefined
-      },
-      ...this.clientActions(this.client)
+      }
     ];
   }
 
   created() {
-    if (this.team) {
-      this.updateClientsInAdditionalTeams();
-    }
-
     void this.saveClient()
       .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
 
-    this.$on("did-archive-client", () => 
+    this.$root.$on("did-archive-client", () => 
       this.clientDrawer.archivedClientsExpansionState = true
     );
-    this.$on("did-unarchive-client", () => 
+    this.$root.$on("did-unarchive-client", () => 
       this.clientDrawer.activeClientsExpansionState = true
     );
-    this.$on("did-delete-client", this.deselectClient);
-    this.$on("did-remove-client-from-team", this.deselectClient);
-    this.$on("did-move-client-to-team", this.deselectClient);
+    this.$root.$on("did-delete-client", this.deselectClient);
+    this.$root.$on("did-remove-client-from-team", this.deselectClient);
+    this.$root.$on("did-move-client-to-team", this.deselectClient);
   }
 
   beforeDestroy() {
-    this.$off("did-archive-client");
-    this.$off("did-unarchive-client");
-    this.$off("did-delete-client");
-    this.$off("did-remove-client-from-team");
-    this.$off("did-move-client-to-team");
+    this.$root.$off("did-archive-client");
+    this.$root.$off("did-unarchive-client");
+    this.$root.$off("did-delete-client");
+    this.$root.$off("did-remove-client-from-team");
+    this.$root.$off("did-move-client-to-team");
   }
 
   deselectClient() {
