@@ -7,8 +7,8 @@ export class Occurrence {
     @Type(() => Date)
     due: Date;
     @Type(() => Date)
-    completed?: Date;
-    user?: string;
+    completed?: Date = undefined;
+    user?: string = undefined;
 
     static sortByDueDate(a: Occurrence, b: Occurrence) {
         return (a.due?.getTime() || 0) - (b.due?.getTime() || 0);

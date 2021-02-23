@@ -8,11 +8,11 @@ export class Intervention extends Reminder {
     targetCode = "";
     detailsCode = "";
     details = "";
-    comment?: string;
-    assignee?: string;
-    receiver?: string;
+    comment?: string = undefined;
+    assignee?: string = undefined;
+    receiver?: string = undefined;
     @Type(() => Intervention)
-    arrangedIntervention?: Intervention;
+    arrangedIntervention?: Intervention = undefined;
 
     static fromCode(code: string) {
         const codes = code.split(".");

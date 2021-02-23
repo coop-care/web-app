@@ -12,14 +12,14 @@ export type PostalAddress = {
 
 export class Contact extends Base {
   id = this.generateId();
-  userId?: string;
-  referenceId?: string;
-  externalSourceURL?: string;
+  userId?: string = undefined;
+  referenceId?: string = undefined;
+  externalSourceURL?: string = undefined;
 
   sex = "";
   firstName = "";
   lastName = "";
-  birthday?: Date;
+  birthday?: Date = undefined;
   relationship = "";
   profession = "";
   degree = "";

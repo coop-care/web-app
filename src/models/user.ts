@@ -4,7 +4,7 @@ import { IdentifiableObject } from ".";
 
 export class TeamMember extends IdentifiableObject {
     userId: string;
-    email?: string;
+    email?: string = undefined;
     firstName = "";
     lastName = "";
     signature = "";

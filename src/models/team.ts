@@ -35,7 +35,7 @@ export class TeamInvitation {
   @Type(() => Date)
   invitedAt: Date;
   @Type(() => Date)
-  acceptedAt?: Date;
+  acceptedAt?: Date = undefined;
   locale: string;
   assignAdminRole = false;
 

@@ -17,7 +17,7 @@ export class ChangeRecord {
     type: ChangeRecordType;
     problemId: string;
     newValues: Record<string, any>;
-    oldValues?: Record<string, any>;
+    oldValues?: Record<string, any> = undefined;
 
     constructor(
         user: string,
