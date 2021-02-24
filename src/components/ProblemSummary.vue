@@ -36,32 +36,11 @@
         </div>
         <div
           v-if="isExpanded && isInteractive"
-          class="q-gutter-xs"
           @click.prevent.stop=""
         >
-          <q-btn
-            v-if="!problem.isHighPriority"
-            :label="$t('prioritizeProblem')"
-            icon="fas fa-arrow-up"
-            @click="prioritizeProblemRecord"
-            rounded
-            outline
-            no-caps
-            size="12.5px"
+          <action-menu
+            :items="actionMenuItems"
             color="classification"
-            class="on-right shadow-1 bg-white"
-          />
-          <q-btn
-            v-if="!record.resolvedAt"
-            :label="$t('problemDismissal')"
-            icon="fas fa-check"
-            @click="dismissProblemRecord"
-            rounded
-            outline
-            no-caps
-            size="12.5px"
-            color="classification"
-            class="on-right shadow-1 bg-white"
           />
         </div>
       </div>
@@ -340,6 +319,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import WarningMixin from "../mixins/WarningMixin";
+import ActionMenu from "../components/ActionMenu.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import VueApexCharts from "vue-apexcharts";
 import { TerminologyWithMaps } from "../helper/terminology";
@@ -352,6 +332,7 @@ Vue.use(VueApexCharts);
   components: {
     apexchart: VueApexCharts,
     SimplifiedMarkdown,
+    ActionMenu
   }
 })
 export default class ProblemSummary extends WarningMixin {
@@ -441,6 +422,22 @@ export default class ProblemSummary extends WarningMixin {
         return [];
       }
     });
+  }
+  get actionMenuItems() {
+    return [
+      {
+        name: this.$t("prioritizeProblem"),
+        icon: "fas fa-arrow-up",
+        action: this.prioritizeProblemRecord,
+        condition: !this.problem.isHighPriority
+      },
+      {
+        name: this.$t("problemDismissal"),
+        icon: "fas fa-check",
+        action: this.dismissProblemRecord,
+        condition: !!this.record && !this.record.resolvedAt
+      }
+    ]
   }
 
   get terminology() {
