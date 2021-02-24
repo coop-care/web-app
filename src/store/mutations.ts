@@ -369,21 +369,6 @@ export default defineMutations<StateInterface>()({
         client.problems = client.problems.concat([]);
     },
 
-    deleteDraftProblemRecord(state, payload) {
-        const client = store.getters.getClient(payload);
-        if (!client) {
-            return;
-        }
-        client.problems = client.problems.filter(
-            (problemRecord: ProblemRecord) => {
-                return (
-                    problemRecord.createdAt ||
-                    problemRecord.id != payload.problemId
-                );
-            }
-        );
-    },
-
     updateNewOutcome(state, payload) {
         const problemRecord = store.getters.getProblemRecordById(payload);
         if (!problemRecord) {
@@ -422,7 +407,6 @@ export default defineMutations<StateInterface>()({
         }
 
         const now = payload.now as Date || new Date();
-        problemRecord.createdAt = now;
 
         client?.changeHistory.push(
             new ChangeRecord(

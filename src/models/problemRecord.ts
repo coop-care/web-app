@@ -14,16 +14,15 @@ export class ProblemRecord extends Base {
     @Type(() => RatingReminder)
     ratingReminder = new RatingReminder(4, 2);
     @Type(() => Date)
-    // optional properties need an initial value because Vue does not detect the addition or removal of a property
-    createdAt?: Date = undefined;
+    createdAt = new Date();
     @Type(() => Date)
+    // optional properties need an initial value because Vue does not detect the addition or removal of a property
     resolvedAt?: Date = undefined;
     tag = "";
 
     static sortByPriorityAndCreatedAt(a: ProblemRecord, b: ProblemRecord) {
-        // sort order: draft first, then high priority followed by low priority, then latest creation first
-        return Number(!!a.createdAt) - Number(!!b.createdAt) ||
-            Number(!a.problem.isHighPriority) - Number(!b.problem.isHighPriority) ||
+        // sort order: high priority before low priority, then latest creation first
+        return Number(!a.problem.isHighPriority) - Number(!b.problem.isHighPriority) ||
             (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0);
     }
 
@@ -60,12 +59,12 @@ export class ProblemRecord extends Base {
     clone() {
         const clone = super.clone();
         clone.id = this.generateId();
+        clone.createdAt = new Date();
         return clone;
     }
 
     prioritizedClone() {
         const clone = this.clone();
-        clone.createdAt = undefined;
         clone.problem.isHighPriority = true;
         clone.problem.priorityDetails = "";
         clone.ratingReminder = new RatingReminder(4, 2);
