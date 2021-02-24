@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.9.16",
-    "apexcharts": "^3.23.1",
+    "chart.js": "^2.9.4",
     "class-transformer": "0.3.1",
     "core-js": "^3.8.2",
     "direct-vuex": "^0.12.1",
@@ -29,7 +29,7 @@
     "reflect-metadata": "^0.1.13",
     "rrule": "^2.6.6",
     "timeago.js": "^4.0.2",
-    "vue-apexcharts": "^1.6.0",
+    "vue-chartjs": "^3.5.1",
     "vue-class-component": "^7.2.6",
     "vue-i18n": "^8.22.3",
     "vue-property-decorator": "^9.1.2"

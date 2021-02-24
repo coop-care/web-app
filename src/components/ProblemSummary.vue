@@ -175,23 +175,44 @@
         </div>
         <div v-if="lastOutcome">
           <div class="row q-col-gutter-md">
-            <div
-              class="col-12 col-sm-4"
-              v-for="(outcome, index) in outcomesForChart"
-              v-if="outcome"
-              v-bind:key="index"
-              ref="chartRow"
-            >
-              <apexchart
-                type="area"
-                :options="outcome.options"
-                :series="outcome.series"
-                width="100%"
-                height="160"
-                class="q-pa-none non-selectable"
+            <div class="col-12 col-sm-4">
+              <rating-chart
+                :ratings="knowledgeData"
+                :height="200"
+                color="outcome"
+                class="full-width non-selectable"
+                @hover="outcomeIndex = $event"
               />
-              <div class="text-subtitle2">{{ outcome.title }}</div>
-              <div class="text-weight-light">{{ outcome.subtitle }}</div>
+              <simplified-markdown
+                :text="knowledgeTitle"
+                class="q-pl-lg block"
+              />
+            </div>
+            <div class="col-12 col-sm-4">
+              <rating-chart
+                :ratings="behaviourData"
+                :height="200"
+                color="outcome"
+                class="full-width non-selectable"
+                @hover="outcomeIndex = $event"
+              />
+              <simplified-markdown
+                :text="behaviourTitle"
+                class="q-pl-lg block"
+              />
+            </div>
+            <div class="col-12 col-sm-4">
+              <rating-chart
+                :ratings="statusData"
+                :height="200"
+                color="outcome"
+                class="full-width non-selectable"
+                @hover="outcomeIndex = $event"
+              />
+              <simplified-markdown
+                :text="statusTitle"
+                class="q-pl-lg block"
+              />
             </div>
           </div>
         </div>
@@ -281,22 +302,20 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch, Mixins } from "vue-property-decorator";
+import { Component, Prop, Watch, Mixins } from "vue-property-decorator";
+import { format } from "timeago.js";
 import RecordMixin from "../mixins/RecordMixin";
 import WarningMixin from "../mixins/WarningMixin";
 import ActionMenu from "../components/ActionMenu.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
-import VueApexCharts from "vue-apexcharts";
-import { getOutcomeAsChartData } from "../helper/apexChartData";
+import RatingChart, { Rating } from "../components/RatingChart.vue";
 import { ProblemRecord, Problem } from "../models";
-
-Vue.use(VueApexCharts);
 
 @Component({
   components: {
-    apexchart: VueApexCharts,
     SimplifiedMarkdown,
-    ActionMenu
+    ActionMenu,
+    RatingChart
   }
 })
 export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
@@ -304,6 +323,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
   @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
   @Prop({type: Boolean, default: true}) readonly isExpandable!: boolean;
   isExpanded = false;
+  outcomeIndex = -1;
 
   @Watch("isExpanded")
   onIsExpandedChanged(value: boolean) {
@@ -331,21 +351,14 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
     return this.record?.interventions || [];
   }
   get lastOutcome() {
-    if (this.record?.outcomes.length) {
-      return this.record.outcomes[this.record.outcomes.length - 1];
+    if (this.outcomes.length) {
+      return this.outcomes[this.outcomes.length - 1];
     } else {
       return undefined;
     }
   }
   get isInteractive() {
     return this.isExpanded && !this.isDisabled;
-  }
-  get outcomesForChart() {
-    if (this.record) {
-      return getOutcomeAsChartData(this.record, this);
-    } else {
-      return [];
-    }
   }
   get sectionPadding() {
     if (this.$q.screen.lt.sm) {
@@ -407,10 +420,70 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
       }
     ]
   }
+  get knowledgeData() {
+    return this.outcomes.map(outcome => {
+      return {
+        createdAt: outcome.createdAt || new Date(),
+        personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
+        user: outcome.user,
+        ...outcome.knowledge
+      } as Rating
+    });
+  }
+  get behaviourData() {
+    return this.outcomes.map(outcome => {
+      return {
+        createdAt: outcome.createdAt || new Date(),
+        personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
+        user: outcome.user,
+        ...outcome.behaviour
+      } as Rating
+    });
+  }
+  get statusData() {
+    return this.outcomes.map(outcome => {
+      return {
+        createdAt: outcome.createdAt || new Date(),
+        personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
+        user: outcome.user,
+        ...outcome.status
+      } as Rating
+    });
+  }
+  get knowledgeTitle() {
+    return this.makeChartTitle(this.knowledgeData, 0)
+  }
+  get behaviourTitle() {
+    return this.makeChartTitle(this.behaviourData, 1)
+  }
+  get statusTitle() {
+    return this.makeChartTitle(this.statusData, 2)
+  }
 
   get record() {
-    console.log("record")
     return this.problemRecord || this.getRecordFromStore();
+  }
+  get outcomes() {
+    return this.record?.outcomes || [];
+  }
+
+  makeChartTitle(ratings: Rating[], ratingType: number) {
+    const index = this.outcomeIndex;
+    const rating = ratings[index] || ratings[ratings.length - 1];
+    const ratingTexts = this.terminology.problemRatingScale.ratings[ratingType].scale;
+    const obersationText = ratingTexts[rating.observation - 1].title;
+    const expectationText = ratingTexts[rating.expectation - 1].title;
+    const username = this.teamMembers[rating.user]?.username;
+    const locale = this.$root.$i18n.locale;
+
+    return [
+      format(rating.createdAt, locale) + " (" + username + "):",
+      "**" + obersationText + " (" + rating.observation + ")**", 
+      (rating.comment ? "***" + this.$t("quotedText", {quote: rating.comment}) + "***" : ""), 
+      (rating.expectation != rating.observation
+        ? this.$t("expectedRatingShortTitle") + ": " + expectationText + " (" + rating.expectation + ")"
+        : "")
+    ].filter(Boolean).join("\n");
   }
 
   toggleExpansion() {
@@ -471,29 +544,6 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
 
   getRecordFromStore() {
     return this.$store.direct.getters.getProblemRecordById(this.params);
-  }
-
-  destroyed() {
-    // sometimes chart instances are not removed from Apex store, especially after intensive window resizing,
-    // which causes duplicate entries and therefore errors when the charts are drawn again for the same components
-    // @ts-ignore
-    const Apex = window.Apex;
-    const params = this.params;
-    const group = ["summary", params.clientId, params.problemId].join(".");
-    if (!Apex._chartInstances) return; // I get an error that this is undefined
-    const zombieChartIndices = Apex._chartInstances
-      .map((chart: any, index: number) => {
-        if (chart.group == group) {
-          return index;
-        } else {
-          return null;
-        }
-      })
-      .filter((item: number | null) => item != null);
-
-    zombieChartIndices.forEach((offset: number, index: number) => {
-      Apex._chartInstances.splice(offset - index, 1);
-    });
   }
 }
 </script>
