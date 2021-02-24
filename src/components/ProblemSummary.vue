@@ -1,11 +1,9 @@
 <template>
   <q-card
-    :class="
-      'radius-md bg-white text-body2 ' + (isExpanded ? 'expanded' : 'collapsed')
-    "
+    :class="['radius-md bg-white text-body2', (isExpanded ? 'expanded' : 'collapsed')]"
     :style="
       'transition: all 0s; width: 100%; ' +
-        (isExpanded ? 'max-width: 100%' : 'max-width: 320px')
+        (isExpanded ? 'max-width: calc(100% - 16px)' : 'max-width: 320px')
     "
     v-if="!!record"
   >

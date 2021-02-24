@@ -1,18 +1,20 @@
 <template>
   <div class="min-height overflow-auto">
-    <div
+    <div 
       v-if="clientProblems.length"
-      class="flex q-gutter-md q-mb-xl q-pa-xs justify-center"
+      class="q-mb-xl q-pa-xs overflow-auto"
     >
-      <problem-summary
-        v-for="problemRecord in clientProblems"
-        v-bind:key="problemRecord.id"
-        :problemRecord="problemRecord"
-        :params="{
-          clientId: $route.params.clientId,
-          problemId: problemRecord.id
-        }"
-      />
+      <div class="flex q-gutter-md justify-center">
+        <problem-summary
+          v-for="problemRecord in clientProblems"
+          v-bind:key="problemRecord.id"
+          :problemRecord="problemRecord"
+          :params="{
+            clientId: $route.params.clientId,
+            problemId: problemRecord.id
+          }"
+        />
+      </div>
     </div>
 
     <div
