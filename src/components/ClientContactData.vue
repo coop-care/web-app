@@ -7,6 +7,7 @@
     no-organization
     no-delete
     class="q-mb-lg"
+    @save="saveClient"
   />
 </template>
 

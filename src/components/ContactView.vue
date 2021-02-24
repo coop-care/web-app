@@ -148,7 +148,7 @@
           :add-button-label="$t('addPhoneNumber')"
           @add="addPhoneNumber"
           @remove="removePhoneNumber($event)"
-          @input:label="updateAndSave($event.target, {label: $event.value})"
+          @input:label="saveObject($event.target, {label: $event.value})"
           class="mb-row-dense"
           v-slot="{ item }"
         >
@@ -167,7 +167,7 @@
           :add-button-label="$t('addEmailAddress')"
           @add="addEmailAddress"
           @remove="removeEmailAddress($event)"
-          @input:label="updateAndSave($event.target, {label: $event.value})"
+          @input:label="saveObject($event.target, {label: $event.value})"
           class="mb-row-dense"
           v-slot="{ item }"
         >
@@ -186,7 +186,7 @@
           :add-button-label="$t('addPostalAddress')"
           @add="addPostalAddress"
           @remove="removePostalAddress($event)"
-          @input:label="updateAndSave($event.target, {label: $event.value})"
+          @input:label="saveObject($event.target, {label: $event.value})"
           class="mb-row-dense"
           v-slot="{ item }"
         >
@@ -426,7 +426,12 @@ export default class ContactView extends RecordMixin {
     this.update(this.contact, changes);
   }
   saveContact(changes: Partial<Contact>) {
-    this.updateAndSave(this.contact, changes);
+    this.update(this.contact, changes);
+    this.save();
+  }
+  saveObject<T>(target: T, changes: Partial<T>) {
+    this.update(target, changes);
+    this.save();
   }
   deleteContact() {
     this.$q.dialog({
@@ -452,7 +457,7 @@ export default class ContactView extends RecordMixin {
     });
   }
   save() {
-    void this.saveClient();
+    this.$emit("save");
   }
 
   mounted() {

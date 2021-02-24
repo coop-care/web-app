@@ -249,7 +249,7 @@ export default class ClientActionMixin extends Vue {
       .then(clientIds => this.clientsInAdditionalTeams = clientIds);
   }
 
-  saveTeam(changes: Partial<Team>, team = this.team) {
+  saveTeam(changes: Partial<Team> = {}, team = this.team) {
     if (team) {
       return this.$store.direct.dispatch.saveTeam({ target: team, changes: changes })
         .then(() => undefined);

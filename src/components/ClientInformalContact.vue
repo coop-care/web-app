@@ -6,6 +6,7 @@
       no-birthday
       no-profession
       no-organization
+      @save="saveClient"
       @delete="deleteContact"
     />
     <contact-intervention-list

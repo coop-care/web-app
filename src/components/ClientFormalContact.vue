@@ -4,15 +4,17 @@
       :contact="contact" 
       no-birthday
       no-relationship
+      @save="saveTeam"
       @delete="deleteContact"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import { Task, Intervention } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
+import ClientActionMixin from "../mixins/ClientActionMixin";
 import ContactView from "../components/ContactView.vue";
 
 @Component({
@@ -20,7 +22,7 @@ import ContactView from "../components/ContactView.vue";
     ContactView
   }
 })
-export default class ClientFormalContactView extends RecordMixin {
+export default class ClientFormalContactView extends Mixins(RecordMixin, ClientActionMixin) {
 
   get contact() {
     const contactId = this.$route.params.formalContactId;
