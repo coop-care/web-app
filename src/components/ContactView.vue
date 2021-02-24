@@ -29,6 +29,12 @@
       >
         {{ localizeLabel(contact.relationship) }}
       </div>
+      <div 
+        v-if="contact.profession && !noProfession" 
+        class="text-body1 text-grey-7 text-center"
+      >
+        {{ localizeLabel(contact.profession) }}
+      </div>
 
       <div class="row justify-center q-my-md non-selectable">
         <div 
