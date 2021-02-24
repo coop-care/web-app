@@ -128,7 +128,7 @@ export function importSamplesV2() {
         store.commit.updateNewOutcome({
           changes: {
             createdAt: occurence.due,
-            userId: store.getters.userId
+            user: store.getters.userId
           },
           problemId: problem.id,
           ...params
