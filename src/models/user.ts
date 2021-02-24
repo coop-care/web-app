@@ -27,7 +27,7 @@ export class TeamMember extends IdentifiableObject {
     }
     get username() {
         return (
-            [this.firstName, this.lastName].filter(name => name).join(" ") ||
+            [this.firstName, this.lastName].filter(Boolean).join(" ") ||
             this.signature
         );
     }

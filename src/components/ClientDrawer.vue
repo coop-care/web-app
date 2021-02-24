@@ -145,7 +145,7 @@ export default class ClientDrawer extends Vue {
 
   selectClient(client: Client) {
     void this.$router.push({
-      name: "clientMasterData",
+      name: "client",
       params: { clientId: client._id?.toHexString() || "" },
     });
     this.closeDrawerIfNeeded();
