@@ -20,7 +20,7 @@
   "dependencies": {
     "@quasar/extras": "^1.9.17",
     "chart.js": "^2.9.4",
-    "class-transformer": "0.3.1",
+    "class-transformer": "^0.4.0",
     "core-js": "^3.8.2",
     "direct-vuex": "^0.12.1",
     "luxon": "^1.25.0",
@@ -45,7 +45,7 @@
     "@typescript-eslint/parser": "^4.13.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^7.17.0",
-    "eslint-config-prettier": "^7.1.0",
+    "eslint-config-prettier": "^8.0.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-vue": "^7.4.1",
