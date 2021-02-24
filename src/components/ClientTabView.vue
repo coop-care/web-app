@@ -3,7 +3,7 @@
     <q-tabs
       v-model="selectedTab"
       no-caps
-      class="client-tabs bg-grey-1 q-mb-md text-primary"
+      class="client-tabs border-bottom-grey q-mb-md text-primary"
       :inline-label="$q.screen.gt.xs"
       :dense="!$q.screen.gt.xs"
       align="center"
