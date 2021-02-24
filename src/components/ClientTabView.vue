@@ -7,6 +7,8 @@
       :inline-label="$q.screen.gt.xs"
       :dense="!$q.screen.gt.xs"
       align="center"
+      right-icon=" "
+      left-icon=" "
     >
       <q-route-tab
         v-if="routesPerTab.length > 0"
@@ -98,6 +100,8 @@
 
 <style lang="sass">
 .client-tabs
+  .q-tabs__content--align-left .q-tab
+    flex: 1 1 auto
   .q-tab
     @media screen and (max-width: $breakpoint-xs-max)
       padding: 0
