@@ -14,7 +14,7 @@
         v-if="routesPerTab.length > 0"
         :name="0"
         :label="$t('masterDataTitle')"
-        icon="fas fa-id-card"
+        icon="fas fa-users"
         :to="routesPerTab[0]"
         class="text-primary"
       />

@@ -10,6 +10,7 @@
     />
     <contact-intervention-list
       :contact="contact" 
+      class="q-mb-lg"
     />
   </div>
 </template>

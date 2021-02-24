@@ -76,7 +76,7 @@
           :label="$t('existingInitialPrescription') + '?'"
         />
       </div>
-      <div>
+      <div class="q-mb-lg">
         <q-checkbox
           :value="agreements.keyHandoverRequired"
           @input="updateAndSave(agreements, {keyHandoverRequired: $event})"

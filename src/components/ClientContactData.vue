@@ -6,6 +6,7 @@
     no-relationship
     no-organization
     no-delete
+    class="q-mb-lg"
   />
 </template>
 
