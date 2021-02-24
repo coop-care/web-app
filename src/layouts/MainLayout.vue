@@ -150,12 +150,10 @@ export default class MainLayout extends Vue {
   }
 
   hasMenuButton(routeName: string) {
-    return (routeName.startsWith("client") && routeName != "clientHistory") && 
-      this.$q.screen.lt.md;
+    return routeName.startsWith("client") && this.$q.screen.lt.md;
   }
   hasBackButton(routeName: string) {
-    return (!routeName.startsWith("client") || routeName == "clientHistory") && 
-      (routeName != "login");
+    return !routeName.startsWith("client") && (routeName != "login");
   }
   showOnboardingForDemoVersion() {
     if (

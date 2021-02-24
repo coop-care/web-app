@@ -62,6 +62,16 @@ const routes: RouteConfig[] = [
             name: "clientReport",
             path: "report/:problemId?",
             component: () => import("components/ClientProblems.vue")
+          },
+          {
+            name: "clientProofOfPerformance",
+            path: "/client/:clientId/reports/execution",
+            component: () => import("components/ProofOfPerformance.vue")
+          },
+          {
+            name: "clientHistory",
+            path: "/client/:clientId/history",
+            component: () => import("components/ClientHistory.vue")
           }
         ]
       },
@@ -105,16 +115,6 @@ const routes: RouteConfig[] = [
         name: "problemsByDiagnosis",
         path: !isDemo ? "/client/:clientId/diagnoses" : "",
         component: () => import("pages/ProblemsByDiagnosis.vue")
-      },
-      {
-        name: "proofOfPerformance",
-        path: "/client/:clientId/reports/execution",
-        component: () => import("pages/ProofOfPerformance.vue")
-      },
-      {
-        name: "clientHistory",
-        path: "/client/:clientId/history",
-        component: () => import("pages/ClientHistory.vue")
       },
       {
         name: "userSettings",

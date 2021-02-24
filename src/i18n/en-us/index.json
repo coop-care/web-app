@@ -97,7 +97,7 @@
   "additionalProblemSelection": "Select additional problems …",
   "createDraftProblemRecords": "create 0 problems as draft | create 1 problem as draft | create {count} problems as draft",
   "task": "Task | Tasks",
-  "documentationHistory": "Show modification history",
+  "documentationHistory": "Show modification",
   "omahaSystemBookCopyrightNotice": "Reprinted and translated with permission: Martin KS. (2005). *The Omaha System: A Key to Practice, Documentation, and Information Management* (Reprinted 2nd ed.). Omaha, NE: Health Connections Press.",
   "recurrence": "Recurrence",
   "Never": "Never",
@@ -209,7 +209,7 @@
     "th": "th"
   },
   "proofOfPerformance": "Proof of Performance",
-  "showProofOfPerformance": "Show Proof of Performance",
+  "showProofOfPerformance": "Proof of Performance",
   "occurrence": "Occurrence",
   "interventionDetails": "Details",
   "datesOfConduction": "Conduction: Dates and Signatures",
@@ -486,5 +486,6 @@
   "clientLeftAt": "Client data archived",
   "clientCreatedAt": "Client data created",
   "demoAppTitle": "Try the demo version",
-  "appDescription": "With our app we relieve nurses in documentation, planning and evaluation and support care teams in cooperation and in strengthening their clients by using the Omaha System."
+  "appDescription": "With our app we relieve nurses in documentation, planning and evaluation and support care teams in cooperation and in strengthening their clients by using the Omaha System.",
+  "moreButton": "More…"
 }

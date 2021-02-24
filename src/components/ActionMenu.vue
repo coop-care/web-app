@@ -17,28 +17,28 @@
         v-bind:key="index"
         v-if="item.condition !== false"
       >
-      <slot
-        v-if="item.customType"
-        :name="item.customType"
-      />
-      <q-separator v-else-if="item.name == '-'" />
-      <q-item
-        v-else
-        clickable
-        v-ripple
-        @click="item.action"
-        :class="item.isDestructive ? 'text-negative' : ''"
-      >
-        <q-item-section side>
-          <q-icon
-            :name="item.icon"
-            :color="item.isDestructive ? 'negative': color"
-          />
-        </q-item-section>
-        <q-item-section>
-          {{ item.name }}
-        </q-item-section>
-      </q-item>
+        <slot
+          v-if="item.customType"
+          :name="item.customType"
+        />
+        <q-separator v-else-if="item.name == '-'" />
+        <q-item
+          v-else
+          clickable
+          v-ripple
+          @click="item.action"
+          :class="item.isDestructive ? 'text-negative' : ''"
+        >
+          <q-item-section side>
+            <q-icon
+              :name="item.icon"
+              :color="item.isDestructive ? 'negative': color"
+            />
+          </q-item-section>
+          <q-item-section>
+            {{ item.name }}
+          </q-item-section>
+        </q-item>
       </div>
     </q-list>
   </q-btn-dropdown>

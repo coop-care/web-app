@@ -97,7 +97,7 @@
   "additionalProblemSelection": "Weitere Probleme auswählen …",
   "createDraftProblemRecords": "0 Probleme als Entwurf anlegen | 1 Problem als Entwurf anlegen | {count} Probleme als Entwurf anlegen",
   "task": "Aufgabe | Aufgaben",
-  "documentationHistory": "Änderungshistorie anzeigen",
+  "documentationHistory": "Änderungshistorie",
   "omahaSystemBookCopyrightNotice": "Mit Genehmigung reproduziert und übersetzt: Martin KS. (2005). *The Omaha System: A Key to Practice, Documentation, and Information Management* (Reprinted 2nd ed.). Omaha, NE: Health Connections Press.",
   "recurrence": "Wiederholen",
   "Never": "Niemals",
@@ -209,7 +209,7 @@
     "th": "."
   },
   "proofOfPerformance": "Durchführungsnachweis",
-  "showProofOfPerformance": "Durchführungsnachweis anzeigen",
+  "showProofOfPerformance": "Durchführungsnachweis",
   "occurrence": "Häufigkeit",
   "interventionDetails": "Details",
   "datesOfConduction": "Durchführung: Termine und Handzeichen",
@@ -486,5 +486,6 @@
   "clientLeftAt": "Klientendaten archiviert",
   "clientCreatedAt": "Daten aufgenommen",
   "demoAppTitle": "Demo-Version ausprobieren",
-  "appDescription": "Wir entlasten mit unserer App Pflegekräfte bei Dokumentation, Planung und Evaluation und unterstützen Pflege-Teams in Kooperation und bei der Stärkung ihrer Klienten durch das Omaha-System."
+  "appDescription": "Wir entlasten mit unserer App Pflegekräfte bei Dokumentation, Planung und Evaluation und unterstützen Pflege-Teams in Kooperation und bei der Stärkung ihrer Klienten durch das Omaha-System.",
+  "moreButton": "Mehr…"
 }

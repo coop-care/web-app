@@ -55,13 +55,6 @@
         class="client-overview q-pt-lg q-px-xl"
         v-else-if="client"
       >
-        <div class="row q-pb-sm justify-end">
-          <action-menu
-            :items="clientActionItems"
-            class="q-mr-sm"
-          />
-        </div>
-        
         <client-tab-view :key="$route.params.clientId || ''" />
       </div>
     </pull-to-refresh>
@@ -87,7 +80,6 @@ import CentralMessage from "components/CentralMessage.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
 import ClientTabView from "../components/ClientTabView.vue";
 
-
 @Component({
   components: {
     NewClient,
@@ -104,28 +96,6 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
 
   get clients() {
     return this.$store.direct.state.clients;
-  }
-  get clientActionItems() {
-    if (!this.client) {
-      return [];
-    }
-
-    return [
-      {
-        name: this.$t("showProofOfPerformance") + " …",
-        icon: "fas fa-clipboard",
-        action: () => this.pushRoute("proofOfPerformance"),
-      },
-      {
-        name: this.$t("documentationHistory") + " …",
-        icon: "fas fa-history",
-        action: () => this.pushRoute("clientHistory"),
-      },
-      {
-        name: "-",
-        action: () => undefined
-      }
-    ];
   }
 
   created() {
@@ -167,13 +137,6 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
         });
       })
       .catch(console.error);
-  }
-
-  pushRoute(name: string) {
-    void this.$router.push({
-      name: name,
-      params: this.$route.params,
-    });
   }
 }
 </script>

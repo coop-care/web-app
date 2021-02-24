@@ -201,17 +201,7 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
 
   showRoute(name: string, params: Record<string, string> = {}, query: Record<string, string> = {}) {
     this.splitView.showAfter();
-    
-    if (!this.isCurrentRoute(name, params)) {
-      void this.$router.push({
-        name: name,
-        params: {
-          ...params,
-          clientId: this.$route.params.clientId
-        },
-        query: query
-      });
-    }
+    this.pushRoute(name, params, query);
   }
   showInformalContact(contactId: string, editMode = false) {
     const query =  editMode ? {edit: "1"} : undefined;
@@ -220,11 +210,6 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
   showFormalContact(contactId: string) {
     this.$route.params.formalContactId = contactId;
     this.showRoute("clientFormalContact");
-  }
-  isCurrentRoute(name: string, params: Record<string, string>) {
-    const route = this.$route;
-    return (name == route.name) && 
-      (Object.keys(params).filter(key => params[key] != route.params[key]).length == 0);
   }
 
   addInformalContact() {
