@@ -398,7 +398,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
         condition: !!this.record && !this.record.resolvedAt
       },
       {
-        name: this.$t("deleteProblem"),
+        name: this.$t("deleteNewProblem"),
         icon: "fas fa-trash",
         action: this.deleteProblemRecord,
         condition: !!this.record && 
