@@ -46,7 +46,7 @@ export class Client extends IdentifiableObject {
     @Type(() => Contact)
     informalContacts: Contact[] = [];
     @Type(() => Contact)
-    formalContacts: Contact[] = [];
+    formalContacts: string[] = [];
     @Type(() => ClientHealthInformation)
     healthInformation = new ClientHealthInformation();
     @Type(() => ClientAgreements)

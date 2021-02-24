@@ -99,6 +99,13 @@
       <div class="column text-size-adjust-md">
         <div class="mb-row-dense">
           <q-input
+            v-if="!noDegree"
+            :value="contact.degree"
+            @input="updateContact({degree: $event})"
+            @change="save"
+            :label="$t('degree')"
+          />
+          <q-input
             :value="contact.firstName"
             @input="updateContact({firstName: $event})"
             @change="save"
@@ -124,6 +131,14 @@
             :options="$store.direct.getters.relationshipLabels.map(makeOption)"
             clearable
             @input="saveContact({relationship: $event})"
+          />
+          <selectable-input
+            v-if="!noProfession"
+            :value="contact.profession"
+            :label="$t('profession')"
+            :options="$store.direct.getters.professionLabels.map(makeOption)"
+            clearable
+            @input="saveContact({profession: $event})"
           />
         </div>
 

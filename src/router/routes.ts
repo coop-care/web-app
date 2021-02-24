@@ -49,7 +49,7 @@ const routes: RouteConfig[] = [
               {
                 name: "clientFormalContact",
                 path: "contacts/formal/:formalContactId",
-                component: () => import("components/ClientAgreements.vue")
+                component: () => import("components/ClientFormalContact.vue")
               }
             ]
           },

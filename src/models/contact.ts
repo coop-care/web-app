@@ -14,7 +14,6 @@ export type PostalAddress = {
 export class Contact extends Base {
   id = this.generateId();
   userId?: string = undefined;
-  referenceId?: string = undefined;
   externalSourceURL?: string = undefined;
 
   sex = "";
@@ -63,7 +62,11 @@ export class Contact extends Base {
   }
 
   get name() {
-    return [this.degree, this.firstName, this.lastName].filter(Boolean).join(" ").trim();
+    if (this.isOrganization) {
+      return this.organization.trim();
+    } else {
+      return [this.degree, this.firstName, this.lastName].filter(Boolean).join(" ").trim();
+    }
   }
 
   makePhoneNumber() {

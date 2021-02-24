@@ -424,6 +424,7 @@
   "neighbourRelationship": "Neighbor",
   "parentInLawRelationship": "Parent-in-law",
   "childInLawRelationship": "Child-in-law",
+  "generalPractitionerProfession": "General practitioner",
   "nursingCareBedType": "Nursing care bed",
   "toiletChairType": "Toilet Chair",
   "raisedToiletSeatType": "Raised toilet seat",
@@ -486,5 +487,7 @@
   "demoAppTitle": "Try the demo version",
   "appDescription": "With our app we relieve nurses in documentation, planning and evaluation and support care teams in cooperation and in strengthening their clients by using the Omaha System.",
   "moreButton": "More…",
-  "deleteNewProblem": "Delete new problem"
+  "deleteNewProblem": "Delete new problem",
+  "profession": "Profession",
+  "degree": "Degree"
 }

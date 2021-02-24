@@ -15,6 +15,12 @@ export default class RecordMixin extends Vue {
     get teamMembers() {
         return this.$store.direct.state.teamMembers;
     }
+    get teams() {
+        return this.$store.direct.state.teams;
+    }
+    get team() {
+        return this.$store.direct.getters.currentTeam;
+    }
     get terminology() {
         return (this.$t("terminology") as unknown) as TerminologyWithMaps;
     }

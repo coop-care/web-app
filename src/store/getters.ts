@@ -51,6 +51,17 @@ export default defineGetters<StateInterface>()({
         )];
     },
 
+    professionLabels: state => {
+        return [... new Set(
+            Contact.professionTypes.concat(state.teams
+                .flatMap(team => team.formalContacts)
+                .flatMap(contact =>
+                    contact.profession ? [contact.profession] : []
+                )
+            )
+        )];
+    },
+
     phoneLabels: state => {
         return [... new Set(
             Contact.phoneLabels.concat(state.clients

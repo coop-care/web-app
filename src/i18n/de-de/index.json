@@ -424,6 +424,7 @@
   "neighbourRelationship": "Nachbar*in",
   "parentInLawRelationship": "Schwiegereltern",
   "childInLawRelationship": "Schwiegerkind",
+  "generalPractitionerProfession": "Hausarzt",
   "nursingCareBedType": "Pflegebett",
   "toiletChairType": "Toilettenstuhl",
   "raisedToiletSeatType": "Toilettensitzerhöhung",
@@ -486,5 +487,7 @@
   "demoAppTitle": "Demo-Version ausprobieren",
   "appDescription": "Wir entlasten mit unserer App Pflegekräfte bei Dokumentation, Planung und Evaluation und unterstützen Pflege-Teams in Kooperation und bei der Stärkung ihrer Klienten durch das Omaha-System.",
   "moreButton": "Mehr…",
-  "deleteNewProblem": "Neues Problem löschen"
+  "deleteNewProblem": "Neues Problem löschen",
+  "profession": "Berufsbezeichnung",
+  "degree": "Titel"
 }

@@ -101,7 +101,7 @@
                 {{ contact.name || $t("withoutNames") }}
               </q-item-label>
               <q-item-label caption>
-                {{ description(contact) }}
+                {{ describeInformalContact(contact) }}
               </q-item-label>
             </q-item-section>
             <q-item-section side>
@@ -111,7 +111,6 @@
             </q-item-section>
           </q-item>
           <q-item 
-            v-if="false"
             class="q-mt-sm q-px-sm q-pb-none text-subtitle1 text-weight-bold"
           >
             <q-item-section>
@@ -125,9 +124,33 @@
                 outline
                 size="10.5px"
                 color="primary"
-                @click.stop="addInformalContact"
+                @click.stop="addFormalContact"
                 :title="$t('addContact')"
                 class="shadow-1"
+              />
+            </q-item-section>
+          </q-item>
+          <q-item
+            clickable
+            v-for="contact in formalContacts"
+            :key="contact.id"
+            v-ripple
+            :active="$route.name == 'clientFormalContact' && $route.params.formalContactId == contact.id"
+            active-class="text-primary"
+            class="q-pl-lg q-pr-sm active-background"
+            @click="showFormalContact(contact.id)"
+          >
+            <q-item-section>
+              <q-item-label :class="!contact.name ? 'text-italic' : ''">
+                {{ contact.name || $t("withoutNames") }}
+              </q-item-label>
+              <q-item-label caption>
+                {{ describeFormalContact(contact) }}
+              </q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-icon
+                name="fas fa-angle-right"
               />
             </q-item-section>
           </q-item>
@@ -169,6 +192,9 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
   isCollapsed = false;
   @Ref() readonly splitView!: SplitView;
 
+  get isDefaultRoute() {
+    return this.$route.name == "clientMasterData";
+  }
   get arrangedInterventions() {
     const interventionsByContact: Record<string, Intervention[]> = {};
     this.client?.informalContacts.forEach(contact => interventionsByContact[contact.id] = []);
@@ -183,20 +209,33 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
     });
     return interventionsByContact;
   }
-  get isDefaultRoute() {
-    return this.$route.name == "clientMasterData";
+  get formalContacts() {
+    return this.client?.formalContacts.flatMap(contactId => {
+      const contact = this.team?.formalContacts.find(contact => contact.id == contactId)
+      return contact ? [contact] : [];
+    }) || [];
   }
 
-  description(contact: Contact) {
+  describeInformalContact(contact: Contact) {
     const relationship = this.localizeRelationship(contact.relationship);
     const interventions = this.arrangedInterventions[contact.id]
       ?.map(intervention => intervention.details).join(", ");
     return [relationship, interventions].filter(Boolean).join(" • ")
   }
+  describeFormalContact(contact: Contact) {
+    const profession = this.localizeProfession(contact.profession);
+    const interventions = this.arrangedInterventions[contact.id]
+      ?.map(intervention => intervention.details).join(", ");
+    return [profession, interventions].filter(Boolean).join(" • ")
+  }
   localizeRelationship(relationship: string) {
-    return Contact.relationshipTypes.includes(relationship) ?
-      this.$t(relationship) as string : 
-      relationship;
+    return this.localizeKey(relationship, Contact.relationshipTypes);
+  }
+  localizeProfession(profession: string) {
+    return this.localizeKey(profession, Contact.professionTypes);
+  }
+  localizeKey(keyOrText: string, keys: string[]) {
+    return keys.includes(keyOrText) ? this.$t(keyOrText) as string : keyOrText;
   }
 
   showRoute(name: string, params: Record<string, string> = {}, query: Record<string, string> = {}) {
@@ -207,11 +246,10 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
     const query =  editMode ? {edit: "1"} : undefined;
     this.showRoute("clientInformalContact", {informalContactId: contactId}, query);
   }
-  showFormalContact(contactId: string) {
-    this.$route.params.formalContactId = contactId;
-    this.showRoute("clientFormalContact");
+  showFormalContact(contactId: string, editMode = false) {
+    const query =  editMode ? {edit: "1"} : undefined;
+    this.showRoute("clientFormalContact", {formalContactId: contactId}, query);
   }
-
   addInformalContact() {
     if (this.client) {
       const newContact = new Contact();
@@ -223,6 +261,29 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
       });
       void this.saveClient();
       this.showInformalContact(newContact.id, true);
+    }
+  }
+  addFormalContact() {
+    if (this.team) {
+      const newContact = new Contact();
+
+      void this.$store.direct.dispatch.saveTeam({
+        target: this.team,
+        changes: {
+          formalContacts: this.team.formalContacts.concat([newContact])
+        }
+      }).then(() => {
+        if (this.client) {
+          this.$store.direct.commit.updateClientObject({
+            target: this.client,
+            changes: {
+              formalContacts: this.client.formalContacts.concat([newContact.id])
+            }
+          });
+          void this.saveClient();
+          this.showFormalContact(newContact.id, true);
+        }
+      });
     }
   }
   didShowBefore() {
