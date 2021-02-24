@@ -83,14 +83,22 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
     }
   }
   get ratingData(): ChartData {
+    const ratings = this.ratings.slice();
+
+    if (ratings.length == 1) {
+      const duplicateRating = {...ratings[0]};
+      duplicateRating.createdAt = new Date(duplicateRating.createdAt.getTime() + 1);
+      ratings.push(duplicateRating);
+    }
+
     return {
-      labels: this.ratings.map(item => item.createdAt).concat([new Date()]),
+      labels: ratings.map(item => item.createdAt).concat([new Date()]),
       datasets: [{
         label: "Beobachtung",
         fill: true,
         borderColor: this.colorValue,
         backgroundColor: this.makeGradient(),
-        data: this.ratings.map(item => item.observation),
+        data: ratings.map(item => item.observation),
         ...this.datasetOptions
       }, {
         label: "Erwartung",
@@ -98,7 +106,7 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
         borderDash: [5, 5],
         borderColor: this.colorValue,
         backgroundColor: this.colorValue,
-        data: this.ratings.map(item => item.expectation),
+        data: ratings.map(item => item.expectation),
         ...this.datasetOptions
       }]
     }
