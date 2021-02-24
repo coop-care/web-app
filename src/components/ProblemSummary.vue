@@ -182,7 +182,7 @@
               />
               <simplified-markdown
                 :text="knowledgeTitle"
-                class="q-pl-lg block"
+                class="q-pl-lg block rating-caption"
               />
             </div>
             <div class="col-12 col-sm-4">
@@ -195,7 +195,7 @@
               />
               <simplified-markdown
                 :text="behaviourTitle"
-                class="q-pl-lg block"
+                class="q-pl-lg block rating-caption"
               />
             </div>
             <div class="col-12 col-sm-4">
@@ -208,7 +208,7 @@
               />
               <simplified-markdown
                 :text="statusTitle"
-                class="q-pl-lg block"
+                class="q-pl-lg block rating-caption"
               />
             </div>
           </div>
@@ -296,6 +296,10 @@
   width: .5rem
   height: .5rem
   border-radius: .25rem
+.rating-caption
+  height: 6.5em
+  overflow: hidden
+  line-height: 1.3em
 </style>
 
 <script lang="ts">
