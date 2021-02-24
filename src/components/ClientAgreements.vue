@@ -69,17 +69,20 @@
         :label="$t('carePlanCreatedDate')"
         :format="$t('dateFormat')"
       />
-      <q-checkbox
-        :value="agreements.existingInitialPrescription"
-        @input="updateAndSave(agreements, {existingInitialPrescription: $event})"
-        :label="$t('existingInitialPrescription') + '?'"
-        class="q-mt-md"
-      />
-      <q-checkbox
-        :value="agreements.keyHandoverRequired"
-        @input="updateAndSave(agreements, {keyHandoverRequired: $event})"
-        :label="$t('keyHandoverRequired') + '?'"
-      />
+      <div class="q-mt-md">
+        <q-checkbox
+          :value="agreements.existingInitialPrescription"
+          @input="updateAndSave(agreements, {existingInitialPrescription: $event})"
+          :label="$t('existingInitialPrescription') + '?'"
+        />
+      </div>
+      <div>
+        <q-checkbox
+          :value="agreements.keyHandoverRequired"
+          @input="updateAndSave(agreements, {keyHandoverRequired: $event})"
+          :label="$t('keyHandoverRequired') + '?'"
+        />
+      </div>
     </div>
   </div>
 </template>

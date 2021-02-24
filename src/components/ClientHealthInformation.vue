@@ -97,17 +97,20 @@
         :label="$t('biographyTitle')"
         autogrow
       />
-      <q-checkbox
-        :value="healthInfo.existingAdvanceHealthcareDirective"
-        @input="updateAndSave(healthInfo, {existingAdvanceHealthcareDirective: $event})"
-        :label="$t('existingAdvanceHealthcareDirective') + '?'"
-        class="q-mt-md"
-      />
-      <q-checkbox
-        :value="healthInfo.existingHealthcareProxy"
-        @input="updateAndSave(healthInfo, {existingHealthcareProxy: $event})"
-        :label="$t('existingHealthcareProxy') + '?'"
-      />
+      <div class="q-mt-md">
+        <q-checkbox
+          :value="healthInfo.existingAdvanceHealthcareDirective"
+          @input="updateAndSave(healthInfo, {existingAdvanceHealthcareDirective: $event})"
+          :label="$t('existingAdvanceHealthcareDirective') + '?'"
+        />
+      </div>
+      <div>
+        <q-checkbox
+          :value="healthInfo.existingHealthcareProxy"
+          @input="updateAndSave(healthInfo, {existingHealthcareProxy: $event})"
+          :label="$t('existingHealthcareProxy') + '?'"
+        />
+      </div>
       <q-input
         :value="healthInfo.notes"
         @input="update(healthInfo, {notes: $event})"
