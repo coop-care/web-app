@@ -18,7 +18,8 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
     scrollBehavior: (to, from, savedPosition) => {
       if (savedPosition) {
         return savedPosition;
-      } else if (to.name?.startsWith("client")) {
+      } else if (to.name?.startsWith("client") &&
+        (to.params.clientId == from.params.clientId)) {
         return undefined;
       } else {
         return { x: 0, y: 0 };
