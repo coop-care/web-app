@@ -47,42 +47,6 @@
     </q-card-section>
 
     <q-card-section :class="sectionPadding">
-      <div
-        v-if="isDraft && isExpandable"
-        :class="'q-mb-md ' + (isExpanded ? 'q-mt-none' : 'q-mt-sm')"
-      >
-        <q-btn
-          :label="$t('editDraft')"
-          icon="edit"
-          :to="{
-            name: 'problem',
-            params: {
-              clientId: params.clientId,
-              problemId: params.problemId,
-              step: problem.code ? 3 : 1
-            }
-          }"
-          rounded
-          unelevated
-          dense
-          size="md"
-          color="negative"
-          class="shadow-1 q-px-xs q-mr-sm"
-          :disable="isDisabled"
-        />
-        <q-btn
-          v-if="isDraft && !isDisabled"
-          icon="delete_forever"
-          :title="$t('delete')"
-          @click="deleteDraft"
-          dense
-          round
-          unelevated
-          size="13.5px"
-          color="negative"
-          class="shadow-1"
-        />
-      </div>
       <div class="align-chips">
         <q-chip
           size="12px"
@@ -317,12 +281,12 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch, Mixins } from "vue-property-decorator";
+import RecordMixin from "../mixins/RecordMixin";
 import WarningMixin from "../mixins/WarningMixin";
 import ActionMenu from "../components/ActionMenu.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import VueApexCharts from "vue-apexcharts";
-import { TerminologyWithMaps } from "../helper/terminology";
 import { getOutcomeAsChartData } from "../helper/apexChartData";
 import { ProblemRecord, Problem } from "../models";
 
@@ -335,11 +299,10 @@ Vue.use(VueApexCharts);
     ActionMenu
   }
 })
-export default class ProblemSummary extends WarningMixin {
+export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
   @Prop({type: Object, default: {}}) readonly params!: Record<string, string>;
   @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
   @Prop({type: Boolean, default: true}) readonly isExpandable!: boolean;
-  @Prop(Boolean) readonly isDisabled!: boolean;
   isExpanded = false;
 
   @Watch("isExpanded")
@@ -374,11 +337,8 @@ export default class ProblemSummary extends WarningMixin {
       return undefined;
     }
   }
-  get isDraft() {
-    return !this.record?.createdAt;
-  }
   get isInteractive() {
-    return !this.isDraft && this.isExpanded && !this.isDisabled;
+    return this.isExpanded && !this.isDisabled;
   }
   get outcomesForChart() {
     if (this.record) {
@@ -436,22 +396,20 @@ export default class ProblemSummary extends WarningMixin {
         icon: "fas fa-check",
         action: this.dismissProblemRecord,
         condition: !!this.record && !this.record.resolvedAt
+      },
+      {
+        name: this.$t("deleteProblem"),
+        icon: "fas fa-trash",
+        action: this.deleteProblemRecord,
+        condition: !!this.record && 
+          (Date.now() - 24 * 60 * 60 * 1000 < this.record.createdAt.getTime()),
+        isDestructive: true
       }
     ]
   }
 
-  get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
-  }
-  get clientName() {
-    return (
-      this.$store.direct.getters.getClient(this.params)?.contact.name || ""
-    );
-  }
-  get language() {
-    return this.$root.$i18n.locale;
-  }
   get record() {
+    console.log("record")
     return this.problemRecord || this.getRecordFromStore();
   }
 
@@ -502,13 +460,17 @@ export default class ProblemSummary extends WarningMixin {
     }
   }
 
-  getRecordFromStore() {
-    return this.$store.direct.getters.getProblemRecordById(this.params);
+  deleteProblemRecord() {
+    if (this.record && this.client) {
+      const recordId = this.record.id;
+      this.updateAndSave(this.client, {
+        problems: this.client?.problems.filter(record => record.id != recordId)
+      });
+    }
   }
 
-  deleteDraft() {
-    this.$store.direct.commit.deleteDraftProblemRecord(this.params);
-    void this.$store.direct.dispatch.saveClient(this.params);
+  getRecordFromStore() {
+    return this.$store.direct.getters.getProblemRecordById(this.params);
   }
 
   destroyed() {

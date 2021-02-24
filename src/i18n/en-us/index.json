@@ -48,7 +48,6 @@
     "description": "Practitioner’s judgment that a problem is of secondary concern as compared to other problems, based on recommendations from clients, referral sources, and others. When a problem is considered low priority, the practitioner documents the problem, but does not provide interventions or complete ratings until the client’s needs change or increase."
   },
   "outcome": "Outcome | Outcomes",
-  "editDraft": "Edit draft",
   "delete": "Delete",
   "noExistingClient": "There is no client data yet.",
   "noSelectedClient": "Select a client from the client list.",
@@ -95,7 +94,6 @@
   "problemsForDiagnosisSelectionTitle": "Select from the typically occurring problems",
   "frequentProblemsForDiagnosis": "Frequently occurring problems with {diagnosis}",
   "additionalProblemSelection": "Select additional problems …",
-  "createDraftProblemRecords": "create 0 problems as draft | create 1 problem as draft | create {count} problems as draft",
   "task": "Task | Tasks",
   "documentationHistory": "Show modification",
   "omahaSystemBookCopyrightNotice": "Reprinted and translated with permission: Martin KS. (2005). *The Omaha System: A Key to Practice, Documentation, and Information Management* (Reprinted 2nd ed.). Omaha, NE: Health Connections Press.",
@@ -487,5 +485,6 @@
   "clientCreatedAt": "Client data created",
   "demoAppTitle": "Try the demo version",
   "appDescription": "With our app we relieve nurses in documentation, planning and evaluation and support care teams in cooperation and in strengthening their clients by using the Omaha System.",
-  "moreButton": "More…"
+  "moreButton": "More…",
+  "deleteNewProblem": "Delete new problem"
 }

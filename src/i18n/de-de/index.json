@@ -48,7 +48,6 @@
     "description": "Das Problem ist im Vergleich zu anderen Problemen von untergeordneter Bedeutung, basierend auf dem Klientenwunsch und gegebenenfalls anderen Empfehlungen. Wenn ein Problem als unwichtig eingestuft wird, wird das Problem dokumentiert, aber keine Interventionen geplant oder Bewertungen vorgenommen, bis sich die Bedürfnisse des Klienten ändern oder erhöhen."
   },
   "outcome": "Ergebnis | Ergebnisse",
-  "editDraft": "Entwurf",
   "delete": "Löschen",
   "noExistingClient": "Es existieren noch keine Klientendaten.",
   "noSelectedClient": "Wähle einen Klienten aus der Klientenliste aus.",
@@ -95,7 +94,6 @@
   "problemsForDiagnosisSelectionTitle": "Aus den typischerweise auftretenden Problemen auswählen",
   "frequentProblemsForDiagnosis": "Häufig zu beobachtende Probleme bei {diagnosis}",
   "additionalProblemSelection": "Weitere Probleme auswählen …",
-  "createDraftProblemRecords": "0 Probleme als Entwurf anlegen | 1 Problem als Entwurf anlegen | {count} Probleme als Entwurf anlegen",
   "task": "Aufgabe | Aufgaben",
   "documentationHistory": "Änderungshistorie",
   "omahaSystemBookCopyrightNotice": "Mit Genehmigung reproduziert und übersetzt: Martin KS. (2005). *The Omaha System: A Key to Practice, Documentation, and Information Management* (Reprinted 2nd ed.). Omaha, NE: Health Connections Press.",
@@ -487,5 +485,6 @@
   "clientCreatedAt": "Daten aufgenommen",
   "demoAppTitle": "Demo-Version ausprobieren",
   "appDescription": "Wir entlasten mit unserer App Pflegekräfte bei Dokumentation, Planung und Evaluation und unterstützen Pflege-Teams in Kooperation und bei der Stärkung ihrer Klienten durch das Omaha-System.",
-  "moreButton": "Mehr…"
+  "moreButton": "Mehr…",
+  "deleteNewProblem": "Neues Problem löschen"
 }

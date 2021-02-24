@@ -12,7 +12,6 @@
           clientId: $route.params.clientId,
           problemId: problemRecord.id
         }"
-        :isDisabled="isDisabled"
       />
     </div>
 
@@ -56,7 +55,11 @@ import { ProblemRecord } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import ProblemSummary from "../components/ProblemSummary.vue";
 
-@Component({ components: { ProblemSummary } })
+@Component({
+  components: {
+    ProblemSummary
+  }
+})
 export default class ClientProblems extends RecordMixin {
   get clientProblems() {
     const client = this.client;
