@@ -4,7 +4,7 @@ import { ObjectID } from "bson";
 
 export class IdentifiableObject {
   // optional properties need an initial value because Vue does not detect the addition or removal of a property
-  @Transform(({ value }) => (value as ObjectID).toHexString(), { toPlainOnly: true })
+  @Transform(({ value, obj, key }) => (value as ObjectID)?.toHexString(), { toPlainOnly: true })
   @Transform(({ value }) => new ObjectID(value), { toClassOnly: true })
   _id?: ObjectID = undefined;
 
