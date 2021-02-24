@@ -134,7 +134,6 @@
       <div v-if="!isExpanded">
         <div
           v-if="ratingsSummary.length"
-          class="text-outcome"
         >
           <div
             v-for="(rating, index) in ratingsSummary"
@@ -230,7 +229,7 @@
           :text="
             $tc('numberOfInterventions', record.interventions.length)
           "
-          class="text-intervention"
+          bold-class="text-intervention"
         />
       </div>
       <div v-else-if="isInteractive && problem.isHighPriority">
