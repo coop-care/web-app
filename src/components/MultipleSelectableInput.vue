@@ -16,6 +16,7 @@
     @new-value="createValue"
     @input-value="inputValue = $event;"
     @keydown.tab="selectInputValue(); lastTabKeyDownTimestamp = Date.now();"
+    @keydown="onKeyDownComma"
     @blur="onBlur"
     @filter="filter"
     ref="select"
@@ -42,6 +43,12 @@ export default class MultipleSelectableInput extends Vue {
 
   onBlur() {
     if (this.lastTabKeyDownTimestamp + 100 < Date.now()) {
+      this.selectInputValue();
+    }
+  }
+  onKeyDownComma(event: KeyboardEvent) {
+    if (event.key == ",") {
+      event.preventDefault();
       this.selectInputValue();
     }
   }
