@@ -83,7 +83,7 @@
           :rule-index="0"
           hide-start
           hide-end
-          @input="updateAndSave(intervention.arrangedIntervention, {recurrenceRules: $event})"
+          @input="didUpdateRule"
         />
       </div>
       <div
@@ -145,7 +145,7 @@
 import { Component, Prop, Mixins } from "vue-property-decorator";
 import { DateTime } from "luxon";
 import { TranslateResult } from "vue-i18n";
-import { Intervention, Task } from "../models";
+import { Intervention, Task, RRuleSet } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import InterventionMixin from "../mixins/InterventionMixin";
 import RecordValidator from "../mixins/RecordValidator";
@@ -270,6 +270,13 @@ export default class ContactTaskView extends Mixins(InterventionMixin, RecordMix
       client: this.client
     });
     void this.saveClient();
+  }
+  didUpdateRule(value?: RRuleSet) {
+    if (!!value && value._rrule.length == 0 && value._rdate.length > 0) {
+      value = undefined;
+    }
+    
+    this.updateAndSave(this.intervention.arrangedIntervention, {recurrenceRules: value});
   }
 }
 </script>
