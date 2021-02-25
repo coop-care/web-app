@@ -14,6 +14,9 @@
     :hide-dropdown-icon="hideDropdownIcon"
     @input="onInput"
     @new-value="createValue"
+    @input-value="inputValue = $event;"
+    @keydown.tab="selectInputValue(); lastTabKeyDownTimestamp = Date.now();"
+    @blur="onBlur"
     @filter="filter"
     ref="select"
   />
@@ -34,8 +37,37 @@ export default class MultipleSelectableInput extends Vue {
   @Ref() readonly select!: QSelect;
 
   filteredOptions: LabeledValue<string>[] = this.options;
+  lastTabKeyDownTimestamp = 0;
+  inputValue = "";
 
+  onBlur() {
+    if (this.lastTabKeyDownTimestamp + 100 < Date.now()) {
+      this.selectInputValue();
+    }
+  }
+  selectInputValue() {
+    const value = this.inputValue.trim();
+    if (value.length > 0) {
+      if (this.value.includes(value)) {
+        this.onInput(this.value);
+      } else {
+        this.onInput(this.value.concat(value));
+      }
+    }
+    // const needle = value.toLocaleLowerCase();
+    // const existingOption = this.options.find(option => 
+    //   option.label.toLocaleLowerCase() == needle || option.value == value
+    // );
 
+    // if (!existingOption) {
+    //   this.filteredOptions = this.options;
+    //   this.$emit("input", value);
+    //   this.$emit("new-value", value);
+    // } else if (existingOption.value != this.value) {
+    //   this.filteredOptions = this.options;
+    //   this.$emit("input", existingOption.value);
+    // }
+  }
   onInput(value: string[]) {
     if (value.length) {
       const lastValue = value[value.length - 1];
