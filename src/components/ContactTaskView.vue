@@ -81,6 +81,7 @@
         <recurrence-rule-editor
           :value="intervention.intervention.recurrenceRules"
           :rule-index="0"
+          noFrequencyKey="NeverOrSporadic"
           hide-start
           hide-end
           @input="didUpdateRule"

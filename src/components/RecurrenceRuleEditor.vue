@@ -298,6 +298,7 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
   @Prop(Object) readonly value: RRuleSet | undefined;
   @Prop({ type: Number, required: true}) readonly ruleIndex!: number;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
+  @Prop({ type: String, default: "Never"}) readonly noFrequencyKey!: string;
   @Prop(Boolean) readonly hideStart!: boolean;
   @Prop(Boolean) readonly hideFrequency!: boolean;
   @Prop(Boolean) readonly hideEnd!: boolean;
@@ -527,8 +528,8 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
       Frequency.YEARLY
     ]);
     return values.map(value => {
-      const key = Frequency[value] || "Never";
-      const label = key.charAt(0) + key.slice(1).toLowerCase();
+      const key = Frequency[value];
+      const label = key ? key.charAt(0) + key.slice(1).toLowerCase() : this.noFrequencyKey;
       return { label: this.$t(label), value: value };
     });
   }
