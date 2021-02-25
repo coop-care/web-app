@@ -54,19 +54,6 @@ export default class MultipleSelectableInput extends Vue {
         this.onInput(this.value.concat(value));
       }
     }
-    // const needle = value.toLocaleLowerCase();
-    // const existingOption = this.options.find(option => 
-    //   option.label.toLocaleLowerCase() == needle || option.value == value
-    // );
-
-    // if (!existingOption) {
-    //   this.filteredOptions = this.options;
-    //   this.$emit("input", value);
-    //   this.$emit("new-value", value);
-    // } else if (existingOption.value != this.value) {
-    //   this.filteredOptions = this.options;
-    //   this.$emit("input", existingOption.value);
-    // }
   }
   onInput(value: string[]) {
     if (value.length) {
