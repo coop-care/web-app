@@ -292,7 +292,7 @@ export function makeTerminologyWithMaps(terminologyJSON: any) {
 
     result.icons.severity = [
         "fas fa-grin-wink",
-        "fas fa-smile",
+        "fas fa-meh",
         "fas fa-frown-open"
     ];
     result.icons.scope = ["fas fa-user", "fas fa-user-friends", "fas fa-users"];
