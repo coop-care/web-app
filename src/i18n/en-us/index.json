@@ -490,5 +490,6 @@
   "moreButton": "More…",
   "deleteNewProblem": "Delete new problem",
   "profession": "Profession",
-  "degree": "Degree"
+  "degree": "Degree",
+  "discardProblem": "Discard problem"
 }
