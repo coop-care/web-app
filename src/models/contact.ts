@@ -38,7 +38,7 @@ export class Contact extends Base {
   static readonly sexTypes = ["femaleSex", "maleSex", "otherSex"];
   static readonly relationshipTypes = ["partner", "child", "parent", "sibling", "friend", "neighbour", "grandchild", "grandparent", "parentInLaw", "childInLaw"]
     .map(value => value + "Relationship");
-  static readonly professionTypes = ["generalPractitioner"]
+  static readonly professionTypes = ["generalPractitioner", "pharmacy"]
     .map(value => value + "Profession");
   static readonly predefinedLabels = [...new Set(
     Contact.emailLabels

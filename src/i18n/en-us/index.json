@@ -426,6 +426,7 @@
   "parentInLawRelationship": "Parent-in-law",
   "childInLawRelationship": "Child-in-law",
   "generalPractitionerProfession": "General practitioner",
+  "pharmacyProfession": "Pharmacy",
   "nursingCareBedType": "Nursing care bed",
   "toiletChairType": "Toilet Chair",
   "raisedToiletSeatType": "Raised toilet seat",
@@ -491,5 +492,8 @@
   "deleteNewProblem": "Delete new problem",
   "profession": "Profession",
   "degree": "Degree",
-  "discardProblem": "Discard problem"
+  "discardProblem": "Discard problem",
+  "organizationName": "Company or organization",
+  "contactIsAnOrganization": "Contact is an organization",
+  "addAcademicTitleButton": "Add degree"
 }

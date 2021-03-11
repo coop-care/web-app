@@ -426,6 +426,7 @@
   "parentInLawRelationship": "Schwiegereltern",
   "childInLawRelationship": "Schwiegerkind",
   "generalPractitionerProfession": "Hausarzt",
+  "pharmacyProfession": "Apotheke",
   "nursingCareBedType": "Pflegebett",
   "toiletChairType": "Toilettenstuhl",
   "raisedToiletSeatType": "Toilettensitzerhöhung",
@@ -491,5 +492,8 @@
   "deleteNewProblem": "Neues Problem löschen",
   "profession": "Berufsbezeichnung",
   "degree": "Titel",
-  "discardProblem": "Problem verwerfen"
+  "discardProblem": "Problem verwerfen",
+  "organizationName": "Firma oder Organisation",
+  "contactIsAnOrganization": "Kontakt ist eine Organisation",
+  "addAcademicTitleButton": "Titel hinzufügen"
 }

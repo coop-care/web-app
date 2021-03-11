@@ -24,7 +24,7 @@
           icon="fas fa-chevron-left"
           size="13.5px"
           dense
-          class="q-mx-sm absolute-top-left"
+          class="absolute-top-left"
           @click="showBefore"/>
       </div>
     </template>

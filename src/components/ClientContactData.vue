@@ -2,7 +2,6 @@
   <contact-view 
     v-if="contact"
     :contact="contact"
-    no-degree
     no-relationship
     no-organization
     no-delete

@@ -2,7 +2,6 @@
   <div v-if="contact">
     <contact-view 
       :contact="contact" 
-      no-degree
       no-birthday
       no-profession
       no-organization

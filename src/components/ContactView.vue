@@ -30,10 +30,10 @@
         {{ localizeLabel(contact.relationship) }}
       </div>
       <div 
-        v-if="contact.profession && !noProfession" 
+        v-if="professionalSubtitle" 
         class="text-body1 text-grey-7 text-center"
       >
-        {{ localizeLabel(contact.profession) }}
+        {{ professionalSubtitle }}
       </div>
 
       <div class="row justify-center q-my-md non-selectable">
@@ -104,34 +104,49 @@
 
       <div class="column text-size-adjust-md">
         <div class="mb-row-dense">
-          <q-input
-            v-if="!noDegree"
-            :value="contact.degree"
-            @input="updateContact({degree: $event})"
-            @change="save"
-            :label="$t('degree')"
+          <q-toggle 
+            v-if="!noOrganization"
+            :value="contact.isOrganization" 
+            @input="saveContact({isOrganization: $event})"
+            :label="$t('contactIsAnOrganization') + ':'"
+            left-label
           />
+          <reveal-button
+            v-if="!noDegree && !contact.isOrganization"
+            :label="$t('addAcademicTitleButton')"
+            :reveal-immediately="contact.degree.length > 0"
+            button-class="q-py-sm"
+          >
+            <q-input
+              :value="contact.degree"
+              @input="updateContact({degree: $event})"
+              @change="save"
+              :label="$t('degree')"
+            />
+          </reveal-button>
           <q-input
+            v-if="!contact.isOrganization"
             :value="contact.firstName"
             @input="updateContact({firstName: $event})"
             @change="save"
             :label="$t('firstName')"
           />
           <q-input
+            v-if="!contact.isOrganization"
             :value="contact.lastName"
             @input="updateContact({lastName: $event})"
             @change="save"
             :label="$t('lastName')"
           />
           <date-time-input
-            v-if="!noBirthday"
+            v-if="!noBirthday && !contact.isOrganization"
             :value="contact.birthday"
             @input="saveContact({birthday: $event})"
             :label="$t('birthday')"
             :format="$t('dateFormat')"
           />
           <selectable-input
-            v-if="!noRelationship"
+            v-if="!noRelationship && !contact.isOrganization"
             :value="contact.relationship"
             :label="$t('relationshipToClient')"
             :options="$store.direct.getters.relationshipLabels.map(makeOption)"
@@ -139,10 +154,25 @@
             @input="saveContact({relationship: $event})"
           />
           <selectable-input
-            v-if="!noProfession"
+            v-if="!noProfession && !contact.isOrganization"
             :value="contact.profession"
             :label="$t('profession')"
-            :options="$store.direct.getters.professionLabels.map(makeOption)"
+            :options="professionLabels"
+            clearable
+            @input="saveContact({profession: $event})"
+          />
+          <q-input
+            v-if="!noOrganization"
+            :value="contact.organization"
+            @input="updateContact({organization: $event})"
+            @change="save"
+            :label="$t('organizationName')"
+          />
+          <selectable-input
+            v-if="!noProfession && contact.isOrganization"
+            :value="contact.profession"
+            :label="$t('profession')"
+            :options="professionLabels"
             clearable
             @input="saveContact({profession: $event})"
           />
@@ -279,9 +309,10 @@
 import { Component, Prop, Watch } from "vue-property-decorator";
 import { DateTime } from "luxon";
 import RecordMixin from "../mixins/RecordMixin";
-import { Contact, LabeledValue, PostalAddress} from "../models";
+import { Contact, LabeledValue, PostalAddress, Client } from "../models";
 import NoDataItem from "../components/NoDataItem.vue";
 import LabeledItem, { LabeledItemType } from "../components/LabeledItem.vue";
+import RevealButton from "../components/RevealButton.vue";
 import SelectableInput from "../components/SelectableInput.vue";
 import LabeledValueEditor from "../components/LabeledValueEditor.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
@@ -290,6 +321,7 @@ import DateTimeInput from "../components/DateTimeInput.vue";
   components: {
     NoDataItem,
     LabeledItem,
+    RevealButton,
     SelectableInput,
     LabeledValueEditor,
     DateTimeInput
@@ -297,11 +329,11 @@ import DateTimeInput from "../components/DateTimeInput.vue";
 })
 export default class ContactView extends RecordMixin {
   @Prop(Object) readonly contact!: Contact;
-  @Prop(Boolean) readonly noDegree!: boolean; // todo
+  @Prop(Boolean) readonly noDegree!: boolean;
   @Prop(Boolean) readonly noBirthday!: boolean; 
-  @Prop(Boolean) readonly noProfession!: boolean; // todo
+  @Prop(Boolean) readonly noProfession!: boolean;
   @Prop(Boolean) readonly noRelationship!: boolean;
-  @Prop(Boolean) readonly noOrganization!: boolean; // todo
+  @Prop(Boolean) readonly noOrganization!: boolean;
   @Prop(Boolean) readonly noDelete!: boolean;
 
   isEditing = false;
@@ -320,6 +352,18 @@ export default class ContactView extends RecordMixin {
     }
   }
 
+  get professionalSubtitle() {
+    const texts: string[] = []
+
+    if (!this.noProfession && this.contact.profession) {
+      texts.push(this.localizeLabel(this.contact.profession));
+    }
+    if (!this.noOrganization && !this.contact.isOrganization && this.contact.organization) {
+      texts.push(this.contact.organization);
+    }
+
+    return texts.join(", ");
+  }
   get contactDetails() {
     const result: LabeledItemType[] = [];
     const locale = this.$root.$i18n.locale;
@@ -359,6 +403,11 @@ export default class ContactView extends RecordMixin {
         value: this.contact.notes
       }
     ] : []);
+  }
+  get professionLabels() {
+    return this.$store.direct.getters.professionLabels
+      .map(this.makeOption)
+      .sort(Client.sortByLabel)
   }
   get compactLayout() {
     return this.width <= 400
