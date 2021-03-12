@@ -111,7 +111,7 @@ export default class ContactInterventionList extends RecordMixin {
 
     this.client?.forAllReminders((reminder, problem) => {
       if (reminder instanceof Intervention && 
-          (reminder.receiver == this.contact.id) && 
+          (reminder.receiver?.equals(this.contact.id)) && 
           (!reminder.isFinished || reminder.hasCompletedOccurences)) {
         const task = new Task(reminder, problem?.id, reminder.occurrences[0]);
 

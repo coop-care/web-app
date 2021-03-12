@@ -34,7 +34,7 @@ export default class ClientInformalContactView extends RecordMixin {
     const contactId = this.$route.params.informalContactId;
 
     if (contactId) {
-      return this.client?.informalContacts.find(contact => contact.id == contactId);
+      return this.client?.informalContacts.find(contact => contact.id.equals(contactId));
     } else {
       return undefined;
     }
@@ -46,7 +46,7 @@ export default class ClientInformalContactView extends RecordMixin {
     if (client) {
       client.forAllReminders((reminder, problem) => {
         if (reminder instanceof Intervention && 
-            (reminder.receiver == contactId) && 
+            (reminder.receiver?.equals(contactId)) && 
             !reminder.isFinished) {
           this.$store.direct.commit.endReminder({
             task: new Task(reminder, problem?.id, reminder.occurrences[0]),
@@ -57,7 +57,7 @@ export default class ClientInformalContactView extends RecordMixin {
       this.$store.direct.commit.updateClientObject({
         target: client,
         changes: {
-          informalContacts: client.informalContacts.filter(contact => contact.id != contactId)
+          informalContacts: client.informalContacts.filter(contact => !contact.id.equals(contactId))
         }
       });
       void this.saveClient();

@@ -46,8 +46,8 @@ export function importSamplesV2() {
     Object.assign(client.contact, plainToClass(Contact, json.contact));
     Object.assign(client.healthInformation, plainToClass(ClientHealthInformation, json.healthInformation));
     Object.assign(client.agreements, plainToClass(ClientAgreements, json.agreements));
-    Object.assign(client.informalContacts, (json.informalContacts as Partial<Contact>[]).map(item => plainToClass(Contact, item)));
-    Object.assign(client.formalContacts, json.formalContacts.map(item => plainToClass(Contact, item)));
+    Object.assign(client.informalContacts, json.informalContacts.map((item: any) => plainToClass(Contact, item)));
+    Object.assign(client.formalContacts, json.formalContacts.map((item: any) => plainToClass(Contact, item)));
     Object.assign(client.unrelatedReminders, (json.unrelatedReminders as any[]).map(item => plainToClass(Intervention, item)));
     store.commit.setClients(originalClients.concat(client));
     const params = { clientId: client._id.toHexString() };

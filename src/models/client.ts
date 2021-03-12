@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { Type, plainToClass } from "class-transformer";
 import { ProblemRecord, Intervention, Contact, Reminder, ChangeRecord, IdentifiableObject, CustomField } from ".";
 import { LabeledValue } from "./types";
+import { ObjectID } from "bson";
 
 export class ClientHealthInformation {
     static readonly asstiveTechnologyTypes = ["nursingCareBedType", "toiletChairType", "raisedToiletSeatType", "rollatorType", "mobilityAidsType", "hearingAidsType", "glassesType", "upperDentureType", "lowerDentureType"];
@@ -46,7 +47,7 @@ export class Client extends IdentifiableObject {
     @Type(() => Contact)
     informalContacts: Contact[] = [];
     @Type(() => Contact)
-    formalContacts: string[] = [];
+    formalContacts: Contact[] = [];
     @Type(() => ClientHealthInformation)
     healthInformation = new ClientHealthInformation();
     @Type(() => ClientAgreements)
@@ -101,8 +102,8 @@ export class Client extends IdentifiableObject {
         return !!id ? this.problems.find(problem => problem.id == id) : undefined;
     }
 
-    findContact(id?: string) {
-        return !!id ? this.informalContacts.find(contact => contact.id == id) : undefined;
+    findContact(id?: string | ObjectID) {
+        return !!id ? this.informalContacts.find(contact => contact.id.equals(id)) : undefined;
     }
 
     findReminder(id: string) {

@@ -1,4 +1,5 @@
 
+import { ObjectID } from "bson";
 import { Vue, Component } from "vue-property-decorator";
 import { Client, Intervention, RRuleSet } from "../models";
 
@@ -11,7 +12,7 @@ export default class InterventionMixin extends Vue {
       .join(": ");
   }
 
-  findContactName(contactId: string | undefined, client?: Client) {
+  findContactName(contactId?: ObjectID, client?: Client) {
     if (contactId) {
       const contact = client?.findContact(contactId);
 

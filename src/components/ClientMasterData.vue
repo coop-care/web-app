@@ -89,9 +89,9 @@
           <q-item
             clickable
             v-for="contact in client.informalContacts"
-            :key="contact.id"
+            :key="contact.idAsKey"
             v-ripple
-            :active="$route.name == 'clientInformalContact' && $route.params.informalContactId == contact.id"
+            :active="$route.name == 'clientInformalContact' && contact.id.equals($route.params.informalContactId)"
             active-class="text-primary"
             class="q-pl-lg q-pr-sm active-background"
             @click="showInformalContact(contact.id)"
@@ -132,10 +132,10 @@
           </q-item>
           <q-item
             clickable
-            v-for="contact in formalContacts"
-            :key="contact.id"
+            v-for="contact in client.formalContacts"
+            :key="contact.idAsKey"
             v-ripple
-            :active="$route.name == 'clientFormalContact' && $route.params.formalContactId == contact.id"
+            :active="$route.name == 'clientFormalContact' && contact.id.equals($route.params.formalContactId)"
             active-class="text-primary"
             class="q-pl-lg q-pr-sm active-background"
             @click="showFormalContact(contact.id)"
@@ -180,6 +180,7 @@ import ClientActionMixin from "../mixins/ClientActionMixin";
 import ActionMenu from "../components/ActionMenu.vue";
 import ClientHealthInformation from "../components/ClientHealthInformation.vue";
 import SplitView from "../components/SplitView.vue";
+import { ObjectID } from "bson";
 
 @Component({
   components: {
@@ -197,34 +198,28 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
   }
   get arrangedInterventions() {
     const interventionsByContact: Record<string, Intervention[]> = {};
-    this.client?.informalContacts.forEach(contact => interventionsByContact[contact.id] = []);
+    this.client?.informalContacts.forEach(contact => interventionsByContact[contact.id.toHexString()] = []);
     this.client?.forAllReminders(reminder => {
       if (reminder instanceof Intervention && 
           reminder.arrangedIntervention && 
           reminder.hasCompletedOccurences &&
           !reminder.arrangedIntervention.isFinished) {
-        interventionsByContact[reminder.arrangedIntervention?.assignee || ""]
+        interventionsByContact[reminder.arrangedIntervention?.assignee?.toHexString() || ""]
           ?.push(reminder.arrangedIntervention);
       }
     });
     return interventionsByContact;
   }
-  get formalContacts() {
-    return this.client?.formalContacts.flatMap(contactId => {
-      const contact = this.team?.formalContacts.find(contact => contact.id == contactId)
-      return contact ? [contact] : [];
-    }) || [];
-  }
 
   describeInformalContact(contact: Contact) {
     const relationship = this.localizeRelationship(contact.relationship);
-    const interventions = this.arrangedInterventions[contact.id]
+    const interventions = this.arrangedInterventions[contact.id.toHexString()]
       ?.map(intervention => intervention.details).join(", ");
     return [relationship, interventions].filter(Boolean).join(" • ")
   }
   describeFormalContact(contact: Contact) {
     const profession = this.localizeProfession(contact.profession);
-    const interventions = this.arrangedInterventions[contact.id]
+    const interventions = this.arrangedInterventions[contact.id.toHexString()]
       ?.map(intervention => intervention.details).join(", ");
     return [profession, interventions].filter(Boolean).join(" • ")
   }
@@ -242,13 +237,13 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
     this.splitView.showAfter();
     this.pushRoute(name, params, query);
   }
-  showInformalContact(contactId: string, editMode = false) {
+  showInformalContact(contactId: ObjectID, editMode = false) {
     const query =  editMode ? {edit: "1"} : undefined;
-    this.showRoute("clientInformalContact", {informalContactId: contactId}, query);
+    this.showRoute("clientInformalContact", {informalContactId: contactId.toHexString()}, query);
   }
-  showFormalContact(contactId: string, editMode = false) {
+  showFormalContact(contactId: ObjectID, editMode = false) {
     const query =  editMode ? {edit: "1"} : undefined;
-    this.showRoute("clientFormalContact", {formalContactId: contactId}, query);
+    this.showRoute("clientFormalContact", {formalContactId: contactId.toHexString()}, query);
   }
   addInformalContact() {
     if (this.client) {
@@ -264,26 +259,16 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
     }
   }
   addFormalContact() {
-    if (this.team) {
+    if (this.client) {
       const newContact = new Contact();
-
-      void this.$store.direct.dispatch.saveTeam({
-        target: this.team,
+      this.$store.direct.commit.updateClientObject({
+        target: this.client,
         changes: {
-          formalContacts: this.team.formalContacts.concat([newContact])
-        }
-      }).then(() => {
-        if (this.client) {
-          this.$store.direct.commit.updateClientObject({
-            target: this.client,
-            changes: {
-              formalContacts: this.client.formalContacts.concat([newContact.id])
-            }
-          });
-          void this.saveClient();
-          this.showFormalContact(newContact.id, true);
+          formalContacts: this.client.formalContacts.concat([newContact])
         }
       });
+      void this.saveClient();
+      this.showFormalContact(newContact.id, true);
     }
   }
   didShowBefore() {

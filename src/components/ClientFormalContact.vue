@@ -4,17 +4,16 @@
       :contact="contact" 
       no-birthday
       no-relationship
-      @save="saveTeam"
+      @save="saveClient"
       @delete="deleteContact"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import { Task, Intervention } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
-import ClientActionMixin from "../mixins/ClientActionMixin";
 import ContactView from "../components/ContactView.vue";
 
 @Component({
@@ -22,13 +21,13 @@ import ContactView from "../components/ContactView.vue";
     ContactView
   }
 })
-export default class ClientFormalContactView extends Mixins(RecordMixin, ClientActionMixin) {
+export default class ClientFormalContactView extends RecordMixin {
 
   get contact() {
     const contactId = this.$route.params.formalContactId;
 
     if (contactId) {
-      return this.team?.formalContacts.find(contact => contact.id == contactId);
+      return this.client?.formalContacts.find(contact => contact.id.equals(contactId));
     } else {
       return undefined;
     }
@@ -40,7 +39,7 @@ export default class ClientFormalContactView extends Mixins(RecordMixin, ClientA
     if (client) {
       client.forAllReminders((reminder, problem) => {
         if (reminder instanceof Intervention && 
-            (reminder.receiver == contactId) && 
+            (reminder.receiver?.equals(contactId)) && 
             !reminder.isFinished) {
           this.$store.direct.commit.endReminder({
             task: new Task(reminder, problem?.id, reminder.occurrences[0]),
@@ -51,7 +50,7 @@ export default class ClientFormalContactView extends Mixins(RecordMixin, ClientA
       this.$store.direct.commit.updateClientObject({
         target: client,
         changes: {
-          formalContacts: client.formalContacts.filter(id => id != contactId)
+          formalContacts: client.formalContacts.filter(contact => !contact.id.equals(contactId))
         }
       });
       void this.saveClient();

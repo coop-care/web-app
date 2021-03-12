@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { plainToClass, Type } from "class-transformer";
-import { IdentifiableObject, TeamMember, Contact } from ".";
+import { IdentifiableObject, TeamMember } from ".";
 
 export class Team extends IdentifiableObject {
   name: string;
@@ -11,8 +11,6 @@ export class Team extends IdentifiableObject {
   invites: TeamInvitation[] = [];
   @Type(() => TeamMember)
   alumni: TeamMember[] = [];
-  @Type(() => Contact)
-  formalContacts: Contact[] = [];
 
   static fromObject(object: any): Team | Team[] {
     return plainToClass(Team, object);
