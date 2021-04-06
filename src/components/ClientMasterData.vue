@@ -1,167 +1,167 @@
 <template>
-    <split-view
-      v-if="client"
-      class="min-height"
-      ref="splitView"
-      @did-show-before="didShowBefore"
-      @update:is-collapsed="isCollapsed = $event"
-    >
-      <template v-slot:before>
-        <q-list 
-          class="text-size-adjust-md q-mb-xl"
+  <split-view
+    v-if="client"
+    class="min-height client-master-data-split-view"
+    ref="splitView"
+    @did-show-before="didShowBefore"
+    @update:is-collapsed="isCollapsed = $event"
+  >
+    <template v-slot:before>
+      <q-list 
+        class="text-size-adjust-md q-mb-xl"
+      >
+        <q-item class="q-px-sm q-pb-none text-subtitle1 text-weight-bold">
+          <q-item-section>
+            <q-item-label class="ellipsis">{{ client.contact.name }}</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <action-menu
+              :items="clientActions(client)"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item 
+          clickable
+          @click="showRoute('clientHealthInformation')"
+          v-ripple
+          :active="$route.name == 'clientHealthInformation' || (!isCollapsed && isDefaultRoute)"
+          class="q-pl-lg q-pr-sm active-background"
         >
-          <q-item class="q-px-sm q-pb-none text-subtitle1 text-weight-bold">
-            <q-item-section>
-              <q-item-label class="ellipsis">{{ client.contact.name }}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <action-menu
-                :items="clientActions(client)"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item 
-            clickable
-            @click="showRoute('clientHealthInformation')"
-            v-ripple
-            :active="$route.name == 'clientHealthInformation' || (!isCollapsed && isDefaultRoute)"
-            class="q-pl-lg q-pr-sm active-background"
-          >
-            <q-item-section>
-              <q-item-label>{{ $t("healthInformation") }}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-icon
-                name="fas fa-angle-right"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item 
-            clickable
-            @click="showRoute('clientContactData')"
-            v-ripple
-            :active="$route.name == 'clientContactData'"
-            class="q-pl-lg q-pr-sm active-background"
-          >
-            <q-item-section>
-              <q-item-label>{{ $t("contactDetails") }}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-icon
-                name="fas fa-angle-right"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item
-            clickable
-            @click="showRoute('clientAgreements')"
-            v-ripple
-            :active="$route.name == 'clientAgreements'"
-            class="q-pl-lg q-pr-sm active-background"
-          >
-            <q-item-section>
-              <q-item-label>{{ $t("agreements") }}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-icon
-                name="fas fa-angle-right"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item class="q-mt-sm q-px-sm q-pb-none text-subtitle1 text-weight-bold">
-            <q-item-section>
-              <q-item-label class="ellipsis">{{ $t("informalContacts") }}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-btn
-                v-if="!isDisabled"
-                icon="add"
-                round
-                outline
-                size="10.5px"
-                color="primary"
-                @click.stop="addInformalContact"
-                :title="$t('addContact')"
-                class="shadow-1"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item
-            clickable
-            v-for="contact in client.informalContacts"
-            :key="contact.idAsKey"
-            v-ripple
-            :active="$route.name == 'clientInformalContact' && contact.id.equals($route.params.informalContactId)"
-            active-class="text-primary"
-            class="q-pl-lg q-pr-sm active-background"
-            @click="showInformalContact(contact.id)"
-          >
-            <q-item-section>
-              <q-item-label :class="!contact.name ? 'text-italic' : ''">
-                {{ contact.name || $t("withoutNames") }}
-              </q-item-label>
-              <q-item-label caption>
-                {{ describeInformalContact(contact) }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-icon
-                name="fas fa-angle-right"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item 
-            class="q-mt-sm q-px-sm q-pb-none text-subtitle1 text-weight-bold"
-          >
-            <q-item-section>
-              <q-item-label class="ellipsis">{{ $t("formalContacts") }}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-btn
-                v-if="!isDisabled"
-                icon="add"
-                round
-                outline
-                size="10.5px"
-                color="primary"
-                @click.stop="addFormalContact"
-                :title="$t('addContact')"
-                class="shadow-1"
-              />
-            </q-item-section>
-          </q-item>
-          <q-item
-            clickable
-            v-for="contact in client.formalContacts"
-            :key="contact.idAsKey"
-            v-ripple
-            :active="$route.name == 'clientFormalContact' && contact.id.equals($route.params.formalContactId)"
-            active-class="text-primary"
-            class="q-pl-lg q-pr-sm active-background"
-            @click="showFormalContact(contact.id)"
-          >
-            <q-item-section>
-              <q-item-label :class="!contact.name ? 'text-italic' : ''">
-                {{ contact.name || $t("withoutNames") }}
-              </q-item-label>
-              <q-item-label caption>
-                {{ describeFormalContact(contact) }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-icon
-                name="fas fa-angle-right"
-              />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </template>
+          <q-item-section>
+            <q-item-label>{{ $t("healthInformation") }}</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon
+              name="fas fa-angle-right"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item 
+          clickable
+          @click="showRoute('clientContactData')"
+          v-ripple
+          :active="$route.name == 'clientContactData'"
+          class="q-pl-lg q-pr-sm active-background"
+        >
+          <q-item-section>
+            <q-item-label>{{ $t("contactDetails") }}</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon
+              name="fas fa-angle-right"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          @click="showRoute('clientAgreements')"
+          v-ripple
+          :active="$route.name == 'clientAgreements'"
+          class="q-pl-lg q-pr-sm active-background"
+        >
+          <q-item-section>
+            <q-item-label>{{ $t("agreements") }}</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon
+              name="fas fa-angle-right"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item class="q-mt-sm q-px-sm q-pb-none text-subtitle1 text-weight-bold">
+          <q-item-section>
+            <q-item-label class="ellipsis">{{ $t("informalContacts") }}</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn
+              v-if="!isDisabled"
+              icon="add"
+              round
+              outline
+              size="10.5px"
+              color="primary"
+              @click.stop="addInformalContact"
+              :title="$t('addContact')"
+              class="shadow-1"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          v-for="contact in client.informalContacts"
+          :key="contact.idAsKey"
+          v-ripple
+          :active="$route.name == 'clientInformalContact' && contact.id.equals($route.params.informalContactId)"
+          active-class="text-primary"
+          class="q-pl-lg q-pr-sm active-background"
+          @click="showInformalContact(contact.id)"
+        >
+          <q-item-section>
+            <q-item-label :class="!contact.name ? 'text-italic' : ''">
+              {{ contact.name || $t("withoutNames") }}
+            </q-item-label>
+            <q-item-label caption>
+              {{ describeInformalContact(contact) }}
+            </q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon
+              name="fas fa-angle-right"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item 
+          class="q-mt-sm q-px-sm q-pb-none text-subtitle1 text-weight-bold"
+        >
+          <q-item-section>
+            <q-item-label class="ellipsis">{{ $t("formalContacts") }}</q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn
+              v-if="!isDisabled"
+              icon="add"
+              round
+              outline
+              size="10.5px"
+              color="primary"
+              @click.stop="addFormalContact"
+              :title="$t('addContact')"
+              class="shadow-1"
+            />
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          v-for="contact in client.formalContacts"
+          :key="contact.idAsKey"
+          v-ripple
+          :active="$route.name == 'clientFormalContact' && contact.id.equals($route.params.formalContactId)"
+          active-class="text-primary"
+          class="q-pl-lg q-pr-sm active-background"
+          @click="showFormalContact(contact.id)"
+        >
+          <q-item-section>
+            <q-item-label :class="!contact.name ? 'text-italic' : ''">
+              {{ contact.name || $t("withoutNames") }}
+            </q-item-label>
+            <q-item-label caption>
+              {{ describeFormalContact(contact) }}
+            </q-item-label>
+          </q-item-section>
+          <q-item-section side>
+            <q-icon
+              name="fas fa-angle-right"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </template>
 
-      <template v-slot:after>
-        <client-health-information v-if ="isDefaultRoute"/>
-        <router-view v-else />
-      </template>
-    </split-view>
+    <template v-slot:after>
+      <client-health-information v-if ="isDefaultRoute"/>
+      <router-view v-else />
+    </template>
+  </split-view>
 </template>
 
 <style lang="sass">
@@ -170,6 +170,12 @@
     color: #bbbbbb
   &.active-background.q-item--active .fa-angle-right
     color: var(--q-color-primary)
+.client-master-data-split-view
+  @media print
+    .q-splitter__separator
+      display: none
+    .q-splitter__before
+      width: 0 !important
 </style>
 
 <script lang="ts">

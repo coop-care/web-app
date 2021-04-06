@@ -495,5 +495,6 @@
   "discardProblem": "Discard problem",
   "organizationName": "Company or organization",
   "contactIsAnOrganization": "Contact is an organization",
-  "addAcademicTitleButton": "Add degree"
+  "addAcademicTitleButton": "Add degree",
+  "tasksForDay": "Tasks for"
 }

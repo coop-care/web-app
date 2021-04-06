@@ -1,5 +1,6 @@
 <template>
   <div class="min-height overflow-auto">
+    <div class="text-h6 text-center q-mb-sm print-only">{{ $t("reportTitle") }}</div>
     <div 
       v-if="clientProblems.length"
       class="q-mb-xl q-pa-xs overflow-auto"

@@ -140,7 +140,7 @@
             v-bind:key="index"
             class="rating row no-wrap"
           >
-            <div class="row no-wrap items-center q-mr-xs">
+            <div class="row no-wrap items-center q-mr-xs print-color">
               <div
                 v-for="(color, colorIndex) in rating.colors"
                 :key="'rating-' + index + '-' + colorIndex"
@@ -171,7 +171,7 @@
           />
         </div>
         <div v-if="lastOutcome">
-          <div class="row q-col-gutter-md">
+          <div class="problem-summary-ratings row q-col-gutter-md">
             <div class="col-12 col-sm-4">
               <rating-chart
                 :ratings="knowledgeData"
@@ -300,6 +300,11 @@
   height: 6.5em
   overflow: hidden
   line-height: 1.3em
+.problem-summary-ratings
+  @media print
+    canvas
+      width: 100% !important
+      height: auto !important
 </style>
 
 <script lang="ts">

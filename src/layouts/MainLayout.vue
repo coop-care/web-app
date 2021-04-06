@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh Lpr lff">
-    <q-header class="bg-white">
+    <q-header class="bg-white print-hide">
       <q-toolbar
         :class="'shadow-3 bg-primary ' + ($q.screen.lt.sm ? 'q-px-none' : '')"
         style="z-index: 1000"
@@ -54,6 +54,9 @@
     </q-header>
 
     <q-page-container>
+      <div class="print-only text-black text-center text-subtitle2 border-bottom-grey">
+        {{ [title, subtitle].filter(Boolean).join(" – ") }}
+      </div>
       <router-view />
     </q-page-container>
   </q-layout>

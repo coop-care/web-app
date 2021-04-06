@@ -3,6 +3,7 @@
     v-model="isVisible"
     content-class="bg-grey-2 dense-avatar"
     show-if-above
+    class="print-hide"
   >
     <pull-to-refresh>
       <q-list>

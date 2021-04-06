@@ -495,5 +495,6 @@
   "discardProblem": "Problem verwerfen",
   "organizationName": "Firma oder Organisation",
   "contactIsAnOrganization": "Kontakt ist eine Organisation",
-  "addAcademicTitleButton": "Titel hinzufügen"
+  "addAcademicTitleButton": "Titel hinzufügen",
+  "tasksForDay": "Aufgaben für"
 }

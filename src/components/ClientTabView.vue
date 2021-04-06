@@ -3,7 +3,7 @@
     <q-tabs
       v-model="selectedTab"
       no-caps
-      class="client-tabs border-bottom-grey q-mb-md text-primary"
+      class="client-tabs border-bottom-grey q-mb-md text-primary print-hide"
       :inline-label="$q.screen.gt.xs"
       :dense="!$q.screen.gt.xs"
       align="center"
@@ -116,6 +116,8 @@
 .client-overview
   @media (max-width: $breakpoint-xs-max)
     padding: 8px
+  @media print
+    padding: .75cm 0 0
 </style>
 
 <script lang="ts">

@@ -40,7 +40,7 @@
           </q-popup-proxy>
         </q-btn>
       </div>
-      <div class="q-mr-sm selected-date">
+      <div class="q-mr-sm selected-date print-hide">
         <div class="text-h6 ellipsis">
           {{ formattedDate({ weekday: "long" }) }}
           {{ todayHint }}
@@ -50,6 +50,10 @@
             formattedDate({ year: "numeric", month: "long", day: "numeric" })
           }}
         </div>
+      </div>
+      <div class="text-h6 print-only">
+        {{ $t("tasksForDay") }}
+        {{ formattedDate({ weekday: "long",  year: "numeric", month: "long", day: "numeric" }) }}
       </div>
       <div class="q-mt-xs">
         <q-btn
