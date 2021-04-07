@@ -18,14 +18,14 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.9.17",
+    "@quasar/extras": "^1.10.2",
     "chart.js": "^2.9.4",
     "class-transformer": "^0.4.0",
     "core-js": "^3.8.2",
     "direct-vuex": "^0.12.1",
     "luxon": "^1.25.0",
     "mongodb-stitch-browser-sdk": "^4.8.0",
-    "quasar": "^1.15.4",
+    "quasar": "^1.15.10",
     "reflect-metadata": "^0.1.13",
     "rrule": "^2.6.6",
     "timeago.js": "^4.0.2",
@@ -35,7 +35,7 @@
     "vue-property-decorator": "^9.1.2"
   },
   "devDependencies": {
-    "@quasar/app": "^2.1.15",
+    "@quasar/app": "^2.2.4",
     "@quasar/quasar-app-extension-qenv": "^1.1.0",
     "@quasar/quasar-app-extension-qmarkdown": "^1.4.1",
     "@types/bson": "^4.0.3",
