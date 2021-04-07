@@ -496,5 +496,10 @@
   "organizationName": "Firma oder Organisation",
   "contactIsAnOrganization": "Kontakt ist eine Organisation",
   "addAcademicTitleButton": "Titel hinzufügen",
-  "tasksForDay": "Aufgaben für"
+  "tasksForDay": "Aufgaben für",
+  "newFormalContactTitle": "Neuer formeller Kontakt",
+  "findKnownContact": "Einen bekannten Kontakt finden",
+  "addSelectedContact": "Ausgewählten Kontakt hinzufügen",
+  "addNewContact": "Neuen Kontakt hinzufügen",
+  "or": "oder"
 }

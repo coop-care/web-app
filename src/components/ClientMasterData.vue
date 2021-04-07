@@ -265,7 +265,14 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
     }
   }
   addFormalContact() {
-    if (this.client) {
+    const formalContactIds = this.client?.formalContacts
+      .map(contact => contact.id.toHexString()) || [];
+    const knownContacts = this.$store.direct.getters.formalContacts
+      .filter(contact => !formalContactIds.includes(contact.id.toHexString()));
+
+    if (knownContacts.length > 0) {
+      this.showRoute("clientFormalContact", {formalContactId: "new"});
+    } else if (this.client) {
       const newContact = new Contact();
       this.$store.direct.commit.updateClientObject({
         target: this.client,

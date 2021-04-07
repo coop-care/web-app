@@ -1,3 +1,4 @@
+import { ObjectID } from "bson";
 import { defineGetters } from "direct-vuex";
 import { store, StateInterface } from ".";
 import { Client, ProblemRecord, Contact } from "../models";
@@ -53,8 +54,8 @@ export default defineGetters<StateInterface>()({
 
     professionLabels: state => {
         return [... new Set(
-            Contact.professionTypes.concat(state.teams
-                .flatMap(team => team.formalContacts)
+            Contact.professionTypes.concat(state.clients
+                .flatMap(client => client.formalContacts)
                 .flatMap(contact =>
                     contact.profession ? [contact.profession] : []
                 )
@@ -97,4 +98,19 @@ export default defineGetters<StateInterface>()({
             )
         )];
     },
+
+    referenceCountForFormalContact: state => (contactId: ObjectID) =>
+        state.clients.flatMap(client => client.formalContacts.filter(
+            contact => contact.id.equals(contactId)
+        )).length,
+
+    formalContacts: state =>
+        Object.values(
+            state.clients.reduce((map, client) => {
+                client.formalContacts.forEach(contact =>
+                    map[contact.id.toHexString()] = contact
+                );
+                return map;
+            }, {} as Record<string, Contact>)
+        )
 });

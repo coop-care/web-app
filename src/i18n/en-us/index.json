@@ -496,5 +496,10 @@
   "organizationName": "Company or organization",
   "contactIsAnOrganization": "Contact is an organization",
   "addAcademicTitleButton": "Add degree",
-  "tasksForDay": "Tasks for"
+  "tasksForDay": "Tasks for",
+  "newFormalContactTitle": "New formal contact",
+  "findKnownContact": "Find a known contact",
+  "addSelectedContact": "Add selected contact",
+  "addNewContact": "Add new contact",
+  "or": "or"
 }
