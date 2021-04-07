@@ -501,5 +501,6 @@
   "findKnownContact": "Einen bekannten Kontakt finden",
   "addSelectedContact": "Ausgewählten Kontakt hinzufügen",
   "addNewContact": "Neuen Kontakt hinzufügen",
-  "or": "oder"
+  "or": "oder",
+  "contactNotFound": "Keine Kontaktdaten gefunden."
 }

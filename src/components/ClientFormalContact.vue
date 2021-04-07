@@ -72,6 +72,13 @@
       @delete="deleteContact"
     />
   </div>
+
+  <div
+    v-else
+    :class="['q-pt-xs q-pb-md text-center text-body1 text-grey-7 text-italic', $q.screen.gt.xs ? 'q-px-md' : 'q-px-xs']"
+  >
+    {{ $t("contactNotFound") }}
+  </div>
 </template>
 
 <script lang="ts">
@@ -189,8 +196,7 @@ export default class ClientFormalContactView extends RecordMixin {
         }
       });
       void this.saveClient();
-      const parentRoute = this.$route.matched[this.$route.matched.length - 2];
-      void this.$router.replace({name: parentRoute.name, params: this.$route.params});
+      setTimeout(() => window.scrollTo({top: 0, behavior: "smooth"}))
     }
   }
 }

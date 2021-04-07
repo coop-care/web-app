@@ -40,6 +40,7 @@ import { Vue, Component, Prop, Ref } from "vue-property-decorator";
 @Component
 export default class SplitViewView extends Vue {
   @Prop({ type: Number, default: 300 }) readonly minSlotWidth!: number;
+  @Prop({ type: Number, default: 0 }) readonly scrollOffsetTop!: number;
   @Ref() readonly beforeContainer!: HTMLElement;
   @Ref() readonly afterContainer!: HTMLElement;
 
@@ -102,6 +103,14 @@ export default class SplitViewView extends Vue {
   showAfter(animate = true) {
     this.isBeforeVisible = false;
     this.showVisible(animate);
+
+    const scrollTop = (this.$el?.getBoundingClientRect().top || 0) + window.pageYOffset + this.scrollOffsetTop;
+
+    if (window.pageYOffset > scrollTop) {
+      window.scrollTo({
+        top: scrollTop
+      });
+    }
   }
   animate(from: number, to: number, duration: number, easing: (progress: number) => number = t => t,  handler: (value: number) => void) {
     let start: DOMHighResTimeStamp;

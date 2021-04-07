@@ -3,6 +3,7 @@
     v-if="client"
     class="min-height client-master-data-split-view"
     ref="splitView"
+    :scrollOffsetTop="-60"
     @did-show-before="didShowBefore"
     @update:is-collapsed="isCollapsed = $event"
   >
