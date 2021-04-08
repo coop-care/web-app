@@ -109,6 +109,11 @@ export default class ClientFormalContactView extends RecordMixin {
       return undefined;
     }
   }
+  get referenceCount() {
+    return this.contact 
+      ? this.$store.direct.getters.referenceCountForFormalContact(this.contact.id)
+      : 0;
+  }
   get knownContacts() {
     const formalContactIds = this.client?.formalContacts
       .map(contact => contact.id.toHexString()) || [];

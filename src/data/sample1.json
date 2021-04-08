@@ -118,7 +118,79 @@
         "customFields": []
       }
     ],
-    "formalContacts": [],
+    "formalContacts": [
+      {
+        "id": "wo7kh8ch10",
+        "sex": "",
+        "firstName": "Susanne",
+        "lastName": "Weiß",
+        "relationship": "",
+        "profession": "generalPractitionerProfession",
+        "degree": "Dr. med.",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "centralOfficeLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [
+          {
+            "label": "workLabel",
+            "value": "hallo@hausarzt-praxis-weiss.de"
+          }
+        ],
+        "postalAddresses": [
+          {
+            "label": "workLabel",
+            "value": {
+              "street1": "Gerade Straße 4",
+              "street2": "",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      },
+      {
+        "id": "wo7kh8ch11",
+        "sex": "",
+        "firstName": "",
+        "lastName": "",
+        "relationship": "",
+        "profession": "pharmacyProfession",
+        "degree": "",
+        "organization": "Löwen-Apotheke",
+        "isOrganization": true,
+        "phoneNumbers": [
+          {
+            "label": "centralOfficeLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [],
+        "postalAddresses": [
+          {
+            "label": "workLabel",
+            "value": {
+              "street1": "Gerade Straße 4",
+              "street2": "",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      }
+    ],
     "unrelatedReminders": [
       {
         "id": "ns70waxbq8",
@@ -804,7 +876,79 @@
         "customFields": []
       }
     ],
-    "formalContacts": [],
+    "formalContacts": [
+      {
+        "id": "wo7kh8ch12",
+        "sex": "",
+        "firstName": "Holger",
+        "lastName": "Roth",
+        "relationship": "",
+        "profession": "generalPractitionerProfession",
+        "degree": "Dr. med.",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "centralOfficeLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [
+          {
+            "label": "workLabel",
+            "value": "info@hausarzt-praxis-roth.de"
+          }
+        ],
+        "postalAddresses": [
+          {
+            "label": "workLabel",
+            "value": {
+              "street1": "Hauptstraße 7",
+              "street2": "",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      },
+      {
+        "id": "wo7kh8ch11",
+        "sex": "",
+        "firstName": "",
+        "lastName": "",
+        "relationship": "",
+        "profession": "pharmacyProfession",
+        "degree": "",
+        "organization": "Löwen-Apotheke",
+        "isOrganization": true,
+        "phoneNumbers": [
+          {
+            "label": "centralOfficeLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [],
+        "postalAddresses": [
+          {
+            "label": "workLabel",
+            "value": {
+              "street1": "Gerade Straße 4",
+              "street2": "",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      }
+    ],
     "unrelatedReminders": [
       {
         "id": "yt4hil4bix",
