@@ -40,7 +40,7 @@ const availableLocales = Object.keys(messages);
 
 const i18n = new VueI18n({
   locale: matchLocale(
-    Quasar.lang.getLocale(),
+    Quasar.lang.getLocale() || "",
     availableLocales,
     defaultLocale
   ),
@@ -55,7 +55,7 @@ export default boot(({ app, Vue }) => {
   app.store?.subscribe((mutation, state: StateInterface) => {
     if (mutation.type == "setCurrentUser" || mutation.type == "updateCurrentUser") {
       const newLocale = state.currentUser?.locale ||
-        matchLocale(Quasar.lang.getLocale(), availableLocales, defaultLocale);
+        matchLocale(Quasar.lang.getLocale() || "", availableLocales, defaultLocale);
 
       if (newLocale != i18n.locale) {
         i18n.locale = newLocale;
