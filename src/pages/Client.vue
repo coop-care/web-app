@@ -138,5 +138,12 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
       })
       .catch(console.error);
   }
+
+  mounted() {
+    // no client is selected and the client drawer is not visible
+    if (!this.clientDrawer?.isVisible && this.clients.length > 0 && !this.$route.params.clientId) {
+      this.$root.$emit("toggle-client-drawer");
+    }
+  }
 }
 </script>
