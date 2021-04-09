@@ -11,9 +11,9 @@
     :content-class="'radius-md shadow-5 text-' + color"
     :title="title || $t('moreActions')"
   >
-    <q-list>
+    <q-list class="print-hide">
       <div
-        v-for="(item, index) in items"
+        v-for="(item, index) in sortedItems"
         v-bind:key="index"
         v-if="item.condition !== false"
       >
@@ -65,5 +65,9 @@ export default class ActionMenu extends Vue {
   @Prop({ type: String, default: ""}) readonly title!: string;
   @Prop({ type: Array, default: () => [] }) readonly items!: ActionItem[];
   @Prop({ type: String, default: "primary" }) readonly color!: string;
+
+  get sortedItems() {
+    return this.items.slice().sort((a, b) => Number(a.isDestructive || false) - Number(b.isDestructive || false))
+  }
 }
 </script>

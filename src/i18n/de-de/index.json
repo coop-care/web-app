@@ -502,5 +502,6 @@
   "addSelectedContact": "Ausgewählten Kontakt hinzufügen",
   "addNewContact": "Neuen Kontakt hinzufügen",
   "or": "oder",
-  "contactNotFound": "Keine Kontaktdaten gefunden."
+  "contactNotFound": "Keine Kontaktdaten gefunden.",
+  "print": "Drucken"
 }
