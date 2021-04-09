@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 (2021-04-09)
+
+- community care: collect contact information from the client’s informal and formal network
+- community care: manage tasks related to client contacts
+- collect and assess client medical data and master data
+- all client tabs and reports received print-friendly styles
+- improved rating charts with details on hover using a faster, canvas-based chart library
+
 ## 0.3.0 (2021-02-04)
 
 - team collaboration: add, invite or remove users to or from teams, manage roles and access rights
