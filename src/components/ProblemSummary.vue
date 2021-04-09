@@ -171,47 +171,10 @@
           />
         </div>
         <div v-if="lastOutcome">
-          <div class="problem-summary-ratings row q-col-gutter-md">
-            <div class="col-12 col-sm-4">
-              <rating-chart
-                :ratings="knowledgeData"
-                :height="200"
-                color="outcome"
-                class="full-width non-selectable"
-                @hover="outcomeIndex = $event"
-              />
-              <simplified-markdown
-                :text="knowledgeTitle"
-                class="q-pl-lg block rating-caption"
-              />
-            </div>
-            <div class="col-12 col-sm-4">
-              <rating-chart
-                :ratings="behaviourData"
-                :height="200"
-                color="outcome"
-                class="full-width non-selectable"
-                @hover="outcomeIndex = $event"
-              />
-              <simplified-markdown
-                :text="behaviourTitle"
-                class="q-pl-lg block rating-caption"
-              />
-            </div>
-            <div class="col-12 col-sm-4">
-              <rating-chart
-                :ratings="statusData"
-                :height="200"
-                color="outcome"
-                class="full-width non-selectable"
-                @hover="outcomeIndex = $event"
-              />
-              <simplified-markdown
-                :text="statusTitle"
-                class="q-pl-lg block rating-caption"
-              />
-            </div>
-          </div>
+          <rating-chart-group 
+            :outcomes="outcomes"
+            :teamMembers="teamMembers"
+          />
         </div>
         <div
           class="text-italic"
@@ -296,32 +259,22 @@
   width: .5rem
   height: .5rem
   border-radius: .25rem
-.rating-caption
-  height: 6.5em
-  overflow: hidden
-  line-height: 1.3em
-.problem-summary-ratings
-  @media print
-    canvas
-      width: 100% !important
-      height: auto !important
 </style>
 
 <script lang="ts">
 import { Component, Prop, Watch, Mixins } from "vue-property-decorator";
-import { format } from "timeago.js";
 import RecordMixin from "../mixins/RecordMixin";
 import WarningMixin from "../mixins/WarningMixin";
 import ActionMenu from "../components/ActionMenu.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
-import RatingChart, { Rating } from "../components/RatingChart.vue";
+import RatingChartGroup from "../components/RatingChartGroup.vue";
 import { ProblemRecord, Problem } from "../models";
 
 @Component({
   components: {
-    SimplifiedMarkdown,
     ActionMenu,
-    RatingChart
+    SimplifiedMarkdown,
+    RatingChartGroup
   }
 })
 export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
@@ -329,7 +282,6 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
   @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
   @Prop({type: Boolean, default: true}) readonly isExpandable!: boolean;
   isExpanded = false;
-  outcomeIndex = -1;
 
   @Watch("isExpanded")
   onIsExpandedChanged(value: boolean) {
@@ -426,70 +378,12 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
       }
     ]
   }
-  get knowledgeData() {
-    return this.outcomes.map(outcome => {
-      return {
-        createdAt: outcome.createdAt || new Date(),
-        personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
-        user: outcome.user,
-        ...outcome.knowledge
-      } as Rating
-    });
-  }
-  get behaviourData() {
-    return this.outcomes.map(outcome => {
-      return {
-        createdAt: outcome.createdAt || new Date(),
-        personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
-        user: outcome.user,
-        ...outcome.behaviour
-      } as Rating
-    });
-  }
-  get statusData() {
-    return this.outcomes.map(outcome => {
-      return {
-        createdAt: outcome.createdAt || new Date(),
-        personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
-        user: outcome.user,
-        ...outcome.status
-      } as Rating
-    });
-  }
-  get knowledgeTitle() {
-    return this.makeChartTitle(this.knowledgeData, 0)
-  }
-  get behaviourTitle() {
-    return this.makeChartTitle(this.behaviourData, 1)
-  }
-  get statusTitle() {
-    return this.makeChartTitle(this.statusData, 2)
-  }
 
   get record() {
     return this.problemRecord || this.getRecordFromStore();
   }
   get outcomes() {
     return this.record?.outcomes || [];
-  }
-
-  makeChartTitle(ratings: Rating[], ratingType: number) {
-    const index = this.outcomeIndex;
-    const rating = ratings[index] || ratings[ratings.length - 1];
-    const ratingTexts = this.terminology.problemRatingScale.ratings[ratingType].scale;
-    const obersationText = ratingTexts[rating.observation - 1].title;
-    const expectationText = ratingTexts[rating.expectation - 1].title;
-    const username = this.teamMembers[rating.user]?.username;
-    const locale = this.$root.$i18n.locale;
-
-    return [
-      format(rating.createdAt, locale) + " (" + username + "):",
-      "**" + obersationText + " (" + rating.observation + ")**", 
-      (rating.comment ? "***" + this.$t("quotedText", {quote: rating.comment}) + "***" : ""), 
-      (rating.expectation != rating.observation
-        ? this.$t("expectedRatingShortTitle") + ": " + expectationText + " (" + rating.expectation + ")"
-        : "")
-    ].filter(Boolean).join("\n");
   }
 
   toggleExpansion() {

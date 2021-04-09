@@ -20,15 +20,19 @@ export type Rating = {
     mixins: [mixins.reactiveProp]
 })
 export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
+  @Prop({type: Number, default: -1}) readonly value!: number;
   @Prop({type: Object, default: () => {{}}}) readonly chartData!: ChartData;
   @Prop({type: Array, default: () => []}) readonly ratings!: Rating[];
-  @Prop({type: Number, default: -1}) readonly selectedIndex!: number;
   @Prop({type: String, default: "primary"}) readonly color!: string;
   @Ref() readonly canvas!: HTMLCanvasElement;
 
   @Watch("ratings")
   onDataChanged() {
     this.redrawData();
+  }
+  @Watch("value")
+  onValueChanged() {
+    this.onHoverPoint();
   }
   @Watch("color")
   onColorChanged() {
@@ -77,8 +81,6 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
     return {
       spanGaps: true,
       cubicInterpolationMode: "monotone",
-      pointHoverRadius: 5,
-      pointRadius: 0,
       pointBackgroundColor: this.colorValue
     }
   }
@@ -99,6 +101,8 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
         borderColor: this.colorValue,
         backgroundColor: this.makeGradient(),
         data: ratings.map(item => item.observation),
+        pointHoverRadius: 0,
+        pointRadius: 0,
         ...this.datasetOptions
       }, {
         label: "Erwartung",
@@ -107,6 +111,8 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
         borderColor: this.colorValue,
         backgroundColor: this.colorValue,
         data: ratings.map(item => item.expectation),
+        pointHoverRadius: 0,
+        pointRadius: 0,
         ...this.datasetOptions
       }]
     }
@@ -131,10 +137,22 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
   }
   onTooltip(tooltip: ChartTooltipModel) {
     if (tooltip.dataPoints?.length) {
-      this.$emit("hover", tooltip.dataPoints[0].index);
+      this.$emit("input", tooltip.dataPoints[0].index);
     } else {
-      this.$emit("hover", -1);
+      this.$emit("input", -1);
     }
+  }
+  onHoverPoint() {
+    const pointRadii = Array.from(
+      {length: this.ratings.length}, 
+      (_ , index) => index != this.value ? 0 : 5
+    );
+
+    this.chart?.data.datasets?.forEach(item => {
+      item.pointRadius = pointRadii;
+      item.pointHoverRadius = pointRadii;
+    });
+    this.chart?.update({duration: 300});
   }
   onResize() {
     const datasets = this.chart?.data.datasets;

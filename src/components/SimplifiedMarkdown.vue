@@ -9,9 +9,7 @@
         v-for="(fragment, index) in line.replace(/(\*+)([^*]+)(\*+)/g, '|$1$2$3|').split('|')"
         v-bind:key="lineIndex + '.' + index"
         :class="classes(fragment)"
-      >
-        {{ fragment.replace(/\*/g, "") }}
-      </span>
+      >{{ fragment.replace(/\*/g, "") }}</span>
     </span>
   </span>
 </template>
