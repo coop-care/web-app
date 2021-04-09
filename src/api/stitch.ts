@@ -119,6 +119,8 @@ export default class StitchApi implements CoopCareApiInterface {
                 if (!data) {
                     return undefined;
                 } else {
+                    // @ts-ignore
+                    data._id = data?._id?.toHexString();
                     const user = User.fromObject(data) as User;
                     user.email = stitchUser.profile.email || "";
                     return user;
@@ -158,6 +160,8 @@ export default class StitchApi implements CoopCareApiInterface {
             .find({}, {})
             .toArray()
             .then(data => {
+                // @ts-ignore
+                data.forEach(item => item._id = item._id?.toHexString())
                 const result = TeamMember.fromObject(data) as TeamMember[];
                 return result;
             })
@@ -189,6 +193,8 @@ export default class StitchApi implements CoopCareApiInterface {
                 }, {})
                 .toArray()
                 .then(data => {
+                    // @ts-ignore
+                    data.forEach(item => item._id = item._id?.toHexString())
                     const result = Client.fromObject(data) as Client[];
                     return result;
                 })
@@ -199,6 +205,8 @@ export default class StitchApi implements CoopCareApiInterface {
             .find({ _id: id }, {})
             .first()
             .then(data => {
+                // @ts-ignore
+                data._id = data?._id?.toHexString();
                 return Client.fromObject(data) as Client;
             });
     }
@@ -228,6 +236,8 @@ export default class StitchApi implements CoopCareApiInterface {
                 .find({}, {})
                 .toArray()
                 .then(data => {
+                    // @ts-ignore
+                    data.forEach(item => item._id = item._id?.toHexString())
                     const result = Team.fromObject(data) as Team[];
                     return result;
                 })

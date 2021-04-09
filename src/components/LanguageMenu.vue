@@ -32,8 +32,8 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class LanguageMenu extends Vue {
-  @Prop(String) readonly anchor: string | undefined;
-  @Prop(String) readonly self: string | undefined;
+  @Prop({ type: String, default: "bottom middle"}) readonly anchor!: string;
+  @Prop({ type: String, default: "top middle"}) readonly self!: string;
   @Prop(Boolean) readonly fit!: boolean;
 
   changeLocale(locale: string) {

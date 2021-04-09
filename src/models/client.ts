@@ -1,12 +1,58 @@
 import "reflect-metadata";
 import { Type, plainToClass } from "class-transformer";
-import { MasterData, ProblemRecord, Reminder, ChangeRecord, IdentifiableObject } from ".";
+import { ProblemRecord, Intervention, Contact, Reminder, ChangeRecord, IdentifiableObject, CustomField } from ".";
+import { LabeledValue } from "./types";
+import { ObjectID } from "bson";
 
+export class ClientHealthInformation {
+    static readonly asstiveTechnologyTypes = ["nursingCareBedType", "toiletChairType", "raisedToiletSeatType", "rollatorType", "mobilityAidsType", "hearingAidsType", "glassesType", "upperDentureType", "lowerDentureType"];
+    static readonly predefinedTypes = [...new Set(ClientHealthInformation.asstiveTechnologyTypes)];
+
+    diagnoses: string[] = [];
+    diabetes = "";
+    anticoagulant = "";
+    pain = "";
+    allergies: string[] = [];
+    assistiveTechnology: string[] = [];
+    existingAdvanceHealthcareDirective: boolean | null = null;
+    existingHealthcareProxy: boolean | null = null;
+    likes = "";
+    dislikes = "";
+    biography = "";
+    notes = "";
+};
+export class ClientAgreements {
+    @Type(() => Date)
+    initialInterview?: Date = undefined;
+    @Type(() => Date)
+    initialCare?: Date = undefined;
+    @Type(() => Date)
+    contractHandover?: Date = undefined;
+    @Type(() => Date)
+    costEstimateHandover?: Date = undefined;
+    @Type(() => Date)
+    documentationCreated?: Date = undefined;
+    @Type(() => Date)
+    carePlanCreated?: Date = undefined;
+    existingInitialPrescription: boolean | null = null;
+    keyHandoverRequired: boolean | null = null;
+};
 export class Client extends IdentifiableObject {
-    @Type(() => MasterData)
-    masterData: MasterData = new MasterData();
+    @Type(() => Contact)
+    contact: Contact = new Contact();
     @Type(() => ProblemRecord)
     problems: ProblemRecord[] = [];
+    @Type(() => Intervention)
+    unrelatedReminders: Intervention[] = [];
+    @Type(() => Contact)
+    informalContacts: Contact[] = [];
+    @Type(() => Contact)
+    formalContacts: Contact[] = [];
+    @Type(() => ClientHealthInformation)
+    healthInformation = new ClientHealthInformation();
+    @Type(() => ClientAgreements)
+    agreements = new ClientAgreements();
+    customFields: CustomField<any>[] = [];
     @Type(() => Date)
     createdAt = new Date();
     @Type(() => Date)
@@ -19,12 +65,24 @@ export class Client extends IdentifiableObject {
     }
 
     static sortByLastName(a: Client, b: Client) {
-        return a.masterData.lastName.localeCompare(b.masterData.lastName) ||
-            a.masterData.firstName.localeCompare(b.masterData.firstName);
+        return a.contact.lastName.localeCompare(b.contact.lastName) ||
+            a.contact.firstName.localeCompare(b.contact.firstName);
+    }
+    static sortByActiveAndLastName(a: Client, b: Client) {
+        if (!!a.leftAt && !b.leftAt) {
+            return 1;
+        } else if (!a.leftAt && !!b.leftAt) {
+            return -1;
+        } else {
+            return Client.sortByLastName(a, b);
+        }
+    }
+    static sortByLabel(a: LabeledValue<any>, b: LabeledValue<any>) {
+        return a.label.localeCompare(b.label);
     }
 
     get name() {
-        return this.masterData.name;
+        return this.contact.name;
     }
     get dueTasksCount() {
         let count = 0;
@@ -40,18 +98,23 @@ export class Client extends IdentifiableObject {
         return this.problems.filter(problem => !problem.resolvedAt).length;
     }
 
-    findProblemRecord(id: string) {
-        return this.problems.find(problem => problem.id == id);
+    findProblemRecord(id?: string) {
+        return !!id ? this.problems.find(problem => problem.id == id) : undefined;
+    }
+
+    findContact(id?: string | ObjectID) {
+        return !!id ? this.informalContacts.find(contact => contact.id.equals(id)) : undefined;
     }
 
     findReminder(id: string) {
         return this.problems
             .flatMap(problem => problem.reminders)
+            .concat(this.unrelatedReminders)
             .find(reminder => reminder.id == id);
     }
 
     forAllReminders(
-        method: (reminder: Reminder, problem: ProblemRecord) => any
+        method: (reminder: Reminder, problem?: ProblemRecord) => any
     ) {
         this.problems.forEach(problem => {
             if (!problem.createdAt) {
@@ -61,10 +124,11 @@ export class Client extends IdentifiableObject {
                 method(reminder, problem);
             });
         });
+        this.unrelatedReminders.forEach(reminder => method(reminder));
     }
 
     forActiveReminders(
-        method: (reminder: Reminder, problem: ProblemRecord) => any
+        method: (reminder: Reminder, problem?: ProblemRecord) => any
     ) {
         this.problems.forEach(problem => {
             if (
@@ -76,12 +140,15 @@ export class Client extends IdentifiableObject {
             }
 
             problem.reminders.forEach(reminder => {
-                if (reminder.isCompleted) {
-                    return;
+                if (!reminder.isFinished) {
+                    method(reminder, problem);
                 }
-
-                method(reminder, problem);
             });
+        });
+        this.unrelatedReminders.forEach(reminder => {
+            if (!reminder.isFinished) {
+                method(reminder);
+            }
         });
     }
 
@@ -93,8 +160,9 @@ export class Client extends IdentifiableObject {
         this.forActiveReminders((reminder, problem) =>
             reminder.calculateOccurrences(
                 !!this.leftAt ||
-                !!problem.resolvedAt ||
-                !problem.problem.isHighPriority
+                (!!problem &&
+                    (!!problem.resolvedAt ||
+                        !problem.problem.isHighPriority))
             )
         );
     }

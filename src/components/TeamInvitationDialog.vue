@@ -75,8 +75,9 @@ export default class TeamInvitationDialog extends Vue {
       .flatMap(member => 
         member.email && !existingTeamMembers.includes(member.userId) ? 
         [{
-          value: member.email,
-          displayValue: member.username
+          label: member.username,
+          description: member.email,
+          value: member.email
         }] : []
       );
   }

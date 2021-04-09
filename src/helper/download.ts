@@ -9,10 +9,11 @@ export function downloadJSON(data: any, filename: string) {
     const json = JSON.stringify(
         data,
         (key, value) => {
-            if (["_id", "user_id"].includes(key)) {
-                return undefined;
+            if (key == "_id") {
+                return Array.prototype.map.call(new Uint8Array(value.id), x => ("00" + x.toString(16)).slice(-2)).join("");
+            } else {
+                return value;
             }
-            return value;
         },
         2
     );

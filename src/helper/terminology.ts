@@ -37,6 +37,7 @@ export interface InterventionScheme extends HasTitle {
     targets: HasTitleDescriptionCode[];
 }
 export interface Category extends HasTitleDescriptionCode {
+    shortTitleKey?: string
     icon?: string;
 }
 export interface ProblemRatingScale extends HasTitle {
@@ -281,6 +282,7 @@ export function makeTerminologyWithMaps(terminologyJSON: any) {
     };
 
     terminology.interventionScheme.categories.forEach(category => {
+        category.shortTitleKey = "categoryShortTitle" + category.code;
         category.icon = result.icons.category[category.code];
         result.categoryByCode[category.code] = category;
     });
@@ -290,7 +292,7 @@ export function makeTerminologyWithMaps(terminologyJSON: any) {
 
     result.icons.severity = [
         "fas fa-grin-wink",
-        "fas fa-smile",
+        "fas fa-meh",
         "fas fa-frown-open"
     ];
     result.icons.scope = ["fas fa-user", "fas fa-user-friends", "fas fa-users"];

@@ -194,7 +194,7 @@
               >
                 <q-item-section>
                   <q-item-label>
-                    {{ client.masterData.name }}
+                    {{ client.contact.name }}
                   </q-item-label>
                   <q-item-label 
                     v-if="captionForClient(client)"
@@ -292,20 +292,12 @@ export default class TeamSettingsPage extends ClientActionMixin {
   get allMembers() {
     return this.team?.allMembers
       .map(id => this.$store.direct.state.teamMembers[id] || {})
-      .sort((a, b) => a.username?.localeCompare(b.username)) || [];
+      .sort(TeamMember.sortByName) || [];
   }
   get clients() {
     return this.$store.direct.state.clients
       .slice()
-      .sort((a, b) => {
-        if (!!a.leftAt && !b.leftAt) {
-          return 1;
-        } else if (!a.leftAt && !!b.leftAt) {
-          return -1;
-        } else {
-          return Client.sortByLastName(a, b);
-        }
-      }) || [];
+      .sort(Client.sortByActiveAndLastName) || [];
   }
   get invitations() {
     return this.team?.invites.filter(invitation => !invitation.acceptedAt) || [];

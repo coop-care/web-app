@@ -4,6 +4,18 @@
     hide-default-footer
   >
     <problem-summary-container>
+      <div class="row justify-center">
+        <q-btn
+          @click="discardProblemRecord"
+          color="primary"
+          rounded
+          no-caps
+          flat
+          icon="fas fa-undo-alt"
+          :label="discardButtonLabel"
+          class="icon-smaller"
+        />
+      </div>
       <q-stepper
         v-model="step"
         ref="stepper"
@@ -308,6 +320,9 @@ export default class ProblemRecording extends RecordValidator {
       return this.$t("editProblemAnyway");
     }
   }
+  get discardButtonLabel() {
+    return this.$t("discardProblem")
+  }
   get isDataAvailable() {
     return this.$route.params.problemId == "new" || !!this.record;
   }
@@ -337,7 +352,25 @@ export default class ProblemRecording extends RecordValidator {
     this.$store.direct.commit.saveNewProblemRecord(this.$route.params);
     void this.$store.direct.dispatch
       .saveClient(this.$route.params)
-      .then(() => this.$router.back());
+      .then(() => this.navigateToClient());
+  }
+  discardProblemRecord() {
+    if (this.record) {
+      const recordId = this.record.id;
+      this.updateAndSave(this.client, {
+        problems: this.client?.problems.filter(record => record.id != recordId)
+      });
+    }
+
+    this.navigateToClient();
+  }
+  navigateToClient() {
+    this.$router.push({
+      name: "clientReport", 
+      params: {
+        clientId: this.$route.params.clientId
+      }
+    });
   }
 
   created() {

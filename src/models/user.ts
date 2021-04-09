@@ -4,13 +4,16 @@ import { IdentifiableObject } from ".";
 
 export class TeamMember extends IdentifiableObject {
     userId: string;
-    email?: string;
+    email?: string = undefined;
     firstName = "";
     lastName = "";
     signature = "";
 
     static fromObject(object: any): TeamMember | TeamMember[] {
         return plainToClass(TeamMember, object);
+    }
+    static sortByName(a: TeamMember, b: TeamMember) {
+        return a.username?.localeCompare(b.username);
     }
 
     constructor(userId: string, email?: string) {
@@ -24,7 +27,7 @@ export class TeamMember extends IdentifiableObject {
     }
     get username() {
         return (
-            [this.firstName, this.lastName].filter(name => name).join(" ") ||
+            [this.firstName, this.lastName].filter(Boolean).join(" ") ||
             this.signature
         );
     }

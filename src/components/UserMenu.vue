@@ -45,8 +45,8 @@
             <q-icon name="fas fa-angle-right" />
           </q-item-section>
           <language-menu
-            :anchor="$q.screen.gt.xs ? 'top left' : ''"
-            :self="$q.screen.gt.xs ? 'top right' : ''"
+            :anchor="$q.screen.gt.xs ? 'top left' : 'bottom middle'"
+            :self="$q.screen.gt.xs ? 'top right' : 'top middle'"
             :fit="true"
           />
         </q-item>
@@ -76,7 +76,22 @@
         <q-item
           clickable
           v-close-popup
-          @click="openMail()"
+          @click="print"
+        >
+          <q-item-section side>
+            <q-icon name="fas fa-print" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t("print") }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-separator />
+
+        <q-item
+          clickable
+          v-close-popup
+          @click="openMail"
         >
           <q-item-section side>
             <q-icon name="feedback" />
@@ -161,6 +176,9 @@ export default class UserMenu extends Vue {
   }
   get isDemo() {
     return process.env.BACKEND == "demo";
+  }
+  print() {
+    window.print();
   }
   openMail() {
     location.href = "mailto:feedback@coopcare.de?subject=Feedback";

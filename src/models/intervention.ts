@@ -1,12 +1,29 @@
 import "reflect-metadata";
-import { Reminder } from "./reminder";
+import { Type, Transform, TransformFnParams } from "class-transformer";
+import { Reminder } from ".";
 import { Term } from "./term";
+import { ObjectID } from "bson";
+
+const fromObjectID = ({ value, obj, key }: TransformFnParams) =>
+    (value as ObjectID)?.toHexString();
+
+const toObjectID = ({ value }: TransformFnParams) =>
+    value != undefined ? new ObjectID((value as string).padStart(12)) : undefined;
 
 export class Intervention extends Reminder {
     categoryCode = "";
     targetCode = "";
     detailsCode = "";
     details = "";
+    comment?: string = undefined;
+    @Transform(fromObjectID, { toPlainOnly: true })
+    @Transform(toObjectID, { toClassOnly: true })
+    assignee?: ObjectID = undefined;
+    @Transform(fromObjectID, { toPlainOnly: true })
+    @Transform(toObjectID, { toClassOnly: true })
+    receiver?: ObjectID = undefined;
+    @Type(() => Intervention)
+    arrangedIntervention?: Intervention = undefined;
 
     static fromCode(code: string) {
         const codes = code.split(".");
@@ -26,7 +43,9 @@ export class Intervention extends Reminder {
     }
     get category() {
         if (this.categoryCode) {
-            return new Term("terminology.categoryByCode." + this.categoryCode);
+            const term = new Term("terminology.categoryByCode." + this.categoryCode);
+            term.shortTitle = "categoryShortTitle" + this.categoryCode;
+            return term;
         } else {
             return new Term("");
         }
@@ -37,5 +56,8 @@ export class Intervention extends Reminder {
         } else {
             return new Term("");
         }
+    }
+    get intervention() {
+        return this.arrangedIntervention || this;
     }
 }

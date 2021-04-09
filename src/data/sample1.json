@@ -1,9 +1,269 @@
 [
   {
-    "masterData": {
+    "_id": "6033c10377b850dbb17c7d40",
+    "contact": {
+      "id": "60doopry5n",
+      "sex": "",
       "firstName": "Erika",
-      "lastName": "Bauer"
+      "lastName": "Bauer",
+      "birthday": "1946-04-11T22:00:00.000Z",
+      "relationship": "",
+      "profession": "",
+      "degree": "",
+      "organization": "",
+      "isOrganization": false,
+      "phoneNumbers": [
+        {
+          "label": "privateLabel",
+          "value": "0123 456789"
+        }
+      ],
+      "emailAddresses": [],
+      "postalAddresses": [
+        {
+          "label": "privateLabel",
+          "value": {
+            "street1": "Veilchenweg 27",
+            "street2": "EG",
+            "postalCode": "12345",
+            "city": "Musterstadt",
+            "region": "",
+            "country": "Deutschland"
+          }
+        }
+      ],
+      "notes": "",
+      "customFields": []
     },
+    "healthInformation": {
+      "diagnoses": [
+        "Demenz",
+        "Depression"
+      ],
+      "diabetes": "",
+      "anticoagulant": "",
+      "pain": "",
+      "allergies": [],
+      "assistiveTechnology": [],
+      "existingAdvanceHealthcareDirective": false,
+      "existingHealthcareProxy": false,
+      "likes": "Rock'n'Roll Musik",
+      "dislikes": "",
+      "biography": "",
+      "notes": ""
+    },
+    "agreements": {
+      "initialInterview": "2020-01-04T08:00:00.000Z",
+      "initialCare": "2020-01-06T09:00:00.000Z",
+      "contractHandover": "2020-01-06T23:00:00.000Z",
+      "costEstimateHandover": "2020-01-06T23:00:00.000Z",
+      "documentationCreated": "2020-01-03T23:00:00.000Z",
+      "carePlanCreated": "2020-01-03T23:00:00.000Z",
+      "existingInitialPrescription": true,
+      "keyHandoverRequired": true
+    },
+    "informalContacts": [
+      {
+        "id": "wo7kh8ch1p",
+        "sex": "",
+        "firstName": "Kurt",
+        "lastName": "Bauer",
+        "relationship": "childRelationship",
+        "profession": "",
+        "degree": "",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "privateLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [],
+        "postalAddresses": [],
+        "notes": "",
+        "customFields": []
+      },
+      {
+        "id": "hxakikx5x4",
+        "sex": "",
+        "firstName": "Brigitte",
+        "lastName": "Mayer",
+        "relationship": "neighbourRelationship",
+        "profession": "",
+        "degree": "",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "privateLabel",
+            "value": "0123 456789"
+          }
+        ],
+        "emailAddresses": [],
+        "postalAddresses": [
+          {
+            "label": "privateLabel",
+            "value": {
+              "street1": "Veilchenweg 27",
+              "street2": "EG",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      }
+    ],
+    "formalContacts": [
+      {
+        "id": "wo7kh8ch10",
+        "sex": "",
+        "firstName": "Susanne",
+        "lastName": "Weiß",
+        "relationship": "",
+        "profession": "generalPractitionerProfession",
+        "degree": "Dr. med.",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "centralOfficeLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [
+          {
+            "label": "workLabel",
+            "value": "hallo@hausarzt-praxis-weiss.de"
+          }
+        ],
+        "postalAddresses": [
+          {
+            "label": "workLabel",
+            "value": {
+              "street1": "Gerade Straße 4",
+              "street2": "",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      },
+      {
+        "id": "wo7kh8ch11",
+        "sex": "",
+        "firstName": "",
+        "lastName": "",
+        "relationship": "",
+        "profession": "pharmacyProfession",
+        "degree": "",
+        "organization": "Löwen-Apotheke",
+        "isOrganization": true,
+        "phoneNumbers": [
+          {
+            "label": "centralOfficeLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [],
+        "postalAddresses": [
+          {
+            "label": "workLabel",
+            "value": {
+              "street1": "Gerade Straße 4",
+              "street2": "",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      }
+    ],
+    "unrelatedReminders": [
+      {
+        "id": "ns70waxbq8",
+        "createdAt": "2020-01-04T16:55:55.640Z",
+        "categoryCode": "03",
+        "targetCode": "60",
+        "detailsCode": "",
+        "details": "",
+        "receiver": "hxakikx5x4",
+        "arrangedIntervention": {
+          "id": "16senxcb0m",
+          "recurrenceRules": {
+            "rrules": [
+              {
+                "freq": 2,
+                "wkst": 0,
+                "tzid": "Europe/Berlin"
+              }
+            ],
+            "exrules": [],
+            "rdates": [],
+            "exdates": [],
+            "tzid": "Europe/Berlin"
+          },
+          "occurrences": [],
+          "createdAt": "2020-01-04T16:55:55.640Z",
+          "categoryCode": "",
+          "targetCode": "",
+          "detailsCode": "",
+          "details": "Betreuung",
+          "assignee": "hxakikx5x4"
+        }
+      },
+      {
+        "id": "tpkg0c7vg7",
+        "occurrences": [],
+        "createdAt": "2020-04-14T16:56:15.891Z",
+        "categoryCode": "03",
+        "targetCode": "60",
+        "detailsCode": "",
+        "details": "",
+        "receiver": "wo7kh8ch1p",
+        "arrangedIntervention": {
+          "id": "1b4sx86vx3",
+          "recurrenceRules": {
+            "rrules": [
+              {
+                "freq": 2,
+                "wkst": 0,
+                "tzid": "Europe/Berlin"
+              }
+            ],
+            "exrules": [],
+            "rdates": [],
+            "exdates": [],
+            "tzid": "Europe/Berlin"
+          },
+          "occurrences": [],
+          "createdAt": "2020-04-14T16:56:15.891Z",
+          "categoryCode": "",
+          "targetCode": "",
+          "detailsCode": "",
+          "details": "Betreuung",
+          "assignee": "wo7kh8ch1p"
+        }
+      }
+    ],
+    "_completedOccurrences": [
+      [
+        "ns70waxbq8",
+        7
+      ]
+    ],
     "problems": [
       {
         "id": "gdponox9uk",
@@ -72,7 +332,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:10:13.502Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "49",
             "detailsCode": "",
@@ -135,7 +395,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:03:35.797Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "_additionalRatingsKBS": [
           [
@@ -219,7 +479,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:16:44.484Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "41",
             "detailsCode": "",
@@ -296,7 +556,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:12:05.029Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:17:32.777Z",
         "resolvedAt": null,
@@ -372,7 +632,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:23:27.284Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "33",
             "detailsCode": "",
@@ -462,9 +722,9 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:19:22.135Z",
-          "completedAt": null
+          "finishedAt": null
         },
-        "createdAt": "2020-01-04T13:25:22.022Z",
+        "createdAt": "2020-01-01T13:25:22.022Z",
         "resolvedAt": null,
         "tag": ""
       }
@@ -473,10 +733,358 @@
     "leftAt": null
   },
   {
-    "masterData": {
+    "_id": "6033c10377b850dbb17c7d41",
+    "contact": {
+      "id": "47mt7qblfv",
+      "sex": "",
       "firstName": "Frida",
-      "lastName": "Richter"
+      "lastName": "Richter",
+      "birthday": "1941-07-12T22:00:00.000Z",
+      "relationship": "",
+      "profession": "",
+      "degree": "",
+      "organization": "",
+      "isOrganization": false,
+      "phoneNumbers": [
+        {
+          "label": "privateLabel",
+          "value": "0123 456789"
+        }
+      ],
+      "emailAddresses": [],
+      "postalAddresses": [
+        {
+          "label": "privateLabel",
+          "value": {
+            "street1": "Bäckergasse 12",
+            "street2": "1. OG",
+            "postalCode": "12345",
+            "city": "Musterstadt",
+            "region": "",
+            "country": "Deutschland"
+          }
+        }
+      ],
+      "notes": "zweimal klingeln oder anrufen",
+      "customFields": []
     },
+    "healthInformation": {
+      "diagnoses": [
+        "Herzinsuffizienz"
+      ],
+      "diabetes": "",
+      "anticoagulant": "",
+      "pain": "",
+      "allergies": [],
+      "assistiveTechnology": [],
+      "existingAdvanceHealthcareDirective": true,
+      "existingHealthcareProxy": false,
+      "likes": "Schokoladeneis",
+      "dislikes": "Ananas",
+      "biography": "",
+      "notes": ""
+    },
+    "agreements": {
+      "initialInterview": "2020-01-04T10:00:00.000Z",
+      "initialCare": "2020-01-07T09:00:00.000Z",
+      "contractHandover": "2020-01-05T23:00:00.000Z",
+      "costEstimateHandover": "2020-01-05T23:00:00.000Z",
+      "documentationCreated": "2020-01-03T23:00:00.000Z",
+      "carePlanCreated": "2020-01-03T23:00:00.000Z",
+      "existingInitialPrescription": false,
+      "keyHandoverRequired": false
+    },
+    "informalContacts": [
+      {
+        "id": "i4g2opn3pq",
+        "sex": "",
+        "firstName": "Barbara",
+        "lastName": "Müller",
+        "relationship": "childRelationship",
+        "profession": "",
+        "degree": "",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "privateLabel",
+            "value": "0123 456789"
+          }
+        ],
+        "emailAddresses": [
+          {
+            "label": "privateLabel",
+            "value": "b.mueller@example.com"
+          }
+        ],
+        "postalAddresses": [],
+        "notes": "",
+        "customFields": []
+      },
+      {
+        "id": "iebrx56anf",
+        "sex": "",
+        "firstName": "Anna",
+        "lastName": "Richter",
+        "relationship": "childRelationship",
+        "profession": "",
+        "degree": "",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "privateLabel",
+            "value": "0123 456789"
+          }
+        ],
+        "emailAddresses": [],
+        "postalAddresses": [],
+        "notes": "",
+        "customFields": []
+      },
+      {
+        "id": "6sz98h3lqr",
+        "sex": "",
+        "firstName": "Margarete",
+        "lastName": "Schmidt",
+        "relationship": "friendRelationship",
+        "profession": "",
+        "degree": "",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "privateLabel",
+            "value": "0123 456789"
+          }
+        ],
+        "emailAddresses": [],
+        "postalAddresses": [
+          {
+            "label": "privateLabel",
+            "value": {
+              "street1": "Bäckergasse 12",
+              "street2": "2. OG",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      }
+    ],
+    "formalContacts": [
+      {
+        "id": "wo7kh8ch12",
+        "sex": "",
+        "firstName": "Holger",
+        "lastName": "Roth",
+        "relationship": "",
+        "profession": "generalPractitionerProfession",
+        "degree": "Dr. med.",
+        "organization": "",
+        "isOrganization": false,
+        "phoneNumbers": [
+          {
+            "label": "centralOfficeLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [
+          {
+            "label": "workLabel",
+            "value": "info@hausarzt-praxis-roth.de"
+          }
+        ],
+        "postalAddresses": [
+          {
+            "label": "workLabel",
+            "value": {
+              "street1": "Hauptstraße 7",
+              "street2": "",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      },
+      {
+        "id": "wo7kh8ch11",
+        "sex": "",
+        "firstName": "",
+        "lastName": "",
+        "relationship": "",
+        "profession": "pharmacyProfession",
+        "degree": "",
+        "organization": "Löwen-Apotheke",
+        "isOrganization": true,
+        "phoneNumbers": [
+          {
+            "label": "centralOfficeLabel",
+            "value": "01234 56789"
+          }
+        ],
+        "emailAddresses": [],
+        "postalAddresses": [
+          {
+            "label": "workLabel",
+            "value": {
+              "street1": "Gerade Straße 4",
+              "street2": "",
+              "postalCode": "12345",
+              "city": "Musterstadt",
+              "region": "",
+              "country": "Deutschland"
+            }
+          }
+        ],
+        "notes": "",
+        "customFields": []
+      }
+    ],
+    "unrelatedReminders": [
+      {
+        "id": "yt4hil4bix",
+        "createdAt": "2020-01-04T13:35:00.402Z",
+        "categoryCode": "03",
+        "targetCode": "60",
+        "detailsCode": "",
+        "details": "",
+        "receiver": "i4g2opn3pq",
+        "arrangedIntervention": {
+          "id": "z18r40buug",
+          "recurrenceRules": {
+            "rrules": [
+              {
+                "freq": 2,
+                "wkst": 0,
+                "tzid": "Europe/Berlin"
+              }
+            ],
+            "exrules": [],
+            "rdates": [],
+            "exdates": [],
+            "tzid": "Europe/Berlin"
+          },
+          "occurrences": [],
+          "createdAt": "2020-01-04T13:35:00.402Z",
+          "categoryCode": "",
+          "targetCode": "",
+          "detailsCode": "",
+          "details": "Betreuung",
+          "assignee": "i4g2opn3pq"
+        }
+      },
+      {
+        "id": "rrve0oje9i",
+        "createdAt": "2020-01-04T13:35:17.343Z",
+        "categoryCode": "03",
+        "targetCode": "60",
+        "detailsCode": "",
+        "details": "",
+        "receiver": "6sz98h3lqr",
+        "arrangedIntervention": {
+          "id": "e86hzd5ccd",
+          "occurrences": [],
+          "createdAt": "2020-01-04T13:35:17.343Z",
+          "categoryCode": "",
+          "targetCode": "",
+          "detailsCode": "",
+          "details": "Medikamente besorgen",
+          "assignee": "6sz98h3lqr"
+        }
+      },
+      {
+        "id": "cpxc3hycou",
+        "occurrences": [],
+        "createdAt": "2020-04-04T13:37:55.624Z",
+        "categoryCode": "03",
+        "targetCode": "60",
+        "detailsCode": "",
+        "details": "",
+        "receiver": "i4g2opn3pq",
+        "arrangedIntervention": {
+          "id": "6zmspmtbj0",
+          "occurrences": [],
+          "createdAt": "2020-04-04T13:37:55.624Z",
+          "categoryCode": "",
+          "targetCode": "",
+          "detailsCode": "",
+          "details": "Unterstützung bei Kompressionsstrümpfen",
+          "assignee": "i4g2opn3pq"
+        }
+      },
+      {
+        "id": "xn5u5v3l3c",
+        "occurrences": [],
+        "createdAt": "2020-04-04T13:38:40.386Z",
+        "categoryCode": "01",
+        "targetCode": "07",
+        "detailsCode": "",
+        "details": "Kompressionsstrümpfe",
+        "receiver": "i4g2opn3pq"
+      },
+      {
+        "id": "kujw8tlx30",
+        "createdAt": "2020-01-07T10:02:45.955Z",
+        "categoryCode": "03",
+        "targetCode": "60",
+        "detailsCode": "",
+        "details": "",
+        "receiver": "6sz98h3lqr",
+        "arrangedIntervention": {
+          "id": "udpqy2vcy2",
+          "occurrences": [],
+          "createdAt": "2020-01-07T10:02:45.955Z",
+          "categoryCode": "",
+          "targetCode": "",
+          "detailsCode": "",
+          "details": "Fahrten",
+          "assignee": "6sz98h3lqr"
+        }
+      },
+      {
+        "id": "i3xeo4trp1",
+        "occurrences": [],
+        "createdAt": "2020-04-04T13:39:40.632Z",
+        "categoryCode": "03",
+        "targetCode": "60",
+        "detailsCode": "",
+        "details": "",
+        "receiver": "6sz98h3lqr",
+        "arrangedIntervention": {
+          "id": "vfcy89xd8u",
+          "occurrences": [],
+          "createdAt": "2020-04-04T13:39:40.632Z",
+          "categoryCode": "",
+          "targetCode": "",
+          "detailsCode": "",
+          "details": "Medikamenteneinnahme beobachten",
+          "assignee": "6sz98h3lqr"
+        }
+      }
+    ],
+    "_completedOccurrences": [
+      [
+        "yt4hil4bix",
+        7
+      ],
+      [
+        "rrve0oje9i",
+        3
+      ],
+      [
+        "kujw8tlx30",
+        4
+      ]
+    ],
     "problems": [
       {
         "id": "gotzinopsb",
@@ -512,7 +1120,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:30:28.265Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:32:21.000Z",
         "resolvedAt": null,
@@ -552,7 +1160,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:32:22.889Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:33:56.199Z",
         "resolvedAt": null,
@@ -632,7 +1240,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:42:49.424Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "50",
             "detailsCode": "",
@@ -642,15 +1250,15 @@
         "_completedOccurrences": [
           [
             "us5noyybrm",
-            1
+            4
           ],
           [
             "ry2i92jbph",
-            1
+            4
           ],
           [
             "tg247nhgg8",
-            1
+            4
           ]
         ],
         "outcomes": [
@@ -712,7 +1320,7 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:33:58.994Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:43:48.673Z",
         "resolvedAt": null,
@@ -771,7 +1379,7 @@
             },
             "occurrences": [],
             "createdAt": "2020-01-04T13:47:23.697Z",
-            "completedAt": null,
+            "finishedAt": null,
             "categoryCode": "04",
             "targetCode": "32",
             "detailsCode": "",
@@ -781,11 +1389,11 @@
         "_completedOccurrences": [
           [
             "werxjw687z",
-            1
+            4
           ],
           [
             "u8uja28gs3",
-            1
+            4
           ]
         ],
         "outcomes": [
@@ -847,14 +1455,14 @@
           },
           "occurrences": [],
           "createdAt": "2020-01-04T13:43:55.858Z",
-          "completedAt": null
+          "finishedAt": null
         },
         "createdAt": "2020-01-04T13:48:08.383Z",
         "resolvedAt": null,
         "tag": ""
       }
     ],
-    "createdAt": "2020-01-04T13:30:25.409Z",
+    "createdAt": "2020-01-03T13:30:25.409Z",
     "leftAt": null
   }
 ]

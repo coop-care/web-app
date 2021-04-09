@@ -24,7 +24,7 @@ export class RatingReminder extends Reminder {
         this.recurrenceRules.exdate(startdate);
     }
 
-    get isCompleted() {
+    get isFinished() {
         return this.interval == 0;
     }
     get interval() {

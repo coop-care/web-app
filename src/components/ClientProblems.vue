@@ -1,33 +1,37 @@
 <template>
-  <div class="min-height">
-    <div
+  <div class="min-height overflow-auto">
+    <div class="text-h6 text-center q-mb-sm print-only">{{ $t("reportTitle") }}</div>
+    <div 
       v-if="clientProblems.length"
-      class="flex q-gutter-md q-my-md q-px-xs"
+      class="q-mb-xl q-pa-xs overflow-auto"
     >
-      <problem-summary
-        v-for="problemRecord in clientProblems"
-        v-bind:key="problemRecord.id"
-        :problemRecord="problemRecord"
-        :params="{
-          clientId: $route.params.clientId,
-          problemId: problemRecord.id
-        }"
-        :isDisabled="isDisabled"
-      />
+      <div class="flex q-gutter-md justify-center">
+        <problem-summary
+          v-for="problemRecord in clientProblems"
+          v-bind:key="problemRecord.id"
+          :problemRecord="problemRecord"
+          :params="{
+            clientId: $route.params.clientId,
+            problemId: problemRecord.id
+          }"
+        />
+      </div>
     </div>
 
     <div
       v-else
-      class="q-mt-lg q-px-lg"
+      class="q-mt-lg q-px-lg column items-center"
     >
-      <div class="text-body2 text-italic">{{ $t("noClientProblemRecords") }}</div>
+      <div class="text-body2 text-italic text-center">{{ $t("noClientProblemRecords") }}</div>
       <q-btn
+        v-if="!isDisabled"
         :label="$t('problemAdmission')"
         flat
         no-caps
+        rounded
         size="md"
         color="classification"
-        class="q-ml-lg q-mt-xs text-normal"
+        class="q-ml-lg q-mt-xs text-normal self-center"
         @click="addProblem"
       />
     </div>
@@ -49,17 +53,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
+import { ProblemRecord } from "../models";
+import RecordMixin from "../mixins/RecordMixin";
 import ProblemSummary from "../components/ProblemSummary.vue";
 
-@Component({ components: { ProblemSummary } })
-export default class ClientProblems extends Vue {
-  get client() {
-    return this.$store.direct.getters.getClient(this.$route.params);
+@Component({
+  components: {
+    ProblemSummary
   }
-  get isDisabled() {
-    return !!this.client?.leftAt;
-  }
+})
+export default class ClientProblems extends RecordMixin {
   get clientProblems() {
     const client = this.client;
     const problems = client ? client.problems : [];
@@ -67,15 +71,7 @@ export default class ClientProblems extends Vue {
       .filter((problem) => {
         return !problem.resolvedAt;
       })
-      .reverse()
-      .sort(
-        (first, second) =>
-          // sort order: draft first, then high priority followed by low priority
-          //@ts-ignore
-          !second.createdAt - !first.createdAt ||
-          //@ts-ignore
-          second.problem.isHighPriority - first.problem.isHighPriority
-      );
+      .sort(ProblemRecord.sortByPriorityAndCreatedAt);
   }
 
   addProblem() {

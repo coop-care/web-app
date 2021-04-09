@@ -9,9 +9,7 @@
         v-for="(fragment, index) in line.replace(/(\*+)([^*]+)(\*+)/g, '|$1$2$3|').split('|')"
         v-bind:key="lineIndex + '.' + index"
         :class="classes(fragment)"
-      >
-        {{ fragment.replace(/\*/g, "") }}
-      </span>
+      >{{ fragment.replace(/\*/g, "") }}</span>
     </span>
   </span>
 </template>
@@ -22,14 +20,16 @@ import { Vue, Component, Prop } from "vue-property-decorator";
 @Component
 export default class SimplifiedMarkdown extends Vue {
   @Prop({ type: String, default: ""}) readonly text!: string;
+  @Prop({ type: String, default: ""}) readonly boldClass!: string;
+  @Prop({ type: String, default: ""}) readonly italicClass!: string;
 
   classes(text: string) {
     let classes = "";
     if (text.startsWith("**")) {
-      classes += "text-bold ";
+      classes += "text-bold " + this.boldClass;
     }
     if (text.startsWith("***") || /^\*[^*]/.test(text)) {
-      classes += "text-italic ";
+      classes += "text-italic " + this.italicClass;
     }
     return classes;
   }

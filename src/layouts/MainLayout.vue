@@ -1,21 +1,19 @@
 <template>
   <q-layout view="hHh Lpr lff">
-    <q-header class="bg-white">
+    <q-header class="bg-white print-hide">
       <q-toolbar
         :class="'shadow-3 bg-primary ' + ($q.screen.lt.sm ? 'q-px-none' : '')"
         style="z-index: 1000"
       >
         <q-btn
-          v-if="
-            ($router.currentRoute.name || '').startsWith('client') && $q.screen.lt.md
-          "
+          v-if="hasMenuButton($router.currentRoute.name || '')"
           flat
           icon="menu"
           aria-label="menu"
           @click="$root.$emit('toggle-client-drawer')"
         />
         <q-btn
-          v-if="hasBackButton(this.$router.currentRoute.name)"
+          v-if="hasBackButton($router.currentRoute.name || '')"
           size="lg"
           dense
           no-caps
@@ -56,6 +54,9 @@
     </q-header>
 
     <q-page-container>
+      <div class="print-only text-black text-center text-subtitle2 border-bottom-grey">
+        {{ [title, subtitle].filter(Boolean).join(" – ") }}
+      </div>
       <router-view />
     </q-page-container>
   </q-layout>
@@ -88,8 +89,11 @@ import Banner from "../components/Banner.vue";
     Banner
   },
   meta() {
+    const isDemo = process.env.BACKEND == "demo";
     return {
+      title: "CoopCare" + (isDemo ? " – " + this.$t("demoAppTitle") : " App" ),
       meta: {
+        description: { name: "description", content: this.$t("appDescription") },
         google: { name: "google", content: "notranslate" },
         contentLanguage: {
           "http-equiv": "Content-Language",
@@ -105,7 +109,7 @@ export default class MainLayout extends Vue {
 
     if (route.path.startsWith("/client")) {
       if (this.selectedClient) {
-        return this.selectedClient.masterData.name;
+        return this.selectedClient.contact.name;
       } else if (route.params.clientId == "new") {
         return this.$t("newClient");
       } else {
@@ -148,15 +152,11 @@ export default class MainLayout extends Vue {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
 
-  hasBackButton(routeName: string | null | undefined) {
-    return ![
-      "client",
-      "clientReminders",
-      "clientReport",
-      "clientContacts",
-      "clientMasterData",
-      "login"
-    ].includes(routeName || "");
+  hasMenuButton(routeName: string) {
+    return routeName.startsWith("client") && this.$q.screen.lt.md;
+  }
+  hasBackButton(routeName: string) {
+    return !routeName.startsWith("client") && (routeName != "login");
   }
   showOnboardingForDemoVersion() {
     if (

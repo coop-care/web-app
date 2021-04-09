@@ -1,10 +1,35 @@
 // app global css in Sass form
-
-.unselectable
-  -webkit-user-select: none
-  -moz-user-select: none
-  -ms-user-select: none
-  user-select: none
+::selection
+  background: var(--q-color-primary)
+  color: #ffffff
+::-moz-selection
+  background: var(--q-color-primary)
+  color: #ffffff
+.selectable
+  -webkit-user-select: auto
+  -moz-user-select: auto
+  -ms-user-select: auto
+  user-select: auto
+.text-size-adjust-md
+  -webkit-size-adjust: 120%
+  -moz-size-adjust: 120%
+  -ms-size-adjust: 120%
+  text-size-adjust: 120%
+  button, .no-text-size-adjust
+    -webkit-size-adjust: auto
+    -moz-size-adjust: auto
+    -ms-size-adjust: auto
+    text-size-adjust: auto
+.break-word
+  word-wrap: break-word
+.hyphen
+  word-wrap: break-word
+  -webkit-hyphens: auto
+  -ms-hyphens: auto
+  hyphens: auto
+.auto-height
+  height: auto
+  min-height: auto
 .text-underline
   text-decoration: underline
 .section-heading
@@ -41,7 +66,7 @@
       margin-top: 0
     &.counter:before
       counter-increment: section
-      content: counter(section) ". "
+      content: counter(section) "."
 .intervention
   .editable-intervention
     counter-reset: intervention
@@ -49,12 +74,12 @@
     margin: 0.75em 0 0em
   .counter:before
     counter-increment: intervention
-    content: counter(intervention) ". "
+    content: counter(intervention) "."
 body
   counter-reset: always
 .counter:before
   counter-increment: always
-  content: counter(always) ". "
+  content: counter(always) "."
 .column-2
   column-count: 2
   column-gap: 2em
@@ -74,7 +99,7 @@ body
   -webkit-column-break-inside: avoid // Chrome, Safari
   page-break-inside: avoid // Theoretically FF 20+
   break-inside: avoid-column // IE 11
-.text-classification
+.text-classification, .icon-classification .q-icon
   color: var(--q-color-classification)
 .bg-classification
   background-color: var(--q-color-classification)
@@ -83,7 +108,7 @@ body
   background-color: var(--q-color-classification-bg)
 .border-classification
   border-color: var(--q-color-classification)
-.text-outcome
+.text-outcome, .icon-outcome .q-icon
   color: var(--q-color-outcome)
 .bg-outcome
   background-color: var(--q-color-outcome)
@@ -92,7 +117,7 @@ body
   background-color: var(--q-color-outcome-bg)
 .border-outcome
   border-color: var(--q-color-outcome)
-.text-intervention
+.text-intervention, .icon-intervention .q-icon
   color: var(--q-color-intervention)
 .bg-intervention
   background-color: var(--q-color-intervention)
@@ -105,6 +130,8 @@ body
   background-image: var(--q-color-primary-gd) !important
 .border-primary
   border-color: var(--q-color-primary)
+.border-bottom-grey
+  border-bottom: 1px solid #cccccc
 .radius-xs
   border-radius: 4px
 .radius-sm
@@ -119,6 +146,20 @@ body
   line-height: 1.2rem
 .line-height-15
   line-height: 1.5rem
+body.desktop .hover-primary .q-hoverable:hover > .q-focus-helper
+  background-color: var(--q-color-primary)
+.can-hover:hover, .active-background.q-item--active
+  position: relative
+  &::before
+    content: ''
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
+    z-index: -1
+    background-color: currentColor
+    opacity: .08
 .q-tab
   @media screen and (max-width: $breakpoint-xs-max)
     padding: 0 4px
@@ -142,6 +183,10 @@ body
   list-style-type: none
   margin: 0
   padding: 0
+@media screen and (max-width: $breakpoint-xs-max)
+  .no-padding-xs > .q-item
+    padding-left: 0
+    padding-right: 4px
 .signature
   border-radius: 50%
   padding: 0 .2em 0 0
@@ -165,6 +210,10 @@ body
   margin-top: 40vh
   padding-top: 20vh
   padding-bottom: 20vh
+.mb-row-dense
+  margin-bottom: 40px
+.icon-smaller .q-icon
+  font-size: 1.2em
 .q-markdown
   h1
     font-size: 2rem

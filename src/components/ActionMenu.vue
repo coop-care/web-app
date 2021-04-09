@@ -11,34 +11,34 @@
     :content-class="'radius-md shadow-5 text-' + color"
     :title="title || $t('moreActions')"
   >
-    <q-list>
+    <q-list class="print-hide">
       <div
-        v-for="(item, index) in items"
+        v-for="(item, index) in sortedItems"
         v-bind:key="index"
         v-if="item.condition !== false"
       >
-      <slot
-        v-if="item.customType"
-        :name="item.customType"
-      />
-      <q-separator v-else-if="item.name == '-'" />
-      <q-item
-        v-else
-        clickable
-        v-ripple
-        @click="item.action"
-        :class="item.isDestructive ? 'text-negative' : ''"
-      >
-        <q-item-section side>
-          <q-icon
-            :name="item.icon"
-            :color="item.isDestructive ? 'negative': color"
-          />
-        </q-item-section>
-        <q-item-section>
-          {{ item.name }}
-        </q-item-section>
-      </q-item>
+        <slot
+          v-if="item.customType"
+          :name="item.customType"
+        />
+        <q-separator v-else-if="item.name == '-'" />
+        <q-item
+          v-else
+          clickable
+          v-ripple
+          @click="item.action"
+          :class="item.isDestructive ? 'text-negative' : ''"
+        >
+          <q-item-section side>
+            <q-icon
+              :name="item.icon"
+              :color="item.isDestructive ? 'negative': color"
+            />
+          </q-item-section>
+          <q-item-section>
+            {{ item.name }}
+          </q-item-section>
+        </q-item>
       </div>
     </q-list>
   </q-btn-dropdown>
@@ -65,5 +65,9 @@ export default class ActionMenu extends Vue {
   @Prop({ type: String, default: ""}) readonly title!: string;
   @Prop({ type: Array, default: () => [] }) readonly items!: ActionItem[];
   @Prop({ type: String, default: "primary" }) readonly color!: string;
+
+  get sortedItems() {
+    return this.items.slice().sort((a, b) => Number(a.isDestructive || false) - Number(b.isDestructive || false))
+  }
 }
 </script>

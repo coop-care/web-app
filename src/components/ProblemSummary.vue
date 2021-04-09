@@ -1,11 +1,9 @@
 <template>
   <q-card
-    :class="
-      'radius-md bg-white text-body2 ' + (isExpanded ? 'expanded' : 'collapsed')
-    "
+    :class="['radius-md bg-white text-body2', (isExpanded ? 'expanded' : 'collapsed')]"
     :style="
       'transition: all 0s; width: 100%; ' +
-        (isExpanded ? 'max-width: 100%' : 'max-width: 320px')
+        (isExpanded ? 'max-width: calc(100% - 16px)' : 'max-width: 320px')
     "
     v-if="!!record"
   >
@@ -36,74 +34,17 @@
         </div>
         <div
           v-if="isExpanded && isInteractive"
-          class="q-gutter-xs"
           @click.prevent.stop=""
         >
-          <q-btn
-            v-if="!problem.isHighPriority"
-            :label="$t('prioritizeProblem')"
-            icon="fas fa-arrow-up"
-            @click="prioritizeProblemRecord"
-            rounded
-            outline
-            no-caps
-            size="12.5px"
+          <action-menu
+            :items="actionMenuItems"
             color="classification"
-            class="on-right shadow-1 bg-white"
-          />
-          <q-btn
-            v-if="!record.resolvedAt"
-            :label="$t('problemDismissal')"
-            icon="fas fa-check"
-            @click="dismissProblemRecord"
-            rounded
-            outline
-            no-caps
-            size="12.5px"
-            color="classification"
-            class="on-right shadow-1 bg-white"
           />
         </div>
       </div>
     </q-card-section>
 
     <q-card-section :class="sectionPadding">
-      <div
-        v-if="isDraft && isExpandable"
-        :class="'q-mb-md ' + (isExpanded ? 'q-mt-none' : 'q-mt-sm')"
-      >
-        <q-btn
-          :label="$t('editDraft')"
-          icon="edit"
-          :to="{
-            name: 'problem',
-            params: {
-              clientId: params.clientId,
-              problemId: params.problemId,
-              step: problem.code ? 3 : 1
-            }
-          }"
-          rounded
-          unelevated
-          dense
-          size="md"
-          color="negative"
-          class="shadow-1 q-px-xs q-mr-sm"
-          :disable="isDisabled"
-        />
-        <q-btn
-          v-if="isDraft && !isDisabled"
-          icon="delete_forever"
-          :title="$t('delete')"
-          @click="deleteDraft"
-          dense
-          round
-          unelevated
-          size="13.5px"
-          color="negative"
-          class="shadow-1"
-        />
-      </div>
       <div class="align-chips">
         <q-chip
           size="12px"
@@ -193,14 +134,13 @@
       <div v-if="!isExpanded">
         <div
           v-if="ratingsSummary.length"
-          class="text-outcome"
         >
           <div
             v-for="(rating, index) in ratingsSummary"
             v-bind:key="index"
             class="rating row no-wrap"
           >
-            <div class="row no-wrap items-center q-mr-xs">
+            <div class="row no-wrap items-center q-mr-xs print-color">
               <div
                 v-for="(color, colorIndex) in rating.colors"
                 :key="'rating-' + index + '-' + colorIndex"
@@ -231,26 +171,10 @@
           />
         </div>
         <div v-if="lastOutcome">
-          <div class="row q-col-gutter-md">
-            <div
-              class="col-12 col-sm-4"
-              v-for="(outcome, index) in outcomesForChart"
-              v-if="outcome"
-              v-bind:key="index"
-              ref="chartRow"
-            >
-              <apexchart
-                type="area"
-                :options="outcome.options"
-                :series="outcome.series"
-                width="100%"
-                height="160"
-                class="q-pa-none unselectable"
-              />
-              <div class="text-subtitle2">{{ outcome.title }}</div>
-              <div class="text-weight-light">{{ outcome.subtitle }}</div>
-            </div>
-          </div>
+          <rating-chart-group 
+            :outcomes="outcomes"
+            :teamMembers="teamMembers"
+          />
         </div>
         <div
           class="text-italic"
@@ -268,7 +192,7 @@
           :text="
             $tc('numberOfInterventions', record.interventions.length)
           "
-          class="text-intervention"
+          bold-class="text-intervention"
         />
       </div>
       <div v-else-if="isInteractive && problem.isHighPriority">
@@ -338,27 +262,25 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Component, Prop, Watch, Mixins } from "vue-property-decorator";
+import RecordMixin from "../mixins/RecordMixin";
 import WarningMixin from "../mixins/WarningMixin";
+import ActionMenu from "../components/ActionMenu.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
-import VueApexCharts from "vue-apexcharts";
-import { TerminologyWithMaps } from "../helper/terminology";
-import { getOutcomeAsChartData } from "../helper/apexChartData";
+import RatingChartGroup from "../components/RatingChartGroup.vue";
 import { ProblemRecord, Problem } from "../models";
-
-Vue.use(VueApexCharts);
 
 @Component({
   components: {
-    apexchart: VueApexCharts,
+    ActionMenu,
     SimplifiedMarkdown,
+    RatingChartGroup
   }
 })
-export default class ProblemSummary extends WarningMixin {
+export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
   @Prop({type: Object, default: {}}) readonly params!: Record<string, string>;
   @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
   @Prop({type: Boolean, default: true}) readonly isExpandable!: boolean;
-  @Prop(Boolean) readonly isDisabled!: boolean;
   isExpanded = false;
 
   @Watch("isExpanded")
@@ -387,24 +309,14 @@ export default class ProblemSummary extends WarningMixin {
     return this.record?.interventions || [];
   }
   get lastOutcome() {
-    if (this.record?.outcomes.length) {
-      return this.record.outcomes[this.record.outcomes.length - 1];
+    if (this.outcomes.length) {
+      return this.outcomes[this.outcomes.length - 1];
     } else {
       return undefined;
     }
   }
-  get isDraft() {
-    return !this.record?.createdAt;
-  }
   get isInteractive() {
-    return !this.isDraft && this.isExpanded && !this.isDisabled;
-  }
-  get outcomesForChart() {
-    if (this.record) {
-      return getOutcomeAsChartData(this.record, this);
-    } else {
-      return [];
-    }
+    return this.isExpanded && !this.isDisabled;
   }
   get sectionPadding() {
     if (this.$q.screen.lt.sm) {
@@ -442,20 +354,36 @@ export default class ProblemSummary extends WarningMixin {
       }
     });
   }
+  get actionMenuItems() {
+    return [
+      {
+        name: this.$t("prioritizeProblem"),
+        icon: "fas fa-arrow-up",
+        action: this.prioritizeProblemRecord,
+        condition: !this.problem.isHighPriority
+      },
+      {
+        name: this.$t("problemDismissal"),
+        icon: "fas fa-check",
+        action: this.dismissProblemRecord,
+        condition: !!this.record && !this.record.resolvedAt
+      },
+      {
+        name: this.$t("deleteNewProblem"),
+        icon: "fas fa-trash",
+        action: this.deleteProblemRecord,
+        condition: !!this.record && 
+          (Date.now() - 24 * 60 * 60 * 1000 < this.record.createdAt.getTime()),
+        isDestructive: true
+      }
+    ]
+  }
 
-  get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
-  }
-  get clientName() {
-    return (
-      this.$store.direct.getters.getClient(this.params)?.masterData.name || ""
-    );
-  }
-  get language() {
-    return this.$root.$i18n.locale;
-  }
   get record() {
     return this.problemRecord || this.getRecordFromStore();
+  }
+  get outcomes() {
+    return this.record?.outcomes || [];
   }
 
   toggleExpansion() {
@@ -505,36 +433,17 @@ export default class ProblemSummary extends WarningMixin {
     }
   }
 
+  deleteProblemRecord() {
+    if (this.record && this.client) {
+      const recordId = this.record.id;
+      this.updateAndSave(this.client, {
+        problems: this.client?.problems.filter(record => record.id != recordId)
+      });
+    }
+  }
+
   getRecordFromStore() {
     return this.$store.direct.getters.getProblemRecordById(this.params);
-  }
-
-  deleteDraft() {
-    this.$store.direct.commit.deleteDraftProblemRecord(this.params);
-    void this.$store.direct.dispatch.saveClient(this.params);
-  }
-
-  destroyed() {
-    // sometimes chart instances are not removed from Apex store, especially after intensive window resizing,
-    // which causes duplicate entries and therefore errors when the charts are drawn again for the same components
-    // @ts-ignore
-    const Apex = window.Apex;
-    const params = this.params;
-    const group = ["summary", params.clientId, params.problemId].join(".");
-    if (!Apex._chartInstances) return; // I get an error that this is undefined
-    const zombieChartIndices = Apex._chartInstances
-      .map((chart: any, index: number) => {
-        if (chart.group == group) {
-          return index;
-        } else {
-          return null;
-        }
-      })
-      .filter((item: number | null) => item != null);
-
-    zombieChartIndices.forEach((offset: number, index: number) => {
-      Apex._chartInstances.splice(offset - index, 1);
-    });
   }
 }
 </script>

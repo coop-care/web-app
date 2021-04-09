@@ -23,7 +23,7 @@
         <q-item-section>
           <q-item-label>
             <text-with-highlights
-              :text="item.displayValue || item.value"
+              :text="item.label"
               :regex="filterRegExp"
               :classesForMatches="
                 value != item.value ? 'text-underline text-weight-bolder' : ''
@@ -31,11 +31,11 @@
             />
           </q-item-label>
           <q-item-label
-            v-if="item.displayValue"
+            v-if="item.description"
             caption
           >
             <text-with-highlights
-              :text="item.value"
+              :text="item.description"
               :regex="filterRegExp"
               :classesForMatches="
                 value != item.value ? 'text-underline text-weight-bolder' : ''
@@ -53,7 +53,11 @@ import { Vue, Component, Prop, Ref, Watch } from "vue-property-decorator";
 import { QMenu } from "quasar";
 import TextWithHighlights from "../components/TextWithHighlights.vue";
 
-type TitleCaption = { value: string; displayValue?: string; };
+type ItemType = {
+  label: string;
+  value: string;
+  description?: string;
+};
 
 @Component({
   components: {
@@ -62,7 +66,7 @@ type TitleCaption = { value: string; displayValue?: string; };
 })
 export default class FilterableMenu extends Vue {
   @Prop({ type: String, required: true}) readonly value!: string;
-  @Prop({ type: Array, default: () => []}) readonly items!: string[] | TitleCaption[];
+  @Prop({ type: Array, default: () => []}) readonly items!: string[] | ItemType[];
   @Prop({ type: String, default: "primary"}) readonly color!: string;
   @Ref() readonly  menu: QMenu | undefined;
 
@@ -102,14 +106,16 @@ export default class FilterableMenu extends Vue {
   }
   get filteredItems() {
     // @ts-ignore
-    const items: TitleCaption[] = this.items.map((item: string | TitleCaption) => 
-      typeof item == "string" ? { value: item } : item
+    const items: TitleCaption[] = this.items.map((item: string | ItemType) => 
+      typeof item == "string" ? 
+        { label: item, value: item } : 
+        item
     )
 
     if (this.filterRegExp) {
       const regexp = this.filterRegExp;
       return items.filter(item => {
-        const value = item.value + " " + (item.displayValue || "");
+        const value = item.label + " " + (item.description || "");
         return new RegExp(regexp).test(value);
       });
     } else {

@@ -101,7 +101,7 @@ export default class ClientActionMixin extends Vue {
                 clients: oldTeam.clients.filter(id => id != clientId)
               }, oldTeam)
             )
-            .then(() => this.$emit("did-move-client-to-team"))
+            .then(() => this.$root.$emit("did-move-client-to-team"))
         }
       });
     }
@@ -121,7 +121,7 @@ export default class ClientActionMixin extends Vue {
           void this.saveTeam({
             clients: newTeam.clients.concat([clientId])
           }, newTeam)
-            .then(() => this.$emit("did-add-client-to-team"))
+            .then(() => this.$root.$emit("did-add-client-to-team"))
             .then(this.updateClientsInAdditionalTeams);
         }
       });
@@ -149,7 +149,7 @@ export default class ClientActionMixin extends Vue {
           void this.saveTeam({
             clients: this.team.clients.filter(id => id != clientId)
           })
-            .then(() => this.$emit("did-remove-client-from-team"));
+            .then(() => this.$root.$emit("did-remove-client-from-team"));
         }
       });
     }
@@ -162,7 +162,7 @@ export default class ClientActionMixin extends Vue {
           changes: {
             leftAt: new Date()
           }
-        }).then(() => this.$emit("did-archive-client"))
+        }).then(() => this.$root.$emit("did-archive-client"))
       );
     }
   }
@@ -174,7 +174,7 @@ export default class ClientActionMixin extends Vue {
           changes: {
             leftAt: undefined
           }
-        }).then(() => this.$emit("did-unarchive-client"))
+        }).then(() => this.$root.$emit("did-unarchive-client"))
       );
     }
   }
@@ -198,7 +198,7 @@ export default class ClientActionMixin extends Vue {
         }
       }).onOk(() =>
         void this.$store.direct.dispatch.deleteClient(client)
-          .then(() => this.$emit("did-delete-client"))
+          .then(() => this.$root.$emit("did-delete-client"))
       );
     }
   }
@@ -249,7 +249,7 @@ export default class ClientActionMixin extends Vue {
       .then(clientIds => this.clientsInAdditionalTeams = clientIds);
   }
 
-  saveTeam(changes: Partial<Team>, team = this.team) {
+  saveTeam(changes: Partial<Team> = {}, team = this.team) {
     if (team) {
       return this.$store.direct.dispatch.saveTeam({ target: team, changes: changes })
         .then(() => undefined);

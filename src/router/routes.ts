@@ -8,28 +8,70 @@ const routes: RouteConfig[] = [
     children: [
       {
         path: "",
-        redirect: "client"
+        redirect: { name: "clientNoneSelected" }
+      },
+      {
+        name: "clientNoneSelected",
+        path: "/client",
+        component: () => import("pages/Client.vue")
       },
       {
         name: "client",
-        path: "/client/:clientId?",
+        path: "/client/:clientId",
+        redirect: { name: "clientMasterData" },
         component: () => import("pages/Client.vue"),
         children: [
           {
+            name: "clientMasterData",
+            path: "profile",
+            component: () => import("components/ClientMasterData.vue"),
+            children: [
+              {
+                name: "clientHealthInformation",
+                path: "health",
+                component: () => import("components/ClientHealthInformation.vue")
+              },
+              {
+                name: "clientAgreements",
+                path: "agreements",
+                component: () => import("components/ClientAgreements.vue")
+              },
+              {
+                name: "clientContactData",
+                path: "contacts/client",
+                component: () => import("components/ClientContactData.vue")
+              },
+              {
+                name: "clientInformalContact",
+                path: "contacts/informal/:informalContactId",
+                component: () => import("components/ClientInformalContact.vue")
+              },
+              {
+                name: "clientFormalContact",
+                path: "contacts/formal/:formalContactId",
+                component: () => import("components/ClientFormalContact.vue")
+              }
+            ]
+          },
+          {
             name: "clientReminders",
-            path: "reminders/:day?"
+            path: "reminders/:day?",
+            component: () => import("components/ClientReminders.vue")
           },
           {
             name: "clientReport",
-            path: "report/:problemId?"
+            path: "report/:problemId?",
+            component: () => import("components/ClientProblems.vue")
           },
           {
-            name: "clientContacts",
-            path: "contacts"
+            name: "clientProofOfPerformance",
+            path: "/client/:clientId/reports/execution",
+            component: () => import("components/ProofOfPerformance.vue")
           },
           {
-            name: "clientMasterData",
-            path: "profile"
+            name: "clientHistory",
+            path: "/client/:clientId/history",
+            component: () => import("components/ClientHistory.vue")
           }
         ]
       },
@@ -73,16 +115,6 @@ const routes: RouteConfig[] = [
         name: "problemsByDiagnosis",
         path: !isDemo ? "/client/:clientId/diagnoses" : "",
         component: () => import("pages/ProblemsByDiagnosis.vue")
-      },
-      {
-        name: "proofOfPerformance",
-        path: "/client/:clientId/reports/execution",
-        component: () => import("pages/ProofOfPerformance.vue")
-      },
-      {
-        name: "clientHistory",
-        path: "/client/:clientId/history",
-        component: () => import("pages/ClientHistory.vue")
       },
       {
         name: "userSettings",
