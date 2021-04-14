@@ -1,0 +1,254 @@
+{
+  "50": {
+    "interventionSuggestions": {
+      "01": {
+        "11": [
+          "",
+          "Strategien zur Bewältigung von Trauer und Verlust",
+          "Psychische Gesundheit des Patienten und psychosoziale Unterstützung"
+        ],
+        "16": [
+          ""
+        ],
+        "25": [
+          ""
+        ],
+        "28": [
+          ""
+        ],
+        "32": [
+          "Verordnete/empfohlene/freiverkäufliche Medikamente",
+          "Impfungen"
+        ],
+        "41": [
+          "Hände regelmäßig und gründlich mit Wasser und Seife oder einem Handdesinfektionsmittel auf 60%iger Alkoholbasis waschen"
+        ],
+        "46": [
+          ""
+        ],
+        "48": [
+          "",
+          "",
+          "",
+          "Kranken Haushaltsmitgliedern ein eigenes Zimmer geben und sie von nur einem Mitglied betreuen lassen",
+          ""
+        ],
+        "50": [
+          "Fieber, Husten und Kurzatmigkeit ",
+          "wann und wie Anbieter zu benachrichtigen sind"
+        ],
+        "54": [
+          "Spiritueller Trost"
+        ],
+        "56": [
+          ""
+        ],
+        "59": [
+          "Trauer- oder Krisenberatung und unterstützende Hotlines/Dienste"
+        ],
+        "60": [
+          "Aufbau formeller und informeller Unterstützungssysteme in der Nachbarschaft"
+        ],
+        "62": [
+          "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken"
+        ],
+        "66": [
+          "Gefährdete Personen identifizieren und schützen"
+        ],
+        "67": [
+          ""
+        ],
+        "68": [
+          "Symptomlinderung/Palliativmedizin"
+        ],
+        "71": [
+          "",
+          "",
+          "",
+          "Empfehlungen zur physischen Distanzierung einhalten",
+          "Quarantäne-Richtlinien zur Verhinderung der Ausbreitung",
+          "",
+          "Gesichtsmasken",
+          "Verfahren zur Reinigung, Wiederverwendung und Verlängerung der Lebensdauer von medizinischem Material und Geräten",
+          ""
+        ],
+        "81": [
+          ""
+        ],
+        "02": [
+          "in die Armbeuge husten, Berührung des Gesichts vermeiden"
+        ]
+      },
+      "02": {
+        "18": [
+          ""
+        ],
+        "27": [
+          ""
+        ],
+        "31": [
+          "Flüssigkeitshaushalt",
+          "Zusätzliche Sauerstoffzufuhr und Beatmungsunterstützung"
+        ],
+        "33": [
+          "Impfungen"
+        ],
+        "40": [
+          ""
+        ],
+        "41": [
+          "Hände regelmäßig und gründlich mit Wasser und Seife oder einem Handdesinfektionsmittel auf 60%iger Alkoholbasis waschen"
+        ],
+        "48": [
+          "Kranken Haushaltsmitgliedern ein eigenes Zimmer geben und sie von nur einem Mitglied betreuen lassen",
+          "",
+          ""
+        ],
+        "54": [
+          "Spiritueller Trost"
+        ],
+        "58": [
+          "Quarantäne vorbereiten"
+        ],
+        "62": [
+          "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken"
+        ],
+        "67": [
+          ""
+        ],
+        "68": [
+          "Symptomlinderung/Palliativmedizin",
+          "Palliativversorgung gewährleisten "
+        ],
+        "71": [
+          "Empfehlungen zur physischen Distanzierung einhalten",
+          "Bei Erkrankung zu Hause bleiben",
+          "Gesichtsmasken",
+          "Verfahren zur Reinigung, Wiederverwendung und Verlängerung der Lebensdauer von medizinischem Material und Geräten",
+          "",
+          "",
+          "",
+          "Infektionsschutzmaßnahmen",
+          "Vorsichtsmaßnahmen beim Einsatz von Aerosol-erzeugenden Verfahren treffen "
+        ],
+        "73": [
+          ""
+        ],
+        "81": [
+          ""
+        ],
+        "02": [
+          "in die Armbeuge husten, Berührung des Gesichts vermeiden"
+        ]
+      },
+      "03": {
+        "10": [
+          ""
+        ],
+        "16": [
+          ""
+        ],
+        "27": [
+          ""
+        ],
+        "30": [
+          "",
+          ""
+        ],
+        "31": [
+          "Was bei Krankheit zu tun ist; wann medizinische Hilfe zu suchen ist",
+          "Absage oder Aufschub nicht notwendiger medizinischer Behandlungen",
+          ""
+        ],
+        "40": [
+          ""
+        ],
+        "46": [
+          "",
+          "",
+          ""
+        ],
+        "48": [
+          ""
+        ],
+        "50": [
+          ""
+        ],
+        "53": [
+          ""
+        ],
+        "54": [
+          "Spiritueller Trost"
+        ],
+        "58": [
+          ""
+        ],
+        "67": [
+          ""
+        ],
+        "68": [
+          "Symptomlinderung/Palliativmedizin"
+        ],
+        "71": [
+          "Virtuelle Aktivitäten fördern, z. B. Telemedizin, Teleunterricht, Telefon, Mail, Video",
+          "",
+          "Quarantäne vorbereiten",
+          "Gesichtsmasken",
+          "Infektionsschutzmaßnahmen beenden",
+          "Patienten entlassen"
+        ],
+        "73": [
+          "",
+          "Medikamente",
+          "",
+          "",
+          "",
+          "",
+          "Impfungen"
+        ]
+      },
+      "04": {
+        "11": [
+          "Bedürfnisse von isolierten und unter Quarantäne stehenden Personen",
+          "Sorge oder Angst vor Quarantäne oder Krankheit"
+        ],
+        "27": [
+          ""
+        ],
+        "29": [
+          "Testergebnisse melden",
+          ""
+        ],
+        "40": [
+          ""
+        ],
+        "41": [
+          "Händewaschen"
+        ],
+        "50": [
+          "Fieber, Husten und Kurzatmigkeit "
+        ],
+        "62": [
+          "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken",
+          "Gesundheitszustand nach Impfung"
+        ],
+        "67": [
+          ""
+        ],
+        "71": [
+          "Kontakte von erkrankten Personen ermitteln",
+          "Empfehlungen zur physischen Distanzierung einhalten",
+          "Test auf Erkrankung"
+        ],
+        "73": [
+          "Verordnete/empfohlene/freiverkäufliche Medikamente",
+          ""
+        ],
+        "02": [
+          "in die Armbeuge husten, Berührung des Gesichts vermeiden"
+        ]
+      }
+    },
+    "problemRatingScaleExamples": {}
+  }
+}

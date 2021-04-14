@@ -42,6 +42,26 @@ if (process.env.BACKEND != "demo") {
         .then(data => {
             deDE.usersGuide = data;
         });
+} else {
+    const responseHandler = (response: Response) => {
+        if (response.ok) {
+            return response
+                .text()
+                .then(text => JSON.parse(text.replace(/\/\*[\s\S]*?\*\//, ""))); // strip leading comment
+        } else {
+            throw new Error("no data");
+        }
+    };
+    void fetch("covid19_EN.json")
+        .then(responseHandler)
+        .then(data => {
+            enUS.usersGuide = data;
+        });
+    void fetch("covid19_DE.json")
+        .then(responseHandler)
+        .then(data => {
+            deDE.usersGuide = data;
+        });
 }
 
 register("de-de", timeagoDE);

@@ -7,6 +7,7 @@ import { colors } from "quasar";
 const { getBrand, textToRgb, rgbToHex } = colors;
 
 export type Rating = {
+  type: 0 | 1 | 2;
   createdAt: Date;
   observation: number;
   expectation: number;
@@ -144,7 +145,7 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
   }
   onHoverPoint() {
     const pointRadii = Array.from(
-      {length: this.ratings.length}, 
+      {length: Math.max(this.ratings.length, 2)}, 
       (_ , index) => index != this.value ? 0 : 5
     );
 
