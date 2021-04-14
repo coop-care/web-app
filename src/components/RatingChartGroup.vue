@@ -10,7 +10,7 @@
         class="q-pl-lg text-body2 rating-caption column justify-end"
       >
         <simplified-markdown
-          :text="makeChartTitle(index)"
+          :text="makeChartTitle(index, ratings[0].type)"
           class="block"
         />
       </div>
@@ -35,7 +35,7 @@
         class="q-pl-lg text-body2 rating-caption column justify-start"
       >
         <simplified-markdown
-          :text="makeChartTitle(index)"
+          :text="makeChartTitle(index, ratings[0].type)"
           class="block"
         />
       </div>
@@ -91,52 +91,55 @@ export default class RatingChartGroup extends Vue {
   get ratingsList() {
     return [
       this.outcomes.map(outcome => ({
+        type: 0,
         createdAt: outcome.createdAt || new Date(),
         personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
         user: outcome.user,
         ...outcome.knowledge
       })),
       this.outcomes.map(outcome => ({
+        type: 1,
         createdAt: outcome.createdAt || new Date(),
         personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
         user: outcome.user,
         ...outcome.behaviour
       })),
       this.outcomes.map(outcome => ({
+        type: 2,
         createdAt: outcome.createdAt || new Date(),
         personRatedInPlaceOfOwner: outcome.personRatedInPlaceOfOwner,
         user: outcome.user,
         ...outcome.status
       })),
-    ] as Rating[][];
+    ].filter(ratings => ratings.find(rating => rating.observation || rating.expectation)) as Rating[][];
   }
   get ratingTerminology() {
     return this.$t("terminology.problemRatingScale.ratings") as unknown as RatingTerminology[];
   }
 
-  rating(ratingType: number) {
-    const ratings = this.ratingsList[ratingType] || [];
+  rating(index: number) {
+    const ratings = this.ratingsList[index] || [];
     return ratings[this.outcomeIndex] || ratings[ratings.length - 1];
   }
-  observation(ratingType: number) {
-    return this.rating(ratingType).observation || 0;
+  observation(index: number) {
+    return this.rating(index).observation || 0;
   }
-  expectation(ratingType: number) {
-    return this.rating(ratingType).expectation || 0;
+  expectation(index: number) {
+    return this.rating(index).expectation || 0;
   }
-  makeChartTitle(ratingType: number) {
-    const rating = this.rating(ratingType);
+  makeChartTitle(index: number, ratingType: number) {
+    const rating = this.rating(index);
     const ratingTexts = this.ratingTerminology[ratingType].scale;
-    const obersationText = ratingTexts[rating.observation - 1].title;
-    const expectationText = ratingTexts[rating.expectation - 1].title;
+    const observationText = ratingTexts[rating.observation - 1]?.title || "";
+    const expectationText = ratingTexts[rating.expectation - 1]?.title || "";
     const username = this.teamMembers[rating.user]?.signature;
     const locale = this.$root.$i18n.locale;
 
     return [
       format(rating.createdAt, locale) + " (" + username + "):",
-      "**" + obersationText + "**" + 
+      (observationText ? "**" + observationText + "**" : "") + 
       (rating.comment ? ", ***" + this.$t("quotedText", {quote: rating.comment}) + "***" : ""), 
-      (rating.expectation != rating.observation
+      (expectationText && (rating.expectation != rating.observation)
         ? this.$t("expectedRatingShortTitle") + ": " + expectationText
         : "")
     ].filter(Boolean).join("\n");

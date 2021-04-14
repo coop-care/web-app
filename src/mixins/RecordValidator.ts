@@ -72,7 +72,7 @@ export default class RecordValidator extends RecordMixin {
     }
 
     private get ratingWarnings() {
-        const outcome = this.record?.outcomes[0];
+        const outcome = this.record?.outcomes.slice().pop();
         const warnings: TranslateResult[] = [];
 
         if (!outcome || outcome.knowledge.observation == 0) {
