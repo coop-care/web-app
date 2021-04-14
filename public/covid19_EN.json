@@ -1,0 +1,254 @@
+{
+  "50": {
+    "interventionSuggestions": {
+      "01": {
+        "11": [
+          "Address fear in the community",
+          "Strategies for coping with grief and loss",
+          "Patient mental health and psychosocial support"
+        ],
+        "16": [
+          "Ensure continuity of education"
+        ],
+        "25": [
+          "Protect children and support safe school operations"
+        ],
+        "28": [
+          "Counter stigma and discrimination"
+        ],
+        "32": [
+          "Prescribed/recommended/over-the-counter medications",
+          "Vaccines"
+        ],
+        "41": [
+          "Wash hands regularly and thoroughly with soap and water or 60% alcohol-based hand sanitizer"
+        ],
+        "46": [
+          "Employer response"
+        ],
+        "48": [
+          "Manage patients with COVID-19 in the community",
+          "Prepare for surge in patients",
+          "Train health workers/mandated reporters",
+          "Give sick household members their own room and have only one member care for them",
+          "Personal response of ill community members"
+        ],
+        "50": [
+          "Fever, cough, and shortness of breath",
+          "When and how to notify providers"
+        ],
+        "54": [
+          "Spiritual comfort"
+        ],
+        "56": [
+          "Promote healthy functioning activities"
+        ],
+        "59": [
+          "Grief or crisis counseling and support hotlines/services"
+        ],
+        "60": [
+          "Build formal and informal neighborhood/community support systems"
+        ],
+        "62": [
+          "Interpersonal support; hydration, nourishment, exercise, sleep; limit media, limit substance use"
+        ],
+        "66": [
+          "Identify and protect vulnerable people"
+        ],
+        "67": [
+          "How to donate/obtain food"
+        ],
+        "68": [
+          "Symptom relief/palliative care"
+        ],
+        "71": [
+          "Disseminate messages to the public, address misinformation",
+          "Modify, postpone, or cancel large events",
+          "Personal readiness",
+          "Adhere to physical distancing recommendations",
+          "Quarantine guidelines to prevent spread",
+          "Transmission routes and sources",
+          "Universal facemasks",
+          "Protocols for cleaning, reusing, and extending the life of medical supplies and equipment",
+          "Burial or cremation ritual"
+        ],
+        "81": [
+          "Prone position"
+        ],
+        "02": [
+          "Cover cough, avoid touching face"
+        ]
+      },
+      "02": {
+        "18": [
+          "Clean and disinfect surfaces"
+        ],
+        "27": [
+          "Essential services (shelter)"
+        ],
+        "31": [
+          "Fluid management ",
+          "Supplemental oxygenation and ventilation support"
+        ],
+        "33": [
+          "Vaccines"
+        ],
+        "40": [
+          "Essential services (prevention and control supplies)"
+        ],
+        "41": [
+          "Wash hands regularly and thoroughly with soap and water or 60% alcohol-based hand sanitizer"
+        ],
+        "48": [
+          "Give sick household members their own room and have only one member care for them",
+          "Personal response of ill community members",
+          "Prepare for surge in patients"
+        ],
+        "54": [
+          "Spiritual comfort"
+        ],
+        "58": [
+          "Prepare for quarantine"
+        ],
+        "62": [
+          "Interpersonal support; hydration, nourishment, exercise, sleep; limit media, limit substance use"
+        ],
+        "67": [
+          "Essential services (nutrition)"
+        ],
+        "68": [
+          "Symptom relief/palliative care",
+          "Provide palliative care "
+        ],
+        "71": [
+          "Adhere to physical distancing recommendations",
+          "Stay home when sick",
+          "Universal facemasks",
+          "Protocols for cleaning, reusing, and extending the life of medical supplies and equipment",
+          "Avoid aerosol generating procedures",
+          "Placement of persons receiving treatment",
+          "Transporting patients within healthcare facilities",
+          "Standard and transmission-based precautions",
+          "Take precautions when performing aerosol-generating procedures "
+        ],
+        "73": [
+          "Essential services (medications)"
+        ],
+        "81": [
+          "Prone position"
+        ],
+        "02": [
+          "Cover cough, avoid touching face"
+        ]
+      },
+      "03": {
+        "10": [
+          "Coordinate clear, accurate, and timely messaging"
+        ],
+        "16": [
+          "Ensure continuity of education"
+        ],
+        "27": [
+          "Isolation shelter plan for unsheltered individuals/families in need of shelter"
+        ],
+        "30": [
+          "Plan for management of ill travelers",
+          "Decrease density of prison populations (e.g. release of eligible prisoners)"
+        ],
+        "31": [
+          "What to do if you are sick; when to seek medical care",
+          "Cancel or delay non-essential health care",
+          "Standardized care protocols"
+        ],
+        "40": [
+          "Clothing, face masks,internet, telephone"
+        ],
+        "46": [
+          "Have a household safety plan ",
+          "Critical infrastructure workers",
+          "Emergency Operations Plan"
+        ],
+        "48": [
+          "Acute care visitors policy exception to accompany person with ID"
+        ],
+        "50": [
+          "Triage, place, and discharge patients"
+        ],
+        "53": [
+          "Testing sites "
+        ],
+        "54": [
+          "Spiritual comfort"
+        ],
+        "58": [
+          "Ethical decision making for allocation of resources and supplies"
+        ],
+        "67": [
+          "Food distribution"
+        ],
+        "68": [
+          "Symptom relief/palliative care"
+        ],
+        "71": [
+          "Encourage virtual transactions e.g. telehealth, teleeducation, telesupport, telebusiness, phone, mail, video",
+          "Modify, postpone, or cancel large events",
+          "Prepare for quarantine",
+          "Universal facemasks",
+          "Discontinuing transmission-based precautions ",
+          "Discharging patients"
+        ],
+        "73": [
+          "ACE inhibitors/ARBs* in high risk patients (*ACE inhibitors - angiotensin converting enzyme inhibitors and ARBs - angiotensin-receptor blockers)",
+          "Medications",
+          "Anticoagulation therapy ",
+          "Appropriate antimicrobial prescribing and use",
+          "Potential drugs under evaluation ",
+          "Use of certain medications ",
+          "Vaccines"
+        ]
+      },
+      "04": {
+        "11": [
+          "Needs of persons isolated and quarantined",
+          "Anxiety or fear about quarantine or illness"
+        ],
+        "27": [
+          "Need for essential services (shelter)"
+        ],
+        "29": [
+          "Report test results",
+          "Case reporting"
+        ],
+        "40": [
+          "Need for essential services (prevention and control supplies)"
+        ],
+        "41": [
+          "Hand washing"
+        ],
+        "50": [
+          "Fever, cough, and shortness of breath "
+        ],
+        "62": [
+          "Interpersonal support; hydration, nourishment, exercise, sleep; limit media, limit substance use",
+          "Immunization status"
+        ],
+        "67": [
+          "Need for essential services (nutrition)"
+        ],
+        "71": [
+          "Identify contacts of sick people",
+          "Adhere to physical distancing recommendations",
+          "Test for disease"
+        ],
+        "73": [
+          "Prescribed/recommended/over-the-counter medications",
+          "Need for essential services (medications)"
+        ],
+        "02": [
+          "Cover cough, avoid touching face"
+        ]
+      }
+    },
+    "problemRatingScaleExamples": {}
+  }
+}

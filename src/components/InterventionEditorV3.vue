@@ -164,7 +164,7 @@ export default class InterventionEditor extends WarningMixin {
       const category = intervention[this.categoryCode] || {};
       const details = category[this.targetCode] || [];
 
-      return details;
+      return details.filter(Boolean);
     } else {
       return [];
     }
