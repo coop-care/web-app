@@ -373,7 +373,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
         icon: "fas fa-trash",
         action: this.deleteProblemRecord,
         condition: !!this.record && 
-          (Date.now() - 24 * 60 * 60 * 1000 < this.record.createdAt.getTime()),
+          (Date.now() - 24 * 60 * 60 * 1000 < this.record.createdAt?.getTime()),
         isDestructive: true
       }
     ]

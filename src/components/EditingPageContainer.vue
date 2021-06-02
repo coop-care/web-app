@@ -15,7 +15,7 @@
         <simplified-markdown
           v-if="title"
           :text="title"
-          class="text-h5 q-mb-lg"
+          class="text-h5 block q-mb-lg"
         />
         <slot />
         <slot name="footer">

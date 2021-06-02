@@ -5,7 +5,7 @@
       v-if="tooltip"
       name="fas fa-info-circle"
       size=".85rem"
-      :class="['q-ml-xs', iconClass]"
+      :class="[!iconClass.includes('q-ml-') ? 'q-ml-xs' : '', iconClass]"
       style="vertical-align: baseline"
     />
     <q-tooltip

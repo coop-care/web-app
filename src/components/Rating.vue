@@ -4,233 +4,220 @@
       <div class="text-h6">{{ title }}</div>
       <div class="text-weight-light">{{ description }}</div>
     </div>
-    <div class="row custom-gutter">
-      <div class="col-12 col-sm-9 col-md-7">
-        <div class="row q-pb-sm q-pa-xxs-none">
-          <div
-            class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11"
-          >
-            {{ $t("observedRating") }}:
-          </div>
-          <div class="col-12-xxs col-9">
-            <div class="row">
-              <q-icon
-                name="sentiment_very_dissatisfied"
-                color="negative"
-                size="lg"
-              />
-              <q-btn-toggle
-                v-model="observation"
-                spread
-                no-caps
-                unelevated
-                toggle-color="outcome"
-                rounded
-                text-color="outcome"
-                :options="options"
-                class="q-mx-sm col border-outcome"
-                style="border-width: 2px"
-              >
-                <template v-slot:1>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="observationMouseover = 0"
-                    @before-hide="observationMouseover = -1"
-                  />
-                </template>
-                <template v-slot:2>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="observationMouseover = 1"
-                    @before-hide="observationMouseover = -1"
-                  />
-                </template>
-                <template v-slot:3>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="observationMouseover = 2"
-                    @before-hide="observationMouseover = -1"
-                  />
-                </template>
-                <template v-slot:4>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="observationMouseover = 3"
-                    @before-hide="observationMouseover = -1"
-                  />
-                </template>
-                <template v-slot:5>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="observationMouseover = 4"
-                    @before-hide="observationMouseover = -1"
-                  />
-                </template>
-              </q-btn-toggle>
-              <q-icon
-                name="sentiment_very_satisfied"
-                color="positive"
-                size="lg"
-              />
-            </div>
-            <text-with-tooltip
-              :text="observationScale"
-              :tooltip="observationExample"
-              class="text-center text-weight-light q-my-xs"
-            />
-          </div>
-        </div>
 
-        <div class="row" style="opacity: 0.7">
-          <div
-            class="col-12-xxs col-3 text-subtitle2 text-right q-pr-md q-pt-sm q-mt-xs line-height-11"
-          >
-            {{ $t("expectedRating") }}:
-          </div>
-          <div class="col-12-xxs col-9">
-            <div class="row">
-              <q-icon
-                name="sentiment_very_dissatisfied"
-                color="negative"
-                size="lg"
-              />
-              <q-btn-toggle
-                v-model="expectation"
-                spread
-                no-caps
-                unelevated
-                toggle-color="outcome"
-                rounded
-                text-color="outcome"
-                :options="options"
-                class="q-mx-sm col border-outcome"
-                clearable
-              >
-                <template v-slot:1>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="expectationMouseover = 0"
-                    @before-hide="expectationMouseover = -1"
-                  />
-                </template>
-                <template v-slot:2>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="expectationMouseover = 1"
-                    @before-hide="expectationMouseover = -1"
-                  />
-                </template>
-                <template v-slot:3>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="expectationMouseover = 2"
-                    @before-hide="expectationMouseover = -1"
-                  />
-                </template>
-                <template v-slot:4>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="expectationMouseover = 3"
-                    @before-hide="expectationMouseover = -1"
-                  />
-                </template>
-                <template v-slot:5>
-                  <q-tooltip
-                    v-if="$q.platform.is.desktop"
-                    content-class="hidden"
-                    @before-show="expectationMouseover = 4"
-                    @before-hide="expectationMouseover = -1"
-                  />
-                </template>
-              </q-btn-toggle>
-              <q-icon
-                name="sentiment_very_satisfied"
-                color="positive"
-                size="lg"
-              />
-            </div>
-            <text-with-tooltip
-              :text="expectationScale"
-              :tooltip="expectationExample"
-              class="text-center text-weight-light q-my-xs"
-            />
-          </div>
-        </div>
-      </div>
-      <div class="col-12 col-sm-3 col-md-5">
-        <q-btn
-          v-if="!showComment && !comment"
-          @click="showComment = true"
-          :label="$t('showCommentInput')"
-          flat
-          no-caps
-          size="md"
-          color="outcome"
-          dense
-          class="q-mt-xs"
-        />
-        <div v-else>
-          <q-input
-            v-model="comment"
-            :label="$t('ratingCommentLabel')"
-            autogrow
-            :autofocus="showComment && !comment"
-            color="outcome"
-            dense
+    <div class="q-mb-lg row q-col-gutter-x-xl q-col-gutter-y-lg">
+      <div class="col-12 col-sm-6"> 
+        <div class="rating-header column justify-center text-center q-mb-xs">
+          <text-with-tooltip
+            :text="$t('observedRating') + ':'"
+            :tooltip="$t(type + 'ObservationHint')"
+            class="text-subtitle2"
+          />
+          <text-with-tooltip
+            :text="observationScale"
+            :tooltip="observationExample"
+            class="text-weight-light"
           />
         </div>
+        <div class="row">
+          <q-icon
+            name="sentiment_very_dissatisfied"
+            color="negative"
+            size="lg"
+          />
+          <q-btn-toggle
+            v-model="observation"
+            spread
+            no-caps
+            unelevated
+            toggle-color="outcome"
+            rounded
+            text-color="outcome"
+            :options="options"
+            class="q-mx-xs col border-outcome"
+            style="border-width: 2px"
+          >
+            <template v-slot:1>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="observationMouseover = 0"
+                @before-hide="observationMouseover = -1"
+              />
+            </template>
+            <template v-slot:2>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="observationMouseover = 1"
+                @before-hide="observationMouseover = -1"
+              />
+            </template>
+            <template v-slot:3>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="observationMouseover = 2"
+                @before-hide="observationMouseover = -1"
+              />
+            </template>
+            <template v-slot:4>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="observationMouseover = 3"
+                @before-hide="observationMouseover = -1"
+              />
+            </template>
+            <template v-slot:5>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="observationMouseover = 4"
+                @before-hide="observationMouseover = -1"
+              />
+            </template>
+          </q-btn-toggle>
+          <q-icon
+            name="sentiment_very_satisfied"
+            color="positive"
+            size="lg"
+          />
+        </div>
+        <reveal-button
+          :label="$t('showCommentInput')"
+          :revealImmediately="!!observationComment"
+          color="outcome"
+          class="q-mt-sm"
+          button-class="q-mt-sm q-mb-md text-center"
+        >
+          <q-input
+            v-model="observationComment"
+            :label="$t('ratingCommentLabel')"
+            autogrow
+            :autofocus="!observationComment"
+            color="outcome"
+            dense
+            clearable
+          />
+        </reveal-button>
+      </div>
+
+      <div class="col-12 col-sm-6" style="opacity: 0.7"> 
+        <div class="rating-header column justify-center text-center q-mb-xs">
+          <text-with-tooltip
+            :text="$t('expectedRating') + ':'"
+            :tooltip="$t(type + 'ExpectationHint')"
+            class="text-subtitle2"
+          />
+          <text-with-tooltip
+            :text="expectationScale"
+            :tooltip="expectationExample"
+            class="text-weight-light"
+          />
+        </div>
+        <div class="row">
+          <q-icon
+            name="sentiment_very_dissatisfied"
+            color="negative"
+            size="lg"
+          />
+          <q-btn-toggle
+            v-model="expectation"
+            spread
+            no-caps
+            unelevated
+            toggle-color="outcome"
+            rounded
+            text-color="outcome"
+            :options="options"
+            class="q-mx-sm col border-outcome"
+            clearable
+          >
+            <template v-slot:1>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="expectationMouseover = 0"
+                @before-hide="expectationMouseover = -1"
+              />
+            </template>
+            <template v-slot:2>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="expectationMouseover = 1"
+                @before-hide="expectationMouseover = -1"
+              />
+            </template>
+            <template v-slot:3>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="expectationMouseover = 2"
+                @before-hide="expectationMouseover = -1"
+              />
+            </template>
+            <template v-slot:4>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="expectationMouseover = 3"
+                @before-hide="expectationMouseover = -1"
+              />
+            </template>
+            <template v-slot:5>
+              <q-tooltip
+                v-if="$q.platform.is.desktop"
+                content-class="hidden"
+                @before-show="expectationMouseover = 4"
+                @before-hide="expectationMouseover = -1"
+              />
+            </template>
+          </q-btn-toggle>
+          <q-icon
+            name="sentiment_very_satisfied"
+            color="positive"
+            size="lg"
+          />
+        </div>
+        <reveal-button
+          :label="$t('showCommentInput')"
+          :revealImmediately="!!expectationComment"
+          color="outcome"
+          class="q-mt-sm"
+          button-class="q-my-sm text-center"
+        >
+          <q-input
+            v-model="expectationComment"
+            :label="$t('ratingCommentLabel')"
+            autogrow
+            :autofocus="!expectationComment"
+            color="outcome"
+            dense
+            clearable
+          />
+        </reveal-button>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="sass">
-.custom-gutter
-  margin-top: -24px
-  margin-left: -24px
-  @media (max-width: $breakpoint-sm-max)
-    margin-top: -16px
-    margin-left: -16px
-  @media (max-width: $breakpoint-xs-max)
-    margin-top: -8px
-    margin-left: -8px
-  &> *
-    padding-top: 24px
-    padding-left: 24px
-    @media (max-width: $breakpoint-sm-max)
-      padding-top: 16px
-      padding-left: 16px
-    @media (max-width: $breakpoint-xs-max)
-      padding-top: 8px
-      padding-left: 8px
-.row > .col-12-xxs
-  @media (max-width: 400px)
-    width: 100%
-    padding: 0 0 4px
-    &.text-right
-      text-align: center
-.q-pa-xxs-none
-  @media (max-width: 400px)
-    padding: 0
+.rating-header
+  height: 2.7rem
 </style>
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
 import { Rating } from "../models";
 import TextWithTooltip from "./TextWithTooltip.vue";
+import RevealButton from "./RevealButton.vue";
 
 @Component({
   components: {
-    TextWithTooltip
+    TextWithTooltip,
+    RevealButton
   }
 })
 export default class RatingView extends Vue {
@@ -243,7 +230,6 @@ export default class RatingView extends Vue {
 
   observationMouseover = -1;
   expectationMouseover = -1;
-  showComment = false;
 
   get observation() {
     return this.rating?.observation || 0;
@@ -257,11 +243,17 @@ export default class RatingView extends Vue {
   set expectation(value: number) {
     this.updateNewOutcome({ expectation: value });
   }
-  get comment() {
+  get observationComment() {
     return this.rating?.comment || "";
   }
-  set comment(value: string) {
+  set observationComment(value: string) {
     this.updateNewOutcome({ comment: value });
+  }
+  get expectationComment() {
+    return this.rating?.expectationComment || "";
+  }
+  set expectationComment(value: string) {
+    this.updateNewOutcome({ expectationComment: value });
   }
 
   get options() {
@@ -271,14 +263,14 @@ export default class RatingView extends Vue {
   }
   get observationScale() {
     if (this.observationMouseover < 0) {
-      return this.scale[this.observation - 1] || " ";
+      return this.scale[this.observation - 1] || "";
     } else {
       return this.scale[this.observationMouseover];
     }
   }
   get expectationScale() {
     if (this.expectationMouseover < 0) {
-      return this.scale[this.expectation - 1] || " ";
+      return this.scale[this.expectation - 1] || "";
     } else {
       return this.scale[this.expectationMouseover];
     }

@@ -12,6 +12,7 @@ export type Rating = {
   observation: number;
   expectation: number;
   comment: string;
+  expectationComment: string;
   personRatedInPlaceOfOwner: string;
   user: string;
 };

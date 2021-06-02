@@ -10,31 +10,22 @@
         :examples="rating.scaleExamples"
         :type="rating.type"
         :rating="ratingForType(rating.type)"
+        class="q-mb-xl"
       />
-      <div>
-        <q-btn
-          v-if="!showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner"
-          @click="showPersonRatedInPlaceOfOwner = true"
-          :label="$t('showPersonRatedInPlaceOfOwnerInput')"
-          flat
+      <reveal-button
+        :label="$t('showPersonRatedInPlaceOfOwnerInput')"
+        :revealImmediately="!!personRatedInPlaceOfOwner"
+        color="outcome"
+      >
+        <q-input
+          v-model="personRatedInPlaceOfOwner"
+          :label="$t('personRatedInPlaceOfOwnerLabel')"
           dense
-          no-caps
-          size="md"
+          autogrow
+          :autofocus="!personRatedInPlaceOfOwner"
           color="outcome"
         />
-        <div v-else class="q-mt-xs q-mb-md">
-          <q-input
-            v-model="personRatedInPlaceOfOwner"
-            :label="$t('personRatedInPlaceOfOwnerLabel')"
-            dense
-            autogrow
-            :autofocus="
-              showPersonRatedInPlaceOfOwner && !personRatedInPlaceOfOwner
-            "
-            color="outcome"
-          />
-        </div>
-      </div>
+      </reveal-button>
       <div>
         <div class="row custom-gutter">
           <div class="row col-12 col-sm-9 col-md-7">
@@ -95,17 +86,18 @@ import { Vue, Component } from "vue-property-decorator";
 import { date } from "quasar";
 import { Frequency, RatingReminder, Outcome } from "../models";
 import RatingView from "components/Rating.vue";
+import RevealButton from "components/RevealButton.vue";
 import { Terminology, UsersGuide } from "../helper/terminology";
 
 const { formatDate } = date;
 
 @Component({
   components: {
-    RatingView
+    RatingView,
+    RevealButton
   }
 })
 export default class ProblemRating extends Vue {
-  showPersonRatedInPlaceOfOwner = false;
   intervalKey = Math.random();
 
   get personRatedInPlaceOfOwner() {
