@@ -383,7 +383,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
     return this.problemRecord || this.getRecordFromStore();
   }
   get outcomes() {
-    return this.record?.outcomes || [];
+    return this.record?.outcomes.filter(outcome => outcome.createdAt) || [];
   }
 
   toggleExpansion() {
