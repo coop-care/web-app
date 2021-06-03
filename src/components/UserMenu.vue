@@ -32,6 +32,18 @@
           </q-item-section>
         </q-item>
 
+        <q-item
+          v-if="!isDemo"
+          clickable
+          v-close-popup
+          @click="logout"
+        >
+          <q-item-section side>
+            <q-icon name="fas fa-sign-out-alt" />
+          </q-item-section>
+          <q-item-section>{{ $t("logout") }}</q-item-section>
+        </q-item>
+
         <q-separator />
 
         <q-item clickable>
@@ -86,8 +98,6 @@
           </q-item-section>
         </q-item>
 
-        <q-separator />
-
         <q-item
           clickable
           v-close-popup
@@ -99,20 +109,6 @@
           <q-item-section>
             <q-item-label>{{ $t("feedback") }}</q-item-label>
           </q-item-section>
-        </q-item>
-
-        <q-separator />
-
-        <q-item
-          v-if="!isDemo"
-          clickable
-          v-close-popup
-          @click="logout"
-        >
-          <q-item-section side>
-            <q-icon name="fas fa-sign-out-alt" />
-          </q-item-section>
-          <q-item-section>{{ $t("logout") }}</q-item-section>
         </q-item>
 
         <q-separator />
