@@ -82,6 +82,17 @@
           </q-item-section>
           <q-item-section>{{ $t("teamSettings") }}</q-item-section>
         </q-item>
+        <q-item
+          v-if="isDev"
+          clickable
+          v-close-popup
+          @click="$router.push({ name: 'insights' })"
+        >
+          <q-item-section side>
+            <q-icon name="fas fa-chart-line" />
+          </q-item-section>
+          <q-item-section>{{ $t("insights") }}</q-item-section>
+        </q-item>
 
         <q-separator />
 
@@ -172,6 +183,9 @@ export default class UserMenu extends Vue {
   }
   get isDemo() {
     return process.env.BACKEND == "demo";
+  }
+  get isDev() {
+    return process.env.DEV;
   }
   print() {
     window.print();
