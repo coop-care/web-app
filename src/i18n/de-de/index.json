@@ -13,8 +13,8 @@
   "newRating": "Zwischenbewertung vornehmen",
   "intervention": "Pflegeintervention | Pflegeinterventionen",
   "feedback": "Verbesserung vorschlagen",
-  "observedRating": "aktuell beobachtet",
-  "expectedRating": "erwartetes Ziel",
+  "observedRating": "Aktuelle Beobachtung",
+  "expectedRating": "Erwartetes Ziel",
   "selectProblem": "Bedürfnis oder Problem auswählen",
   "findProblem": "Bedürfnis oder Problem finden",
   "noProblemsFound": "Keine Probleme, Anzeichen oder Symptome gefunden",
@@ -503,5 +503,11 @@
   "addNewContact": "Neuen Kontakt hinzufügen",
   "or": "oder",
   "contactNotFound": "Keine Kontaktdaten gefunden.",
-  "print": "Drucken"
+  "print": "Drucken",
+  "knowledgeObservationHint": "Wie würdest du das Wissen des Klienten in Bezug auf sein oder ihr Problem in diesem Augenblick bewerten?",
+  "behaviourObservationHint": "Wie würdest du das beobachtbare Verhalten des Klienten in Bezug auf sein oder ihr Problem in diesem Augenblick bewerten?",
+  "statusObservationHint": "Wie würdest du den Gesundheitszustand des Klienten in Bezug auf sein oder ihr Problem in diesem Augenblick bewerten?",
+  "knowledgeExpectationHint": "Welches Wissen über sein oder ihr Problem kann der Klient mit deiner Hilfe realistisch erreichen?",
+  "behaviourExpectationHint": "Welches Verhalten zur Verbesserung seines oder ihres Problems kann der Klient mit deiner Hilfe realistisch erreichen?",
+  "statusExpectationHint": "Welchen Gesundheitszustand in Bezug auf sein oder ihr Problem kann der Klient mit deiner Hilfe realistisch erreichen?",
 }

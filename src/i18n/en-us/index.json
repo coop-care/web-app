@@ -13,8 +13,8 @@
   "newRating": "Make interim rating",
   "intervention": "Intervention | Interventions",
   "feedback": "Suggest improvement",
-  "observedRating": "currently observed",
-  "expectedRating": "expected goal",
+  "observedRating": "Current observation",
+  "expectedRating": "Expected goal",
   "selectProblem": "Select Need or Problem",
   "findProblem": "Find need or problem",
   "noProblemsFound": "no problems, signs or symptoms found",
@@ -503,5 +503,11 @@
   "addNewContact": "Add new contact",
   "or": "or",
   "contactNotFound": "No contact details found.",
-  "print": "Print"
+  "knowledgeObservationHint": "How would you rate the client's knowledge of his problem right now?",
+  "behaviourObservationHint": "How would you rate the client's observable behavior regarding his or her problem right now?",
+  "statusObservationHint": "How would you rate the client's health status regarding his or her problem right now?",
+  "knowledgeExpectationHint": "What knowledge about his or her problem can the client realistically achieve with your help?",
+  "behaviourExpectationHint": "What behavior to improve his or her problem can the client realistically achieve with your help?",
+  "statusExpectationHint": "What health status regarding his or her problem can the client realistically achieve with your help?",
+  "print": "Print",
 }

@@ -46,11 +46,8 @@ export class ProblemRecord extends Base {
 
             if (lastOutcome) {
                 newOutcome.knowledge = lastOutcome.knowledge.clone();
-                newOutcome.knowledge.comment = "";
                 newOutcome.behaviour = lastOutcome.behaviour.clone();
-                newOutcome.behaviour.comment = "";
                 newOutcome.status = lastOutcome.status.clone();
-                newOutcome.status.comment = "";
             }
             this.outcomes.push(newOutcome);
             lastOutcome = newOutcome;

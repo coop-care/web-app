@@ -140,7 +140,10 @@ export default class RatingChartGroup extends Vue {
       (observationText ? "**" + observationText + "**" : "") + 
       (rating.comment ? ", ***" + this.$t("quotedText", {quote: rating.comment}) + "***" : ""), 
       (expectationText && (rating.expectation != rating.observation)
-        ? this.$t("expectedRatingShortTitle") + ": " + expectationText
+        ? (
+          this.$t("expectedRatingShortTitle") + ": " + expectationText + 
+          (rating.expectationComment ? ", *" + this.$t("quotedText", {quote: rating.expectationComment}) + "*" : "")
+        )
         : "")
     ].filter(Boolean).join("\n");
   }
