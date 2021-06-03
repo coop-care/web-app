@@ -40,7 +40,13 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
       if (store.state.currentUser?.signature == "" && to.name != "userSettings") {
         next({ name: "userSettings" });
       } else {
-        next();
+        if (store.state.redirectPath) {
+          const path = store.state.redirectPath;
+          store.direct.commit.setRedirectPath("");
+          next(path);
+        } else {
+          next();
+        }
       }
     } else {
       if (["login", "register", "confirm", "requestPasswordReset", "resetPassword"]
@@ -48,6 +54,7 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
       ) {
         next();
       } else {
+        store.direct.commit.setRedirectPath(to.path);
         next({ name: "login" });
       }
     }

@@ -94,6 +94,10 @@ export default defineMutations<StateInterface>()({
         state.isLoadingClientList = isLoading;
     },
 
+    setRedirectPath(state, redirectPath: string) {
+        state.redirectPath = redirectPath;
+    },
+
     calculateOccurrences(state, client: Client) {
         client.calculateOccurrences();
     },
