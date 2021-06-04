@@ -115,8 +115,10 @@ export default class MainLayout extends Vue {
       } else {
         return this.$tc("client", 2);
       }
-    } else {
+    } else if (this.$te(route.name || "")) {
       return this.$t(route.name || "");
+    } else {
+      return "";
     }
   }
   get subtitle() {
