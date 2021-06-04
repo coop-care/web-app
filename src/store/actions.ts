@@ -51,10 +51,19 @@ export default defineActions({
             return Promise.reject();
         }
 
-        const { commit } = rootActionContext(context);
+        const { state, commit, dispatch } = rootActionContext(context);
 
         return ccApi
-            .getMyTeams().then(teams => commit.setTeams(teams))
+            .getMyTeams()
+            .then(teams => {
+                commit.setTeams(teams);
+                const activeTeam = state.currentUser?.activeTeam;
+
+                // tricky: automatically join first available team if currently not a member of a (available) team
+                if ((teams.length > 0 || !!activeTeam) && !teams.find(team => team.id == activeTeam)) {
+                    return dispatch.changeTeam(teams[0]?.id || "");
+                }
+            })
             .catch(console.error);
     },
 
@@ -271,6 +280,19 @@ export default defineActions({
         } else {
             return Promise.resolve()
         }
+    },
+
+    changeTeam(context, teamId: string): Promise<void> {
+        if (!ccApi.isLoggedIn) {
+            return Promise.reject();
+        }
+
+        const { dispatch } = rootActionContext(context);
+
+        return dispatch.saveCurrentUser(user => user.activeTeam = teamId)
+            .then(() => dispatch.fetchTeamsFromDB())
+            .then(() => dispatch.fetchTeamMembersFromDB())
+            .then(() => dispatch.fetchClientsFromDB())
     },
 
     deleteTeam(context, team: Team): Promise<void> {
