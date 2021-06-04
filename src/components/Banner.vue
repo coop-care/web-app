@@ -190,7 +190,9 @@ export default class BannerView extends Vue {
     void this.$store.direct.dispatch.saveTeam({
       target: team,
       changes: changes
-    });
+    }).then(_ => 
+      this.$store.direct.dispatch.fetchEssentialDataFromDB({locale: this.$root.$i18n.locale})
+    );
   }
   deleteInvitation(team: Team, invitation: TeamInvitation) {
     void this.$store.direct.dispatch.saveTeam({

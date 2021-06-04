@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { plainToClass, classToClass } from "class-transformer";
+import { plainToClass } from "class-transformer";
 import { IdentifiableObject } from ".";
 
 export class TeamMember extends IdentifiableObject {
@@ -22,9 +22,6 @@ export class TeamMember extends IdentifiableObject {
         this.email = email?.toLowerCase();
     }
 
-    get id() {
-        return this._id?.toHexString() || "";
-    }
     get username() {
         return (
             [this.firstName, this.lastName].filter(Boolean).join(" ") ||
@@ -33,7 +30,7 @@ export class TeamMember extends IdentifiableObject {
     }
 
     makeAlumnus() {
-        const clone = classToClass(this);
+        const clone = this.clone();
         delete clone._id;
         delete clone.email;
         return clone;

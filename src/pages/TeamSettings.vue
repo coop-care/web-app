@@ -260,13 +260,8 @@ export default class TeamSettingsPage extends ClientActionMixin {
         setTimeout(() => this.teamNameInput.focus(), 100);
       }
     } else {
-      void this.$store.direct.dispatch.saveCurrentUser(user => 
-        user.activeTeam = value
-      ).then(() => 
-        this.$store.direct.dispatch.fetchEssentialDataFromDB({ locale: this.$root.$i18n.locale })
-      ).then(() => 
-        this.updateClientsInAdditionalTeams()
-      );
+      void this.$store.direct.dispatch.changeTeam(value)
+        .then(() => this.updateClientsInAdditionalTeams());
     }
   }
   get teamName() {
@@ -282,7 +277,7 @@ export default class TeamSettingsPage extends ClientActionMixin {
     return this.$store.direct.state.teams.map(team => {
       return {
         label: team.name,
-        value: team._id?.toHexString()
+        value: team.id
       }
     }).concat({
       label: this.$t("addTeam") as string,
