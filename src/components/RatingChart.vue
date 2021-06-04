@@ -98,7 +98,7 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
     return {
       labels: ratings.map(item => item.createdAt).concat([new Date()]),
       datasets: [{
-        label: "Beobachtung",
+        label: this.$t("observedRating").toString(),
         fill: true,
         borderColor: this.colorValue,
         backgroundColor: this.makeGradient(),
@@ -107,7 +107,7 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
         pointRadius: 0,
         ...this.datasetOptions
       }, {
-        label: "Erwartung",
+        label: this.$t("expectedRating").toString(),
         fill: false,
         borderDash: [5, 5],
         borderColor: this.colorValue,

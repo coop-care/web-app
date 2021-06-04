@@ -8,6 +8,10 @@ export class IdentifiableObject {
   @Transform(({ value }) => new ObjectID(value), { toClassOnly: true })
   _id?: ObjectID = undefined;
 
+  get id() {
+    return this._id?.toHexString() || "";
+  }
+
   equals(object: IdentifiableObject) {
     return this._id?.equals(object._id || "") || false;
   }

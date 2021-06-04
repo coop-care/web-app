@@ -127,6 +127,11 @@ const routes: RouteConfig[] = [
         component: () => import("pages/TeamSettings.vue")
       },
       {
+        name: "insights",
+        path: "/insights",
+        component: () => import("pages/Insights.vue")
+      },
+      {
         name: "login",
         path: !isDemo ? "/login" : "",
         component: () => import("pages/Login.vue")

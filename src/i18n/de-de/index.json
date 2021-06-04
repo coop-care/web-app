@@ -510,4 +510,7 @@
   "knowledgeExpectationHint": "Welches Wissen über sein oder ihr Problem kann der Klient mit deiner Hilfe realistisch erreichen?",
   "behaviourExpectationHint": "Welches Verhalten zur Verbesserung seines oder ihres Problems kann der Klient mit deiner Hilfe realistisch erreichen?",
   "statusExpectationHint": "Welchen Gesundheitszustand in Bezug auf sein oder ihr Problem kann der Klient mit deiner Hilfe realistisch erreichen?",
+  "insights": "Erkenntnisse",
+  "filter": "Filter",
+  "timePeriod": "Zeitraum"
 }

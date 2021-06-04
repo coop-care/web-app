@@ -115,14 +115,8 @@ export default class MainLayout extends Vue {
       } else {
         return this.$tc("client", 2);
       }
-    } else if (
-      ["userSettings", "teamSettings", "legalNotice", "privacyPolicy"].includes(
-        route.name || ""
-      )
-    ) {
-      return this.$t(route.name || "");
     } else {
-      return "";
+      return this.$t(route.name || "");
     }
   }
   get subtitle() {

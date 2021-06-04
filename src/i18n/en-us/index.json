@@ -510,4 +510,7 @@
   "behaviourExpectationHint": "What behavior to improve his or her problem can the client realistically achieve with your help?",
   "statusExpectationHint": "What health status regarding his or her problem can the client realistically achieve with your help?",
   "print": "Print",
+  "insights": "Insights",
+  "filter": "Filter",
+  "timePeriod": "Period"
 }

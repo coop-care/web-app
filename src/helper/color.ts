@@ -48,3 +48,19 @@ export const defaultColors = [
     "#ff3b30",
     "#28CD41"
 ];
+
+export const chartColors = {
+    "blue": "rgb(0, 122, 255)",
+    "brown": "rgb(172, 142, 104)",
+    "gray": "rgb(152, 152, 157)",
+    "green": "rgb(50, 215, 75)",
+    "indigo": "rgb(94, 92, 230)",
+    "orange": "rgb(255, 159, 10)",
+    "pink": "rgb(255, 55, 95)",
+    "purple": "rgb(191, 90, 242)",
+    "red": "rgb(255, 69, 58)",
+    "teal": "rgb(90, 200, 245)",
+    "yellow": "rgb(255, 214, 10)",
+}
+
+Object.entries(chartColors).forEach(([key, value]) => setBrand(key, value))
