@@ -9,20 +9,26 @@ import actions from "./actions";
 Vue.use(Vuex);
 
 export interface StateInterface {
-    currentUser?: User;
+    // persistent data:
     teams: Team[];
     teamMembers: Record<string, TeamMember>;
     clients: Client[];
+    currentUser?: User;
+    // ephemeral state:
     isLoadingClientList: boolean;
+    redirectPath: string;
 }
 
 const { store, rootActionContext, moduleActionContext } = createDirectStore({
     state: {
-        currentUser: undefined,
+        // persistent data:
         teams: [],
         teamMembers: {},
         clients: [],
-        isLoadingClientList: false
+        currentUser: undefined,
+        // ephemeral state:
+        isLoadingClientList: false,
+        redirectPath: "",
     } as StateInterface,
     getters,
     mutations,
@@ -46,7 +52,6 @@ export { rootActionContext, moduleActionContext };
 // The following lines enable types in the injected store '$store'.
 export type AppStore = typeof store;
 declare module "vuex" {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface Store<S> {
         direct: AppStore;
     }

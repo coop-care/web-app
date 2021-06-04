@@ -194,9 +194,9 @@ export default class UserMenu extends Vue {
     location.href = "mailto:feedback@coopcare.de?subject=Feedback";
   }
   logout() {
-    void this.$store.direct.dispatch
-      .logout()
-      .then(() => this.$router.push({ name: "login" }))
+    // first to login page, then logout to prevent redirectPath being set to current path
+    void this.$router.replace({name: "login"})
+      .then(() => this.$store.direct.dispatch.logout())
   }
 }
 </script>
