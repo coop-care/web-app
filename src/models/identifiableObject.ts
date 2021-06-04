@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { classToPlain, classToClass, Transform } from "class-transformer";
+import { ClassConstructor, classToPlain, plainToClass, Transform } from "class-transformer";
 import { ObjectID } from "bson";
 
 export class IdentifiableObject {
@@ -21,7 +21,7 @@ export class IdentifiableObject {
   }
 
   clone() {
-    return classToClass(this);
+    return plainToClass(this.constructor as ClassConstructor<this>, classToPlain(this));
   }
 
 }
