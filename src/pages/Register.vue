@@ -1,18 +1,16 @@
 <template>
-  <q-page class="window-height window-width row justify-center">
-    <div
-      v-if="isForm"
-      class="column"
-    >
+  <q-page class="window-width row justify-center">
+    <div class="column">
       <div class="row">
         <q-card class="credentials bg-grey-2 shadow-1 q-mt-xl">
           <q-card-section>
             <div class="text-h5 text-center">{{ $t("createAccount") }}</div>
           </q-card-section>
-          <q-card-section>
+
+          <q-card-section v-if="isForm">
             <p
               v-if="errorMsg"
-              class="text-red q-mt-md"
+              class="text-negative q-mt-md"
             >{{ errorMsg }}</p>
             <q-form class="q-gutter-md">
               <q-input
@@ -29,7 +27,15 @@
               />
             </q-form>
           </q-card-section>
-          <q-card-actions class="q-px-md q-pb-md">
+          <q-card-section v-else-if="isSuccess">
+            <p class="q-my-md"
+            >{{ $t("confirmationMessage") }}</p>
+          </q-card-section>
+
+          <q-card-actions
+            v-if="isForm"
+            class="q-px-md q-pb-md"
+          >
             <q-btn
               unelevated
               no-caps
@@ -40,16 +46,6 @@
             />
           </q-card-actions>
         </q-card>
-      </div>
-    </div>
-    <div
-      v-else-if="isSuccess"
-      class="column"
-    >
-      <div class="row">
-        <h5 class="text-h5 q-my-md">
-          {{ $t("confirmationMessage") }}
-        </h5>
       </div>
     </div>
   </q-page>
