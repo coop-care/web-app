@@ -194,15 +194,24 @@ module.exports = configure(function (ctx) {
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
+        // https://electron.github.io/electron-packager/master/interfaces/electronpackager.options.html
+
+        // all: true,
+        platform: ["darwin", "win32"],
+        arch: ["x64"],
+
+        junk: true,
 
         // OS X / Mac App Store
-        // appBundleId: '',
-        // appCategoryType: '',
+        appBundleId: "de.coopcare.v1",
+        appCategoryType: "public.app-category.medical",
         // osxSign: '',
-        // protocol: 'myapp://path',
+        protocol: "coopcare://",
 
         // Windows only
-        // win32metadata: { ... }
+        win32metadata: {
+          CompanyName: "CoopCare"
+        }
       },
 
       builder: {
@@ -212,7 +221,7 @@ module.exports = configure(function (ctx) {
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
-      nodeIntegration: true,
+      nodeIntegration: false,
 
       extendWebpack(/* cfg */) {
         // do something with Electron main process Webpack cfg
