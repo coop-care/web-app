@@ -168,7 +168,8 @@ export default class StitchApi implements CoopCareApiInterface {
     }
 
     createClient(client: Client) {
-        return this.clients.insertOne(client).then(result => {
+        const data: any = client.toJSON();
+        return this.clients.insertOne(data).then(result => {
             client._id = new ObjectID(result.insertedId);
             return client;
         })
@@ -193,10 +194,19 @@ export default class StitchApi implements CoopCareApiInterface {
                 }, {})
                 .toArray()
                 .then(data => {
-                    // @ts-ignore
-                    data.forEach(item => item._id = item._id?.toHexString())
-                    const result = Client.fromObject(data) as Client[];
-                    return result;
+                    return data.flatMap((item: any) => {
+                        try {
+                            item._id = item._id?.toHexString();
+
+                            if (typeof item.contact.id == "object") {
+                                item.contact.id = item.contact.id?.toHexString();
+                            }
+                            return [Client.fromObject(item) as Client]
+                        } catch (error) {
+                            console.error(error);
+                            return [];
+                        }
+                    })
                 })
         );
     }
