@@ -1,5 +1,5 @@
 <template>
-  <div class="fit">
+  <div class="relative-position" style="height: 5em">
     <div class="absolute-center vertical-middle full-width column items-center">
       <q-spinner
         size="5em"

@@ -318,7 +318,7 @@ export default class TaskView extends InterventionMixin {
       {
         name: this.$t("newRating") + " …",
         icon: "far fa-comment-dots",
-        action: () => this.routerPush("outcome"),
+        action: () => this.routerPush("clientOutcome"),
         condition: isRatingReminder && isTaskUncompleted,
       },
       {
@@ -350,7 +350,7 @@ export default class TaskView extends InterventionMixin {
       {
         name: this.$t("editIntervention") + " …",
         icon: "fas fa-pen",
-        action: () => this.routerPush("intervention"),
+        action: () => this.routerPush("clientIntervention"),
         condition: isIntervention && isReminderUnfinished,
       },
       {

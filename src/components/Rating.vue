@@ -7,16 +7,16 @@
 
     <div class="q-mb-lg row q-col-gutter-x-xl q-col-gutter-y-lg">
       <div class="col-12 col-sm-6"> 
-        <div class="rating-header column justify-center text-center q-mb-xs">
+        <div class="rating-header column no-wrap justify-center text-center q-mb-xs">
           <text-with-tooltip
             :text="$t('observedRating') + ':'"
             :tooltip="$t(type + 'ObservationHint')"
-            class="text-subtitle2"
+            class="text-subtitle2 ellipsis"
           />
           <text-with-tooltip
             :text="observationScale"
             :tooltip="observationExample"
-            class="text-weight-light"
+            class="text-weight-light ellipsis"
           />
         </div>
         <div class="row">
@@ -104,16 +104,16 @@
       </div>
 
       <div class="col-12 col-sm-6" style="opacity: 0.7"> 
-        <div class="rating-header column justify-center text-center q-mb-xs">
+        <div class="rating-header column no-wrap justify-center text-center q-mb-xs">
           <text-with-tooltip
             :text="$t('expectedRating') + ':'"
             :tooltip="$t(type + 'ExpectationHint')"
-            class="text-subtitle2"
+            class="text-subtitle2 ellipsis"
           />
           <text-with-tooltip
             :text="expectationScale"
             :tooltip="expectationExample"
-            class="text-weight-light"
+            class="text-weight-light ellipsis"
           />
         </div>
         <div class="row">

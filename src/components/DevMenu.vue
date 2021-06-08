@@ -1,12 +1,9 @@
 <template>
-  <q-btn
-    icon="fas fa-wrench"
-    flat
-    stretch
-    style="max-width:44px"
-    v-if="isVisible"
-  >
-    <q-menu max-height="calc(96vh - 50px)">
+    <q-menu
+      max-height="calc(96vh - 50px)"
+      :anchor="anchor"
+      :self="self"
+    >
       <q-list
         class="text-body2"
         style="width: 240px"
@@ -57,7 +54,6 @@
 
         <q-separator />
 
-        <!-- <q-item-label header>{{ $t("databaseTestSettings") }}</q-item-label> -->
         <q-item
           clickable
           v-close-popup
@@ -75,14 +71,15 @@
         </q-item>
       </q-list>
     </q-menu>
-  </q-btn>
 </template>
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { getColor, setColor } from "../helper/color";
 
 @Component
 export default class DevMenu extends Vue {
+  @Prop({ type: String, default: "bottom middle"}) readonly anchor!: string;
+  @Prop({ type: String, default: "top middle"}) readonly self!: string;
   colorMenuKey = Math.random();
 
   get colors() {
@@ -95,9 +92,6 @@ export default class DevMenu extends Vue {
       intervention: "Interventions-Farbe",
       outcome: "Bewertungs-Farbe",
     } as { [key: string]: string };
-  }
-  get isVisible() {
-    return this.$ccApi.isLoggedIn && process.env.BACKEND != "demo" && process.env.DEV;
   }
   getColor(name: string) {
     return getColor(name);

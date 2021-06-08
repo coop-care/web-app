@@ -23,7 +23,7 @@
             v-if="isInteractive"
             :title="$t('editProblem')"
             icon="edit"
-            :to="{ name: 'classification', params: params }"
+            :to="{ name: 'clientProblemClassification', params: params }"
             round
             outline
             size="10.5px"
@@ -162,7 +162,7 @@
             v-if="isInteractive"
             :title="$t('newRating')"
             icon="add"
-            :to="{ name: 'outcome', params: params }"
+            :to="{ name: 'clientOutcome', params: params }"
             round
             outline
             size="10.5px"
@@ -202,7 +202,7 @@
             v-if="isInteractive"
             :title="$t('editInterventions')"
             icon="add"
-            :to="{ name: 'newInterventionForProblem', params: params }"
+            :to="{ name: 'clientNewInterventionForProblem', params: params }"
             round
             outline
             size="10.5px"
@@ -395,7 +395,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
   prioritizeProblemRecord() {
     this.$store.direct.commit.prioritizeProblemRecord(this.params);
     void this.$router.push({
-      name: "problem",
+      name: "clientProblem",
       params: this.$store.direct.getters.getRouteParamsForLatestProblem(
         this.params
       ),
@@ -423,7 +423,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
         this.$t("problemDismissalOutcomeWarningMessage") as string
       )
         .onOk(() => {
-          void this.$router.push({ name: "outcome", params: this.params });
+          void this.$router.push({ name: "clientOutcome", params: this.params });
         })
         .onCancel(() => {
           dismiss();

@@ -10,7 +10,7 @@
           flat
           icon="menu"
           aria-label="menu"
-          @click="$root.$emit('toggle-client-drawer')"
+          @click="$root.$emit('toggle-drawer')"
         />
         <q-btn
           v-if="hasBackButton($router.currentRoute.name || '')"
@@ -33,7 +33,6 @@
         </q-toolbar-title>
 
         <user-menu v-if="$ccApi.isLoggedIn" />
-        <dev-menu v-if="$ccApi.isLoggedIn" />
 
         <q-btn
           v-else
@@ -52,6 +51,8 @@
         style="bottom: -10px"
       ></div>
     </q-header>
+
+    <navigation-drawer v-if="hasDrawer($router.currentRoute.name || '')" />
 
     <q-page-container>
       <div class="print-only text-black text-center text-subtitle2 border-bottom-grey">
@@ -78,15 +79,15 @@
 import { Vue, Component } from "vue-property-decorator";
 import UserMenu from "../components/UserMenu.vue";
 import LanguageMenu from "../components/LanguageMenu.vue";
-import DevMenu from "../components/DevMenu.vue";
 import Banner from "../components/Banner.vue";
+import NavigationDrawer from "../components/NavigationDrawer.vue";
 
 @Component({
   components: {
     UserMenu,
     LanguageMenu,
-    DevMenu,
-    Banner
+    Banner,
+    NavigationDrawer
   },
   meta() {
     const isDemo = process.env.BACKEND == "demo";
@@ -127,16 +128,14 @@ export default class MainLayout extends Vue {
     if (
       this.record &&
       [
-        "problem",
-        "classification",
-        "outcome",
-        "intervention",
-        "interventions"
+        "clientProblem",
+        "clientProblemClassification",
+        "clientOutcome",
+        "clientIntervention",
+        "clientInterventions"
       ].includes(route.name || "")
     ) {
       return this.$t(this.record.problem.title);
-    } else if (route.name == "problemsByDiagnosis") {
-      return this.$t("problemAdmissionByDiagnosis");
     } else {
       return "";
     }
@@ -147,12 +146,21 @@ export default class MainLayout extends Vue {
   get record() {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
+  get backButtonRoutes() {
+    return ["register", "confirm", "requestPasswordReset", "resetPassword"];
+  }
+  get noDrawerRoutes() {
+    return this.backButtonRoutes.concat("login");
+  }
 
+  hasDrawer(routeName: string) {
+    return !this.noDrawerRoutes.includes(routeName);
+  }
   hasMenuButton(routeName: string) {
-    return routeName.startsWith("client") && this.$q.screen.lt.md;
+    return this.hasDrawer(routeName) && this.$q.screen.lt.md;
   }
   hasBackButton(routeName: string) {
-    return !routeName.startsWith("client") && (routeName != "login");
+    return this.backButtonRoutes.includes(routeName);
   }
   showOnboardingForDemoVersion() {
     if (

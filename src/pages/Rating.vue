@@ -4,7 +4,6 @@
     :is-data-available="!!record"
     hide-default-footer
   >
-    <problem-summary-container :problemRecord="record">
       <problem-rating />
       <warning
         v-model="showWarning"
@@ -20,7 +19,6 @@
         :label="doneButtonLabel"
         class="q-mt-lg"
       />
-    </problem-summary-container>
   </editing-page-container>
 </template>
 

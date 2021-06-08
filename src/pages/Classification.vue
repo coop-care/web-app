@@ -4,7 +4,6 @@
     :is-data-available="!!record"
     hide-default-footer
   >
-    <problem-summary-container :problemRecord="record">
       <q-stepper
         v-model="step"
         ref="stepper"
@@ -78,7 +77,6 @@
           />
         </q-step>
       </q-stepper>
-    </problem-summary-container>
   </editing-page-container>
 </template>
 

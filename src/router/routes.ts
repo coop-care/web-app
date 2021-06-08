@@ -20,99 +20,110 @@ const routes: RouteConfig[] = [
         path: "/client/:clientId",
         redirect: { name: "clientMasterData" },
         component: () => import("pages/Client.vue"),
+        meta: { noScroll: true },
         children: [
           {
             name: "clientMasterData",
             path: "profile",
             component: () => import("components/ClientMasterData.vue"),
+            meta: { noScroll: true },
             children: [
               {
                 name: "clientHealthInformation",
                 path: "health",
-                component: () => import("components/ClientHealthInformation.vue")
+                component: () => import("components/ClientHealthInformation.vue"),
+                meta: { noScroll: true },
               },
               {
                 name: "clientAgreements",
                 path: "agreements",
-                component: () => import("components/ClientAgreements.vue")
+                component: () => import("components/ClientAgreements.vue"),
+                meta: { noScroll: true },
               },
               {
                 name: "clientContactData",
                 path: "contacts/client",
-                component: () => import("components/ClientContactData.vue")
+                component: () => import("components/ClientContactData.vue"),
+                meta: { noScroll: true },
               },
               {
                 name: "clientInformalContact",
                 path: "contacts/informal/:informalContactId",
-                component: () => import("components/ClientInformalContact.vue")
+                component: () => import("components/ClientInformalContact.vue"),
+                meta: { noScroll: true },
               },
               {
                 name: "clientFormalContact",
                 path: "contacts/formal/:formalContactId",
-                component: () => import("components/ClientFormalContact.vue")
+                component: () => import("components/ClientFormalContact.vue"),
+                meta: { noScroll: true },
               }
             ]
           },
           {
             name: "clientReminders",
             path: "reminders/:day?",
-            component: () => import("components/ClientReminders.vue")
+            component: () => import("components/ClientReminders.vue"),
+            meta: { noScroll: true },
           },
           {
             name: "clientReport",
             path: "report/:problemId?",
-            component: () => import("components/ClientProblems.vue")
+            component: () => import("components/ClientProblems.vue"),
+            meta: { noScroll: true },
           },
           {
             name: "clientProofOfPerformance",
             path: "/client/:clientId/reports/execution",
-            component: () => import("components/ProofOfPerformance.vue")
+            component: () => import("components/ProofOfPerformance.vue"),
+            meta: { noScroll: true },
           },
           {
             name: "clientHistory",
             path: "/client/:clientId/history",
-            component: () => import("components/ClientHistory.vue")
+            component: () => import("components/ClientHistory.vue"),
+            meta: { noScroll: true },
           }
         ]
       },
       {
-        name: "classification",
+        name: "clientProblemClassification",
         path: "/client/:clientId/problem/:problemId/classification",
         component: () => import("pages/Classification.vue")
       },
       {
-        name: "outcome",
+        name: "clientOutcome",
         path: "/client/:clientId/problem/:problemId/outcome",
         component: () => import("pages/Rating.vue")
       },
       {
-        name: "newInterventionForProblem",
+        name: "clientNewInterventionForProblem",
         path: "/client/:clientId/problem/:problemId/intervention/new",
         component: () => import("pages/NewIntervention.vue")
       },
       // {
-      //     name: "interventions",
+      //     name: "clientiInterventions",
       //     path: "/client/:clientId/problem/:problemId/intervention",
       //     component: () => import("pages/InterventionList.vue")
       // },
       {
-        name: "intervention",
+        name: "clientIntervention",
         path:
           "/client/:clientId/problem/:problemId/intervention/:interventionId",
         component: () => import("pages/Intervention.vue")
       },
       {
-        name: "newIntervention",
+        name: "clientNewIntervention",
         path: "/client/:clientId/intervention/new",
         component: () => import("pages/NewIntervention.vue")
       },
       {
-        name: "problem",
+        name: "clientProblem",
         path: "/client/:clientId/problem/:problemId/:step?",
         component: () => import("pages/ProblemRecording.vue")
       },
       {
-        name: "problemsByDiagnosis",
+        name: "clientProblemsByDiagnosis",
         path: !isDemo ? "/client/:clientId/diagnoses" : "",
         component: () => import("pages/ProblemsByDiagnosis.vue")
       },
@@ -129,7 +140,8 @@ const routes: RouteConfig[] = [
       {
         name: "insights",
         path: "/insights",
-        component: () => import("pages/Insights.vue")
+        component: () => import("pages/Insights.vue"),
+        meta: { section: "team" }
       },
       {
         name: "login",

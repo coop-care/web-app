@@ -1,7 +1,6 @@
 <template>
   <q-page
-    padding
-    class="limit-page-width"
+    class="limit-page-width page-padding"
   >
     <q-markdown
       :src="markdown"

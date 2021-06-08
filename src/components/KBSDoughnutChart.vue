@@ -25,7 +25,6 @@
   right: 15%
   border-radius: 50%
   text-align: center
-  vertical-align:middle
   .keyfigure
     margin-bottom: .2rem
     font-weight: bold

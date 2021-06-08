@@ -4,7 +4,6 @@
     :is-data-available="!!(client && intervention)"
     hide-default-footer
   >
-    <problem-summary-container>
       <intervention-editor
         :value="intervention"
         isSingleEditor
@@ -24,7 +23,6 @@
         :label="doneButtonLabel"
         class="q-mt-lg"
       />
-    </problem-summary-container>
   </editing-page-container>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <q-btn
     v-if="$ccApi.isLoggedIn"
-    icon="account_circle"
+    icon="share"
     flat
     stretch
     style="max-width:44px"
@@ -14,38 +14,6 @@
         class="text-body2"
         style="width: 260px"
       >
-        <q-item v-if="user">
-          <q-item-section side>
-            <signature
-              :user="user"
-              color="white"
-              class="usermenu-signature bg-grey-7"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>
-              <simplified-markdown :text="$t('accountWelcomeMessage', { name: user.username })" />
-              <div class="q-mt-xs text-caption text-weight-medium">
-                {{ user.email }}
-              </div>
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item
-          v-if="!isDemo"
-          clickable
-          v-close-popup
-          @click="logout"
-        >
-          <q-item-section side>
-            <q-icon name="fas fa-sign-out-alt" />
-          </q-item-section>
-          <q-item-section>{{ $t("logout") }}</q-item-section>
-        </q-item>
-
-        <q-separator />
-
         <q-item clickable>
           <q-item-section side>
             <q-icon name="fas fa-globe" />
@@ -62,41 +30,22 @@
             :fit="true"
           />
         </q-item>
-        <q-item
-          clickable
-          v-close-popup
-          @click="$router.push({ name: 'userSettings' })"
-        >
-          <q-item-section side>
-            <q-icon name="fas fa-user-cog" />
-          </q-item-section>
-          <q-item-section>{{ $t("userSettings") }}</q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          v-close-popup
-          @click="$router.push({ name: 'teamSettings' })"
-        >
-          <q-item-section side>
-            <q-icon name="fas fa-users-cog" />
-          </q-item-section>
-          <q-item-section>{{ $t("teamSettings") }}</q-item-section>
-        </q-item>
-        <q-item
-          v-if="isDev"
-          clickable
-          v-close-popup
-          @click="$router.push({ name: 'insights' })"
-        >
-          <q-item-section side>
-            <q-icon name="fas fa-chart-line" />
-          </q-item-section>
-          <q-item-section>{{ $t("insights") }}</q-item-section>
-        </q-item>
-
-        <q-separator />
 
         <q-item
+          clickable
+          v-close-popup
+          @click="openMail"
+        >
+          <q-item-section side>
+            <q-icon name="far fa-comment" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t("feedback") }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          v-if="!$q.platform.is.electron"
           clickable
           v-close-popup
           @click="print"
@@ -109,49 +58,27 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          v-close-popup
-          @click="openMail"
-        >
-          <q-item-section side>
-            <q-icon name="feedback" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{ $t("feedback") }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-separator />
-
-        <q-item class="column q-px-none text-grey-7">
-          <q-btn
-            :label="$t('contributeAndOpenSource')"
-            flat
-            no-caps
-            class="text-caption"
-            type="a"
-            href="https://github.com/coop-care/web-app"
-            target="_blank"
-            rel="noreferrer noopener"
-            icon-right="fab fa-github"
-            v-close-popup
-          />
-          <q-btn
-            :label="$t('privacyPolicy')"
-            flat
-            no-caps
-            class="text-caption"
-            @click="$router.push({ name: 'privacyPolicy' })"
-          />
-          <q-btn
-            :label="$t('legalNotice')"
-            flat
-            no-caps
-            class="text-caption"
-            @click="$router.push({ name: 'legalNotice' })"
-          />
-        </q-item>
+        <div v-if="isDev">
+          <q-separator />
+          <q-item clickable>
+            <q-item-section side>
+              <q-icon name="fas fa-tools" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>
+                {{ $q.platform.is.name }} – {{ $q.platform.is.platform }},
+                Version {{ $q.platform.is.versionNumber }} ({{ $q.platform.is.version }})
+              </q-item-label>
+            </q-item-section>
+            <q-item-section side>
+              <q-icon name="fas fa-angle-right" />
+            </q-item-section>
+            <dev-menu
+              :anchor="$q.screen.gt.xs ? 'top left' : 'bottom middle'"
+              :self="$q.screen.gt.xs ? 'top right' : 'top middle'"
+            />
+          </q-item>
+        </div>
       </q-list>
     </q-menu>
   </q-btn>
@@ -167,20 +94,15 @@
 <script lang="ts">
 import { Vue, Component } from "vue-property-decorator";
 import LanguageMenu from "./LanguageMenu.vue";
-import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
-import Signature from "./Signature.vue";
+import DevMenu from "./DevMenu.vue";
 
 @Component({
   components: {
     LanguageMenu,
-    SimplifiedMarkdown,
-    Signature
+    DevMenu
   },
 })
 export default class UserMenu extends Vue {
-  get user() {
-    return this.$store.direct.state.currentUser;
-  }
   get isDemo() {
     return process.env.BACKEND == "demo";
   }

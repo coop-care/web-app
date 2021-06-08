@@ -1,7 +1,6 @@
 <template>
   <q-page
-    padding
-    class="limit-page-width width-sm insights-page"
+    class="limit-page-width width-md page-padding insights-page"
   >
     <pull-to-refresh @refresh="refresh">
       <div class="q-mb-md text-center text-subtitle2">Hinweis: die angezeigten Daten sind zufällig und noch ohne Bezug zu gespeicherten Klientendaten</div>

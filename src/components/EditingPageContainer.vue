@@ -1,10 +1,12 @@
 <template>
   <q-page
-    padding
-    class="limit-page-width width-md"
+    class="limit-page-width page-padding width-sm"
   >
     <pull-to-refresh>
-      <loading v-if="$store.direct.state.isLoadingClientList && !isDataAvailable" />
+      <loading
+        v-if="$store.direct.state.isLoadingClientList && !isDataAvailable"
+        class="fit"
+      />
 
       <central-message
         v-else-if="!$store.direct.state.isLoadingClientList && !isDataAvailable"
@@ -12,11 +14,24 @@
       />
 
       <div v-else>
-        <simplified-markdown
-          v-if="title"
-          :text="title"
-          class="text-h5 block q-mb-lg"
-        />
+        <div 
+          v-if="!hideDefaultHeader"
+          class="row items-center q-pb-md q-mb-lg"
+        > 
+          <q-btn
+            flat
+            round
+            color="primary"
+            icon="fas fa-chevron-left"
+            size="13.5px"
+            dense
+            @click="$router.back()"/>
+          <simplified-markdown
+            v-if="title"
+            :text="title"
+            class="text-h5 block col text-center"
+          />
+        </div>
         <slot />
         <slot name="footer">
           <div
@@ -62,6 +77,7 @@ import PullToRefresh from "components/PullToRefresh.vue";
 export default class EditingPageContainer extends Vue {
   @Prop(Boolean) readonly isDataAvailable!: boolean;
   @Prop({ type: String, default: ""}) readonly title!: string;
+  @Prop(Boolean) readonly hideDefaultHeader!: boolean;
   @Prop(Boolean) readonly hideDefaultFooter!: boolean;
 }
 </script>

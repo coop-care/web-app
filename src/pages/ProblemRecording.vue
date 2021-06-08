@@ -1,9 +1,10 @@
 <template>
   <editing-page-container
     :is-data-available="isDataAvailable"
+    hide-default-header
     hide-default-footer
+    class="width-md"
   >
-    <problem-summary-container>
       <div class="row justify-center">
         <q-btn
           @click="discardProblemRecord"
@@ -174,7 +175,6 @@
           />
         </q-step>
       </q-stepper>
-    </problem-summary-container>
   </editing-page-container>
 </template>
 

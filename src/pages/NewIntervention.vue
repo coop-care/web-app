@@ -4,7 +4,6 @@
     :is-data-available="!!(client && intervention)"
     hide-default-footer
   >
-    <problem-summary-container :problemRecord="record">
       <div v-if="!$route.params.problemId">
         <div class="q-mt-sm text-subtitle1 counter">{{ $t("selectProblem") }}</div>
         <q-select
@@ -55,7 +54,6 @@
         :label="doneButtonLabel"
         class="q-mt-lg"
       />
-    </problem-summary-container>
   </editing-page-container>
 </template>
 
@@ -98,7 +96,7 @@ export default class InterventionPage extends RecordValidator {
         })
         .then(() => {
           void this.$router.push({
-            name: "problem",
+            name: "clientProblem",
             params: this.$store.direct.getters.getRouteParamsForLatestProblem(
               this.$route.params
             ),

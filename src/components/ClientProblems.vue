@@ -76,7 +76,7 @@ export default class ClientProblems extends RecordMixin {
 
   addProblem() {
     void this.$router.push({
-      name: "problem",
+      name: "clientProblem",
       params: { problemId: "new" },
     });
   }

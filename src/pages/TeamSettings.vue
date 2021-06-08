@@ -1,7 +1,6 @@
 <template>
   <q-page
-    padding
-    class="limit-page-width width-sm"
+    class="limit-page-width width-sm page-padding"
   >
     <pull-to-refresh @refresh="updateClientsInAdditionalTeams">
       <div

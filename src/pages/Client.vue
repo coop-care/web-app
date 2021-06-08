@@ -1,9 +1,11 @@
 <template>
   <q-page class="limit-page-width">
-    <client-drawer ref="clientDrawer" />
 
     <pull-to-refresh @refresh="updateClientsInAdditionalTeams">
-      <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
+      <loading
+        v-if="$store.direct.state.isLoadingClientList && !clients.length"
+        class="fit"
+      />
 
       <div
         v-else-if="
@@ -52,7 +54,7 @@
       />
 
       <div
-        class="client-overview q-pt-lg q-px-xl"
+        class="page-padding"
         v-else-if="client"
       >
         <client-tab-view :key="$route.params.clientId || ''" />
@@ -63,15 +65,14 @@
 
 <style lang="sass">
 .client-overview
-  @media (max-width: $breakpoint-xs-max)
-    padding: 8px
+  @media print
+    padding: .75cm 0 0
 </style>
 
 <script lang="ts">
-import { Component, Ref, Mixins } from "vue-property-decorator";
+import { Component, Mixins } from "vue-property-decorator";
 import RecordMixin from "../mixins/RecordMixin";
 import ClientActionMixin from "../mixins/ClientActionMixin";
-import ClientDrawer from "../components/ClientDrawer.vue";
 import NewClient from "../components/NewClient.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import { Client, Contact } from "../models";
@@ -84,7 +85,6 @@ import ClientTabView from "../components/ClientTabView.vue";
   components: {
     NewClient,
     ActionMenu,
-    ClientDrawer,
     Loading,
     CentralMessage,
     PullToRefresh,
@@ -92,8 +92,6 @@ import ClientTabView from "../components/ClientTabView.vue";
   },
 })
 export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
-  @Ref() readonly  clientDrawer!: ClientDrawer;
-
   get clients() {
     return this.$store.direct.state.clients;
   }
@@ -102,20 +100,12 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
     void this.saveClient()
       .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
 
-    this.$root.$on("did-archive-client", () => 
-      this.clientDrawer.archivedClientsExpansionState = true
-    );
-    this.$root.$on("did-unarchive-client", () => 
-      this.clientDrawer.activeClientsExpansionState = true
-    );
     this.$root.$on("did-delete-client", this.deselectClient);
     this.$root.$on("did-remove-client-from-team", this.deselectClient);
     this.$root.$on("did-move-client-to-team", this.deselectClient);
   }
 
   beforeDestroy() {
-    this.$root.$off("did-archive-client");
-    this.$root.$off("did-unarchive-client");
     this.$root.$off("did-delete-client");
     this.$root.$off("did-remove-client-from-team");
     this.$root.$off("did-move-client-to-team");
@@ -140,9 +130,9 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
   }
 
   mounted() {
-    // no client is selected and the client drawer is not visible
-    if (!this.clientDrawer?.isVisible && this.clients.length > 0 && !this.$route.params.clientId) {
-      this.$root.$emit("toggle-client-drawer");
+    // no client is selected
+    if (this.clients.length > 0 && !this.$route.params.clientId) {
+      this.$root.$emit("open-drawer");
     }
   }
 }

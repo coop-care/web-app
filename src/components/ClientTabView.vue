@@ -14,7 +14,7 @@
         v-if="routesPerTab.length > 0"
         :name="0"
         :label="$t('masterDataTitle')"
-        icon="fas fa-users"
+        icon="fas fa-user-friends"
         :to="routesPerTab[0]"
         class="text-primary"
       />
@@ -113,11 +113,6 @@
     .q-btn-dropdown--simple * + .q-btn-dropdown__arrow
       margin-left: 0
       margin-right: -8px
-.client-overview
-  @media (max-width: $breakpoint-xs-max)
-    padding: 8px
-  @media print
-    padding: .75cm 0 0
 </style>
 
 <script lang="ts">
