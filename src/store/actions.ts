@@ -121,8 +121,7 @@ export default defineActions({
 
         return ccApi.createClient(client).then(client => {
             const clientId = client._id?.toHexString();
-            const team = state.teams.find(team =>
-                team._id?.toHexString() == user.activeTeam);
+            const team = state.teams.find(team => team.id == user.activeTeam);
 
             if (!clientId) {
                 return Promise.reject();
