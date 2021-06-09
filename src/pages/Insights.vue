@@ -79,6 +79,7 @@
             <k-b-s-overview-chart
               :labels="terminologyRatings.map(item => item.title)"
               :dates="[startDate, endDate]"
+              :title="$t('evaluationOfAllClients')"
             />
           </div>
           <div class="col-12 col-sm-6 col-md-3">

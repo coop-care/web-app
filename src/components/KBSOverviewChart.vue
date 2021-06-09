@@ -1,19 +1,28 @@
 <template>
   <div class="full-width non-selectable relative-position">
     <canvas ref="canvas" :height="height"></canvas>
-    <div class="text-subtitle2 text-weight-bold text-center">Evaluation aller Klienten</div>
+    <div class="text-subtitle2 text-weight-bold text-center">{{ title }}</div>
+    <div :class="[dense ? 'row justify-around' : '']">
+      <div
+        v-for="(dataset, index) in randomData"
+        :key="dataset.label"
+        class="row"
+      >
+        <div :class="['text-right text-weight-medium', 'text-' + colors[index], dense ? '' : 'col']">{{dataset.label}}</div>
+        <div :class="['text-left', dense ? 'q-pl-xs' : 'col q-pl-sm']">{{ legend(dataset.data) }}</div>
+      </div>
+    </div>
     <div
-      v-for="(dataset, index) in randomData"
-      :key="dataset.label"
+      v-if="!dense"
       class="row"
     >
-      <div :class="['col text-right text-weight-medium', 'text-' + colors[index]]">{{dataset.label}}</div>
-      <div class="col q-pl-sm text-left">{{ legend(dataset.data) }}</div>
-    </div>
-    <div class="row">
       <div class="col text-right text-caption"></div>
       <div class="col q-pl-sm text-left text-caption">{{ date }}</div>
     </div>
+    <div
+      v-else
+      class="text-center text-caption"
+    >{{ date }}</div>
   </div>
 </template>
 
@@ -29,6 +38,8 @@ import { getColor } from "../helper/color";
 export default class KBSOverviewChart extends Vue {
   @Prop({type: Array, default: () => []}) readonly labels!: string[];
   @Prop({type: Array, default: () => []}) readonly dates!: Date[];
+  @Prop({type: String, default: ""}) readonly title!: string;
+  @Prop(Boolean) readonly dense!: boolean;
   @Prop({type: Object, default: () => ({})}) readonly chartOptions!: ChartOptions;
   @Prop({type: Object, default: () => ({})}) readonly chartData!: ChartData;
   @Prop({type: Array, default: () => []}) readonly datasets!: number[][];
@@ -42,6 +53,14 @@ export default class KBSOverviewChart extends Vue {
   onChartDataChanged() {
     if (this.chart) {
       this.chart.data = this.actualChartData;
+      this.chart.update();
+    }
+  }
+
+  @Watch("chartOptions")
+  onChartOptionsChanged() {
+    if (this.chart) {
+      this.chart.options = this.options;
       this.chart.update();
     }
   }
@@ -97,7 +116,8 @@ export default class KBSOverviewChart extends Vue {
         mode: "index",
         intersect: false
       },
-      onResize: this.onResize
+      onResize: this.onResize,
+      ...this.chartOptions
     }
   }
   get datasetOptions(): ChartDataSets {
@@ -141,7 +161,7 @@ export default class KBSOverviewChart extends Vue {
   get date() {
     return this.hoverIndex >= 0
       ? this.dates[this.hoverIndex].toLocaleDateString(this.$root.$i18n.locale)
-      : "";
+      : " ";
   }
   get context() {
     return this.canvas.getContext("2d");
