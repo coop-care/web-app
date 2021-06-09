@@ -392,7 +392,7 @@
   "confirmTeamDeletionMessage": "Das Team {name} wird unwiederbringlich gelöscht.",
   "addEmailAddress": "E-Mail-Adresse hinzufügen",
   "addPostalAddress": "Adresse hinzufügen",
-  "street": "Straße",
+  "street": "Straße und Hausnummer",
   "postalCode": "Postleitzahl",
   "city": "Stadt",
   "country": "Land",

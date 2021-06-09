@@ -233,13 +233,7 @@
               @change="save"
               :placeholder="$t('street')"
               dense
-            />
-            <q-input
-              :value="item.value.street2"
-              @input="update(item.value, {street2: $event})"
-              @change="save"
-              :placeholder="$t('street')"
-              dense
+              autogrow
             />
             <div class="row">
               <q-input
