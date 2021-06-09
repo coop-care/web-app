@@ -2,6 +2,7 @@
   <q-input
     v-model="dateString"
     :mask="dateMaskForInput"
+    fill-mask
     :label="label"
     :placeholder="placeholder"
     :color="color"
@@ -10,6 +11,7 @@
     :hint="hint"
     @blur="dateKey = Math.random()"
     ref="dateInput"
+    inputmode="numeric"
   >
     <q-menu
       v-if="mappedOptions"

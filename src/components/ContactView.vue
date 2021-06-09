@@ -142,7 +142,7 @@
             v-if="!noBirthday && !contact.isOrganization"
             :value="contact.birthday"
             @input="saveContact({birthday: $event})"
-            :label="$t('birthday')"
+            :label="$t('birthday') + ' (' + $t('dateFormatPlaceholder') + ')'"
             :format="$t('dateFormat')"
           />
           <selectable-input
