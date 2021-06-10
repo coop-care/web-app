@@ -512,5 +512,7 @@
   "statusExpectationHint": "Welchen Gesundheitszustand in Bezug auf sein oder ihr Problem kann der Klient mit deiner Hilfe realistisch erreichen?",
   "insights": "Erkenntnisse",
   "filter": "Filter",
-  "timePeriod": "Zeitraum"
+  "timePeriod": "Zeitraum",
+  "hasBirthdayTodayMessage": "{name} wird heute {age} Jahre alt!",
+  "hadBirthdayYesterdayMessage": "{name} wurde gestern {age} Jahre alt."
 }

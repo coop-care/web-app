@@ -512,5 +512,7 @@
   "print": "Print",
   "insights": "Insights",
   "filter": "Filter",
-  "timePeriod": "Period"
+  "timePeriod": "Period",
+  "hasBirthdayTodayMessage": "{name} turns {age} today!",
+  "hadBirthdayYesterdayMessage": "{name} turned {age} yesterday."
 }

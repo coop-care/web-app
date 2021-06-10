@@ -70,6 +70,29 @@
     </div>
 
     <q-list 
+      v-if="client && (client.hasBirthday(selectedDate) || client.hasBirthday(yesterday))"
+      class="q-mt-lg"
+      dense
+    >
+      <q-item v-if="client.hasBirthday(selectedDate)">
+        <q-item-section side>
+          <q-icon name="fas fa-birthday-cake" color="intervention"/>
+        </q-item-section>
+        <q-item-section class="text-subtitle2">
+          <q-item-label>{{ $t('hasBirthdayTodayMessage', {name: client.name, age: client.age(selectedDate) }) }}</q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item v-else>
+        <q-item-section side>
+          <q-icon name="far fa-heart" color="intervention"/>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $t('hadBirthdayYesterdayMessage', {name: client.name, age: client.age(yesterday) }) }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
+
+    <q-list 
       v-if="tasks.length"
       class="q-mb-xl full-width"
       dense
@@ -219,6 +242,9 @@ export default class ClientReminders extends RecordMixin {
   }
   set selectedDateString(value: string) {
     this.selectedDate = new Date(value);
+  }
+  get yesterday() {
+    return subtractFromDate(this.selectedDate, {days: 1})
   }
   get tasks() {
     return this.tasksForDay(this.selectedDate);

@@ -3,6 +3,7 @@ import { Type, plainToClass } from "class-transformer";
 import { ProblemRecord, Intervention, Contact, Reminder, ChangeRecord, IdentifiableObject, CustomField } from ".";
 import { LabeledValue } from "./types";
 import { ObjectID } from "bson";
+import { DateTime } from "luxon";
 
 export class ClientHealthInformation {
     static readonly asstiveTechnologyTypes = ["nursingCareBedType", "toiletChairType", "raisedToiletSeatType", "rollatorType", "mobilityAidsType", "hearingAidsType", "glassesType", "upperDentureType", "lowerDentureType"];
@@ -96,6 +97,20 @@ export class Client extends IdentifiableObject {
     }
     get activeProblemCount() {
         return this.problems.filter(problem => !problem.resolvedAt).length;
+    }
+
+    age(date = new Date()) {
+        return this.contact.birthday
+            ? Math.floor(
+                DateTime.fromJSDate(date)
+                    .diff(DateTime.fromJSDate(this.contact.birthday), "years").years
+            ) : undefined;
+    }
+
+    hasBirthday(date = new Date()) {
+        return this.contact.birthday &&
+            this.contact.birthday.getMonth() == date.getMonth() &&
+            this.contact.birthday.getDate() == date.getDate();
     }
 
     findProblemRecord(id?: string) {
