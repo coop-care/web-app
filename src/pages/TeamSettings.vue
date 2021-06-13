@@ -47,21 +47,31 @@
             switch-toggle-side
             :default-opened="false"
           >
-            <q-input
-              :value="teamName"
-              :label="$t('teamName')"
-              ref="teamNameInput"
-              @change="teamName = $event.target.value"
-            />
-            <q-btn
-              :label="$t('deleteTeam')"
-              outline
-              rounded
-              no-caps
-              color="negative"
-              class="q-mt-md"
-              @click="deleteTeam"
-            />
+            <div style="max-width: 468px">
+              <q-input
+                :value="teamName"
+                :label="$t('teamName')"
+                ref="teamNameInput"
+                @change="teamName = $event.target.value"
+              />
+              <selectable-input
+                :key="localeChangedKey"
+                :value="team.countryCode"
+                :label="$t('country')"
+                :options="countryOptions"
+                clearable
+                @input="saveTeam({countryCode: $event})"
+              />
+              <q-btn
+                :label="$t('deleteTeam')"
+                outline
+                rounded
+                no-caps
+                color="negative"
+                class="q-mt-md"
+                @click="deleteTeam"
+              />
+            </div>
           </q-expansion-item>
 
           <q-expansion-item
@@ -221,19 +231,21 @@ import { Component, Ref } from "vue-property-decorator";
 import { QInput } from "quasar";
 import VueI18n from "vue-i18n";
 import { TeamMember, Team, TeamInvitation, Client } from "../models";
+import ClientActionMixin from "../mixins/ClientActionMixin";
 import Signature from "../components/Signature.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import TextWithTooltip from "../components/TextWithTooltip.vue";
 import PullToRefresh from "../components/PullToRefresh.vue";
 import TeamInvitationDialog from "../components/TeamInvitationDialog.vue";
-import ClientActionMixin from "../mixins/ClientActionMixin";
+import SelectableInput from "../components/SelectableInput.vue";
 
 @Component({
   components: {
     Signature,
     ActionMenu,
     TextWithTooltip,
-    PullToRefresh
+    PullToRefresh,
+    SelectableInput,
   },
 })
 export default class TeamSettingsPage extends ClientActionMixin {
@@ -242,6 +254,7 @@ export default class TeamSettingsPage extends ClientActionMixin {
   expandedSettings = false;
   expandedMembers = true;
   expandedClients = true;
+  localeChangedKey = Math.random();
 
   get teamId() {
     return this.currentUser?.activeTeam || "";
@@ -307,6 +320,10 @@ export default class TeamSettingsPage extends ClientActionMixin {
         rounded: true
       }
     }
+  }
+  get countryOptions() {
+    return Object.entries(this.$t("countries") as Record<string, any>)
+      .map(([value, label]) => ({label, value}));
   }
 
   isCurrentUser(member: TeamMember) {
@@ -525,10 +542,16 @@ export default class TeamSettingsPage extends ClientActionMixin {
     }
   }
 
+  created() {
+    this.$root.$on("did-change-locale", () => this.localeChangedKey = Math.random());
+  }
   mounted() {
     if (this.team) {
       this.updateClientsInAdditionalTeams();
     }
+  }
+  beforeDestroy() {
+    this.$root.$off("did-change-locale");
   }
 }
 </script>
