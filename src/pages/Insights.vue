@@ -3,7 +3,7 @@
     padding
     class="limit-page-width width-sm insights-page"
   >
-    <pull-to-refresh @refresh="refresh">
+    <pull-to-refresh>
       <div class="q-mb-md text-center text-subtitle2">Hinweis: die angezeigten Daten sind zufällig und noch ohne Bezug zu gespeicherten Klientendaten</div>
       <div class="row items-center">
         <q-item>
@@ -191,9 +191,6 @@ export default class InsightsPage extends Vue {
   formatDate(date: Date) {
     const locale = this.$root.$i18n.locale;
     return date.toLocaleDateString(locale)
-  }
-  refresh() {
-
   }
 }
 </script>

@@ -2,7 +2,7 @@
   <div class="rating-chart-group row q-col-gutter-md">
     <div
       v-for="(ratings, index) in ratingsList"
-      :key=""
+      :key="index"
       class="col-12 col-sm-4"
     >
       <div
@@ -41,7 +41,6 @@
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <style lang="sass">

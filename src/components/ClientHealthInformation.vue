@@ -150,7 +150,6 @@ import MultipleSelectableInput from "../components/MultipleSelectableInput.vue";
 export default class ClientHealthInformationView extends RecordMixin {
   isEditing = false;
   compactLayout = false;
-  foo=[]
 
   get items() {
     const result: LabeledItemType[] = [];
