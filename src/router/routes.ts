@@ -127,6 +127,11 @@ const routes: RouteConfig[] = [
         component: () => import("pages/TeamSettings.vue")
       },
       {
+        name: "backOfficeSettings",
+        path: "/settings/backoffice/:backofficeId?",
+        component: () => import("pages/BackOfficeSettings.vue")
+      },
+      {
         name: "insights",
         path: "/insights",
         component: () => import("pages/Insights.vue")

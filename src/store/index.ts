@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { Client, User, Team, TeamMember } from "../models";
+import { Client, User, Team, TeamMember, BackOffice } from "../models";
 import { createDirectStore } from "direct-vuex";
 import getters from "./getters";
 import mutations from "./mutations";
@@ -12,6 +12,7 @@ export interface StateInterface {
     // persistent data:
     teams: Team[];
     teamMembers: Record<string, TeamMember>;
+    backoffices: BackOffice[];
     clients: Client[];
     currentUser?: User;
     // ephemeral state:
@@ -24,6 +25,7 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
         // persistent data:
         teams: [],
         teamMembers: {},
+        backoffices: [],
         clients: [],
         currentUser: undefined,
         // ephemeral state:

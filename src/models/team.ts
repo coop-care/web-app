@@ -4,7 +4,7 @@ import { IdentifiableObject, TeamMember } from ".";
 
 export class Team extends IdentifiableObject {
   name: string;
-  countryCode = "";
+  backoffice = "";
   members: string[] = [];
   admins: string[] = [];
   clients: string[] = [];

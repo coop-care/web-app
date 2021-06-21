@@ -1,0 +1,196 @@
+<template>
+  <q-expansion-item
+    v-if="backoffice"
+    :value="true"
+    :label="$t('billing')"
+    header-class="section-heading q-mb-sm q-px-none dense-avatar"
+    switch-toggle-side
+  >
+    <selectable-input
+      :label="$t('de.rechnungsart')"
+      :options="rechnungsartOptions"
+      no-new-value
+      clearable
+      :value="customValue('de.rechnungsart')"
+      @input="saveCustomField('de.rechnungsart', $event)"
+    />
+    <q-input
+      :label="$t('de.leistungserbringerIK')"
+      :value="customValue('de.leistungserbringerIK')"
+      @change="saveCustomField('de.leistungserbringerIK', $event.target.value)"
+      inputmode="numeric"
+      mask="#########"
+      hide-bottom-space
+      :rules="[value => !value || /^\d{9}$/.test(value) || $t('de.institutionskennzeichenWarning')]"
+    />
+    <q-input
+      v-if="['2', '3'].includes(customValue('de.rechnungsart'))"
+      :label="$t('de.abrechnungsstelleIK')"
+      :value="customValue('de.abrechnungsstelleIK')"
+      @change="saveCustomField('de.abrechnungsstelleIK', $event.target.value)"
+      inputmode="numeric"
+      mask="#########"
+      hide-bottom-space
+      :rules="[value => !value || /^\d{9}$/.test(value) || $t('de.institutionskennzeichenWarning')]"
+    />
+    <selectable-input
+      :label="$t('de.abrechnungscode')"
+      :options="abrechnungscodeOptions"
+      no-new-value
+      clearable
+      :value="customValue('de.abrechnungscode')"
+      @input="saveCustomField('de.abrechnungscode', $event)"
+    />
+    <selectable-input
+      :label="$t('de.tarifbereich')"
+      :options="tarifbereichOptions"
+      no-new-value
+      clearable
+      :value="customValue('de.tarifbereich')"
+      @input="saveCustomField('de.tarifbereich', $event)"
+    />
+    <div
+      v-for="(contact, index) in contacts"
+      :key="index"
+      class="row items-center q-gutter-sm"
+    >
+      <q-input
+        :label="$t('contactPersonName')"
+        :value="contact.name"
+        @change="updateContact(index, {name: $event.target.value})"
+        class="col"
+      />
+      <q-input
+        :label="$t('phone')"
+        :value="contact.phone"
+        @change="updateContact(index, {phone: $event.target.value})"
+        inputmode="phone"
+        class="col"
+      />
+        <q-btn
+          icon="fas fa-user-minus"
+          flat
+          round
+          color="primary"
+          :title="$t('deleteContactPerson')"
+          @click="deleteContact(index)"
+          class="q-mt-lg"
+        />
+    </div>
+    <q-btn
+      :label="$t('addContactPerson')"
+      icon="fas fa-user-plus"
+      flat
+      rounded
+      no-caps
+      color="primary"
+      class="q-mt-md"
+      @click="addContact"
+    />
+    <div class="row items-center q-gutter-x-md" style="min-height: 56px">
+      <q-toggle
+        :label="$t('de.umsatzsteuerbefreit')"
+        :value="customValue('de.umsatzsteuerbefreit') || false"
+        @input="saveCustomField('de.umsatzsteuerbefreit', $event)"
+      />
+      <q-input
+        v-if="!customValue('de.umsatzsteuerbefreit')"
+        :label="$t('de.umsatzsteuerOrdnungsnummer')"
+        :value="customValue('de.umsatzsteuerOrdnungsnummer')"
+        @change="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event.target.value)"
+        class="col"
+        style="min-width: 150px"
+      />
+    </div>
+    <q-input
+      :label="$t('invoiceNumberPrefix')"
+      :value="customValue('invoiceNumberPrefix')"
+      @change="saveCustomField('invoiceNumberPrefix', $event.target.value)"
+    />
+  </q-expansion-item>
+</template>
+
+<script lang="ts">
+import { Vue, Component, Prop } from "vue-property-decorator";
+import SelectableInput from "src/components/SelectableInput.vue";
+import { BackOffice } from "src/models";
+import {
+  rechnungsartSchluessel,
+  abrechnungscodeSchluesselSGBXI,
+  tarifbereichSchluesselSGBXI,
+} from "paid-care";
+import { mapToOptions } from "src/helper/billing/de";
+
+type ContactPerson = {name: string, phone: string};
+
+@Component({
+  components: {
+    SelectableInput,
+  },
+})
+export default class BackOfficeSettings extends Vue {
+  @Prop({type: Object, required: true}) readonly backoffice!: BackOffice;
+
+  get rechnungsartOptions() {
+    return mapToOptions(rechnungsartSchluessel);
+  }
+  get abrechnungscodeOptions() {
+    return mapToOptions(abrechnungscodeSchluesselSGBXI);
+  }
+  get tarifbereichOptions() {
+    return mapToOptions(tarifbereichSchluesselSGBXI)
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }
+  get contacts(): ContactPerson[] {
+    return this.customValue("de.ansprechpartner") || [];
+  }
+
+  addContact() {
+    this.saveCustomField(
+      "de.ansprechpartner", 
+      this.contacts.concat({
+        name: "",
+        phone: ""
+      })
+    );
+  }
+  deleteContact(contactIndex: number) {
+    this.saveCustomField(
+      "de.ansprechpartner", 
+      this.contacts.filter((_, index) => index != contactIndex)
+    );
+  }
+  updateContact(index: number, changes: Partial<ContactPerson>) {
+    const contact = this.contacts[index];
+
+    this.$store.direct.commit.updateObject({
+      target: contact,
+      changes
+    });
+    void this.$store.direct.dispatch.saveBackoffice({
+      target: this.backoffice,
+      changes: {}
+    });
+  }
+
+  customValue(label: string) {
+    return this.backoffice.customValue(label);
+  }
+  updateCustomField(label: string, value: any) {
+    void this.$store.direct.commit.updateObject({
+      target: this.backoffice,
+      changes: {
+        customFields: this.backoffice.updatedCustomField(label, value)
+      }
+    });
+  }
+  saveCustomField(label: string, value: any) {
+    void this.$store.direct.dispatch.saveBackoffice({
+      target: this.backoffice,
+      changes: {
+        customFields: this.backoffice.updatedCustomField(label, value)
+      }
+    });
+  }
+}
+</script>

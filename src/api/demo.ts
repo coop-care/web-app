@@ -1,5 +1,5 @@
 import CoopCareApiInterface from "./coopCareApiInterface";
-import { Client, User, Team } from "../models";
+import { Client, User, Team, BackOffice } from "../models";
 import { ObjectID } from "bson";
 import { importSamplesV2, sampleClientIds } from "../data/sampleImporter";
 
@@ -19,6 +19,11 @@ export default class DemoApi implements CoopCareApiInterface {
         team._id = new ObjectID("6033c10377b850dbb17c7d30");
         team.clients = sampleClientIds().map(id => id.toHexString());
         return [team];
+    })();
+    private backoffices = (() => {
+        const backoffice = new BackOffice("Unser Pflegedienst", this.userId);
+        backoffice._id = new ObjectID("6033c10377b850dbb17c7d40");
+        return [backoffice];
     })();
     private didImportSampleClients = false;
 
@@ -120,6 +125,24 @@ export default class DemoApi implements CoopCareApiInterface {
     }
     deleteTeam(team: Team) {
         this.teams = this.teams.filter(item => !item.equals(team));
+        return Promise.resolve();
+    }
+
+    getMyBackoffices() {
+        return Promise.resolve(this.backoffices.slice());
+    }
+    createBackoffice(backoffice: BackOffice) {
+        if (!backoffice._id) {
+            backoffice._id = new ObjectID();
+        }
+        this.backoffices.push(backoffice);
+        return Promise.resolve(backoffice);
+    }
+    saveBackoffice(backoffice: BackOffice) {
+        return Promise.resolve(backoffice);
+    }
+    deleteBackoffice(backoffice: BackOffice) {
+        this.backoffices = this.backoffices.filter(item => !item.equals(backoffice));
         return Promise.resolve();
     }
 }

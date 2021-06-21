@@ -1,13 +1,14 @@
 
-import { Vue, Component, Watch } from "vue-property-decorator";
+import { Component, Watch } from "vue-property-decorator";
 import { date } from "quasar";
 import { Client, Team } from "../models";
 import SelectDialog from "components/SelectDialog.vue";
+import TeamMixin from "./TeamMixin";
 
 const { addToDate } = date;
 
 @Component
-export default class ClientActionMixin extends Vue {
+export default class ClientActionMixin extends TeamMixin {
   clientsInAdditionalTeams: string[] = [];
 
   @Watch("team")
@@ -15,18 +16,6 @@ export default class ClientActionMixin extends Vue {
     if (!!newValue && !oldValue) {
       this.updateClientsInAdditionalTeams();
     }
-  }
-
-  get currentUser() {
-    return this.$store.direct.state.currentUser;
-  }
-  get team() {
-    return this.$store.direct.getters.currentTeam;
-  }
-  get isAdmin() {
-    const userId = this.currentUser?.userId;
-    const admins = this.team?.admins || [];
-    return !!userId && admins.includes(userId);
   }
 
   isClientInAdditionalTeam(client: Client) {

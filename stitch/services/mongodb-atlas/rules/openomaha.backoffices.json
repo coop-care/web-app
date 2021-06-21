@@ -1,0 +1,30 @@
+{
+    "collection": "backoffices",
+    "database": "openomaha",
+    "id": "60cba7693d201d161046ecba",
+    "roles": [
+        {
+            "name": "admin",
+            "apply_when": {
+                "admins": "%%user.id"
+            },
+            "read": true,
+            "write": true,
+            "insert": true,
+            "delete": true,
+            "search": true,
+            "additional_fields": {}
+        },
+        {
+            "name": "anyone",
+            "apply_when": {},
+            "read": true,
+            "write": false,
+            "insert": false,
+            "delete": false,
+            "search": true,
+            "additional_fields": {}
+        }
+    ],
+    "schema": {}
+}

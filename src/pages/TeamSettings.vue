@@ -47,28 +47,53 @@
             switch-toggle-side
             :default-opened="false"
           >
-            <div style="max-width: 468px">
+            <div>
               <q-input
                 :value="teamName"
                 :label="$t('teamName')"
                 ref="teamNameInput"
                 @change="teamName = $event.target.value"
+                style="max-width: 500px"
               />
-              <selectable-input
-                :key="localeChangedKey"
-                :value="team.countryCode"
-                :label="$t('country')"
-                :options="countryOptions"
-                clearable
-                @input="saveTeam({countryCode: $event})"
-              />
+              <div class="row items-center q-gutter-y-sm">
+                <q-select
+                  :value="team.backoffice"
+                  @input="saveTeam({backoffice: $event || ''})"
+                  :options="backofficeOptions"
+                  :label="$t('backoffice')"
+                  emit-value
+                  map-options
+                  dense-options
+                  clearable
+                  class="col"
+                  style="max-width: 500px; min-width: 240px"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-italic text-grey">
+                        {{ $t("noExistingBackOffices") }}
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+                <q-btn
+                  :label="$t('goToBackofficeSettings')"
+                  icon-right="fas fa-caret-right"
+                  flat
+                  rounded
+                  no-caps
+                  size="13px"
+                  color="primary"
+                  @click="$router.push({name: 'backOfficeSettings'})"
+                />
+              </div>
               <q-btn
                 :label="$t('deleteTeam')"
                 outline
                 rounded
                 no-caps
                 color="negative"
-                class="q-mt-md"
+                class="q-mt-xl"
                 @click="deleteTeam"
               />
             </div>
@@ -237,7 +262,6 @@ import ActionMenu from "../components/ActionMenu.vue";
 import TextWithTooltip from "../components/TextWithTooltip.vue";
 import PullToRefresh from "../components/PullToRefresh.vue";
 import TeamInvitationDialog from "../components/TeamInvitationDialog.vue";
-import SelectableInput from "../components/SelectableInput.vue";
 
 @Component({
   components: {
@@ -245,13 +269,12 @@ import SelectableInput from "../components/SelectableInput.vue";
     ActionMenu,
     TextWithTooltip,
     PullToRefresh,
-    SelectableInput,
   },
 })
 export default class TeamSettingsPage extends ClientActionMixin {
   @Ref() readonly teamNameInput!: QInput;
 
-  expandedSettings = false;
+  expandedSettings = true;
   expandedMembers = true;
   expandedClients = true;
   localeChangedKey = Math.random();
@@ -321,9 +344,13 @@ export default class TeamSettingsPage extends ClientActionMixin {
       }
     }
   }
-  get countryOptions() {
-    return Object.entries(this.$t("countries") as Record<string, any>)
-      .map(([value, label]) => ({label, value}));
+  get backofficeOptions() {
+    return this.$store.direct.state.backoffices.map(item => {
+      return {
+        label: item.name,
+        value: item.id
+      }
+    });
   }
 
   isCurrentUser(member: TeamMember) {

@@ -3,6 +3,20 @@ import { defineGetters } from "direct-vuex";
 import { store, StateInterface } from ".";
 import { Client, ProblemRecord, Contact } from "../models";
 
+const currentTeam = (state: StateInterface) => {
+    const teamId = state.currentUser?.activeTeam;
+    return state.teams.find(team => teamId && team._id?.equals(teamId));
+};
+
+const currentBackoffice = (state: StateInterface) => {
+    const backofficeId = currentTeam(state)?.backoffice;
+    return state.backoffices.find(item => backofficeId && item.id == backofficeId);
+};
+
+const countryCode = (state: StateInterface) => {
+    return currentBackoffice(state)?.countryCode.toLowerCase() || "";
+};
+
 export default defineGetters<StateInterface>()({
     getClient: state => (payload: any): Client | undefined => {
         if (payload.clientId) {
@@ -36,10 +50,9 @@ export default defineGetters<StateInterface>()({
         return state.currentUser?.userId || "";
     },
 
-    currentTeam: state => {
-        const teamId = state.currentUser?.activeTeam;
-        return state.teams.find(team => teamId && team._id?.equals(teamId));
-    },
+    currentTeam,
+    currentBackoffice,
+    countryCode,
 
     relationshipLabels: state => {
         return [... new Set(
