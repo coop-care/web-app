@@ -42,18 +42,18 @@
       </div>
       <div class="q-mr-sm selected-date print-hide">
         <div class="text-h6 ellipsis">
-          {{ formattedDate({ weekday: "long" }) }}
+          {{ $d(selectedDate, "WeekdayLong") }}
           {{ todayHint }}
         </div>
         <div class="text-body2">
           {{
-            formattedDate({ year: "numeric", month: "long", day: "numeric" })
+            $d(selectedDate, "DateMed")
           }}
         </div>
       </div>
       <div class="text-h6 print-only">
         {{ $t("tasksForDay") }}
-        {{ formattedDate({ weekday: "long",  year: "numeric", month: "long", day: "numeric" }) }}
+        {{ $d(selectedDate, "DateHuge") }}
       </div>
       <div class="q-mt-xs">
         <q-btn
@@ -279,13 +279,6 @@ export default class ClientReminders extends RecordMixin {
       this.client?._id?.toHexString() || "no-client-id", 
       this.$root.$route.params.day || "today"
     ].join(".");
-  }
-
-  formattedDate(options: Intl.DateTimeFormatOptions) {
-    return this.selectedDate.toLocaleDateString(
-      this.$root.$i18n.locale,
-      options
-    );
   }
 
   swipeTasks({ direction }: any) {

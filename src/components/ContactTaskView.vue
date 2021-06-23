@@ -144,7 +144,6 @@
 
 <script lang="ts">
 import { Component, Prop, Mixins } from "vue-property-decorator";
-import { DateTime } from "luxon";
 import { TranslateResult } from "vue-i18n";
 import { Intervention, Task, RRuleSet } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
@@ -214,9 +213,8 @@ export default class ContactTaskView extends Mixins(InterventionMixin, RecordMix
     return this.localizeRecurrenceRule(this.recurrenceRules, 0);
   }
   get localizedSignature() {
-    const locale = this.$root.$i18n.locale;
     const values = {
-      date: this.task.completed?.toLocaleString(locale, DateTime.DATETIME_SHORT),
+      date: this.$d(this.task.completed || NaN, "DateTimeShort"),
       name: this.findContactName(this.intervention.receiver, this.client)
     }
 

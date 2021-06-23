@@ -140,7 +140,7 @@ export default class KBSOverviewChart extends Vue {
   }
   get date() {
     return this.hoverIndex >= 0
-      ? this.dates[this.hoverIndex].toLocaleDateString(this.$root.$i18n.locale)
+      ? this.$d(this.dates[this.hoverIndex])
       : "";
   }
   get context() {

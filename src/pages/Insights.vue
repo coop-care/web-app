@@ -49,9 +49,9 @@
           class="text-body2"
         >
           vom 
-          <span class="text-body1 text-weight-bold">{{ formatDate(startDate) }}</span>
+          <span class="text-body1 text-weight-bold">{{ $d(startDate) }}</span>
           bis zum
-          <span class="text-body1 text-weight-bold">{{ formatDate(endDate) }}</span>
+          <span class="text-body1 text-weight-bold">{{ $d(endDate) }}</span>
         </div>
       </div>
       <div 
@@ -187,10 +187,6 @@ export default class InsightsPage extends Vue {
       this.endDate = endOfDate(new Date(), "day", false);
       this.randomRenwewalKey = Math.random();
     }
-  }
-  formatDate(date: Date) {
-    const locale = this.$root.$i18n.locale;
-    return date.toLocaleDateString(locale)
   }
 }
 </script>

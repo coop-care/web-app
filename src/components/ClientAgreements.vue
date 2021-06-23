@@ -92,7 +92,6 @@
 
 <script lang="ts">
 import { Component } from "vue-property-decorator";
-import { DateTime } from "luxon";
 import { Client } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import EditToggleButton from "../components/EditToggleButton.vue";
@@ -119,48 +118,47 @@ export default class ClientHealthInformation extends RecordMixin {
 
   get items() {
     const result: LabeledItemType[] = [];
-    const locale = this.$root.$i18n.locale;
 
     if (this.client?.createdAt) {
       result.push({
         label: this.$t("clientCreatedAt") as string,
-        value: this.client?.createdAt.toLocaleString(locale, DateTime.DATETIME_MED)
+        value: this.$d(this.client?.createdAt, "DateTimeMed")
       });
     }
     if (this.agreements.initialInterview) {
       result.push({
         label: this.$t("initialInterviewDate") as string,
-        value: this.agreements.initialInterview.toLocaleString(locale, DateTime.DATETIME_MED)
+        value: this.$d(this.agreements.initialInterview, "DateTimeMed")
       });
     }
     if (this.agreements.initialCare) {
       result.push({
         label: this.$t("initialCareDate") as string,
-        value: this.agreements.initialCare.toLocaleString(locale, DateTime.DATETIME_MED)
+        value: this.$d(this.agreements.initialCare, "DateTimeMed")
       });
     }
     if (this.agreements.contractHandover) {
       result.push({
         label: this.$t("contractHandoverDate") as string,
-        value: this.agreements.contractHandover.toLocaleString(locale, DateTime.DATE_MED)
+        value: this.$d(this.agreements.contractHandover, "DateMed")
       });
     }
     if (this.agreements.costEstimateHandover) {
       result.push({
         label: this.$t("costEstimateHandoverDate") as string,
-        value: this.agreements.costEstimateHandover.toLocaleString(locale, DateTime.DATE_MED)
+        value: this.$d(this.agreements.costEstimateHandover, "DateMed")
       });
     }
     if (this.agreements.documentationCreated) {
       result.push({
         label: this.$t("documentationCreatedDate") as string,
-        value: this.agreements.documentationCreated.toLocaleString(locale, DateTime.DATE_MED)
+        value: this.$d(this.agreements.documentationCreated, "DateMed")
       });
     }
     if (this.agreements.carePlanCreated) {
       result.push({
         label: this.$t("carePlanCreatedDate") as string,
-        value: this.agreements.carePlanCreated.toLocaleString(locale, DateTime.DATE_MED)
+        value: this.$d(this.agreements.carePlanCreated, "DateMed")
       });
     }
     if (this.agreements.existingInitialPrescription != null) {
@@ -178,7 +176,7 @@ export default class ClientHealthInformation extends RecordMixin {
     if (this.client?.leftAt) {
       result.push({
         label: this.$t("clientLeftAt") as string,
-        value: this.client?.leftAt.toLocaleString(locale, DateTime.DATETIME_MED)
+        value: this.$d(this.client?.leftAt, "DateTimeMed")
       });
     }
     
