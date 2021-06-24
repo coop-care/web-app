@@ -7,7 +7,7 @@ import assistiveTechnologiesJSON from "paid-care/dist/hilfsmittelverzeichnis.jso
 
 export const mapToOptions = (map: Record<string, string>) =>
   Object.entries(map).map(([value, label]) => ({
-    label: [value, label].join(" – "),
+    label: [value, label].filter(Boolean).join(" – "),
     value
   }));
 export const mapToOptionsWithoutValue = (map: Record<string, string>) =>

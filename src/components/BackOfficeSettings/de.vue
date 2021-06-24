@@ -87,11 +87,15 @@
       class="q-mt-md"
       @click="addContact"
     />
-    <div class="row items-center q-gutter-x-md" style="min-height: 56px">
-      <q-toggle
-        :label="$t('de.umsatzsteuerbefreit')"
-        :value="customValue('de.umsatzsteuerbefreit') || false"
+    <div class="row items-center q-gutter-x-md">
+      <q-select
+        :value="customValue('de.umsatzsteuerbefreit') || ''"
         @input="saveCustomField('de.umsatzsteuerbefreit', $event)"
+        :options="umsatzsteuerBefreiungOptions"
+        emit-value
+        map-options
+        class="col"
+        style="min-width: 280px"
       />
       <q-input
         v-if="!customValue('de.umsatzsteuerbefreit')"
@@ -99,8 +103,9 @@
         :value="customValue('de.umsatzsteuerOrdnungsnummer')"
         @input="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
         class="col"
-        style="min-width: 150px"
+        style="min-width: 280px"
       />
+      <div v-else class="col" style="min-width: 280px"/>
     </div>
     <q-input
       :label="$t('invoiceNumberPrefix')"
@@ -118,6 +123,7 @@ import {
   rechnungsartSchluessel,
   abrechnungscodeSchluesselSGBXI,
   tarifbereichSchluesselSGBXI,
+  umsatzsteuerBefreiungSchluessel,
 } from "paid-care";
 import { mapToOptions } from "src/helper/billing/de";
 import { debounce } from "src/helper/utils";
@@ -142,6 +148,10 @@ export default class BackOfficeSettings extends Vue {
   }
   get tarifbereichOptions() {
     return mapToOptions(tarifbereichSchluesselSGBXI)
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }
+  get umsatzsteuerBefreiungOptions() {
+    return mapToOptions(umsatzsteuerBefreiungSchluessel)
       .sort((a, b) => a.label.localeCompare(b.label));
   }
   get contacts(): ContactPerson[] {
