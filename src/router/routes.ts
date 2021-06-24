@@ -32,6 +32,11 @@ const routes: RouteConfig[] = [
                 component: () => import("components/ClientHealthInformation.vue")
               },
               {
+                name: "clientBillingInformation",
+                path: "billing",
+                component: () => import("components/ClientBillingSettings/index.vue")
+              },
+              {
                 name: "clientAgreements",
                 path: "agreements",
                 component: () => import("components/ClientAgreements.vue")

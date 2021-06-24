@@ -38,13 +38,12 @@
         <div v-else class="q-pb-xl">
           <div v-if="isBackofficeAdmin" class="q-pl-md">
             <q-input
-              :value="backoffice.name"
-              @input="isValidName($event, updateBackoffice)"
-              @change="isValidName($event.target.value, saveBackoffice)"
+              v-model="backofficeName"
               :label="$t('backofficeName')"
               ref="backofficeNameInput"
-              :rules="nameRules"
               hide-bottom-space
+              :error-message="backofficeNameErrorMessage"
+              :error="!!backofficeNameErrorMessage"
             />
             <selectable-input
               :key="localeChangedKey"
@@ -86,7 +85,7 @@ import PullToRefresh from "src/components/PullToRefresh.vue";
 import SelectableInput from "src/components/SelectableInput.vue";
 import BackOfficeSettings from "src/components/BackOfficeSettings/index.vue";
 import { BackOffice, Client } from "src/models";
-import { incrementalName } from "src/helper/names";
+import { debounce, incrementalName } from "src/helper/utils";
 import TeamMixin from "src/mixins/TeamMixin";
 
 @Component({
@@ -100,6 +99,8 @@ export default class BackOfficeSettingsPage extends TeamMixin {
   @Ref() readonly backofficeNameInput!: QInput;
 
   localeChangedKey = Math.random();
+  saveBackofficeDelayed = debounce(this.saveBackoffice, 1000);
+  backofficeNameErrorMessage = "";
 
   get backofficeId() {
     return this.$route.params.backofficeId 
@@ -141,12 +142,27 @@ export default class BackOfficeSettingsPage extends TeamMixin {
     
     return options;
   }
+  get backofficeName() {
+    return this.backoffice?.name || "";
+  }
+  set backofficeName(value: string) {
+    const name = value.trim();
+    const errorMessage = this.nameRules
+      .map(rule => rule(name))
+      .find(value => value !== true)?.toString() || "";
+    this.backofficeNameErrorMessage = errorMessage;
+
+    if (!errorMessage) {
+      this.updateBackoffice({name});
+      void this.saveBackofficeDelayed({});
+    }
+  }
   get nameRules() {
     return [
-      (value: string) => !!value || this.$t("requiredValue"),
+      (value: string) => !!value || this.$t("requiredValue").toString(),
       (value: string) => !this.$store.direct.state.backoffices.find(item => 
           item.name == value && item.id != this.backoffice?.id
-        ) || this.$t("nameMustBeUnique")
+        ) || this.$t("nameMustBeUnique").toString()
     ];
   }
   get countryOptions() {
@@ -173,20 +189,16 @@ export default class BackOfficeSettingsPage extends TeamMixin {
     });
   }
   updateBackoffice(changes: Partial<BackOffice>) {
-    if (this.backoffice) {
-      void this.$store.direct.commit.updateObject({
-        target: this.backoffice,
-        changes: changes
-      });
-    }
+    void this.$store.direct.commit.updateObject({
+      target: this.backoffice,
+      changes
+    });
   }
   saveBackoffice(changes: Partial<BackOffice>) {
-    if (this.backoffice) {
-      void this.$store.direct.dispatch.saveBackoffice({
-        target: this.backoffice,
-        changes: changes
-      });
-    }
+    return this.$store.direct.dispatch.saveBackoffice({
+      target: this.backoffice,
+      changes
+    });
   }
   deleteBackoffice() {
     const backoffice = this.backoffice;

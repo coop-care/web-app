@@ -181,4 +181,18 @@ export class Client extends IdentifiableObject {
             )
         );
     }
+
+    customField(label: string) {
+        return this.customFields.find(field => field.label == label);
+    }
+    customValue(label: string) {
+        return this.customField(label)?.value;
+    }
+    updatedCustomField(label: string, value: any) {
+        return [{
+            ...this.customField(label),
+            label,
+            value,
+        }].concat(this.customFields.filter(field => field.label != label));
+    }
 }

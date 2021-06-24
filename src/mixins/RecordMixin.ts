@@ -1,9 +1,12 @@
 
 import { Vue, Component } from "vue-property-decorator";
-import { TerminologyWithMaps } from "../helper/terminology";
+import { TerminologyWithMaps } from "src/helper/terminology";
+import { debounce } from "src/helper/utils";
 
 @Component
 export default class RecordMixin extends Vue {
+    saveClientDelayed = debounce(this.saveClient, 1000);
+
     get client() {
         return this.$store.direct.getters.getClient(this.$route.params);
     }
@@ -66,5 +69,15 @@ export default class RecordMixin extends Vue {
         } else {
             return Promise.resolve();
         }
+    }
+
+    clientCustomValue(label: string) {
+        return this.client?.customValue(label);
+    }
+    saveClientCustomField(label: string, value: any, immediately = true) {
+        this.update(this.client, {
+            customFields: this.client?.updatedCustomField(label, value)
+        });
+        immediately ? void this.saveClient() : void this.saveClientDelayed();
     }
 }

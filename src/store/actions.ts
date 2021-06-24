@@ -387,10 +387,10 @@ export default defineActions({
             });
     },
 
-    saveBackoffice(context, payload: { target: BackOffice, changes: Partial<BackOffice> }): Promise<BackOffice | void> {
+    saveBackoffice(context, payload: { target: BackOffice | undefined, changes: Partial<BackOffice> }): Promise<BackOffice | void> {
         const { commit, state } = rootActionContext(context);
 
-        if (state.currentUser) {
+        if (state.currentUser && payload.target) {
             commit.updateObject(payload);
 
             return ccApi

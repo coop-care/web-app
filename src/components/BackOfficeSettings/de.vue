@@ -17,7 +17,7 @@
     <q-input
       :label="$t('de.leistungserbringerIK')"
       :value="customValue('de.leistungserbringerIK')"
-      @change="saveCustomField('de.leistungserbringerIK', $event.target.value)"
+      @input="saveCustomField('de.leistungserbringerIK', $event, false)"
       inputmode="numeric"
       mask="#########"
       hide-bottom-space
@@ -27,7 +27,7 @@
       v-if="['2', '3'].includes(customValue('de.rechnungsart'))"
       :label="$t('de.abrechnungsstelleIK')"
       :value="customValue('de.abrechnungsstelleIK')"
-      @change="saveCustomField('de.abrechnungsstelleIK', $event.target.value)"
+      @input="saveCustomField('de.abrechnungsstelleIK', $event, false)"
       inputmode="numeric"
       mask="#########"
       hide-bottom-space
@@ -57,25 +57,25 @@
       <q-input
         :label="$t('contactPersonName')"
         :value="contact.name"
-        @change="updateContact(index, {name: $event.target.value})"
+        @input="updateContact(contact, {name: $event})"
         class="col"
       />
       <q-input
         :label="$t('phone')"
         :value="contact.phone"
-        @change="updateContact(index, {phone: $event.target.value})"
+        @input="updateContact(contact, {phone: $event})"
         inputmode="phone"
         class="col"
       />
-        <q-btn
-          icon="fas fa-user-minus"
-          flat
-          round
-          color="primary"
-          :title="$t('deleteContactPerson')"
-          @click="deleteContact(index)"
-          class="q-mt-lg"
-        />
+      <q-btn
+        icon="fas fa-user-minus"
+        flat
+        round
+        color="primary"
+        :title="$t('deleteContactPerson')"
+        @click="deleteContact(index)"
+        class="q-mt-lg"
+      />
     </div>
     <q-btn
       :label="$t('addContactPerson')"
@@ -97,15 +97,15 @@
         v-if="!customValue('de.umsatzsteuerbefreit')"
         :label="$t('de.umsatzsteuerOrdnungsnummer')"
         :value="customValue('de.umsatzsteuerOrdnungsnummer')"
-        @change="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event.target.value)"
+        @input="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
         class="col"
         style="min-width: 150px"
       />
     </div>
     <q-input
       :label="$t('invoiceNumberPrefix')"
-      :value="customValue('invoiceNumberPrefix')"
-      @change="saveCustomField('invoiceNumberPrefix', $event.target.value)"
+      :value="customValue('de.invoiceNumberPrefix')"
+      @input="saveCustomField('de.invoiceNumberPrefix', $event, false)"
     />
   </q-expansion-item>
 </template>
@@ -120,6 +120,7 @@ import {
   tarifbereichSchluesselSGBXI,
 } from "paid-care";
 import { mapToOptions } from "src/helper/billing/de";
+import { debounce } from "src/helper/utils";
 
 type ContactPerson = {name: string, phone: string};
 
@@ -130,6 +131,8 @@ type ContactPerson = {name: string, phone: string};
 })
 export default class BackOfficeSettings extends Vue {
   @Prop({type: Object, required: true}) readonly backoffice!: BackOffice;
+
+  saveBackofficeDelayed = debounce(this.saveBackoffice, 1000);
 
   get rechnungsartOptions() {
     return mapToOptions(rechnungsartSchluessel);
@@ -160,36 +163,30 @@ export default class BackOfficeSettings extends Vue {
       this.contacts.filter((_, index) => index != contactIndex)
     );
   }
-  updateContact(index: number, changes: Partial<ContactPerson>) {
-    const contact = this.contacts[index];
-
+  updateContact(contact: ContactPerson, changes: Partial<ContactPerson>) {
     this.$store.direct.commit.updateObject({
       target: contact,
       changes
     });
-    void this.$store.direct.dispatch.saveBackoffice({
-      target: this.backoffice,
-      changes: {}
-    });
+    void this.saveBackofficeDelayed();
   }
 
   customValue(label: string) {
     return this.backoffice.customValue(label);
   }
-  updateCustomField(label: string, value: any) {
+  saveCustomField(label: string, value: any, immediately = true) {
     void this.$store.direct.commit.updateObject({
       target: this.backoffice,
       changes: {
         customFields: this.backoffice.updatedCustomField(label, value)
       }
     });
+    immediately ? void this.saveBackoffice() : void this.saveBackofficeDelayed();
   }
-  saveCustomField(label: string, value: any) {
-    void this.$store.direct.dispatch.saveBackoffice({
+  saveBackoffice() {
+    return this.$store.direct.dispatch.saveBackoffice({
       target: this.backoffice,
-      changes: {
-        customFields: this.backoffice.updatedCustomField(label, value)
-      }
+      changes: {}
     });
   }
 }

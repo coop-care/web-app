@@ -173,6 +173,8 @@ export default class DateTimeInput extends Vue {
           )
         );
       }
+    } else {
+      this.$emit("input", undefined)
     }
   }
   get dateMaskForInput() {

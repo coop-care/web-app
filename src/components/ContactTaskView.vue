@@ -214,7 +214,9 @@ export default class ContactTaskView extends Mixins(InterventionMixin, RecordMix
   }
   get localizedSignature() {
     const values = {
-      date: this.$d(this.task.completed || NaN, "DateTimeShort"),
+      date: this.task.completed 
+        ? this.$d(this.task.completed, "DateTimeShort")
+        : "",
       name: this.findContactName(this.intervention.receiver, this.client)
     }
 
