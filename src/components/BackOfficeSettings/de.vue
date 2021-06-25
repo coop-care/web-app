@@ -13,105 +13,154 @@
       clearable
       :value="customValue('de.rechnungsart')"
       @input="saveCustomField('de.rechnungsart', $event)"
+      class="q-mb-xl"
     />
-    <q-input
-      :label="$t('de.leistungserbringerIK')"
-      :value="customValue('de.leistungserbringerIK')"
-      @input="saveCustomField('de.leistungserbringerIK', $event, false)"
-      inputmode="numeric"
-      mask="#########"
-      hide-bottom-space
-      :rules="[value => !value || /^\d{9}$/.test(value) || $t('de.institutionskennzeichenWarning')]"
-    />
-    <q-input
-      v-if="['2', '3'].includes(customValue('de.rechnungsart'))"
-      :label="$t('de.abrechnungsstelleIK')"
-      :value="customValue('de.abrechnungsstelleIK')"
-      @input="saveCustomField('de.abrechnungsstelleIK', $event, false)"
-      inputmode="numeric"
-      mask="#########"
-      hide-bottom-space
-      :rules="[value => !value || /^\d{9}$/.test(value) || $t('de.institutionskennzeichenWarning')]"
-    />
-    <selectable-input
-      :label="$t('de.abrechnungscode')"
-      :options="abrechnungscodeOptions"
-      no-new-value
-      clearable
-      :value="customValue('de.abrechnungscode')"
-      @input="saveCustomField('de.abrechnungscode', $event)"
-    />
-    <selectable-input
-      :label="$t('de.tarifbereich')"
-      :options="tarifbereichOptions"
-      no-new-value
-      clearable
-      :value="customValue('de.tarifbereich')"
-      @input="saveCustomField('de.tarifbereich', $event)"
-    />
-    <div
-      v-for="(contact, index) in contacts"
-      :key="index"
-      class="row items-center q-gutter-sm"
-    >
+
+    <div class="q-mb-xl">
       <q-input
-        :label="$t('contactPersonName')"
-        :value="contact.name"
-        @input="updateContact(contact, {name: $event})"
-        class="col"
+        :label="$t('de.leistungserbringerIK')"
+        :value="customValue('de.leistungserbringerIK')"
+        @input="saveCustomField('de.leistungserbringerIK', $event, false)"
+        inputmode="numeric"
+        mask="#########"
+        hide-bottom-space
+        :rules="[value => !value || /^\d{9}$/.test(value) || $t('de.institutionskennzeichenWarning')]"
       />
-      <q-input
-        :label="$t('phone')"
-        :value="contact.phone"
-        @input="updateContact(contact, {phone: $event})"
-        inputmode="phone"
-        class="col"
+      <selectable-input
+        :label="$t('de.abrechnungscode')"
+        :options="abrechnungscodeOptions"
+        no-new-value
+        clearable
+        :value="customValue('de.abrechnungscode')"
+        @input="saveCustomField('de.abrechnungscode', $event)"
       />
+      <selectable-input
+        :label="$t('de.tarifbereich')"
+        :options="tarifbereichOptions"
+        no-new-value
+        clearable
+        :value="customValue('de.tarifbereich')"
+        @input="saveCustomField('de.tarifbereich', $event)"
+      />
+      <div
+        v-for="(contact, index) in getContacts('de.ansprechpartner')"
+        :key="index"
+        class="row items-center q-gutter-sm"
+      >
+        <q-input
+          :label="$t('contactPersonName')"
+          :value="contact.name"
+          @input="updateContact(contact, {name: $event})"
+          class="col"
+        />
+        <q-input
+          :label="$t('phone')"
+          :value="contact.phone"
+          @input="updateContact(contact, {phone: $event})"
+          inputmode="phone"
+          class="col"
+        />
+        <q-btn
+          icon="fas fa-user-minus"
+          flat
+          round
+          color="primary"
+          :title="$t('deleteContactPerson')"
+          @click="deleteContact('de.ansprechpartner', index)"
+          class="q-mt-lg"
+        />
+      </div>
       <q-btn
-        icon="fas fa-user-minus"
+        :label="$t('addContactPerson')"
+        icon="fas fa-user-plus"
         flat
-        round
+        rounded
+        no-caps
         color="primary"
-        :title="$t('deleteContactPerson')"
-        @click="deleteContact(index)"
-        class="q-mt-lg"
+        class="q-mt-md"
+        @click="addContact('de.ansprechpartner')"
+      />
+      <div class="row items-center q-gutter-x-md">
+        <q-select
+          :value="customValue('de.umsatzsteuerbefreit') || ''"
+          @input="saveCustomField('de.umsatzsteuerbefreit', $event)"
+          :options="umsatzsteuerBefreiungOptions"
+          emit-value
+          map-options
+          class="col"
+          style="min-width: 280px"
+        />
+        <q-input
+          v-if="!customValue('de.umsatzsteuerbefreit')"
+          :label="$t('de.umsatzsteuerOrdnungsnummer')"
+          :value="customValue('de.umsatzsteuerOrdnungsnummer')"
+          @input="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
+          class="col"
+          style="min-width: 280px"
+        />
+        <div v-else class="col" style="min-width: 280px"/>
+      </div>
+      <q-input
+        :label="$t('invoiceNumberPrefix')"
+        :value="customValue('de.invoiceNumberPrefix')"
+        @input="saveCustomField('de.invoiceNumberPrefix', $event, false)"
       />
     </div>
-    <q-btn
-      :label="$t('addContactPerson')"
-      icon="fas fa-user-plus"
-      flat
-      rounded
-      no-caps
-      color="primary"
-      class="q-mt-md"
-      @click="addContact"
-    />
-    <div class="row items-center q-gutter-x-md">
-      <q-select
-        :value="customValue('de.umsatzsteuerbefreit') || ''"
-        @input="saveCustomField('de.umsatzsteuerbefreit', $event)"
-        :options="umsatzsteuerBefreiungOptions"
-        emit-value
-        map-options
-        class="col"
-        style="min-width: 280px"
+    
+    <div v-if="['2', '3'].includes(customValue('de.rechnungsart'))">
+      <q-input
+        :label="$t('de.abrechnungsstelleIK')"
+        :value="customValue('de.abrechnungsstelleIK')"
+        @input="saveCustomField('de.abrechnungsstelleIK', $event, false)"
+        inputmode="numeric"
+        mask="#########"
+        hide-bottom-space
+        :rules="[value => !value || /^\d{9}$/.test(value) || $t('de.institutionskennzeichenWarning')]"
       />
       <q-input
-        v-if="!customValue('de.umsatzsteuerbefreit')"
-        :label="$t('de.umsatzsteuerOrdnungsnummer')"
-        :value="customValue('de.umsatzsteuerOrdnungsnummer')"
-        @input="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
-        class="col"
-        style="min-width: 280px"
+        :label="$t('de.abrechnungsstelleName')"
+        :value="customValue('de.abrechnungsstelleName')"
+        @input="saveCustomField('de.abrechnungsstelleName', $event, false)"
       />
-      <div v-else class="col" style="min-width: 280px"/>
+      <div
+        v-for="(contact, index) in getContacts('de.abrechnungsstelleAnsprechpartner')"
+        :key="index"
+        class="row items-center q-gutter-sm"
+      >
+        <q-input
+          :label="$t('contactPersonName')"
+          :value="contact.name"
+          @input="updateContact(contact, {name: $event})"
+          class="col"
+        />
+        <q-input
+          :label="$t('phone')"
+          :value="contact.phone"
+          @input="updateContact(contact, {phone: $event})"
+          inputmode="phone"
+          class="col"
+        />
+        <q-btn
+          icon="fas fa-user-minus"
+          flat
+          round
+          color="primary"
+          :title="$t('deleteContactPerson')"
+          @click="deleteContact('de.abrechnungsstelleAnsprechpartner', index)"
+          class="q-mt-lg"
+        />
+      </div>
+      <q-btn
+        :label="$t('addContactPerson')"
+        icon="fas fa-user-plus"
+        flat
+        rounded
+        no-caps
+        color="primary"
+        class="q-mt-md"
+        @click="addContact('de.abrechnungsstelleAnsprechpartner')"
+      />
     </div>
-    <q-input
-      :label="$t('invoiceNumberPrefix')"
-      :value="customValue('de.invoiceNumberPrefix')"
-      @input="saveCustomField('de.invoiceNumberPrefix', $event, false)"
-    />
   </q-expansion-item>
 </template>
 
@@ -154,23 +203,23 @@ export default class BackOfficeSettings extends Vue {
     return mapToOptions(umsatzsteuerBefreiungSchluessel)
       .sort((a, b) => a.label.localeCompare(b.label));
   }
-  get contacts(): ContactPerson[] {
-    return this.customValue("de.ansprechpartner") || [];
-  }
 
-  addContact() {
+  getContacts(label: string): ContactPerson[] {
+    return this.customValue(label) || [];
+  }
+  addContact(label: string) {
     this.saveCustomField(
-      "de.ansprechpartner", 
-      this.contacts.concat({
+      label, 
+      this.getContacts(label).concat({
         name: "",
         phone: ""
       })
     );
   }
-  deleteContact(contactIndex: number) {
+  deleteContact(label: string, contactIndex: number) {
     this.saveCustomField(
-      "de.ansprechpartner", 
-      this.contacts.filter((_, index) => index != contactIndex)
+      label, 
+      this.getContacts(label).filter((_, index) => index != contactIndex)
     );
   }
   updateContact(contact: ContactPerson, changes: Partial<ContactPerson>) {

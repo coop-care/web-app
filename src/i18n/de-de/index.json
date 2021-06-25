@@ -563,7 +563,8 @@
     "entlastungsleistungLeistungserbringer": "§ 45b: Namen und Adressen der anderen Leistungserbringer",
     "medikamenteOrganisieren": "Rezepte oder Medikamente über unsere Organisation?",
     "gebuehrenbefreit": "Gebührenbefreit?",
-    "pflegegradSeitDatum": "Pflegegrad seit {date}"
+    "pflegegradSeitDatum": "Pflegegrad seit {date}",
+    "abrechnungsstelleName": "Name der Abrechnungsstelle"
   },
   "contactPersonName": "Name des Ansprechpartners",
   "invoiceNumberPrefix": "Rechnungsnummern-Prefix (optional)",
