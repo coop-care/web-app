@@ -564,7 +564,8 @@
     "medikamenteOrganisieren": "Rezepte oder Medikamente über unsere Organisation?",
     "gebuehrenbefreit": "Gebührenbefreit?",
     "pflegegradSeitDatum": "Pflegegrad seit {date}",
-    "abrechnungsstelleName": "Name der Abrechnungsstelle"
+    "abrechnungsstelleName": "Name der Abrechnungsstelle",
+    "leistungserbringerRegion": "Bundesland oder Region"
   },
   "contactPersonName": "Name des Ansprechpartners",
   "invoiceNumberPrefix": "Rechnungsnummern-Prefix (optional)",

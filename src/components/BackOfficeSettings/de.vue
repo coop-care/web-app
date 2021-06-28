@@ -35,6 +35,14 @@
         @input="saveCustomField('de.abrechnungscode', $event)"
       />
       <selectable-input
+        :label="$t('de.leistungserbringerRegion')"
+        :options="regionOptions"
+        no-new-value
+        clearable
+        :value="customValue('de.leistungserbringerRegion')"
+        @input="saveCustomField('de.leistungserbringerRegion', $event)"
+      />
+      <selectable-input
         :label="$t('de.tarifbereich')"
         :options="tarifbereichOptions"
         no-new-value
@@ -173,8 +181,9 @@ import {
   abrechnungscodeSchluesselSGBXI,
   tarifbereichSchluesselSGBXI,
   umsatzsteuerBefreiungSchluessel,
+  careProviderLocationSchluessel,
 } from "paid-care";
-import { mapToOptions } from "src/helper/billing/de";
+import { mapToOptions, mapToOptionsWithoutValue } from "src/helper/billing/de";
 import { debounce } from "src/helper/utils";
 
 type ContactPerson = {name: string, phone: string};
@@ -197,6 +206,10 @@ export default class BackOfficeSettings extends Vue {
   }
   get tarifbereichOptions() {
     return mapToOptions(tarifbereichSchluesselSGBXI)
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }
+  get regionOptions() {
+    return mapToOptionsWithoutValue(careProviderLocationSchluessel)
       .sort((a, b) => a.label.localeCompare(b.label));
   }
   get umsatzsteuerBefreiungOptions() {
