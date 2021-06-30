@@ -119,18 +119,18 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
   get navigationItems() {
     return [{
       label: this.$t("healthInformation").toString(),
-      route: "clientHealthInformation",
+      action: () => this.showRoute("clientHealthInformation"),
       active: this.$route.name == "clientHealthInformation" || (!this.isCollapsed && this.isDefaultRoute),
     }, {
       label: this.$t("billingData").toString(),
-      route: "clientBillingInformation",
+      action: () => this.showRoute("clientBillingInformation"),
       visible: billingCountries.includes(this.$store.direct.getters.countryCode),
     }, {
       label: this.$t("contactDetails").toString(),
-      route: "clientContactData",
+      action: () => this.showRoute("clientContactData"),
     }, {
       label: this.$t("agreements").toString(),
-      route: "clientAgreements",
+      action: () => this.showRoute("clientAgreements"),
     }]
   }
   get informalContactItems() {
