@@ -163,6 +163,7 @@
           @input="saveClientCustomField('de.entlastungsleistungBudget', $event, false)"
           :hint="$t('de.entlastungsleistungHint')"
           inputmode="numeric"
+          type="number"
         >
           <template v-slot:append>
             <div class="q-mt-sm">€</div>
@@ -174,14 +175,26 @@
           @input="saveClientCustomField('de.entlastungsleistungAufteilung', $event)"
           class="q-mt-md"
         />
-        <q-input
-          v-if="clientCustomValue('de.entlastungsleistungAufteilung')"
-          :label="$t('de.entlastungsleistungLeistungserbringer')"
-          :value="clientCustomValue('de.entlastungsleistungLeistungserbringer')"
-          @input="saveClientCustomField('de.entlastungsleistungLeistungserbringer', $event, false)"
-          autogrow
-          :autofocus="!clientCustomValue('de.entlastungsleistungLeistungserbringer')"
-        />
+        <div v-if="clientCustomValue('de.entlastungsleistungAufteilung')">
+          <q-input
+            :label="$t('de.entlastungsleistungLeistungserbringer')"
+            :value="clientCustomValue('de.entlastungsleistungLeistungserbringer')"
+            @input="saveClientCustomField('de.entlastungsleistungLeistungserbringer', $event, false)"
+            autogrow
+            :autofocus="!clientCustomValue('de.entlastungsleistungLeistungserbringer')"
+          />
+          <q-input
+            :label="$t('de.entlastungsleistungAvailableBudget')"
+            :value="clientCustomValue('de.entlastungsleistungAvailableBudget')"
+            @input="saveClientCustomField('de.entlastungsleistungAvailableBudget', $event, false)"
+            inputmode="numeric"
+            type="number"
+          >
+            <template v-slot:append>
+              <div class="q-mt-sm">€</div>
+            </template>
+          </q-input>
+        </div>
       </div>
 
       <div class="q-mb-xl column">
@@ -281,7 +294,7 @@ export default class ClientBillingSettings extends RecordMixin {
         value = this.careInsurance?.label || value;
       } else if (label == "de.beihilfe" && value) {
         value = value + " %";
-      } else if (label == "de.entlastungsleistungBudget" && value) {
+      } else if (["de.entlastungsleistungBudget", "de.entlastungsleistungAvailableBudget"].includes(label) && value) {
         value = value + " €";
       } else if (typeof value == "boolean") {
         value = value ? this.$t("yes") : this.$t("no");
