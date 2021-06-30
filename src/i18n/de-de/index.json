@@ -565,7 +565,8 @@
     "gebuehrenbefreit": "Gebührenbefreit?",
     "pflegegradSeitDatum": "Pflegegrad seit {date}",
     "abrechnungsstelleName": "Name der Abrechnungsstelle",
-    "leistungserbringerRegion": "Bundesland oder Region"
+    "leistungserbringerRegion": "Bundesland oder Region",
+    "entlastungsleistungAvailableBudget": "§ 45b: für uns reserviertes Budget für Entlastungsleistungen"
   },
   "contactPersonName": "Name des Ansprechpartners",
   "invoiceNumberPrefix": "Rechnungsnummern-Prefix (optional)",
