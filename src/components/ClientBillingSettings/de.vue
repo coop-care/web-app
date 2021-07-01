@@ -223,9 +223,9 @@ import SelectableInput from "src/components/SelectableInput.vue";
 import DateTimeInput from "src/components/DateTimeInput.vue";
 import { LabeledItemType } from "src/components/LabeledItem.vue";
 import { 
-  healthInsuranceOptions, 
-  careInsuranceOptions, 
-  mapToOptionsWithoutValue
+  BillingDatabase, 
+  mapToOptionsWithoutValue,
+  SelectOption
 } from "src/helper/billing/de";
 import { PflegegradSchluessel, pflegegradSchluessel } from "paid-care";
 
@@ -244,9 +244,12 @@ type Pflegegrad = {
   },
 })
 export default class ClientBillingSettings extends RecordMixin {
+  db = new BillingDatabase();
   isEditing = false;
   compactLayout = false;
   addedKostentraeger: string[] = [];
+  healthInsuranceOptions: SelectOption[] = [];
+  careInsuranceOptions: SelectOption[] = [];
 
   @Watch("isEditing")
   onIsEditingChanged() {
@@ -330,18 +333,12 @@ export default class ClientBillingSettings extends RecordMixin {
   get healthInsuranceDescription() {
     return this.healthInsurance?.description;
   }
-  get healthInsuranceOptions() {
-    return healthInsuranceOptions();
-  }
   get careInsurance() {
     const value = this.clientCustomValue("de.pflegekasse");
     return this.careInsuranceOptions.find(item => item.value == value);
   }
   get careInsuranceDescription() {
     return this.careInsurance?.description;
-  }
-  get careInsuranceOptions() {
-    return careInsuranceOptions();
   }
   get revealButtonClasses() {
     return "q-mt-xs q-py-sm q-px-md can-hover radius-xl overflow-hidden inline-block";
@@ -377,6 +374,11 @@ export default class ClientBillingSettings extends RecordMixin {
   private onResize() {
     const width = (this.$el as HTMLElement).offsetWidth;
     this.compactLayout = width <= 400;
+  }
+
+  created() {
+    void this.db.healthInsuranceOptions().then(options => this.healthInsuranceOptions = options);
+    void this.db.careInsuranceOptions().then(options => this.careInsuranceOptions = options);
   }
 }
 </script>

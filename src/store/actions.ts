@@ -11,15 +11,24 @@ export default defineActions({
             return Promise.reject();
         }
 
-        const { dispatch } = rootActionContext(context);
+        const { dispatch, getters } = rootActionContext(context);
 
-        const promise = dispatch.fetchUserFromDB(defaults)
+        const firstPromise = dispatch.fetchUserFromDB(defaults)
             .then(() => dispatch.fetchBackofficesFromDB());
-        void dispatch.fetchTeamsFromDB()
+        const secondPromise = dispatch.fetchTeamsFromDB()
             .then(() => dispatch.fetchTeamMembersFromDB())
             .then(() => dispatch.fetchClientsFromDB());
 
-        return promise;
+        void Promise.all([firstPromise, secondPromise])
+            .then(() => getters.countryCode
+                ? import("src/helper/billing/" + getters.countryCode)
+                : undefined
+            ).then(component => component?.BillingDatabase
+                ? (new component.BillingDatabase())?.updateData?.()
+                : undefined
+            );
+
+        return firstPromise;
     },
 
     fetchUserFromDB(context, defaults: { locale: string }): Promise<void> {
