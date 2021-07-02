@@ -69,6 +69,8 @@
       <q-space />
     </div>
 
+    <time-recording />
+
     <q-list 
       v-if="client && (client.hasBirthday(selectedDate) || client.hasBirthday(yesterday))"
       class="q-mt-lg"
@@ -197,6 +199,7 @@ import { date, QPopupProxy } from "quasar";
 import { Task, TaskGroup, Reminder } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
+import TimeRecording from "components/TimeRecording.vue";
 
 const {
   isSameDate,
@@ -215,6 +218,7 @@ const allInclusive = {
 @Component({
   components: {
     TaskView,
+    TimeRecording
   },
 })
 export default class ClientReminders extends RecordMixin {
