@@ -27,7 +27,6 @@
     "localized-countries": "^2.0.0",
     "luxon": "^1.25.0",
     "mongodb-stitch-browser-sdk": "^4.8.0",
-    "paid-care": "github:coop-care/paid#distribution",
     "quasar": "^1.15.16",
     "reflect-metadata": "^0.1.13",
     "rrule": "^2.6.6",
