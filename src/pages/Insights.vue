@@ -55,9 +55,9 @@
             v-else
             class="text-body2"
           >
-            vom 
+            {{ $t("from") }} 
             <span class="text-body1 text-weight-bold">{{ formatDate(startDate) }}</span>
-            bis zum
+            {{ $t("until") }} 
             <span class="text-body1 text-weight-bold">{{ formatDate(endDate) }}</span>
           </div>
         </div>
@@ -207,7 +207,7 @@ export default class InsightsPage extends Vue {
     return [
       ...(teams.length > 1 
         ? [{
-          name: "Alle Teams",
+          name: this.$t("allTeams"),
           id: "allTeams",
           clients: teams.flatMap(team => team.clients)
             // filter duplicates
@@ -235,7 +235,7 @@ export default class InsightsPage extends Vue {
       label: value + " " + this.$tc("month", value),
       value
     })).concat({
-      label: "Eigener …",
+      label: this.$t("customInterval") as string,
       value: 0
     });
   }

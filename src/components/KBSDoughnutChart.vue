@@ -140,9 +140,9 @@ export default class KBSDoughnutChart extends Vue {
     const locale = this.$root.$i18n.locale;
     const options = { minimumFractionDigits: 1, maximumFractionDigits: 1 };
     return [
-      "der Klienten verbesserten sich um **ø +" + this.dataset[0]?.change.toLocaleString(locale, options) + "** beim",
-      "der Klienten zeigten keine Veränderung beim",
-      "der Klienten verschlechterten sich um **ø " + this.dataset[2]?.change.toLocaleString(locale, options) + "** beim"
+      this.$t("clientRatioPositiveHealthChange", {value: this.dataset[0]?.change.toLocaleString(locale, options)}) as string,
+      this.$t("clientRatioNoHealthChange"),
+      this.$t("clientRatioNegativeHealthChange", {value: this.dataset[2]?.change.toLocaleString(locale, options)}) as string,
     ][this.hoverIndex]
   }
   get defaultHoverIndex() {
