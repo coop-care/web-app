@@ -1,7 +1,7 @@
 <template>
   <div class="full-width non-selectable relative-position">
     <canvas ref="canvas" :height="height"></canvas>
-    <div class="text-subtitle2 text-weight-bold text-center">{{ title }}</div>
+    <div class="text-subtitle2 text-weight-bold text-center one-line">{{ title }}</div>
     <div :class="[dense ? 'row justify-around' : '']">
       <div
         v-for="(dataset, index) in formattedDatasets"

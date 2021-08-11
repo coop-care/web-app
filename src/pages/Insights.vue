@@ -81,7 +81,7 @@
           header-class="section-heading horizontal-caption q-mt-md q-mb-sm q-px-none dense-avatar"
           switch-toggle-side
         >
-          <div class="row q-col-gutter-lg">
+          <div class="row q-col-gutter-md">
             <div class="col-12 col-sm-6 col-md-3">
               <k-b-s-overview-chart
                 :labels="terminologyRatings.map(item => item.title)"
@@ -126,7 +126,9 @@
 .insights-page
   .date-input
     max-width: 140px
-  @media print
+@media print
+  .insights-page
+    padding: 0
     canvas
       width: 100% !important
       height: auto !important
@@ -145,11 +147,6 @@ import { TerminologyWithMaps } from "src/helper/terminology";
 import { Client, Outcome, Rating } from "src/models";
 
 const { startOfDate, endOfDate, subtractFromDate } = date;
-
-/* ToDo:
- * - adjustments for print 
- * - i18n
- */
 
 @Component({
   components: {

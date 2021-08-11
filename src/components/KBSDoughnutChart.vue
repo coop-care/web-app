@@ -2,7 +2,7 @@
   <div class="full-width non-selectable">
     <div class="relative-position" @mouseout="onTooltip">
       <canvas ref="canvas" :height="height"></canvas>
-      <div class="doughnutchart-caption text-body2 column justify-center">
+      <div class="doughnutchart-caption text-body2 column justify-center no-wrap">
         <div :class="['keyfigure', 'text-' + colors[hoverIndex]]">
           <span class="">{{ keyFigure }}</span> %
         </div>
@@ -19,19 +19,32 @@
 .doughnutchart-caption
   pointer-events: none
   position: absolute
-  top: 0
-  bottom: 0
+  top: 10%
+  bottom: 10%
   left: 15%
   right: 15%
   border-radius: 50%
   text-align: center
   vertical-align: middle
+  -webkit-print-color-adjust: exact
   .keyfigure
     margin-bottom: .2rem
     font-weight: bold
     font-size: 1.3rem
     span
       font-size: 2.6rem
+@media print
+  .doughnutchart-caption
+    font-size: .8rem
+    line-height: 1.2rem
+    .keyfigure
+      margin-bottom: 0
+      font-size: 1rem
+      span
+        font-size: 1.8rem
+    .text-subtitle1
+      font-size: .8rem
+      line-height: inherit
 </style>
 
 <script lang="ts">
