@@ -25,7 +25,7 @@
   right: 15%
   border-radius: 50%
   text-align: center
-  vertical-align:middle
+  vertical-align: middle
   .keyfigure
     margin-bottom: .2rem
     font-weight: bold
@@ -40,26 +40,39 @@ import { Chart, ChartOptions, ChartData, ChartTooltipModel } from "chart.js";
 import { getColor } from "../helper/color";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 
+export type ClientProgress = {
+  ratio: number,
+  change: number
+}
+
 @Component({
   components: {
     SimplifiedMarkdown
   }
 })
 export default class KBSDoughnutChart extends Vue {
-  @Prop({type: String, required: true}) readonly title!: string;
+  @Prop({type: Array, default: () => []}) readonly dataset!: ClientProgress[];
   @Prop({type: Object, default: () => ({})}) readonly chartOptions!: ChartOptions;
-  @Prop({type: Object, default: () => ({})}) readonly chartData!: ChartData;
-  @Prop({type: Array, default: () => []}) readonly datasets!: number[][];
+  @Prop({type: String, required: true}) readonly title!: string;
   @Prop({type: Number, default: 300}) readonly height!: number;
   @Ref() readonly canvas!: HTMLCanvasElement;
 
   _chart: Chart | null = null;
-  hoverIndex = 0;
+  hoverIndex = this.defaultHoverIndex;
 
-  @Watch("chartData")
-  onChartDataChanged() {
+  @Watch("dataset")
+  onDatasetChanged() {
     if (this.chart) {
-      this.chart.data = this.actualChartData;
+      this.chart.data = this.chartData;
+      this.hoverIndex = this.defaultHoverIndex;
+      this.chart.update();
+    }
+  }
+
+  @Watch("chartOptions")
+  onChartOptionsChanged() {
+    if (this.chart) {
+      this.chart.options = this.options;
       this.chart.update();
     }
   }
@@ -68,7 +81,7 @@ export default class KBSDoughnutChart extends Vue {
     if (!this._chart) {
       this._chart = new Chart(this.canvas, {
         type: "doughnut",
-        data: this.actualChartData,
+        data: this.chartData,
         options: this.options
       });
     }
@@ -88,11 +101,11 @@ export default class KBSDoughnutChart extends Vue {
       cutoutPercentage: 80,
     }
   }
-  get actualChartData(): ChartData {
+  get chartData(): ChartData {
     return {
       labels: [new Date("2021-05-01"), new Date()],
       datasets: [{
-        data: this.randomData,
+        data: this.dataset.map(item => item.ratio),
         backgroundColor: this.colorValues,
         borderWidth: this.borderWidth,
       }]
@@ -108,25 +121,19 @@ export default class KBSDoughnutChart extends Vue {
     return [0, 0, 0].map((_, index) => index == this.hoverIndex ? 0 : 5);
   }
   get keyFigure() {
-    const data = (this.actualChartData.datasets || [])[0].data as number[];
-    return Math.round(data[this.hoverIndex] * 100);
+    return Math.round(this.dataset[this.hoverIndex]?.ratio * 100);
   }
   get description() {
     const locale = this.$root.$i18n.locale;
     const options = { minimumFractionDigits: 1, maximumFractionDigits: 1 };
-    const value = 0.1 + Math.random() * 1.5;
-    const sign = this.hoverIndex < 2 ? "+" : "-";
-    const formattedValue = sign + value.toLocaleString(locale, options);
     return [
-      "der Klienten verbesserten sich um **ø " + formattedValue + "** beim",
+      "der Klienten verbesserten sich um **ø +" + this.dataset[0]?.change.toLocaleString(locale, options) + "** beim",
       "der Klienten zeigten keine Veränderung beim",
-      "der Klienten verschlechterten sich um **ø " + formattedValue + "** beim"
+      "der Klienten verschlechterten sich um **ø " + this.dataset[2]?.change.toLocaleString(locale, options) + "** beim"
     ][this.hoverIndex]
   }
-  get randomData() {
-    const positive = Math.round((0.1 + Math.random() / 3) * 100) / 100;
-    const negative = Math.round((Math.random() / 9) * 100) / 100;
-    return [positive, 1 - positive - negative, negative];
+  get defaultHoverIndex() {
+    return Math.max(this.dataset.findIndex(item => item.ratio > 0), 0);
   }
   
   onResize() {
@@ -140,7 +147,7 @@ export default class KBSDoughnutChart extends Vue {
     if (tooltip.dataPoints?.length) {
       this.hoverIndex = tooltip.dataPoints[0].index || 0;
     } else {
-      this.hoverIndex = 0;
+      this.hoverIndex = this.defaultHoverIndex;
     }
 
     if (this.chart.data.datasets) {
@@ -150,7 +157,7 @@ export default class KBSDoughnutChart extends Vue {
   }
 
   mounted () {
-    this.onChartDataChanged();
+    this.onDatasetChanged();
   }
 }
 </script>

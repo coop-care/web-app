@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Type, plainToClass } from "class-transformer";
-import { ProblemRecord, Intervention, Contact, Reminder, ChangeRecord, IdentifiableObject, CustomField } from ".";
+import { ProblemRecord, Intervention, Contact, Reminder, ChangeRecord, IdentifiableObject, CustomField, Outcome } from ".";
 import { LabeledValue } from "./types";
 import { ObjectID } from "bson";
 
@@ -97,6 +97,17 @@ export class Client extends IdentifiableObject {
     get activeProblemCount() {
         return this.problems.filter(problem => !problem.resolvedAt).length;
     }
+    get firstOutcome(): Outcome | undefined {
+        return this.outcomesByDate[0];
+    }
+    get lastOutcome(): Outcome | undefined {
+        return this.outcomesByDate[this.outcomesByDate.length - 1];
+    }
+    private get outcomesByDate() {
+        return this.problems
+            .flatMap(problem => problem.outcomes.filter(outcome => !!outcome.createdAt))
+            .sort((a, b) => a.createdAt!.getTime() - b.createdAt!.getTime())
+    }
 
     findProblemRecord(id?: string) {
         return !!id ? this.problems.find(problem => problem.id == id) : undefined;
@@ -165,5 +176,15 @@ export class Client extends IdentifiableObject {
                         !problem.problem.isHighPriority))
             )
         );
+    }
+
+    outcomesAtEndOfDay(date: Date) {
+        const day = new Date(new Date(date).setUTCHours(23, 59, 59, 999));
+
+        return this.problems.flatMap(problem =>
+            problem.createdAt < day && (!problem.resolvedAt || problem.resolvedAt > day)
+                ? problem.outcomes.slice().reverse().find(outcome => outcome.createdAt && outcome.createdAt < day) || []
+                : []
+        )
     }
 }

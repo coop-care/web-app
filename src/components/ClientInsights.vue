@@ -1,5 +1,6 @@
 <template>
   <q-card
+    v-if="startDate && outcomesOverTime.length"
     class="radius-md bg-white text-body2 collapsed"
     style="transition: all 0s; width: 100%; max-width: 320px"
   >
@@ -11,7 +12,8 @@
       </div>
       <k-b-s-overview-chart 
         :labels="terminologyRatings.map(item => item.title)"
-        :dates="[new Date(0), new Date()]"
+        :dates="dates"
+        :datasets="datasets"
         dense
         :chart-options="chartOptions"
         :height="100"
@@ -31,6 +33,7 @@
 import { Component } from "vue-property-decorator";
 import RecordMixin from "../mixins/RecordMixin";
 import KBSOverviewChart from "../components/KBSOverviewChart.vue";
+import { Outcome, Rating } from "src/models";
 
 @Component({
   components: {
@@ -59,6 +62,35 @@ export default class ClientInsights extends RecordMixin {
   }
   get terminologyRatings() {
     return this.terminology.problemRatingScale.ratings;
+  }
+  get startDate() {
+    return this.client?.firstOutcome?.createdAt;
+  }
+  get dates() {
+    return this.startDate
+      ? [this.startDate, new Date()]
+      : [new Date()]
+  }
+  get outcomesOverTime() {
+    return this.dates
+        .map(date => this.client?.outcomesAtEndOfDay(date) || [])
+        .filter(outcomes => outcomes.length > 0)
+  }
+  get datasets() {
+    return ([
+      outcome => outcome.knowledge,
+      outcome => outcome.behaviour,
+      outcome => outcome.status,
+    ] as ((_: Outcome) => Rating)[])
+      .map(this.makeAverageRatings)
+  }
+  makeAverageRatings(chooseKBS: (_: Outcome) => Rating) {
+    return this.outcomesOverTime.map(outcomes =>
+      outcomes
+        .map(outcome => chooseKBS(outcome).observation)
+        .reduce((a, b) => a + b, 0) 
+      / outcomes.length
+    )
   }
 }
 </script>
