@@ -512,5 +512,11 @@
   "statusExpectationHint": "Welchen Gesundheitszustand in Bezug auf sein oder ihr Problem kann der Klient mit deiner Hilfe realistisch erreichen?",
   "insights": "Erkenntnisse",
   "filter": "Filter",
-  "timePeriod": "Zeitraum"
+  "timePeriod": "Zeitraum",
+  "evaluationOfAllClients": "Evaluation aller Klienten",
+  "customInterval": "Eigener …",
+  "allTeams": "Alle Teams",
+  "clientRatioPositiveHealthChange": "der Klienten verbesserten sich um **ø +{value}** beim",
+  "clientRatioNoHealthChange": "der Klienten zeigten keine Veränderung beim",
+  "clientRatioNegativeHealthChange": "der Klienten verschlechterten sich um **ø {value}** beim"
 }

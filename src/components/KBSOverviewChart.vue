@@ -1,19 +1,28 @@
 <template>
   <div class="full-width non-selectable relative-position">
     <canvas ref="canvas" :height="height"></canvas>
-    <div class="text-subtitle2 text-weight-bold text-center">Evaluation aller Klienten</div>
+    <div class="text-subtitle2 text-weight-bold text-center one-line">{{ title }}</div>
+    <div :class="[dense ? 'row justify-around' : '']">
+      <div
+        v-for="(dataset, index) in formattedDatasets"
+        :key="dataset.label"
+        class="row"
+      >
+        <div :class="['text-right text-weight-medium', 'text-' + colors[index], dense ? '' : 'col']">{{dataset.label}}</div>
+        <div :class="['text-left', dense ? 'q-pl-xs' : 'col q-pl-sm']">{{ legend(dataset.data) }}</div>
+      </div>
+    </div>
     <div
-      v-for="(dataset, index) in randomData"
-      :key="dataset.label"
+      v-if="!dense"
       class="row"
     >
-      <div :class="['col text-right text-weight-medium', 'text-' + colors[index]]">{{dataset.label}}</div>
-      <div class="col q-pl-sm text-left">{{ legend(dataset.data) }}</div>
-    </div>
-    <div class="row">
       <div class="col text-right text-caption"></div>
       <div class="col q-pl-sm text-left text-caption">{{ date }}</div>
     </div>
+    <div
+      v-else
+      class="text-center text-caption"
+    >{{ date }}</div>
   </div>
 </template>
 
@@ -29,19 +38,38 @@ import { getColor } from "../helper/color";
 export default class KBSOverviewChart extends Vue {
   @Prop({type: Array, default: () => []}) readonly labels!: string[];
   @Prop({type: Array, default: () => []}) readonly dates!: Date[];
-  @Prop({type: Object, default: () => ({})}) readonly chartOptions!: ChartOptions;
-  @Prop({type: Object, default: () => ({})}) readonly chartData!: ChartData;
   @Prop({type: Array, default: () => []}) readonly datasets!: number[][];
+  @Prop({type: Object, default: () => ({})}) readonly chartOptions!: ChartOptions;
+  @Prop({type: String, default: ""}) readonly title!: string;
+  @Prop(Boolean) readonly dense!: boolean;
   @Prop({type: Number, default: 150}) readonly height!: number;
   @Ref() readonly canvas!: HTMLCanvasElement;
 
   _chart: Chart | null = null;
   hoverIndex = -1;
 
-  @Watch("chartData")
-  onChartDataChanged() {
+  @Watch("labels")
+  onLabelsChanged() {
+    this.onDatasetsChanged();
+  }
+
+  @Watch("dates")
+  onDatesChanged() {
+    this.onDatasetsChanged();
+  }
+
+  @Watch("datasets")
+  onDatasetsChanged() {
     if (this.chart) {
-      this.chart.data = this.actualChartData;
+      this.chart.data = this.chartData;
+      this.chart.update();
+    }
+  }
+
+  @Watch("chartOptions")
+  onChartOptionsChanged() {
+    if (this.chart) {
+      this.chart.options = this.options;
       this.chart.update();
     }
   }
@@ -50,7 +78,7 @@ export default class KBSOverviewChart extends Vue {
     if (!this._chart) {
       this._chart = new Chart(this.canvas, {
         type: "line",
-        data: this.actualChartData,
+        data: this.chartData,
         options: this.options
       });
     }
@@ -97,7 +125,8 @@ export default class KBSOverviewChart extends Vue {
         mode: "index",
         intersect: false
       },
-      onResize: this.onResize
+      onResize: this.onResize,
+      ...this.chartOptions
     }
   }
   get datasetOptions(): ChartDataSets {
@@ -109,10 +138,10 @@ export default class KBSOverviewChart extends Vue {
       pointRadius: 0,
     }
   }
-  get actualChartData(): ChartData {
+  get chartData(): ChartData {
     return {
-      labels: this.dates,
-      datasets: this.randomData.map(item => ({
+      labels: this.duplicateSingleDate(this.dates),
+      datasets: this.formattedDatasets.map(item => ({
         ...item,
         ...this.datasetOptions
       }))
@@ -126,6 +155,9 @@ export default class KBSOverviewChart extends Vue {
   }
   get legend() {
     return (values: number[]) => {
+      if (values.length == 0) {
+        return "–"
+      }
       const locale = this.$root.$i18n.locale;
       const options = { minimumFractionDigits: 1, maximumFractionDigits: 1 };
 
@@ -140,22 +172,30 @@ export default class KBSOverviewChart extends Vue {
   }
   get date() {
     return this.hoverIndex >= 0
-      ? this.dates[this.hoverIndex].toLocaleDateString(this.$root.$i18n.locale)
-      : "";
+      ? this.duplicateSingleDate(this.dates)[this.hoverIndex].toLocaleDateString(this.$root.$i18n.locale)
+      : " ";
   }
   get context() {
     return this.canvas.getContext("2d");
   }
-  get randomData() {
-    return this.labels.map((label, index) => {
-      const data = [this.random(), this.random()].sort();
-      return {
-        label,
-        data,
-        borderColor: this.colorValues[index],
-        backgroundColor: this.colorValues[index],
-      }
-    });
+  get formattedDatasets() {
+    return this.labels.map((label, index) => ({
+      label,
+      data: this.duplicateSingleValue(this.datasets[index] || []),
+      borderColor: this.colorValues[index],
+      backgroundColor: this.colorValues[index],
+    }));
+  }
+
+  duplicateSingleValue(list: any[]) {
+    return list.length == 1
+      ? [list[0], list[0]]
+      : list;
+  }
+  duplicateSingleDate(list: Date[]) {
+    return list.length == 1 || (list.length == 2 && list[0].getTime() == list[1].getTime()) 
+      ? [list[0], new Date(list[0].getTime() + 1)]
+      : list;
   }
 
   onResize() {
@@ -172,12 +212,9 @@ export default class KBSOverviewChart extends Vue {
       this.hoverIndex = -1;
     }
   }
-  random() {
-    return 2 + 2 * Math.random();
-  }
 
   mounted () {
-    this.onChartDataChanged();
+    this.onDatasetsChanged();
   }
 }
 </script>
