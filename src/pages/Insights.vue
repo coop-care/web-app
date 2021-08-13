@@ -3,7 +3,7 @@
     padding
     class="limit-page-width width-sm insights-page"
   >
-    <pull-to-refresh>
+    <pull-to-refresh refresh="refresh">
       <loading v-if="$store.direct.state.isLoadingClientList && !teams.length" />
 
       <central-message
@@ -162,7 +162,7 @@ export default class InsightsPage extends Vue {
   period = this.periodOptions[1].value;
   startDate = subtractFromDate(startOfDate(new Date(), "day", false), {month: this.period});
   endDate = endOfDate(new Date(), "day", false);
-
+  clients = this.$store.direct.state.clients.slice();
   randomRenwewalKey = Math.random();
 
   get dates() {
@@ -173,7 +173,7 @@ export default class InsightsPage extends Vue {
       name: this.$t("team") + " " + team.name,
       id: team.id,
       clients: (team.clients
-        .map(clientId => this.$store.direct.state.clients.find(client => client.id == clientId))
+        .map(clientId => this.clients.find(client => client.id == clientId))
         .filter(client => 
           !!client 
           && client.createdAt < this.endDate 
@@ -202,7 +202,7 @@ export default class InsightsPage extends Vue {
             status: this.getAverageRatings(outcomesOverTime, outcome => outcome.status),
           }
         })
-    })).filter(team => team.clients.length)
+    }))
 
     return [
       ...(teams.length > 1 
@@ -276,6 +276,12 @@ export default class InsightsPage extends Vue {
   formatDate(date: Date) {
     const locale = this.$root.$i18n.locale;
     return date.toLocaleDateString(locale)
+  }
+  async refresh() {
+    this.clients = await this.$store.direct.dispatch.fetchClientsOfAllTeamsFromDB();
+  }
+  mounted() {
+    this.refresh();
   }
 }
 </script>
