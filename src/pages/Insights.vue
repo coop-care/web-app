@@ -202,7 +202,7 @@ export default class InsightsPage extends Vue {
             status: this.getAverageRatings(outcomesOverTime, outcome => outcome.status),
           }
         })
-    }))
+    }));
 
     return [
       ...(teams.length > 1 
@@ -218,14 +218,24 @@ export default class InsightsPage extends Vue {
     ].map(section => ({
       ...section,
       lineChartDatasets: [
-        this.dates.map((_, index) => this.getAverage(section.clients.map(client => client.knowledge[index]))),
-        this.dates.map((_, index) => this.getAverage(section.clients.map(client => client.behaviour[index]))),
-        this.dates.map((_, index) => this.getAverage(section.clients.map(client => client.status[index])))
+        this.getLineChartDataset(section.clients.map(client => client.knowledge)),
+        this.getLineChartDataset(section.clients.map(client => client.behaviour)),
+        this.getLineChartDataset(section.clients.map(client => client.status)),
       ],
       knowledgeDataset: this.groupRatingsByProgress(section.clients.map(client => client.knowledge)),
       behaviourDataset: this.groupRatingsByProgress(section.clients.map(client => client.behaviour)),
       statusDataset: this.groupRatingsByProgress(section.clients.map(client => client.status)),
     }))
+  }
+  getLineChartDataset(clientValues: number[][]) {
+    return this.dates
+      .map((_, index) => 
+        this.getAverage(
+          clientValues
+            .map(values => values[index])
+            ?.filter(value => value != undefined) || []
+        )
+      ).filter(value => !isNaN(value));
   }
   get teams() {
     return this.$store.direct.state.teams;
@@ -251,8 +261,12 @@ export default class InsightsPage extends Vue {
   }
   getAverageRatings(outcomesOverTime: Outcome[][], chooseKBS: (_: Outcome) => Rating) {
     return outcomesOverTime.map(outcomes =>
-      this.getAverage(outcomes.map(outcome => chooseKBS(outcome).observation))
-    );
+      this.getAverage(
+        outcomes
+          .map(outcome => chooseKBS(outcome).observation || NaN)
+          .filter(value => !isNaN(value))
+      )
+    ).filter(value => !isNaN(value));
   }
   groupRatingsByProgress(ratingsList: number[][]) {
     return [
@@ -260,7 +274,11 @@ export default class InsightsPage extends Vue {
       ratingsList.filter(ratings => ratings.length < 2 || ratings[0] == ratings[ratings.length - 1]),
       ratingsList.filter(ratings => ratings.length > 1 && ratings[0] > ratings[ratings.length - 1]),
     ].map((ratingsGroup, index) => ({
-      ratio: ratingsGroup.length / ratingsList.length,
+      ratio: ratingsList.length
+        ? (ratingsGroup.length / ratingsList.length) || 0
+        : index != 1 
+          ? 0 
+          : 1,
       change: index != 1
         ? this.getAverage(ratingsGroup.map(ratings => ratings[ratings.length - 1] - ratings[0])) || 0
         : 0

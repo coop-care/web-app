@@ -105,7 +105,7 @@ export class Client extends IdentifiableObject {
     }
     private get outcomesByDate() {
         return this.problems
-            .flatMap(problem => problem.outcomes.filter(outcome => !!outcome.createdAt))
+            .flatMap(problem => problem.outcomes.filter(outcome => !!outcome.createdAt && problem.createdAt <= outcome.createdAt))
             .sort((a, b) => a.createdAt!.getTime() - b.createdAt!.getTime())
     }
 
@@ -179,7 +179,8 @@ export class Client extends IdentifiableObject {
     }
 
     outcomesAtEndOfDay(date: Date) {
-        const day = new Date(new Date(date).setUTCHours(23, 59, 59, 999));
+        const day = new Date(date);
+        day.setUTCHours(23, 59, 59, 999);
 
         return this.problems.flatMap(problem =>
             problem.createdAt < day && (!problem.resolvedAt || problem.resolvedAt > day)

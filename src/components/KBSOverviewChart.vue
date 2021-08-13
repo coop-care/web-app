@@ -155,6 +155,9 @@ export default class KBSOverviewChart extends Vue {
   }
   get legend() {
     return (values: number[]) => {
+      if (values.length == 0) {
+        return "–"
+      }
       const locale = this.$root.$i18n.locale;
       const options = { minimumFractionDigits: 1, maximumFractionDigits: 1 };
 

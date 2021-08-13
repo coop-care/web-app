@@ -82,15 +82,20 @@ export default class ClientInsights extends RecordMixin {
       outcome => outcome.behaviour,
       outcome => outcome.status,
     ] as ((_: Outcome) => Rating)[])
-      .map(this.makeAverageRatings)
+      .map(this.getAverageRatings)
+      
   }
-  makeAverageRatings(chooseKBS: (_: Outcome) => Rating) {
+  getAverage(values: number[]) {
+    return values.reduce((a, b) => a + b, 0) / values.length
+  }
+  getAverageRatings(chooseKBS: (_: Outcome) => Rating) {
     return this.outcomesOverTime.map(outcomes =>
-      outcomes
-        .map(outcome => chooseKBS(outcome).observation)
-        .reduce((a, b) => a + b, 0) 
-      / outcomes.length
-    )
+      this.getAverage(
+        outcomes
+          .map(outcome => chooseKBS(outcome).observation || NaN)
+          .filter(value => !isNaN(value))
+      )
+    ).filter(value => !isNaN(value));
   }
 }
 </script>
