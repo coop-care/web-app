@@ -121,6 +121,16 @@ export default defineActions({
             });
     },
 
+    fetchClientsOfAllTeamsFromDB(context): Promise<Client[]> {
+        if (!ccApi.isLoggedIn) {
+            return Promise.reject();
+        }
+
+        const { state } = rootActionContext(context);
+        const clientIds = [... new Set(state.teams.flatMap(team => team.clients))];
+        return ccApi.getClients(clientIds);
+    },
+
     fetchBackofficesFromDB(context): Promise<void> {
         if (!ccApi.isLoggedIn) {
             return Promise.reject();

@@ -67,7 +67,7 @@ export function importSamplesV2() {
         ...params
       });
       store.commit.saveNewProblemRecord({
-        now: createdAt,
+        now: record.createdAt,
         problemId: record.id,
         ...params
       });
