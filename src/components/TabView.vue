@@ -3,7 +3,7 @@
     <q-tabs
       v-model="selectedTab"
       no-caps
-      class="client-tabs border-bottom-grey q-mb-md text-primary print-hide"
+      class="tab-view border-bottom-grey q-mb-md text-primary print-hide"
       :inline-label="$q.screen.gt.xs"
       :dense="!$q.screen.gt.xs"
       align="center"
@@ -11,40 +11,26 @@
       left-icon=" "
     >
       <q-route-tab
-        v-if="routesPerTab.length > 0"
-        :name="0"
-        :label="$t('masterDataTitle')"
-        icon="fas fa-users"
-        :to="routesPerTab[0]"
-        class="text-primary"
-      />
-      <q-route-tab
-        v-if="routesPerTab.length > 1"
-        :name="1"
-        :label="$tc('task', 2)"
-        icon="fas fa-tasks"
-        :to="routesPerTab[1]"
-        class="text-intervention"
+        v-for="(item, index) in regularTabs"
+        :key="'regularTab' + index"
+        :name="index"
+        :label="item.label"
+        :icon="item.icon"
+        :to="routesPerTab[index]"
+        :class="'text-' + (item.color || 'primary')"
       >
         <q-badge
-          color="intervention"
+          v-if="item.badge"
+          :label="item.badge"
+          :color="item.color || 'primary'"
           floating
-          :label="dueTaskCount"
-          v-if="dueTaskCount"
           class="radius-lg text-weight-medium"
         />
       </q-route-tab>
-      <q-route-tab
-        v-if="routesPerTab.length > 2"
-        :name="2"
-        :label="$t('reportTitle')"
-        icon="fas fa-notes-medical"
-        :to="routesPerTab[2]"
-        class="text-classification"
-      />
 
       <q-tab
-        :name="3"
+        v-if="additionalTabs.length"
+        :name="tabCount - 1"
         :ripple="false"
         disable
         class="more-tab q-pa-none"
@@ -64,20 +50,20 @@
         >
           <q-list>
             <q-item
-              v-for="(item, index) in moreTabItems"
-              :key="'moreTabItem' + index"
+              v-for="(item, index) in additionalTabs"
+              :key="'additionalTab' + index"
               clickable
               v-ripple
-              @click="item.action"
+              :to="routesPerTab[tabCount - 1 + index]"
             >
               <q-item-section side>
                 <q-icon 
                   :name="item.icon"
-                  color="primary"
+                  :color="item.color || 'primary'"
                 />
               </q-item-section>
               <q-item-section>
-                {{ item.name }}
+                {{ item.label }}
               </q-item-section>
             </q-item>
           </q-list>
@@ -91,7 +77,7 @@
           :enter-active-class="'full-width animated ' + tabPanelEnterClass"
           :leave-active-class="'full-width absolute animated ' + tabPanelLeaveClass"
         >
-          <router-view :key="$route.path.split('/')[3]"/>
+          <router-view :key="'tab' + selectedTab"/>
         </transition>
       </div>
     </div>
@@ -99,7 +85,7 @@
 </template>
 
 <style lang="sass">
-.client-tabs
+.tab-view
   .q-tabs__content--align-left .q-tab
     flex: 1 1 auto
   .q-tab
@@ -113,20 +99,23 @@
     .q-btn-dropdown--simple * + .q-btn-dropdown__arrow
       margin-left: 0
       margin-right: -8px
-.client-overview
-  @media (max-width: $breakpoint-xs-max)
-    padding: 8px
-  @media print
-    padding: .75cm 0 0
 </style>
 
 <script lang="ts">
-import { Component, Watch } from "vue-property-decorator";
-import RecordMixin from "../mixins/RecordMixin";
+import { Vue, Component, Prop, Watch } from "vue-property-decorator";
 import { Route } from "vue-router";
 
+export type Tab = {
+  label: string;
+  route: string;
+  icon: string;
+  color?: string;
+  badge?: string;
+};
+
 @Component
-export default class ClientPage extends RecordMixin {
+export default class TabView extends Vue {
+  @Prop({type: Array, default: []}) readonly tabs!: Tab[];
   selectedTab = this.initiallySelectedTab;
   routesPerTab: Partial<Route>[] = this.childrenRouteNames.map(name => {
     return {name: name, params: this.$route.params}
@@ -153,36 +142,23 @@ export default class ClientPage extends RecordMixin {
       this.routesPerTab[newIndex] = newRoute;
 
       if (newIndex > 2) {
-        this.selectedTab = this.tabCount;
+        this.selectedTab = this.tabCount - 1;
       }
     }
-  }
-  get dueTaskCount() {
-    return this.client?.dueTasksCount || 0;
   }
   get childrenRouteNames() {
-    return ["clientMasterData", "clientReminders", "clientReport", "clientProofOfPerformance", "clientHistory"];
+    return this.tabs.map(tab => tab.route);
+  }
+  get regularTabs() {
+    return this.tabs.slice(0, this.tabs.length > this.tabCount ? this.tabCount - 1 : this.tabCount);
+  }
+  get additionalTabs() {
+    return this.tabs.length > this.tabCount
+      ? this.tabs.slice(this.tabCount - 1)
+      : [];
   }
   get tabCount() {
-    return 3;
-  }
-  get moreTabItems() {
-    if (!this.client) {
-      return [];
-    }
-
-    return [
-      {
-        name: this.$t("showProofOfPerformance"),
-        icon: "fas fa-clipboard",
-        action: () => this.pushRoute("clientProofOfPerformance"),
-      },
-      {
-        name: this.$t("documentationHistory"),
-        icon: "fas fa-history",
-        action: () => this.pushRoute("clientHistory"),
-      }
-    ];
+    return 4;
   }
   get initiallySelectedTab() {
     return Math.max(
@@ -191,7 +167,7 @@ export default class ClientPage extends RecordMixin {
         this.childrenRouteNames.indexOf(
           this.findChildrenRouteName(this.$route, this.childrenRouteNames)
         ),
-        this.tabCount
+        this.tabCount - 1
       )
     );
   }
