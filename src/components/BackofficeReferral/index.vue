@@ -20,7 +20,7 @@ export const countryCodes = Object.keys(components);
 })
 export default class BackofficeReferral extends BackofficeMixin {
   get localizedComponent() {
-    return this.matchingCountryCode(countryCodes, this.$store.direct.getters.countryCode);
+    return this.matchingCountryCode(countryCodes)
   }
 }
 </script>

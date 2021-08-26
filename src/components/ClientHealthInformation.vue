@@ -1,7 +1,5 @@
 <template>
-  <div
-    :class="[$q.screen.gt.xs ? 'q-px-md' : 'q-px-xs']"
-  >
+  <div>
     <q-resize-observer @resize="onResize" />
     <div class="row justify-end">
       <edit-toggle-button

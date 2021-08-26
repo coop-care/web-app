@@ -58,6 +58,7 @@ export default class NavigationItems extends Vue {
     if (this.$route.name != routeName) {
       void this.$router.push({ name: routeName })
     }
+    this.$emit("did-route");
   }
 }
 </script>

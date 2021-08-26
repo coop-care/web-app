@@ -1,22 +1,15 @@
 <template>
-  <q-expansion-item
-    v-if="backoffice"
-    :value="true"
-    :label="$t('billing')"
-    header-class="section-heading q-mb-sm q-px-none dense-avatar"
-    switch-toggle-side
-  >
-    <selectable-input
-      :label="$t('de.rechnungsart')"
-      :options="rechnungsartOptions"
-      no-new-value
-      clearable
-      :value="customValue('de.rechnungsart')"
-      @input="saveCustomField('de.rechnungsart', $event)"
-      class="q-mb-xl"
-    />
-
-    <div class="q-mb-xl">
+  <div>
+    <div class="q-my-xl">
+      <div class="text-h6 q-mt-lg">{{ $t("billing") }}</div>
+      <selectable-input
+        :label="$t('de.rechnungsart')"
+        :options="rechnungsartOptions"
+        no-new-value
+        clearable
+        :value="customValue('de.rechnungsart')"
+        @input="saveCustomField('de.rechnungsart', $event)"
+      />
       <q-input
         :label="$t('de.leistungserbringerIK')"
         :value="customValue('de.leistungserbringerIK')"
@@ -27,14 +20,6 @@
         :rules="[value => !value || /^\d{9}$/.test(value) || $t('de.institutionskennzeichenWarning')]"
       />
       <selectable-input
-        :label="$t('de.abrechnungscode')"
-        :options="abrechnungscodeOptions"
-        no-new-value
-        clearable
-        :value="customValue('de.abrechnungscode')"
-        @input="saveCustomField('de.abrechnungscode', $event)"
-      />
-      <selectable-input
         :label="$t('de.leistungserbringerRegion')"
         :options="regionOptions"
         no-new-value
@@ -42,13 +27,74 @@
         :value="customValue('de.leistungserbringerRegion')"
         @input="saveCustomField('de.leistungserbringerRegion', $event)"
       />
-      <selectable-input
-        :label="$t('de.tarifbereich')"
-        :options="tarifbereichOptions"
-        no-new-value
-        clearable
-        :value="customValue('de.tarifbereich')"
-        @input="saveCustomField('de.tarifbereich', $event)"
+      <div class="row items-center q-gutter-x-md">
+        <selectable-input
+          :label="$t('de.abrechnungscodeSgbXI')"
+          :options="abrechnungscodeOptions"
+          no-new-value
+          clearable
+          :value="customValue('de.abrechnungscodeSgbXI')"
+          @input="saveCustomField('de.abrechnungscodeSgbXI', $event)"
+          class="col"
+          style="min-width: 280px"
+        />
+        <selectable-input
+          :label="$t('de.tarifbereichSgbXI')"
+          :options="tarifbereichOptions"
+          no-new-value
+          clearable
+          :value="customValue('de.tarifbereichSgbXI')"
+          @input="saveCustomField('de.tarifbereichSgbXI', $event)"
+          class="col"
+          style="min-width: 280px"
+        />
+      </div>
+      <div class="row items-center q-gutter-x-md">
+        <selectable-input
+          :label="$t('de.abrechnungscodeSgbV')"
+          :options="abrechnungscodeOptions"
+          no-new-value
+          clearable
+          :value="customValue('de.abrechnungscodeSgbV')"
+          @input="saveCustomField('de.abrechnungscodeSgbV', $event)"
+          class="col"
+          style="min-width: 280px"
+        />
+        <selectable-input
+          :label="$t('de.tarifbereichSgbV')"
+          :options="tarifbereichOptions"
+          no-new-value
+          clearable
+          :value="customValue('de.tarifbereichSgbV')"
+          @input="saveCustomField('de.tarifbereichSgbV', $event)"
+          class="col"
+          style="min-width: 280px"
+        />
+      </div>
+      <div class="row items-center q-gutter-x-md">
+        <q-select
+          :value="customValue('de.umsatzsteuerbefreit') || ''"
+          @input="saveCustomField('de.umsatzsteuerbefreit', $event)"
+          :options="umsatzsteuerBefreiungOptions"
+          emit-value
+          map-options
+          class="col"
+          style="min-width: 280px"
+        />
+        <q-input
+          v-if="!customValue('de.umsatzsteuerbefreit')"
+          :label="$t('de.umsatzsteuerOrdnungsnummer')"
+          :value="customValue('de.umsatzsteuerOrdnungsnummer')"
+          @input="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
+          class="col"
+          style="min-width: 280px"
+        />
+      </div>
+      <q-input
+        :label="$t('invoiceNumberPrefix')"
+        :value="customValue('de.invoiceNumberPrefix')"
+        @input="saveCustomField('de.invoiceNumberPrefix', $event, false)"
+        maxlength="8"
       />
       <div
         v-for="(contact, index) in getContacts('de.ansprechpartner')"
@@ -88,34 +134,10 @@
         class="q-mt-md"
         @click="addContact('de.ansprechpartner')"
       />
-      <div class="row items-center q-gutter-x-md">
-        <q-select
-          :value="customValue('de.umsatzsteuerbefreit') || ''"
-          @input="saveCustomField('de.umsatzsteuerbefreit', $event)"
-          :options="umsatzsteuerBefreiungOptions"
-          emit-value
-          map-options
-          class="col"
-          style="min-width: 280px"
-        />
-        <q-input
-          v-if="!customValue('de.umsatzsteuerbefreit')"
-          :label="$t('de.umsatzsteuerOrdnungsnummer')"
-          :value="customValue('de.umsatzsteuerOrdnungsnummer')"
-          @input="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
-          class="col"
-          style="min-width: 280px"
-        />
-        <div v-else class="col" style="min-width: 280px"/>
-      </div>
-      <q-input
-        :label="$t('invoiceNumberPrefix')"
-        :value="customValue('de.invoiceNumberPrefix')"
-        @input="saveCustomField('de.invoiceNumberPrefix', $event, false)"
-      />
     </div>
     
     <div v-if="['2', '3'].includes(customValue('de.rechnungsart'))">
+      <div class="text-h6 q-mt-lg">{{ $t("de.abrechnungsstelle") }}</div>
       <q-input
         :label="$t('de.abrechnungsstelleIK')"
         :value="customValue('de.abrechnungsstelleIK')"
@@ -169,7 +191,7 @@
         @click="addContact('de.abrechnungsstelleAnsprechpartner')"
       />
     </div>
-  </q-expansion-item>
+  </div>
 </template>
 
 <script lang="ts">

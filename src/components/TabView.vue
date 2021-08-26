@@ -56,7 +56,10 @@
               v-ripple
               :to="routesPerTab[tabCount - 1 + index]"
             >
-              <q-item-section side>
+              <q-item-section
+                v-if="item.icon" 
+                side
+              >
                 <q-icon 
                   :name="item.icon"
                   :color="item.color || 'primary'"
@@ -108,7 +111,7 @@ import { Route } from "vue-router";
 export type Tab = {
   label: string;
   route: string;
-  icon: string;
+  icon?: string;
   color?: string;
   badge?: string;
 };
@@ -117,9 +120,10 @@ export type Tab = {
 export default class TabView extends Vue {
   @Prop({type: Array, default: []}) readonly tabs!: Tab[];
   selectedTab = this.initiallySelectedTab;
-  routesPerTab: Partial<Route>[] = this.childrenRouteNames.map(name => {
-    return {name: name, params: this.$route.params}
-  });
+  routesPerTab: Partial<Route>[] = this.childrenRouteNames.map(name => ({
+    name, 
+    params: this.$route.params
+  }));
   tabPanelEnterClass = "slideInRight";
   tabPanelLeaveClass = "slideOutLeft";
 
@@ -145,6 +149,13 @@ export default class TabView extends Vue {
         this.selectedTab = this.tabCount - 1;
       }
     }
+  }
+  @Watch("tabs")
+  onTabsChange() {
+    this.routesPerTab = this.childrenRouteNames.map(name => ({
+      name, 
+      params: this.$route.params
+    }));
   }
   get childrenRouteNames() {
     return this.tabs.map(tab => tab.route);

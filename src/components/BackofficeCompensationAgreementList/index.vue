@@ -18,9 +18,9 @@ export const countryCodes = Object.keys(components);
 @Component({
   components,
 })
-export default class BackofficeReferral extends BackofficeMixin {
+export default class BackofficeCompensationAgreementList extends BackofficeMixin {
   get localizedComponent() {
-    return this.matchingCountryCode(countryCodes, this.$store.direct.getters.countryCode);
+    return this.matchingCountryCode(countryCodes)
   }
 }
 </script>

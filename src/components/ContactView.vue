@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="contact"
-    :class="[$q.screen.gt.xs ? 'q-px-md' : 'q-px-xs']"
-  >
+  <div v-if="contact">
     <q-resize-observer @resize="onResize" />
 
     <div v-if="!isEditing || isDisabled" >

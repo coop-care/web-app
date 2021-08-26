@@ -106,7 +106,7 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
     return [{
       label: this.$t("masterDataTitle") as string,
       route: "clientMasterData",
-      icon: "fas fa-users",
+      icon: "fas fa-user-friends",
     },{
       label: this.$tc("task", 2),
       route: "clientReminders",
