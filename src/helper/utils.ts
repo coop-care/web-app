@@ -29,3 +29,9 @@ export const debounce = <T>(method: (...args: any[]) => Promise<T>, ms: number) 
     return new Promise((resolve: (value: T) => void) => resolves.push(resolve));
   };
 };
+
+export function sanitizeHTML(html: string) {
+  const element = document.createElement("div");
+  element.innerText = html;
+  return element.innerHTML;
+}
