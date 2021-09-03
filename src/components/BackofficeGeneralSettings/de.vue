@@ -82,8 +82,8 @@
           style="min-width: 280px"
         />
         <q-input
-          v-if="!customValue('de.umsatzsteuerbefreit')"
-          :label="$t('de.umsatzsteuerOrdnungsnummer')"
+          :label="customValue('de.umsatzsteuerbefreit') ? $t('de.steuernummer') : $t('de.ustIdentifikationsnummer')"
+          :placeholder="customValue('de.umsatzsteuerbefreit') ? $t('de.steuernummerPlaceholder') : $t('de.ustIdentifikationsnummerPlaceholder')"
           :value="customValue('de.umsatzsteuerOrdnungsnummer')"
           @input="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
           class="col"
@@ -195,9 +195,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 import SelectableInput from "src/components/SelectableInput.vue";
-import { BackOffice } from "src/models";
 import {
   rechnungsartSchluessel,
   abrechnungscodeSchluesselSGBXI,
@@ -206,7 +205,7 @@ import {
   careProviderLocationSchluessel,
 } from "paid-care";
 import { mapToOptions, mapToOptionsWithoutValue } from "src/helper/billing/de";
-import { debounce } from "src/helper/utils";
+import BackofficeMixin from "src/mixins/BackofficeMixin";
 
 type ContactPerson = {name: string, phone: string};
 
@@ -215,11 +214,7 @@ type ContactPerson = {name: string, phone: string};
     SelectableInput,
   },
 })
-export default class BackOfficeSettings extends Vue {
-  @Prop({type: Object, required: true}) readonly backoffice!: BackOffice;
-
-  saveBackofficeDelayed = debounce(this.saveBackoffice, 1000);
-
+export default class BackOfficeSettings extends BackofficeMixin {
   get rechnungsartOptions() {
     return mapToOptions(rechnungsartSchluessel);
   }
@@ -237,6 +232,9 @@ export default class BackOfficeSettings extends Vue {
   get umsatzsteuerBefreiungOptions() {
     return mapToOptions(umsatzsteuerBefreiungSchluessel)
       .sort((a, b) => a.label.localeCompare(b.label));
+  }
+  get saveCustomField() {
+    return this.saveBackofficeCustomField;
   }
 
   getContacts(label: string): ContactPerson[] {
@@ -266,22 +264,7 @@ export default class BackOfficeSettings extends Vue {
   }
 
   customValue(label: string) {
-    return this.backoffice.customValue(label);
-  }
-  saveCustomField(label: string, value: any, immediately = true) {
-    void this.$store.direct.commit.updateObject({
-      target: this.backoffice,
-      changes: {
-        customFields: this.backoffice.updatedCustomField(label, value)
-      }
-    });
-    immediately ? void this.saveBackoffice() : void this.saveBackofficeDelayed();
-  }
-  saveBackoffice() {
-    return this.$store.direct.dispatch.saveBackoffice({
-      target: this.backoffice,
-      changes: {}
-    });
+    return this.backoffice?.customValue(label);
   }
 }
 </script>

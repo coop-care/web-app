@@ -15,7 +15,9 @@
           type="splitview"
           @did-route="splitView.showAfter()"
         />
-        <backoffice-compensation-agreement-list />
+        <backoffice-compensation-agreement-list
+          @did-route="splitView.showAfter()"
+        />
       </q-list>
     </template>
 

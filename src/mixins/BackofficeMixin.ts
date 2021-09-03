@@ -35,10 +35,40 @@ export default class BackofficeMixin extends Vue {
       changes
     });
   }
-  saveBackoffice(changes: Partial<BackOffice>) {
+  saveBackoffice(changes: Partial<BackOffice> = {}) {
     return this.$store.direct.dispatch.saveBackoffice({
       target: this.backoffice,
       changes
     });
+  }
+  saveBackofficeCustomField(label: string, value: any, immediately = true) {
+    if (!this.backoffice) {
+      return;
+    }
+
+    void this.$store.direct.commit.updateObject({
+      target: this.backoffice,
+      changes: {
+        customFields: this.backoffice.updatedCustomField(label, value)
+      }
+    });
+    immediately ? void this.saveBackoffice() : void this.saveBackofficeDelayed();
+  }
+  isCurrentRoute(name: string, params: Record<string, string>) {
+    const route = this.$route;
+    return (name == route.name) &&
+      (Object.keys(params).filter(key => params[key] != route.params[key]).length == 0);
+  }
+  pushRoute(name: string, params: Record<string, string> = {}, query: Record<string, string> = {}) {
+    if (!this.isCurrentRoute(name, params)) {
+      void this.$router.push({
+        name,
+        params: {
+          ...params,
+          backofficeId: this.$route.params.backofficeId
+        },
+        query
+      });
+    }
   }
 }

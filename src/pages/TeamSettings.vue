@@ -84,7 +84,7 @@
                   no-caps
                   size="13px"
                   color="primary"
-                  @click="$router.push({name: 'backOfficeSettings'})"
+                  @click="$router.push({name: 'backofficeSettings'})"
                 />
               </div>
               <q-btn
