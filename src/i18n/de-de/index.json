@@ -518,5 +518,6 @@
   "allTeams": "Alle Teams",
   "clientRatioPositiveHealthChange": "der Klienten verbesserten sich um **ø +{value}** beim",
   "clientRatioNoHealthChange": "der Klienten zeigten keine Veränderung beim",
-  "clientRatioNegativeHealthChange": "der Klienten verschlechterten sich um **ø {value}** beim"
+  "clientRatioNegativeHealthChange": "der Klienten verschlechterten sich um **ø {value}** beim",
+  "downloadBackup": "Backup herunterladen"
 }
