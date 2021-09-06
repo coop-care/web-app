@@ -1,5 +1,4 @@
-import { boot } from "quasar/wrappers"
-import { classToPlain } from "class-transformer";
+import { boot } from "quasar/wrappers";
 import { downloadJSON } from "../helper/download";
 import { setColorSet, defaultColors } from "../helper/color";
 import { ccApi } from "../api/apiProvider";
@@ -29,7 +28,7 @@ export default boot(({ app }) => {
 
   if ((process.env.DEV as unknown) === true || process.env.DEV === "true") {
     // @ts-ignore
-    window.download = () => downloadJSON(classToPlain(store.state.clients) || [], "sample1.json");
+    window.download = () => downloadJSON(store.state.clients.map(client => client.toJSON()), "sample1.json", true);
     // @ts-ignore
     window.api = ccApi
     // @ts-ignore

@@ -608,5 +608,6 @@
   "generalSettings": "General settings",
   "contactPerson": "Contact Person",
   "dataNotFound": "No data found",
-  "featureNotYetSupported": "This feature is not yet supported."
+  "featureNotYetSupported": "This feature is not yet supported.",
+  "downloadBackup": "Download backup"
 }

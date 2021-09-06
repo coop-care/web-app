@@ -609,5 +609,6 @@
   "generalSettings": "Allgemeine Einstellungen",
   "contactPerson": "Ansprechpartner",
   "dataNotFound": "Keine Daten gefunden",
-  "featureNotYetSupported": "Diese Funktion wird aktuell noch nicht unterstützt."
+  "featureNotYetSupported": "Diese Funktion wird aktuell noch nicht unterstützt.",
+  "downloadBackup": "Backup herunterladen"
 }
