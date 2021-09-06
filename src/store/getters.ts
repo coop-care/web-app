@@ -112,5 +112,10 @@ export default defineGetters<StateInterface>()({
                 );
                 return map;
             }, {} as Record<string, Contact>)
-        )
+        ),
+
+    appVersion: _ => process.env.APP_VERSION || "0",
+
+    appBuild: _ => process.env.APP_BUILD || "0",
+
 });
