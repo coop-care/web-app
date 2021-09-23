@@ -35,7 +35,9 @@ yarn-error.log*
 .quasar.env.json
 
 *.env
+/stitch
 /stitch/hosting/files
 /public/icons
 /public/favicon.ico
 deploy.sh
+deploy-stitch.sh
