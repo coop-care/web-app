@@ -5,7 +5,6 @@ import { ObjectID } from "bson";
 
 export type PostalAddress = {
   street1: string;
-  street2: string;
   postalCode: string;
   city: string;
   region: string;
@@ -84,7 +83,6 @@ export class Contact extends Base {
   makePostalAddress(country: string) {
     return Contact.makeLabeledValue({
       street1: "",
-      street2: "",
       postalCode: "",
       city: "",
       region: "",

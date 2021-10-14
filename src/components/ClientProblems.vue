@@ -6,6 +6,7 @@
       class="q-mb-xl q-pa-xs overflow-auto"
     >
       <div class="flex q-gutter-md justify-center">
+        <client-insights v-if="clientProblems.length > 0" />
         <problem-summary
           v-for="problemRecord in clientProblems"
           v-bind:key="problemRecord.id"
@@ -56,10 +57,12 @@
 import { Component } from "vue-property-decorator";
 import { ProblemRecord } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
+import ClientInsights from "../components/ClientInsights.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
 
 @Component({
   components: {
+    ClientInsights,
     ProblemSummary
   }
 })

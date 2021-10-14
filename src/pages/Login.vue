@@ -42,16 +42,6 @@
               size="md"
               color="primary"
               class="text-center full-width q-mt-lg"
-              :label="$t('notRegistered') + ' ' + $t('createAccount')"
-              :to="{ name: 'register' }"
-            />
-            <q-btn
-              flat
-              dense
-              no-caps
-              size="md"
-              color="primary"
-              class="text-center full-width"
               :label="$t('forgotPassword')"
               :to="{ name: 'requestPasswordReset' }"
             />

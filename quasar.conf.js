@@ -8,6 +8,7 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { configure } = require("quasar/wrappers")
+const { readFileSync } = require('fs')
 
 module.exports = configure(function (ctx) {
   return {
@@ -76,6 +77,11 @@ module.exports = configure(function (ctx) {
 
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
+
+      env: {
+        APP_VERSION: JSON.parse(readFileSync('./package.json')).version || 0,
+        APP_BUILD: (new Date()).toISOString().replace(/\D/g, ""),
+      },
 
       // https://quasar.dev/quasar-cli/handling-webpack
       extendWebpack(cfg) {

@@ -111,6 +111,16 @@ export default defineActions({
             });
     },
 
+    fetchClientsOfAllTeamsFromDB(context): Promise<Client[]> {
+        if (!ccApi.isLoggedIn) {
+            return Promise.reject();
+        }
+
+        const { state } = rootActionContext(context);
+        const clientIds = [... new Set(state.teams.flatMap(team => team.clients))];
+        return ccApi.getClients(clientIds);
+    },
+
     addClient(context, client: Client): Promise<Client> {
         const { state, dispatch } = rootActionContext(context);
         const user = state.currentUser;

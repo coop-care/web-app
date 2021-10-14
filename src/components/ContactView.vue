@@ -142,7 +142,7 @@
             v-if="!noBirthday && !contact.isOrganization"
             :value="contact.birthday"
             @input="saveContact({birthday: $event})"
-            :label="$t('birthday')"
+            :label="$t('birthday') + ' (' + $t('dateFormatPlaceholder') + ')'"
             :format="$t('dateFormat')"
           />
           <selectable-input
@@ -233,13 +233,7 @@
               @change="save"
               :placeholder="$t('street')"
               dense
-            />
-            <q-input
-              :value="item.value.street2"
-              @input="update(item.value, {street2: $event})"
-              @change="save"
-              :placeholder="$t('street')"
-              dense
+              autogrow
             />
             <div class="row">
               <q-input

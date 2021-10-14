@@ -54,12 +54,24 @@
               @change="teamName = $event.target.value"
             />
             <q-btn
+              v-if="!isDemo"
+              :label="$t('downloadBackup')"
+              icon="fas fa-file-download"
+              outline
+              rounded
+              no-caps
+              color="primary"
+              class="q-mt-md block"
+              @click="downloadBackup"
+            />
+            <q-btn
               :label="$t('deleteTeam')"
+              icon="fas fa-user-slash"
               outline
               rounded
               no-caps
               color="negative"
-              class="q-mt-md"
+              class="q-mt-md block"
               @click="deleteTeam"
             />
           </q-expansion-item>
@@ -227,6 +239,7 @@ import TextWithTooltip from "../components/TextWithTooltip.vue";
 import PullToRefresh from "../components/PullToRefresh.vue";
 import TeamInvitationDialog from "../components/TeamInvitationDialog.vue";
 import ClientActionMixin from "../mixins/ClientActionMixin";
+import { downloadJSON } from "src/helper/download";
 
 @Component({
   components: {
@@ -522,6 +535,24 @@ export default class TeamSettingsPage extends ClientActionMixin {
           void this.$store.direct.dispatch.deleteTeam(team)
         );
       }
+    }
+  }
+  downloadBackup() {
+    if (this.team && this.isAdmin) {
+      const timestamp = (new Date()).toISOString().replace(/\D/g, "").slice(0, 14);
+      const filename = `CoopCare_Team_${this.team.name}_${timestamp}.json`;
+
+      downloadJSON({
+        meta: {
+          appVersion: this.$store.direct.getters.appVersion,
+          appBuild: this.$store.direct.getters.appBuild,
+          backupCreatedAtTimestamp: Date.now(),
+        },
+        data: {
+          clients: this.$store.direct.state.clients.map(client => client.toJSON()),
+          team: this.team.toJSON(),
+        },
+      }, filename);
     }
   }
 

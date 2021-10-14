@@ -16,7 +16,7 @@ let ccApi: CoopCareApiInterface;
 if (process.env.BACKEND == "demo") {
     ccApi = new DemoApi();
 } else {
-    ccApi = new StitchApi("openomaha-elgvq", "openomaha");
+    ccApi = new StitchApi(process.env.BACKEND_APP_ID || "", process.env.BACKEND_APP_ID?.split("-")[0] || "");
 
     ccApi.authListener = (changeType) => {
         if (changeType == "sessionEnded") {

@@ -83,7 +83,6 @@
           <q-item-section>{{ $t("teamSettings") }}</q-item-section>
         </q-item>
         <q-item
-          v-if="isDev"
           clickable
           v-close-popup
           @click="$router.push({ name: 'insights' })"

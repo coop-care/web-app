@@ -392,7 +392,7 @@
   "confirmTeamDeletionMessage": "Das Team {name} wird unwiederbringlich gelöscht.",
   "addEmailAddress": "E-Mail-Adresse hinzufügen",
   "addPostalAddress": "Adresse hinzufügen",
-  "street": "Straße",
+  "street": "Straße und Hausnummer",
   "postalCode": "Postleitzahl",
   "city": "Stadt",
   "country": "Land",
@@ -512,5 +512,12 @@
   "statusExpectationHint": "Welchen Gesundheitszustand in Bezug auf sein oder ihr Problem kann der Klient mit deiner Hilfe realistisch erreichen?",
   "insights": "Erkenntnisse",
   "filter": "Filter",
-  "timePeriod": "Zeitraum"
+  "timePeriod": "Zeitraum",
+  "evaluationOfAllClients": "Evaluation aller Klienten",
+  "customInterval": "Eigener …",
+  "allTeams": "Alle Teams",
+  "clientRatioPositiveHealthChange": "der Klienten verbesserten sich um **ø +{value}** beim",
+  "clientRatioNoHealthChange": "der Klienten zeigten keine Veränderung beim",
+  "clientRatioNegativeHealthChange": "der Klienten verschlechterten sich um **ø {value}** beim",
+  "downloadBackup": "Backup herunterladen"
 }
