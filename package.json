@@ -14,6 +14,18 @@
     "url": "git://github.com/coop-care/web-app.git"
   },
   "scripts": {
+    "dev:web": "QENV=development quasar dev",
+    "dev:demo": "QENV=demo quasar dev",
+    "dev:ios": "QENV=development quasar dev -m ios --buildConfig src-cordova/build.json",
+    "dev:android": "QENV=development quasar dev -m android",
+    "dev:electron": "QENV=development quasar dev -m electron",
+    "deploy:ios": "QENV=development quasar build -m ios --skip-pkg; pushd src-cordova; cordova run ios --debug --device --buildConfig build.json; popd",
+    "build:web": "QENV=production quasar build -m spa",
+    "build:demo": "QENV=demo quasar build -m spa",
+    "build:ios": "QENV=production quasar build -m ios --buildConfig src-cordova/build.json",
+    "build:android": "QENV=production quasar build -m android",
+    "build:electron": "QENV=production quasar build -m electron",
+    "icons": "icongenie generate -m spa,electron --skip-trim --splashscreen-icon-ratio 0 --svg-color 960372 -i src/icons/app-icon.png; icongenie generate -m cordova --skip-trim --splashscreen-icon-ratio 0 --svg-color 960372 -i src/icons/app-icon-cordova.png -b src/icons/app-splashscreen.png",
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0"
   },

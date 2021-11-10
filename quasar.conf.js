@@ -186,6 +186,18 @@ module.exports = configure(function (ctx) {
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
     cordova: {
+      // add the dynamic top padding on iOS mobile devices
+      iosStatusBarPadding: true,
+
+      // Quasar handles app exit on mobile phone back button.
+      // Requires Quasar v1.9.3+ for true/false, v1.12.6+ for '*' wildcard and array values
+      // backButtonExit: true / false / '*' / ['/login', '/home', '/my-page'],
+
+      // On the other hand, the following completely
+      // disables Quasar's back button management.
+      // Requires Quasar v1.14.1+
+      // backButton: true / false
+
       // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
     },
 
@@ -209,7 +221,7 @@ module.exports = configure(function (ctx) {
         junk: true,
 
         // OS X / Mac App Store
-        appBundleId: "de.coopcare.v1",
+        appBundleId: "de.coopcare.app",
         appCategoryType: "public.app-category.medical",
         // osxSign: '',
         protocol: "coopcare://",
