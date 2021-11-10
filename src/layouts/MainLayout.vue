@@ -22,6 +22,10 @@
           :ripple="false"
           @click="$router.back()"
         />
+        <div 
+          v-if="!hasMenuButton($router.currentRoute.name || '') && !hasBackButton($router.currentRoute.name || '')"
+          style="width: 60px"
+        ></div>
 
         <q-toolbar-title class="text-center">
           <div

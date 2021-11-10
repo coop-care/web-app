@@ -52,7 +52,7 @@
       />
 
       <div
-        class="client-overview q-pt-lg q-px-xl"
+        class="client-overview q-pt-lg"
         v-else-if="client"
       >
         <client-tab-view :key="$route.params.clientId || ''" />
