@@ -1,9 +1,9 @@
 <template>
   <q-drawer
     v-model="isVisible"
-    content-class="dense-avatar"
+    content-class="dense-avatar bg-grey-2 safe-area-left"
     show-if-above
-    class="bg-grey-2 safe-area-left print-hide"
+    class="print-hide"
   >
     <pull-to-refresh>
       <q-list>
