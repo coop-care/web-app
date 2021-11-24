@@ -57,7 +57,7 @@
       ></div>
     </q-header>
 
-    <q-page-container>
+    <q-page-container class="bg-white">
       <div class="print-only text-black text-center text-subtitle2 border-bottom-grey">
         {{ [title, subtitle].filter(Boolean).join(" – ") }}
       </div>
