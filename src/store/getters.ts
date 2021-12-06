@@ -2,6 +2,7 @@ import { ObjectID } from "bson";
 import { defineGetters } from "direct-vuex";
 import { store, StateInterface } from ".";
 import { Client, ProblemRecord, Contact } from "../models";
+import { Platform } from "quasar";
 
 export default defineGetters<StateInterface>()({
     getClient: state => (payload: any): Client | undefined => {
@@ -118,4 +119,17 @@ export default defineGetters<StateInterface>()({
 
     appBuild: _ => process.env.APP_BUILD || "0",
 
+    appPlatform: _ => {
+        if (Platform.is.cordova) {
+            if (Platform.is.ios) {
+                return "ios";
+            } else if (Platform.is.android) {
+                return "android";
+            }
+        } else if (Platform.is.electron) {
+            return Platform.is.platform; // e.g. "mac", "win", "linux"
+        }
+
+        return "";
+    },
 });

@@ -73,6 +73,18 @@
         >
           <q-item-section>{{ $t("databaseClearAll") }}</q-item-section>
         </q-item>
+
+        <q-separator />
+
+        <q-item class="text-grey-5">
+          <q-item-section>
+            <q-item-label>Version {{ $store.getters.appVersion }}</q-item-label>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $store.getters.appPlatform || "browser" }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
       </q-list>
     </q-menu>
   </q-btn>
