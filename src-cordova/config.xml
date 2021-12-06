@@ -79,6 +79,7 @@
     </platform>
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="StatusBarStyle" value="lightcontent" />
+    <preference name="StatusBarDefaultScrollToTop" value="true" />
     <preference name="KeyboardShrinksView" value="true" />
     <preference name="BackgroundColor" value="0xff960372" />
 </widget>
