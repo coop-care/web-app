@@ -34,7 +34,7 @@
               :events="[]"
               color="primary"
               event-color="primary"
-              mask="YYYY-MM-DDTHH:mm:ss.sssZ"
+              mask="YYYY-MM-DD"
               today-btn
             />
           </q-popup-proxy>
@@ -218,7 +218,9 @@ export default class ClientReminders extends RecordMixin {
     return this.selectedDate.toISOString();
   }
   set selectedDateString(value: string) {
-    this.selectedDate = new Date(value);
+    if (value) {
+      this.selectedDate = new Date(value + "T00:00:00.000Z");
+    }
   }
   get tasks() {
     return this.tasksForDay(this.selectedDate);
