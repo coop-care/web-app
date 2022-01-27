@@ -1,7 +1,7 @@
 <template>
   <q-drawer
     v-model="isVisible"
-    content-class="bg-grey-2 dense-avatar"
+    content-class="dense-avatar bg-grey-2 safe-area-left"
     show-if-above
     class="print-hide"
   >
