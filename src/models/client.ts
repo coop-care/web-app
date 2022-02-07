@@ -37,6 +37,19 @@ export class ClientAgreements {
     existingInitialPrescription: boolean | null = null;
     keyHandoverRequired: boolean | null = null;
 };
+
+export class ShiftNote {
+    user: string;
+    @Type(() => Date)
+    created: Date;
+    text: string;
+
+    constructor(user: string, text: string) {
+        this.user = user;
+        this.text = text;
+        this.created = new Date();
+    }
+};
 export class Client extends IdentifiableObject {
     @Type(() => Contact)
     contact: Contact = new Contact();
@@ -57,6 +70,8 @@ export class Client extends IdentifiableObject {
     createdAt = new Date();
     @Type(() => Date)
     leftAt?: Date = undefined;
+    @Type(() => ShiftNote)
+    shiftNotes: ShiftNote[] = [];
     @Type(() => ChangeRecord)
     changeHistory: ChangeRecord[] = [];
 

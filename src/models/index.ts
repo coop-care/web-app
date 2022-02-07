@@ -1,7 +1,7 @@
 export { IdentifiableObject } from "./identifiableObject";
 export { User, TeamMember } from "./user";
 export { Team, TeamInvitation } from "./team";
-export { Client, ClientHealthInformation, ClientAgreements } from "./client";
+export { Client, ClientHealthInformation, ClientAgreements, ShiftNote } from "./client";
 export { Base } from "./base";
 export { ProblemRecord } from "./problemRecord";
 export { Problem } from "./problem";

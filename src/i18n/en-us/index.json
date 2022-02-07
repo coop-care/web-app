@@ -519,5 +519,9 @@
   "clientRatioPositiveHealthChange": "of clients improved by **ø +{value}** in",
   "clientRatioNoHealthChange": "of clients showed no change in",
   "clientRatioNegativeHealthChange": "of clients deteriorated by **ø {value}** in",
-  "downloadBackup": "Download backup"
+  "downloadBackup": "Download backup",
+  "addOptionalShiftNote": "Add a shift note?",
+  "shiftNoteLabel": "What was special today?",
+  "send": "Send",
+  "shiftNoteAdditionForCurrentDayOnly": "A short report can only be noted for the current day."
 }

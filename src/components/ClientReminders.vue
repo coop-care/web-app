@@ -101,6 +101,13 @@
             {{ taskOrTitle.title }}
           </div>
         </div>
+
+        <shift-notes-day-view
+          key="shiftnotes"
+          :date="selectedDate"
+          :canAddNote="isToday"
+          class="shift-notes q-px-md full-width"
+        />
       </transition-group>
     </q-list>
 
@@ -166,14 +173,17 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
   opacity: 0
 .task-list-move
   transition: opacity 1s ease-in-out, transform .3s ease-in-out .7s
+.shift-notes
+  margin-top: 64px
 </style>
 
 <script lang="ts">
 import { Component, Ref } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
-import { Task, TaskGroup, Reminder } from "../models";
+import { Task, TaskGroup, Reminder, ShiftNote } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
+import ShiftNotesDayView from "components/ShiftNotesDayView.vue";
 
 const {
   isSameDate,
@@ -192,6 +202,7 @@ const allInclusive = {
 @Component({
   components: {
     TaskView,
+    ShiftNotesDayView,
   },
 })
 export default class ClientReminders extends RecordMixin {
