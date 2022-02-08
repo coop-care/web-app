@@ -250,7 +250,7 @@ import { downloadJSON } from "src/helper/download";
   },
 })
 export default class TeamSettingsPage extends ClientActionMixin {
-  @Ref() readonly teamNameInput!: QInput;
+  @Ref() readonly teamNameInput?: QInput;
 
   expandedSettings = false;
   expandedMembers = true;
@@ -270,7 +270,7 @@ export default class TeamSettingsPage extends ClientActionMixin {
         this.expandedSettings = true;
         this.expandedMembers = true;
         this.expandedClients = true;
-        setTimeout(() => this.teamNameInput.focus(), 100);
+        setTimeout(() => this.teamNameInput?.focus(), 100);
       }
     } else {
       void this.$store.direct.dispatch.changeTeam(value)

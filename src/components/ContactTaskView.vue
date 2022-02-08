@@ -52,7 +52,7 @@
           :outline="!intervention.intervention.details"
           color="primary"
           class="q-px-sm"
-          @click.stop="validate(customWarnings, () => isEditing = false)"
+          @click.stop="validate('' + customWarnings, () => isEditing = false)"
         />
       </div>
     </div>

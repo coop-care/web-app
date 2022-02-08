@@ -52,7 +52,7 @@
       />
 
       <div
-        class="client-overview q-pt-lg q-px-xl"
+        class="page-padding client-overview"
         v-else-if="client"
       >
         <client-tab-view :key="$route.params.clientId || ''" />
@@ -63,8 +63,8 @@
 
 <style lang="sass">
 .client-overview
-  @media (max-width: $breakpoint-xs-max)
-    padding: 8px
+  @media print
+    padding: .75cm 0 0
 </style>
 
 <script lang="ts">

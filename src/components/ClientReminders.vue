@@ -34,7 +34,7 @@
               :events="[]"
               color="primary"
               event-color="primary"
-              mask="YYYY-MM-DDTHH:mm:ss.sssZ"
+              mask="YYYY-MM-DD"
               today-btn
             />
           </q-popup-proxy>
@@ -43,7 +43,7 @@
       <div class="q-mr-sm selected-date print-hide">
         <div class="text-h6 ellipsis">
           {{ formattedDate({ weekday: "long" }) }}
-          {{ todayHint }}
+          {{ isToday ? $t("isTodayHint") : "" }}
         </div>
         <div class="text-body2">
           {{
@@ -92,7 +92,7 @@
             :task="taskOrTitle.task"
             :date="selectedDate"
             :hasCheckbox="canComplete"
-            @force-update="recompute = Math.random()"
+            @update="updateTasks"
           />
           <div
             v-else
@@ -196,16 +196,13 @@ const allInclusive = {
 })
 export default class ClientReminders extends RecordMixin {
   @Ref() readonly dateProxy!: QPopupProxy;
-
-  recompute = Math.random();
+  tasks = this.tasksForDay(this.selectedDate);
+  isToday = true;
+  startOfTodayTimer = 0;
+  endOfTodayTimer = 0;
 
   get selectedDate() {
-    const timestamp = parseInt(this.$root.$route.params.day)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const recompute = this.recompute
-    return !isNaN(timestamp)
-      ? new Date(timestamp)
-      : new Date();
+    return new Date(parseInt(this.$root.$route.params.day) || Date.now());
   }
   set selectedDate(value) {
     this.$route.params.day = "" + value.getTime();
@@ -213,15 +210,17 @@ export default class ClientReminders extends RecordMixin {
       name: this.$route.name || undefined,
       params: this.$route.params,
     });
+    this.updateTasks();
+    this.updatedIsToday();
+    this.setTodayTimers();
   }
   get selectedDateString() {
     return this.selectedDate.toISOString();
   }
   set selectedDateString(value: string) {
-    this.selectedDate = new Date(value);
-  }
-  get tasks() {
-    return this.tasksForDay(this.selectedDate);
+    if (value) {
+      this.selectedDate = new Date(value + "T00:00:00.000Z");
+    }
   }
   get canComplete() {
     return isBetweenDates(
@@ -237,13 +236,6 @@ export default class ClientReminders extends RecordMixin {
       minute: "numeric",
     });
   }
-  get todayHint() {
-    if (isSameDate(this.selectedDate, new Date(), "day")) {
-      return this.$t("isTodayHint");
-    } else {
-      return "";
-    }
-  }
   get hasActiveProblems() {
     return this.client && this.client.activeProblemCount > 0
   }
@@ -253,6 +245,10 @@ export default class ClientReminders extends RecordMixin {
       this.client?._id?.toHexString() || "no-client-id", 
       this.$root.$route.params.day || "today"
     ].join(".");
+  }
+
+  updatedIsToday() {
+    return this.isToday = isSameDate(this.selectedDate, Date.now(), "day");
   }
 
   formattedDate(options: Intl.DateTimeFormatOptions) {
@@ -278,7 +274,11 @@ export default class ClientReminders extends RecordMixin {
     this.selectedDate = subtractFromDate(this.selectedDate, { days: 1 });
   }
 
-  tasksForDay(day: Date) {
+  updateTasks(animated?: boolean) {
+    this.tasks = this.tasksForDay(this.selectedDate, animated)
+  }
+
+  tasksForDay(day: Date, animated = false) {
     const startOfDay = startOfDate(day, "day", false);
     const endOfDay = endOfDate(day, "day", false);
     const startOfDayTimestamp = startOfDay.getTime();
@@ -289,7 +289,7 @@ export default class ClientReminders extends RecordMixin {
       startOfDayTimestamp,
       startOfTodayTimestamp
     );
-    const pastDueCompletedTimestamp = Date.now() - UpdateTimeoutMilliseconds;
+    const pastDueCompletedTimestamp = Date.now() - (animated ? UpdateTimeoutMilliseconds : 0);
     const isFuture = endOfTodayTimestamp < startOfDayTimestamp;
     const isPresentOrPast = startOfDayTimestamp <= startOfTodayTimestamp;
     const pastDueTasks: Task<Reminder>[] = [];
@@ -397,16 +397,45 @@ export default class ClientReminders extends RecordMixin {
 
   visibilityDidChange() {
     if (document.visibilityState == "visible") {
-      this.recompute = Math.random();
+      setTimeout(() => {
+        this.updateTasks();
+        this.updatedIsToday();  
+      }, 2000); // give fetch data some time to load everything
     }
+  }
+
+  setTodayTimers() {
+    this.clearTodayTimers();
+    const timeUntilSelectedDateBecomesToday = startOfDate(this.selectedDate, "day", false).getTime() + 1000 - Date.now();
+    const timeUntilSelectedDateWasToday = endOfDate(this.selectedDate, "day", false).getTime() + 1000 - Date.now();
+
+    if (timeUntilSelectedDateBecomesToday > 0) {
+      this.startOfTodayTimer = window.setTimeout(this.updatedIsToday, timeUntilSelectedDateBecomesToday);
+    }
+
+    if (timeUntilSelectedDateWasToday > 0) {
+      this.endOfTodayTimer = window.setTimeout(this.updatedIsToday, timeUntilSelectedDateWasToday);
+    }
+  } 
+
+  clearTodayTimers() {
+    window.clearTimeout(this.startOfTodayTimer);
+    this.startOfTodayTimer = 0;
+    
+    window.clearTimeout(this.endOfTodayTimer);
+    this.endOfTodayTimer = 0;
   }
 
   created() {
     window.addEventListener("visibilitychange", this.visibilityDidChange);
+    this.updateTasks();
+    this.updatedIsToday();
+    this.setTodayTimers();
   }
 
   beforeDestroy() {
     window.removeEventListener("visibilitychange", this.visibilityDidChange);
+    this.clearTodayTimers();
   }
 }
 </script>

@@ -2,6 +2,7 @@ import Vue from "vue";
 import CoopCareApiInterface from "./coopCareApiInterface";
 import DemoApi from "./demo";
 import StitchApi from "./stitch";
+import RealmApi from "./realm";
 import store from "../store";
 import { User, TeamMember, Team, Client } from "../models";
 
@@ -15,6 +16,8 @@ let ccApi: CoopCareApiInterface;
 
 if (process.env.BACKEND == "demo") {
     ccApi = new DemoApi();
+} else if (process.env.BACKEND == "realm") {
+    ccApi = new RealmApi(process.env.BACKEND_APP_ID || "", process.env.BACKEND_APP_ID?.split("-")[0] || "");
 } else {
     ccApi = new StitchApi(process.env.BACKEND_APP_ID || "", process.env.BACKEND_APP_ID?.split("-")[0] || "");
 

@@ -158,13 +158,15 @@ export default class TaskView extends InterventionMixin {
       isCompleted: value,
       client: this.client,
     });
+    this.$emit("update", true);
     void this.$store.direct.dispatch.saveClient({ client: this.client });
 
     if (this.isPastDue) {
       window.clearTimeout(this.forceUpdateTimeoutHandler || undefined);
-      this.forceUpdateTimeoutHandler = window.setTimeout(() => 
-        this.$emit("force-update"),
-      UpdateTimeoutMilliseconds);
+      this.forceUpdateTimeoutHandler = window.setTimeout(
+        () => this.$emit("update", true),
+        UpdateTimeoutMilliseconds
+      );
     }
   }
   get isPastDue() {
@@ -404,6 +406,7 @@ export default class TaskView extends InterventionMixin {
       task: this.task,
       client: this.client
     });
+    this.$emit("update");
     this.save();
   }
 
@@ -456,6 +459,7 @@ export default class TaskView extends InterventionMixin {
       changes: changes,
       updateFrom: this.task.due,
     });
+    this.$emit("update");
   }
 
   updateRatingReminder(changes: Partial<RatingReminder>) {

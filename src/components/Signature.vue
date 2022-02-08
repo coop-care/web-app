@@ -38,6 +38,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
+import { DateTime } from "luxon";
 import { TeamMember } from "../models";
 
 @Component
@@ -46,13 +47,18 @@ export default class SignatureView extends Vue {
   @Prop({ type: String, default: "" }) readonly userId!: string;
   @Prop({ type: String, default: "black"}) readonly color!: string;
   @Prop({ type: String, default: ""}) readonly description!: string;
+  @Prop({ type: Date}) readonly date?: Date;
   @Prop({ type: Boolean}) readonly hasTooltip!: boolean;
 
   get signature() {
     return this.teamMember?.signature;
   }
   get tooltip() {
-    return [this.teamMember?.username, this.description].filter(text => text).join(", ");
+    return [
+      this.teamMember?.username, 
+      this.date?.toLocaleString(this.$root.$i18n.locale, DateTime.DATETIME_SHORT), 
+      this.description
+    ].filter(Boolean).join(", ");
   }
   get teamMember() {
     return this.user || this.$store.direct.state.teamMembers[this.userId];
