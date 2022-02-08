@@ -26,6 +26,7 @@
     "luxon": "^1.25.0",
     "mongodb-stitch-browser-sdk": "^4.8.0",
     "quasar": "^1.15.16",
+    "realm-web": "^1.6.0",
     "reflect-metadata": "^0.1.13",
     "rrule": "^2.6.6",
     "timeago.js": "^4.0.2",

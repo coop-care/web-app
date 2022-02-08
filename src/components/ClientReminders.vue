@@ -408,8 +408,10 @@ export default class ClientReminders extends RecordMixin {
 
   visibilityDidChange() {
     if (document.visibilityState == "visible") {
-      this.updateTasks();
-      this.updatedIsToday();
+      setTimeout(() => {
+        this.updateTasks();
+        this.updatedIsToday();  
+      }, 2000); // give fetch data some time to load everything
     }
   }
 

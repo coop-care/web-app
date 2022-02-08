@@ -15,7 +15,7 @@ export default boot(({ app }) => {
 
     let lastFetch = 0;
     window.addEventListener("visibilitychange", () => {
-      if ((document.visibilityState == "visible") && (Date.now() > lastFetch + 3600 * 1000)) {
+      if ((document.visibilityState == "visible") && (Date.now() > lastFetch + 120 * 1000)) {
         void store.dispatch.fetchEssentialDataFromDB({ locale: i18n.locale }).catch(() => 0);
         lastFetch = Date.now();
       }
