@@ -6,19 +6,23 @@ import { ccApi } from "../api/apiProvider";
 import { defaultColors, setColorSet } from "../helper/color";
 
 export default defineActions({
-    fetchEssentialDataFromDB(context, defaults: { locale: string }): Promise<void> {
+    fetchEssentialDataFromDB(context, defaults: { locale: string, awaitAllResponses?: boolean }): Promise<void> {
         if (!ccApi.isLoggedIn) {
             return Promise.reject();
         }
 
         const { dispatch } = rootActionContext(context);
 
-        const promise = dispatch.fetchUserFromDB(defaults);
-        void dispatch.fetchTeamsFromDB()
+        const promiseUserData = dispatch.fetchUserFromDB(defaults);
+        const promiseTeamClients = dispatch.fetchTeamsFromDB()
             .then(() => dispatch.fetchTeamMembersFromDB())
             .then(() => dispatch.fetchClientsFromDB());
 
-        return promise;
+        if (defaults.awaitAllResponses == true) {
+            return Promise.all([promiseUserData, promiseTeamClients]).then(() => {});
+        } else {
+            return promiseUserData;
+        }
     },
 
     fetchUserFromDB(context, defaults: { locale: string }): Promise<void> {
