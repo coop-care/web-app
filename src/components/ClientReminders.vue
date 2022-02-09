@@ -178,7 +178,7 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
 </style>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Watch } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
 import { Task, TaskGroup, Reminder, ShiftNote } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
@@ -211,6 +211,12 @@ export default class ClientReminders extends RecordMixin {
   isToday = true;
   startOfTodayTimer = 0;
   endOfTodayTimer = 0;
+
+  @Watch("$route")
+  onRouteChange() {
+    this.updateTasks();
+    this.updatedIsToday();  
+  }
 
   get selectedDate() {
     return new Date(parseInt(this.$root.$route.params.day) || Date.now());
