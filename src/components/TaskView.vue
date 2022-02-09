@@ -45,14 +45,12 @@
         v-if="title"
         :class="[task.isDue ? 'text-negative' : '']"
       >
-        <span :class="[hasDetails ? '': 'text-italic']">{{ title }}</span>
+        <span :class="[hasDetails ? '': 'text-italic']">{{ title }} </span>
         <span
           v-if="timeAgo"
           @click.prevent="navigateToDueDate"
           class="text-caption text-weight-medium link"
-        >
-          ({{ timeAgo }})
-        </span>
+        >({{ timeAgo }})</span>
       </q-item-label>
     </q-item-section>
     <q-item-section
