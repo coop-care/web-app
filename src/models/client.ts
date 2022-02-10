@@ -21,6 +21,7 @@ export class ClientHealthInformation {
     biography = "";
     notes = "";
 };
+
 export class ClientAgreements {
     @Type(() => Date)
     initialInterview?: Date = undefined;
@@ -43,6 +44,10 @@ export class ShiftNote {
     @Type(() => Date)
     created: Date;
     text: string;
+
+    static sortByCreated(a: ShiftNote, b: ShiftNote) {
+        return a.created.getTime() - b.created.getTime();
+    }
 
     constructor(user: string, text: string) {
         this.user = user;
@@ -109,8 +114,10 @@ export class Client extends IdentifiableObject {
         });
         return count;
     }
-    get activeProblemCount() {
-        return this.problems.filter(problem => !problem.resolvedAt).length;
+    get activeProblems() {
+        return this.problems.filter(problem => 
+            !!problem.createdAt && !problem.resolvedAt && problem.problem.isHighPriority
+        );
     }
     get firstOutcome(): Outcome | undefined {
         return this.outcomesByDate[0];

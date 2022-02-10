@@ -180,7 +180,7 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
 <script lang="ts">
 import { Component, Ref, Watch } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
-import { Task, TaskGroup, Reminder, ShiftNote } from "../models";
+import { Task, TaskGroup, Reminder } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
 import ShiftNotesDayView from "components/ShiftNotesDayView.vue";
@@ -254,7 +254,7 @@ export default class ClientReminders extends RecordMixin {
     });
   }
   get hasActiveProblems() {
-    return this.client && this.client.activeProblemCount > 0
+    return this.client && this.client.activeProblems.length > 0
   }
   get taskListTransitionGroupKey() {
     return [

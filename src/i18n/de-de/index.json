@@ -166,7 +166,7 @@
   "noScheduledReminder": "Keine Erinnerung geplant.",
   "weekdayDateFormat": "dddd, DD. MMMM YYYY",
   "forProblem": "für das Problem „{problem}“",
-  "interimRating": "Zwischenbewertung",
+  "interimRating": "Zwischen­bewertung",
   "skipTask": "Einzelne Aufgabe überspringen",
   "moveSingleTask": "Einzelne Aufgabe verschieben",
   "moveFutureTasks": "Diese und folgende Aufgaben verschieben",
@@ -523,5 +523,8 @@
   "addOptionalShiftNote": "Kurzen Bericht hinzufügen?",
   "shiftNoteLabel": "Was war heute besonders?",
   "send": "Senden",
-  "shiftNoteAdditionForCurrentDayOnly": "Ein Kurzbericht kann nur für den aktuellen Tag notiert werden."
+  "shiftNoteAdditionForCurrentDayOnly": "Ein Kurzbericht kann nur für den aktuellen Tag notiert werden.",
+  "shiftNoteOmahaSystemHint": "Hat sich Wissen, Verhalten oder Zustand des Klienten verändert? Kann eine der Aktionen unten die Info ebenso ausdrücken wie ein Bericht?",
+  "selectProblemForNewRating": "Für welches Problem möchtest du eine Zwischenbewertung vornehmen?",
+  "rateButtonTitle": "Bewerten"
 }

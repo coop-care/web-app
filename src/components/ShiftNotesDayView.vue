@@ -1,5 +1,5 @@
 <template>
-  <div class="shift-notes q-px-md full-width">
+  <div class="shift-notes full-width">
     <div>
       <q-chat-message
         v-for="(note, index) in (shiftNotes || [])"
@@ -51,38 +51,73 @@
           autogrow
           :rules="[val => canAddNote || $t('shiftNoteAdditionForCurrentDayOnly')]"
           class="shift-note-input"
+          :hint="$t('shiftNoteOmahaSystemHint')"
+          hide-bottom-space
         >
-          <template v-slot:after>
+          <template v-slot:append>
             <q-btn
               v-if="canAddNote && shiftNoteDraft.length"
               :label="$t('send')"
               :disabled="!shiftNoteDraft"
               flat
-              rounded
               no-caps
               color="primary"
+              class="full-height"
               @click="addShiftNote"
             />
             <q-btn
               v-else
               :label="$t('cancel')"
               flat
-              rounded
               no-caps
               color="primary"
+              class="full-height"
               @click="shiftNodeInputVisible = false"
             />
           </template>
         </q-input>
+        <q-btn-group
+          flat
+          spread
+          rounded
+          class="q-mt-xs"
+        >
+          <q-btn
+            v-if="hasActiveProblems"
+            :label="$t('interimRating')"
+            flat
+            no-caps
+            color="outcome"
+            @click="addOutcome"
+          />
+          <q-btn
+            v-if="hasActiveProblems"
+            :label="$t('addTask')"
+            flat
+            no-caps
+            color="intervention"
+            :to="{ name: 'newIntervention' }"
+          />
+          <q-btn
+            :label="$t('problemAdmission')"
+            flat
+            no-caps
+            color="classification"
+            :to="{ name: 'problem', params: { problemId: 'new' } }"
+          />
+        </q-btn-group>
       </div>
     </div>
   </div>
 </template>
 
 <style lang="sass">
-.shift-note-input .q-field__after
-  padding-left: 0
-  align-items: flex-end
+.shift-note-input
+  .q-field__append
+    height: auto
+    padding-top: 16px
+  .q-field__messages, .q-field__counter
+    line-height: 1.3
 </style>
 
 <script lang="ts">
@@ -91,6 +126,7 @@ import { date } from "quasar";
 import { ShiftNote } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import Signature from "components/Signature.vue";
+import SelectDialog from "components/SelectDialog.vue";
 
 const {
   isBetweenDates,
@@ -115,13 +151,16 @@ export default class ShiftNotesDayView extends RecordMixin {
 
     return this.client?.shiftNotes.filter(note => 
       isBetweenDates(note.created, startOfDay, endOfDay)
-    ) || [];
+    ).sort(ShiftNote.sortByCreated) || [];
   }
   get timeFormatter() {
     return new Intl.DateTimeFormat(this.$root.$i18n.locale, {
       hour: "numeric",
       minute: "numeric",
     });
+  }
+  get hasActiveProblems() {
+    return this.client && this.client.activeProblems.length > 0
   }
 
   addShiftNote() {
@@ -132,6 +171,37 @@ export default class ShiftNotesDayView extends RecordMixin {
       })
       this.shiftNodeInputVisible = false;
       this.shiftNoteDraft = "";
+    }
+  }
+
+  addOutcome() {
+    if (this.client) {
+      const activeProblems = this.client.activeProblems;
+
+      if (activeProblems.length > 1) {
+        this.$q.dialog({
+          component: SelectDialog,
+          parent: this,
+          title: this.$t("newRating") as string,
+          message: this.$t("selectProblemForNewRating") as string,
+          okButtonLabel: this.$t("rateButtonTitle") as string,
+          selectOptions: activeProblems.map(problem => ({
+            label: this.$t(problem.problem.title),
+            value: problem.id
+          }))
+        }).onOk((problemId: string) => {
+          void this.$router.push({
+            name: "outcome",
+            params: { problemId }
+          });
+        });
+      } else if (activeProblems.length == 1) {
+        const problemId = activeProblems[0].id;
+        void this.$router.push({
+          name: "outcome",
+          params: { problemId }
+        });
+      }
     }
   }
 }

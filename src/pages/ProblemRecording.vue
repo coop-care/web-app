@@ -362,7 +362,7 @@ export default class ProblemRecording extends RecordValidator {
       });
     }
 
-    this.navigateToClient();
+    this.$router.back();
   }
   navigateToClient() {
     this.$router.push({
