@@ -154,7 +154,7 @@
 <style lang="sass">
 .client-reminders
   &> *
-    max-width: 560px
+    max-width: 600px
   .thin-button
     width: 32px
   .selected-date
