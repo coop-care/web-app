@@ -106,7 +106,7 @@
           key="shiftnotes"
           :date="selectedDate"
           :canAddNote="isToday"
-          class="shift-notes q-px-md full-width"
+          class="shift-notes q-px-md q-pb-xl full-width"
         />
       </transition-group>
     </q-list>

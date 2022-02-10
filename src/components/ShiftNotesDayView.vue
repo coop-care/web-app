@@ -40,7 +40,7 @@
       </div>
       <div
         v-else
-        class="q-pb-sm"
+        class="q-pb-sm column items-center"
       >
         <q-input
           v-model="shiftNoteDraft"
@@ -78,7 +78,6 @@
         </q-input>
         <q-btn-group
           flat
-          spread
           rounded
           class="q-mt-xs"
         >
