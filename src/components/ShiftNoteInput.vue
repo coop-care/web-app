@@ -72,6 +72,8 @@
     padding-top: 16px
   .q-field__messages, .q-field__counter
     line-height: 1.3
+  .q-field__messages
+    font-weight: bold
 </style>
 
 <script lang="ts">

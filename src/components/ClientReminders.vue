@@ -105,7 +105,7 @@
           key="shiftnotes"
           :date="selectedDate"
           :canAddNote="isToday"
-          class="shift-notes q-px-md q-pb-xl full-width"
+          :class="['q-pb-xl', $q.screen.gt.xs ? 'q-px-md' : '']"
         />
       </transition-group>
     </q-list>
