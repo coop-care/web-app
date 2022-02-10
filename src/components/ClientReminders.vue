@@ -1,6 +1,5 @@
 <template>
   <div
-    v-touch-swipe.mouse.horizontal="swipeTasks"
     class="client-reminders min-height column items-center"
   >
     <div class="row">
@@ -273,14 +272,6 @@ export default class ClientReminders extends RecordMixin {
       this.$root.$i18n.locale,
       options
     );
-  }
-
-  swipeTasks({ direction }: any) {
-    if (direction == "left") {
-      this.gotoNextDay();
-    } else if (direction == "right") {
-      this.gotoPreviousDay();
-    }
   }
 
   gotoNextDay() {
