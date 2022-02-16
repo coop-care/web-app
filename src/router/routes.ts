@@ -64,6 +64,14 @@ const routes: RouteConfig[] = [
             component: () => import("components/ClientProblems.vue")
           },
           {
+            name: "clientConversation",
+            path: "conversation/:day?",
+            component: () => import("components/ClientConversation.vue"),
+            meta: {
+              disablePullToRefresh: true
+            }
+          },
+          {
             name: "clientProofOfPerformance",
             path: "/client/:clientId/reports/execution",
             component: () => import("components/ProofOfPerformance.vue")

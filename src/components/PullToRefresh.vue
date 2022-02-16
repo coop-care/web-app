@@ -1,14 +1,20 @@
 <template>
-  <q-pull-to-refresh @refresh="refresh" :key="redrawKey">
+  <q-pull-to-refresh
+    @refresh="refresh"
+    :key="redrawKey"
+    :disable="disable"
+  >
     <slot />
   </q-pull-to-refresh>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 
 @Component
 export default class PullToRefreshControl extends Vue {
+  @Prop(Boolean) readonly disable!: boolean;
+  
   redrawKey = Math.random();
 
   refresh(done: () => void) {

@@ -2,7 +2,10 @@
   <q-page class="limit-page-width">
     <client-drawer ref="clientDrawer" />
 
-    <pull-to-refresh @refresh="updateClientsInAdditionalTeams">
+    <pull-to-refresh
+      @refresh="updateClientsInAdditionalTeams"
+      :disable="disablePullToRefresh"
+    >
       <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
 
       <div
@@ -96,6 +99,9 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
 
   get clients() {
     return this.$store.direct.state.clients;
+  }
+  get disablePullToRefresh() {
+    return this.$route.meta?.disablePullToRefresh == true;
   }
 
   created() {

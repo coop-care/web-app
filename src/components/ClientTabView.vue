@@ -42,9 +42,17 @@
         :to="routesPerTab[2]"
         class="text-classification"
       />
+      <q-route-tab
+        v-if="routesPerTab.length > 3"
+        :name="3"
+        :label="$t('shiftNotesTitle')"
+        icon="fas fa-comments"
+        :to="routesPerTab[3]"
+        class="text-primary"
+      />
 
       <q-tab
-        :name="3"
+        :name="4"
         :ripple="false"
         disable
         class="more-tab q-pa-none"
@@ -147,7 +155,7 @@ export default class ClientPage extends RecordMixin {
 
       this.routesPerTab[newIndex] = newRoute;
 
-      if (newIndex > 2) {
+      if (newIndex > this.tabCount - 1) {
         this.selectedTab = this.tabCount;
       }
     }
@@ -156,10 +164,10 @@ export default class ClientPage extends RecordMixin {
     return this.client?.dueTasksCount || 0;
   }
   get childrenRouteNames() {
-    return ["clientMasterData", "clientReminders", "clientReport", "clientProofOfPerformance", "clientHistory"];
+    return ["clientMasterData", "clientReminders", "clientReport", "clientConversation", "clientProofOfPerformance", "clientHistory"];
   }
   get tabCount() {
-    return 3;
+    return 4;
   }
   get moreTabItems() {
     if (!this.client) {

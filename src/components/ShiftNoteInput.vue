@@ -1,15 +1,16 @@
 <template>
-  <div class="q-pb-sm column items-center">
+  <div class="q-pb-sm column items-center full-width">
     <q-input
       v-model="shiftNoteDraft"
-      autofocus
+      :autofocus="autofocus"
       :label="$t('shiftNoteLabel')"
       maxlength="140"
       counter
       autogrow
-      class="shift-note-input"
+      class="shift-note-input full-width"
       :hint="$t('shiftNoteOmahaSystemHint')"
       hide-bottom-space
+      hide-hint
     >
       <template v-slot:append>
         <q-btn
@@ -78,17 +79,10 @@
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
-import { date } from "quasar";
 import { ShiftNote } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import Signature from "components/Signature.vue";
 import SelectDialog from "components/SelectDialog.vue";
-
-const {
-  isBetweenDates,
-  startOfDate,
-  endOfDate,
-} = date;
 
 @Component({
   components: {
@@ -96,6 +90,7 @@ const {
   }
 })
 export default class ShiftNoteInput extends RecordMixin {
+  @Prop(Boolean) readonly autofocus!: boolean;
   @Prop(Boolean) readonly cancelable!: boolean;
   shiftNoteDraft = "";
 

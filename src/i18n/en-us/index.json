@@ -526,5 +526,9 @@
   "shiftNoteAdditionForCurrentDayOnly": "A short report can only be noted for the current day.",
   "shiftNoteOmahaSystemHint": "Can one of the actions below express the info as well as a shift note, for example because the client's knowledge, behavior or status has changed?",
   "selectProblemForNewRating": "For which problem would you like to do an interim rating?",
-  "rateButtonTitle": "Evaluate"
+  "rateButtonTitle": "Evaluate",
+  "shiftNotesTitle": "Notes",
+  "yesterday": "Yesterday",
+  "showShiftNoteTabView": "Show in context",
+  "noShiftNotes": "No reports have been written yet."
 }
