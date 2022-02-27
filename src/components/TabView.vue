@@ -119,6 +119,7 @@ export type Tab = {
 @Component
 export default class TabView extends Vue {
   @Prop({type: Array, default: []}) readonly tabs!: Tab[];
+  @Prop({type: Number, default: 4}) readonly tabCount!: number;
   selectedTab = this.initiallySelectedTab;
   routesPerTab: Partial<Route>[] = this.childrenRouteNames.map(name => ({
     name, 
@@ -145,7 +146,7 @@ export default class TabView extends Vue {
 
       this.routesPerTab[newIndex] = newRoute;
 
-      if (newIndex > 2) {
+      if (newIndex >= this.tabCount - 1) {
         this.selectedTab = this.tabCount - 1;
       }
     }
@@ -167,9 +168,6 @@ export default class TabView extends Vue {
     return this.tabs.length > this.tabCount
       ? this.tabs.slice(this.tabCount - 1)
       : [];
-  }
-  get tabCount() {
-    return 4;
   }
   get initiallySelectedTab() {
     return Math.max(

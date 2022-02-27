@@ -2,7 +2,10 @@
   <q-page class="limit-page-width">
     <client-drawer ref="clientDrawer" />
 
-    <pull-to-refresh @refresh="updateClientsInAdditionalTeams">
+    <pull-to-refresh
+      @refresh="updateClientsInAdditionalTeams"
+      :disable="disablePullToRefresh"
+    >
       <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
 
       <div
@@ -52,12 +55,13 @@
       />
 
       <div
-        class="client-overview q-pt-lg q-px-xl"
+        class="page-padding client-overview"
         v-else-if="client"
       >
         <tab-view
           :key="$route.params.clientId || ''"
           :tabs="tabs"
+          :tabCount="5"
         />
       </div>
     </pull-to-refresh>
@@ -66,7 +70,7 @@
 
 <style lang="sass">
 .client-overview
-  @media (max-width: $breakpoint-xs-max)
+  @media (max-width: $breakpoint-sm-max)
     padding: 8px
   @media print
     padding: .75cm 0 0
@@ -119,6 +123,11 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
       icon: "fas fa-notes-medical",
       color: "classification",
     },{
+      label: this.$t("shiftNotesTitle") as string,
+      route: "clientConversation",
+      icon: "fas fa-comments",
+      color: "primary",
+    },{
       label: this.$t("showProofOfPerformance") as string,
       route: "clientProofOfPerformance",
       icon: "fas fa-clipboard",
@@ -127,6 +136,9 @@ export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
       route: "clientHistory",
       icon: "fas fa-history",
     }];
+  }
+  get disablePullToRefresh() {
+    return this.$route.meta?.disablePullToRefresh == true;
   }
 
   created() {

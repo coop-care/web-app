@@ -6,29 +6,33 @@ import { ccApi } from "../api/apiProvider";
 import { defaultColors, setColorSet } from "../helper/color";
 
 export default defineActions({
-    fetchEssentialDataFromDB(context, defaults: { locale: string }): Promise<void> {
+    fetchEssentialDataFromDB(context, defaults: { locale: string, awaitAllResponses?: boolean }): Promise<void> {
         if (!ccApi.isLoggedIn) {
             return Promise.reject();
         }
 
         const { dispatch, getters } = rootActionContext(context);
 
-        const firstPromise = dispatch.fetchUserFromDB(defaults)
+        const promiseUserBackoffices = dispatch.fetchUserFromDB(defaults)
             .then(() => dispatch.fetchBackofficesFromDB());
-        const secondPromise = dispatch.fetchTeamsFromDB()
+        const promiseTeamClients = dispatch.fetchTeamsFromDB()
             .then(() => dispatch.fetchTeamMembersFromDB())
             .then(() => dispatch.fetchClientsFromDB());
+            
+        const promiseAll = Promise.all([promiseUserBackoffices, promiseTeamClients])
+        .then(() => getters.countryCode
+            ? import("src/helper/billing/" + getters.countryCode)
+            : undefined
+        ).then(component => component?.BillingDatabase
+            ? (new component.BillingDatabase())?.updateData?.()
+            : undefined
+        );
 
-        void Promise.all([firstPromise, secondPromise])
-            .then(() => getters.countryCode
-                ? import("src/helper/billing/" + getters.countryCode)
-                : undefined
-            ).then(component => component?.BillingDatabase
-                ? (new component.BillingDatabase())?.updateData?.()
-                : undefined
-            );
-
-        return firstPromise;
+        if (defaults.awaitAllResponses == true) {
+            return promiseAll;
+        } else {
+            return promiseUserBackoffices;
+        }
     },
 
     fetchUserFromDB(context, defaults: { locale: string }): Promise<void> {

@@ -45,14 +45,12 @@
         v-if="title"
         :class="[task.isDue ? 'text-negative' : '']"
       >
-        <span :class="[hasDetails ? '': 'text-italic']">{{ title }}</span>
+        <span :class="[hasDetails ? '': 'text-italic']">{{ title }} </span>
         <span
           v-if="timeAgo"
           @click.prevent="navigateToDueDate"
           class="text-caption text-weight-medium link"
-        >
-          ({{ timeAgo }})
-        </span>
+        >({{ timeAgo }})</span>
       </q-item-label>
     </q-item-section>
     <q-item-section
@@ -157,13 +155,15 @@ export default class TaskView extends InterventionMixin {
       isCompleted: value,
       client: this.client,
     });
+    this.$emit("update", true);
     void this.$store.direct.dispatch.saveClient({ client: this.client });
 
     if (this.isPastDue) {
       window.clearTimeout(this.forceUpdateTimeoutHandler || undefined);
-      this.forceUpdateTimeoutHandler = window.setTimeout(() => 
-        this.$emit("force-update"),
-      UpdateTimeoutMilliseconds);
+      this.forceUpdateTimeoutHandler = window.setTimeout(
+        () => this.$emit("update", true),
+        UpdateTimeoutMilliseconds
+      );
     }
   }
   get isPastDue() {
@@ -398,6 +398,7 @@ export default class TaskView extends InterventionMixin {
       task: this.task,
       client: this.client
     });
+    this.$emit("update");
     this.save();
   }
 
@@ -450,6 +451,7 @@ export default class TaskView extends InterventionMixin {
       changes: changes,
       updateFrom: this.task.due,
     });
+    this.$emit("update");
   }
 
   updateRatingReminder(changes: Partial<RatingReminder>) {

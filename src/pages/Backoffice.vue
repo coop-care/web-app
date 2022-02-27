@@ -16,7 +16,7 @@
           no-caps
           color="primary"
           class="q-mt-md"
-          @click="backofficeId = 'new'"
+          @click="setBackofficeId('new')"
         />
       </div>
       <div v-else>
@@ -34,7 +34,7 @@
           :message="$t('backofficeNotFound')"
         />
         <div
-          class="client-overview q-pt-lg"
+          class="backoffice-overview q-pt-lg"
           v-else-if="isBackofficeAdmin"
         >
           <tab-view
@@ -49,8 +49,8 @@
 </template>
 
 <style lang="sass">
-.client-overview
-  @media (max-width: $breakpoint-xs-max)
+.backoffice-overview
+  @media (max-width: $breakpoint-sm-max)
     padding: 8px
   @media print
     padding: .75cm 0 0

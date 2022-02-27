@@ -1,6 +1,5 @@
 <template>
   <div
-    v-touch-swipe.mouse.horizontal="swipeTasks"
     class="client-reminders min-height column items-center"
   >
     <div class="row">
@@ -34,7 +33,7 @@
               :events="[]"
               color="primary"
               event-color="primary"
-              mask="YYYY-MM-DDTHH:mm:ss.sssZ"
+              mask="YYYY-MM-DD"
               today-btn
             />
           </q-popup-proxy>
@@ -43,7 +42,7 @@
       <div class="q-mr-sm selected-date print-hide">
         <div class="text-h6 ellipsis">
           {{ $d(selectedDate, "WeekdayLong") }}
-          {{ todayHint }}
+          {{ isToday ? $t("isTodayHint") : "" }}
         </div>
         <div class="text-body2">
           {{
@@ -71,31 +70,7 @@
 
     <time-recording />
 
-    <q-list 
-      v-if="client && (client.hasBirthday(selectedDate) || client.hasBirthday(yesterday))"
-      class="q-mt-lg"
-      dense
-    >
-      <q-item v-if="client.hasBirthday(selectedDate)">
-        <q-item-section side>
-          <q-icon name="fas fa-birthday-cake" color="intervention"/>
-        </q-item-section>
-        <q-item-section class="text-subtitle2">
-          <q-item-label>{{ $t('hasBirthdayTodayMessage', {name: client.name, age: client.age(selectedDate) }) }}</q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item v-else>
-        <q-item-section side>
-          <q-icon name="far fa-heart" color="intervention"/>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label>{{ $t('hadBirthdayYesterdayMessage', {name: client.name, age: client.age(yesterday) }) }}</q-item-label>
-        </q-item-section>
-      </q-item>
-    </q-list>
-
-    <q-list 
-      v-if="tasks.length"
+    <q-list
       class="q-mb-xl full-width"
       dense
     >
@@ -117,7 +92,7 @@
             :task="taskOrTitle.task"
             :date="selectedDate"
             :hasCheckbox="canComplete"
-            @force-update="recompute = Math.random()"
+            @update="updateTasks"
           />
           <div
             v-else
@@ -126,32 +101,40 @@
             {{ taskOrTitle.title }}
           </div>
         </div>
+
+        <div
+          v-if="!tasks.length"
+          key="noTasks"
+          class="text-center text-body2 q-mt-xl"
+        >
+          <div class="text-italic">{{$t("noTasksPlanned")}}</div>
+          <div
+            v-if="!hasActiveProblems"
+            class="q-mt-lg"
+          >
+            <div class="text-italic">{{ $t("noProblemForNewIntervention") }}</div>
+            <q-btn
+              v-if="!isDisabled"
+              :label="$t('problemAdmission')"
+              flat
+              no-caps
+              rounded
+              size="md"
+              color="classification"
+              class="q-mt-xs text-normal"
+              @click="addProblem"
+            />
+          </div>
+        </div>
+
+        <shift-notes-day-view
+          key="shiftnotes"
+          :date="selectedDate"
+          :canAddNote="isToday"
+          :class="['q-pb-xl', $q.screen.gt.xs ? 'q-px-md' : '']"
+        />
       </transition-group>
     </q-list>
-
-    <div
-      v-else
-      class="text-center text-body2 q-mt-xl"
-    >
-      <div class="text-italic">{{$t("noTasksPlanned")}}</div>
-      <div
-        v-if="!hasActiveProblems"
-        class="q-mt-lg"
-      >
-        <div class="text-italic">{{ $t("noProblemForNewIntervention") }}</div>
-        <q-btn
-          v-if="!isDisabled"
-          :label="$t('problemAdmission')"
-          flat
-          no-caps
-          rounded
-          size="md"
-          color="classification"
-          class="q-mt-xs text-normal"
-          @click="addProblem"
-        />
-      </div>
-    </div>
 
     <q-page-sticky
       v-if="!isDisabled && hasActiveProblems"
@@ -172,7 +155,7 @@
 <style lang="sass">
 .client-reminders
   &> *
-    max-width: 560px
+    max-width: 600px
   .thin-button
     width: 32px
   .selected-date
@@ -191,14 +174,17 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
   opacity: 0
 .task-list-move
   transition: opacity 1s ease-in-out, transform .3s ease-in-out .7s
+.shift-notes
+  margin-top: 64px
 </style>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Watch } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
 import { Task, TaskGroup, Reminder } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
+import ShiftNotesDayView from "components/ShiftNotesDayView.vue";
 import TimeRecording from "components/TimeRecording.vue";
 
 const {
@@ -218,21 +204,25 @@ const allInclusive = {
 @Component({
   components: {
     TaskView,
+    ShiftNotesDayView,
     TimeRecording
   },
 })
 export default class ClientReminders extends RecordMixin {
   @Ref() readonly dateProxy!: QPopupProxy;
+  tasks = this.tasksForDay(this.selectedDate);
+  isToday = true;
+  startOfTodayTimer = 0;
+  endOfTodayTimer = 0;
 
-  recompute = Math.random();
+  @Watch("$route")
+  onRouteChange() {
+    this.updateTasks();
+    this.updatedIsToday();  
+  }
 
   get selectedDate() {
-    const timestamp = parseInt(this.$root.$route.params.day)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const recompute = this.recompute
-    return !isNaN(timestamp)
-      ? new Date(timestamp)
-      : new Date();
+    return new Date(parseInt(this.$root.$route.params.day) || Date.now());
   }
   set selectedDate(value) {
     this.$route.params.day = "" + value.getTime();
@@ -240,18 +230,17 @@ export default class ClientReminders extends RecordMixin {
       name: this.$route.name || undefined,
       params: this.$route.params,
     });
+    this.updateTasks();
+    this.updatedIsToday();
+    this.setTodayTimers();
   }
   get selectedDateString() {
     return this.selectedDate.toISOString();
   }
   set selectedDateString(value: string) {
-    this.selectedDate = new Date(value);
-  }
-  get yesterday() {
-    return subtractFromDate(this.selectedDate, {days: 1})
-  }
-  get tasks() {
-    return this.tasksForDay(this.selectedDate);
+    if (value) {
+      this.selectedDate = new Date(value + "T00:00:00.000Z");
+    }
   }
   get canComplete() {
     return isBetweenDates(
@@ -261,21 +250,8 @@ export default class ClientReminders extends RecordMixin {
       allInclusive
     );
   }
-  get timeFormatter() {
-    return new Intl.DateTimeFormat(this.$root.$i18n.locale, {
-      hour: "numeric",
-      minute: "numeric",
-    });
-  }
-  get todayHint() {
-    if (isSameDate(this.selectedDate, new Date(), "day")) {
-      return this.$t("isTodayHint");
-    } else {
-      return "";
-    }
-  }
   get hasActiveProblems() {
-    return this.client && this.client.activeProblemCount > 0
+    return this.client && this.client.activeProblems.length > 0
   }
   get taskListTransitionGroupKey() {
     return [
@@ -283,6 +259,10 @@ export default class ClientReminders extends RecordMixin {
       this.client?._id?.toHexString() || "no-client-id", 
       this.$root.$route.params.day || "today"
     ].join(".");
+  }
+
+  updatedIsToday() {
+    return this.isToday = isSameDate(this.selectedDate, Date.now(), "day");
   }
 
   swipeTasks({ direction }: any) {
@@ -301,7 +281,11 @@ export default class ClientReminders extends RecordMixin {
     this.selectedDate = subtractFromDate(this.selectedDate, { days: 1 });
   }
 
-  tasksForDay(day: Date) {
+  updateTasks(animated?: boolean) {
+    this.tasks = this.tasksForDay(this.selectedDate, animated)
+  }
+
+  tasksForDay(day: Date, animated = false) {
     const startOfDay = startOfDate(day, "day", false);
     const endOfDay = endOfDate(day, "day", false);
     const startOfDayTimestamp = startOfDay.getTime();
@@ -312,7 +296,7 @@ export default class ClientReminders extends RecordMixin {
       startOfDayTimestamp,
       startOfTodayTimestamp
     );
-    const pastDueCompletedTimestamp = Date.now() - UpdateTimeoutMilliseconds;
+    const pastDueCompletedTimestamp = Date.now() - (animated ? UpdateTimeoutMilliseconds : 0);
     const isFuture = endOfTodayTimestamp < startOfDayTimestamp;
     const isPresentOrPast = startOfDayTimestamp <= startOfTodayTimestamp;
     const pastDueTasks: Task<Reminder>[] = [];
@@ -387,7 +371,7 @@ export default class ClientReminders extends RecordMixin {
     scheduledTasks
       .sort(Task.sortByDueDate)
       .forEach((task) => {
-        const title = this.timeFormatter.format(task.due);
+        const title = task.due ? this.$d(task.due, "TimeSimple") : "";
         const group = groupedTasks.find((group) => group.title == title);
 
         if (group) {
@@ -420,16 +404,45 @@ export default class ClientReminders extends RecordMixin {
 
   visibilityDidChange() {
     if (document.visibilityState == "visible") {
-      this.recompute = Math.random();
+      setTimeout(() => {
+        this.updateTasks();
+        this.updatedIsToday();  
+      }, 2000); // give fetch data some time to load everything
     }
+  }
+
+  setTodayTimers() {
+    this.clearTodayTimers();
+    const timeUntilSelectedDateBecomesToday = startOfDate(this.selectedDate, "day", false).getTime() + 1000 - Date.now();
+    const timeUntilSelectedDateWasToday = endOfDate(this.selectedDate, "day", false).getTime() + 1000 - Date.now();
+
+    if (timeUntilSelectedDateBecomesToday > 0) {
+      this.startOfTodayTimer = window.setTimeout(this.updatedIsToday, timeUntilSelectedDateBecomesToday);
+    }
+
+    if (timeUntilSelectedDateWasToday > 0) {
+      this.endOfTodayTimer = window.setTimeout(this.updatedIsToday, timeUntilSelectedDateWasToday);
+    }
+  } 
+
+  clearTodayTimers() {
+    window.clearTimeout(this.startOfTodayTimer);
+    this.startOfTodayTimer = 0;
+    
+    window.clearTimeout(this.endOfTodayTimer);
+    this.endOfTodayTimer = 0;
   }
 
   created() {
     window.addEventListener("visibilitychange", this.visibilityDidChange);
+    this.updateTasks();
+    this.updatedIsToday();
+    this.setTodayTimers();
   }
 
   beforeDestroy() {
     window.removeEventListener("visibilitychange", this.visibilityDidChange);
+    this.clearTodayTimers();
   }
 }
 </script>

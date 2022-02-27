@@ -7,6 +7,8 @@ We relieve nurses in documentation and planning by using the Omaha System and su
 npm install
 ```
 
+**Important note: we are currently undergoing a major rebuild of CoopCare's foundation to provide offline capability and end-to-end encryption in data synchronization. Until the transition to the new system is ready, starting the app in development mode and building the app for production will temporarily not work.**
+
 ### Start the app in development mode
 
 Including hot-code reloading, error reporting, etc.
