@@ -551,9 +551,9 @@
     "abrechnungscode": "Abrechnungscode",
     "tarifbereich": "Tarifbereich",
     "ustIdentifikationsnummer": "Umsatzsteuer-Identifikationsnummer",
-    "steuernummerPlaceholder": "z.B. 999/999/99999",
-    "steuernummer": "Steuernummer",
     "ustIdentifikationsnummerPlaceholder": "z.B. DE999999999",
+    "steuernummer": "Steuernummer",
+    "steuernummerPlaceholder": "z.B. 999/999/99999",
     "krankenkasse": "Krankenkasse Institutionskennzeichen",
     "versichertennummer": "Versichertennummer",
     "pflegekasse": "Pflegekasse Institutionskennzeichen",
@@ -590,7 +590,9 @@
     "leistungsbereich": "Leistungsbereich",
     "kassenverband": "Kassenverband | Kassenverbände",
     "verguetungsart": "Vergütungsart",
-    "zuschlaegeAbzuege": "Zuschläge und Abzüge"
+    "zuschlaegeAbzuege": "Zuschläge und Abzüge",
+    "bundesland": "Bundesland",
+    "leistungen": "Leistungen"
   },
   "contactPersonName": "Name des Ansprechpartners",
   "invoiceNumberPrefix": "Rechnungsnummern-Prefix (optional)",

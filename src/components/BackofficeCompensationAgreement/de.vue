@@ -39,7 +39,7 @@
       />
     </div>
 
-    <div class="text-h6 q-mt-xl">{{ $t("Leistungen") }}</div>
+    <div class="text-h6 q-mt-xl">{{ $t("de.leistungen") }}</div>
 
     <div v-if="vereinbarung.verguetungsart == '01'">
       <div class="text-h6 q-mt-xl">{{ $t("de.zuschlaegeAbzuege") }}</div>
