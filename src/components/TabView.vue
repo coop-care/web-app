@@ -152,11 +152,14 @@ export default class TabView extends Vue {
     }
   }
   @Watch("tabs")
-  onTabsChange() {
-    this.routesPerTab = this.childrenRouteNames.map(name => ({
-      name, 
-      params: this.$route.params
-    }));
+  onTabsChange(newValue: Tab[], oldValue: Tab[]) {
+    // check if tab routes did really change and this Watcher is not just called because of a redraw
+    if (newValue.length != oldValue.length || newValue.some((tab, index) => tab.route != oldValue[index].route)) {
+      this.routesPerTab = this.childrenRouteNames.map(name => ({
+        name, 
+        params: this.$route.params
+      }));
+    }
   }
   get childrenRouteNames() {
     return this.tabs.map(tab => tab.route);
