@@ -189,5 +189,9 @@ export default class TabView extends Vue {
       childrenRouteNames.includes(route.name || "")
     )?.name || "";
   }
+
+  mounted() {
+    this.onRouteChange(this.$route, this.$route);
+  }
 }
 </script>
