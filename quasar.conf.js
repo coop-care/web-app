@@ -15,7 +15,11 @@ module.exports = configure(function (ctx) {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: {
       tsCheckerConfig: {
-        eslint: true
+        eslint: true,
+        /* Fixing the heap allocation problem while type checking with ForkTsCheckerWebpackPlugin and Webpack 4 by doubling the memory limit.
+        The files in src-cordova are causing the increase in memory usage and type checking duration (twice as long).
+        Alternatively, they could be excluded by including only src directories except src-cordova in tsconfig.json ("include": ["src", "src-electron"]) */
+        memoryLimit: 4096
       }
     },
 
