@@ -1,6 +1,6 @@
 import * as Realm from "realm-web";
 import CoopCareApiInterface, { CoopCareApiListener } from "./coopCareApiInterface";
-import { Client, User, Team, TeamMember } from "../models";
+import { Client, User, Team, TeamMember, BackOffice } from "../models";
 import { ObjectID } from "bson";
 
 type RequiredID = { _id: ObjectID };
@@ -16,10 +16,6 @@ export default class RealmApi implements CoopCareApiInterface {
     constructor(realmApp: string, databaseName: string) {
         this.app = new Realm.App(realmApp);
         this.databaseName = databaseName;
-
-        if (this.isLoggedIn) {
-            this.addWatchers();
-        }
     }
 
     private get database() {
@@ -34,6 +30,10 @@ export default class RealmApi implements CoopCareApiInterface {
     private get users() {
         return this.database?.collection<TeamMember & RequiredID>("userData")
     }
+    private get backoffices() {
+        return this.database?.collection<BackOffice & RequiredID>("backoffices")
+    }
+
 
     get isLoggedIn() {
         return this.app.currentUser?.isLoggedIn == true;
@@ -45,16 +45,10 @@ export default class RealmApi implements CoopCareApiInterface {
         return this.app.currentUser?.profile.email;
     }
 
-    private addWatchers() {
-        
-    }
-
-    login(username: string, password: string) {
+    login(username: string, password: string): Promise<void> {
         const credentials = Realm.Credentials.emailPassword(username, password);
         return this.app.logIn(credentials)
-            .then(user => {
-                this.addWatchers();
-            });
+            .then(() => undefined);
     }
     logout() {
         // this.watchers.forEach(stream => stream.close());
@@ -230,7 +224,7 @@ export default class RealmApi implements CoopCareApiInterface {
             .findOneAndReplace({ _id: client._id }, data)
             .then(() => client);
     }
-    getClientsInAdditionalTeams(clientIds: string[], teamIds: string[]) {
+    getClientsInAdditionalTeams(clientIds: string[], teamIds: string[]): Promise<string[]> {
         if (!this.app.currentUser) {
             return Promise.reject("not logged in");
         }
@@ -238,7 +232,7 @@ export default class RealmApi implements CoopCareApiInterface {
         return this.app.currentUser.callFunction(
             "getClientsInAdditionalTeams",
             clientIds, teamIds
-        ) as Promise<any>;
+        );
     }
 
     createTeam(team: Team) {
@@ -287,6 +281,55 @@ export default class RealmApi implements CoopCareApiInterface {
 
         return this.teams
             .deleteOne({ _id: team._id })
+            .then(() => undefined);
+    }
+
+    getMyBackoffices(): Promise<BackOffice[]> {
+        if (!this.backoffices) {
+            return Promise.reject("not logged in");
+        }
+
+        return (
+            this.backoffices
+                .find({}, {})
+                .then(data => {
+                    // @ts-ignore
+                    data.forEach(item => item._id = item._id?.toHexString())
+                    const result = BackOffice.fromObject(data) as BackOffice[];
+                    return result;
+                })
+        );
+    }
+    createBackoffice(backoffice: BackOffice): Promise<BackOffice> {
+        if (!this.backoffices) {
+            return Promise.reject("not logged in");
+        }
+
+        const data: any = backoffice.toJSON();
+        delete data._id;
+        return this.backoffices.insertOne(data).then(result => {
+            backoffice._id = new ObjectID(result.insertedId);
+            return backoffice;
+        })
+    }
+    saveBackoffice(backoffice: BackOffice): Promise<BackOffice> {
+        if (!this.backoffices) {
+            return Promise.reject("not logged in");
+        }
+
+        const data: any = backoffice.toJSON();
+        data._id = backoffice._id;
+        return this.backoffices
+            .findOneAndReplace({ _id: backoffice._id }, data)
+            .then(() => backoffice);
+    }
+    deleteBackoffice(backoffice: BackOffice): Promise<void> {
+        if (!this.backoffices) {
+            return Promise.reject("not logged in");
+        }
+
+        return this.backoffices
+            .deleteOne({ _id: backoffice._id })
             .then(() => undefined);
     }
 }
