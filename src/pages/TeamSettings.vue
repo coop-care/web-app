@@ -55,7 +55,7 @@
                 @change="teamName = $event.target.value"
                 style="max-width: 500px"
               />
-              <div class="row items-center q-gutter-y-sm">
+              <!-- <div class="row items-center q-gutter-y-sm">
                 <q-select
                   :value="team.backoffice"
                   @input="saveTeam({backoffice: $event || ''})"
@@ -86,7 +86,7 @@
                   color="primary"
                   @click="$router.push({name: 'backofficeSettings'})"
                 />
-              </div>
+              </div> -->
               <q-btn
                 v-if="!isDemo"
                 :label="$t('downloadBackup')"

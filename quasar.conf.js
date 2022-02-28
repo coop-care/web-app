@@ -98,12 +98,6 @@ module.exports = configure(function (ctx) {
             exclude: /node_modules/
           })
         }
-
-        // parse these javascript libraries differently while still using Webpack 4, but can be removed for Webpack 5
-        cfg.module.rules.push({
-          test: /node_modules\/paid-care.*.js$/,
-          loader: "babel-loader"
-        });
       }
     },
 

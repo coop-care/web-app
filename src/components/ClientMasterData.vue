@@ -102,7 +102,7 @@ import ActionMenu from "../components/ActionMenu.vue";
 import ClientHealthInformation from "../components/ClientHealthInformation.vue";
 import SplitView from "../components/SplitView.vue";
 import NavigationItems from "../components/NavigationItems.vue";
-import { countryCodes as billingCountries } from "src/components/ClientBillingSettings/index.vue";
+// import { countryCodes as billingCountries } from "src/components/ClientBillingSettings/index.vue";
 
 @Component({
   components: {
@@ -121,11 +121,11 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
       label: this.$t("healthInformation").toString(),
       action: () => this.showRoute("clientHealthInformation"),
       active: this.$route.name == "clientHealthInformation" || (!this.isCollapsed && this.isDefaultRoute),
-    }, {
-      label: this.$t("billingData").toString(),
-      action: () => this.showRoute("clientBillingInformation"),
-      route: "clientBillingInformation",
-      visible: billingCountries.includes(this.$store.direct.getters.countryCode),
+    // }, {
+    //   label: this.$t("billingData").toString(),
+    //   action: () => this.showRoute("clientBillingInformation"),
+    //   route: "clientBillingInformation",
+    //   visible: billingCountries.includes(this.$store.direct.getters.countryCode),
     }, {
       label: this.$t("contactDetails").toString(),
       action: () => this.showRoute("clientContactData"),

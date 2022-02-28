@@ -225,11 +225,16 @@ import {
   mapToOptionsWithoutValue,
   SelectOption
 } from "src/helper/billing/de";
-import { PflegegradSchluessel, pflegegradSchluessel } from "paid-care";
+// import { PflegegradSchluessel, pflegegradSchluessel } from "paid-care";
+const pflegegradSchluessel = {
+    "1": "Pflegegrad 1",
+    "2": "Pflegegrad 2",
+}
+type PflegegradSchluessel = keyof typeof pflegegradSchluessel;
 
 type Pflegegrad = {
-  value?: PflegegradSchluessel,
-  since?: number
+  value?: PflegegradSchluessel;
+  since?: number;
 }
 
 @Component({
@@ -375,8 +380,8 @@ export default class ClientBillingSettings extends RecordMixin {
   }
 
   created() {
-    void this.db.healthInsuranceOptions().then(options => this.healthInsuranceOptions = options);
-    void this.db.careInsuranceOptions().then(options => this.careInsuranceOptions = options);
+    // void this.db.healthInsuranceOptions().then(options => this.healthInsuranceOptions = options);
+    // void this.db.careInsuranceOptions().then(options => this.careInsuranceOptions = options);
   }
 }
 </script>

@@ -197,15 +197,36 @@
 <script lang="ts">
 import { Component } from "vue-property-decorator";
 import SelectableInput from "src/components/SelectableInput.vue";
-import {
-  rechnungsartSchluessel,
-  abrechnungscodeSchluesselSGBXI,
-  tarifbereichSchluesselSGBXI,
-  umsatzsteuerBefreiungSchluessel,
-  careProviderLocationSchluessel,
-} from "paid-care";
+// import {
+//   rechnungsartSchluessel,
+//   abrechnungscodeSchluesselSGBXI,
+//   tarifbereichSchluesselSGBXI,
+//   umsatzsteuerBefreiungSchluessel,
+//   careProviderLocationSchluessel,
+// } from "paid-care";
 import { mapToOptions, mapToOptionsWithoutValue } from "src/helper/billing/de";
 import BackofficeMixin from "src/mixins/BackofficeMixin";
+const rechnungsartSchluessel =  {
+    "1": "Abrechnung von Leistungserbringer und Zahlung an IK Leistungserbringer",
+    "2": "Abrechnung über Abrechnungsstelle (ohne Inkassovollmacht) und Zahlung an IK Leistungserbringer",
+    "3": "Abrechnung über Abrechnungsstelle (mit Inkassovollmacht) und Zahlung an IK Abrechnungsstelle",
+}
+const abrechnungscodeSchluesselSGBXI = {
+    "35": "ambulante Pflege: frei gemeinnütziger Anbieter (Sozialstation)",
+    "36": "ambulante Pflege: privat gewerblicher Anbieter",
+}
+const tarifbereichSchluesselSGBXI = {
+    "01": "Baden-Württemberg",
+    "05": "Hamburg",
+}
+const umsatzsteuerBefreiungSchluessel = {
+    "": "keine Umsatzsteuerbefreiung",
+    "01": "Umsatzsteuerbefreiung nach § 4 Nr. 16",
+}
+const careProviderLocationSchluessel = {
+    "HH": "Hamburg",
+    "BW": "Baden-Württemberg",
+}
 
 type ContactPerson = {name: string, phone: string};
 

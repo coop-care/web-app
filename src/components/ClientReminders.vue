@@ -68,7 +68,7 @@
       <q-space />
     </div>
 
-    <time-recording />
+    <!-- <time-recording /> -->
 
     <q-list
       class="q-mb-xl full-width"

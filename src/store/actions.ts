@@ -14,19 +14,21 @@ export default defineActions({
         const { dispatch, getters } = rootActionContext(context);
 
         const promiseUserBackoffices = dispatch.fetchUserFromDB(defaults)
-            .then(() => dispatch.fetchBackofficesFromDB());
+            // .then(() => dispatch.fetchBackofficesFromDB());
         const promiseTeamClients = dispatch.fetchTeamsFromDB()
             .then(() => dispatch.fetchTeamMembersFromDB())
             .then(() => dispatch.fetchClientsFromDB());
             
         const promiseAll = Promise.all([promiseUserBackoffices, promiseTeamClients])
-        .then(() => getters.countryCode
-            ? import("src/helper/billing/" + getters.countryCode)
-            : undefined
-        ).then(component => component?.BillingDatabase
-            ? (new component.BillingDatabase())?.updateData?.()
-            : undefined
-        );
+        .then(() => undefined)
+        getters.countryCode
+        // .then(() => getters.countryCode
+        //     ? import("src/helper/billing/" + getters.countryCode)
+        //     : undefined
+        // ).then(component => component?.BillingDatabase
+        //     ? (new component.BillingDatabase())?.updateData?.()
+        //     : undefined
+        // );
 
         if (defaults.awaitAllResponses == true) {
             return promiseAll;
