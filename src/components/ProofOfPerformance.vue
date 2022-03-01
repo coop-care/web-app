@@ -108,15 +108,13 @@ export default class ProofOfPerformancePage extends InterventionMixin {
       count: number;
       dates: string[];
     }[] = [];
-    const locale = this.$root.$i18n.locale;
     const options = { inclusiveFrom: true, inclusiveTo: true, onlyDate: true };
     const teamMembers = this.$store.direct.state.teamMembers;
 
     this.client?.forAllReminders((reminder) => {
-      const completed = reminder.occurrences.filter(
-        (item) =>
-          !!item.completed &&
-          isBetweenDates(item.completed, this.startDate, this.endDate, options)
+      const completed = reminder.occurrences.filter((item) =>
+        !!item.completed &&
+        isBetweenDates(item.completed, this.startDate, this.endDate, options)
       );
 
       if (reminder instanceof Intervention && completed.length > 0) {
@@ -138,16 +136,9 @@ export default class ProofOfPerformancePage extends InterventionMixin {
         const dates = completed.map(
           (item) => {
             const signature = teamMembers[item.user || ""]?.signature;
-            return item.completed?.toLocaleString(locale, {
-              day: "numeric",
-              month: "short",
-            }) +
-            " " +
-            item.completed?.toLocaleString(locale, {
-              hour: "numeric",
-              minute: "numeric",
-            }) +
-            (signature ? " (" + signature + ")" : "");
+            return this.$d(item.completed || 0, "DayMonthShort") + " " +
+              this.$d(item.completed || 0, "TimeSimple") +
+              (signature ? " (" + signature + ")" : "");
         });
 
         tasks.push({

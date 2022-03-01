@@ -1,7 +1,5 @@
 <template>
-  <div
-    :class="[$q.screen.gt.xs ? 'q-px-md' : 'q-px-xs']"
-  >
+  <div>
     <q-resize-observer @resize="onResize" />
     <div class="row justify-end">
       <edit-toggle-button
@@ -150,7 +148,6 @@ import MultipleSelectableInput from "../components/MultipleSelectableInput.vue";
 export default class ClientHealthInformationView extends RecordMixin {
   isEditing = false;
   compactLayout = false;
-  foo=[]
 
   get items() {
     const result: LabeledItemType[] = [];

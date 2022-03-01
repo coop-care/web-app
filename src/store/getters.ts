@@ -4,6 +4,20 @@ import { store, StateInterface } from ".";
 import { Client, ProblemRecord, Contact } from "../models";
 import { Platform } from "quasar";
 
+const currentTeam = (state: StateInterface) => {
+    const teamId = state.currentUser?.activeTeam;
+    return state.teams.find(team => teamId && team._id?.equals(teamId));
+};
+
+const currentBackoffice = (state: StateInterface) => {
+    const backofficeId = currentTeam(state)?.backoffice;
+    return state.backoffices.find(item => backofficeId && item.id == backofficeId);
+};
+
+const countryCode = (state: StateInterface) => {
+    return currentBackoffice(state)?.countryCode.toLowerCase() || "";
+};
+
 export default defineGetters<StateInterface>()({
     getClient: state => (payload: any): Client | undefined => {
         if (payload.clientId) {
@@ -37,10 +51,9 @@ export default defineGetters<StateInterface>()({
         return state.currentUser?.userId || "";
     },
 
-    currentTeam: state => {
-        const teamId = state.currentUser?.activeTeam;
-        return state.teams.find(team => teamId && team._id?.equals(teamId));
-    },
+    currentTeam,
+    currentBackoffice,
+    countryCode,
 
     relationshipLabels: state => {
         return [... new Set(
@@ -115,11 +128,11 @@ export default defineGetters<StateInterface>()({
             }, {} as Record<string, Contact>)
         ),
 
-    appVersion: _ => process.env.APP_VERSION || "0",
+    appVersion: () => process.env.APP_VERSION || "0",
 
-    appBuild: _ => process.env.APP_BUILD || "0",
+    appBuild: () => process.env.APP_BUILD || "0",
 
-    appPlatform: _ => {
+    appPlatform: () => {
         if (Platform.is.cordova) {
             if (Platform.is.ios) {
                 return "ios";

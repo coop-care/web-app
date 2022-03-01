@@ -4,7 +4,7 @@ import { Reminder } from ".";
 import { Term } from "./term";
 import { ObjectID } from "bson";
 
-const fromObjectID = ({ value, obj, key }: TransformFnParams) =>
+const fromObjectID = ({ value }: TransformFnParams) =>
     (value as ObjectID)?.toHexString();
 
 const toObjectID = ({ value }: TransformFnParams) =>

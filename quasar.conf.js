@@ -8,14 +8,18 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { configure } = require("quasar/wrappers")
-const { readFileSync } = require('fs')
+const { readFileSync } = require("fs")
 
 module.exports = configure(function (ctx) {
   return {
     // https://quasar.dev/quasar-cli/supporting-ts
     supportTS: {
       tsCheckerConfig: {
-        eslint: true
+        eslint: true,
+        /* Fixing the heap allocation problem while type checking with ForkTsCheckerWebpackPlugin and Webpack 4 by doubling the memory limit.
+        The files in src-cordova are causing the increase in memory usage and type checking duration (twice as long).
+        Alternatively, they could be excluded by including only src directories except src-cordova in tsconfig.json ("include": ["src", "src-electron"]) */
+        memoryLimit: 4096
       }
     },
 
@@ -79,7 +83,7 @@ module.exports = configure(function (ctx) {
       // extractCSS: false,
 
       env: {
-        APP_VERSION: JSON.parse(readFileSync('./package.json')).version || 0,
+        APP_VERSION: JSON.parse(readFileSync("./package.json")).version || 0,
         APP_BUILD: (new Date()).toISOString().replace(/\D/g, ""),
       },
 

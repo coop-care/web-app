@@ -190,7 +190,7 @@ export default class BannerView extends Vue {
     void this.$store.direct.dispatch.saveTeam({
       target: team,
       changes: changes
-    }).then(_ => 
+    }).then(() => 
       this.$store.direct.dispatch.fetchEssentialDataFromDB({locale: this.$root.$i18n.locale})
     );
   }

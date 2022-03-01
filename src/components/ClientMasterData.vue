@@ -21,54 +21,11 @@
             />
           </q-item-section>
         </q-item>
-        <q-item 
-          clickable
-          @click="showRoute('clientHealthInformation')"
-          v-ripple
-          :active="$route.name == 'clientHealthInformation' || (!isCollapsed && isDefaultRoute)"
-          class="q-pl-lg q-pr-sm active-background"
-        >
-          <q-item-section>
-            <q-item-label>{{ $t("healthInformation") }}</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-icon
-              name="fas fa-angle-right"
-            />
-          </q-item-section>
-        </q-item>
-        <q-item 
-          clickable
-          @click="showRoute('clientContactData')"
-          v-ripple
-          :active="$route.name == 'clientContactData'"
-          class="q-pl-lg q-pr-sm active-background"
-        >
-          <q-item-section>
-            <q-item-label>{{ $t("contactDetails") }}</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-icon
-              name="fas fa-angle-right"
-            />
-          </q-item-section>
-        </q-item>
-        <q-item
-          clickable
-          @click="showRoute('clientAgreements')"
-          v-ripple
-          :active="$route.name == 'clientAgreements'"
-          class="q-pl-lg q-pr-sm active-background"
-        >
-          <q-item-section>
-            <q-item-label>{{ $t("agreements") }}</q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-icon
-              name="fas fa-angle-right"
-            />
-          </q-item-section>
-        </q-item>
+        <navigation-items
+          :items="navigationItems"
+          type="splitview"
+        />
+
         <q-item class="q-mt-sm q-px-sm q-pb-none text-subtitle1 text-weight-bold">
           <q-item-section>
             <q-item-label class="ellipsis">{{ $t("informalContacts") }}</q-item-label>
@@ -87,30 +44,11 @@
             />
           </q-item-section>
         </q-item>
-        <q-item
-          clickable
-          v-for="contact in client.informalContacts"
-          :key="contact.idAsKey"
-          v-ripple
-          :active="$route.name == 'clientInformalContact' && contact.id.equals($route.params.informalContactId)"
-          active-class="text-primary"
-          class="q-pl-lg q-pr-sm active-background"
-          @click="showInformalContact(contact.id)"
-        >
-          <q-item-section>
-            <q-item-label :class="!contact.name ? 'text-italic' : ''">
-              {{ contact.name || $t("withoutNames") }}
-            </q-item-label>
-            <q-item-label caption>
-              {{ describeInformalContact(contact) }}
-            </q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-icon
-              name="fas fa-angle-right"
-            />
-          </q-item-section>
-        </q-item>
+        <navigation-items
+          :items="informalContactItems"
+          type="splitview"
+        />
+
         <q-item 
           class="q-mt-sm q-px-sm q-pb-none text-subtitle1 text-weight-bold"
         >
@@ -131,30 +69,10 @@
             />
           </q-item-section>
         </q-item>
-        <q-item
-          clickable
-          v-for="contact in client.formalContacts"
-          :key="contact.idAsKey"
-          v-ripple
-          :active="$route.name == 'clientFormalContact' && contact.id.equals($route.params.formalContactId)"
-          active-class="text-primary"
-          class="q-pl-lg q-pr-sm active-background"
-          @click="showFormalContact(contact.id)"
-        >
-          <q-item-section>
-            <q-item-label :class="!contact.name ? 'text-italic' : ''">
-              {{ contact.name || $t("withoutNames") }}
-            </q-item-label>
-            <q-item-label caption>
-              {{ describeFormalContact(contact) }}
-            </q-item-label>
-          </q-item-section>
-          <q-item-section side>
-            <q-icon
-              name="fas fa-angle-right"
-            />
-          </q-item-section>
-        </q-item>
+        <navigation-items
+          :items="formalContactItems"
+          type="splitview"
+        />
       </q-list>
     </template>
 
@@ -166,11 +84,6 @@
 </template>
 
 <style lang="sass">
-.q-item
-  .fa-angle-right
-    color: #bbbbbb
-  &.active-background.q-item--active .fa-angle-right
-    color: var(--q-color-primary)
 .client-master-data-split-view
   @media print
     .q-splitter__separator
@@ -181,25 +94,66 @@
 
 <script lang="ts">
 import { Component, Ref, Mixins } from "vue-property-decorator";
+import { ObjectID } from "bson";
 import { Contact, Intervention } from "../models";
 import RecordMixin from "../mixins/RecordMixin";
 import ClientActionMixin from "../mixins/ClientActionMixin";
 import ActionMenu from "../components/ActionMenu.vue";
 import ClientHealthInformation from "../components/ClientHealthInformation.vue";
 import SplitView from "../components/SplitView.vue";
-import { ObjectID } from "bson";
+import NavigationItems from "../components/NavigationItems.vue";
+// import { countryCodes as billingCountries } from "src/components/ClientBillingSettings/index.vue";
 
 @Component({
   components: {
     ActionMenu,
     ClientHealthInformation,
-    SplitView
+    SplitView,
+    NavigationItems,
   }
 })
 export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMixin) {
   isCollapsed = false;
   @Ref() readonly splitView!: SplitView;
 
+  get navigationItems() {
+    return [{
+      label: this.$t("healthInformation").toString(),
+      action: () => this.showRoute("clientHealthInformation"),
+      active: this.$route.name == "clientHealthInformation" || (!this.isCollapsed && this.isDefaultRoute),
+    // }, {
+    //   label: this.$t("billingData").toString(),
+    //   action: () => this.showRoute("clientBillingInformation"),
+    //   route: "clientBillingInformation",
+    //   visible: billingCountries.includes(this.$store.direct.getters.countryCode),
+    }, {
+      label: this.$t("contactDetails").toString(),
+      action: () => this.showRoute("clientContactData"),
+      route: "clientContactData",
+    }, {
+      label: this.$t("agreements").toString(),
+      action: () => this.showRoute("clientAgreements"),
+      route: "clientAgreements",
+    }]
+  }
+  get informalContactItems() {
+    return this.client?.informalContacts.map(contact => ({
+      label: contact.name || this.$t("withoutNames"),
+      caption: this.describeInformalContact(contact),
+      labelClass: !contact.name ? "text-italic" : "",
+      action: () => this.showInformalContact(contact.id),
+      active: this.$route.name == "clientInformalContact" && contact.id.equals(this.$route.params.informalContactId)
+    }))
+  }
+  get formalContactItems() {
+    return this.client?.formalContacts.map(contact => ({
+      label: contact.name || this.$t("withoutNames"),
+      caption: this.describeFormalContact(contact),
+      labelClass: !contact.name ? "text-italic" : "",
+      action: () => this.showFormalContact(contact.id),
+      active: this.$route.name == "clientFormalContact" && contact.id.equals(this.$route.params.formalContactId)
+    }))
+  }
   get isDefaultRoute() {
     return this.$route.name == "clientMasterData";
   }

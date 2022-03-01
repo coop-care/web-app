@@ -56,9 +56,9 @@
             class="text-body2"
           >
             {{ $t("from") }} 
-            <span class="text-body1 text-weight-bold">{{ formatDate(startDate) }}</span>
+            <span class="text-body1 text-weight-bold">{{ $d(startDate) }}</span>
             {{ $t("until") }} 
-            <span class="text-body1 text-weight-bold">{{ formatDate(endDate) }}</span>
+            <span class="text-body1 text-weight-bold">{{ $d(endDate) }}</span>
           </div>
         </div>
         <div 
@@ -291,15 +291,11 @@ export default class InsightsPage extends Vue {
       this.randomRenwewalKey = Math.random();
     }
   }
-  formatDate(date: Date) {
-    const locale = this.$root.$i18n.locale;
-    return date.toLocaleDateString(locale)
-  }
   async refresh() {
     this.clients = await this.$store.direct.dispatch.fetchClientsOfAllTeamsFromDB();
   }
   mounted() {
-    this.refresh();
+    void this.refresh();
   }
 }
 </script>

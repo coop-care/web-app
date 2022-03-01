@@ -158,21 +158,20 @@ export default class KBSOverviewChart extends Vue {
       if (values.length == 0) {
         return "–"
       }
-      const locale = this.$root.$i18n.locale;
       const options = { minimumFractionDigits: 1, maximumFractionDigits: 1 };
 
       if (this.hoverIndex < 0) {
         const delta = values[values.length - 1] - values[0];
         const sign = delta >= 0 ? "+" : "-";
-        return sign + delta.toLocaleString(locale, options);
+        return sign + this.$n(delta, options);
       } else {
-        return values[this.hoverIndex].toLocaleString(locale, options);
+        return this.$n(values[this.hoverIndex], options);
       }
     }
   }
   get date() {
     return this.hoverIndex >= 0
-      ? this.duplicateSingleDate(this.dates)[this.hoverIndex].toLocaleDateString(this.$root.$i18n.locale)
+      ? this.$d(this.duplicateSingleDate(this.dates)[this.hoverIndex])
       : " ";
   }
   get context() {

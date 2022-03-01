@@ -123,8 +123,7 @@ export default class DevMenu extends Vue {
   clearDB() {
     this.$q
       .dialog({
-        title:
-          "Möchtest du wirklich die Daten <strong>aller</strong> Klienten löschen?",
+        title: "Möchtest du wirklich die Daten aller Klienten löschen?",
         message: "Diese Aktion kann nicht rückgängig gemacht werden.",
         ok: {
           label: this.$t("databaseClearAll"),
@@ -133,7 +132,6 @@ export default class DevMenu extends Vue {
         },
         cancel: true,
         persistent: true,
-        html: true,
       })
       .onOk(() => {
         void this.$store.direct.dispatch.clearDB();

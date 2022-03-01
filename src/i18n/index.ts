@@ -7,12 +7,16 @@ import terminologyEN from "./en-us/terminology.json";
 (enUS as Record<string, any>).terminology = makeTerminologyWithMaps(
     terminologyEN
 );
+import countriesEN_US from "localized-countries/data/en_US.json";
+(enUS as Record<string, any>).countries = countriesEN_US;
 
 import deDE from "./de-de/index.json";
 import terminologyDE from "./de-de/terminology.json";
 (deDE as Record<string, any>).terminology = makeTerminologyWithMaps(
     terminologyDE
 );
+import countriesDE_DE from "localized-countries/data/de_DE.json";
+(deDE as Record<string, any>).countries = countriesDE_DE;
 
 if (process.env.BACKEND != "demo") {
     const responseHandler = (response: Response) => {

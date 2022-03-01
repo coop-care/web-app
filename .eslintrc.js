@@ -44,9 +44,7 @@ module.exports = {
 
     // https://github.com/prettier/eslint-config-prettier#installation
     // usage with Prettier, provided by 'eslint-config-prettier'.
-    'prettier',
-    'prettier/@typescript-eslint',
-    'prettier/vue'
+    'prettier'
   ],
 
   plugins: [
@@ -79,6 +77,7 @@ module.exports = {
     // allow paren-less arrow functions
     'arrow-parens': 'off',
     'one-var': 'off',
+    'curly': 'all',
 
     'import/first': 'off',
     'import/named': 'error',
