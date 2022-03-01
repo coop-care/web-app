@@ -623,5 +623,14 @@
   "shiftNotesTitle": "Bericht",
   "yesterday": "Gestern",
   "showShiftNoteTabView": "Im Zusammenhang anzeigen",
-  "noShiftNotes": "Es wurden noch keine Berichte verfasst."
+  "noShiftNotes": "Es wurden noch keine Berichte verfasst.",
+  "stopTimeTracking": "Zeiterfassung beenden",
+  "startTimeTracking": "Zeiterfassung starten",
+  "timeTracking": "Zeiterfassung",
+  "startTime": "Beginn",
+  "endTime": "Ende",
+  "duration": "Dauer",
+  "serviceType": "Leistungsart",
+  "timeTrackingRecordCount": "{count} Einsatz | {count} Einsätze",
+  "minuteCount": "{count} Minute | {count} Minuten"
 }

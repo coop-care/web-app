@@ -68,7 +68,11 @@
       <q-space />
     </div>
 
-    <!-- <time-recording /> -->
+    <!-- <time-recording
+      v-if="canComplete"
+      :date="selectedDate"
+      class="q-mt-sm"
+    /> -->
 
     <q-list
       class="q-mb-xl full-width"

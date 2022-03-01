@@ -622,5 +622,14 @@
   "shiftNotesTitle": "Notes",
   "yesterday": "Yesterday",
   "showShiftNoteTabView": "Show in context",
-  "noShiftNotes": "No reports have been written yet."
+  "noShiftNotes": "No reports have been written yet.",
+  "stopTimeTracking": "Stop time tracking",
+  "startTimeTracking": "Start time tracking",
+  "timeTracking": "Time Tracking",
+  "startTime": "Start",
+  "endTime": "End",
+  "duration": "Duration",
+  "serviceType": "Service type",
+  "timeTrackingRecordCount": "{count} record | {count} records",
+  "minuteCount": "{count} minute | \n{count} minutes"
 }
