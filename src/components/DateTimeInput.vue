@@ -214,5 +214,13 @@ export default class DateTimeInput extends Vue {
     this.dateInput.$emit("blur", event);
     this.showOptions = false;
   }
+
+  created() {
+    this.$root.$on("did-change-locale", () => this.dateKey = Math.random());
+  }
+
+  beforeDestroy() {
+    this.$root.$off("did-change-locale");
+  }
 }
 </script>
