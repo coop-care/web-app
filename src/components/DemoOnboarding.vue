@@ -18,10 +18,10 @@
             :key="item"
           >{{ item }}</li>
         </ul>
-        <i18n path="demoOnboardingBetaProgramMessage" tag="p">
+        <!-- <i18n path="demoOnboardingBetaProgramMessage" tag="p">
           <a :href="'mailto:mail@coopcare.de?subject=' + $t('demoOnboardingBetaProgramEmailSubject') + '&body=' + $t('demoOnboardingBetaProgramEmailMessage')"
             >{{ $t("demoOnboardingBetaProgramTitle") }}</a>
-        </i18n>
+        </i18n> -->
         <i18n path="demoOnboardingFeedbackMessage" tag="p">
           <a :href="'mailto:feedback@coopcare.de?subject=' + $t('demoOnboardingFeedbackEmailSubject')"
             >{{ $t("demoOnboardingFeedbackTitle") }}</a>
