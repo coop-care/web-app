@@ -11,7 +11,7 @@
         :offset="250"
         @load="load"
         reverse
-        class="limit-width q-pb-md"
+        class="limit-width full-width q-pb-md"
       >
         <chat-message
           v-for="(note, index) in shiftNotes"
