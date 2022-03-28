@@ -9,7 +9,7 @@ import electronDebug from "electron-debug"
 import installExtension, { VUEJS_DEVTOOLS } from "electron-devtools-installer"
 import { app, BrowserWindow } from "electron"
 
-app.whenReady().then(() => {
+void app.whenReady().then(() => {
   // allow for a small delay for mainWindow to be created
   setTimeout(() => {
     // Install `electron-debug` with `devtron`

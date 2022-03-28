@@ -2,7 +2,7 @@
   "name": "de.coopcare.app",
   "displayName": "CoopCare",
   "version": "1.0.0",
-  "description": "A sample Apache Cordova application that responds to the deviceready event.",
+  "description": "We relieve nurses in documentation and planning by using the Omaha System and support care teams in cooperation and in strengthening their clients.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
