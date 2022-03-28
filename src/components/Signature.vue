@@ -29,11 +29,11 @@
   font-weight: 500
   font-style: italic
   border: 1px solid
-.cursor-help
-  cursor: help
 .signature-tooltip
   font-size: .8rem
   padding: 2px 6px
+.cursor-help
+  cursor: help
 </style>
 
 <script lang="ts">
