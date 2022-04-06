@@ -539,14 +539,14 @@
                 "description": "Funktionen und Prozesse, die das Leben erhalten.",
                 "problems": {
                     "19": {
-                        "title": "Gehör",
-                        "description": "Wahrnehmung von Geräuschen durch die Ohren.",
+                        "title": "Hörvermögen",
+                        "description": "Wahrnehmung von Geräuschen mit den Ohren.",
                         "signsAndSymptoms": {
                             "01": {
                                 "title": "Schwierigkeiten beim Hören normaler Sprachtöne"
                             },
                             "05": {
-                                "title": "Schwierigkeiten beim Hören von Sprache in großen Gruppen"
+                                "title": "Schwierigkeiten beim Hören von Gesprochenem in großen Gruppen"
                             },
                             "06": {
                                 "title": "Schwierigkeiten beim Hören von Tönen höherer Frequenz"
@@ -563,11 +563,11 @@
                         }
                     },
                     "20": {
-                        "title": "Sehkraft",
+                        "title": "Sehvermögen",
                         "description": "Wahrnehmung mit den Augen.",
                         "signsAndSymptoms": {
                             "01": {
-                                "title": "Schwierigkeiten beim Erkennen von kleiner Schrift"
+                                "title": "Schwierigkeiten Kleingedrucktes zu lesen"
                             },
                             "02": {
                                 "title": "Schwierigkeiten beim Sehen entfernter Objekte"
@@ -576,13 +576,13 @@
                                 "title": "Schwierigkeiten beim Sehen von nahen Objekten"
                             },
                             "04": {
-                                "title": "fehlende oder anormale Reaktion auf visuelle Reize"
+                                "title": "fehlende oder anormale Reaktion auf visuelle Stimuli"
                             },
                             "05": {
                                 "title": "anormale Ergebnisse beim Sehtest"
                             },
                             "06": {
-                                "title": "schielen, blinzeln, tränen oder verschwimmend"
+                                "title": "schielen, blinzeln, tränen oder verschwimmen"
                             },
                             "09": {
                                 "title": "Glaskörpertrübungen, Mouches volantes oder Blitzlichter"
@@ -630,13 +630,13 @@
                                 "title": "sonstige"
                             },
                             "11": {
-                                "title": "Abschweifen"
+                                "title": "irrt sich"
                             },
                             "01": {
                                 "title": "vermindertes Urteilsvermögen"
                             },
                             "02": {
-                                "title": "desorientiert in Bezug auf Zeit, Ort oder Personen"
+                                "title": "desorientiert in Bezug auf Zeit, Ort oder Person"
                             },
                             "03": {
                                 "title": "begrenzte Erinnerung an kürzliche Ereignisse"
@@ -657,7 +657,7 @@
                                 "title": "Impulsivität"
                             },
                             "09": {
-                                "title": "Wiederholendes Reden oder Verhalten"
+                                "title": "wiederholende Erzählungen oder Verhalten"
                             }
                         }
                     },
@@ -666,19 +666,19 @@
                         "description": "Unangenehme sensorische und emotionale Erfahrungen, die mit tatsächlichen oder potenziellen Gewebeschäden verbunden sind.",
                         "signsAndSymptoms": {
                             "01": {
-                                "title": "drückt Unannehmlichkeiten oder Schmerzen aus"
+                                "title": "äußert Unwohlsein oder Schmerz"
                             },
                             "02": {
                                 "title": "erhöhter Puls, Atmung oder Blutdruck"
                             },
                             "03": {
-                                "title": "ausgleichende Bewegungen oder Schonung"
+                                "title": "kompensierende Bewegungen oder Schonhaltung"
                             },
                             "04": {
                                 "title": "ruheloses Verhalten"
                             },
                             "05": {
-                                "title": "zieht Grimassen"
+                                "title": "Gesichtsgrimassen"
                             },
                             "06": {
                                 "title": "Blässe oder Schwitzen"
@@ -690,7 +690,7 @@
                     },
                     "25": {
                         "title": "Bewusstsein",
-                        "description": "Wahrnehmung und Reaktionsfähigkeit auf Reize und die Umgebung.",
+                        "description": "Wahrnehmung und Reaktionsfähigkeit auf Stimuli und Umgebung.",
                         "signsAndSymptoms": {
                             "01": {
                                 "title": "lethargisch"
@@ -717,31 +717,31 @@
                                 "title": "sonstige"
                             },
                             "11": {
-                                "title": "verzögerte Narbenheilung"
+                                "title": "verzögerte Wundheilung"
                             },
                             "01": {
-                                "title": "Läsion, Druckgeschwür oder Dekubitus"
+                                "title": "Läsion oder Dekubitus"
                             },
                             "02": {
                                 "title": "Hautausschlag oder Effloreszenz"
                             },
                             "03": {
-                                "title": "extrem trocken"
+                                "title": "übermäßig trocken"
                             },
                             "04": {
-                                "title": "extrem fettig"
+                                "title": "übermäßig ölig"
                             },
                             "05": {
                                 "title": "Entzündung"
                             },
                             "06": {
-                                "title": "Juckreiz"
+                                "title": "Pruritus"
                             },
                             "07": {
-                                "title": "Wunddrainage"
+                                "title": "Drainage"
                             },
                             "08": {
-                                "title": "Prellung oder Hämatom"
+                                "title": "Hämatom"
                             },
                             "09": {
                                 "title": "Hypertrophie der Nägel"
@@ -749,23 +749,23 @@
                         }
                     },
                     "27": {
-                        "title": "Neuromuskeläre- und Skelett-Funktion",
+                        "title": "Neuromuskulär-skelettale Funktion",
                         "description": "Fähigkeit von Nerven, Muskeln und Knochen, gezielte Bewegungen, Empfindungen oder Steuerungen auszuführen oder zu koordinieren.",
                         "signsAndSymptoms": {
                             "11": {
-                                "title": "Anfall, Krämpfe, Zittern oder Tremor"
+                                "title": "Tremor oder Krampfanfall"
                             },
                             "12": {
                                 "title": "sonstige"
                             },
                             "13": {
-                                "title": "Schwierigkeiten bei Transfer oder Umlagerung"
+                                "title": "Schwierigkeiten beim Transfer"
                             },
                             "14": {
-                                "title": "Brüche oder Frakturen"
+                                "title": "Frakturen"
                             },
                             "15": {
-                                "title": "Probleme mit der Thermoregulation"
+                                "title": "Schwierigkeiten mit der Thermoregulation"
                             },
                             "01": {
                                 "title": "eingeschränkte Bewegungsfreiheit"
@@ -789,10 +789,10 @@
                                 "title": "gesteigerte Sinnesempfindung"
                             },
                             "08": {
-                                "title": "vermindertes Gleichgewicht"
+                                "title": "Gleichgewichtsstörung"
                             },
                             "09": {
-                                "title": "Störung des Gangs"
+                                "title": "Gangstörung"
                             }
                         }
                     },
@@ -804,7 +804,7 @@
                                 "title": "sonstige"
                             },
                             "11": {
-                                "title": "anormale Ergebnisse beim Atemtest"
+                                "title": "anormale respiratorische Laborergebnisse"
                             },
                             "01": {
                                 "title": "anormale Atemmuster"
@@ -822,13 +822,13 @@
                                 "title": "Zyanose"
                             },
                             "06": {
-                                "title": "anormaler Auswurf oder Sputum"
+                                "title": "anormales Sputum"
                             },
                             "07": {
-                                "title": "laute Atemzüge"
+                                "title": "geräuschvolle Atemzüge"
                             },
                             "08": {
-                                "title": "Rhinitis, laufende oder verstopfte Nase"
+                                "title": "Rhinitis oder verstopfte Nase"
                             },
                             "09": {
                                 "title": "anormale Atemgeräusche"
@@ -837,7 +837,7 @@
                     },
                     "29": {
                         "title": "Kreislauf",
-                        "description": "Das Pumpen von Blut in ausreichender Menge und Druck durch den ganzen Körper.",
+                        "description": "Das Blut in angemessenen Mengen und Druck durch den Körper pumpen.",
                         "signsAndSymptoms": {
                             "10": {
                                 "title": "unregelmäßige Herzfrequenz"
@@ -873,16 +873,16 @@
                                 "title": "niedriger Puls"
                             },
                             "04": {
-                                "title": "Verfärbung der Haut"
+                                "title": "Hautkolorit"
                             },
                             "05": {
                                 "title": "Temperaturveränderung im betroffenen Bereich"
                             },
                             "06": {
-                                "title": "Krampfadern"
+                                "title": "Varizen"
                             },
                             "07": {
-                                "title": "synkopale Episoden (Ohnmacht) oder Schwindelgefühl"
+                                "title": "Synkopen (Ohnmacht) oder Schwindelgefühl"
                             },
                             "08": {
                                 "title": "anormale Werte bei Blutdruckmessung"
@@ -893,11 +893,11 @@
                         }
                     },
                     "30": {
-                        "title": "Verdauung und Flüssigkeitsaufnahme",
-                        "description": "Prozess zur Umwandlung von Lebensmitteln in Formen, die aufgenommen und verarbeitet werden können, und zur Aufrechterhaltung des Flüssigkeitsgleichgewichts.",
+                        "title": "Nahrungs- und Flüssigkeitsaufnahme",
+                        "description": "Prozess der Absorption von Nahrungsmitteln, sowie des Flüssigkeitshaushalts.",
                         "signsAndSymptoms": {
                             "10": {
-                                "title": "rissige Lippen oder trockener Mund"
+                                "title": "spröde Lippen oder trockener Mund"
                             },
                             "11": {
                                 "title": "Elektrolytungleichgewicht"
@@ -906,16 +906,16 @@
                                 "title": "sonstige"
                             },
                             "01": {
-                                "title": "Übelkeit oder Brechreiz"
+                                "title": "Nausea oder Brechreiz"
                             },
                             "02": {
                                 "title": "Schwierigkeiten oder Unvermögen zu kauen, zu schlucken oder zu verdauen"
                             },
                             "03": {
-                                "title": "Magenverstimmung oder Verdauungsstörung"
+                                "title": "Verdauungsstörung"
                             },
                             "04": {
-                                "title": "Reflux oder Rückfluss"
+                                "title": "Reflux"
                             },
                             "05": {
                                 "title": "Anorexie"
@@ -927,19 +927,19 @@
                                 "title": "Aszites"
                             },
                             "08": {
-                                "title": "Ikterus (Gelbsucht) oder Lebervergrößerung"
+                                "title": "Ikterus oder Lebervergrößerung"
                             },
                             "09": {
-                                "title": "verminderte Hautspannung oder Dehydratation"
+                                "title": "verminderter Hautturgor"
                             }
                         }
                     },
                     "31": {
                         "title": "Darmfunktion",
-                        "description": "Transport von Nahrung durch den Magen-Darm-Trakt zur Ausscheidung von Abfällen.",
+                        "description": "Transport von Nahrung durch den Gastrointestinaltrakt zur Ausscheidung von Abfällen.",
                         "signsAndSymptoms": {
                             "01": {
-                                "title": "anormale Häufigkeit oder Konsistenz des Stuhls"
+                                "title": "anormale Häufigkeit oder Konsistenz des Stuhlgangs"
                             },
                             "02": {
                                 "title": "schmerzhafter Stuhlgang"
@@ -948,13 +948,13 @@
                                 "title": "verminderte Darmgeräusche"
                             },
                             "04": {
-                                "title": "Blut im Stuhl"
+                                "title": "Blut im Stuhlgang"
                             },
                             "05": {
                                 "title": "anormale Farbe"
                             },
                             "06": {
-                                "title": "Krämpfe oder Bauchschmerzen"
+                                "title": "Krämpfe oder Abdominalschmerzen"
                             },
                             "07": {
                                 "title": "Stuhlinkontinenz"
@@ -1011,19 +1011,19 @@
                                 "title": "Harndrang oder -häufigkeit"
                             },
                             "04": {
-                                "title": "Schwierigkeiten mit dem Urinieren zu beginnen"
+                                "title": "Schwierigkeiten das Urinieren zu initiieren"
                             },
                             "05": {
-                                "title": "Schwierigkeiten die Blase zu entleeren"
+                                "title": "unvollständige Blasenentleerung"
                             },
                             "06": {
                                 "title": "anormale Menge"
                             },
                             "07": {
-                                "title": "Hämaturie (Blut im Urin) oder anormale Farbe"
+                                "title": "Hämaturie oder anormale Farbe"
                             },
                             "08": {
-                                "title": "Nykturie (Unterbrechung des Nachtschlafs wegen Harndrang)"
+                                "title": "Nykturie"
                             },
                             "09": {
                                 "title": "Anormale Ergebnisse beim Urintest"
@@ -1047,7 +1047,7 @@
                                 "title": "Anomale Knoten, Schwellung oder Spannung an Genitalien oder Brüsten"
                             },
                             "05": {
-                                "title": "Schmerzen während oder nach dem Geschlechtsverkehr"
+                                "title": "Schmerzen während oder nach dem Coitus"
                             },
                             "06": {
                                 "title": "Unfruchtbarkeit"
@@ -1068,7 +1068,7 @@
                                 "title": "Schwierigkeiten eine Bindung zum ungeborenen Baby aufzubauen"
                             },
                             "02": {
-                                "title": "Schwierigkeiten beim Umgang von Körperveränderungen"
+                                "title": "Schwierigkeiten Körperveränderungen anzunehmen"
                             },
                             "03": {
                                 "title": "Schwierigkeiten mit pränatalen Übungen, Ruhe, Ernährung oder Verhalten"
@@ -1088,8 +1088,8 @@
                         }
                     },
                     "49": {
-                        "title": "Wochenbett",
-                        "description": "Der Zeitraum sechs Wochen nach der Geburt.",
+                        "title": "Postpartum",
+                        "description": "Der Zeitraum von sechs Wochen nach der Geburt.",
                         "signsAndSymptoms": {
                             "01": {
                                 "title": "Schwierigkeiten beim Stillen"
@@ -1101,13 +1101,13 @@
                                 "title": "Schwierigkeiten mit postpartalen Übungen, Ruhe, Ernährung oder Verhalten"
                             },
                             "04": {
-                                "title": "Anormale Blutung oder Vaginalausfluss"
+                                "title": "anormale Blutung oder fluor genitalis"
                             },
                             "05": {
                                 "title": "postpartale Komplikationen"
                             },
                             "06": {
-                                "title": "anormale depressive Gefühle"
+                                "title": "Wochenbettdepression"
                             },
                             "07": {
                                 "title": "sonstige"
@@ -1116,13 +1116,13 @@
                     },
                     "50": {
                         "title": "Übertragbare oder infektiöse Erkrankung",
-                        "description": "Zustand, bei dem Organismen den Körper befallen und oberflächliche oder systemische Erkrankungen hervorrufen mit dem Risiko der Ausbreitung oder Übertragung.",
+                        "description": "Zustand, bei dem Organismen den Körper befallen und oberflächliche oder systemische Erkrankungen hervorrufen mit dem Potenzial der Ausbreitung oder Übertragung.",
                         "signsAndSymptoms": {
                             "01": {
                                 "title": "Infektion"
                             },
                             "02": {
-                                "title": "Infestation (Befall) durch Parasiten"
+                                "title": "Infestation"
                             },
                             "03": {
                                 "title": "Fieber"
@@ -1131,13 +1131,13 @@
                                 "title": "biologische Gefahren"
                             },
                             "05": {
-                                "title": "positiver Befund oder Laborergebnisse"
+                                "title": "positiver Befund, Kultur oder Laborergebnisse"
                             },
                             "06": {
-                                "title": "unzureichender Vorrat, Ausrüstung oder Konzepte zur Verhinderung der Übertragung"
+                                "title": "unzureichender Vorrat, Ausstattung oder Richtlinien zur Verhinderung der Kontamination"
                             },
                             "07": {
-                                "title": "befolgt nicht die Richtlinien zur Eindämmung von Infektionskrankheiten"
+                                "title": "befolgt die Richtlinien zur Eindämmung von Infektionskrankheiten nicht"
                             },
                             "08": {
                                 "title": "unzureichende Immunität"
