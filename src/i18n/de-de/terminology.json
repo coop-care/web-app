@@ -129,7 +129,7 @@
                         "description": "Freiheit von Krankheit, Verletzung oder Schaden im Wohnquartier oder am Arbeitsplatz.",
                         "signsAndSymptoms": {
                             "10": {
-                                "title": "chemische Gefahren (Gifte, Ätzendes, leicht Entzündliches, Explosives)"
+                                "title": "chemische Gefahren"
                             },
                             "11": {
                                 "title": "Strahlenrisiko"
@@ -153,7 +153,7 @@
                                 "title": "Bedrohungen oder Berichte von Gewalt"
                             },
                             "04": {
-                                "title": "physikalische Gefahren (Hitze, Kollisionen, Stürze, Lärm)"
+                                "title": "physikalische Gefahren"
                             },
                             "09": {
                                 "title": "Gefährdung durch Verkehr oder Fahrzeuge"
@@ -1158,7 +1158,7 @@
                         "description": "Auswahl und Konsum von Lebensmitteln und Flüssigkeiten zur körperlichen Energiezufuhr, Aufrechterhaltung, Wachstum und Gesundheit.",
                         "signsAndSymptoms": {
                             "10": {
-                                "title": "Hyperglykämie (Überzucker)"
+                                "title": "Hyperglykämie"
                             },
                             "11": {
                                 "title": "sonstige"
@@ -1191,7 +1191,7 @@
                                 "title": "unerklärlicher oder fortschreitender Gewichtsverlust"
                             },
                             "09": {
-                                "title": "Hypoglykämie (Unterzuckerung)"
+                                "title": "Hypoglykämie"
                             }
                         }
                     },
@@ -1209,7 +1209,7 @@
                                 "title": "Schlafwandeln"
                             },
                             "04": {
-                                "title": "Schlafstörung"
+                                "title": "Schlaflosigkeit"
                             },
                             "05": {
                                 "title": "Albträume"
@@ -1392,10 +1392,10 @@
                                 "title": "unsachgemäße Lagerung von Medikamenten"
                             },
                             "05": {
-                                "title": "kein angemessener Bezug von Nachschub"
+                                "title": "versäumt die angemessene Besorgung von Nachschub"
                             },
                             "06": {
-                                "title": "keine Impfungen erhalten"
+                                "title": "lässt sich nicht impfen"
                             },
                             "08": {
                                 "title": "unangemessene medikamentöse Behandlung"
@@ -1447,23 +1447,19 @@
         "categories": {
             "01": {
                 "title": "Information, Beratung, Anleitung",
-                "description": "Aktivitäten wie Informationen und Material anbieten, zum Handeln ermutigen und dazu Verantwortung zur Selbsthilfe und Problembewältigung zu übernehmen, sowie Unterstützung Entscheidungen zu treffen und Probleme zu lösen.",
-                "icon": "fas fa-comment-medical"
+                "description": "Aktivitäten wie Informationen und Material anbieten, zum Handeln ermutigen und dazu Verantwortung zur Selbsthilfe und Problembewältigung zu übernehmen, sowie Unterstützung Entscheidungen zu treffen und Probleme zu lösen."
             },
             "02": {
                 "title": "Behandlung und Pflegemaßnahmen",
-                "description": "Fachspezifische Aktivitäten wie Wundversorgung, Probenentnahme, Krafttraining und Medikamentenverschreibung, die Symptome verhindern, verringern oder lindern sollen.",
-                "icon": "fas fa-band-aid"
+                "description": "Fachspezifische Aktivitäten wie Wundversorgung, Probenentnahme, Krafttraining und Medikamentenverschreibung, die Symptome verhindern, verringern oder lindern sollen."
             },
             "03": {
                 "title": "Fallmanagement",
-                "description": "Aktivitäten wie Koordination, Überweisung und Interessenvertretung, die die Dienstbereitstellung erleichtern, die Selbstbehauptung fördern, zur Nutzung geeigneter Hilfsmittel führen und die Kommunikation zwischen allen Anbietern von Gesundheits- und sozialen Diensten verbessern.",
-                "icon": "fas fa-project-diagram"
+                "description": "Aktivitäten wie Koordination, Überweisung und Interessenvertretung, die die Dienstbereitstellung erleichtern, die Selbstbehauptung fördern, zur Nutzung geeigneter Hilfsmittel führen und die Kommunikation zwischen allen Anbietern von Gesundheits- und sozialen Diensten verbessern."
             },
             "04": {
                 "title": "Beobachtung",
-                "description": "Aktivitäten wie Erkennung, Messung, kritische Analyse und Überwachung um den Status der Person, Familie oder Gemeinschaft bezüglich eines bestimmten Zustands oder eines Phänomens wahrzunehmen.",
-                "icon": "fas fa-eye"
+                "description": "Aktivitäten wie Erkennung, Messung, kritische Analyse und Überwachung um den Status der Person, Familie oder Gemeinschaft bezüglich eines bestimmten Zustands oder eines Phänomens wahrzunehmen."
             }
         },
         "targets": {
@@ -1641,7 +1637,7 @@
             },
             "59": {
                 "title": "Selbsthilfegruppe",
-                "description": "Organisierte Informations- und Unterstützungsangebote wie Fokusgruppen und Organisationen, Telefonseelsorge und zuverlässige Internetseiten, die sich mit einem bestimmten Thema wie Erziehung, Alkoholismus, Fettleibigkeit und Alzheimer befassen."
+                "description": "Organisierte Informations- und Unterstützungsangebote wie Fokusgruppen und Organisationen, Telefonseelsorge und zuverlässige Internetseiten, die sich mit einem bestimmten Thema wie Erziehung, Alkoholismus, Adipositas und Alzheimer befassen."
             },
             "60": {
                 "title": "Unterstützungssystem",
@@ -1665,7 +1661,7 @@
             },
             "65": {
                 "title": "Kommunale Hilfsdienste",
-                "description": "Unterstützung bei der Koordination von Aufgaben in den Bereichen Gesundheit, Transport, Haushalt und Betreuung von Kindern oder Erwachsenen durch qualifizierte Mitarbeiter unter der Aufsicht von professionellen Gesundheitsdienstleistern."
+                "description": "Unterstützung bei der Koordination von Aufgaben in den Bereichen Gesundheitversorgung, Transport, Haushalt und Betreuung von Kindern oder Erwachsenen durch qualifizierte Mitarbeiter unter der Aufsicht von professionellen Gesundheitsdienstleistern."
             },
             "66": {
                 "title": "Koordination der Pflege",
