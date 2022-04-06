@@ -1447,23 +1447,19 @@
         "categories": {
             "01": {
                 "title": "Teaching, Guidance, and Counseling",
-                "description": "Activities designed to provide information and materials, encourage action and responsibility for self-care and coping, and assist the individual, family, or community to make decisions and solve problems.",
-                "icon": "fas fa-comment-medical"
+                "description": "Activities designed to provide information and materials, encourage action and responsibility for self-care and coping, and assist the individual, family, or community to make decisions and solve problems."
             },
             "02": {
                 "title": "Treatments and Procedures",
-                "description": "Technical activities such as wound care, specimen collection, resistive exercises, and medication prescriptions that are designed to prevent, decrease, or alleviate signs and symptoms for the individual, family, or community.",
-                "icon": "fas fa-band-aid"
+                "description": "Technical activities such as wound care, specimen collection, resistive exercises, and medication prescriptions that are designed to prevent, decrease, or alleviate signs and symptoms for the individual, family, or community."
             },
             "03": {
                 "title": "Case Management",
-                "description": "Activities such as coordination, advocacy, and referral that facilitate service delivery, promote assertiveness, guide the individual, family, or community toward use of appropriate resources, and improve communication among health and human service providers.",
-                "icon": "fas fa-project-diagram"
+                "description": "Activities such as coordination, advocacy, and referral that facilitate service delivery, promote assertiveness, guide the individual, family, or community toward use of appropriate resources, and improve communication among health and human service providers."
             },
             "04": {
                 "title": "Surveillance",
-                "description": "Activities such as detection, measurement, critical analysis, and monitoring intended to identify the individual, family, or community's status in relation to a given condition or phenomenon.",
-                "icon": "fas fa-eye"
+                "description": "Activities such as detection, measurement, critical analysis, and monitoring intended to identify the individual, family, or community's status in relation to a given condition or phenomenon."
             }
         },
         "targets": {
