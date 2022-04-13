@@ -8,7 +8,9 @@
 /* eslint-env node */
 /* eslint-disable @typescript-eslint/no-var-requires */
 const { configure } = require("quasar/wrappers")
-const { readFileSync } = require('fs')
+const { readFileSync } = require("fs")
+const path = require("path")
+const { LicenseWebpackPlugin } = require("license-webpack-plugin")
 
 module.exports = configure(function (ctx) {
   return {
@@ -94,6 +96,113 @@ module.exports = configure(function (ctx) {
             exclude: /node_modules/
           })
         }
+
+        const findDependencies = (names) => {
+          const results = [...new Set(names.flatMap(name => [name, ...Object.keys(JSON.parse(readFileSync(`src-cordova/node_modules/${name}/package.json`)).dependencies || {})]))];
+
+          if (results.length > names.length) {
+            return findDependencies(results);
+          } else {
+            return results;
+          }
+        }
+
+        /* An unexaustive list of licenses that are compatible with AGPL-3.0 license.
+           Licenses that are incompatible with AGPL-3.0 are unacceptable and may not be combined with the source code of this app.
+           For a complete list, see https://www.gnu.org/licenses/license-list.html.
+           For a compatibility overview, see https://web.archive.org/web/20210101030518/https://dwheeler.com/essays/floss-license-slide.html.
+        */
+        const unacceptableLicenseTest = (license) => ![
+          "MIT",
+          "Apache-2.0",
+          "ISC",
+          "LGPL",
+          "Unlicense",
+          "CC0-1.0",
+          "BSD-3-Clause",
+          "BSD-2-Clause",
+          "0BSD",
+          "(MIT AND BSD-3-Clause)",
+          "MIT or GPL-2.0",
+        ].includes(license);
+        const licenseTypeOverrides = {
+          "realm-web": "Apache-2.0",
+          "cordova-plugin-keyboard": "Apache-2.0",
+          "cordova-plugin-printer": "Apache-2.0",
+          "shelljs": "BSD-3-Clause",
+          "tail": "MIT",
+          "xml-escape": "MIT"
+        }
+
+        cfg.plugins = (cfg.plugins || []).concat([
+          new LicenseWebpackPlugin({
+            outputFilename: "oss-licenses.json",
+            perChunkOutput: false,
+            unacceptableLicenseTest,
+            renderLicenses: modules => JSON.stringify(
+              modules.map(module => ({
+                name: module.name,
+                author: (author => {
+                  const authorName = author.name || author;
+                  const name = authorName.replace(/( <.+@.+>)/, "").replace(/( \(http.+\))/, "");
+                  const email = author.email || authorName.match(/^.* <(.+@.+)>.*$/)?.[1];
+                  const url = (author.url || authorName.match(/^.* \((http.+)\).*$/)?.[1])//?.replace(/^(?!http)/, "http://");
+                  return {name: name + (email ? ` <${email}>` : "") + (url ? ` (${url})`: "")};
+                })(module.packageJson?.author || ""),
+                license: module.licenseId,
+                licenseText: module.licenseText,
+                repository: (module.packageJson?.repository?.url || module.packageJson?.repository)
+                  ?.replace(/^(git\+https|git|git\+ssh):/, "https:").replace(/^git@github.com:/, "https://github.com/").replace(/^(?!https:)/, "https://github.com/"),
+                // source: `https://registry.npmjs.org/${module.name}/-/${module.name.split("/").pop()}-${module.packageJson?.version}.tgz`,
+                homepage: module.packageJson?.homepage,
+                // version: module.packageJson?.version
+              })).concat([{
+                name: "@fortawesome/fontawesome-free",
+                author: {
+                  name: "The Font Awesome Team (https://github.com/orgs/FortAwesome/people)",
+                },
+                license: "(CC-BY-4.0 AND OFL-1.1 AND MIT)", // the OFL-1.1 part applies to this project and should be compatible, see explanation at https://www.gnu.org/licenses/license-list.html#SILOFL
+                licenseText: readFileSync("node_modules/@quasar/extras/fontawesome-v5/LICENSE.txt", {encoding: "utf-8"}),
+                repository: "https://github.com/FortAwesome/Font-Awesome",
+                homepage: "https://fontawesome.com"
+              }, {
+                name: "@mdi/font",
+                author: {
+                  name: "Austin Andrews (http://twitter.com/templarian)",
+                },
+                license: "Apache-2.0",
+                licenseText: readFileSync("node_modules/@quasar/extras/material-icons/LICENSE", { encoding: "utf-8" }),
+                repository: "https://github.com/Templarian/MaterialDesign-Webfont.git",
+                homepage: "https://materialdesignicons.com"
+              }, {
+                name: "roboto-font",
+                author: {
+                  name: "Christian Robertson"
+                },
+                license: "Apache-2.0",
+                licenseText: readFileSync("node_modules/@quasar/extras/material-icons/LICENSE", { encoding: "utf-8" }),
+              }]),
+            null, 2),
+            licenseTypeOverrides,
+            licenseTemplateDir: path.resolve(__dirname, "license-templates"),
+            additionalModules: ctx.mode.cordova
+              ? findDependencies(Object.keys(JSON.parse(readFileSync("src-cordova/package.json")).devDependencies))
+                .map(name => {
+                  const license = licenseTypeOverrides[name]
+                    || JSON.parse(readFileSync(`src-cordova/node_modules/${name}/package.json`)).license;
+
+                  if (unacceptableLicenseTest(license)) {
+                    throw new Error(`Unacceptable License for "${name}": ${license}`);
+                  }
+
+                  return {
+                    name,
+                    directory: path.join(__dirname, "src-cordova", "node_modules", name)
+                  }
+                })
+              : []
+          })
+        ])
       }
     },
 

@@ -108,49 +108,94 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          v-close-popup
-          @click="openMail"
-        >
-          <q-item-section side>
-            <q-icon name="feedback" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{ $t("feedback") }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
         <q-separator />
 
-        <q-item class="column q-px-none text-grey-7">
-          <q-btn
-            :label="$t('contributeAndOpenSource')"
-            flat
-            no-caps
-            class="text-caption"
-            type="a"
-            href="https://github.com/coop-care/web-app"
-            target="_blank"
-            rel="noreferrer noopener"
-            icon-right="fab fa-github"
-            v-close-popup
-          />
-          <q-btn
-            :label="$t('privacyPolicy')"
-            flat
-            no-caps
-            class="text-caption"
-            @click="$router.push({ name: 'privacyPolicy' })"
-          />
-          <q-btn
-            :label="$t('legalNotice')"
-            flat
-            no-caps
-            class="text-caption"
-            @click="$router.push({ name: 'legalNotice' })"
-          />
+        <q-item clickable>
+          <q-item-section side>
+            <q-icon name="fas fa-info-circle" />
+          </q-item-section>
+          <q-item-section>{{
+            $t("aboutCoopCare")
+          }}</q-item-section>
+          <q-item-section side>
+            <q-icon name="fas fa-angle-right" />
+          </q-item-section>
+          <q-menu
+            auto-close
+            :anchor="$q.screen.gt.xs ? 'top left' : 'bottom middle'"
+            :self="$q.screen.gt.xs ? 'top right' : 'top middle'"
+            :fit="true"
+          >
+            <q-list class="text-body2">
+              <q-item
+                clickable
+                v-close-popup
+                @click="openMail"
+              >
+                <q-item-section side>
+                  <q-icon name="feedback" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>{{ $t("feedback") }}</q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+                tag="a"
+                href="https://www.coopcare.de/en/contributing/"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+              >
+                <q-item-section side>
+                  <q-icon name="fab fa-github" />
+                </q-item-section>
+                <q-item-section>{{ $t("contribute") }}</q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+                @click="$router.push({ name: 'license' })"
+              >
+                <q-item-section side>
+                  <q-icon name="fas fa-handshake" />
+                </q-item-section>
+                <q-item-section>{{ $t("license") }}</q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+                @click="$router.push({ name: 'acknowledgements' })"
+              >
+                <q-item-section side>
+                  <q-icon name="fas fa-heart" />
+                </q-item-section>
+                <q-item-section>{{ $t("acknowledgements") }}</q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+                @click="$router.push({ name: 'privacyPolicy' })"
+              >
+                <q-item-section side>
+                  <q-icon name="fas fa-shield-alt" />
+                </q-item-section>
+                <q-item-section>{{ $t("privacyPolicy") }}</q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+                @click="$router.push({ name: 'legalNotice' })"
+              >
+                <q-item-section side>
+                  <q-icon name="fas fa-info" />
+                </q-item-section>
+                <q-item-section>{{ $t("legalNotice") }}</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
         </q-item>
+
       </q-list>
     </q-menu>
   </q-btn>

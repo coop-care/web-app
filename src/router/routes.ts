@@ -158,6 +158,16 @@ const routes: RouteConfig[] = [
         component: () => import("pages/PasswordReset.vue")
       },
       {
+        name: "license",
+        path: "/license",
+        component: () => import("pages/License.vue")
+      },
+      {
+        name: "acknowledgements",
+        path: "/acknowledgements",
+        component: () => import("pages/Acknowledgements.vue")
+      },
+      {
         name: "legalNotice",
         path: "/legal-notice",
         component: () => import("pages/Markdown.vue")

@@ -140,6 +140,10 @@ body
   border-radius: 12px
 .radius-lg
   border-radius: 16px
+.radius-xl
+  border-radius: 32px
+.line-height-10
+  line-height: 1rem
 .line-height-11
   line-height: 1.1rem
 .line-height-12
@@ -173,6 +177,8 @@ body.desktop .hover-primary .q-hoverable:hover > .q-focus-helper
     max-width: 1280px
   &.width-sm
     max-width: 1024px
+  &.width-xs
+    max-width: 800px
 .min-height
   min-height: 95vh
 .page-padding
@@ -257,6 +263,8 @@ body.desktop .hover-primary .q-hoverable:hover > .q-focus-helper
   .q-markdown--link-external
     &:after
       content: ''
+a
+  color: var(--q-color-primary)
 .safe-area-horizontal, .q-page-container, .q-banner
   padding-left: env(safe-area-inset-left)
   padding-right: env(safe-area-inset-right)
