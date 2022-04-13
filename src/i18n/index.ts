@@ -1,6 +1,7 @@
 import { makeTerminologyWithMaps } from "../helper/terminology";
 import { register } from "timeago.js";
 import { de as timeagoDE } from "timeago.js/lib/lang";
+import store from "../store";
 
 import enUS from "./en-us/index.json";
 import terminologyEN from "./en-us/terminology.json";
@@ -14,7 +15,7 @@ import terminologyDE from "./de-de/terminology.json";
     terminologyDE
 );
 
-if (process.env.BACKEND != "demo") {
+if (!store.direct.getters.isDemo) {
     const responseHandler = (response: Response) => {
         if (response.ok) {
             return response

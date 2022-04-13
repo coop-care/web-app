@@ -1,6 +1,7 @@
-import { RouteConfig } from "vue-router"
+import { RouteConfig } from "vue-router";
+import store from "../store";
 
-const isDemo = process.env.BACKEND == "demo";
+const isDemo = store.direct.getters.isDemo;
 const routes: RouteConfig[] = [
   {
     path: "/",

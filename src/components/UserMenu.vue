@@ -33,7 +33,7 @@
         </q-item>
 
         <q-item
-          v-if="!isDemo"
+          v-if="!$store.direct.getters.isDemo"
           clickable
           v-close-popup
           @click="logout"
@@ -179,9 +179,6 @@ import Signature from "./Signature.vue";
 export default class UserMenu extends Vue {
   get user() {
     return this.$store.direct.state.currentUser;
-  }
-  get isDemo() {
-    return process.env.BACKEND == "demo";
   }
   get isDev() {
     return process.env.DEV;
