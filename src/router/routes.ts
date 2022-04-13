@@ -1,6 +1,7 @@
-import { RouteConfig } from "vue-router"
+import { RouteConfig } from "vue-router";
+import store from "../store";
 
-const isDemo = process.env.BACKEND == "demo";
+const isDemo = store.direct.getters.isDemo;
 const routes: RouteConfig[] = [
   {
     path: "/",
@@ -155,6 +156,16 @@ const routes: RouteConfig[] = [
         name: "resetPassword",
         path: !isDemo ? "/passwordreset" : "",
         component: () => import("pages/PasswordReset.vue")
+      },
+      {
+        name: "license",
+        path: "/license",
+        component: () => import("pages/License.vue")
+      },
+      {
+        name: "acknowledgements",
+        path: "/acknowledgements",
+        component: () => import("pages/Acknowledgements.vue")
       },
       {
         name: "legalNotice",

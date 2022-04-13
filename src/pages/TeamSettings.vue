@@ -47,33 +47,36 @@
             switch-toggle-side
             :default-opened="false"
           >
-            <q-input
-              :value="teamName"
-              :label="$t('teamName')"
-              ref="teamNameInput"
-              @change="teamName = $event.target.value"
-            />
-            <q-btn
-              v-if="!isDemo"
-              :label="$t('downloadBackup')"
-              icon="fas fa-file-download"
-              outline
-              rounded
-              no-caps
-              color="primary"
-              class="q-mt-md block"
-              @click="downloadBackup"
-            />
-            <q-btn
-              :label="$t('deleteTeam')"
-              icon="fas fa-user-slash"
-              outline
-              rounded
-              no-caps
-              color="negative"
-              class="q-mt-md block"
-              @click="deleteTeam"
-            />
+            <div>
+              <q-input
+                :value="teamName"
+                :label="$t('teamName')"
+                ref="teamNameInput"
+                @change="teamName = $event.target.value"
+                style="max-width: 500px"
+              />
+              <q-btn
+                v-if="!$store.direct.getters.isDemo"
+                :label="$t('downloadBackup')"
+                icon="fas fa-file-download"
+                outline
+                rounded
+                no-caps
+                color="primary"
+                class="q-mt-md block"
+                @click="downloadBackup"
+              />
+              <q-btn
+                :label="$t('deleteTeam')"
+                icon="fas fa-user-slash"
+                outline
+                rounded
+                no-caps
+                color="negative"
+                class="q-mt-xl block"
+                @click="deleteTeam"
+              />
+            </div>
           </q-expansion-item>
 
           <q-expansion-item
@@ -179,7 +182,7 @@
                 </q-item-section>
               </q-item>
               <q-btn
-                v-if="isAdmin && !isDemo"
+                v-if="isAdmin && !$store.direct.getters.isDemo"
                 :label="$t('addTeamMember')"
                 icon="add"
                 outline
@@ -309,9 +312,6 @@ export default class TeamSettingsPage extends ClientActionMixin {
   }
   get invitations() {
     return this.team?.invites.filter(invitation => !invitation.acceptedAt) || [];
-  }
-  get isDemo() {
-    return process.env.BACKEND == "demo";
   }
   get infoDialog() {
     return {

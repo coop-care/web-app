@@ -2,6 +2,8 @@ import { ObjectID } from "bson";
 import { defineGetters } from "direct-vuex";
 import { store, StateInterface } from ".";
 import { Client, ProblemRecord, Contact } from "../models";
+import { ccApi } from "src/api/apiProvider";
+import DemoApi from "src/api/demo";
 
 export default defineGetters<StateInterface>()({
     getClient: state => (payload: any): Client | undefined => {
@@ -114,8 +116,9 @@ export default defineGetters<StateInterface>()({
             }, {} as Record<string, Contact>)
         ),
 
-    appVersion: _ => process.env.APP_VERSION || "0",
+    appVersion: () => process.env.APP_VERSION || "0",
 
-    appBuild: _ => process.env.APP_BUILD || "0",
+    appBuild: () => process.env.APP_BUILD || "0",
 
+    isDemo: () => ccApi.constructor == DemoApi,
 });

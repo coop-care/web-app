@@ -9,7 +9,7 @@
       @input="$emit('input', $event)"
     />
     <div class="text-caption text-center q-px-lg q-py-md text-grey-6">
-      <simplified-markdown :text="$t('omahaSystemBookCopyrightNotice')" />
+      {{ $t("omahaSystemBookCopyrightNotice") }} <q-markdown :src="$t('omahaSystemBookReference')" />
     </div>
   </div>
 </template>

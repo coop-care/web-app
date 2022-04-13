@@ -449,7 +449,7 @@
             "categoryCode": "01",
             "targetCode": "41",
             "detailsCode": "",
-            "details": "Klärung was sie tun kann und was nicht"
+            "details": "Klären, was sie selbst kann und was nicht"
           },
           {
             "id": "q75b9p6zyj",
@@ -458,7 +458,7 @@
             "categoryCode": "03",
             "targetCode": "77",
             "detailsCode": "",
-            "details": "Vermittlung von Hilfe bei Dusche, Umziehen und Wäsche"
+            "details": "Unterstützung bei Körperpflege und Wäsche vermitteln"
           },
           {
             "id": "hv70knq185",
@@ -503,7 +503,7 @@
             "behaviour": {
               "observation": 1,
               "expectation": 3,
-              "comment": "kann die Körperpflege nicht starten oder beenden"
+              "comment": "kann Körperpflege nicht selbständig beginnen"
             },
             "status": {
               "observation": 1,
@@ -593,7 +593,7 @@
             "categoryCode": "01",
             "targetCode": "33",
             "detailsCode": "",
-            "details": "muss alle Dosen wie geplant einnehmen"
+            "details": "Wichtigkeit vermitteln, alle Dosen wie geplant einzunehmen"
           },
           {
             "id": "34lh44f2ty",
@@ -602,7 +602,7 @@
             "categoryCode": "03",
             "targetCode": "31",
             "detailsCode": "",
-            "details": "Terminplanung zur Überprüfung von Medikamenten"
+            "details": "Termin planen zur Überprüfung der Medikation"
           },
           {
             "id": "exspfk8ak0",
@@ -611,7 +611,7 @@
             "categoryCode": "03",
             "targetCode": "77",
             "detailsCode": "",
-            "details": "Psychiatriefachkraft hilft Klientin"
+            "details": "Unterstützung der Klientin mit Psychiatriefachkraft vereinbaren"
           },
           {
             "id": "u39eil3rar",
@@ -663,7 +663,7 @@
             "knowledge": {
               "observation": 3,
               "expectation": 4,
-              "comment": "weiß Namen von Medikamenten und dass sie genommen werden müssen"
+              "comment": "kennt Namen von Medikamenten und dass sie genommen werden müssen"
             },
             "behaviour": {
               "observation": 2,
@@ -1267,12 +1267,12 @@
             "knowledge": {
               "observation": 2,
               "expectation": 4,
-              "comment": "hat eine Verschlechterung des Zustands nicht erkannt"
+              "comment": "hat die Verschlechterung des Zustands nicht erkannt"
             },
             "behaviour": {
               "observation": 2,
               "expectation": 4,
-              "comment": "misst weder ihr Körpergewicht, noch legt sie die Beine hoch oder meldet Symptome"
+              "comment": "misst ihr Körpergewicht nicht, legt Beine nicht hoch und meldet Symptome nicht"
             },
             "status": {
               "observation": 2,
@@ -1348,7 +1348,7 @@
             "categoryCode": "01",
             "targetCode": "32",
             "detailsCode": "",
-            "details": "Zweck der Einnahme, was ist zu erwarten oder zu berichten"
+            "details": "Zweck der Einnahme, zu erwartende Wirkung, was ist zu berichten"
           },
           {
             "id": "u8uja28gs3",
@@ -1357,7 +1357,7 @@
             "categoryCode": "01",
             "targetCode": "34",
             "detailsCode": "",
-            "details": "Benutzung, Vorteile und Möglichkeiten eines Tablettenorganisators"
+            "details": "Anwendung und Vorteile eines Tablettenorganisators"
           },
           {
             "id": "zaygiz87k9",
@@ -1402,7 +1402,7 @@
             "knowledge": {
               "observation": 2,
               "expectation": 4,
-              "comment": "kennt den Zweck oder die Nebenwirkungen der Medikamente nicht"
+              "comment": "kennt Zweck und Nebenwirkungen der Medikamente nicht"
             },
             "behaviour": {
               "observation": 3,

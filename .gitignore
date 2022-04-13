@@ -39,5 +39,6 @@ yarn-error.log*
 /stitch/hosting/files
 /public/icons
 /public/favicon.ico
+/license-templates
 deploy.sh
 deploy-stitch.sh

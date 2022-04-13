@@ -40,5 +40,4 @@ export default boot(({ app }) => {
   }
 
   setColorSet(store?.state.currentUser?.colorScheme || defaultColors);
-
 })
