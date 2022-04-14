@@ -4,8 +4,7 @@
     class="limit-page-width width-xs"
   >
     <div class="q-mt-md q-mb-lg text-h4 text-weight-medium">{{ $t("license") }}</div>
-    <div v-if="!$store.direct.getters.isDemo">{{ $t("appCopyrightNotice") }}</div>
-    <div v-else>
+    <div v-if="$store.direct.getters.license == 'AGPL'">
       <q-markdown
         :src="licenseSummary"
         class="readable-line-length q-mb-xl"
@@ -17,6 +16,7 @@
         class="readable-line-length"
       />
     </div>
+    <div v-else>{{ $t("appCopyrightNotice") }}</div>
   </q-page>
 </template>
 

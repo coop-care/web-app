@@ -149,4 +149,6 @@ export default defineGetters<StateInterface>()({
     },
 
     isDemo: () => ccApi.constructor == DemoApi,
+
+    license: () => !process.env.USE_FALLBACK_LICENSE ? "AGPL" : "",
 });
