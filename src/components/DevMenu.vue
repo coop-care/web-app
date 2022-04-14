@@ -109,7 +109,7 @@ export default class DevMenu extends Vue {
     } as { [key: string]: string };
   }
   get isVisible() {
-    return this.$ccApi.isLoggedIn && process.env.BACKEND != "demo" && process.env.DEV;
+    return this.$ccApi.isLoggedIn && !this.$store.direct.getters.isDemo && process.env.DEV;
   }
   getColor(name: string) {
     return getColor(name);

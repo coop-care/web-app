@@ -2,6 +2,8 @@ import { ObjectID } from "bson";
 import { defineGetters } from "direct-vuex";
 import { store, StateInterface } from ".";
 import { Client, ProblemRecord, Contact } from "../models";
+import { ccApi } from "src/api/apiProvider";
+import DemoApi from "src/api/demo";
 import { Platform } from "quasar";
 
 const currentTeam = (state: StateInterface) => {
@@ -145,4 +147,6 @@ export default defineGetters<StateInterface>()({
 
         return "";
     },
+
+    isDemo: () => ccApi.constructor == DemoApi,
 });

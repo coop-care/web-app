@@ -88,7 +88,7 @@
                 />
               </div> -->
               <q-btn
-                v-if="!isDemo"
+                v-if="!$store.direct.getters.isDemo"
                 :label="$t('downloadBackup')"
                 icon="fas fa-file-download"
                 outline
@@ -214,7 +214,7 @@
                 </q-item-section>
               </q-item>
               <q-btn
-                v-if="isAdmin && !isDemo"
+                v-if="isAdmin && !$store.direct.getters.isDemo"
                 :label="$t('addTeamMember')"
                 icon="add"
                 outline
@@ -345,9 +345,6 @@ export default class TeamSettingsPage extends ClientActionMixin {
   }
   get invitations() {
     return this.team?.invites.filter(invitation => !invitation.acceptedAt) || [];
-  }
-  get isDemo() {
-    return process.env.BACKEND == "demo";
   }
   get infoDialog() {
     return {
