@@ -183,11 +183,7 @@ export class Client extends IdentifiableObject {
         method: (reminder: Reminder, problem?: ProblemRecord) => any
     ) {
         this.problems.forEach(problem => {
-            if (
-                !problem.createdAt ||
-                !!problem.resolvedAt ||
-                !problem.problem.isHighPriority
-            ) {
+            if (!problem.isActive) {
                 return;
             }
 
@@ -209,13 +205,8 @@ export class Client extends IdentifiableObject {
             return;
         }
 
-        this.forActiveReminders((reminder, problem) =>
-            reminder.calculateOccurrences(
-                !!this.leftAt ||
-                (!!problem &&
-                    (!!problem.resolvedAt ||
-                        !problem.problem.isHighPriority))
-            )
+        this.forActiveReminders((reminder) =>
+            reminder.calculateOccurrences()
         );
     }
 

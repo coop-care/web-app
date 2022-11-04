@@ -60,7 +60,7 @@ export class Reminder extends Base {
         return this.startDateOfRecurrenceRules || this.createdAt;
     }
 
-    calculateOccurrences(isInactive: boolean) {
+    calculateOccurrences() {
         const start = this.startDateOfRecurrenceRules;
 
         if (start && this.recurrenceRules) {
@@ -73,7 +73,7 @@ export class Reminder extends Base {
             this.occurrences = this.occurrences.concat(due);
         }
 
-        if (isInactive || this.isFinished) {
+        if (this.isFinished) {
             const completedOccurrences = this.completedOccurrences;
             if (completedOccurrences.length < this.occurrences.length) {
                 this.occurrences = completedOccurrences;
@@ -90,7 +90,7 @@ export class Reminder extends Base {
             );
 
             if (pastOccurrences.length == this.occurrences.length) {
-                return this.calculateOccurrences(false);
+                return this.calculateOccurrences();
             }
 
             const completedSinceStartOccurrences = this.occurrences.filter(
@@ -99,7 +99,7 @@ export class Reminder extends Base {
 
             if (!completedSinceStartOccurrences.length) {
                 this.occurrences = pastOccurrences;
-                return this.calculateOccurrences(false);
+                return this.calculateOccurrences();
             }
 
             const dueSinceStartOccurrences = this.recurrenceRules

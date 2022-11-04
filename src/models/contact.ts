@@ -78,7 +78,7 @@ export class Contact extends Base {
     return Contact.makeLabeledValue("", this.phoneNumbers, Contact.phoneLabels);
   }
   makeEmailAddress() {
-    return Contact.makeLabeledValue("", this.emailAddresses, Contact.phoneLabels);
+    return Contact.makeLabeledValue("", this.emailAddresses, Contact.emailLabels);
   }
   makePostalAddress(country: string) {
     return Contact.makeLabeledValue({
