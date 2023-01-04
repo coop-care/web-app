@@ -211,11 +211,11 @@ export default class UserSettingsPage extends Vue {
         colors: defaultColors
       },
       {
-        label: "omahasystem.nl",
+        label: "Classic Scheme",
         value: ["#0BB5B7", "#E63E22", "#EF971B", "#0BB5B7", defaultColors[4], defaultColors[5]],
       },
       {
-        label: "Cold pink",
+        label: "Cold Pink",
         value: ["#C64EA9", "#F30062", "#3A85D5", "#7D49C3", defaultColors[4], defaultColors[5]],
       },
     ]

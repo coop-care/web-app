@@ -84,7 +84,7 @@
       </template>
     </q-stepper>
     <div class="text-caption text-center q-px-lg q-pb-md">
-      <simplified-markdown :text="$t('omahaSystemBookCopyrightNotice')" />
+      {{ $t("omahaSystemBookCopyrightNotice") }} <q-markdown :src="$t('omahaSystemBookReference')" />
     </div>
   </q-page>
 </template>

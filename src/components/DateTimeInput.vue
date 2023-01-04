@@ -2,6 +2,7 @@
   <q-input
     v-model="dateString"
     :mask="dateMaskForInput"
+    fill-mask
     :label="label"
     :placeholder="placeholder"
     :color="color"
@@ -10,6 +11,7 @@
     :hint="hint"
     @blur="dateKey = Math.random()"
     ref="dateInput"
+    inputmode="numeric"
   >
     <q-menu
       v-if="mappedOptions"
@@ -126,15 +128,15 @@ interface DateSelectionOption {
 export default class DateTimeInput extends Vue {
   @Prop(Date) readonly value: Date | undefined;
   @Prop({ type: String, default: "YYYY-MM-DD HH:mm"}) readonly format!: string;
-  @Prop(Date) readonly min: Date | undefined;
-  @Prop(String) readonly label: string | undefined;
-  @Prop(String) readonly placeholder: string | undefined;
-  @Prop(String) readonly defaultTime: string | undefined;
+  @Prop(Date) readonly min: Date | undefined;
+  @Prop(String) readonly label: string | undefined;
+  @Prop(String) readonly placeholder: string | undefined;
+  @Prop(String) readonly defaultTime: string | undefined;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
   @Prop(Boolean) readonly required!: boolean;
   @Prop(Boolean) readonly dense!: boolean;
   @Prop({ type: Array, default: () => []}) readonly options!: DateSelectionOption[];
-  @Prop(String) readonly hint: string | undefined;
+  @Prop(String) readonly hint: string | undefined;
   @Ref() readonly dateInput!: QInput;
   @Ref() readonly dateProxy!: QPopupProxy;
   @Ref() readonly timeProxy!: QPopupProxy;
@@ -171,6 +173,8 @@ export default class DateTimeInput extends Vue {
           )
         );
       }
+    } else {
+      this.$emit("input", undefined)
     }
   }
   get dateMaskForInput() {
@@ -209,6 +213,14 @@ export default class DateTimeInput extends Vue {
     this.$emit("input", null);
     this.dateInput.$emit("blur", event);
     this.showOptions = false;
+  }
+
+  created() {
+    this.$root.$on("did-change-locale", () => this.dateKey = Math.random());
+  }
+
+  beforeDestroy() {
+    this.$root.$off("did-change-locale");
   }
 }
 </script>

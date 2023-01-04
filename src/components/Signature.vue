@@ -29,11 +29,11 @@
   font-weight: 500
   font-style: italic
   border: 1px solid
-.cursor-help
-  cursor: help
 .signature-tooltip
   font-size: .8rem
   padding: 2px 6px
+.cursor-help
+  cursor: help
 </style>
 
 <script lang="ts">
@@ -46,13 +46,18 @@ export default class SignatureView extends Vue {
   @Prop({ type: String, default: "" }) readonly userId!: string;
   @Prop({ type: String, default: "black"}) readonly color!: string;
   @Prop({ type: String, default: ""}) readonly description!: string;
+  @Prop({ type: Date}) readonly date?: Date;
   @Prop({ type: Boolean}) readonly hasTooltip!: boolean;
 
   get signature() {
     return this.teamMember?.signature;
   }
   get tooltip() {
-    return [this.teamMember?.username, this.description].filter(text => text).join(", ");
+    return [
+      this.teamMember?.username, 
+      this.date ? this.$d(this.date, "DateTimeShort") : undefined, 
+      this.description
+    ].filter(Boolean).join(", ");
   }
   get teamMember() {
     return this.user || this.$store.direct.state.teamMembers[this.userId];

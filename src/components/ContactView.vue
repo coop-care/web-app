@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="contact"
-    :class="[$q.screen.gt.xs ? 'q-px-md' : 'q-px-xs']"
-  >
+  <div v-if="contact">
     <q-resize-observer @resize="onResize" />
 
     <div v-if="!isEditing || isDisabled" >
@@ -142,7 +139,7 @@
             v-if="!noBirthday && !contact.isOrganization"
             :value="contact.birthday"
             @input="saveContact({birthday: $event})"
-            :label="$t('birthday')"
+            :label="$t('birthday') + ' (' + $t('dateFormatPlaceholder') + ')'"
             :format="$t('dateFormat')"
           />
           <selectable-input
@@ -233,13 +230,7 @@
               @change="save"
               :placeholder="$t('street')"
               dense
-            />
-            <q-input
-              :value="item.value.street2"
-              @input="update(item.value, {street2: $event})"
-              @change="save"
-              :placeholder="$t('street')"
-              dense
+              autogrow
             />
             <div class="row">
               <q-input
@@ -307,7 +298,6 @@
 
 <script lang="ts">
 import { Component, Prop, Watch } from "vue-property-decorator";
-import { DateTime } from "luxon";
 import RecordMixin from "../mixins/RecordMixin";
 import { Contact, LabeledValue, PostalAddress, Client } from "../models";
 import NoDataItem from "../components/NoDataItem.vue";
@@ -366,7 +356,6 @@ export default class ContactView extends RecordMixin {
   }
   get contactDetails() {
     const result: LabeledItemType[] = [];
-    const locale = this.$root.$i18n.locale;
 
     return result.concat(this.contact.phoneNumbers.map((item, index, list) => {
       return {
@@ -395,7 +384,7 @@ export default class ContactView extends RecordMixin {
     })).concat(this.contact.birthday ? [
       {
         label: this.$t("birthday") as string,
-        value: this.contact.birthday.toLocaleString(locale, DateTime.DATE_FULL)
+        value: this.$d(this.contact.birthday, "DateFull")
       }
     ] : []).concat(this.contact.notes ? [
       {

@@ -11,6 +11,11 @@ node_modules
 /src-cordova/platforms
 /src-cordova/plugins
 /src-cordova/www
+/src-cordova/res/android
+/src-cordova/res/ios
+/src-cordova/res/screen
+/src-cordova/build.json
+*.keystore
 
 # Capacitor related directories and files
 /src-capacitor/www
@@ -35,7 +40,10 @@ yarn-error.log*
 .quasar.env.json
 
 *.env
+/stitch
 /stitch/hosting/files
 /public/icons
 /public/favicon.ico
+/license-templates
 deploy.sh
+deploy-stitch.sh

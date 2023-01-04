@@ -69,6 +69,18 @@
         >
           <q-item-section>{{ $t("databaseClearAll") }}</q-item-section>
         </q-item>
+
+        <q-separator />
+
+        <q-item class="text-grey-5">
+          <q-item-section>
+            <q-item-label>Version {{ $store.getters.appVersion }}</q-item-label>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $store.getters.appPlatform || "browser" }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
       </q-list>
     </q-menu>
 </template>
@@ -93,6 +105,9 @@ export default class DevMenu extends Vue {
       outcome: "Bewertungs-Farbe",
     } as { [key: string]: string };
   }
+  get isVisible() {
+    return this.$ccApi.isLoggedIn && !this.$store.direct.getters.isDemo && process.env.DEV;
+  }
   getColor(name: string) {
     return getColor(name);
   }
@@ -105,8 +120,7 @@ export default class DevMenu extends Vue {
   clearDB() {
     this.$q
       .dialog({
-        title:
-          "Möchtest du wirklich die Daten <strong>aller</strong> Klienten löschen?",
+        title: "Möchtest du wirklich die Daten aller Klienten löschen?",
         message: "Diese Aktion kann nicht rückgängig gemacht werden.",
         ok: {
           label: this.$t("databaseClearAll"),
@@ -115,7 +129,6 @@ export default class DevMenu extends Vue {
         },
         cancel: true,
         persistent: true,
-        html: true,
       })
       .onOk(() => {
         void this.$store.direct.dispatch.clearDB();

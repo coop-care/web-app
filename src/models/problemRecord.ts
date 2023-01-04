@@ -26,6 +26,9 @@ export class ProblemRecord extends Base {
             (b.createdAt?.getTime() || 0) - (a.createdAt?.getTime() || 0);
     }
 
+    get isActive(): boolean {
+        return !!this.createdAt && !this.resolvedAt && !!this.problem.isHighPriority;
+    }
     get reminders(): Reminder[] {
         if (this.ratingReminder) {
             return (this.interventions as Reminder[]).concat([

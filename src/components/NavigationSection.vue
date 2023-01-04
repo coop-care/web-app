@@ -38,6 +38,7 @@ export default class NavigationSection extends Vue {
   route(routeName?: string) {
     if (this.$route.name != routeName) {
       this.$router.push({ name: routeName })
+        .catch(console.error)
     }
   }
 }

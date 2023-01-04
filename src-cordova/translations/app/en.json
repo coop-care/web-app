@@ -1,0 +1,6 @@
+{
+  "config_ios": {
+    "NSCameraUsageDescription": "Scan documents and take pictures to document health problems"
+  },
+  "config_android": {}
+}

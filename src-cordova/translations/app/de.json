@@ -1,0 +1,6 @@
+{
+  "config_ios": {
+    "NSCameraUsageDescription": "Dokumente einscannen und Fotos aufnehmen um Gesundheitsprobleme zu dokumentieren"
+  },
+  "config_android": {}
+}

@@ -2,6 +2,7 @@ import Vue from "vue";
 import CoopCareApiInterface from "./coopCareApiInterface";
 import DemoApi from "./demo";
 import StitchApi from "./stitch";
+import RealmApi from "./realm";
 import store from "../store";
 import { User, TeamMember, Team, Client } from "../models";
 
@@ -13,10 +14,10 @@ declare module "vue/types/vue" {
 
 let ccApi: CoopCareApiInterface;
 
-if (process.env.BACKEND == "demo") {
-    ccApi = new DemoApi();
-} else {
-    ccApi = new StitchApi("openomaha-elgvq", "openomaha");
+if (process.env.BACKEND == "realm" && process.env.BACKEND_APP_ID) {
+    ccApi = new RealmApi(process.env.BACKEND_APP_ID, process.env.BACKEND_APP_ID.split("-")[0] || "");
+} else if (process.env.BACKEND == "stitch" && process.env.BACKEND_APP_ID) {
+    ccApi = new StitchApi(process.env.BACKEND_APP_ID, process.env.BACKEND_APP_ID.split("-")[0] || "");
 
     ccApi.authListener = (changeType) => {
         if (changeType == "sessionEnded") {
@@ -59,6 +60,8 @@ if (process.env.BACKEND == "demo") {
             void store.direct.dispatch.fetchClientsFromDB();
         }
     };
+} else {
+    ccApi = new DemoApi();
 }
 
 export { ccApi };

@@ -61,16 +61,26 @@ export default class MyAccountDrawer extends Vue {
       icon: "far fa-comment",
       action: this.feedback,
     },{
-      label: this.$t("contributeAndOpenSource"),
+      label: this.$t("contribute"),
       icon: "fab fa-github",
-      route: "contributeAndOpenSource",
+      action: () => {
+        const win = window.open("https://www.coopcare.de/en/contributing/", "_blank");
+
+        if (win) {
+          win.opener = null;
+        }
+      },
+    },{
+      label: this.$t("license"),
+      icon: "fas fa-handshake",
+      route: "license",
     },{
       label: this.$t("acknowledgements"),
-      icon: "far fa-copyright",
+      icon: "far fa-heart",
       route: "acknowledgements",
     },{
       label: this.$t("privacyPolicy"),
-      icon: "fas fa-user-shield",
+      icon: "fas fa-shield-alt",
       route: "privacyPolicy",
     },{
       label: this.$t("legalNotice"),

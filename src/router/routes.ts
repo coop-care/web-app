@@ -1,6 +1,7 @@
-import { RouteConfig } from "vue-router"
+import { RouteConfig } from "vue-router";
+import store from "../store";
 
-const isDemo = process.env.BACKEND == "demo";
+const isDemo = store.direct.getters.isDemo;
 const routes: RouteConfig[] = [
   {
     path: "/",
@@ -34,6 +35,11 @@ const routes: RouteConfig[] = [
                 component: () => import("components/ClientHealthInformation.vue"),
                 meta: { noScroll: true },
               },
+              // {
+              //   name: "clientBillingInformation",
+              //   path: "billing",
+              //   component: () => import("components/ClientBillingSettings/index.vue")
+              // },
               {
                 name: "clientAgreements",
                 path: "agreements",
@@ -71,6 +77,14 @@ const routes: RouteConfig[] = [
             path: "report/:problemId?",
             component: () => import("components/ClientProblems.vue"),
             meta: { noScroll: true },
+          },
+          {
+            name: "clientConversation",
+            path: "conversation/:day?",
+            component: () => import("components/ClientConversation.vue"),
+            meta: {
+              disablePullToRefresh: true
+            }
           },
           {
             name: "clientProofOfPerformance",
@@ -137,6 +151,47 @@ const routes: RouteConfig[] = [
         path: "/settings/team",
         component: () => import("pages/TeamSettings.vue")
       },
+      // {
+      //   name: "backoffice",
+      //   path: "/backoffice/:backofficeId?",
+      //   redirect: { name: "backofficeInvoice" },
+      //   component: () => import("pages/Backoffice.vue"),
+      //   children: [
+      //     {
+      //       name: "backofficeInvoice",
+      //       path: "invoice/:invoiceId?",
+      //       component: () => import("components/BackofficeInvoice.vue"),
+      //     },
+      //     {
+      //       name: "backofficeCostEstimate",
+      //       path: "costestimate/:costestimateId?",
+      //       component: () => import("components/BackofficeCostEstimate.vue")
+      //     },
+      //     {
+      //       name: "backofficeReferral",
+      //       path: "referral/:referralId?",
+      //       component: () => import("components/BackofficeReferral/index.vue")
+      //     },
+      //     {
+      //       name: "backofficeSettings",
+      //       path: "settings",
+      //       redirect: { name: "backofficeGeneralSettings" },
+      //       component: () => import("components/BackofficeSettings.vue"),
+      //       children: [
+      //         {
+      //           name: "backofficeGeneralSettings",
+      //           path: "general",
+      //           component: () => import("components/BackofficeGeneralSettings.vue")
+      //         },
+      //         {
+      //           name: "backofficeCompensationAgreement",
+      //           path: "compensationagreement/:agreementId",
+      //           component: () => import("components/BackofficeCompensationAgreement/index.vue")
+      //         },
+      //       ]
+      //     },
+      //   ]
+      // },
       {
         name: "insights",
         path: "/insights",
@@ -167,6 +222,16 @@ const routes: RouteConfig[] = [
         name: "resetPassword",
         path: !isDemo ? "/passwordreset" : "",
         component: () => import("pages/PasswordReset.vue")
+      },
+      {
+        name: "license",
+        path: "/license",
+        component: () => import("pages/License.vue")
+      },
+      {
+        name: "acknowledgements",
+        path: "/acknowledgements",
+        component: () => import("pages/Acknowledgements.vue")
       },
       {
         name: "legalNotice",

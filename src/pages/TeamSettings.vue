@@ -46,21 +46,68 @@
             switch-toggle-side
             :default-opened="false"
           >
-            <q-input
-              :value="teamName"
-              :label="$t('teamName')"
-              ref="teamNameInput"
-              @change="teamName = $event.target.value"
-            />
-            <q-btn
-              :label="$t('deleteTeam')"
-              outline
-              rounded
-              no-caps
-              color="negative"
-              class="q-mt-md"
-              @click="deleteTeam"
-            />
+            <div>
+              <q-input
+                :value="teamName"
+                :label="$t('teamName')"
+                ref="teamNameInput"
+                @change="teamName = $event.target.value"
+                style="max-width: 500px"
+              />
+              <!-- <div class="row items-center q-gutter-y-sm">
+                <q-select
+                  :value="team.backoffice"
+                  @input="saveTeam({backoffice: $event || ''})"
+                  :options="backofficeOptions"
+                  :label="$t('backoffice')"
+                  emit-value
+                  map-options
+                  dense-options
+                  clearable
+                  class="col"
+                  style="max-width: 500px; min-width: 240px"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-italic text-grey">
+                        {{ $t("noExistingBackOffices") }}
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+                <q-btn
+                  :label="$t('goToBackofficeSettings')"
+                  icon-right="fas fa-caret-right"
+                  flat
+                  rounded
+                  no-caps
+                  size="13px"
+                  color="primary"
+                  @click="$router.push({name: 'backofficeSettings'})"
+                />
+              </div> -->
+              <q-btn
+                v-if="!$store.direct.getters.isDemo"
+                :label="$t('downloadBackup')"
+                icon="fas fa-file-download"
+                outline
+                rounded
+                no-caps
+                color="primary"
+                class="q-mt-md block"
+                @click="downloadBackup"
+              />
+              <q-btn
+                :label="$t('deleteTeam')"
+                icon="fas fa-user-slash"
+                outline
+                rounded
+                no-caps
+                color="negative"
+                class="q-mt-xl block"
+                @click="deleteTeam"
+              />
+            </div>
           </q-expansion-item>
 
           <q-expansion-item
@@ -166,7 +213,7 @@
                 </q-item-section>
               </q-item>
               <q-btn
-                v-if="isAdmin && !isDemo"
+                v-if="isAdmin && !$store.direct.getters.isDemo"
                 :label="$t('addTeamMember')"
                 icon="add"
                 outline
@@ -220,27 +267,29 @@ import { Component, Ref } from "vue-property-decorator";
 import { QInput } from "quasar";
 import VueI18n from "vue-i18n";
 import { TeamMember, Team, TeamInvitation, Client } from "../models";
+import ClientActionMixin from "../mixins/ClientActionMixin";
 import Signature from "../components/Signature.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import TextWithTooltip from "../components/TextWithTooltip.vue";
 import PullToRefresh from "../components/PullToRefresh.vue";
 import TeamInvitationDialog from "../components/TeamInvitationDialog.vue";
-import ClientActionMixin from "../mixins/ClientActionMixin";
+import { downloadJSON } from "src/helper/download";
 
 @Component({
   components: {
     Signature,
     ActionMenu,
     TextWithTooltip,
-    PullToRefresh
+    PullToRefresh,
   },
 })
 export default class TeamSettingsPage extends ClientActionMixin {
-  @Ref() readonly teamNameInput!: QInput;
+  @Ref() readonly teamNameInput?: QInput;
 
-  expandedSettings = false;
+  expandedSettings = true;
   expandedMembers = true;
   expandedClients = true;
+  localeChangedKey = Math.random();
 
   get teamId() {
     return this.currentUser?.activeTeam || "";
@@ -256,7 +305,7 @@ export default class TeamSettingsPage extends ClientActionMixin {
         this.expandedSettings = true;
         this.expandedMembers = true;
         this.expandedClients = true;
-        setTimeout(() => this.teamNameInput.focus(), 100);
+        setTimeout(() => this.teamNameInput?.focus(), 100);
       }
     } else {
       void this.$store.direct.dispatch.changeTeam(value)
@@ -296,9 +345,6 @@ export default class TeamSettingsPage extends ClientActionMixin {
   get invitations() {
     return this.team?.invites.filter(invitation => !invitation.acceptedAt) || [];
   }
-  get isDemo() {
-    return process.env.BACKEND == "demo";
-  }
   get infoDialog() {
     return {
       persistent: true,
@@ -306,6 +352,14 @@ export default class TeamSettingsPage extends ClientActionMixin {
         rounded: true
       }
     }
+  }
+  get backofficeOptions() {
+    return this.$store.direct.state.backoffices.map(item => {
+      return {
+        label: item.name,
+        value: item.id
+      }
+    });
   }
 
   isCurrentUser(member: TeamMember) {
@@ -523,11 +577,35 @@ export default class TeamSettingsPage extends ClientActionMixin {
       }
     }
   }
+  downloadBackup() {
+    if (this.team && this.isAdmin) {
+      const timestamp = (new Date()).toISOString().replace(/\D/g, "").slice(0, 14);
+      const filename = `CoopCare_Team_${this.team.name}_${timestamp}.json`;
 
+      downloadJSON({
+        meta: {
+          appVersion: this.$store.direct.getters.appVersion,
+          appBuild: this.$store.direct.getters.appBuild,
+          backupCreatedAtTimestamp: Date.now(),
+        },
+        data: {
+          clients: this.$store.direct.state.clients.map(client => client.toJSON()),
+          team: this.team.toJSON(),
+        },
+      }, filename);
+    }
+  }
+
+  created() {
+    this.$root.$on("did-change-locale", () => this.localeChangedKey = Math.random());
+  }
   mounted() {
     if (this.team) {
       this.updateClientsInAdditionalTeams();
     }
+  }
+  beforeDestroy() {
+    this.$root.$off("did-change-locale");
   }
 }
 </script>

@@ -1,24 +1,40 @@
 import { defineActions } from "direct-vuex";
 import { addSamples } from "../data/sampleImporter";
 import { rootActionContext } from ".";
-import { Client, User, Team, TeamInvitation } from "../models";
+import { Client, User, Team, TeamInvitation, BackOffice } from "../models";
 import { ccApi } from "../api/apiProvider";
 import { defaultColors, setColorSet } from "../helper/color";
 
 export default defineActions({
-    fetchEssentialDataFromDB(context, defaults: { locale: string }): Promise<void> {
+    fetchEssentialDataFromDB(context, defaults: { locale: string, awaitAllResponses?: boolean }): Promise<void> {
         if (!ccApi.isLoggedIn) {
             return Promise.reject();
         }
 
-        const { dispatch } = rootActionContext(context);
+        const { dispatch, getters } = rootActionContext(context);
 
-        const promise = dispatch.fetchUserFromDB(defaults);
-        void dispatch.fetchTeamsFromDB()
+        const promiseUserBackoffices = dispatch.fetchUserFromDB(defaults)
+            // .then(() => dispatch.fetchBackofficesFromDB());
+        const promiseTeamClients = dispatch.fetchTeamsFromDB()
             .then(() => dispatch.fetchTeamMembersFromDB())
             .then(() => dispatch.fetchClientsFromDB());
+            
+        const promiseAll = Promise.all([promiseUserBackoffices, promiseTeamClients])
+        .then(() => undefined)
+        getters.countryCode
+        // .then(() => getters.countryCode
+        //     ? import("src/helper/billing/" + getters.countryCode)
+        //     : undefined
+        // ).then(component => component?.BillingDatabase
+        //     ? (new component.BillingDatabase())?.updateData?.()
+        //     : undefined
+        // );
 
-        return promise;
+        if (defaults.awaitAllResponses == true) {
+            return promiseAll;
+        } else {
+            return promiseUserBackoffices;
+        }
     },
 
     fetchUserFromDB(context, defaults: { locale: string }): Promise<void> {
@@ -109,6 +125,37 @@ export default defineActions({
                 commit.isLoadingClientList(false);
                 return Promise.reject();
             });
+    },
+
+    fetchClientsOfAllTeamsFromDB(context): Promise<Client[]> {
+        if (!ccApi.isLoggedIn) {
+            return Promise.reject();
+        }
+
+        const { state } = rootActionContext(context);
+        const clientIds = [... new Set(state.teams.flatMap(team => team.clients))];
+        return ccApi.getClients(clientIds);
+    },
+
+    fetchBackofficesFromDB(context): Promise<void> {
+        if (!ccApi.isLoggedIn) {
+            return Promise.reject();
+        }
+
+        const { state, getters, commit } = rootActionContext(context);
+
+        return ccApi
+            .getMyBackoffices()
+            .then(backoffices => {
+                const userId = state.currentUser?.userId;
+                commit.setBackoffices(
+                    backoffices.filter(item =>
+                        getters.currentTeam?.backoffice == item.id ||
+                        (userId && item.admins.includes(userId))
+                    )
+                );
+            })
+            .catch(console.error);
     },
 
     addClient(context, client: Client): Promise<Client> {
@@ -353,6 +400,54 @@ export default defineActions({
         }
 
         return promise;
+    },
+
+    addBackoffice(context, backoffice: BackOffice): Promise<BackOffice> {
+        const { commit, state } = rootActionContext(context);
+
+        return ccApi.createBackoffice(backoffice)
+            .then(backoffice => {
+                commit.setBackoffices(state.backoffices.concat([backoffice]));
+                return backoffice;
+            });
+    },
+
+    saveBackoffice(context, payload: { target: BackOffice | undefined, changes: Partial<BackOffice> }): Promise<BackOffice | void> {
+        const { commit, state } = rootActionContext(context);
+
+        if (state.currentUser && payload.target) {
+            commit.updateObject(payload);
+
+            return ccApi
+                .saveBackoffice(payload.target)
+                .catch(err =>
+                    console.error(`Saving back office failed with error: ${err}`)
+                );
+        } else {
+            return Promise.resolve()
+        }
+    },
+
+    deleteBackoffice(context, backoffice: BackOffice): Promise<void> {
+        const { dispatch, getters } = rootActionContext(context);
+        return ccApi
+            .deleteBackoffice(backoffice)
+            .then(() => {
+                return dispatch.fetchBackofficesFromDB();
+            })
+            .then(() => {
+                const team = getters.currentTeam;
+
+                if (team && team?.backoffice == backoffice.id) {
+                    return dispatch.saveTeam({
+                        target: team,
+                        changes: { backoffice: "" }
+                    })
+                } else {
+                    return Promise.resolve();
+                }
+            })
+            .then(() => Promise.resolve());
     },
 
     addSamplesToDB(): Promise<void> {

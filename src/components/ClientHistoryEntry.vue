@@ -69,7 +69,7 @@
 .q-timeline--comfortable .change-record
   .q-timeline__title table
     margin-left: 40px
-.change-record .q-timeline__subtitle div:nth-of-type(2)
+.change-record .q-timeline__subtitle div
   text-transform: none
 .q-timeline--dense .change-record
   margin-left: 8px
@@ -83,7 +83,6 @@
 
 <script lang="ts">
 import { Component, Prop } from "vue-property-decorator";
-import { DateTime } from "luxon";
 import InterventionMixin from "../mixins/InterventionMixin";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import { Intervention, ChangeRecord, Problem } from "../models";
@@ -115,11 +114,7 @@ export default class ClientHistoryEntry extends InterventionMixin {
     });
   }
   get date() {
-    const locale = this.$root.$i18n.locale;
-    return this.changeRecord.createdAt.toLocaleString(
-      locale,
-      DateTime.DATETIME_MED
-    );
+    return this.$d(this.changeRecord.createdAt, "DateTimeMed");
   }
   get username() {
     return this.$store.direct.state.teamMembers[this.changeRecord.user]?.username;

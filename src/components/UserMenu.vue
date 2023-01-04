@@ -110,7 +110,13 @@ export default class UserMenu extends Vue {
     return process.env.DEV;
   }
   print() {
-    window.print();
+    if (this.$q.platform.is.cordova && (cordova?.plugins as any)?.printer) {
+      (cordova?.plugins as any)?.printer?.print?.();
+    } else if (this.$q.platform.is.electron) {
+      window.print();
+    } else {
+      window.print();
+    }
   }
   openMail() {
     location.href = "mailto:feedback@coopcare.de?subject=Feedback";

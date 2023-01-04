@@ -14,7 +14,10 @@
     </template>
 
     <template v-slot:after>
-      <div ref="afterContainer">
+      <div
+        ref="afterContainer"
+        :class="[isCollapsed ? 'q-px-xs' : 'q-pl-md']"
+      >
         <slot name="after" />
         <q-btn
           v-if="isCollapsed"

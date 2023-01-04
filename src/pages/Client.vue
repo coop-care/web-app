@@ -1,11 +1,11 @@
 <template>
   <q-page class="limit-page-width">
 
-    <pull-to-refresh @refresh="updateClientsInAdditionalTeams">
-      <loading
-        v-if="$store.direct.state.isLoadingClientList && !clients.length"
-        class="fit"
-      />
+    <pull-to-refresh
+      @refresh="updateClientsInAdditionalTeams"
+      :disable="disablePullToRefresh"
+    >
+      <loading v-if="$store.direct.state.isLoadingClientList && !clients.length" />
 
       <div
         v-else-if="
@@ -57,17 +57,15 @@
         class="page-padding"
         v-else-if="client"
       >
-        <client-tab-view :key="$route.params.clientId || ''" />
+        <tab-view
+          :key="$route.params.clientId || ''"
+          :tabs="tabs"
+          :tabCount="5"
+        />
       </div>
     </pull-to-refresh>
   </q-page>
 </template>
-
-<style lang="sass">
-.client-overview
-  @media print
-    padding: .75cm 0 0
-</style>
 
 <script lang="ts">
 import { Component, Mixins } from "vue-property-decorator";
@@ -79,7 +77,7 @@ import { Client, Contact } from "../models";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
-import ClientTabView from "../components/ClientTabView.vue";
+import TabView from "../components/TabView.vue";
 
 @Component({
   components: {
@@ -88,12 +86,46 @@ import ClientTabView from "../components/ClientTabView.vue";
     Loading,
     CentralMessage,
     PullToRefresh,
-    ClientTabView
+    TabView
   },
 })
 export default class ClientPage extends Mixins(RecordMixin, ClientActionMixin) {
   get clients() {
     return this.$store.direct.state.clients;
+  }
+  get tabs() {
+    return [{
+      label: this.$t("masterDataTitle") as string,
+      route: "clientMasterData",
+      icon: "fas fa-user-friends",
+    },{
+      label: this.$tc("task", 2),
+      route: "clientReminders",
+      icon: "fas fa-tasks",
+      color: "intervention",
+      badge: this.client?.dueTasksCount || 0,
+    },{
+      label: this.$t("reportTitle") as string,
+      route: "clientReport",
+      icon: "fas fa-notes-medical",
+      color: "classification",
+    },{
+      label: this.$t("shiftNotesTitle") as string,
+      route: "clientConversation",
+      icon: "fas fa-comments",
+      color: "primary",
+    },{
+      label: this.$t("showProofOfPerformance") as string,
+      route: "clientProofOfPerformance",
+      icon: "fas fa-clipboard",
+    },{
+      label: this.$t("documentationHistory") as string,
+      route: "clientHistory",
+      icon: "fas fa-history",
+    }];
+  }
+  get disablePullToRefresh() {
+    return this.$route.meta?.disablePullToRefresh == true;
   }
 
   created() {

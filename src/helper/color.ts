@@ -17,6 +17,11 @@ export function setColor(name: string, value: string) {
         ")"
     );
     setBrand(name + "-bg", lighten(value, 97));
+
+    if (name == "primary") {
+        setBrand(name + "-chat", lighten(value, 86));
+        setBrand(name + "-chat-bg", `linear-gradient(${lighten(value, 96)}, ${lighten(value, 86)})`);
+    }
 }
 
 export function setColorSet(colors: string[]) {

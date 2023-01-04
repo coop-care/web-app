@@ -36,7 +36,7 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
   Router.beforeEach((to, from, next) => {
     // console.log("before each. to:", to.name, "from:", from.name);
     if (ccApi.isLoggedIn) {
-      if (store.state.currentUser?.signature == "" && to.name != "userSettings") {
+      if (store.state.currentUser?.signature == "" && to.name != "userSettings" && to.name != "login") {
         next({ name: "userSettings" });
       } else {
         if (store.state.redirectPath) {

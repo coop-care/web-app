@@ -4,6 +4,7 @@ import Vue from "vue"
 import VueI18n from "vue-i18n"
 import { Quasar } from "quasar"
 import { StateInterface } from "src/store"
+import { DateTime } from "luxon"
 
 declare module "vue/types/vue" {
   interface Vue {
@@ -35,8 +36,29 @@ function matchLocale(
   return resultingLocale
 }
 
+const defaultDateTimeFormats: Record<string, Intl.DateTimeFormatOptions> = {
+  "DateShort": DateTime.DATE_SHORT, // 11.4.2012
+  "DateMed": DateTime.DATE_MED, // 11. Apr 2012
+  "DateFull": DateTime.DATE_FULL, // 11. April 2012
+  "DateHuge": DateTime.DATE_HUGE, // Mittwoch, 11. April 2012
+  "DateTimeShort": DateTime.DATETIME_SHORT, // 11.4.2021 21:15
+  "DateTimeMed": DateTime.DATETIME_MED, // 11. Apr 2021 21:15
+  "WeekdayLong": { // Mittwoch
+    weekday: "long"
+  },
+  "DayMonthShort": { // 11. Apr
+    day: "numeric",
+    month: "short",
+  },
+  "TimeSimple": DateTime.TIME_SIMPLE, // 21:15 (or 09:15 PM)
+};
+
 const defaultLocale = Quasar.lang.isoName;
 const availableLocales = Object.keys(messages);
+const dateTimeFormats = availableLocales.reduce((result, locale) => {
+  result[locale] = defaultDateTimeFormats;
+  return result;
+}, {} as VueI18n.DateTimeFormats);
 
 const i18n = new VueI18n({
   locale: matchLocale(
@@ -45,7 +67,9 @@ const i18n = new VueI18n({
     defaultLocale
   ),
   fallbackLocale: defaultLocale,
-  messages
+  messages,
+  dateTimeFormats,
+  warnHtmlInMessage: "error"
 })
 
 export default boot(({ app, Vue }) => {

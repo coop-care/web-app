@@ -45,14 +45,12 @@
         v-if="title"
         :class="[task.isDue ? 'text-negative' : '']"
       >
-        <span :class="[hasDetails ? '': 'text-italic']">{{ title }}</span>
+        <span :class="[hasDetails ? '': 'text-italic']">{{ title }} </span>
         <span
           v-if="timeAgo"
           @click.prevent="navigateToDueDate"
           class="text-caption text-weight-medium link"
-        >
-          ({{ timeAgo }})
-        </span>
+        >({{ timeAgo }})</span>
       </q-item-label>
     </q-item-section>
     <q-item-section
@@ -111,7 +109,6 @@
 <script lang="ts">
 import { Component, Prop, Ref } from "vue-property-decorator";
 import { date, QPopupProxy } from "quasar";
-import { DateTime } from "luxon";
 import { TranslateResult } from "vue-i18n";
 import {
   Client,
@@ -158,13 +155,15 @@ export default class TaskView extends InterventionMixin {
       isCompleted: value,
       client: this.client,
     });
+    this.$emit("update", true);
     void this.$store.direct.dispatch.saveClient({ client: this.client });
 
     if (this.isPastDue) {
       window.clearTimeout(this.forceUpdateTimeoutHandler || undefined);
-      this.forceUpdateTimeoutHandler = window.setTimeout(() => 
-        this.$emit("force-update"),
-      UpdateTimeoutMilliseconds);
+      this.forceUpdateTimeoutHandler = window.setTimeout(
+        () => this.$emit("update", true),
+        UpdateTimeoutMilliseconds
+      );
     }
   }
   get isPastDue() {
@@ -172,8 +171,9 @@ export default class TaskView extends InterventionMixin {
         this.task.due.getTime() < new Date(this.date).setHours(0, 0, 0, 0);
   }
   get completionDate() {
-    const locale = this.$root.$i18n.locale;
-    return this.task.completed?.toLocaleString(locale, DateTime.DATETIME_SHORT);
+    return this.task.completed 
+      ? this.$d(this.task.completed, "DateTimeShort") 
+      : "";
   }
   get localizedSignature() {
     if (!this.intervention?.receiver) {
@@ -245,20 +245,14 @@ export default class TaskView extends InterventionMixin {
       this.task.due &&
       !isSameDate(selectedDate, this.task.due, "day")
     ) {
-      const locale = this.$root.$i18n.locale;
       const startOfDayTimestamp = new Date().setHours(0, 0, 0, 0);
       const sevenDaysAgo = subtractFromDate(startOfDayTimestamp, {
         days: 7,
       }).getTime();
-      if (this.task.due.getTime() > sevenDaysAgo) {
-        return this.$t("sinceDate", {
-          date: this.task.due.toLocaleString(locale, { weekday: "long" }),
-        });
-      } else {
-        return this.$t("sinceDate", {
-          date: this.task.due.toLocaleString(locale, DateTime.DATE_SHORT),
-        });
-      }
+      const format = this.task.due.getTime() > sevenDaysAgo
+        ? "WeekdayLong"
+        : "DateShort";
+      return this.$t("sinceDate", { date: this.$d(this.task.due, format) });
     } else {
       return undefined;
     }
@@ -404,6 +398,7 @@ export default class TaskView extends InterventionMixin {
       task: this.task,
       client: this.client
     });
+    this.$emit("update");
     this.save();
   }
 
@@ -456,6 +451,7 @@ export default class TaskView extends InterventionMixin {
       changes: changes,
       updateFrom: this.task.due,
     });
+    this.$emit("update");
   }
 
   updateRatingReminder(changes: Partial<RatingReminder>) {

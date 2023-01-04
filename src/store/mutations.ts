@@ -14,7 +14,8 @@ import {
     User,
     Team,
     TeamMember,
-    TeamInvitation
+    TeamInvitation,
+    BackOffice
 } from "../models";
 import { classToPlain, ClassTransformOptions } from "class-transformer";
 
@@ -74,6 +75,20 @@ export default defineMutations<StateInterface>()({
         if (id) {
             state.teamMembers[id] = teamMember;
         }
+    },
+
+    setBackoffices(state, backoffices: BackOffice[]) {
+        state.backoffices = backoffices;
+    },
+
+    setBackoffice(state, updatedBackoffice: BackOffice) {
+        state.backoffices = state.backoffices.map(backoffice => {
+            if (backoffice.equals(updatedBackoffice)) {
+                return updatedBackoffice;
+            } else {
+                return backoffice;
+            }
+        });
     },
 
     setClients(state, clients: Client[]) {

@@ -22,6 +22,10 @@
           :ripple="false"
           @click="$router.back()"
         />
+        <div 
+          v-if="!hasMenuButton($router.currentRoute.name || '') && !hasBackButton($router.currentRoute.name || '')"
+          style="width: 60px"
+        ></div>
 
         <q-toolbar-title class="text-center">
           <div
@@ -90,9 +94,8 @@ import NavigationDrawer from "../components/NavigationDrawer.vue";
     NavigationDrawer
   },
   meta() {
-    const isDemo = process.env.BACKEND == "demo";
     return {
-      title: "CoopCare" + (isDemo ? " – " + this.$t("demoAppTitle") : " App" ),
+      title: "CoopCare" + (this.$store.direct.getters.isDemo ? " – " + this.$t("demoAppTitle") : " App" ),
       meta: {
         description: { name: "description", content: this.$t("appDescription") },
         google: { name: "google", content: "notranslate" },
@@ -164,7 +167,7 @@ export default class MainLayout extends Vue {
   }
   showOnboardingForDemoVersion() {
     if (
-      process.env.BACKEND == "demo" &&
+      this.$store.direct.getters.isDemo &&
       !this.$store.direct.state.currentUser?.isOnboardingCompleted
     ) {
       void import("../components/DemoOnboarding.vue").then(component => {

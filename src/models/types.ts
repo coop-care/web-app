@@ -2,7 +2,7 @@
 export type CustomField<T> = {
   label: string;
   value: T;
-  dataType: string;
+  dataType?: string;
 };
 
 export type LabeledValue<T> = {
