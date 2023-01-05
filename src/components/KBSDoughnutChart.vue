@@ -19,20 +19,29 @@
 .doughnutchart-caption
   pointer-events: none
   position: absolute
-  top: 10%
-  bottom: 10%
+  top: 12%
+  bottom: 8%
   left: 15%
   right: 15%
   border-radius: 50%
   text-align: center
   vertical-align: middle
   -webkit-print-color-adjust: exact
+  container-type: inline-size
+  &> *
+    @container (max-width: 132px)
+      line-height: 1rem
   .keyfigure
     margin-bottom: .2rem
     font-weight: bold
     font-size: 1.3rem
     span
       font-size: 2.6rem
+      @container (max-width: 120px)
+        font-size: 2rem
+  &> span
+    @container (max-width: 110px)
+      font-size: 0.75rem
 @media print
   .doughnutchart-caption
     font-size: .8rem

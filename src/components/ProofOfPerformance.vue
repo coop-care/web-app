@@ -28,7 +28,7 @@
     <div :class="$q.screen.gt.xs ? 'flex justify-center' : ''">
       <table
         v-if="tasks.length"
-        class="proof-of-performance text-left hyphen"
+        class="proof-of-performance text-left hyphen block scroll-x"
       >
         <thead>
           <tr>

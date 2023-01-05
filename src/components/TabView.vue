@@ -80,7 +80,7 @@
           :enter-active-class="'full-width animated ' + tabPanelEnterClass"
           :leave-active-class="'full-width absolute animated ' + tabPanelLeaveClass"
         >
-          <router-view :key="'tab' + selectedTab"/>
+          <router-view :key="'tab' + selectedTab" class="tabview-panel"/>
         </transition>
       </div>
     </div>

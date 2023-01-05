@@ -54,7 +54,7 @@
       />
 
       <div
-        class="page-padding"
+        class="tabview-padding"
         v-else-if="client"
       >
         <tab-view

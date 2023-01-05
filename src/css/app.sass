@@ -230,8 +230,16 @@ body.desktop .hover-primary .q-hoverable:hover > .q-focus-helper
   padding: 24px 24px
   @media (max-width: $breakpoint-sm-max)
     padding: 8px
+  @media print
+    padding: .75cm 0 0
+.tabview-padding
+  padding: 24px 24px
+  @media (max-width: $breakpoint-sm-max)
+    padding: 8px
   @media (max-width: $breakpoint-xs-max)
     padding: 8px 0px
+    .tabview-panel
+      padding: 0px 8px
   @media print
     padding: .75cm 0 0
 .link

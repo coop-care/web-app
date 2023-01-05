@@ -2,7 +2,7 @@
   <div class="client-conversation">
     <div 
       ref="scrollTarget" 
-      class="overflow-auto column items-center q-pr-sm non-selectable" 
+      class="overflow-auto column items-center non-selectable" 
       style="height: 0"
     >
       <q-infinite-scroll
