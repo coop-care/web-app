@@ -4,8 +4,8 @@
     class="radius-md bg-white text-body2 collapsed"
     style="transition: all 0s; width: 100%; max-width: 320px"
   >
-    <q-card-section>
-      <div class="row">
+    <q-card-section class="q-px-sm">
+      <div class="row q-px-sm">
         <div class="text-classification text-h6">
           {{ $t("summary") }}
         </div>
@@ -96,6 +96,26 @@ export default class ClientInsights extends RecordMixin {
           .filter(value => !isNaN(value))
       )
     ).filter(value => !isNaN(value));
+  }
+  /* when the available width is smaller than the maxWidth of 320px, 
+     the canvas width needs to be reduced accordingly */
+  adjustWidthIfNeeded() {
+    const margin = 16;
+    const negativeHorizontalOffsetByGutter = 2 * margin;
+    const maxWidth = 320 - margin;
+    const requiredWidth = Math.min(
+      (this.$el.parentElement?.clientWidth ?? 200) - negativeHorizontalOffsetByGutter, 
+      maxWidth
+    );
+    const canvas = this.$el.querySelector("canvas");
+
+    if (canvas) {
+      canvas.style.width = requiredWidth + "px";
+    }
+  }
+
+  mounted() {
+    this.adjustWidthIfNeeded();
   }
 }
 </script>
