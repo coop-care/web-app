@@ -1,6 +1,4 @@
 import { makeTerminologyWithMaps } from "../helper/terminology";
-import { register } from "timeago.js";
-import { de as timeagoDE } from "timeago.js/lib/lang";
 import store from "../store";
 
 import enUS from "./en-us/index.json";
@@ -68,8 +66,6 @@ if (!store.direct.getters.isDemo) {
             deDE.usersGuide = data;
         });
 }
-
-register("de-de", timeagoDE);
 
 export default {
     "en-us": enUS,

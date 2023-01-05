@@ -70,7 +70,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-property-decorator";
-import { format } from "timeago.js";
+import { format } from "src/helper/timeago";
 import { Outcome, TeamMember } from "src/models";
 import { Rating as RatingTerminology } from "src/helper/terminology";
 import RatingChart, { Rating } from "../components/RatingChart.vue";
