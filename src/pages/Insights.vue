@@ -81,7 +81,7 @@
           switch-toggle-side
         >
           <div class="row q-col-gutter-md">
-            <div class="col-12 col-sm-6 col-md-3">
+            <div class="col-12 col-sm-6 col-md-3 insights-item">
               <k-b-s-overview-chart
                 :labels="terminologyRatings.map(item => item.title)"
                 :dates="dates"
@@ -89,22 +89,25 @@
                 :title="$t('evaluationOfAllClients')"
               />
             </div>
-            <div class="col-12 col-sm-6 col-md-3">
+            <div class="col-12 col-sm-6 col-md-3 insights-item column items-center justify-center">
               <k-b-s-doughnut-chart
                 :dataset="section.knowledgeDataset"
                 :title="terminologyRatings[0].title"
+                class="insights-item-sm"
               />
             </div>
-            <div class="col-12 col-sm-6 col-md-3">
+            <div class="col-12 col-sm-6 col-md-3 insights-item column items-center justify-center">
               <k-b-s-doughnut-chart
                 :dataset="section.behaviourDataset"
                 :title="terminologyRatings[1].title"
+                class="insights-item-sm"
               />
             </div>
-            <div class="col-12 col-sm-6 col-md-3">
+            <div class="col-12 col-sm-6 col-md-3 insights-item column items-center justify-center">
               <k-b-s-doughnut-chart
                 :dataset="section.statusDataset"
                 :title="terminologyRatings[2].title"
+                class="insights-item-sm"
               />
             </div>
           </div>
@@ -125,6 +128,10 @@
 .insights-page
   .date-input
     max-width: 140px
+.insights-item
+  max-width: 400px !important
+.insights-item-sm
+  max-width: 240px
 @media print
   .insights-page
     padding: 0
