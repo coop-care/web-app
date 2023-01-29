@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import { RRuleSet as RuleSet, RRule, Frequency, Options, Weekday } from "rrule";
 import { DateTime } from "luxon";
-import { classToClass } from "class-transformer";
 
 type GetText = (id: string | number | Weekday) => string;
 interface Language {
@@ -19,7 +18,7 @@ class RRuleSet extends RuleSet {
             return undefined;
         }
 
-        json = JSON.parse(JSON.stringify(json));
+        json = structuredClone(json);
 
         const ruleSet = new RRuleSet(true);
         ruleSet.tzid(json.tzid);
@@ -121,9 +120,9 @@ class RRuleSet extends RuleSet {
         const options = overwriteAllValues
             ? {
                   tzid: rule.origOptions.tzid,
-                  wkst: classToClass(rule.origOptions.wkst)
+                  wkst: structuredClone(rule.origOptions.wkst)
               }
-            : classToClass(rule.origOptions);
+            : structuredClone(rule.origOptions);
         Object.assign(options, changes);
         return new RRule(options, !rule._cache);
     }
