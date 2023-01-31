@@ -59,6 +59,7 @@
         v-if="canAddNote && shiftNodeInputVisible"
         autofocus
         cancelable
+        class="print-hide"
         @add="shiftNodeInputVisible = false"
         @cancel="shiftNodeInputVisible = false"
       />

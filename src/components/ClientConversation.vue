@@ -1,5 +1,6 @@
 <template>
   <div class="client-conversation">
+    <div class="text-h6 text-center q-mb-sm print-only">{{ $t("shiftNotesTitle") }}</div>
     <div 
       ref="scrollTarget" 
       class="overflow-auto column items-center non-selectable" 
@@ -27,7 +28,7 @@
         class="text-body2 text-italic q-my-lg"
       >{{ $t("noShiftNotes") }}</div>
     </div>
-    <div ref="footer" class="column items-center bg-white border-top-grey">
+    <div ref="footer" class="column items-center bg-white border-top-grey print-hide">
       <q-resize-observer @resize="onResize" />
       <shift-note-input
         @add="didAddShiftNote"
