@@ -29,7 +29,7 @@ export class Reminder extends Base {
     )
     @Transform(({ value }) => 
         RRuleSet.fromJSON(
-            value.constructor.name == "RRuleSet" 
+            value?.constructor?.name == "RRuleSet" 
                 ? value.toJSON() 
                 : value
         ), 
