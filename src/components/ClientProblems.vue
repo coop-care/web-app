@@ -15,6 +15,8 @@
             clientId: $route.params.clientId,
             problemId: problemRecord.id
           }"
+          :expanded="expanded.includes(problemRecord.id)"
+          @update:expanded="updateExpanded(problemRecord.id)"
         />
       </div>
     </div>
@@ -77,11 +79,33 @@ export default class ClientProblems extends RecordMixin {
       .sort(ProblemRecord.sortByPriorityAndCreatedAt);
   }
 
+  get expanded() {
+    return this.$route.params.expandedIds?.split(",") || [];
+  }
+
   addProblem() {
     void this.$router.push({
       name: "clientProblem",
       params: { problemId: "new" },
     });
+  }
+
+  updateExpanded(problemId: string) {
+    let expandedIds: string;
+
+    if (this.expanded.includes(problemId)) {
+      expandedIds = this.expanded.filter(id => id != problemId).join(",");
+    } else {
+      expandedIds = this.expanded.concat([problemId]).join(",");
+    }
+
+    const params: Record<string, string> = {...this.$route.params, expandedIds};
+
+    if (params.expandedIds.length == 0) {
+      delete params.expandedIds;
+    }
+
+    this.$router.push({name: "clientReport", params})
   }
 }
 </script>

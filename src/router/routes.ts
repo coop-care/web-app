@@ -74,7 +74,7 @@ const routes: RouteConfig[] = [
           },
           {
             name: "clientReport",
-            path: "report/:problemId?",
+            path: ":expandedIds?/report/:sheet?/:problemId?/:interventionId?/:step?",
             component: () => import("components/ClientProblems.vue"),
             meta: { noScroll: true },
           },

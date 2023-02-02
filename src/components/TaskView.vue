@@ -295,6 +295,10 @@ export default class TaskView extends InterventionMixin {
     const isTaskUncompleted = !this.task.completed;
     const isUncompleted = isReminderUnfinished && isTaskUncompleted;
     let endInterventionLabel: TranslateResult;
+    const clientId = this.client._id?.toHexString() || "";
+    const problemId = this.task.problemId || "0";
+    const interventionId = this.reminder.id;
+    const params = { clientId, problemId, interventionId };
 
     if (!!this.intervention?.receiver) {
       endInterventionLabel = this.$t("cancelRequest");
@@ -338,7 +342,7 @@ export default class TaskView extends InterventionMixin {
             problem: this.problemName,
           }) + " …",
         icon: "far fa-arrow-right",
-        action: () => this.routerPush("clientReport"),
+        action: () => this.$router.push({name: "clientReport", params: {clientId, expandedIds: problemId}}),
         condition: isIntervention && !!this.record && !this.record.resolvedAt,
       },
       {

@@ -262,7 +262,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Watch, Mixins } from "vue-property-decorator";
+import { Component, Prop, PropSync, Watch, Mixins } from "vue-property-decorator";
 import RecordMixin from "../mixins/RecordMixin";
 import WarningMixin from "../mixins/WarningMixin";
 import ActionMenu from "../components/ActionMenu.vue";
@@ -281,21 +281,17 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
   @Prop({type: Object, default: {}}) readonly params!: Record<string, string>;
   @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
   @Prop({type: Boolean, default: true}) readonly isExpandable!: boolean;
-  isExpanded = false;
+  @PropSync("expanded", {type: Boolean, default: false}) isExpanded!: boolean;
 
   @Watch("isExpanded")
   onIsExpandedChanged(value: boolean) {
       if (value) {
-        setTimeout(() => {
-          const top = this.$el.getBoundingClientRect().top;
-          const y = top + window.pageYOffset + -80;
-          window.scrollTo({ top: y, behavior: "smooth" });
-        });
+        this.scrollToVisible();
       }
   }
 
   get problem() {
-    return this.record?.problem || new Problem();
+    return this.record?.problem || new Problem();
   }
   get problemTitle() {
     const problemTitle = this.$t(this.problem.title);
@@ -444,6 +440,14 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
 
   getRecordFromStore() {
     return this.$store.direct.getters.getProblemRecordById(this.params);
+  }
+
+  scrollToVisible() {
+    setTimeout(() => {
+      const top = this.$el.getBoundingClientRect().top;
+      const y = top + window.pageYOffset + -80;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    });
   }
 }
 </script>
