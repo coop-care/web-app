@@ -7,8 +7,8 @@ import { ObjectID } from "bson";
 const fromObjectID = ({ value }: TransformFnParams) =>
     (value as ObjectID)?.toHexString();
 
-const toObjectID = ({ value }: TransformFnParams) =>
-    value != undefined ? new ObjectID((value as string).padStart(12)) : undefined;
+const toObjectID = ({ value }: TransformFnParams) => 
+    value != undefined ? new ObjectID(typeof value == "string" ? value.padStart(12) : value) : undefined;
 
 export class Intervention extends Reminder {
     categoryCode = "";
@@ -57,7 +57,7 @@ export class Intervention extends Reminder {
             return new Term("");
         }
     }
-    get intervention() {
+    get intervention(): Intervention {
         return this.arrangedIntervention || this;
     }
 }
