@@ -27,12 +27,12 @@
         />
       </reveal-button>
       <div>
-        <div class="row custom-gutter">
-          <div class="row col-12 col-sm-9 col-md-7">
-            <div class="text-subtitle2 q-pr-md q-pt-sm q-mt-xs">
-              {{ $t("remindOfInterimRatingEvery") }}
-            </div>
-            <div class="row col-sm col-12">
+        <div class="row">
+          <div class="text-subtitle2 q-pr-md q-pt-sm q-mt-xs">
+            {{ $t("remindOfInterimRatingEvery") }}
+          </div>
+          <div>
+            <div class="row">
               <q-input
                 color="outcome"
                 v-model.number="interval"
@@ -41,7 +41,7 @@
                 step="1"
                 input-class="text-center"
                 :key="intervalKey"
-                class="col"
+                class="col-4"
               >
               </q-input>
               <q-select
@@ -53,7 +53,7 @@
                 options-cover
                 map-options
                 emit-value
-                class="col"
+                class="col-8"
                 popup-content-class="text-center"
               >
                 <template v-slot:selected>
@@ -69,9 +69,9 @@
                 </template>
               </q-select>
             </div>
-          </div>
-          <div class="text-caption text-italic q-pt-md q-mt-sm line-height-15">
-            {{ nextRatingDate }}
+            <div class="text-caption text-italic q-mt-xs line-height-11">
+              {{ nextRatingDate }}
+            </div>
           </div>
         </div>
       </div>
