@@ -133,10 +133,7 @@ export default class ClientDrawer extends Vue {
     return this.selectedClient == client;
   }
   addClient() {
-    void this.$router.push({
-      name: "client",
-      params: { clientId: "new" } as any,
-    });
+    this.$root.$emit("new-client");
     this.$root.$emit("close-drawer");
   }
   selectClient(client: Client) {

@@ -14,21 +14,18 @@
         @keyup.enter="$emit('save', contact)"
       />
     </div>
-    <q-btn
-      :label="$t('cancel')"
-      @click="$emit('cancel')"
-      flat
-      color="primary"
-      rounded
-      class="on-left shadow-1"
-    />
-    <q-btn
-      :label="$t('save')"
-      :disable="contact.name.trim().length === 0"
-      color="primary"
-      rounded
-      @click="$emit('save', contact)"
-    />
+    <div class="q-mt-lg row justify-center">
+      <q-btn
+        @click="$emit('save', contact)"
+        color="primary"
+        rounded
+        unelevated
+        no-caps
+        :disable="contact.name.trim().length === 0"
+        :label="$t('add')"
+        class="done-button"
+      />
+    </div>
   </div>
 </template>
 
@@ -37,7 +34,7 @@ import { Vue, Component } from "vue-property-decorator";
 import { Contact } from "../models";
 
 @Component
-export default class App extends Vue {
+export default class NewClientView extends Vue {
   contact = new Contact();
 }
 </script>

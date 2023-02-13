@@ -18,7 +18,7 @@
         <div class="q-pa-md absolute-center vertical-middle column items-center full-width">
           <div class="text-center text-body2">{{ $t("noExistingClient") }}</div>
           <q-btn
-            @click="$router.push({ name: 'client', params: { clientId: 'new' } })"
+            @click="$root.$emit('new-client');"
             no-caps
             color="primary"
             rounded
@@ -37,17 +37,6 @@
         </div>
       </div>
 
-      <div
-        v-else-if="$route.params.clientId == 'new'"
-        class="fit"
-      >
-        <new-client
-          class="q-py-xl q-px-lg"
-          @save="addClient"
-          @cancel="$router.push({ name: 'clientNoneSelected' })"
-        />
-      </div>
-
       <central-message
         v-else-if="$route.params.clientId && !client"
         :message="$t('clientNotFound')"
@@ -64,6 +53,7 @@
         />
       </div>
     </pull-to-refresh>
+    <new-client-sheet/>
   </q-page>
 </template>
 
@@ -71,7 +61,7 @@
 import { Component, Mixins } from "vue-property-decorator";
 import RecordMixin from "../mixins/RecordMixin";
 import ClientActionMixin from "../mixins/ClientActionMixin";
-import NewClient from "../components/NewClient.vue";
+import NewClientSheet from "../components/NewClientSheet.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import { Client, Contact } from "../models";
 import Loading from "components/Loading.vue";
@@ -81,7 +71,7 @@ import TabView from "../components/TabView.vue";
 
 @Component({
   components: {
-    NewClient,
+    NewClientSheet,
     ActionMenu,
     Loading,
     CentralMessage,
