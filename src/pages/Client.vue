@@ -53,7 +53,6 @@
         />
       </div>
     </pull-to-refresh>
-    <new-client-sheet/>
   </q-page>
 </template>
 
@@ -61,7 +60,6 @@
 import { Component, Mixins } from "vue-property-decorator";
 import RecordMixin from "../mixins/RecordMixin";
 import ClientActionMixin from "../mixins/ClientActionMixin";
-import NewClientSheet from "../components/NewClientSheet.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import { Client, Contact } from "../models";
 import Loading from "components/Loading.vue";
@@ -71,7 +69,6 @@ import TabView from "../components/TabView.vue";
 
 @Component({
   components: {
-    NewClientSheet,
     ActionMenu,
     Loading,
     CentralMessage,

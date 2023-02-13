@@ -63,6 +63,7 @@
       </div>
       <router-view />
       <component :is="modalSheetComponent" />
+      <new-client-sheet/>
     </q-page-container>
   </q-layout>
 </template>
@@ -84,6 +85,7 @@ import LanguageMenu from "../components/LanguageMenu.vue";
 import Banner from "../components/Banner.vue";
 import NavigationDrawer from "../components/NavigationDrawer.vue";
 import EditingSheet from "../components/EditingSheet.vue";
+import NewClientSheet from "../components/NewClientSheet.vue";
 
 @Component({
   components: {
@@ -91,7 +93,8 @@ import EditingSheet from "../components/EditingSheet.vue";
     LanguageMenu,
     Banner,
     NavigationDrawer,
-    EditingSheet
+    EditingSheet,
+    NewClientSheet,
   },
   meta() {
     return {
