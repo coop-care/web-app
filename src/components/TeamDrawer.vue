@@ -25,10 +25,8 @@ export default class TeamDrawer extends Vue {
     },{
       label: this.$t("insights"),
       icon: "fas fa-chart-line",
-      route: "insights",
-      visible: !!process.env.DEV
+      route: "insights"
     }]
-    .filter(item => item.visible != false)
   }
 }
 </script>

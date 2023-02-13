@@ -15,7 +15,7 @@ export default class DemoApi implements CoopCareApiInterface {
     })();
     private clients: Client[] = [];
     private teams = (() => {
-        const team = new Team("Team CoopCare", this.userId);
+        const team = new Team("CoopCare", this.userId);
         team._id = new ObjectID("6033c10377b850dbb17c7d30");
         team.clients = sampleClientIds().map(id => id.toHexString());
         return [team];
