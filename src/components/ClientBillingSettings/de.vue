@@ -160,8 +160,8 @@
           :value="clientCustomValue('de.entlastungsleistungBudget')"
           @input="saveClientCustomField('de.entlastungsleistungBudget', $event, false)"
           :hint="$t('de.entlastungsleistungHint')"
+          type="text"
           inputmode="numeric"
-          type="number"
         >
           <template v-slot:append>
             <div class="q-mt-sm">€</div>
@@ -185,8 +185,8 @@
             :label="$t('de.entlastungsleistungAvailableBudget')"
             :value="clientCustomValue('de.entlastungsleistungAvailableBudget')"
             @input="saveClientCustomField('de.entlastungsleistungAvailableBudget', $event, false)"
+            type="text"
             inputmode="numeric"
-            type="number"
           >
             <template v-slot:append>
               <div class="q-mt-sm">€</div>

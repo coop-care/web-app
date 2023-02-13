@@ -146,7 +146,6 @@
 import { Component, Prop, Mixins } from "vue-property-decorator";
 import { TranslateResult } from "vue-i18n";
 import { Intervention, Task, RRuleSet } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
 import InterventionMixin from "../mixins/InterventionMixin";
 import RecordValidator from "../mixins/RecordValidator";
 import Signature from "../components/Signature.vue";
@@ -164,7 +163,7 @@ import InterventionTargetSelect from "../components/InterventionTargetSelect.vue
     InterventionTargetSelect
   }
 })
-export default class ContactTaskView extends Mixins(InterventionMixin, RecordMixin, RecordValidator) {
+export default class ContactTaskView extends Mixins(InterventionMixin, RecordValidator) {
   @Prop({ type: Object, required: true}) readonly task!: Task<Intervention>;
 
   isEditing = Date.now() < this.task.reminder.createdAt.getTime() + 1000;

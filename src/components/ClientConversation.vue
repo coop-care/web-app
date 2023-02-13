@@ -163,7 +163,6 @@ export default class ClientConversation extends RecordMixin {
   mounted() {
     this.onResize();
     this.scrollToDateIfNeeded();
-    (window as any).foo = this
   }
 
   beforeDestroy() {
