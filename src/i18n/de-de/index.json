@@ -651,5 +651,10 @@
   "acknowledgementsOmahaSystemDiagnoses": "Probleme der Klienten, die häufig mit ausgewählten Erkrankungen, medizinischen Diagnosen und Behandlungen einhergehen (Appendix C)",
   "acknowledgementsOpenSourceIntro": "Diese App baut auf Softwarekomponenten auf und nutzt Schriftarten, die von vielen Menschen entwickelt und unter Open-Source-Lizenzen frei veröffentlicht werden. Ohne diese externen Komponenten wäre die Entwicklung von CoopCare nicht mit vertretbarem Aufwand möglich. Wir sind allen Mitwirkenden an diesen {count} Open-Source-Projekten zutiefst dankbar für ihre Zeit, Erfahrung und Leidenschaft, die sie in die Entwicklung und Verbesserung der Projekte investieren:",
   "appCopyrightNotice": "Copyright © Michael Kamphausen - Alle Rechte vorbehalten",
-  "myApp": "Meine App"
+  "myApp": "Meine App",
+  "unsavedChangesTitle": "Änderungen verwerfen?",
+  "unsavedChangesMessage": "Du hast Änderungen vorgenommen, die beim Abbrechen verloren gehen. Möchtest du deine Eingaben wirklich verwerfen?",
+  "apply": "Anwenden",
+  "applyAnyway": "Trotzdem anwenden",
+  "addAnyway": "Trotzdem hinzufügen"
 }

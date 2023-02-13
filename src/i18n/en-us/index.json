@@ -651,5 +651,10 @@
   "acknowledgementsOmahaSystemDiagnoses": "Client Problems Frequently Associated with Selected Conditions, Medical Diagnoses, and Treatments (Appendix C)",
   "acknowledgementsOpenSourceIntro": "This app is built on top of software components and uses fonts that are developed by many people and that are freely published under open source licenses. Without these external components, the development of CoopCare would not be possible with reasonable effort. We are deeply grateful to all contributors to these {count} open source projects for their time, experience and passion they invest in developing and improving the projects:",
   "appCopyrightNotice": "Copyright © Michael Kamphausen - All Rights Reserved",
-  "myApp": "My app"
+  "myApp": "My app",
+  "unsavedChangesTitle": "Discard changes?",
+  "unsavedChangesMessage": "You have made changes that will be lost upon canceling. Do you really want to discard your edits?",
+  "apply": "Done",
+  "applyAnyway": "Apply anyway",
+  "addAnyway": "Add anyway"
 }
