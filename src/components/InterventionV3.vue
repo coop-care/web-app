@@ -172,7 +172,7 @@ export default class InterventionView extends Vue {
   }
   duplicateIntervention(id: string) {
     const index = this.interventions.findIndex(item => item.id == id);
-    const intervention = this.interventions[index]?.clone();
+    const intervention = this.interventions[index]?.duplicate();
     if (intervention) {
       const interventions = this.interventions.slice();
       interventions.splice(index + 1, 0, intervention);

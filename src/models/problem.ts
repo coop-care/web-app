@@ -1,7 +1,8 @@
 import { Term } from "./term";
 import { TerminologyWithMaps } from "../helper/terminology";
+import { Base } from "./base";
 
-export class Problem {
+export class Problem extends Base {
     code = "";
     scopeCode = 0;
     severityCode = 2;

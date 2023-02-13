@@ -353,7 +353,7 @@ export default defineMutations<StateInterface>()({
             return;
         }
 
-        const newProblemRecord = problemRecord.prioritizedClone();
+        const newProblemRecord = problemRecord.prioritizedDuplicate();
         client.problems.push(newProblemRecord);
         problemRecord.resolvedAt = new Date();
 
@@ -394,7 +394,21 @@ export default defineMutations<StateInterface>()({
             return;
         }
 
-        let target: Outcome | Rating = problemRecord.editableOutcome;
+        let lastOutcome = problemRecord.outcomes[problemRecord.outcomes.length - 1];
+
+        if (!lastOutcome || lastOutcome.createdAt) {
+            const newOutcome = new Outcome();
+
+            if (lastOutcome) {
+                newOutcome.knowledge = lastOutcome.knowledge.clone();
+                newOutcome.behaviour = lastOutcome.behaviour.clone();
+                newOutcome.status = lastOutcome.status.clone();
+            }
+            problemRecord.outcomes.push(newOutcome);
+            lastOutcome = newOutcome;
+        }
+
+        let target: Outcome | Rating = lastOutcome;
 
         if (payload.ratingType) {
             target = (target as any)[payload.ratingType];

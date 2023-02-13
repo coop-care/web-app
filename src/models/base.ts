@@ -1,8 +1,16 @@
-import { classToClass } from "class-transformer";
+import { classToClass, classToPlain } from "class-transformer";
 
 export class Base {
     clone() {
         return classToClass(this);
+    }
+
+    toJSON() {
+        return JSON.stringify(classToPlain(this));
+    }
+
+    equals(object: Base) {
+        return this.toJSON() == object.toJSON();
     }
 
     generateId() {

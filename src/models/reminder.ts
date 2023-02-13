@@ -131,7 +131,7 @@ export class Reminder extends Base {
         }
     }
 
-    clone() {
+    duplicate() {
         const reminder = super.clone();
         reminder.id = this.generateId();
         reminder.createdAt = new Date();

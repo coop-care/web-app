@@ -41,36 +41,19 @@ export class ProblemRecord extends Base {
     get diagnosisName() {
         return this.tag ? "diagnosisNames." + this.tag : "noDiagnosis";
     }
-    get editableOutcome() {
-        let lastOutcome = this.outcomes[this.outcomes.length - 1];
 
-        if (!lastOutcome || lastOutcome.createdAt) {
-            const newOutcome = new Outcome();
-
-            if (lastOutcome) {
-                newOutcome.knowledge = lastOutcome.knowledge.clone();
-                newOutcome.behaviour = lastOutcome.behaviour.clone();
-                newOutcome.status = lastOutcome.status.clone();
-            }
-            this.outcomes.push(newOutcome);
-            lastOutcome = newOutcome;
-        }
-
-        return lastOutcome;
-    }
-
-    clone() {
+    duplicate() {
         const clone = super.clone();
         clone.id = this.generateId();
         clone.createdAt = new Date();
         return clone;
     }
 
-    prioritizedClone() {
-        const clone = this.clone();
-        clone.problem.isHighPriority = true;
-        clone.problem.priorityDetails = "";
-        clone.ratingReminder = new RatingReminder(4, 2);
-        return clone;
+    prioritizedDuplicate() {
+        const duplicate = this.duplicate();
+        duplicate.problem.isHighPriority = true;
+        duplicate.problem.priorityDetails = "";
+        duplicate.ratingReminder = new RatingReminder(4, 2);
+        return duplicate;
     }
 }
