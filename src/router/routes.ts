@@ -114,11 +114,6 @@ const routes: RouteConfig[] = [
         ]
       },
       // {
-      //     name: "clientInterventions",
-      //     path: "/client/:clientId/problem/:problemId/intervention",
-      //     component: () => import("pages/InterventionList.vue")
-      // },
-      // {
       //   name: "clientProblemsByDiagnosis",
       //   path: !isDemo ? "/client/:clientId/diagnoses" : "",
       //   component: () => import("pages/ProblemsByDiagnosis.vue")
