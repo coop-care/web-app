@@ -123,11 +123,11 @@ const routes: RouteConfig[] = [
         path: "/settings/user",
         component: () => import("pages/UserSettings.vue")
       },
-      {
-        name: "teamSettings",
-        path: "/settings/team",
-        component: () => import("pages/TeamSettings.vue")
-      },
+      // {
+      //   name: "teamSettings",
+      //   path: "/settings/team",
+      //   component: () => import("pages/TeamSettings.vue")
+      // },
       // {
       //   name: "backoffice",
       //   path: "/backoffice/:backofficeId?",
@@ -173,7 +173,7 @@ const routes: RouteConfig[] = [
         name: "insights",
         path: "/insights",
         component: () => import("pages/Insights.vue"),
-        meta: { section: "team" }
+        meta: { section: "client" }
       },
       {
         name: "login",

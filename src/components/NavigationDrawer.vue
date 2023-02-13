@@ -23,12 +23,12 @@
             :label="$tc('client', 2)"
             icon="fas fa-house-user"
           />
-          <q-tab
+          <!-- <q-tab
             name="team"
             :ripple="false"
             :label="$t('team')"
             icon="fas fa-users"
-          />
+          /> -->
           <q-tab
             name="user"
             :ripple="false"
@@ -53,13 +53,13 @@
             <client-drawer/>
             <q-space @click="closeDrawer"/>
           </q-tab-panel>
-          <q-tab-panel
+          <!-- <q-tab-panel
             name="team"
             class="q-pa-none column no-wrap"
           >
             <team-drawer/>
             <q-space @click="closeDrawer"/>
-          </q-tab-panel>
+          </q-tab-panel> -->
           <q-tab-panel
             name="user"
             class="q-pa-none column no-wrap"
@@ -116,8 +116,8 @@ export default class NavigationDrawer extends Vue {
 
     if (section == "client" || name.startsWith("client")) {
       return "clients";
-    } else if (section == "team" || name.startsWith("team")) {
-      return "team";
+    // } else if (section == "team" || name.startsWith("team")) {
+    //   return "team";
     } else {
       return "user";
     }

@@ -80,6 +80,8 @@
         </q-item-section>
       </q-item>
     </q-expansion-item>
+
+    <navigation-section :items="additionalItems" class="q-mt-lg" />
   </q-list>
 </template>
 
@@ -90,10 +92,12 @@
 import { Vue, Component } from "vue-property-decorator";
 import { Client } from "../models/client";
 import Loading from "components/Loading.vue";
+import NavigationSection from "./NavigationSection.vue";
 
 @Component({
   components: {
-    Loading
+    Loading,
+    NavigationSection
   }
 })
 export default class ClientDrawer extends Vue {
@@ -127,6 +131,13 @@ export default class ClientDrawer extends Vue {
     return team
       ? this.$t("team") + " " + team.name
       : "";
+  }
+  get additionalItems() {
+    return [{
+      label: this.$t("insights"),
+      icon: "fas fa-chart-line",
+      route: "insights"
+    }]
   }
 
   isSelected(client: Client) {
