@@ -85,8 +85,8 @@ export default class ClientProblems extends RecordMixin {
 
   addProblem() {
     void this.$router.push({
-      name: "clientProblem",
-      params: { problemId: "new" },
+      name: "clientReport", 
+      params: { ...this.$route.params, sheet: "newProblem" }
     });
   }
 
@@ -105,7 +105,7 @@ export default class ClientProblems extends RecordMixin {
       delete params.expandedIds;
     }
 
-    this.$router.push({name: "clientReport", params})
+    void this.$router.push({name: "clientReport", params})
   }
 }
 </script>

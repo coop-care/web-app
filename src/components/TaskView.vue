@@ -316,7 +316,7 @@ export default class TaskView extends InterventionMixin {
       {
         name: this.$t("newRating") + " …",
         icon: "far fa-comment-dots",
-        action: () => this.routerPush("clientOutcome"),
+        action: () => this.$router.push({params: {...params, sheet: "newOutcome"}}),
         condition: isRatingReminder && isTaskUncompleted,
       },
       {
@@ -348,7 +348,7 @@ export default class TaskView extends InterventionMixin {
       {
         name: this.$t("editIntervention") + " …",
         icon: "fas fa-pen",
-        action: () => this.routerPush("clientIntervention"),
+        action: () => this.$router.push({params: {...params, sheet: "editIntervention"}}),
         condition: isIntervention && isReminderUnfinished,
       },
       {
@@ -436,17 +436,6 @@ export default class TaskView extends InterventionMixin {
         },
       });
     }
-  }
-
-  routerPush(name: string) {
-    void this.$router.push({
-      name: name,
-      params: {
-        clientId: this.client._id?.toHexString() || "",
-        problemId: this.task.problemId || "0",
-        interventionId: this.reminder.id,
-      },
-    });
   }
 
   updateReminder(changes: Partial<Reminder>) {

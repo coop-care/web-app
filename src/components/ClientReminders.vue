@@ -395,14 +395,14 @@ export default class ClientReminders extends RecordMixin {
 
   addIntervention() {
     void this.$router.push({
-      name: "clientNewIntervention",
+      params: { sheet: "newIntervention" },
     });
   }
 
   addProblem() {
     void this.$router.push({
-      name: "clientProblem",
-      params: { problemId: "new" },
+      name: "clientReport", 
+      params: { sheet: "newProblem" }
     });
   }
 

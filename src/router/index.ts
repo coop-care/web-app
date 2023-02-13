@@ -35,6 +35,11 @@ export default route<Store<StateInterface>>(function ({ Vue }) {
 
   Router.beforeEach((to, from, next) => {
     // console.log("before each. to:", to.name, "from:", from.name);
+
+    if (!!to.params.sheet && !to.meta?.sheets?.[to.params.sheet]) {
+      console.error(`component not registered for sheet '${to.params.sheet}' at route '${to.name}'`);
+    }
+
     if (ccApi.isLoggedIn) {
       if (store.state.currentUser?.signature == "" && to.name != "userSettings" && to.name != "login") {
         next({ name: "userSettings" });

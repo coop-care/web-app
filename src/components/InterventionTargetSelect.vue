@@ -18,7 +18,7 @@
     input-debounce="0"
     ref="select"
     class="intervention-target-select"
-    @input="$emit('input', $event)"
+    @input="$emit('input', $event || '')"
     @filter="filterOptions"
   >
     <q-resize-observer @resize="onResize" />

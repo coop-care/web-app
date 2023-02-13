@@ -29,11 +29,10 @@
 
         <q-toolbar-title class="text-center">
           <div
-            :class="'ellipsis title-text ' + (subtitle ? 'has-subtitle' : '')"
+            class="ellipsis title-text"
           >
             {{ title }}
           </div>
-          <div class="ellipsis text-caption title-text">{{ subtitle }}</div>
         </q-toolbar-title>
 
         <user-menu v-if="$ccApi.isLoggedIn" />
@@ -60,9 +59,10 @@
 
     <q-page-container>
       <div class="print-only text-black text-center text-subtitle2 border-bottom-grey">
-        {{ [title, subtitle].filter(Boolean).join(" – ") }}
+        {{ title }}
       </div>
       <router-view />
+      <component :is="modalSheetComponent" />
     </q-page-container>
   </q-layout>
 </template>
@@ -73,8 +73,6 @@
     display: none
 .title-text
   line-height: 1.4rem
-  &.has-subtitle
-    font-size: 1.25rem
   &.text-caption
     font-size: 0.8rem
 </style>
@@ -85,13 +83,15 @@ import UserMenu from "../components/UserMenu.vue";
 import LanguageMenu from "../components/LanguageMenu.vue";
 import Banner from "../components/Banner.vue";
 import NavigationDrawer from "../components/NavigationDrawer.vue";
+import EditingSheet from "../components/EditingSheet.vue";
 
 @Component({
   components: {
     UserMenu,
     LanguageMenu,
     Banner,
-    NavigationDrawer
+    NavigationDrawer,
+    EditingSheet
   },
   meta() {
     return {
@@ -114,31 +114,11 @@ export default class MainLayout extends Vue {
     if (route.path.startsWith("/client")) {
       if (this.selectedClient) {
         return this.selectedClient.contact.name;
-      } else if (route.params.clientId == "new") {
-        return this.$t("newClient");
       } else {
         return this.$tc("client", 2);
       }
     } else if (this.$te(route.name || "")) {
       return this.$t(route.name || "");
-    } else {
-      return "";
-    }
-  }
-  get subtitle() {
-    const route = this.$route;
-
-    if (
-      this.record &&
-      [
-        "clientProblem",
-        "clientProblemClassification",
-        "clientOutcome",
-        "clientIntervention",
-        "clientInterventions"
-      ].includes(route.name || "")
-    ) {
-      return this.$t(this.record.problem.title);
     } else {
       return "";
     }
@@ -154,6 +134,10 @@ export default class MainLayout extends Vue {
   }
   get noDrawerRoutes() {
     return this.backButtonRoutes.concat("login");
+  }
+  get modalSheetComponent() {
+    const sheet = this.$route.params.sheet;
+    return this.$route.meta?.sheets?.[sheet];
   }
 
   hasDrawer(routeName: string) {

@@ -92,7 +92,9 @@
           button-class="q-mt-sm q-mb-md text-center"
         >
           <q-input
-            v-model="observationComment"
+            :value="observationComment"
+            @change="observationComment = $event.target.value"
+            @clear="observationComment = ''"
             :label="$t('ratingCommentLabel')"
             autogrow
             :autofocus="!observationComment"
@@ -189,7 +191,9 @@
           button-class="q-my-sm text-center"
         >
           <q-input
-            v-model="expectationComment"
+            :value="expectationComment"
+            @change="expectationComment = $event.target.value"
+            @clear="expectationComment = ''"
             :label="$t('ratingCommentLabel')"
             autogrow
             :autofocus="!expectationComment"
@@ -235,25 +239,25 @@ export default class RatingView extends Vue {
     return this.rating?.observation || 0;
   }
   set observation(value: number) {
-    this.updateNewOutcome({ observation: value });
+    this.updateNewOutcome({ observation: value ?? 0 });
   }
   get expectation() {
     return this.rating?.expectation || 0;
   }
   set expectation(value: number) {
-    this.updateNewOutcome({ expectation: value });
+    this.updateNewOutcome({ expectation: value ?? 0 });
   }
   get observationComment() {
     return this.rating?.comment || "";
   }
   set observationComment(value: string) {
-    this.updateNewOutcome({ comment: value });
+    this.updateNewOutcome({ comment: value ?? "" });
   }
   get expectationComment() {
     return this.rating?.expectationComment || "";
   }
   set expectationComment(value: string) {
-    this.updateNewOutcome({ expectationComment: value });
+    this.updateNewOutcome({ expectationComment: value ?? "" });
   }
 
   get options() {
@@ -303,11 +307,7 @@ export default class RatingView extends Vue {
   }
 
   updateNewOutcome(changes: Partial<Rating>) {
-    this.$store.direct.commit.updateNewOutcome({
-      ratingType: this.type,
-      changes: changes,
-      ...this.$route.params
-    });
+    this.$emit("input", changes);
   }
 }
 </script>

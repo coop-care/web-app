@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="value"
     class="problem-classification"
     style="max-width: 800px"
   >
@@ -113,7 +114,7 @@ import {
   filterTerminology,
 } from "../helper/terminology";
 import { QInput, QTree } from "quasar";
-import { ProblemRecord, Problem } from "../models";
+import { Problem } from "../models";
 import TextWithHighlights from "./TextWithHighlights.vue";
 
 @Component({
@@ -122,41 +123,39 @@ import TextWithHighlights from "./TextWithHighlights.vue";
   },
 })
 export default class ProblemSelection extends WarningMixin {
-  @Prop(Object) readonly value: ProblemRecord | undefined;
+  @Prop(Object) readonly value!: Problem;
   @Prop(Boolean) readonly editMode!: boolean;
+  @Prop(Boolean) readonly isChangingProblemAdvisable!: boolean;
   @Ref() readonly filter!: QInput;
   @Ref() readonly problemTree!: QTree;
 
   problemsFilter = "";
 
   get selectedProblem() {
-    return this.problem?.code || "";
+    return this.value.code || "";
   }
   set selectedProblem(value: string) {
-    const hasOutcomesOrInterventions =
-      this.record?.outcomes.length || this.record?.interventions.length || false;
-
     if (
       this.editMode &&
       !!this.selectedProblem &&
-      !!this.problem &&
-      (this.problem.signsAndSymptoms.length ||
+      !!this.value &&
+      (this.value.signsAndSymptoms.length ||
         this.problems.details ||
-        hasOutcomesOrInterventions)
+        !this.isChangingProblemAdvisable)
     ) {
       const consequences = [];
-      if (this.problem.signsAndSymptoms.length) {
+      if (this.value.signsAndSymptoms.length) {
         consequences.push(this.$t("existingSignsAndSymptomsWarning"));
       }
-      if (this.problem.details) {
+      if (this.value.details) {
         consequences.push(this.$t("existingProblemDetailsWarning"));
       }
-      if (hasOutcomesOrInterventions) {
+      if (!this.isChangingProblemAdvisable) {
         consequences.push(this.$t("existingOutcomesOrInterventionsWarning"));
       }
       const message = this.$t("problemChangeWarningMessage", {
         consequences: consequences.join("\n"),
-        oldName: this.$t(this.problem.title),
+        oldName: this.$t(this.value.title),
         newName: this.$t("terminology.problemByCode." + value + ".title"),
       }) as string;
 
@@ -193,25 +192,13 @@ export default class ProblemSelection extends WarningMixin {
       this.$store.direct.getters.getProblemRecordById(this.$route.params)
     );
   }
-  get problem() {
-    return this.record?.problem;
-  }
 
   updateProblem(code: string) {
-    const changes: Partial<Problem> = {
-      code: code,
+    this.$emit("input", Object.assign(this.value, {
+      code,
       signsAndSymptomsCodes: [],
       details: "",
-    };
-
-    this.$store.direct.commit.updateObject({
-      target: this.problem,
-      changes: changes,
-      clientId: this.$route.params.clientId,
-      problemId: this.record?.id,
-    });
-
-    this.$emit("input", this.record);
+    }));
   }
 
   resetProblemsFilter() {

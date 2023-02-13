@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="record"
+    v-if="problem"
     class="problem-classification"
     style="max-width: 800px"
   >
@@ -128,6 +128,8 @@ import TextWithTooltip from "./TextWithTooltip.vue";
   },
 })
 export default class ProblemClassification extends WarningMixin {
+  @Prop(Object) readonly value!: Problem;
+  @Prop(Boolean) readonly activeInterventionsAvailable!: boolean;
   @Prop(Boolean) readonly editMode!: boolean;
 
   get selectedProblem() {
@@ -170,13 +172,7 @@ export default class ProblemClassification extends WarningMixin {
     return this.problem.isHighPriority;
   }
   set priority(value: boolean) {
-    if (
-      this.editMode &&
-      !value &&
-      this.record?.interventions.filter(
-        (intervention) => !intervention.finishedAt
-      ).length
-    ) {
+    if (this.editMode && !value && this.activeInterventionsAvailable) {
       this.showWarning(
         this.$t("reducingPriorityWarningMessage") as string
       ).onOk(() => {
@@ -190,13 +186,13 @@ export default class ProblemClassification extends WarningMixin {
     return this.problem.details;
   }
   set details(value: string) {
-    this.updateProblem({ details: value });
+    this.updateProblem({ details: value ?? "" });
   }
   get priorityDetails() {
     return this.problem.priorityDetails;
   }
   set priorityDetails(value: string) {
-    this.updateProblem({ priorityDetails: value });
+    this.updateProblem({ priorityDetails: value ?? "" });
   }
 
   get problems() {
@@ -233,7 +229,7 @@ export default class ProblemClassification extends WarningMixin {
   }
   get severityModifierExample() {
     const usersGuide = (this.$t("usersGuide") as unknown) as UsersGuide;
-    const usersGuideForProblem = usersGuide[this.problem?.code || ""];
+    const usersGuideForProblem = usersGuide[this.problem.code || ""];
     const examples = usersGuideForProblem?.severityModifierExamples || [];
     return examples[this.severity];
   }
@@ -241,12 +237,8 @@ export default class ProblemClassification extends WarningMixin {
   get terminology() {
     return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
-  get record() {
-    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
-  }
   get problem() {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return this.record!.problem;
+    return this.value;
   }
 
   updateProblem(changes: Partial<Problem>) {
@@ -257,12 +249,7 @@ export default class ProblemClassification extends WarningMixin {
       changes.priorityDetails = "";
     }
 
-    this.$store.direct.commit.updateObject({
-      target: this.problem,
-      changes: changes,
-      clientId: this.$route.params.clientId,
-      problemId: this.record?.id,
-    });
+    this.$emit("input", Object.assign(this.problem, changes));
   }
 
   modifier(type: string) {

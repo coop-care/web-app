@@ -23,7 +23,7 @@
             v-if="isInteractive"
             :title="$t('editProblem')"
             icon="edit"
-            :to="{ name: 'clientProblemClassification', params: params }"
+            :to="{ name: 'clientReport', params: {...this.$route.params, ...params, sheet: 'editClassification'} }"
             round
             outline
             size="10.5px"
@@ -162,7 +162,7 @@
             v-if="isInteractive"
             :title="$t('newRating')"
             icon="add"
-            :to="{ name: 'clientOutcome', params: params }"
+            :to="{ params: {...this.$route.params, ...params, sheet: 'newOutcome'} }"
             round
             outline
             size="10.5px"
@@ -200,9 +200,9 @@
           {{ $tc("intervention", 2) }}
           <q-btn
             v-if="isInteractive"
-            :title="$t('editInterventions')"
+            :title="$t('newIntervention')"
             icon="add"
-            :to="{ name: 'clientNewInterventionForProblem', params: params }"
+            :to="{ params: {...this.$route.params, ...params, sheet: 'newIntervention'} }"
             round
             outline
             size="10.5px"
@@ -391,10 +391,11 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
   prioritizeProblemRecord() {
     this.$store.direct.commit.prioritizeProblemRecord(this.params);
     void this.$router.push({
-      name: "clientProblem",
-      params: this.$store.direct.getters.getRouteParamsForLatestProblem(
-        this.params
-      ),
+      params: {
+        ...this.$store.direct.getters.getRouteParamsForLatestProblem(this.params),
+        sheet: "newProblem",
+        step: 3
+      },
     });
     void this.$store.direct.dispatch.saveClient(this.params);
   }
@@ -419,7 +420,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
         this.$t("problemDismissalOutcomeWarningMessage") as string
       )
         .onOk(() => {
-          void this.$router.push({ name: "clientOutcome", params: this.params });
+          void this.$router.push({params: {...this.params, sheet: "newOutcome"}});
         })
         .onCancel(() => {
           dismiss();

@@ -53,14 +53,14 @@
         flat
         no-caps
         color="intervention"
-        :to="{ name: 'clientNewIntervention' }"
+        :to="{ params: {sheet: 'newIntervention'} }"
       />
       <q-btn
         :label="$t('problemAdmission')"
         flat
         no-caps
         color="classification"
-        :to="{ name: 'clientProblem', params: { problemId: 'new' } }"
+        :to="{ name: 'clientReport', params: {sheet: 'newProblem'} }"
       />
     </q-btn-group>
   </div>
@@ -112,6 +112,7 @@ export default class ShiftNoteInput extends RecordMixin {
   addOutcome() {
     if (this.client) {
       const activeProblems = this.client.activeProblems;
+      const sheet = "newOutcome";
 
       if (activeProblems.length > 1) {
         this.$q.dialog({
@@ -126,15 +127,15 @@ export default class ShiftNoteInput extends RecordMixin {
           }))
         }).onOk((problemId: string) => {
           void this.$router.push({
-            name: "clientOutcome",
-            params: { problemId }
+            name: this.$route.name || "",
+            params: { ...this.$route.params, problemId, sheet }
           });
         });
       } else if (activeProblems.length == 1) {
         const problemId = activeProblems[0].id;
         void this.$router.push({
-          name: "clientOutcome",
-          params: { problemId }
+          name: this.$route.name || "",
+          params: { ...this.$route.params, problemId, sheet }
         });
       }
     }

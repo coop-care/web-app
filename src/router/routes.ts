@@ -1,6 +1,12 @@
 import { RouteConfig } from "vue-router";
 import store from "../store";
 
+const newProblem = () => import("pages/ProblemRecording.vue");
+const editClassification = () => import("pages/Classification.vue");
+const newIntervention = () => import("pages/NewIntervention.vue");
+const editIntervention = () => import("pages/Intervention.vue");
+const newOutcome = () => import("pages/Rating.vue");
+
 const isDemo = store.direct.getters.isDemo;
 const routes: RouteConfig[] = [
   {
@@ -68,74 +74,50 @@ const routes: RouteConfig[] = [
           },
           {
             name: "clientReminders",
-            path: "reminders/:day?",
+            path: ":day?/reminders/:sheet?/:problemId?/:interventionId?",
             component: () => import("components/ClientReminders.vue"),
-            meta: { noScroll: true },
+            meta: {
+              noScroll: true,
+              sheets: { newIntervention, editIntervention, newOutcome }
+            },
           },
           {
             name: "clientReport",
-            path: ":expandedIds?/report/:sheet?/:problemId?/:interventionId?/:step?",
+            path: ":expandedIds?/report/:sheet?/:problemId?///:interventionId?///:step?",
             component: () => import("components/ClientProblems.vue"),
-            meta: { noScroll: true },
+            meta: {
+              noScroll: true,
+              sheets: { newProblem, editClassification, newIntervention, newOutcome }
+            },
           },
           {
             name: "clientConversation",
-            path: "conversation/:day?",
+            path: ":day?/conversation/:sheet?/:problemId?",
             component: () => import("components/ClientConversation.vue"),
             meta: {
-              disablePullToRefresh: true
+              disablePullToRefresh: true,
+              sheets: { newOutcome, newIntervention }
             }
           },
           {
             name: "clientProofOfPerformance",
-            path: "/client/:clientId/reports/execution",
+            path: "reports/execution",
             component: () => import("components/ProofOfPerformance.vue"),
             meta: { noScroll: true },
           },
           {
             name: "clientHistory",
-            path: "/client/:clientId/history",
+            path: "history",
             component: () => import("components/ClientHistory.vue"),
             meta: { noScroll: true },
           }
         ]
-      },
-      {
-        name: "clientProblemClassification",
-        path: "/client/:clientId/problem/:problemId/classification",
-        component: () => import("pages/Classification.vue")
-      },
-      {
-        name: "clientOutcome",
-        path: "/client/:clientId/problem/:problemId/outcome",
-        component: () => import("pages/Rating.vue")
-      },
-      {
-        name: "clientNewInterventionForProblem",
-        path: "/client/:clientId/problem/:problemId/intervention/new",
-        component: () => import("pages/NewIntervention.vue")
       },
       // {
       //     name: "clientInterventions",
       //     path: "/client/:clientId/problem/:problemId/intervention",
       //     component: () => import("pages/InterventionList.vue")
       // },
-      {
-        name: "clientIntervention",
-        path:
-          "/client/:clientId/problem/:problemId/intervention/:interventionId",
-        component: () => import("pages/Intervention.vue")
-      },
-      {
-        name: "clientNewIntervention",
-        path: "/client/:clientId/intervention/new",
-        component: () => import("pages/NewIntervention.vue")
-      },
-      {
-        name: "clientProblem",
-        path: "/client/:clientId/problem/:problemId/:step?",
-        component: () => import("pages/ProblemRecording.vue")
-      },
       // {
       //   name: "clientProblemsByDiagnosis",
       //   path: !isDemo ? "/client/:clientId/diagnoses" : "",

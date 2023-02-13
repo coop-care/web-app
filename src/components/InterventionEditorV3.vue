@@ -67,7 +67,7 @@
     </div>
 
     <q-input
-      v-if="targetCode || details"
+      v-if="targetCode || details"
       v-model="details"
       :label="$t('describeClientSpecificIntervention')"
       autogrow
@@ -87,7 +87,7 @@
       />
     </q-input>
 
-    <div v-if="targetCode || details">
+    <div v-if="targetCode || details">
       <reminder-editor
         v-model="recurrenceRules"
         color="intervention"
@@ -150,7 +150,7 @@ export default class InterventionEditor extends WarningMixin {
     return this.value.details;
   }
   set details(value) {
-    this.updateIntervention({ details: value || "" });
+    this.updateIntervention({ details: value ?? "" });
   }
   get recurrenceRules() {
     return this.value.recurrenceRules;

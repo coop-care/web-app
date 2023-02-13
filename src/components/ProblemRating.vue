@@ -10,6 +10,7 @@
         :examples="rating.scaleExamples"
         :type="rating.type"
         :rating="ratingForType(rating.type)"
+        @input="updateRating(rating.type, $event)"
         class="q-mb-xl"
       />
       <reveal-button
@@ -36,12 +37,14 @@
               <q-input
                 color="outcome"
                 v-model.number="interval"
-                type="number"
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]"
                 dense
-                step="1"
                 input-class="text-center"
                 :key="intervalKey"
-                class="col-4"
+                class="col-5"
+                @focus="selectInputText($event.target)"
               >
               </q-input>
               <q-select
@@ -53,7 +56,7 @@
                 options-cover
                 map-options
                 emit-value
-                class="col-8"
+                class="col-7 q-pl-xs"
                 popup-content-class="text-center"
               >
                 <template v-slot:selected>
@@ -82,9 +85,9 @@
 <style lang="sass"></style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { date } from "quasar";
-import { Frequency, RatingReminder, Outcome } from "../models";
+import { Frequency, RatingReminder, Outcome, Rating } from "../models";
 import RatingView from "components/Rating.vue";
 import RevealButton from "components/RevealButton.vue";
 import { Terminology, UsersGuide } from "../helper/terminology";
@@ -98,22 +101,22 @@ const { formatDate } = date;
   }
 })
 export default class ProblemRating extends Vue {
-  intervalKey = Math.random();
+  @Prop(Object) readonly value?: Outcome;
+  @Prop(Object) readonly ratingReminder?: RatingReminder;
+
+  private intervalKey = Math.random();
 
   get personRatedInPlaceOfOwner() {
-    return this.outcome?.personRatedInPlaceOfOwner || "";
+    return this.value?.personRatedInPlaceOfOwner || "";
   }
   set personRatedInPlaceOfOwner(value: string) {
-    const changes: any = {};
-    const key: keyof Outcome = "personRatedInPlaceOfOwner";
-    changes[key] = value;
-    this.$store.direct.commit.updateNewOutcome({
-      changes: changes,
-      ...this.$route.params
-    });
+    if (this.value) {
+      this.value.personRatedInPlaceOfOwner = value;
+      this.$emit("input", this.value);
+    }
   }
   get interval() {
-    return this.record?.ratingReminder.interval || 0;
+    return this.ratingReminder?.interval || 0;
   }
   set interval(value) {
     if (!/^\d{1,3}$/.test("" + value) || value < 0) {
@@ -123,13 +126,22 @@ export default class ProblemRating extends Vue {
     this.updateRatingReminder({ interval: value });
   }
   get frequency() {
-    return this.record?.ratingReminder.frequency || 0;
+    return this.ratingReminder?.frequency || 0;
   }
   set frequency(value) {
     this.updateRatingReminder({ frequency: value });
   }
+ /**
+  * nextRatingDate is calculated with current frequency and interval from startdate
+  * when the ratingReminder (and problem record) where created. That's why nextRatingDate
+  * appears to "randomly" jump when frequency and interval is changed, as the start date
+  * is not right now, but probably a while ago.
+  * 
+  * Note to future self: to improve the clarity for the user it might be helpful to use 
+  * today as start date by adding a new rating reminder rule and ending the previous one.
+  */
   get nextRatingDate() {
-    const date = this.record?.ratingReminder.nextRating;
+    const date = this.ratingReminder?.nextRating;
     if (date) {
       return this.$t("nextReminderOnDate", {
         date: formatDate(date, "" + this.$t("weekdayDateFormat"))
@@ -144,9 +156,6 @@ export default class ProblemRating extends Vue {
   }
   get record() {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
-  }
-  get outcome() {
-    return this.record?.outcomes[this.record.outcomes.length - 1];
   }
   get ratings() {
     const indexToType = ["knowledge", "behaviour", "status"];
@@ -172,24 +181,25 @@ export default class ProblemRating extends Vue {
     ];
   }
 
+  selectInputText(input?: HTMLInputElement) {
+    setTimeout(() => input?.select())
+  }
+
   ratingForType(type: string) {
-    if (this.outcome) {
-      return (this.outcome as any)[type];
+    if (this.value) {
+      return (this.value as any)[type];
     } else {
       return undefined
     }
   }
 
-  updateRatingReminder(changes: Partial<RatingReminder>) {
-    const reminder = this.record?.ratingReminder;
-    if (!reminder) {
-      return;
-    }
+  updateRating(type: string, changes: Partial<Rating>) {
+    Object.assign(this.ratingForType(type), changes);
+    this.$emit("input", this.value);
+  }
 
-    this.$store.direct.commit.updateReminder({
-      target: reminder,
-      changes: changes
-    });
+  updateRatingReminder(changes: Partial<RatingReminder>) {
+    this.$emit("change:rating-reminder", changes);
   }
 }
 </script>

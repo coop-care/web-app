@@ -1,44 +1,33 @@
 import { Component } from "vue-property-decorator";
 import { TranslateResult } from "vue-i18n";
 import RecordMixin from "./RecordMixin";
-import { ProblemRecord, Intervention } from "../models";
+import { Intervention, Outcome, Problem, Client } from "../models";
 
 @Component
 export default class RecordValidator extends RecordMixin {
     showWarning = false;
     lastWarning = "";
 
-    get warnings() {
-        return {
-            problemSelection: this.problemSelectionWarnings,
-            problemClassification: this.problemClassificationWarnings,
-            rating: this.ratingWarnings,
-            intervention: this.interventionWarnings
-        };
-    }
-    get temporaryRecord(): ProblemRecord | undefined {
-        return undefined;
-    }
     get continueButtonLabel() {
         return !this.showWarning
             ? this.$t("continue")
             : this.$t("continueAnyway");
     }
     get doneButtonLabel() {
-        return !this.showWarning ? this.$t("done") : this.$t("finishAnyway");
+        return !this.showWarning ? this.$t("apply") : this.$t("applyAnyway");
+    }
+    get addButtonLabel() {
+        return !this.showWarning ? this.$t("add") : this.$t("addAnyway");
     }
 
-    private get problemSelectionWarnings() {
-        const code = (this.record || this.temporaryRecord)?.problem.code;
-
-        if (!code) {
+    problemSelectionWarnings(problem: Problem | null, id?: string, client?: Client) {
+        if (!problem?.code) {
             return this.$t("noProblemWarning") as string;
         } else if (
-            this.client?.problems.find(
-                record =>
-                    code == record.problem.code &&
-                    record.id != this.record?.id &&
-                    !record.resolvedAt
+            client?.problems.find(record =>
+                problem.code == record.problem.code
+                    && id != record.id
+                    && !record.resolvedAt
             )
         ) {
             return this.$t("duplicateProblemWarning") as string;
@@ -47,9 +36,12 @@ export default class RecordValidator extends RecordMixin {
         }
     }
 
-    private get problemClassificationWarnings() {
-        const problem = this.record?.problem;
+    problemClassificationWarnings(problem: Problem | null) {
         const warnings: TranslateResult[] = [];
+
+        if (!problem) {
+            return "";
+        }
 
         if (
             problem &&
@@ -71,8 +63,7 @@ export default class RecordValidator extends RecordMixin {
         return warnings.join("\n");
     }
 
-    private get ratingWarnings() {
-        const outcome = this.record?.outcomes.slice().pop();
+    ratingWarnings(outcome: Outcome) {
         const warnings: TranslateResult[] = [];
 
         if (!outcome || outcome.knowledge.observation == 0) {
@@ -120,8 +111,7 @@ export default class RecordValidator extends RecordMixin {
         return warnings.join("\n");
     }
 
-    private get interventionWarnings() {
-        const interventions = this.record?.interventions || [];
+    interventionListWarnings(interventions: Intervention[]) {
         const noCategoryCount = interventions.filter(
             intervention => !intervention.categoryCode
         ).length;
@@ -155,20 +145,12 @@ export default class RecordValidator extends RecordMixin {
         return warnings.join("\n");
     }
 
-    validate(warnings: string, next: () => void) {
-        if (this.showWarning && this.lastWarning.includes(warnings)) {
-            this.showWarning = false;
-            next();
-        } else if (warnings) {
-            this.showWarning = true;
-            this.lastWarning = warnings;
-        } else {
-            next();
-        }
-    }
-
-    warningsForIntervention(intervention: Intervention) {
+    interventionWarnings(intervention: Intervention | null) {
         const warnings: TranslateResult[] = [];
+
+        if (!intervention) {
+            return "";
+        }
 
         if (!intervention.categoryCode) {
             warnings.push(this.$t("noInterventionCategorySpecificWarning"));
@@ -181,5 +163,17 @@ export default class RecordValidator extends RecordMixin {
         }
 
         return warnings.join("\n");
+    }
+
+    validate(warnings: string, next: () => void) {
+        if (this.showWarning && this.lastWarning.includes(warnings)) {
+            this.showWarning = false;
+            next();
+        } else if (warnings) {
+            this.showWarning = true;
+            this.lastWarning = warnings;
+        } else {
+            next();
+        }
     }
 }

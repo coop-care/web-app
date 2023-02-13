@@ -1,11 +1,13 @@
 <template>
-  <editing-page-container
+  <editing-sheet
+    ref="editingSheet"
     :title="title"
     :is-data-available="!!(client && intervention)"
-    hide-default-footer
+    :paramsToRemoveOnClose="['problemId']"
+    :hasPendingChanges="hasPendingChanges"
   >
       <div v-if="!$route.params.problemId">
-        <div class="q-mt-sm text-subtitle1 counter">{{ $t("selectProblem") }}</div>
+        <div class="text-subtitle1 q-mt-sm counter">{{ $t("selectProblem") }}</div>
         <q-select
           v-model="problemId"
           :options="problemOptions"
@@ -13,12 +15,15 @@
           color="classification"
           map-options
           emit-value
-          autofocus
+          item-aligned
+          ref="problemSelect"
         >
+          <q-resize-observer @resize="onResize" />
           <template v-slot:option="scope">
             <q-item
               v-bind="scope.itemProps"
               v-on="scope.itemEvents"
+              :style="widthStyle"
             >
               <q-item-section side>
                 <q-icon :name="scope.opt.icon" />
@@ -33,34 +38,44 @@
             </q-item>
           </template>
         </q-select>
-        <div class="q-mt-xl text-subtitle1 counter">{{ $t("addIntervention") }}</div>
+        <div 
+          v-if="problemId"
+          class="q-mt-xl text-subtitle1 counter"
+        >{{ $t("addIntervention") }}</div>
       </div>
-      <intervention-editor
-        v-model="intervention"
-        :problemRecord="record"
-        isSingleEditor
-      />
-      <warning
-        v-model="showWarning"
-        :messages="warningsForIntervention(intervention)"
-      />
-      <q-btn
-        @click="validate(warningsForIntervention(intervention), save)"
-        color="primary"
-        rounded
-        no-caps
-        :outline="!!warningsForIntervention(intervention)"
-        icon-right="fas fa-caret-right"
-        :label="doneButtonLabel"
-        class="q-mt-lg"
-      />
-  </editing-page-container>
+      <div 
+        v-if="problemId"
+      >
+        <intervention-editor
+          v-model="intervention"
+          :problemRecord="record"
+          isSingleEditor
+        />
+        <warning
+          v-model="showWarning"
+          :messages="interventionWarnings(intervention)"
+        />
+        <div class="q-mt-lg row justify-center">
+          <q-btn
+            @click="validate(interventionWarnings(intervention), save)"
+            color="primary"
+            rounded
+            unelevated
+            no-caps
+            :outline="!!interventionWarnings(intervention)"
+            :label="addButtonLabel"
+            class="done-button"
+          />
+        </div>
+      </div>
+  </editing-sheet>
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Ref } from "vue-property-decorator";
+import { QSelect } from "quasar";
 import RecordValidator from "../mixins/RecordValidator";
-import EditingPageContainer from "components/EditingPageContainer.vue";
+import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import InterventionEditor from "components/InterventionEditorV3.vue";
 import Warning from "components/Warning.vue";
@@ -70,15 +85,20 @@ import { Intervention } from "../models/intervention";
 @Component({
   components: {
     InterventionEditor,
-    EditingPageContainer,
+    EditingSheet,
     ProblemSummaryContainer,
     Warning,
   },
 })
 export default class InterventionPage extends RecordValidator {
+  @Ref() readonly editingSheet!: EditingSheet;
+  @Ref() readonly problemSelect!: QSelect;
+
   problemRecordId = "";
   intervention = new Intervention();
+  originalIntervention = this.intervention.toJSON();
   problemKey = Math.random();
+  maxWidth = 300;
 
   get record() {
     return this.client?.findProblemRecord(this.problemId);
@@ -88,32 +108,20 @@ export default class InterventionPage extends RecordValidator {
   }
   set problemId(value) {
     if (value == "new") {
-      this.$store.direct.commit.createProblemRecord(this.$route.params);
-      void this.$router
-        .replace({
-          name: "clientReport",
-          params: this.$route.params,
-        })
-        .then(() => {
-          void this.$router.push({
-            name: "clientProblem",
-            params: this.$store.direct.getters.getRouteParamsForLatestProblem(
-              this.$route.params
-            ),
-          });
-        });
+      void this.editingSheet.cancel({
+        name: "clientReport",
+        params: {sheet: "newProblem"},
+      });
     } else {
       this.problemRecordId = value;
     }
   }
   get title() {
-    if (this.$route.params.problemId) {
-      return this.$t("newInterventionForProblem", {
-        problem: this.$t(this.record?.problem.title || ""),
-      });
-    } else {
-      return this.$t("newIntervention");
-    }
+    return [
+      this.client?.contact.name,
+      this.$t(this.record?.problem.title ?? ""),
+      this.$t("newIntervention")
+    ].filter(Boolean).join(": ");
   }
   get problemOptions() {
     const options = (this.client?.problems || [])
@@ -135,11 +143,14 @@ export default class InterventionPage extends RecordValidator {
         },
       ]);
 
-    if (!this.problemId && this.client) {
-      this.problemRecordId = options[0]?.value;
-    }
-
     return options;
+  }
+  get widthStyle() {
+    return "max-width: " + this.maxWidth + "px";
+  }
+  
+  hasPendingChanges() {
+    return this.intervention.toJSON() != this.originalIntervention;
   }
 
   save() {
@@ -162,7 +173,22 @@ export default class InterventionPage extends RecordValidator {
     }
     void this.$store.direct.dispatch
       .saveClient(this.$route.params)
-      .then(() => this.$router.back());
+      .then(() => this.editingSheet.confirm());
+  }
+
+  onResize() {
+    this.maxWidth = (this.problemSelect?.$el?.firstElementChild as HTMLElement)?.offsetWidth;
+  }
+
+  mounted() {
+    // problemSelect reference is not always yet available when component is mounted
+    setTimeout(() => {
+      this.maxWidth = (this.problemSelect?.$el?.firstElementChild as HTMLElement)?.offsetWidth;
+      
+      if (!this.problemRecordId) {
+        this.problemSelect?.focus();
+      }
+    })
   }
 }
 </script>

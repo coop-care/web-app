@@ -99,9 +99,8 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-property-decorator";
 import { TerminologyWithMaps } from "../helper/terminology";
-import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 import InterventionEditor from "./InterventionEditorV3.vue";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
@@ -113,19 +112,15 @@ import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
   }
 })
 export default class InterventionView extends Vue {
+  @Prop({ type: Array, default: () => [] }) readonly value!: Intervention[];
+  @Prop(String) readonly problemTitle?: string;
   selectedCategory = "01";
 
   get interventions() {
-    return this.record?.interventions || [];
+    return this.value;
   }
   set interventions(interventions) {
-    const changes: any = {};
-    const key: keyof ProblemRecord = "interventions";
-    changes[key] = interventions;
-    this.$store.direct.commit.updateObject({
-      target: this.record,
-      changes: changes
-    });
+    this.$emit("input", interventions);
   }
   get categories() {
     return this.terminology.interventionScheme.categories;
@@ -136,19 +131,12 @@ export default class InterventionView extends Vue {
   get terminology() {
     return (this.$t("terminology") as unknown) as TerminologyWithMaps;
   }
-  get record() {
-    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
-  }
 
   titleForCategory(categoryTitle: string) {
-    if (this.record) {
       return this.$t("interventionsForCategoryTitle", {
           category: categoryTitle,
-          problem: this.$t(this.record.problem.title)
+          problem: this.problemTitle
         }) as string + ":";
-    } else {
-      return ""
-    }
   }
   interventionsInCategory(categoryCode: string) {
     return this.interventions.filter(

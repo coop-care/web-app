@@ -66,7 +66,7 @@ export default class InterventionCategorySelect extends Vue {
     return this.value;
   }
   set categoryCode(value) {
-    this.$emit("input", value);
+    this.$emit("input", value ?? "");
   }
   get categoryOptions() {
     return this.terminology.interventionScheme.categories.map((item) => {
