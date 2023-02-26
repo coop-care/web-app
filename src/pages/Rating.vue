@@ -8,6 +8,7 @@
   >
       <problem-rating
         v-model="editableOutcome"
+        :problem-code="problemCode"
         :rating-reminder="editableRatingReminder"
         @change:rating-reminder="updateRatingReminder"
       />
@@ -65,6 +66,9 @@ export default class Rating extends RecordValidator {
   }
   get ratingReminder() {
     return this.record?.ratingReminder ?? new RatingReminder(4, 2);
+  }
+  get problemCode() {
+    return this.record?.problem.code ?? ""
   }
 
   hasPendingChanges() {

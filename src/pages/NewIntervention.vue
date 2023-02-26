@@ -48,7 +48,7 @@
       >
         <intervention-editor
           v-model="intervention"
-          :problemRecord="record"
+          :problem-code="problemCode"
           isSingleEditor
         />
         <warning
@@ -147,6 +147,9 @@ export default class InterventionPage extends RecordValidator {
   }
   get widthStyle() {
     return "max-width: " + this.maxWidth + "px";
+  }
+  get problemCode() {
+    return this.record?.problem.code ?? ""
   }
   
   hasPendingChanges() {

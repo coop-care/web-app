@@ -140,6 +140,7 @@
         >
           <problem-rating
             v-model="editableOutcome"
+            :problem-code="editableRecord.problem.code"
             :rating-reminder="editableRecord.ratingReminder"
             @change:rating-reminder="updateRatingReminder"
             class="q-mt-xs"
@@ -175,6 +176,7 @@
         >
           <intervention-view
             :value="editableRecord.interventions"
+            :problem-code="editableRecord.problem.code"
             @input="editableRecord.interventions = $event"
             :problemTitle="$t(editableRecord.problem.title)"
             class="q-mt-xs"

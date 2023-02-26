@@ -101,7 +101,7 @@ import { Component, Prop, Ref } from "vue-property-decorator";
 import WarningMixin from "../mixins/WarningMixin";
 import { QInput } from "quasar";
 import { UsersGuide } from "../helper/terminology";
-import { ProblemRecord, Intervention } from "../models";
+import { Intervention } from "../models";
 import InterventionCategorySelect from "../components/InterventionCategorySelect.vue";
 import InterventionTargetSelect from "../components/InterventionTargetSelect.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
@@ -117,15 +117,12 @@ import FilterableMenu from "../components/FilterableMenu.vue";
 })
 export default class InterventionEditor extends WarningMixin {
   @Prop({ type: Object, required: true}) readonly value!: Intervention;
-  @Prop(ProblemRecord) readonly problemRecord: ProblemRecord | undefined;
+  @Prop({ type: String, default: "" }) readonly problemCode!: string;
   @Prop(Boolean) readonly isSingleEditor!: boolean;
   @Prop(Boolean) readonly editMode!: boolean;
   @Ref() readonly  detailsInput!: QInput;
   @Ref() readonly  detailsMenu!: FilterableMenu;
 
-  get problemCode() {
-    return this.record?.problem.code;
-  }
   get categoryCode() {
     return this.value.categoryCode;
   }
@@ -171,12 +168,6 @@ export default class InterventionEditor extends WarningMixin {
   }
   get usersGuideForProblem() {
     return ((this.$t("usersGuide") as unknown) as UsersGuide)[this.problemCode || ""];
-  }
-  get record() {
-    return (
-      this.problemRecord ||
-      this.$store.direct.getters.getProblemRecordById(this.$route.params)
-    );
   }
 
   updateIntervention(changes: Partial<Intervention>) {

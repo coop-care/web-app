@@ -52,6 +52,7 @@
             v-for="intervention in interventionsInSelectedCategory"
             :key="intervention.id"
             :value="intervention"
+            :problem-code="problemCode"
             @delete="deleteIntervention(intervention.id)"
             @duplicate="duplicateIntervention(intervention.id)"
             class="editable-intervention q-px-md q-pt-sm q-pb-xs bg-intervention-light radius-md shadow-2"
@@ -113,6 +114,7 @@ import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
 })
 export default class InterventionView extends Vue {
   @Prop({ type: Array, default: () => [] }) readonly value!: Intervention[];
+  @Prop({ type: String, default: "" }) readonly problemCode!: string;
   @Prop(String) readonly problemTitle?: string;
   selectedCategory = "01";
 

@@ -8,6 +8,7 @@
   >
       <intervention-editor
         :value="editableIntervention"
+        :problem-code="problemCode"
         isSingleEditor
         editMode
         class="q-mt-lg"
@@ -61,6 +62,9 @@ export default class InterventionPage extends RecordValidator {
   }
   get intervention() {
     return this.client?.findReminder(this.$route.params.interventionId);
+  }
+  get problemCode() {
+    return this.record?.problem.code ?? ""
   }
 
   hasPendingChanges() {

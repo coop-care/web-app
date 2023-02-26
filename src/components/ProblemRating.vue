@@ -102,6 +102,7 @@ const { formatDate } = date;
 })
 export default class ProblemRating extends Vue {
   @Prop(Object) readonly value?: Outcome;
+  @Prop({ type: String, default: "" }) readonly problemCode!: string;
   @Prop(Object) readonly ratingReminder?: RatingReminder;
 
   private intervalKey = Math.random();
@@ -160,7 +161,7 @@ export default class ProblemRating extends Vue {
   get ratings() {
     const indexToType = ["knowledge", "behaviour", "status"];
     const usersGuide = (this.$t("usersGuide") as unknown) as UsersGuide;
-    const guideForProblem = usersGuide[this.record?.problem.code || ""];
+    const guideForProblem = usersGuide[this.problemCode];
     const examples = guideForProblem?.problemRatingScaleExamples.ratings || [];
     return this.terminology.problemRatingScale.ratings.map((rating, index) => {
       return {
