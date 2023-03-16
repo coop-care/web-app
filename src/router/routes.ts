@@ -124,11 +124,12 @@ const routes: RouteRecordRaw[] = [
         path: "/settings/user",
         component: () => import("pages/UserSettings.vue")
       },
-      // {
-      //   name: "teamSettings",
-      //   path: "/settings/team",
-      //   component: () => import("pages/TeamSettings.vue")
-      // },
+      {
+        name: "teamSettings",
+        path: isDemo ? "/settings/team" : "",
+        component: () => import("pages/TeamSettings.vue"),
+        meta: { section: "client" }
+      },
       // {
       //   name: "backoffice",
       //   path: "/backoffice/:backofficeId?",

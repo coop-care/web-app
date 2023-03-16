@@ -137,7 +137,15 @@ export default class ClientDrawer extends Vue {
       label: this.$t("insights"),
       icon: "fas fa-chart-line",
       route: "insights"
-    }]
+    }].concat(
+      this.$store.direct.getters.isDemo
+        ? [{
+            label: this.$t("teamSettings"),
+            icon: "fas fa-users-cog",
+            route: "teamSettings",
+          }]
+        : []
+    )
   }
 
   isSelected(client: Client) {

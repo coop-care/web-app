@@ -103,9 +103,6 @@ import DevMenu from "./DevMenu.vue";
   },
 })
 export default class UserMenu extends Vue {
-  get isDemo() {
-    return process.env.BACKEND == "demo";
-  }
   get isDev() {
     return process.env.DEV;
   }

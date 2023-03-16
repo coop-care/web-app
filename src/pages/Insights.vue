@@ -171,10 +171,18 @@ export default class InsightsPage extends Vue {
   clients!: Client[];
   randomRenwewalKey = 0;
 
-  created() {
+  async created() {
     this.period = this.periodOptions[1].value;
     this.updateDates(this.period);
     this.clients = this.$store.direct.state.clients.slice();
+    const clientIds = this.clients.map(client => client.id);
+
+    await this.teams.forEach(async team =>  {
+      const additionalClientIds = team.clients.filter(clientId => !clientIds.includes(clientId));
+      const clients = await this.$ccApi.getClients(additionalClientIds);
+      this.clients = this.clients.concat(clients);
+    });
+    this.randomRenwewalKey = Math.random();
   }
 
   get dates() {
