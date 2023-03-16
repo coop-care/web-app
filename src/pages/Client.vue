@@ -44,7 +44,7 @@
       <tab-view
         :key="$route.params.clientId || ''"
         :tabs="tabs"
-        :tabCount="5"
+        :tabCount="4"
         pullToRefresh
         @refresh="updateClientsInAdditionalTeams"
       />
@@ -104,10 +104,10 @@ class ClientPage extends Vue {
       label: this.$t("showProofOfPerformance") as string,
       route: "clientProofOfPerformance",
       icon: "fas fa-clipboard",
-    },{
-      label: this.$t("documentationHistory") as string,
-      route: "clientHistory",
-      icon: "fas fa-history",
+    // },{
+    //   label: this.$t("documentationHistory") as string,
+    //   route: "clientHistory",
+    //   icon: "fas fa-history",
     }];
   }
   get disablePullToRefresh() {

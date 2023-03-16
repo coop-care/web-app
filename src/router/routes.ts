@@ -106,12 +106,12 @@ const routes: RouteRecordRaw[] = [
             component: () => import("components/ProofOfPerformance.vue"),
             meta: { noScroll: true },
           },
-          {
-            name: "clientHistory",
-            path: "history",
-            component: () => import("components/ClientHistory.vue"),
-            meta: { noScroll: true },
-          }
+          // {
+          //   name: "clientHistory",
+          //   path: "history",
+          //   component: () => import("components/ClientHistory.vue"),
+          //   meta: { noScroll: true },
+          // }
         ]
       },
       // {
