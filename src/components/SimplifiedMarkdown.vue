@@ -2,12 +2,12 @@
   <span>
     <span 
       v-for="(line, lineIndex) in text.split('\n')"
-      v-bind:key="lineIndex"
+      :key="lineIndex"
     >
       <br v-if="lineIndex > 0">
       <span
         v-for="(fragment, index) in line.replace(/(\*+)([^*]+)(\*+)/g, '|$1$2$3|').split('|')"
-        v-bind:key="lineIndex + '.' + index"
+        :key="lineIndex + '.' + index"
         :class="classes(fragment)"
       >{{ fragment.replace(/\*/g, "") }}</span>
     </span>
@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
 @Component
 export default class SimplifiedMarkdown extends Vue {

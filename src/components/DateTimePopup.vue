@@ -61,24 +61,28 @@
         :label="$t('confirmDate')"
         :color="color"
         rounded
+        unelevated
+        no-caps
         v-close-popup
-        @click="$emit('input', selectedDate)"
+        @click="$emit('update:model-value', selectedDate)"
       />
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Model } from "vue-facing-decorator";
 import { date } from "quasar";
 
 const { formatDate, extractDate, isBetweenDates } = date;
 
-@Component
+@Component({
+  emits: ["update:model-value"]
+})
 export default class DateTimePopup extends Vue {
-  @Prop({ type: Date, required: true}) readonly value!: Date;
+  @Model({ type: Date, required: true}) readonly value!: Date;
   @Prop({ type: String, default: "YYYY-MM-DD HH:mm"}) readonly format!: string;
-  @Prop(Date) readonly min: Date | undefined;
+  @Prop({ type: Date }) readonly min: Date | undefined;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
 
   selectedDate = new Date();

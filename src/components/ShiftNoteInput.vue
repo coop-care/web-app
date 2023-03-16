@@ -1,5 +1,8 @@
 <template>
-  <div class="q-pb-sm column items-center full-width">
+  <div
+    v-if="!isDisabled"
+    class="q-pb-sm column items-center full-width"
+  >
     <q-input
       v-model="shiftNoteDraft"
       :autofocus="autofocus"
@@ -78,20 +81,24 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-facing-decorator";
 import { ShiftNote } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import Signature from "components/Signature.vue";
 import SelectDialog from "components/SelectDialog.vue";
+
+interface ShiftNoteInput extends RecordMixinInterface {};
 
 @Component({
   components: {
     Signature
-  }
+  },
+  mixins: [RecordMixin],
+  emits: ["cancel", "add"]
 })
-export default class ShiftNoteInput extends RecordMixin {
-  @Prop(Boolean) readonly autofocus!: boolean;
-  @Prop(Boolean) readonly cancelable!: boolean;
+class ShiftNoteInput extends Vue {
+  @Prop({ type: Boolean }) readonly autofocus!: boolean;
+  @Prop({ type: Boolean }) readonly cancelable!: boolean;
   shiftNoteDraft = "";
 
   get hasActiveProblems() {
@@ -100,7 +107,8 @@ export default class ShiftNoteInput extends RecordMixin {
 
   addShiftNote() {
     if (this.client) {
-      const shiftNote = new ShiftNote(this.$store.direct.getters.userId, this.shiftNoteDraft);
+      const text = this.shiftNoteDraft.replace(/\r\n/g, "\n").replace(/\r/g, "\n").trim(); // canonical line breaks
+      const shiftNote = new ShiftNote(this.$store.direct.getters.userId, text);
       this.updateAndSave(this.client, {
         shiftNotes: this.client.shiftNotes.concat([shiftNote])
       })
@@ -117,14 +125,15 @@ export default class ShiftNoteInput extends RecordMixin {
       if (activeProblems.length > 1) {
         this.$q.dialog({
           component: SelectDialog,
-          parent: this,
-          title: this.$t("newRating") as string,
-          message: this.$t("selectProblemForNewRating") as string,
-          okButtonLabel: this.$t("rateButtonTitle") as string,
-          selectOptions: activeProblems.map(problem => ({
-            label: this.$t(problem.problem.title),
-            value: problem.id
-          }))
+          componentProps: {
+            title: this.$t("newRating") as string,
+            message: this.$t("selectProblemForNewRating") as string,
+            okButtonLabel: this.$t("rateButtonTitle") as string,
+            selectOptions: activeProblems.map(problem => ({
+              label: this.$t(problem.problem.title),
+              value: problem.id
+            }))
+          }
         }).onOk((problemId: string) => {
           void this.$router.push({
             name: this.$route.name || "",
@@ -141,4 +150,6 @@ export default class ShiftNoteInput extends RecordMixin {
     }
   }
 }
+
+export default ShiftNoteInput;
 </script>

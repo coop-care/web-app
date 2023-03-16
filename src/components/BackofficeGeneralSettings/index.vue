@@ -8,10 +8,11 @@
 
 <script lang="ts">
 import { BackOffice } from "src/models";
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { defineAsyncComponent } from "vue";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
 const components = {
-  de: () => import("./de.vue"),
+  de: defineAsyncComponent(() => import("./de.vue")),
 };
 
 export const countryCodes = Object.keys(components);

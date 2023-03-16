@@ -15,7 +15,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Ref } from "vue-property-decorator";
+import { Component, Vue, Ref } from "vue-facing-decorator";
 import EditingSheet from "../components/EditingSheet.vue";
 import NewClientView from "../components/NewClient.vue";
 import { Client, Contact } from "../models";
@@ -45,11 +45,11 @@ export default class NewClientSheet extends Vue {
   }
 
   created() {
-    this.$root.$on("new-client", () => this.editingSheet.visible = true);
+    this.$bus.on("new-client", () => this.editingSheet.visible = true);
   }
 
-  beforeDestroy() {
-    this.$root.$off("new-client")
+  unmounted() {
+    this.$bus.off("new-client")
   }
 }
 </script>

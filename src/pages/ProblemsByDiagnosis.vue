@@ -30,8 +30,9 @@
         active-color="classification"
         done-color="classification"
       >
-        <i18n
-          path="frequentProblemsForDiagnosis"
+        <i18n-t
+          keypath="frequentProblemsForDiagnosis"
+          scope="global"
           tag="div"
           class="text-h6 q-mt-md q-mb-sm"
           v-if="!!selectedDiagnosisCode"
@@ -39,7 +40,7 @@
           <template v-slot:diagnosis>
             <span class="text-weight-bold">{{ $t("diagnosisNames." + selectedDiagnosisCode) }}</span>
           </template>
-        </i18n>
+        </i18n-t>
         <searchable-option-list
           color="classification"
           :options="problemOptionsForSelectedDiagnosis"
@@ -77,7 +78,7 @@
             @click="createDraftProblemRecords"
             color="primary"
             rounded
-            :label="$tc('createDraftProblemRecords', selectedProblemCodes.length)"
+            :label="$t('createDraftProblemRecords', selectedProblemCodes.length)"
             class="q-my-sm"
           />
         </q-stepper-navigation>
@@ -110,7 +111,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-facing-decorator";
 import { ProblemRecord } from "../models/problemRecord";
 import { sortByTitle } from "../helper/terminology";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
@@ -151,7 +152,7 @@ export default class ProblemsByDiagnosis extends Vue {
       .sort(sortByTitle);
   }
   get allProblemCodes() {
-    return Object.keys(this.$t("terminology.problemByCode"));
+    return Object.keys(this.$tm("terminology.problemByCode"));
   }
   get problemCodesForSelectedDiagnosis() {
     return this.problemCodesByDiagnosis[this.selectedDiagnosisCode] || [];
@@ -187,8 +188,8 @@ export default class ProblemsByDiagnosis extends Vue {
   makeProblemOption(code: string) {
     return {
       code: code,
-      title: this.$t("terminology.problemByCode." + code + ".title") as string,
-      description: this.$t(
+      title: this.$tm("terminology.problemByCode." + code + ".title") as string,
+      description: this.$tm(
         "terminology.problemByCode." + code + ".description"
       ) as string
     };

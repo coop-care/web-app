@@ -40,7 +40,7 @@
             <template v-slot:1>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 0"
                 @before-hide="observationMouseover = -1"
               />
@@ -48,7 +48,7 @@
             <template v-slot:2>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 1"
                 @before-hide="observationMouseover = -1"
               />
@@ -56,7 +56,7 @@
             <template v-slot:3>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 2"
                 @before-hide="observationMouseover = -1"
               />
@@ -64,7 +64,7 @@
             <template v-slot:4>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 3"
                 @before-hide="observationMouseover = -1"
               />
@@ -72,7 +72,7 @@
             <template v-slot:5>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 4"
                 @before-hide="observationMouseover = -1"
               />
@@ -92,8 +92,8 @@
           button-class="q-mt-sm q-mb-md text-center"
         >
           <q-input
-            :value="observationComment"
-            @change="observationComment = $event.target.value"
+            :model-value="observationComment"
+            @change="observationComment = $event"
             @clear="observationComment = ''"
             :label="$t('ratingCommentLabel')"
             autogrow
@@ -139,7 +139,7 @@
             <template v-slot:1>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 0"
                 @before-hide="expectationMouseover = -1"
               />
@@ -147,7 +147,7 @@
             <template v-slot:2>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 1"
                 @before-hide="expectationMouseover = -1"
               />
@@ -155,7 +155,7 @@
             <template v-slot:3>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 2"
                 @before-hide="expectationMouseover = -1"
               />
@@ -163,7 +163,7 @@
             <template v-slot:4>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 3"
                 @before-hide="expectationMouseover = -1"
               />
@@ -171,7 +171,7 @@
             <template v-slot:5>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 4"
                 @before-hide="expectationMouseover = -1"
               />
@@ -191,8 +191,8 @@
           button-class="q-my-sm text-center"
         >
           <q-input
-            :value="expectationComment"
-            @change="expectationComment = $event.target.value"
+            :model-value="expectationComment"
+            @change="expectationComment = $event"
             @clear="expectationComment = ''"
             :label="$t('ratingCommentLabel')"
             autogrow
@@ -213,7 +213,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { Rating } from "../models";
 import TextWithTooltip from "./TextWithTooltip.vue";
 import RevealButton from "./RevealButton.vue";
@@ -222,14 +222,15 @@ import RevealButton from "./RevealButton.vue";
   components: {
     TextWithTooltip,
     RevealButton
-  }
+  },
+  emits: ["update:model-value"]
 })
 export default class RatingView extends Vue {
   @Prop({ type: String, required: true}) readonly title!: string;
   @Prop({ type: String, required: true}) readonly description!: string;
   @Prop({ type: String, required: true}) readonly type!: string;
   @Prop({ type: Array, required: true}) readonly scale!: string[];
-  @Prop(Object) readonly rating: Rating | undefined;
+  @Prop({ type: Object }) readonly rating: Rating | undefined;
   @Prop({ type: Array, default: () => []}) readonly examples!: string[];
 
   observationMouseover = -1;
@@ -307,7 +308,7 @@ export default class RatingView extends Vue {
   }
 
   updateNewOutcome(changes: Partial<Rating>) {
-    this.$emit("input", changes);
+    this.$emit("update:model-value", changes);
   }
 }
 </script>

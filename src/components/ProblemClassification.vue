@@ -111,8 +111,8 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import WarningMixin from "../mixins/WarningMixin";
+import { Component, Prop, Vue, Model } from "vue-facing-decorator";
+import WarningMixin, { WarningMixinInterface } from "../mixins/WarningMixin";
 import {
   HasTitleDescription,
   TerminologyWithMaps,
@@ -122,15 +122,19 @@ import {
 import { Problem } from "../models/problem";
 import TextWithTooltip from "./TextWithTooltip.vue";
 
+interface ProblemClassification extends WarningMixinInterface {};
+
 @Component({
   components: {
     TextWithTooltip,
   },
+  mixins: [WarningMixin],
+  emits: ["update:model-value"]
 })
-export default class ProblemClassification extends WarningMixin {
-  @Prop(Object) readonly value!: Problem;
-  @Prop(Boolean) readonly activeInterventionsAvailable!: boolean;
-  @Prop(Boolean) readonly editMode!: boolean;
+class ProblemClassification extends Vue {
+  @Model({ type: Object }) readonly value!: Problem;
+  @Prop({ type: Boolean }) readonly activeInterventionsAvailable!: boolean;
+  @Prop({ type: Boolean }) readonly editMode!: boolean;
 
   get selectedProblem() {
     return this.problem.code;
@@ -228,14 +232,14 @@ export default class ProblemClassification extends WarningMixin {
     ];
   }
   get severityModifierExample() {
-    const usersGuide = (this.$t("usersGuide") as unknown) as UsersGuide;
+    const usersGuide = (this.$tm("usersGuide") as unknown) as UsersGuide;
     const usersGuideForProblem = usersGuide[this.problem.code || ""];
     const examples = usersGuideForProblem?.severityModifierExamples || [];
     return examples[this.severity];
   }
 
   get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
   get problem() {
     return this.value;
@@ -249,7 +253,7 @@ export default class ProblemClassification extends WarningMixin {
       changes.priorityDetails = "";
     }
 
-    this.$emit("input", Object.assign(this.problem, changes));
+    this.$emit("update:model-value", Object.assign(this.problem, changes));
   }
 
   modifier(type: string) {
@@ -267,4 +271,6 @@ export default class ProblemClassification extends WarningMixin {
     });
   }
 }
+
+export default ProblemClassification;
 </script>

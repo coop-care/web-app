@@ -29,7 +29,7 @@
         >
           <diagnosis-selection
             v-model="editableRecord.tag"
-            @input="nextStep"
+            @update:model-value="nextStep"
             class="q-mt-xs"
           />
           <div class="q-mt-lg row justify-center">
@@ -58,7 +58,7 @@
         >
           <problem-selection
             v-model="editableRecord.problem"
-            @input="validate(selectionWarnings, nextStep)"
+            @update:model-value="validate(selectionWarnings, nextStep)"
             class="q-mt-xs"
           />
           <warning
@@ -140,6 +140,7 @@
         >
           <problem-rating
             v-model="editableOutcome"
+            :problem-code="editableRecord.problem.code"
             :rating-reminder="editableRecord.ratingReminder"
             @change:rating-reminder="updateRatingReminder"
             class="q-mt-xs"
@@ -174,8 +175,9 @@
           active-color="intervention"
         >
           <intervention-view
-            :value="editableRecord.interventions"
-            @input="editableRecord.interventions = $event"
+            :model-value="editableRecord.interventions"
+            :problem-code="editableRecord.problem.code"
+            @update:model-value="editableRecord.interventions = $event"
             :problemTitle="$t(editableRecord.problem.title)"
             class="q-mt-xs"
           />
@@ -207,8 +209,6 @@
       width: 72%
     > .col-md-3
       width: 28%
-.q-stepper__header--standard-labels .q-stepper__tab:first-child
-  justify-content: flex-start !important
 .q-stepper--vertical .q-stepper__tab
   padding-left: 4px
 .q-stepper--vertical .q-stepper__step-inner
@@ -217,9 +217,9 @@
 </style>
 
 <script lang="ts">
-import { Component, Watch, Ref } from "vue-property-decorator";
+import { Component, Watch, Ref, Vue } from "vue-facing-decorator";
 import { QStepper } from "quasar";
-import RecordValidator from "../mixins/RecordValidator";
+import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValidator";
 import { Outcome, ProblemRecord, RatingReminder } from "../models";
 import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
@@ -229,6 +229,8 @@ import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import InterventionView from "components/InterventionV3.vue";
 import Warning from "components/Warning.vue";
+
+interface ProblemRecording extends RecordValidatorInterface {};
 
 @Component({
   components: {
@@ -240,14 +242,15 @@ import Warning from "components/Warning.vue";
     ProblemRating,
     InterventionView,
     Warning,
-  }
+  },
+  mixins: [RecordValidator]
 })
-export default class ProblemRecording extends RecordValidator {
+class ProblemRecording extends Vue {
   @Ref() readonly stepper!: QStepper;
   @Ref() readonly editingSheet!: EditingSheet;
   step = 2;
-  editableRecord = this.record?.clone() || new ProblemRecord();
-  originalRecord = this.editableRecord.toJSON();
+  editableRecord = new ProblemRecord(); // value is replaced with actual value in created hook, but needs a value here for reactivity to work
+  originalRecord = ""; // value is replaced with actual value in created hook, but needs a value here for reactivity to work
   ratingReminderChanges: Partial<RatingReminder> = {};
 
   @Watch("step")
@@ -282,7 +285,7 @@ export default class ProblemRecording extends RecordValidator {
     return this.editableRecord.problem.isHighPriority;
   }
   get hasDiagnosisNames() {
-    return Object.keys(this.$t("diagnosisNames")).length > 0;
+    return Object.keys(this.$tm("diagnosisNames")).length > 0;
   }
   get firstStepPrefix() {
     return this.hasDiagnosisNames ? 1 : 0;
@@ -317,7 +320,7 @@ export default class ProblemRecording extends RecordValidator {
         title += ": " + this.$t("noDescription");
       } else if (problem.severityCode == 2) {
         const symptomCount = problem.signsAndSymptoms.length;
-        title += ": " + this.$tc("selectedSymptomsCount", symptomCount);
+        title += ": " + this.$t("selectedSymptomsCount", symptomCount);
       }
 
       return title;
@@ -390,7 +393,7 @@ export default class ProblemRecording extends RecordValidator {
   }
 
   hasPendingChanges() {
-    return this.editableRecord.toJSON() != this.originalRecord;
+    return this.editableRecord.toJSONString() != this.originalRecord;
   }
   
   updateRatingReminder(changes: Partial<RatingReminder>) {
@@ -421,7 +424,7 @@ export default class ProblemRecording extends RecordValidator {
       this.$store.direct.commit.updateObject({
         target: this.record,
         changes: this.editableRecord,
-        clientId: this.$route.params.clientId,
+        clientId: this.$route.params.clientId as string,
         problemId: this.editableRecord.id
       });
     }
@@ -436,7 +439,10 @@ export default class ProblemRecording extends RecordValidator {
   }
 
   created() {
-    this.step = parseInt(this.$root.$route.params.step)
+    this.editableRecord = this.record?.clone() || new ProblemRecord();
+    this.originalRecord = this.editableRecord.toJSONString();
+
+    this.step = parseInt(this.$route.params.step as string)
       || (this.hasDiagnosisNames ? 1 : 2);
     this.editableRecord = this.record?.clone() || new ProblemRecord();
 
@@ -444,7 +450,9 @@ export default class ProblemRecording extends RecordValidator {
       this.editableRecord.outcomes.push(new Outcome());
     }
 
-    this.originalRecord = this.editableRecord.toJSON();
+    this.originalRecord = this.editableRecord.toJSONString();
   }
 }
+
+export default ProblemRecording;
 </script>

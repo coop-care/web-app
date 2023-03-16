@@ -9,7 +9,7 @@
       <template v-slot:header>
         <q-item-section>
           <q-item-label class="q-pl-none">{{
-            $tc("client", 2)
+            $t("client", 2)
           }}</q-item-label>
           <q-item-label 
             v-if="teamname"
@@ -89,7 +89,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import { Client } from "../models/client";
 import Loading from "components/Loading.vue";
 import NavigationSection from "./NavigationSection.vue";
@@ -144,29 +144,29 @@ export default class ClientDrawer extends Vue {
     return this.selectedClient == client;
   }
   addClient() {
-    this.$root.$emit("new-client");
-    this.$root.$emit("close-drawer");
+    this.$bus.emit("new-client");
+    this.$bus.emit("close-drawer");
   }
   selectClient(client: Client) {
     void this.$router.push({
       name: "client",
       params: { clientId: client._id?.toHexString() || "" },
     });
-    this.$root.$emit("close-drawer");
+    this.$bus.emit("close-drawer");
     void this.$store.direct.dispatch.fetchClientsFromDB();
   }
 
   created() {
-    this.$root.$on("did-archive-client", () => 
+    this.$bus.on("did-archive-client", () => 
       this.archivedClientsExpansionState = true
     );
-    this.$root.$on("did-unarchive-client", () => 
+    this.$bus.on("did-unarchive-client", () => 
       this.activeClientsExpansionState = true
     );
   }
-  beforeDestroy() {
-    this.$root.$off("did-archive-client");
-    this.$root.$off("did-unarchive-client");
+  unmounted() {
+    this.$bus.off("did-archive-client");
+    this.$bus.off("did-unarchive-client");
   }
 }
 </script>

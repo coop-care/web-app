@@ -1,4 +1,4 @@
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 import { defineGetters } from "direct-vuex";
 import { store, StateInterface } from ".";
 import { Client, ProblemRecord, Contact } from "../models";
@@ -45,7 +45,7 @@ export default defineGetters<StateInterface>()({
 
         return {
             clientId: client._id?.toHexString() || "",
-            problemId: client.problems[client.problems.length - 1].id
+            problemId: client.problems.at(-1)?.id
         };
     },
 
@@ -115,7 +115,7 @@ export default defineGetters<StateInterface>()({
         )];
     },
 
-    referenceCountForFormalContact: state => (contactId: ObjectID) =>
+    referenceCountForFormalContact: state => (contactId: ObjectId) =>
         state.clients.flatMap(client => client.formalContacts.filter(
             contact => contact.id.equals(contactId)
         )).length,

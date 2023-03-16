@@ -26,10 +26,11 @@
             ref="dateProxy"
             transition-show="scale"
             transition-hide="scale"
+            self="center middle"
           >
             <q-date
               v-model="selectedDateString"
-              @input="dateProxy.hide()"
+              @update:model-value="dateProxy.hide()"
               :events="[]"
               color="primary"
               event-color="primary"
@@ -167,7 +168,7 @@
     div:first-of-type
       margin-bottom: -5px
 body.desktop .task-list .q-hoverable:hover > .q-focus-helper
-  background-color: var(--q-color-primary)
+  background-color: var(--q-primary)
 .task-list
   position: relative
 .task-list-item
@@ -183,13 +184,15 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
 </style>
 
 <script lang="ts">
-import { Component, Ref, Watch } from "vue-property-decorator";
+import { Component, Ref, Watch, Vue } from "vue-facing-decorator";
 import { date, QPopupProxy } from "quasar";
-import { Task, TaskGroup, Reminder } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import { Task, TaskGroup, Reminder, GroupedTask } from "../models";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
 import ShiftNotesDayView from "components/ShiftNotesDayView.vue";
 import TimeRecording from "components/TimeRecording.vue";
+
+interface ClientReminders extends RecordMixinInterface {};
 
 const {
   isSameDate,
@@ -211,10 +214,11 @@ const allInclusive = {
     ShiftNotesDayView,
     TimeRecording
   },
+  mixins: [RecordMixin]
 })
-export default class ClientReminders extends RecordMixin {
+class ClientReminders extends Vue {
   @Ref() readonly dateProxy!: QPopupProxy;
-  tasks = this.tasksForDay(this.selectedDate);
+  tasks: GroupedTask[] = [];
   isToday = true;
   startOfTodayTimer = 0;
   endOfTodayTimer = 0;
@@ -226,13 +230,15 @@ export default class ClientReminders extends RecordMixin {
   }
 
   get selectedDate() {
-    return new Date(parseInt(this.$root.$route.params.day) || Date.now());
+    return new Date(parseInt(this.$route.params.day as string) || Date.now());
   }
   set selectedDate(value) {
-    this.$route.params.day = "" + value.getTime();
     void this.$router.push({
       name: this.$route.name || undefined,
-      params: this.$route.params,
+      params: { 
+        ...this.$route.params, 
+        day: "" + value.getTime()
+      },
     });
     this.updateTasks();
     this.updatedIsToday();
@@ -261,7 +267,7 @@ export default class ClientReminders extends RecordMixin {
     return [
       "task.list", 
       this.client?._id?.toHexString() || "no-client-id", 
-      this.$root.$route.params.day || "today"
+      this.$route.params.day || "today"
     ].join(".");
   }
 
@@ -438,15 +444,18 @@ export default class ClientReminders extends RecordMixin {
   }
 
   created() {
+    this.tasks = this.tasksForDay(this.selectedDate);
     window.addEventListener("visibilitychange", this.visibilityDidChange);
     this.updateTasks();
     this.updatedIsToday();
     this.setTodayTimers();
   }
 
-  beforeDestroy() {
+  unmounted() {
     window.removeEventListener("visibilitychange", this.visibilityDidChange);
     this.clearTodayTimers();
   }
 }
+
+export default ClientReminders;
 </script>

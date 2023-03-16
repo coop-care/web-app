@@ -2,25 +2,32 @@
   <component
     v-if="localizedComponent"
     :is="localizedComponent"
+    @did-route="$emit('did-route')"
   />
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import BackofficeMixin from "../../mixins/BackofficeMixin";
+import { defineAsyncComponent } from "vue";
+import { Component, Vue } from "vue-facing-decorator";
+import BackofficeMixin, { BackofficeMixinInterface } from "../../mixins/BackofficeMixin";
 
 const components = {
-  de: () => import("./de.vue"),
+  de: defineAsyncComponent(() => import("./de.vue")),
 };
 
 export const countryCodes = Object.keys(components);
 
+interface BackofficeCompensationAgreementList extends BackofficeMixinInterface {};
+
 @Component({
   components,
+  mixins: [BackofficeMixin],
+  emits: ["did-route"]
 })
-export default class BackofficeCompensationAgreementList extends BackofficeMixin {
+class BackofficeCompensationAgreementList extends Vue {
   get localizedComponent() {
     return this.matchingCountryCode(countryCodes)
   }
 }
+export default BackofficeCompensationAgreementList;
 </script>

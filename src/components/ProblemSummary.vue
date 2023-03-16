@@ -29,7 +29,7 @@
             size="10.5px"
             color="classification"
             class="on-right shadow-1 bg-white"
-            @click.prevent.stop=""
+            @click.stop=""
           />
         </div>
         <div
@@ -109,7 +109,7 @@
           <ul class="q-ma-none column-2">
             <li
               v-for="(symptom, index) in problem.signsAndSymptoms"
-              v-bind:key="index"
+              :key="index"
               class="no-column-break"
             >
               {{ $t(symptom.title)
@@ -137,7 +137,7 @@
         >
           <div
             v-for="(rating, index) in ratingsSummary"
-            v-bind:key="index"
+            :key="index"
             class="rating row no-wrap"
           >
             <div class="row no-wrap items-center q-mr-xs print-color">
@@ -190,14 +190,14 @@
       <div v-if="!isExpanded">
         <simplified-markdown
           :text="
-            $tc('numberOfInterventions', record.interventions.length)
+            $t('numberOfInterventions', record.interventions.length)
           "
           bold-class="text-intervention"
         />
       </div>
       <div v-else-if="isInteractive && problem.isHighPriority">
         <div class="text-subtitle1 text-weight-bold text-intervention q-mb-xs">
-          {{ $tc("intervention", 2) }}
+          {{ $t("intervention", 2) }}
           <q-btn
             v-if="isInteractive"
             :title="$t('newIntervention')"
@@ -216,7 +216,7 @@
         >
           <li
             v-for="(intervention, index) in interventions"
-            v-bind:key="index"
+            :key="index"
             class="no-column-break"
           >
             <div>
@@ -243,7 +243,7 @@
 
 <style lang="sass">
 .q-card
-  // background-image: var(--q-color-classification-gd) !important
+  // background-image: var(--q-classification-gd) !important
   // *
   //   color: white
   &.text-body2
@@ -262,34 +262,41 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, PropSync, Watch, Mixins } from "vue-property-decorator";
-import RecordMixin from "../mixins/RecordMixin";
-import WarningMixin from "../mixins/WarningMixin";
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import WarningMixin, { WarningMixinInterface } from "../mixins/WarningMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ActionMenu from "../components/ActionMenu.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import RatingChartGroup from "../components/RatingChartGroup.vue";
 import { ProblemRecord, Problem } from "../models";
+
+interface ProblemSummary extends RecordMixinInterface, WarningMixinInterface {};
 
 @Component({
   components: {
     ActionMenu,
     SimplifiedMarkdown,
     RatingChartGroup
-  }
+  },
+  mixins: [RecordMixin, WarningMixin],
+  emits: ["update:expanded"]
 })
-export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
+class ProblemSummary extends Vue {
   @Prop({type: Object, default: {}}) readonly params!: Record<string, string>;
-  @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
+  @Prop({type: Object}) readonly problemRecord: ProblemRecord | undefined;
   @Prop({type: Boolean, default: true}) readonly isExpandable!: boolean;
-  @PropSync("expanded", {type: Boolean, default: false}) isExpanded!: boolean;
+  @Prop({type: Boolean, default: false}) expanded!: boolean;
 
-  @Watch("isExpanded")
-  onIsExpandedChanged(value: boolean) {
-      if (value) {
-        this.scrollToVisible();
-      }
+  get isExpanded() {
+    return this.expanded;
   }
+  set isExpanded(value) {
+    this.$emit("update:expanded", value);
 
+    if (value) {
+      this.scrollToVisible();
+    }
+  }
   get problem() {
     return this.record?.problem || new Problem();
   }
@@ -305,11 +312,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
     return this.record?.interventions || [];
   }
   get lastOutcome() {
-    if (this.outcomes.length) {
-      return this.outcomes[this.outcomes.length - 1];
-    } else {
-      return undefined;
-    }
+    return this.outcomes.at(-1);
   }
   get isInteractive() {
     return this.isExpanded && !this.isDisabled;
@@ -334,7 +337,7 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
               terminologyRatings[index].scale[rating.observation - 1].title,
             colors: [0, 1, 2, 3, 4].map((value) => {
               if (value < rating.observation) {
-                return "var(--q-color-outcome)";
+                return "var(--q-outcome)";
                 // return "#ffffff";
               } else if (value < rating.expectation || 0) {
                 return "#cccccc";
@@ -451,4 +454,6 @@ export default class ProblemSummary extends Mixins(WarningMixin, RecordMixin) {
     });
   }
 }
+
+export default ProblemSummary;
 </script>

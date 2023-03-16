@@ -10,7 +10,7 @@ import {
 import { ChangeEvent } from "mongodb-stitch-core-services-mongodb-remote"
 import CoopCareApiInterface, { CoopCareApiListener } from "./coopCareApiInterface";
 import { Client, User, Team, TeamMember, BackOffice } from "../models";
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 
 export default class StitchApi implements CoopCareApiInterface {
     private stitch: StitchAppClient;
@@ -137,7 +137,7 @@ export default class StitchApi implements CoopCareApiInterface {
         }
 
         return this.users.insertOne(user).then(result => {
-            user._id = new ObjectID(result.insertedId);
+            user._id = new ObjectId(result.insertedId);
             return user;
         });
     }
@@ -173,7 +173,7 @@ export default class StitchApi implements CoopCareApiInterface {
     createClient(client: Client) {
         const data: any = client.toJSON();
         return this.clients.insertOne(data).then(result => {
-            client._id = new ObjectID(result.insertedId);
+            client._id = new ObjectId(result.insertedId);
             return client;
         })
     }
@@ -192,7 +192,7 @@ export default class StitchApi implements CoopCareApiInterface {
                 // where details of selected client cannot be displayed in client view
                 .find({
                     _id: {
-                        $in: clientIds.map(id => new ObjectID(id))
+                        $in: clientIds.map(id => new ObjectId(id))
                     }
                 }, {})
                 .toArray()
@@ -213,7 +213,7 @@ export default class StitchApi implements CoopCareApiInterface {
                 })
         );
     }
-    getClient(id: ObjectID) {
+    getClient(id: ObjectId) {
         return this.clients
             .find({ _id: id }, {})
             .first()
@@ -239,7 +239,7 @@ export default class StitchApi implements CoopCareApiInterface {
 
     createTeam(team: Team) {
         return this.teams.insertOne(team).then(result => {
-            team._id = new ObjectID(result.insertedId);
+            team._id = new ObjectId(result.insertedId);
             return team;
         })
     }
@@ -284,7 +284,7 @@ export default class StitchApi implements CoopCareApiInterface {
     }
     createBackoffice(backoffice: BackOffice) {
         return this.backoffices.insertOne(backoffice).then(result => {
-            backoffice._id = new ObjectID(result.insertedId);
+            backoffice._id = new ObjectId(result.insertedId);
             return backoffice;
         })
     }

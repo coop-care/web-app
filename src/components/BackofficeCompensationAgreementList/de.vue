@@ -2,7 +2,7 @@
   <div>
     <q-item class="q-mt-sm q-px-sm q-pb-none text-subtitle1 text-weight-bold">
       <q-item-section>
-        <q-item-label class="ellipsis">{{ $tc("de.compensationAgreement", 2) }}</q-item-label>
+        <q-item-label class="ellipsis">{{ $t("de.compensationAgreement", 2) }}</q-item-label>
       </q-item-section>
       <q-item-section side>
         <q-btn
@@ -25,21 +25,25 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import BackofficeMixin from "src/mixins/BackofficeMixin";
+import { Component, Vue } from "vue-facing-decorator";
+import BackofficeMixin, { BackofficeMixinInterface } from "src/mixins/BackofficeMixin";
 import { Verguetungsvereinbarung } from "src/models/localized/de"
 import NavigationItems from "components/NavigationItems.vue";
-import { plainToClass } from "class-transformer";
+import { plainToInstance } from "class-transformer";
+
+interface BackofficeCompensationAgreementList extends BackofficeMixinInterface {};
 
 @Component({
   components: {
     NavigationItems
-  }
+  },
+  mixins: [BackofficeMixin],
+  emits: ["did-route"]
 })
-export default class BackofficeCompensationAgreementList extends BackofficeMixin {
+class BackofficeCompensationAgreementList extends Vue {
   get vereinbarungen(): Verguetungsvereinbarung[] {
-    return this.backoffice?.customValue("de.verguetungsvereinbarungen")
-      .map((plain: any) => plainToClass(Verguetungsvereinbarung, plain)) || [];
+    return this.backoffice?.customValue<any[]>("de.verguetungsvereinbarungen")
+      ?.map((plain: any) => plainToInstance(Verguetungsvereinbarung, plain)) || [];
   }
   get vereinbarungenOptions() {
     return this.vereinbarungen.map(item => ({
@@ -59,7 +63,9 @@ export default class BackofficeCompensationAgreementList extends BackofficeMixin
   showVereinbarung(agreementId: string, editMode = false) {
     const query =  editMode ? {edit: "1"} : undefined;
     void this.pushRoute("backofficeCompensationAgreement", {agreementId}, query);
-    this.$parent?.$emit("did-route");
+    this.$emit("did-route");
   }
 }
+
+export default BackofficeCompensationAgreementList;
 </script>

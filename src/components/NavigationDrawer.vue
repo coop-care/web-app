@@ -1,11 +1,10 @@
 <template>
   <q-drawer
     v-model="isVisible"
-    content-class="no-scroll non-selectable bg-grey-2 dense-avatar"
+    class="no-scroll non-selectable bg-grey-2 dense-avatar navigation-drawer print-hide"
     show-if-above
     no-swipe-close
     :breakpoint="1020"
-    class="navigation-drawer print-hide"
   >
     <pull-to-refresh class="fit">
       <div class="fit column no-wrap">
@@ -20,7 +19,7 @@
           <q-tab
             name="clients"
             :ripple="false"
-            :label="$tc('client', 2)"
+            :label="$t('client', 2)"
             icon="fas fa-house-user"
           />
           <!-- <q-tab
@@ -92,7 +91,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import PullToRefresh from "components/PullToRefresh.vue";
 import ClientDrawer from "components/ClientDrawer.vue";
 import TeamDrawer from "components/TeamDrawer.vue";
@@ -108,11 +107,11 @@ import MyAccountDrawer from "components/MyAccountDrawer.vue";
 })
 export default class NavigationDrawer extends Vue {
   selectedTab = this.initialTab;
-  isVisible = this.$q.screen.gt.sm;
+  isVisible = false;
 
   get initialTab() {
-    const name = this.$route.name || "";
-    const section = this.$route.meta?.section || "";
+    const name = this.$route?.name?.toString() || "";
+    const section = this.$route?.meta?.section || "";
 
     if (section == "client" || name.startsWith("client")) {
       return "clients";
@@ -130,14 +129,16 @@ export default class NavigationDrawer extends Vue {
   }
 
   created() {
-    this.$root.$on("toggle-drawer", () => this.isVisible = !this.isVisible);
-    this.$root.$on("open-drawer", () => this.isVisible = true);
-    this.$root.$on("close-drawer", this.closeDrawer);
+    this.selectedTab = this.initialTab;
+    this.isVisible = this.$q.screen.gt.sm;
+    this.$bus.on("toggle-drawer", () => this.isVisible = !this.isVisible);
+    this.$bus.on("open-drawer", () => this.isVisible = true);
+    this.$bus.on("close-drawer", this.closeDrawer);
   }
-  beforeDestroy() {
-    this.$root.$off("toggle-drawer");
-    this.$root.$off("open-drawer");
-    this.$root.$off("close-drawer");
+  unmounted() {
+    this.$bus.off("toggle-drawer");
+    this.$bus.off("open-drawer");
+    this.$bus.off("close-drawer");
   }
 }
 </script>

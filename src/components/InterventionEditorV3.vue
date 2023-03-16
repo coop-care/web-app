@@ -76,14 +76,14 @@
       class="q-mb-sm"
       clearable
       ref="detailsInput"
-      @keydown.up.down.enter.prevent="detailsMenu.navigateMenu"
+      @keydown.up.down.enter.prevent="navigateDetailsMenu"
     >
       <filterable-menu
         v-model="details"
         ref="detailsMenu"
         :items="suggestedDetails"
         color="intervention"
-        @input="detailsInput.focus()"
+        @update:model-value="detailsInput.focus()"
       />
     </q-input>
 
@@ -97,15 +97,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Ref } from "vue-property-decorator";
-import WarningMixin from "../mixins/WarningMixin";
+import { Component, Prop, Ref, Vue, Model } from "vue-facing-decorator";
+import WarningMixin, { WarningMixinInterface } from "../mixins/WarningMixin";
 import { QInput } from "quasar";
 import { UsersGuide } from "../helper/terminology";
-import { ProblemRecord, Intervention } from "../models";
+import { Intervention } from "../models";
 import InterventionCategorySelect from "../components/InterventionCategorySelect.vue";
 import InterventionTargetSelect from "../components/InterventionTargetSelect.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
 import FilterableMenu from "../components/FilterableMenu.vue";
+
+interface InterventionEditor extends WarningMixinInterface {};
 
 @Component({
   components: {
@@ -114,18 +116,17 @@ import FilterableMenu from "../components/FilterableMenu.vue";
     ReminderEditor,
     FilterableMenu,
   },
+  mixins: [WarningMixin],
+  emits: ["duplicate", "delete", "update:model-value"]
 })
-export default class InterventionEditor extends WarningMixin {
-  @Prop({ type: Object, required: true}) readonly value!: Intervention;
-  @Prop(ProblemRecord) readonly problemRecord: ProblemRecord | undefined;
-  @Prop(Boolean) readonly isSingleEditor!: boolean;
-  @Prop(Boolean) readonly editMode!: boolean;
-  @Ref() readonly  detailsInput!: QInput;
-  @Ref() readonly  detailsMenu!: FilterableMenu;
+class InterventionEditor extends Vue {
+  @Model({ type: Object, required: true}) readonly value!: Intervention;
+  @Prop({ type: String, default: "" }) readonly problemCode!: string;
+  @Prop({ type: Boolean }) readonly isSingleEditor!: boolean;
+  @Prop({ type: Boolean }) readonly editMode!: boolean;
+  @Ref() readonly detailsInput!: QInput;
+  @Ref() readonly detailsMenu!: FilterableMenu;
 
-  get problemCode() {
-    return this.record?.problem.code;
-  }
   get categoryCode() {
     return this.value.categoryCode;
   }
@@ -170,13 +171,11 @@ export default class InterventionEditor extends WarningMixin {
     }
   }
   get usersGuideForProblem() {
-    return ((this.$t("usersGuide") as unknown) as UsersGuide)[this.problemCode || ""];
+    return ((this.$tm("usersGuide") as unknown) as UsersGuide)[this.problemCode || ""];
   }
-  get record() {
-    return (
-      this.problemRecord ||
-      this.$store.direct.getters.getProblemRecordById(this.$route.params)
-    );
+
+  navigateDetailsMenu(event: KeyboardEvent) {
+    this.detailsMenu.navigateMenu(event);
   }
 
   updateIntervention(changes: Partial<Intervention>) {
@@ -184,7 +183,9 @@ export default class InterventionEditor extends WarningMixin {
       target: this.value,
       changes: changes,
     });
-    this.$emit("input", this.value);
+    this.$emit("update:model-value", this.value);
   }
 }
+
+export default InterventionEditor;
 </script>

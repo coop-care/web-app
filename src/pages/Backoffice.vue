@@ -3,48 +3,47 @@
     padding
     class="limit-page-width width-sm"
   >
-    <pull-to-refresh>
+    <div
+      v-if="backofficeOptions.length == 1"
+      class="q-mt-lg"
+    >
+      <div>{{ $t("noExistingBackOffices") }}</div>
+      <q-btn 
+        v-if="isTeamAdmin"
+        :label="$t('addBackoffice')"
+        rounded
+        no-caps
+        color="primary"
+        class="q-mt-md"
+        @click="setBackofficeId('new')"
+      />
+    </div>
+    <div v-else>
+      <q-select
+        :model-value="backofficeId"
+        @update:model-value="setBackofficeId"
+        :options="backofficeOptions"
+        :label="$t('backoffice')"
+        emit-value
+        map-options
+        class="text-h6 q-mb-lg"
+      />
+      <central-message
+        v-if="!backoffice" 
+        :message="$t('backofficeNotFound')"
+      />
       <div
-        v-if="backofficeOptions.length == 1"
-        class="q-mt-lg"
+        class="backoffice-overview q-pt-lg"
+        v-else-if="isBackofficeAdmin"
       >
-        <div>{{ $t("noExistingBackOffices") }}</div>
-        <q-btn 
-          v-if="isTeamAdmin"
-          :label="$t('addBackoffice')"
-          rounded
-          no-caps
-          color="primary"
-          class="q-mt-md"
-          @click="setBackofficeId('new')"
+        <tab-view
+          :key="$route.params.backofficeId || ''"
+          :tabs="tabs"
+          pullToRefresh
         />
       </div>
-      <div v-else>
-        <q-select
-          :value="backofficeId"
-          @input="setBackofficeId"
-          :options="backofficeOptions"
-          :label="$t('backoffice')"
-          emit-value
-          map-options
-          class="text-h6 q-mb-lg"
-        />
-        <central-message
-          v-if="!backoffice" 
-          :message="$t('backofficeNotFound')"
-        />
-        <div
-          class="backoffice-overview q-pt-lg"
-          v-else-if="isBackofficeAdmin"
-        >
-          <tab-view
-            :key="$route.params.backofficeId || ''"
-            :tabs="tabs"
-          />
-        </div>
-        <div v-else></div>
-      </div>
-    </pull-to-refresh>
+      <div v-else></div>
+    </div>
   </q-page>
 </template>
 
@@ -57,24 +56,25 @@
 </style>
 
 <script lang="ts">
-import { Component, Mixins } from "vue-property-decorator";
-import BackofficeMixin from "../mixins/BackofficeMixin";
-import TeamMixin from "../mixins/TeamMixin";
+import { Component, Vue } from "vue-facing-decorator";
+import BackofficeMixin, { BackofficeMixinInterface } from "../mixins/BackofficeMixin";
+import TeamMixin, { TeamMixinInterface } from "../mixins/TeamMixin";
 import { BackOffice, Client } from "../models";
 import CentralMessage from "components/CentralMessage.vue";
-import PullToRefresh from "components/PullToRefresh.vue";
 import TabView from "../components/TabView.vue";
 import { incrementalName } from "src/helper/utils";
 import { countryCodes as referralCountryCodes } from "components/BackofficeReferral/index.vue";
 
+interface BackofficePage extends BackofficeMixinInterface, TeamMixinInterface {};
+
 @Component({
   components: {
     CentralMessage,
-    PullToRefresh,
     TabView
   },
+  mixins: [BackofficeMixin, TeamMixin]
 })
-export default class BackofficePage extends Mixins(BackofficeMixin, TeamMixin) {
+class BackofficePage extends Vue {
   get backofficeOptions() {
     const options = this.$store.direct.state.backoffices.map(item => ({
       label: item.name,
@@ -92,17 +92,17 @@ export default class BackofficePage extends Mixins(BackofficeMixin, TeamMixin) {
   }
   get tabs() {
     return [{
-      label: this.$tc("invoice", 2),
+      label: this.$t("invoice", 2),
       route: "backofficeInvoice",
       icon: "fas fa-file-invoice",
     },{
-      label: this.$tc("costEstimate", 2),
+      label: this.$t("costEstimate", 2),
       route: "backofficeCostEstimate",
       icon: "fas fa-tag",
     },
     referralCountryCodes.includes(this.backofficeCountryComponent) 
       ? {
-          label: this.$tc("de.medicalReferral", 2),
+          label: this.$t("de.medicalReferral", 2),
           route: "backofficeReferral",
           icon: "fas fa-file-medical",
         } 
@@ -143,4 +143,6 @@ export default class BackofficePage extends Mixins(BackofficeMixin, TeamMixin) {
     });
   }
 }
+
+export default BackofficePage;
 </script>

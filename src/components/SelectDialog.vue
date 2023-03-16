@@ -42,20 +42,17 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
+import { Vue, Component, Prop, Ref } from "vue-facing-decorator";
 import { QDialog } from "quasar";
-import FilterableMenu from "../components/FilterableMenu.vue";
 
 @Component({
-  components: {
-    FilterableMenu
-  },
+  emits: ["ok", "hide"]
 })
 export default class SelectDialog extends Vue {
   @Prop({type: String, default: ""}) readonly title!: string;
   @Prop({type: String, default: ""}) readonly message!: string;
   @Prop({type: String, default: ""}) readonly label!: string;
-  @Prop(String) readonly okButtonLabel?: string;
+  @Prop({type: String}) readonly okButtonLabel?: string;
   @Prop({type: Array, default: () => []}) readonly selectOptions!: {label: string, value: string}[];
   @Ref() readonly dialog!: QDialog;
 

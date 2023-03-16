@@ -1,5 +1,4 @@
 import { makeTerminologyWithMaps } from "../helper/terminology";
-import store from "../store";
 
 import enUS from "./en-us/index.json";
 import terminologyEN from "./en-us/terminology.json";
@@ -17,7 +16,7 @@ import terminologyDE from "./de-de/terminology.json";
 import countriesDE_DE from "localized-countries/data/de_DE.json";
 (deDE as Record<string, any>).countries = countriesDE_DE;
 
-if (!store.direct.getters.isDemo) {
+if (false) {
     const responseHandler = (response: Response) => {
         if (response.ok) {
             return response
@@ -68,6 +67,6 @@ if (!store.direct.getters.isDemo) {
 }
 
 export default {
-    "en-us": enUS,
-    "de-de": deDE
+  "en-US": enUS,
+  "de-DE": deDE,
 };

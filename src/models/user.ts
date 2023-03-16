@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { plainToClass } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { IdentifiableObject } from ".";
 
 export class TeamMember extends IdentifiableObject {
@@ -10,7 +10,7 @@ export class TeamMember extends IdentifiableObject {
     signature = "";
 
     static fromObject(object: any): TeamMember | TeamMember[] {
-        return plainToClass(TeamMember, object);
+        return plainToInstance(TeamMember, object);
     }
     static sortByName(a: TeamMember, b: TeamMember) {
         return a.username?.localeCompare(b.username);
@@ -44,6 +44,6 @@ export class User extends TeamMember {
     isOnboardingCompleted = false;
 
     static fromObject(object: any): User | User[] {
-        return plainToClass(User, object);
+        return plainToInstance(User, object);
     }
 }

@@ -1,8 +1,8 @@
 <template>
   <q-expansion-item
     :icon="icon"
-    :value="isExpanded"
-    @input="expansionChanged"
+    :model-value="isExpanded"
+    @update:model-value="expansionChanged"
     ref="expansionItem"
     class="intervention-item bg-intervention-light rounded-borders q-mb-sm"
     expand-icon-class="text-intervention expand-icon"
@@ -25,7 +25,7 @@
         />
       </q-item-section>
     </template>
-    <intervention-editor :value="value" class="intervention-editor q-pb-md" />
+    <intervention-editor :model-value="value" class="intervention-editor q-pb-md" />
   </q-expansion-item>
 </template>
 
@@ -52,18 +52,19 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Model } from "vue-facing-decorator";
 import InterventionEditor from "./InterventionEditorV2.vue";
 import { Intervention } from "../models/intervention";
 
 @Component({
   components: {
     InterventionEditor
-  }
+  },
+  emits: ["delete-intervention", "did-expand", "did-collapse"]
 })
 export default class EditableIntervention extends Vue {
-  @Prop({ type: Object, required: true}) readonly value!: Intervention;
-  @Prop(Boolean) readonly isExpanded!: boolean;
+  @Model({ type: Object, required: true}) readonly value!: Intervention;
+  @Prop({ type: Boolean }) readonly isExpanded!: boolean;
 
   get icon() {
     return this.$t(this.value.category.icon) || "fas fa-question";

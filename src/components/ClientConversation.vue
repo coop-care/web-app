@@ -44,23 +44,26 @@
 </style>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Vue } from "vue-facing-decorator";
 import { date } from "quasar";
 import { ShiftNote } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ChatMessage from "components/ChatMessage.vue";
 import ShiftNoteInput from "components/ShiftNoteInput.vue";
 
 const { isSameDate } = date;
 const shiftNotesBatchSize = 20;
 
+interface ClientConversation extends RecordMixinInterface {};
+
 @Component({
   components: {
     ShiftNoteInput,
     ChatMessage
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientConversation extends RecordMixin {
+class ClientConversation extends Vue {
   @Ref() readonly scrollTarget!: HTMLElement;
   @Ref() readonly footer!: HTMLElement;
   @Ref() readonly chatMessage!: ChatMessage[];
@@ -98,7 +101,7 @@ export default class ClientConversation extends RecordMixin {
   }
 
   scrollToDateIfNeeded() {
-    const timestamp = parseInt(this.$route.params.day);
+    const timestamp = parseInt(this.$route.params.day as string);
 
     if (!isNaN(timestamp)) {
       let index = this.allShiftNotes
@@ -165,8 +168,10 @@ export default class ClientConversation extends RecordMixin {
     this.scrollToDateIfNeeded();
   }
 
-  beforeDestroy() {
+  unmounted() {
     window.removeEventListener("resize", this.onResize);
   }
 }
+
+export default ClientConversation;
 </script>

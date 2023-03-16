@@ -1,5 +1,5 @@
-import { plainToClass } from "class-transformer";
-import { ObjectID } from "bson";
+import { plainToInstance } from "class-transformer";
+import { ObjectId } from "bson";
 import { store } from "../store";
 import { Client, ClientAgreements, ClientHealthInformation, Contact, Intervention, ProblemRecord, Task } from "../models";
 import sampleData from "../data/sample1.json";
@@ -20,7 +20,7 @@ export function addSamples() {
 }
 
 export function sampleClientIds() {
-  return sampleData.map(json => new ObjectID(json._id));
+  return sampleData.map(json => new ObjectId(json._id));
 }
 
 export function importSamplesV1() {
@@ -30,10 +30,10 @@ export function importSamplesV1() {
 export function importSamplesV2() {
   // modify dates so sample data looks "fresh"
   const sampleJSON = JSON.stringify(sampleData)
-    .replace(/"2020-01/g, "\"" + daysAgo(3 * 30 + 15).toISOString().substr(0, 7))
-    .replace(/"2020-02/g, "\"" + daysAgo(2 * 30 + 15).toISOString().substr(0, 7))
-    .replace(/"2020-03/g, "\"" + daysAgo(1 * 30 + 15).toISOString().substr(0, 7))
-    .replace(/"2020-04/g, "\"" + daysAgo(0 * 30 + 15).toISOString().substr(0, 7));
+    .replace(/"2020-01/g, "\"" + daysAgo(3 * 30 + 15).toISOString().substring(0, 7))
+    .replace(/"2020-02/g, "\"" + daysAgo(2 * 30 + 15).toISOString().substring(0, 7))
+    .replace(/"2020-03/g, "\"" + daysAgo(1 * 30 + 15).toISOString().substring(0, 7))
+    .replace(/"2020-04/g, "\"" + daysAgo(0 * 30 + 15).toISOString().substring(0, 7));
   const clients: typeof sampleData = JSON.parse(sampleJSON);
 
   return clients.map(json => {
@@ -41,20 +41,20 @@ export function importSamplesV2() {
     const originalClients = store.state.clients.slice();
     const createdAt = new Date(json.createdAt);
     const client = new Client();
-    client._id = new ObjectID();
+    client._id = new ObjectId();
     client.createdAt = createdAt;
-    Object.assign(client.contact, plainToClass(Contact, json.contact));
-    Object.assign(client.healthInformation, plainToClass(ClientHealthInformation, json.healthInformation));
-    Object.assign(client.agreements, plainToClass(ClientAgreements, json.agreements));
-    Object.assign(client.informalContacts, json.informalContacts.map((item: any) => plainToClass(Contact, item)));
-    Object.assign(client.formalContacts, json.formalContacts.map((item: any) => plainToClass(Contact, item)));
-    Object.assign(client.unrelatedReminders, (json.unrelatedReminders as any[]).map(item => plainToClass(Intervention, item)));
+    Object.assign(client.contact, plainToInstance(Contact, json.contact));
+    Object.assign(client.healthInformation, plainToInstance(ClientHealthInformation, json.healthInformation));
+    Object.assign(client.agreements, plainToInstance(ClientAgreements, json.agreements));
+    Object.assign(client.informalContacts, json.informalContacts.map((item: any) => plainToInstance(Contact, item)));
+    Object.assign(client.formalContacts, json.formalContacts.map((item: any) => plainToInstance(Contact, item)));
+    Object.assign(client.unrelatedReminders, (json.unrelatedReminders as any[]).map(item => plainToInstance(Intervention, item)));
     store.commit.setClients(originalClients.concat(client));
     const params = { clientId: client._id.toHexString() };
 
     // create problem records
     json.problems.forEach((problem: any) => {
-      const record = plainToClass(ProblemRecord, problem);
+      const record = plainToInstance(ProblemRecord, problem);
       if (record.outcomes.length) {
         record.outcomes[0].user = store.getters.userId;
       }

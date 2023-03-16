@@ -33,9 +33,9 @@
     <div v-else>
       <div class="q-mb-xl">
         <selectable-input
-          :label="$t('de.krankenkasse') + ', ' + $tc('numberOfDigits', 9)"
-          :value="clientCustomValue('de.krankenkasse')"
-          @input="saveClientCustomField('de.krankenkasse', $event, false)"
+          :label="$t('de.krankenkasse') + ', ' + $t('numberOfDigits', 9)"
+          :model-value="clientCustomValue('de.krankenkasse')"
+          @update:model-value="saveClientCustomField('de.krankenkasse', $event, false)"
           :options="healthInsuranceOptions"
           :options-dense="false"
           clearable
@@ -43,8 +43,8 @@
         />
         <q-input
           :label="$t('de.versichertennummer')"
-          :value="clientCustomValue('de.versichertennummer')"
-          @input="saveClientCustomField('de.versichertennummer', $event, false)"
+          :model-value="clientCustomValue('de.versichertennummer')"
+          @update:model-value="saveClientCustomField('de.versichertennummer', $event, false)"
         />
         <q-btn-dropdown
           :label="$t('de.addKostentraeger')"
@@ -70,9 +70,9 @@
         </q-btn-dropdown>
         <selectable-input
           v-if="!invisibleKostentraeger.includes('de.pflegekasse')"
-          :label="$t('de.pflegekasse') + ', ' + $tc('numberOfDigits', 9)"
-          :value="clientCustomValue('de.pflegekasse')"
-          @input="saveClientCustomField('de.pflegekasse', $event, false)"
+          :label="$t('de.pflegekasse') + ', ' + $t('numberOfDigits', 9)"
+          :model-value="clientCustomValue('de.pflegekasse')"
+          @update:model-value="saveClientCustomField('de.pflegekasse', $event, false)"
           :options="careInsuranceOptions"
           :options-dense="false"
           clearable
@@ -81,14 +81,14 @@
         <q-input
           v-if="!invisibleKostentraeger.includes('de.privateVersicherungTarif')"
           :label="$t('de.privateVersicherungTarif')"
-          :value="clientCustomValue('de.privateVersicherungTarif')"
-          @input="saveClientCustomField('de.privateVersicherungTarif', $event, false)"
+          :model-value="clientCustomValue('de.privateVersicherungTarif')"
+          @update:model-value="saveClientCustomField('de.privateVersicherungTarif', $event, false)"
         />
         <q-input
           v-if="!invisibleKostentraeger.includes('de.beihilfe')"
           :label="$t('de.beihilfe')"
-          :value="clientCustomValue('de.beihilfe')"
-          @input="saveClientCustomField('de.beihilfe', $event, false)"
+          :model-value="clientCustomValue('de.beihilfe')"
+          @update:model-value="saveClientCustomField('de.beihilfe', $event, false)"
           inputmode="numeric"
         >
           <template v-slot:append>
@@ -98,14 +98,14 @@
         <q-input
           v-if="!invisibleKostentraeger.includes('de.sozialamt')"
           :label="$t('de.sozialamt')"
-          :value="clientCustomValue('de.sozialamt')"
-          @input="saveClientCustomField('de.sozialamt', $event, false)"
+          :model-value="clientCustomValue('de.sozialamt')"
+          @update:model-value="saveClientCustomField('de.sozialamt', $event, false)"
         />
         <q-input
           v-if="!invisibleKostentraeger.includes('de.andereKostentraeger')"
           :label="$t('de.andereKostentraeger')"
-          :value="clientCustomValue('de.andereKostentraeger')"
-          @input="saveClientCustomField('de.andereKostentraeger', $event, false)"
+          :model-value="clientCustomValue('de.andereKostentraeger')"
+          @update:model-value="saveClientCustomField('de.andereKostentraeger', $event, false)"
         />
       </div>
 
@@ -117,8 +117,8 @@
         >
           <selectable-input
             :label="$t('de.pflegegrad')"
-            :value="item.value"
-            @input="savePflegegrad(item, {value: $event})"
+            :model-value="item.value"
+            @update:model-value="savePflegegrad(item, {value: $event})"
             :options="pflegegradOptions"
             no-new-value
             clearable
@@ -127,8 +127,8 @@
           />
           <date-time-input
             :label="$t('sinceDateLabel', {dateFormat: $t('dateFormatPlaceholder')})"
-            :value="item.since != undefined ? new Date(item.since) : item.since"
-            @input="savePflegegrad(item, {since: $event != undefined ? $event.getTime() : $event}, false)"
+            :model-value="item.since != undefined ? new Date(item.since) : item.since"
+            @update:model-value="savePflegegrad(item, {since: $event != undefined ? $event.getTime() : undefined}, false)"
             :format="$t('dateFormat')"
             clearable
             class="col"
@@ -157,8 +157,8 @@
       <div class="q-mb-xl">
         <q-input
           :label="$t('de.entlastungsleistungBudget')"
-          :value="clientCustomValue('de.entlastungsleistungBudget')"
-          @input="saveClientCustomField('de.entlastungsleistungBudget', $event, false)"
+          :model-value="clientCustomValue('de.entlastungsleistungBudget')"
+          @update:model-value="saveClientCustomField('de.entlastungsleistungBudget', $event, false)"
           :hint="$t('de.entlastungsleistungHint')"
           type="text"
           inputmode="numeric"
@@ -169,22 +169,22 @@
         </q-input>
         <q-toggle
           :label="$t('de.entlastungsleistungAufteilung')"
-          :value="clientCustomValue('de.entlastungsleistungAufteilung') || false"
-          @input="saveClientCustomField('de.entlastungsleistungAufteilung', $event)"
+          :model-value="clientCustomValue('de.entlastungsleistungAufteilung') || false"
+          @update:model-value="saveClientCustomField('de.entlastungsleistungAufteilung', $event)"
           class="q-mt-md"
         />
         <div v-if="clientCustomValue('de.entlastungsleistungAufteilung')">
           <q-input
             :label="$t('de.entlastungsleistungLeistungserbringer')"
-            :value="clientCustomValue('de.entlastungsleistungLeistungserbringer')"
-            @input="saveClientCustomField('de.entlastungsleistungLeistungserbringer', $event, false)"
+            :model-value="clientCustomValue('de.entlastungsleistungLeistungserbringer')"
+            @update:model-value="saveClientCustomField('de.entlastungsleistungLeistungserbringer', $event, false)"
             autogrow
             :autofocus="!clientCustomValue('de.entlastungsleistungLeistungserbringer')"
           />
           <q-input
             :label="$t('de.entlastungsleistungAvailableBudget')"
-            :value="clientCustomValue('de.entlastungsleistungAvailableBudget')"
-            @input="saveClientCustomField('de.entlastungsleistungAvailableBudget', $event, false)"
+            :model-value="clientCustomValue('de.entlastungsleistungAvailableBudget')"
+            @update:model-value="saveClientCustomField('de.entlastungsleistungAvailableBudget', $event, false)"
             type="text"
             inputmode="numeric"
           >
@@ -198,13 +198,13 @@
       <div class="q-mb-xl column">
         <q-toggle
           :label="$t('de.medikamenteOrganisieren')"
-          :value="clientCustomValue('de.medikamenteOrganisieren') || false"
-          @input="saveClientCustomField('de.medikamenteOrganisieren', $event)"
+          :model-value="clientCustomValue('de.medikamenteOrganisieren') || false"
+          @update:model-value="saveClientCustomField('de.medikamenteOrganisieren', $event)"
         />
         <q-toggle
           :label="$t('de.gebuehrenbefreit')"
-          :value="clientCustomValue('de.gebuehrenbefreit') || false"
-          @input="saveClientCustomField('de.gebuehrenbefreit', $event)"
+          :model-value="clientCustomValue('de.gebuehrenbefreit') || false"
+          @update:model-value="saveClientCustomField('de.gebuehrenbefreit', $event)"
         />
       </div>
     </div>
@@ -212,8 +212,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Watch } from "vue-property-decorator";
-import RecordMixin from "src/mixins/RecordMixin";
+import { Component, Watch, Vue } from "vue-facing-decorator";
+import RecordMixin, { RecordMixinInterface } from "src/mixins/RecordMixin";
 import EditToggleButton from "src/components/EditToggleButton.vue";
 import NoDataItem from "src/components/NoDataItem.vue";
 import LabeledItem from "src/components/LabeledItem.vue";
@@ -237,6 +237,9 @@ type Pflegegrad = {
   since?: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface ClientBillingSettings extends RecordMixinInterface {}
+
 @Component({
   components: {
     EditToggleButton,
@@ -245,8 +248,9 @@ type Pflegegrad = {
     SelectableInput,
     DateTimeInput,
   },
+  mixins: [RecordMixin]
 })
-export default class ClientBillingSettings extends RecordMixin {
+class ClientBillingSettings extends Vue {
   db = new BillingDatabase();
   isEditing = false;
   compactLayout = false;
@@ -384,4 +388,6 @@ export default class ClientBillingSettings extends RecordMixin {
     // void this.db.careInsuranceOptions().then(options => this.careInsuranceOptions = options);
   }
 }
+
+export default ClientBillingSettings;
 </script>

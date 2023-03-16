@@ -30,7 +30,7 @@
       <q-tab-panel
         :name="category.code"
         v-for="(category, index) in categories"
-        v-bind:key="index"
+        :key="index"
       >
         <div class="q-gutter-md">
           <div class="text-subtitle1 text-center category-header">
@@ -51,7 +51,8 @@
           <intervention-editor
             v-for="intervention in interventionsInSelectedCategory"
             :key="intervention.id"
-            :value="intervention"
+            :model-value="intervention"
+            :problem-code="problemCode"
             @delete="deleteIntervention(intervention.id)"
             @duplicate="duplicateIntervention(intervention.id)"
             class="editable-intervention q-px-md q-pt-sm q-pb-xs bg-intervention-light radius-md shadow-2"
@@ -90,16 +91,16 @@
     .text-bold
       white-space: nowrap
       &:nth-of-type(2)
-        color: var(--q-color-intervention)
+        color: var(--q-intervention)
         font-size: 110%
         @media (max-width: $breakpoint-xs-max)
           font-size: 125%
       &:nth-of-type(4)
-        color: var(--q-color-classification)
+        color: var(--q-classification)
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Model } from "vue-facing-decorator";
 import { TerminologyWithMaps } from "../helper/terminology";
 import { Intervention } from "../models/intervention";
 import InterventionEditor from "./InterventionEditorV3.vue";
@@ -109,18 +110,20 @@ import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
   components: {
     InterventionEditor,
     SimplifiedMarkdown
-  }
+  },
+  emits: ["update:model-value"]
 })
 export default class InterventionView extends Vue {
-  @Prop({ type: Array, default: () => [] }) readonly value!: Intervention[];
-  @Prop(String) readonly problemTitle?: string;
+  @Model({ type: Array, default: () => [] }) readonly value!: Intervention[];
+  @Prop({ type: String, default: "" }) readonly problemCode!: string;
+  @Prop({ type: String }) readonly problemTitle?: string;
   selectedCategory = "01";
 
   get interventions() {
     return this.value;
   }
   set interventions(interventions) {
-    this.$emit("input", interventions);
+    this.$emit("update:model-value", interventions);
   }
   get categories() {
     return this.terminology.interventionScheme.categories;
@@ -129,7 +132,7 @@ export default class InterventionView extends Vue {
     return this.interventionsInCategory(this.selectedCategory);
   }
   get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
 
   titleForCategory(categoryTitle: string) {

@@ -7,7 +7,8 @@
     :hasPendingChanges="hasPendingChanges"
   >
       <intervention-editor
-        :value="editableIntervention"
+        :model-value="editableIntervention"
+        :problem-code="problemCode"
         isSingleEditor
         editMode
         class="q-mt-lg"
@@ -32,13 +33,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
-import RecordValidator from "../mixins/RecordValidator";
+import { Component, Ref, Vue } from "vue-facing-decorator";
+import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValidator";
 import { Intervention } from "../models";
 import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import InterventionEditor from "components/InterventionEditorV3.vue";
 import Warning from "components/Warning.vue";
+
+interface InterventionPage extends RecordValidatorInterface {};
 
 @Component({
   components: {
@@ -47,20 +50,26 @@ import Warning from "components/Warning.vue";
     ProblemSummaryContainer,
     Warning,
   },
+  mixins: [RecordValidator]
 })
-export default class InterventionPage extends RecordValidator {
+class InterventionPage extends Vue {
   @Ref() readonly editingSheet!: EditingSheet;
   editableIntervention: Intervention | null = null;
 
   get title() {
     return [
       this.client?.contact.name,
-      this.$t(this.record?.problem.title ?? ""),
+      this.record?.problem.title
+        ? this.$t(this.record?.problem.title)
+        : "",
       this.$t("editIntervention")
     ].filter(Boolean).join(": ");
   }
   get intervention() {
-    return this.client?.findReminder(this.$route.params.interventionId);
+    return this.client?.findReminder(this.$route.params.interventionId as string);
+  }
+  get problemCode() {
+    return this.record?.problem.code ?? ""
   }
 
   hasPendingChanges() {
@@ -71,8 +80,8 @@ export default class InterventionPage extends RecordValidator {
   save() {
     if (this.editableIntervention && this.hasPendingChanges()) {
       this.$store.direct.commit.addToClientHistory({
-        clientId: this.$route.params.clientId,
-        problemId: this.$route.params.problemId,
+        clientId: this.$route.params.clientId as string,
+        problemId: this.$route.params.problemId as string,
         changeType: "InterventionModified",
         newInstance: this.editableIntervention,
         oldInstance: this.intervention,
@@ -92,4 +101,6 @@ export default class InterventionPage extends RecordValidator {
     this.editableIntervention = (this.intervention?.clone() as Intervention) ?? null;
   }
 }
+
+export default InterventionPage;
 </script>

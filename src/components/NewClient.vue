@@ -30,10 +30,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import { Contact } from "../models";
 
-@Component
+@Component({
+  emits: ["save"]
+})
 export default class NewClientView extends Vue {
   contact = new Contact();
 }

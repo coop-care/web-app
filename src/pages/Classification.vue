@@ -6,103 +6,105 @@
     :paramsToRemoveOnClose="['problemId']"
     :hasPendingChanges="hasPendingChanges"
   >
-      <q-stepper
-        v-model="step"
-        ref="stepper"
-        color="primary"
-        header-nav
-        animated
-        flat
-        vertical
-        class="q-pa-none"
-        header-class="text-subtitle1 text-primary"
-        @before-transition="showWarning = false"
+    <q-stepper
+      v-model="step"
+      ref="stepper"
+      color="primary"
+      header-nav
+      animated
+      flat
+      vertical
+      class="q-pa-none"
+      header-class="text-subtitle1 text-primary"
+      @before-transition="showWarning = false"
+    >
+      <q-step
+        :name="1"
+        :title="problemSelectionTitle"
+        :caption="$t('stepCaption', {step: 1, stepCount: 2})"
+        :prefix="1"
+        :done="step > 1"
+        :error="!!selectionWarnings && ((step > 1) || (step == 1 && showWarning ))"
+        :header-nav="step > 1 || !selectionWarnings"
+        active-color="classification"
       >
-        <q-step
-          :name="1"
-          :title="problemSelectionTitle"
-          :caption="$t('stepCaption', {step: 1, stepCount: 2})"
-          :prefix="1"
-          :done="step > 1"
-          :error="!!selectionWarnings && ((step > 1) || (step == 1 && showWarning ))"
-          :header-nav="step > 1 || !selectionWarnings"
-          active-color="classification"
-        >
-          <problem-selection
-            v-if="editableProblem"
-            v-model="editableProblem"
-            edit-mode
-            @input="validate(selectionWarnings, nextStep)"
-            class="q-mt-xs"
+        <problem-selection
+          v-if="editableProblem"
+          v-model="editableProblem"
+          edit-mode
+          @update:model-value="validate(selectionWarnings, nextStep)"
+          class="q-mt-xs"
+        />
+        <warning
+          v-model="showWarning"
+          :messages="selectionWarnings"
+        />
+        <div class="q-mt-lg row justify-center">
+          <q-btn
+            @click="validate(selectionWarnings, nextStep)"
+            color="primary"
+            rounded
+            unelevated
+            no-caps
+            :outline="!!selectionWarnings"
+            :disable="!(editableProblem || {}).code"
+            icon-right="fas fa-caret-right"
+            :label="problemSelectionButtonLabel"
+            class="done-button"
           />
-          <warning
-            v-model="showWarning"
-            :messages="selectionWarnings"
+        </div>
+      </q-step>
+      <q-step
+        :name="2"
+        :title="$t('describeProblem')"
+        :caption="$t('stepCaption', {step: 1, stepCount: 2})"
+        :prefix="2"
+        :done="step > 2"
+        :error="!!classificationWarnings && ((step > 2) || (step == 2 && showWarning ))"
+        :header-nav="step > 2 || !(selectionWarnings || classificationWarnings)"
+        active-color="classification"
+      >
+        <problem-classification
+          v-if="editableProblem"
+          v-model="editableProblem"
+          :activeInterventionsAvailable="hasActiveInterventions"
+          edit-mode
+          class="q-mt-xs"
+        />
+        <warning
+          v-model="showWarning"
+          :messages="classificationWarnings"
+        />
+        <div class="q-mt-lg row justify-center">
+          <q-btn
+            v-if="step == 2"
+            @click="validate(classificationWarnings, save)"
+            color="primary"
+            rounded
+            unelevated
+            no-caps
+            :outline="!!classificationWarnings"
+            :label="doneButtonLabel"
+            class="done-button"
           />
-          <div class="q-mt-lg row justify-center">
-            <q-btn
-              @click="validate(selectionWarnings, nextStep)"
-              color="primary"
-              rounded
-              unelevated
-              no-caps
-              :outline="!!selectionWarnings"
-              :disable="!(editableProblem || {}).code"
-              icon-right="fas fa-caret-right"
-              :label="problemSelectionButtonLabel"
-              class="done-button"
-            />
-          </div>
-        </q-step>
-        <q-step
-          :name="2"
-          :title="$t('describeProblem')"
-          :caption="$t('stepCaption', {step: 1, stepCount: 2})"
-          :prefix="2"
-          :done="step > 2"
-          :error="!!classificationWarnings && ((step > 2) || (step == 2 && showWarning ))"
-          :header-nav="step > 2 || !(selectionWarnings || classificationWarnings)"
-          active-color="classification"
-        >
-          <problem-classification
-            v-if="editableProblem"
-            v-model="editableProblem"
-            :activeInterventionsAvailable="hasActiveInterventions"
-            edit-mode
-            class="q-mt-xs"
-          />
-          <warning
-            v-model="showWarning"
-            :messages="classificationWarnings"
-          />
-          <div class="q-mt-lg row justify-center">
-            <q-btn
-              v-if="step == 2"
-              @click="validate(classificationWarnings, save)"
-              color="primary"
-              rounded
-              unelevated
-              no-caps
-              :outline="!!classificationWarnings"
-              :label="doneButtonLabel"
-              class="done-button"
-            />
-          </div>
-        </q-step>
-      </q-stepper>
+        </div>
+      </q-step>
+    </q-stepper>
   </editing-sheet>
 </template>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Vue } from "vue-facing-decorator";
 import { QStepper } from "quasar";
-import RecordValidator from "../mixins/RecordValidator";
+import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValidator";
 import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import ProblemSelection from "components/ProblemSelection.vue";
 import ProblemClassification from "components/ProblemClassification.vue";
 import Warning from "components/Warning.vue";
 import { Problem } from "src/models";
+
+interface ClassificationPage extends RecordValidatorInterface {};
 
 @Component({
   components: {
@@ -112,8 +114,9 @@ import { Problem } from "src/models";
     ProblemClassification,
     Warning,
   },
+  mixins: [RecordValidator]
 })
-export default class ClassificationPage extends RecordValidator {
+class ClassificationPage extends Vue {
   @Ref() readonly editingSheet!: EditingSheet;
   @Ref() readonly stepper!: QStepper;
   step = 2;
@@ -169,7 +172,7 @@ export default class ClassificationPage extends RecordValidator {
       this.$store.direct.commit.updateObject({
         target: this.record.problem,
         changes: this.editableProblem,
-        clientId: this.$route.params.clientId,
+        clientId: this.$route.params.clientId as string,
         problemId: this.record.id,
       });
     }
@@ -183,4 +186,6 @@ export default class ClassificationPage extends RecordValidator {
     this.editableProblem = this.record?.problem.clone() ?? null;
   }
 }
+
+export default ClassificationPage;
 </script>

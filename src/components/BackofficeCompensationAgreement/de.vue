@@ -4,36 +4,36 @@
     <div class="row items-center q-gutter-x-md">
       <q-select
         :label="$t('de.leistungsbereich')"
-        :value="vereinbarung.leistungsbereich"
-        @input="saveVereinbarung({leistungsbereich: $event})"
+        :model-value="vereinbarung.leistungsbereich"
+        @update:model-value="saveVereinbarung({leistungsbereich: $event})"
         class="col"
         style="min-width: 200px"
       />
       <q-select
         :label="$t('de.bundesland')"
-        :value="vereinbarung.bundesland"
-        @input="saveVereinbarung({bundesland: $event})"
+        :model-value="vereinbarung.bundesland"
+        @update:model-value="saveVereinbarung({bundesland: $event})"
         class="col"
         style="min-width: 200px"
       />
     </div>
     <q-select
-      :label="$tc('de.kassenverband', 2)"
-      :value="vereinbarung.kassenverband"
-      @input="saveVereinbarung({kassenverband: $event})"
+      :label="$t('de.kassenverband', 2)"
+      :model-value="vereinbarung.kassenverband"
+      @update:model-value="saveVereinbarung({kassenverband: $event})"
     />
     <div class="row items-center q-gutter-x-md">
       <q-input
         :label="$t('de.tarifkennzeichen')"
-        :value="vereinbarung.tarifkennzeichen"
-        @input="saveVereinbarung({tarifkennzeichen: $event}, false)"
+        :model-value="vereinbarung.tarifkennzeichen"
+        @update:model-value="saveVereinbarung({tarifkennzeichen: $event}, false)"
         class="col"
         style="min-width: 200px"
       />
       <q-select
         :label="$t('de.verguetungsart')"
-        :value="vereinbarung.verguetungsart"
-        @input="saveVereinbarung({verguetungsart: $event})"
+        :model-value="vereinbarung.verguetungsart"
+        @update:model-value="saveVereinbarung({verguetungsart: $event})"
         class="col"
         style="min-width: 200px"
       />
@@ -66,19 +66,23 @@
 </template>
 
 <script lang="ts">
-import { plainToClass } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { Verguetungsvereinbarung } from "src/models/localized/de";
-import { Component } from "vue-property-decorator";
-import BackofficeMixin from "../../mixins/BackofficeMixin";
+import { Component, Vue } from "vue-facing-decorator";
+import BackofficeMixin, { BackofficeMixinInterface } from "../../mixins/BackofficeMixin";
 
-@Component
-export default class BackofficeCompensationAgreement extends BackofficeMixin {
+interface BackofficeCompensationAgreement extends BackofficeMixinInterface {};
+
+@Component({
+  mixins: [BackofficeMixin]
+})
+class BackofficeCompensationAgreement extends Vue {
 
   get vereinbarungen(): Verguetungsvereinbarung[] {
     return this.backoffice?.customValue("de.verguetungsvereinbarungen") || [];
   }
   get vereinbarung(): Verguetungsvereinbarung | undefined {
-    return plainToClass(Verguetungsvereinbarung,
+    return plainToInstance(Verguetungsvereinbarung,
       this.vereinbarungen.find((item: { id: string; }) => item.id == this.$route.params.agreementId)
     );
   }
@@ -123,4 +127,6 @@ export default class BackofficeCompensationAgreement extends BackofficeMixin {
     }
   }
 }
+
+export default BackofficeCompensationAgreement;
 </script>

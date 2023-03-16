@@ -58,7 +58,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 
 @Component
 export default class PageLogin extends Vue {
@@ -68,7 +68,7 @@ export default class PageLogin extends Vue {
 
   doLogin() {
     this.$store.direct.dispatch
-      .login({ email: this.email, password: this.password, locale: this.$root.$i18n.locale })
+      .login({ email: this.email, password: this.password, locale: this.$i18n.locale })
       .then(() => {
         void this.$router.push({ name: "clientNoneSelected" });
       })

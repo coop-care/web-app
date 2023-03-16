@@ -17,7 +17,7 @@ import {
     TeamInvitation,
     BackOffice
 } from "../models";
-import { classToPlain, ClassTransformOptions } from "class-transformer";
+import { instanceToPlain, ClassTransformOptions } from "class-transformer";
 
 type Updatable<T> = {
     target: T;
@@ -216,8 +216,8 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 changeType,
                 problemId,
-                classToPlain(newInstance, excludeForChangeRecord),
-                classToPlain(oldInstance, excludeForChangeRecord)
+                instanceToPlain(newInstance, excludeForChangeRecord),
+                instanceToPlain(oldInstance, excludeForChangeRecord)
             )
         );
     },
@@ -317,7 +317,7 @@ export default defineMutations<StateInterface>()({
                     store.getters.userId,
                     type,
                     problemId || "",
-                    classToPlain(reminder, excludeForChangeRecord),
+                    instanceToPlain(reminder, excludeForChangeRecord),
                     undefined,
                     reminder.finishedAt
                 )
@@ -362,7 +362,7 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 "ProblemResolved",
                 problemRecord.id,
-                classToPlain(problemRecord.problem)
+                instanceToPlain(problemRecord.problem)
             )
         );
     },
@@ -380,7 +380,7 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 "ProblemResolved",
                 problemRecord.id,
-                classToPlain(problemRecord.problem)
+                instanceToPlain(problemRecord.problem)
             )
         );
 
@@ -394,7 +394,7 @@ export default defineMutations<StateInterface>()({
             return;
         }
 
-        let lastOutcome = problemRecord.outcomes[problemRecord.outcomes.length - 1];
+        let lastOutcome = problemRecord.outcomes.at(-1);
 
         if (!lastOutcome || lastOutcome.createdAt) {
             const newOutcome = new Outcome();
@@ -424,7 +424,7 @@ export default defineMutations<StateInterface>()({
                         store.getters.userId,
                         "OutcomeRated",
                         problemRecord.id,
-                        classToPlain(target),
+                        instanceToPlain(target),
                         undefined,
                         payload.changes.createdAt
                     )
@@ -446,7 +446,7 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 "ProblemCreated",
                 problemRecord.id,
-                classToPlain(problemRecord.problem),
+                instanceToPlain(problemRecord.problem),
                 undefined,
                 now
             )
@@ -461,7 +461,7 @@ export default defineMutations<StateInterface>()({
                     store.getters.userId,
                     "OutcomeRated",
                     problemRecord.id,
-                    classToPlain(outcome),
+                    instanceToPlain(outcome),
                     undefined,
                     now
                 )
@@ -475,7 +475,7 @@ export default defineMutations<StateInterface>()({
                     store.getters.userId,
                     "InterventionStarted",
                     problemRecord.id,
-                    classToPlain(intervention, excludeForChangeRecord),
+                    instanceToPlain(intervention, excludeForChangeRecord),
                     undefined,
                     now
                 )

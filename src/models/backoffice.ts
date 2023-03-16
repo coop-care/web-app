@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { plainToClass } from "class-transformer";
+import { plainToInstance } from "class-transformer";
 import { CustomField, IdentifiableObject } from ".";
 
 export class BackOffice extends IdentifiableObject {
@@ -9,7 +9,7 @@ export class BackOffice extends IdentifiableObject {
   customFields: CustomField<any>[] = [];
 
   static fromObject(object: any): BackOffice | BackOffice[] {
-    return plainToClass(BackOffice, object);
+    return plainToInstance(BackOffice, object);
   }
 
   constructor(name: string, userId?: string) {
@@ -21,11 +21,11 @@ export class BackOffice extends IdentifiableObject {
     }
   }
 
-  customField(label: string) {
+  customField<T>(label: string): CustomField<T> | undefined {
     return this.customFields.find(field => field.label == label);
   }
-  customValue(label: string) {
-    return this.customField(label)?.value;
+  customValue<T>(label: string): T | undefined {
+    return this.customField<T>(label)?.value;
   }
   updatedCustomField(label: string, value: any) {
     return [{

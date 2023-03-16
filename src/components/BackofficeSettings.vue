@@ -28,11 +28,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
-import BackofficeMixin from "src/mixins/BackofficeMixin";
+import { Component, Ref, Vue } from "vue-facing-decorator";
+import BackofficeMixin, { BackofficeMixinInterface } from "src/mixins/BackofficeMixin";
 import SplitView from "components/SplitView.vue";
 import NavigationItems from "components/NavigationItems.vue";
 import BackofficeCompensationAgreementList from "components/BackofficeCompensationAgreementList/index.vue";
+
+interface BackofficeSettings extends BackofficeMixinInterface {};
 
 @Component({
   components: {
@@ -40,8 +42,9 @@ import BackofficeCompensationAgreementList from "components/BackofficeCompensati
     NavigationItems,
     BackofficeCompensationAgreementList
   },
+  mixins: [BackofficeMixin]
 })
-export default class BackofficeSettings extends BackofficeMixin {
+class BackofficeSettings extends Vue {
   isCollapsed = false;
   isBeforeVisible = true;
   @Ref() readonly splitView!: SplitView;
@@ -55,4 +58,6 @@ export default class BackofficeSettings extends BackofficeMixin {
     }]
   }
 }
+
+export default BackofficeSettings;
 </script>

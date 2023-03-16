@@ -2,7 +2,7 @@
   <q-dialog
     v-model="visible"
     position="bottom"
-    :persistent="false"
+    :persistent="persistent"
     no-route-dismiss
     full-height
     id="modal-presentation"
@@ -18,6 +18,7 @@
         style="height: 44px"
       >
         <q-btn
+          v-if="!persistent"
           :label="$t('cancel')"
           flat
           rounded
@@ -27,6 +28,10 @@
           class="q-px-xs"
           v-close-popup
         />
+        <div
+          v-else
+          style="width: 50px"
+        ></div>
         <div class="col text-h5 text-center sheet-title">
           <simplified-markdown
             v-if="title"
@@ -72,7 +77,7 @@
 
 <style lang="sass">
 #modal-presentation > .q-dialog__inner
-  height: calc(100vh - 20px)
+  height: calc(100% - 20px)
   .modal-view-section
     @media (max-width: $breakpoint-xs-max)
       padding-left: 8px
@@ -95,10 +100,10 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Ref } from "vue-property-decorator";
-import { RawLocation } from "vue-router";
+import { Component, Prop, Ref, Vue } from "vue-facing-decorator";
+import { RouteLocationRaw } from "vue-router";
 import { QCard } from "quasar";
-import WarningMixin from "../mixins/WarningMixin";
+import WarningMixin, { WarningMixinInterface } from "../mixins/WarningMixin";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
@@ -109,16 +114,19 @@ export type DoneButton = {
   disable?: boolean;
 };
 
+interface EditingSheet extends WarningMixinInterface {};
+
 @Component({
   components: {
     Loading,
     CentralMessage,
     SimplifiedMarkdown
-  }
+  },
+  mixins: [WarningMixin],
 })
-export default class EditingSheet extends WarningMixin {
+class EditingSheet extends Vue {
   @Ref() readonly card?: QCard;
-  @Prop(Boolean) readonly isDataAvailable!: boolean;
+  @Prop({ type: Boolean }) readonly isDataAvailable!: boolean;
   @Prop({ type: Boolean, default: true }) readonly isInitiallyVisible!: boolean;
   @Prop({ type: Function, default: () => false }) readonly hasPendingChanges!: () => boolean;
   @Prop({ type: String, default: ""}) readonly title!: string;
@@ -126,9 +134,10 @@ export default class EditingSheet extends WarningMixin {
   @Prop({ type: String, default: ""}) readonly doneButtonLabel!: string;
   @Prop({ type: Boolean, default: false}) readonly doneButtonDisable!: boolean;
   @Prop({ type: Function}) readonly doneAction?: () => void;
+  @Prop({ type: Boolean, default: false }) readonly persistent!: boolean;
 
   private isVisible = this.isInitiallyVisible;
-  private locationOnClose: RawLocation | null = null;
+  private locationOnClose: RouteLocationRaw | null = null;
 
   get visible() {
     return this.isVisible;
@@ -161,12 +170,12 @@ export default class EditingSheet extends WarningMixin {
     }
   }
 
-  cancel(toLocation?: RawLocation) {
+  cancel(toLocation?: RouteLocationRaw) {
     this.locationOnClose = toLocation ?? null;
     this.visible = false;
   }
 
-  confirm(toLocation?: RawLocation) {
+  confirm(toLocation?: RouteLocationRaw) {
     this.locationOnClose = toLocation ?? null;
     this.isVisible = false;
   }
@@ -188,9 +197,11 @@ export default class EditingSheet extends WarningMixin {
     setTimeout(() => this.card?.$el?.addEventListener("scroll", this.preventScrollingCard));
   }
 
-  beforeDestroy() {
+  unmounted() {
     this.card?.$el?.removeEventListener("scroll", this.preventScrollingCard);
   }
 
 }
+
+export default EditingSheet;
 </script>

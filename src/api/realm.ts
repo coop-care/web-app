@@ -1,9 +1,9 @@
 import * as Realm from "realm-web";
 import CoopCareApiInterface, { CoopCareApiListener } from "./coopCareApiInterface";
 import { Client, User, Team, TeamMember, BackOffice } from "../models";
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 
-type RequiredID = { _id: ObjectID };
+type RequiredID = { _id: ObjectId };
 
 export default class RealmApi implements CoopCareApiInterface {
     private app: Realm.App;
@@ -101,7 +101,7 @@ export default class RealmApi implements CoopCareApiInterface {
         delete data._id;
 
         return this.users.insertOne(data).then(result => {
-            user._id = new ObjectID(result.insertedId);
+            user._id = new ObjectId(result.insertedId);
             return user;
         });
     }
@@ -149,7 +149,7 @@ export default class RealmApi implements CoopCareApiInterface {
         const data: any = client.toJSON();
         delete data._id;
         return this.clients.insertOne(data).then(result => {
-            client._id = new ObjectID(result.insertedId);
+            client._id = new ObjectId(result.insertedId);
             return client;
         })
     }
@@ -180,7 +180,7 @@ export default class RealmApi implements CoopCareApiInterface {
                 // where details of selected client cannot be displayed in client view
                 .find({
                     _id: {
-                        $in: clientIds.map(id => new ObjectID(id))
+                        $in: clientIds.map(id => new ObjectId(id))
                     }
                 }, {})
                 .then(data => {
@@ -200,7 +200,7 @@ export default class RealmApi implements CoopCareApiInterface {
                 })
         );
     }
-    getClient(id: ObjectID) {
+    getClient(id: ObjectId) {
         if (!this.clients) {
             return Promise.reject("not logged in");
         }
@@ -243,7 +243,7 @@ export default class RealmApi implements CoopCareApiInterface {
         const data: any = team.toJSON();
         delete data._id;
         return this.teams.insertOne(data).then(result => {
-            team._id = new ObjectID(result.insertedId);
+            team._id = new ObjectId(result.insertedId);
             return team;
         })
     }
@@ -308,7 +308,7 @@ export default class RealmApi implements CoopCareApiInterface {
         const data: any = backoffice.toJSON();
         delete data._id;
         return this.backoffices.insertOne(data).then(result => {
-            backoffice._id = new ObjectID(result.insertedId);
+            backoffice._id = new ObjectId(result.insertedId);
             return backoffice;
         })
     }

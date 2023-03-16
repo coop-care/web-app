@@ -27,7 +27,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 import Signature from "./Signature.vue";
 import NavigationSection from "./NavigationSection.vue";
@@ -52,7 +52,7 @@ export default class MyAccountDrawer extends Vue {
       label: this.$t("logout"),
       icon: "fas fa-sign-out-alt",
       action: this.logout,
-      visible: !!process.env.DEV
+      visible: !this.$store.direct.getters.isDemo
     }];
   }
   get appItems() {

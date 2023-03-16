@@ -14,8 +14,7 @@
     <q-list class="print-hide">
       <div
         v-for="(item, index) in sortedItems"
-        v-bind:key="index"
-        v-if="item.condition !== false"
+        :key="index"
       >
         <slot
           v-if="item.customType"
@@ -49,7 +48,7 @@
   margin: 0
 </style>
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
 export interface ActionItem  {
   name: string;
@@ -67,7 +66,9 @@ export default class ActionMenu extends Vue {
   @Prop({ type: String, default: "primary" }) readonly color!: string;
 
   get sortedItems() {
-    return this.items.slice().sort((a, b) => Number(a.isDestructive || false) - Number(b.isDestructive || false))
+    return this.items
+      .filter(item => item.condition !== false)
+      .sort((a, b) => Number(a.isDestructive || false) - Number(b.isDestructive || false))
   }
 }
 </script>

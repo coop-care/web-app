@@ -11,7 +11,7 @@
       transition-show="jump-up"
       transition-hide="jump-down"
       :offset="$q.platform.is.mobile ? [0,14] : [0,4]"
-      content-class="signature-tooltip"
+      class="signature-tooltip"
     >
       {{ tooltip }}
     </q-tooltip>
@@ -37,7 +37,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { TeamMember } from "../models";
 
 @Component

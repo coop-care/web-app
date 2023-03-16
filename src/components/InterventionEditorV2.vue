@@ -13,15 +13,16 @@
       {{ $t("selectInterventionTarget") }}
     </div>
     <div v-if="usersGuideForProblem">
-      <i18n
-        path="frequentInterventionTargetsForProblem"
+      <i18n-t
+        keypath="frequentInterventionTargetsForProblem"
+        scope="global"
         tag="div"
         class="text-subtitle2 text-weight-medium q-mt-sm q-mb-xs q-pl-md"
       >
         <template v-slot:problem>
           <span class="text-weight-bold">{{ $t(record.problem.title) }}</span>:
         </template>
-      </i18n>
+      </i18n-t>
       <searchable-option-list
         color="intervention"
         :options="suggestedTargets"
@@ -97,7 +98,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Model } from "vue-facing-decorator";
 import {
   TerminologyWithMaps,
   UsersGuide,
@@ -112,11 +113,12 @@ import ReminderEditor from "../components/ReminderEditor.vue";
   components: {
     SearchableOptionList,
     ReminderEditor
-  }
+  },
+  emits: ["update:model-value"]
 })
 export default class InterventionEditor extends Vue {
-  @Prop({ type: Object, required: true}) readonly value!: Intervention;
-  @Prop(ProblemRecord) readonly problemRecord: ProblemRecord | undefined;
+  @Model({ type: Object, required: true}) readonly value!: Intervention;
+  @Prop({ type: ProblemRecord }) readonly problemRecord: ProblemRecord | undefined;
 
   get categoryCode() {
     return this.value.categoryCode;
@@ -196,17 +198,18 @@ export default class InterventionEditor extends Vue {
     }
   }
   get usersGuideForProblem() {
-    return ((this.$t("usersGuide") as unknown) as UsersGuide)[
+    return ((this.$tm("usersGuide") as unknown) as UsersGuide)[
       this.record?.problem.code || ""
     ];
   }
   get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
     return (
-      this.problemRecord ||
-      this.$store.direct.getters.getProblemRecordById(this.$route.params)
+      this.problemRecord ??
+      this.$store.direct.getters.getProblemRecordById(this.$route.params) ??
+      new ProblemRecord()
     );
   }
 
@@ -215,7 +218,7 @@ export default class InterventionEditor extends Vue {
       target: this.value,
       changes: changes
     });
-    this.$emit("input", this.value);
+    this.$emit("update:model-value", this.value);
   }
 }
 </script>

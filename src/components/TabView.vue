@@ -76,12 +76,19 @@
 
     <div class="overflow-hidden">
       <div class="relative-position">
-        <transition
-          :enter-active-class="'full-width animated ' + tabPanelEnterClass"
-          :leave-active-class="'full-width absolute animated ' + tabPanelLeaveClass"
+        <pull-to-refresh
+          @refresh="$emit('refresh')"
+          :disable="disablePullToRefresh"
         >
-          <router-view :key="'tab' + selectedTab" class="tabview-panel"/>
-        </transition>
+          <router-view class="tabview-panel" v-slot="{ Component }">
+            <transition
+              :enter-active-class="'full-width animated ' + tabPanelEnterClass"
+              :leave-active-class="'full-width absolute animated ' + tabPanelLeaveClass"
+            >
+              <component :is="Component" />
+            </transition>
+          </router-view>
+        </pull-to-refresh>
       </div>
     </div>
   </div>
@@ -105,8 +112,9 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
-import { Route } from "vue-router";
+import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
+import { RouteLocationNormalized } from "vue-router";
+import PullToRefresh from "components/PullToRefresh.vue";
 
 export type Tab = {
   label: string;
@@ -116,20 +124,31 @@ export type Tab = {
   badge?: string;
 };
 
-@Component
+@Component({
+  components: {
+    PullToRefresh
+  },
+  emits: ["refresh"]
+})
 export default class TabView extends Vue {
   @Prop({type: Array, default: []}) readonly tabs!: Tab[];
   @Prop({type: Number, default: 4}) readonly tabCount!: number;
-  selectedTab = this.initiallySelectedTab;
-  routesPerTab: Partial<Route>[] = this.childrenRouteNames.map(name => ({
-    name, 
-    params: this.$route.params
-  }));
+  @Prop({type: Boolean, default: false}) readonly pullToRefresh!: boolean;
+  selectedTab = 0;
+  routesPerTab: Partial<RouteLocationNormalized>[] = [];
   tabPanelEnterClass = "slideInRight";
   tabPanelLeaveClass = "slideOutLeft";
 
+  created() {
+    this.selectedTab = this.initiallySelectedTab;
+    this.routesPerTab = this.childrenRouteNames.map(name => ({
+      name, 
+      params: this.$route.params
+    }));
+  }
+
   @Watch("$route")
-  onRouteChange(newRoute: Route, oldRoute: Route) {
+  onRouteChange(newRoute: RouteLocationNormalized, oldRoute: RouteLocationNormalized) {
     const newRouteName = this.findChildrenRouteName(newRoute);
     const oldRouteName = this.findChildrenRouteName(oldRoute);
     const newIndex = this.childrenRouteNames.indexOf(newRouteName);
@@ -183,11 +202,14 @@ export default class TabView extends Vue {
       )
     );
   }
+  get disablePullToRefresh() {
+    return !this.pullToRefresh || this.$route.meta?.disablePullToRefresh == true;
+  }
 
-  findChildrenRouteName(route: Route, childrenRouteNames = this.childrenRouteNames) {
-    return route.matched.find(route => 
-      childrenRouteNames.includes(route.name || "")
-    )?.name || "";
+  findChildrenRouteName(route?: RouteLocationNormalized, childrenRouteNames = this.childrenRouteNames) {
+    return route?.matched.find(route => 
+      childrenRouteNames.includes(route.name?.toString() || "")
+    )?.name?.toString() || "";
   }
 
   mounted() {

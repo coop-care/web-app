@@ -44,7 +44,7 @@
             :to="{name: 'clientConversation', params: {day: this.date.getTime()}}"
           />
           <q-btn
-            v-if="canAddNote && !shiftNodeInputVisible"
+            v-if="!isDisabled && canAddNote && !shiftNodeInputVisible"
             :label="$t('addOptionalShiftNote')"
             flat
             rounded
@@ -68,10 +68,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-facing-decorator";
 import { date } from "quasar";
 import { ShiftNote } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ChatMessage from "components/ChatMessage.vue";
 import ShiftNoteInput from "components/ShiftNoteInput.vue";
 
@@ -82,15 +82,18 @@ const {
   subtractFromDate,
 } = date;
 
+interface ShiftNotesDayView extends RecordMixinInterface {};
+
 @Component({
   components: {
     ChatMessage,
     ShiftNoteInput
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ShiftNotesDayView extends RecordMixin {
+class ShiftNotesDayView extends Vue {
   @Prop({ type: Date, required: true}) readonly date!: Date;
-  @Prop(Boolean) readonly canAddNote!: boolean;
+  @Prop({ type: Boolean }) readonly canAddNote!: boolean;
   shiftNodeInputVisible = false;
   shiftNoteDraft = "";
 
@@ -106,4 +109,6 @@ export default class ShiftNotesDayView extends RecordMixin {
     return subtractFromDate(this.date, {days: 1})
   }
 }
+
+export default ShiftNotesDayView;
 </script>

@@ -26,7 +26,6 @@
         <template v-slot:option="scope">
           <q-item
             v-bind="scope.itemProps"
-            v-on="scope.itemEvents"
           >
             <q-item-section>
               <q-item-label>{{ scope.opt.label }}</q-item-label>
@@ -82,18 +81,21 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { Task, Intervention, Contact, LabeledValue } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ContactView from "../components/ContactView.vue";
 import { ObjectID } from "bson";
+
+interface ClientFormalContactView extends RecordMixinInterface {};
 
 @Component({
   components: {
     ContactView
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientFormalContactView extends RecordMixin {
+class ClientFormalContactView extends Vue {
   knownContactId = "";
   filteredOptions: LabeledValue<string>[] = [];
 
@@ -101,7 +103,7 @@ export default class ClientFormalContactView extends RecordMixin {
     return this.$route.params.formalContactId == "new";
   }
   get contact() {
-    const contactId = this.$route.params.formalContactId;
+    const contactId = this.$route.params.formalContactId as string;
 
     if (contactId) {
       return this.client?.formalContacts.find(contact => contact.id.equals(contactId));
@@ -205,4 +207,6 @@ export default class ClientFormalContactView extends RecordMixin {
     }
   }
 }
+
+export default ClientFormalContactView;
 </script>

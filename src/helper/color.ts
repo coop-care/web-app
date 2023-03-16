@@ -1,6 +1,8 @@
-import { colors } from "quasar";
+import { colors, getCssVar, setCssVar } from "quasar";
 
-const { getBrand, setBrand, lighten } = colors;
+const { lighten } = colors;
+const getBrand = (key: string) => getCssVar(key)
+const setBrand = (key: string, value: string) => setCssVar(key, value)
 
 export function getColor(name: string) {
     return getBrand(name);

@@ -32,86 +32,86 @@
     </div>
     <div v-else>
       <multiple-selectable-input
-        :value="healthInfo.diagnoses"
-        @input="updateAndSave(healthInfo, {diagnoses: $event})"
+        :model-value="healthInfo.diagnoses"
+        @update:model-value="updateAndSave(healthInfo, {diagnoses: $event})"
         :options="[]"
         :label="$t('diagnosesTitle')"
         hide-dropdown-icon
       />
       <selectable-input
-        :value="healthInfo.diabetes"
+        :model-value="healthInfo.diabetes"
         :label="$t('diabetes')"
         :options="[]"
         hide-dropdown-icon
-        @input="updateAndSave(healthInfo, {diabetes: $event})"
+        @update:model-value="updateAndSave(healthInfo, {diabetes: $event})"
       />
       <selectable-input
-        :value="healthInfo.anticoagulant"
+        :model-value="healthInfo.anticoagulant"
         :label="$t('anticoagulantTitle')"
         :options="[]"
         hide-dropdown-icon
-        @input="updateAndSave(healthInfo, {anticoagulant: $event})"
+        @update:model-value="updateAndSave(healthInfo, {anticoagulant: $event})"
       />
       <selectable-input
-        :value="healthInfo.pain"
+        :model-value="healthInfo.pain"
         :label="$t('painTitle')"
         :options="[]"
         hide-dropdown-icon
-        @input="updateAndSave(healthInfo, {pain: $event})"
+        @update:model-value="updateAndSave(healthInfo, {pain: $event})"
       />
       <multiple-selectable-input
-        :value="healthInfo.allergies"
-        @input="updateAndSave(healthInfo, {allergies: $event})"
+        :model-value="healthInfo.allergies"
+        @update:model-value="updateAndSave(healthInfo, {allergies: $event})"
         :options="[]"
         :label="$t('allergiesTitle')"
         hide-dropdown-icon
       />
       <multiple-selectable-input
-        :value="healthInfo.assistiveTechnology"
-        @input="updateAndSave(healthInfo, {assistiveTechnology: $event})"
+        :model-value="healthInfo.assistiveTechnology"
+        @update:model-value="updateAndSave(healthInfo, {assistiveTechnology: $event})"
         :options="assistiveTechnologyItems"
         :label="$t('assistiveTechnologiesTitle')"
         hide-dropdown-icon
         class="mb-row-dense"
       />
       <q-input
-        :value="healthInfo.likes"
-        @input="update(healthInfo, {likes: $event})"
+        :model-value="healthInfo.likes"
+        @update:model-value="update(healthInfo, {likes: $event})"
         @change="saveClient"
         :label="$t('likesTaste')"
         autogrow
       />
       <q-input
-        :value="healthInfo.dislikes"
-        @input="update(healthInfo, {dislikes: $event})"
+        :model-value="healthInfo.dislikes"
+        @update:model-value="update(healthInfo, {dislikes: $event})"
         @change="saveClient"
         :label="$t('dislikesDistaste')"
         autogrow
       />
       <q-input
-        :value="healthInfo.biography"
-        @input="update(healthInfo, {biography: $event})"
+        :model-value="healthInfo.biography"
+        @update:model-value="update(healthInfo, {biography: $event})"
         @change="saveClient"
         :label="$t('biographyTitle')"
         autogrow
       />
       <div class="q-mt-md">
         <q-checkbox
-          :value="healthInfo.existingAdvanceHealthcareDirective"
-          @input="updateAndSave(healthInfo, {existingAdvanceHealthcareDirective: $event})"
+          :model-value="healthInfo.existingAdvanceHealthcareDirective"
+          @update:model-value="updateAndSave(healthInfo, {existingAdvanceHealthcareDirective: $event})"
           :label="$t('existingAdvanceHealthcareDirective') + '?'"
         />
       </div>
       <div>
         <q-checkbox
-          :value="healthInfo.existingHealthcareProxy"
-          @input="updateAndSave(healthInfo, {existingHealthcareProxy: $event})"
+          :model-value="healthInfo.existingHealthcareProxy"
+          @update:model-value="updateAndSave(healthInfo, {existingHealthcareProxy: $event})"
           :label="$t('existingHealthcareProxy') + '?'"
         />
       </div>
       <q-input
-        :value="healthInfo.notes"
-        @input="update(healthInfo, {notes: $event})"
+        :model-value="healthInfo.notes"
+        @update:model-value="update(healthInfo, {notes: $event})"
         @change="saveClient"
         :label="$t('additionalNotes')"
         autogrow
@@ -127,14 +127,16 @@
 </style>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { Client, ClientHealthInformation } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import EditToggleButton from "../components/EditToggleButton.vue";
 import NoDataItem from "../components/NoDataItem.vue";
 import LabeledItem, { LabeledItemType } from "../components/LabeledItem.vue";
 import SelectableInput from "../components/SelectableInput.vue";
 import MultipleSelectableInput from "../components/MultipleSelectableInput.vue";
+
+interface ClientHealthInformationView extends RecordMixinInterface {};
 
 @Component({
   components: {
@@ -143,9 +145,10 @@ import MultipleSelectableInput from "../components/MultipleSelectableInput.vue";
     LabeledItem,
     SelectableInput,
     MultipleSelectableInput
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientHealthInformationView extends RecordMixin {
+class ClientHealthInformationView extends Vue {
   isEditing = false;
   compactLayout = false;
 
@@ -257,4 +260,6 @@ export default class ClientHealthInformationView extends RecordMixin {
     }
   }
 }
+
+export default ClientHealthInformationView;
 </script>

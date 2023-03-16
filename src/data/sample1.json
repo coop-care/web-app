@@ -23,8 +23,7 @@
         {
           "label": "privateLabel",
           "value": {
-            "street1": "Veilchenweg 27",
-            "street2": "EG",
+            "street1": "Veilchenweg 27\nEG",
             "postalCode": "12345",
             "city": "Musterstadt",
             "region": "",
@@ -105,8 +104,7 @@
           {
             "label": "privateLabel",
             "value": {
-              "street1": "Veilchenweg 27",
-              "street2": "EG",
+              "street1": "Veilchenweg 27\nEG",
               "postalCode": "12345",
               "city": "Musterstadt",
               "region": "",
@@ -146,7 +144,6 @@
             "label": "workLabel",
             "value": {
               "street1": "Gerade Straße 4",
-              "street2": "",
               "postalCode": "12345",
               "city": "Musterstadt",
               "region": "",
@@ -179,7 +176,6 @@
             "label": "workLabel",
             "value": {
               "street1": "Gerade Straße 4",
-              "street2": "",
               "postalCode": "12345",
               "city": "Musterstadt",
               "region": "",
@@ -756,8 +752,7 @@
         {
           "label": "privateLabel",
           "value": {
-            "street1": "Bäckergasse 12",
-            "street2": "1. OG",
+            "street1": "Bäckergasse 12\n1. OG",
             "postalCode": "12345",
             "city": "Musterstadt",
             "region": "",
@@ -863,8 +858,7 @@
           {
             "label": "privateLabel",
             "value": {
-              "street1": "Bäckergasse 12",
-              "street2": "2. OG",
+              "street1": "Bäckergasse 12\n2. OG",
               "postalCode": "12345",
               "city": "Musterstadt",
               "region": "",
@@ -904,7 +898,6 @@
             "label": "workLabel",
             "value": {
               "street1": "Hauptstraße 7",
-              "street2": "",
               "postalCode": "12345",
               "city": "Musterstadt",
               "region": "",
@@ -937,7 +930,6 @@
             "label": "workLabel",
             "value": {
               "street1": "Gerade Straße 4",
-              "street2": "",
               "postalCode": "12345",
               "city": "Musterstadt",
               "region": "",

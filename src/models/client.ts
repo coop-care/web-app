@@ -1,8 +1,8 @@
 import "reflect-metadata";
-import { Type, plainToClass } from "class-transformer";
+import { Type, plainToInstance } from "class-transformer";
 import { ProblemRecord, Intervention, Contact, Reminder, ChangeRecord, IdentifiableObject, CustomField, Outcome } from ".";
 import { LabeledValue } from "./types";
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 import { DateTime } from "luxon";
 
 export class ClientHealthInformation {
@@ -82,7 +82,7 @@ export class Client extends IdentifiableObject {
     changeHistory: ChangeRecord[] = [];
 
     static fromObject(object: any): Client | Client[] {
-        return plainToClass(Client, object);
+        return plainToInstance(Client, object);
     }
 
     static sortByLastName(a: Client, b: Client) {
@@ -124,7 +124,7 @@ export class Client extends IdentifiableObject {
         return this.outcomesByDate[0];
     }
     get lastOutcome(): Outcome | undefined {
-        return this.outcomesByDate[this.outcomesByDate.length - 1];
+        return this.outcomesByDate.at(-1);
     }
     private get outcomesByDate() {
         return this.problems
@@ -154,7 +154,7 @@ export class Client extends IdentifiableObject {
         return !!id ? this.problems.find(problem => problem.id == id) : undefined;
     }
 
-    findContact(id?: string | ObjectID) {
+    findContact(id?: string | ObjectId) {
         return !!id ? this.informalContacts.find(contact => contact.id.equals(id)) : undefined;
     }
 

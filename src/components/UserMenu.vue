@@ -14,12 +14,26 @@
         class="text-body2"
         style="width: 260px"
       >
+        <q-item
+          v-if="!$q.platform.is.electron"
+          clickable
+          v-close-popup
+          @click="print"
+        >
+          <q-item-section side>
+            <q-icon name="fas fa-print" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t("print") }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item clickable>
           <q-item-section side>
             <q-icon name="fas fa-globe" />
           </q-item-section>
           <q-item-section>{{
-            $t("selectLanguage", { language: $t($root.$i18n.locale) })
+            $t("selectLanguage", { language: $t($i18n.locale.toLowerCase()) })
           }}</q-item-section>
           <q-item-section side>
             <q-icon name="fas fa-angle-right" />
@@ -41,20 +55,6 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ $t("feedback") }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item
-          v-if="!$q.platform.is.electron"
-          clickable
-          v-close-popup
-          @click="print"
-        >
-          <q-item-section side>
-            <q-icon name="fas fa-print" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{ $t("print") }}</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -92,7 +92,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import LanguageMenu from "./LanguageMenu.vue";
 import DevMenu from "./DevMenu.vue";
 

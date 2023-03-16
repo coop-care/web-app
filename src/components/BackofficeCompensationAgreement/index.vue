@@ -6,21 +6,27 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import BackofficeMixin from "../../mixins/BackofficeMixin";
+import { defineAsyncComponent } from "vue";
+import { Component, Vue } from "vue-facing-decorator";
+import BackofficeMixin, { BackofficeMixinInterface } from "../../mixins/BackofficeMixin";
 
 const components = {
-  de: () => import("./de.vue"),
+  de: defineAsyncComponent(() => import("./de.vue")),
 };
 
 export const countryCodes = Object.keys(components);
 
+interface BackofficeCompensationAgreement extends BackofficeMixinInterface {};
+
 @Component({
   components,
+  mixins: [BackofficeMixin]
 })
-export default class BackofficeCompensationAgreement extends BackofficeMixin {
+class BackofficeCompensationAgreement extends Vue {
   get localizedComponent() {
     return this.matchingCountryCode(countryCodes)
   }
 }
+
+export default BackofficeCompensationAgreement;
 </script>

@@ -1,6 +1,6 @@
 <template>
   <q-select
-    :value="value"
+    :model-value="value"
     :label="label"
     :options="filteredOptions"
     map-options
@@ -14,7 +14,7 @@
     :clearable="clearable"
     :hide-dropdown-icon="hideDropdownIcon"
     :hint="hint"
-    @input="$emit('input', $event || '')"
+    @update:model-value="$emit('update:model-value', $event || '')"
     @input-value="inputValue = $event;"
     @keydown.enter.tab="selectInputValue"
     @keydown.tab="lastTabKeyDownTimestamp = Date.now()"
@@ -26,7 +26,6 @@
     <template v-slot:option="scope">
       <q-item
         v-bind="scope.itemProps"
-        v-on="scope.itemEvents"
       >
         <q-item-section>
           <q-item-label>{{ scope.opt.label }}</q-item-label>
@@ -41,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
+import { Vue, Component, Prop, Ref, Model } from "vue-facing-decorator";
 import { QSelect } from "quasar";
 
 type SelectableInputOptions = {
@@ -50,17 +49,19 @@ type SelectableInputOptions = {
   description?: string;
 }
 
-@Component
+@Component({
+  emits: ["update:model-value", "new-value"]
+})
 export default class SelectableInput extends Vue {
-  @Prop({ type: String, default: "" }) readonly value!: string;
+  @Model({ type: String, default: "" }) readonly value!: string;
   @Prop({ type: String, default: "" }) readonly label!: string;
   @Prop({ type: Array, default: () => [] }) readonly options!: SelectableInputOptions[];
-  @Prop(Boolean) readonly dense!: boolean;
+  @Prop({ type: Boolean }) readonly dense!: boolean;
   @Prop({ type: Boolean, default: true }) readonly optionsDense!: boolean;
-  @Prop(Boolean) readonly clearable!: boolean;
-  @Prop(Boolean) readonly hideDropdownIcon!: boolean;
-  @Prop(Boolean) readonly noNewValue!: boolean;
-  @Prop(String) readonly hint?: string;
+  @Prop({ type: Boolean }) readonly clearable!: boolean;
+  @Prop({ type: Boolean }) readonly hideDropdownIcon!: boolean;
+  @Prop({ type: Boolean }) readonly noNewValue!: boolean;
+  @Prop({ type: String }) readonly hint?: string;
   @Ref() readonly select!: QSelect;
 
   filteredOptions: SelectableInputOptions[] = this.options;
@@ -83,12 +84,12 @@ export default class SelectableInput extends Vue {
       this.filteredOptions = this.options;
 
       if (!this.noNewValue) {
-        this.$emit("input", value);
+        this.$emit("update:model-value", value);
         this.$emit("new-value", value);
       }
     } else if (existingOption.value != this.value) {
       this.filteredOptions = this.options;
-      this.$emit("input", existingOption.value);
+      this.$emit("update:model-value", existingOption.value);
     }
   }
   filter(value: string, update: (_: () => void) => void) {

@@ -43,8 +43,8 @@
                 >
                   <q-color
                     :key="colorMenuKey"
-                    :value="getColor(color)"
-                    @input="setColor(color, $event)"
+                    :model-value="getColor(color)"
+                    @update:model-value="setColor(color, $event)"
                   />
                 </q-menu>
               </q-item>
@@ -85,7 +85,7 @@
     </q-menu>
 </template>
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { getColor, setColor } from "../helper/color";
 
 @Component

@@ -9,8 +9,8 @@
       <div class="q-pr-xs">
         <q-checkbox
           :disable="isDisabled"
-          :value="!!task.completed"
-          @input="toggleTaskCompletion"
+          :model-value="!!task.completed"
+          @update:model-value="toggleTaskCompletion"
           :color="!isDisabled ? 'primary' : 'grey-4'"
           keep-color
           class="text-primary text-weight-medium"
@@ -70,8 +70,8 @@
         class="column"
       >
         <q-input
-          :value="intervention.intervention.details"
-          @input="update(intervention.arrangedIntervention, {details: $event})"
+          :model-value="intervention.intervention.details"
+          @update:model-value="update(intervention.arrangedIntervention, {details: $event})"
           @change="saveClient"
           :label="$t('careSupportActivity')"
           :hint="$t('supportGivenDescription')"
@@ -79,12 +79,12 @@
           class="q-mb-xs"
         />
         <recurrence-rule-editor
-          :value="intervention.intervention.recurrenceRules"
+          :model-value="intervention.intervention.recurrenceRules"
           :rule-index="0"
           noFrequencyKey="NeverOrSporadic"
           hide-start
           hide-end
-          @input="didUpdateRule"
+          @update:model-value="didUpdateRule"
         />
       </div>
       <div
@@ -92,19 +92,19 @@
         class="column"
       >
         <intervention-category-select
-          :value="intervention.categoryCode"
-          @input="updateAndSave(intervention, {categoryCode: $event})"
+          :model-value="intervention.categoryCode"
+          @update:model-value="updateAndSave(intervention, {categoryCode: $event})"
           class="q-mt-xs"
         />
         <intervention-target-select
           v-if="intervention.categoryCode"
-          :value="intervention.targetCode"
-          @input="updateAndSave(intervention, {targetCode: $event})"
+          :model-value="intervention.targetCode"
+          @update:model-value="updateAndSave(intervention, {targetCode: $event})"
           :categoryCode="intervention.categoryCode"
         />
         <q-input
-          :value="intervention.details"
-          @input="update(intervention, {details: $event})"
+          :model-value="intervention.details"
+          @update:model-value="update(intervention, {details: $event})"
           @change="saveClient"
           :label="$t('supportNeeds')"
           :hint="$t('supportNeededDescription')"
@@ -143,16 +143,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Mixins } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-facing-decorator";
 import { TranslateResult } from "vue-i18n";
 import { Intervention, Task, RRuleSet } from "../models";
-import InterventionMixin from "../mixins/InterventionMixin";
-import RecordValidator from "../mixins/RecordValidator";
+import InterventionMixin, { InterventionMixinInterface } from "../mixins/InterventionMixin";
+import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValidator";
 import Signature from "../components/Signature.vue";
 import RecurrenceRuleEditor from "../components/RecurrenceRuleEditor.vue";
 import Warning from "../components/Warning.vue";
 import InterventionCategorySelect from "../components/InterventionCategorySelect.vue";
 import InterventionTargetSelect from "../components/InterventionTargetSelect.vue";
+
+interface ContactTaskView extends RecordValidatorInterface, InterventionMixinInterface {};
 
 @Component({
   components: {
@@ -161,9 +163,10 @@ import InterventionTargetSelect from "../components/InterventionTargetSelect.vue
     Warning,
     InterventionCategorySelect,
     InterventionTargetSelect
-  }
+  },
+  mixins: [RecordValidator, InterventionMixin]
 })
-export default class ContactTaskView extends Mixins(InterventionMixin, RecordValidator) {
+class ContactTaskView extends Vue {
   @Prop({ type: Object, required: true}) readonly task!: Task<Intervention>;
 
   isEditing = Date.now() < this.task.reminder.createdAt.getTime() + 1000;
@@ -279,4 +282,6 @@ export default class ContactTaskView extends Mixins(InterventionMixin, RecordVal
     this.updateAndSave(this.intervention.arrangedIntervention, {recurrenceRules: value});
   }
 }
+
+export default ContactTaskView;
 </script>

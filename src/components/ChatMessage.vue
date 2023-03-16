@@ -1,15 +1,16 @@
 <template>
   <q-chat-message
-    :text="[message.text]"
     :stamp="$d(message.created, 'TimeSimple')"
     :sent="message.user == $store.direct.getters.userId"
     :bg-color="message.user == $store.direct.getters.userId ? 'primary-chat' : undefined"
     size="8"
-    text-sanitize
-    stamp-sanitize
-    label-sanitize
-    name-sanitize
   >
+    <div>
+      <div
+        v-for="(line, index) in message.text.split('\n')"
+        :key="index"
+      >{{ line.trim() || "&nbsp;" }}</div>
+    </div>
     <template v-slot:label>
       <q-btn
         v-if="label"
@@ -34,7 +35,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import Signature from "components/Signature.vue";
 
 export type ChatMessage = {
@@ -46,11 +47,12 @@ export type ChatMessage = {
 @Component({
   components: {
     Signature
-  }
+  },
+  emits: ["label-click"]
 })
 export default class ChatMessageView extends Vue {
   @Prop({type: Object, required: true}) readonly message!: ChatMessage;
-  @Prop(String) readonly label?: string;
+  @Prop({ type: String }) readonly label?: string;
   shiftNoteDraft = "";
 }
 </script>

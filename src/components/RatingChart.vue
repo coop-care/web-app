@@ -1,10 +1,23 @@
-<script lang="ts">
-import { Component, Prop, Ref, Watch, Mixins } from "vue-property-decorator";
-import { Line, mixins } from "vue-chartjs";
-import { ChartOptions, ChartData, ChartDataSets, ChartTooltipModel } from "chart.js";
-import { colors } from "quasar";
+<template>
+  <Line
+    ref="chart" 
+    :data="ratingData" 
+    :options="options"
+    @touchstart="active = true"
+    @mouseenter="active = true"
+    @mouseleave="onMouseLeave"
+  />
+</template>
 
-const { getBrand, textToRgb, rgbToHex } = colors;
+<script lang="ts">
+import { Component, Prop, Ref, Model, Vue } from "vue-facing-decorator";
+import { Chart, LineController, LineElement, PointElement, TimeSeriesScale, LinearScale, ChartOptions, ChartData, Filler, ChartDataset, ScriptableContext } from "chart.js";
+import { Line } from "vue-chartjs";
+import { colors, getCssVar } from "quasar";
+
+Chart.register(LineController, LineElement, PointElement, TimeSeriesScale, LinearScale, Filler);
+
+const { textToRgb, rgbToHex } = colors;
 
 export type Rating = {
   type: 0 | 1 | 2;
@@ -18,75 +31,77 @@ export type Rating = {
 };
 
 @Component({
-    extends: Line, // this is important to add the functionality to your component
-    mixins: [mixins.reactiveProp]
+  components: {
+    Line
+  },
+  emits: ["update:model-value"]
 })
-export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
-  @Prop({type: Number, default: -1}) readonly value!: number;
-  @Prop({type: Object, default: () => {{}}}) readonly chartData!: ChartData;
+export default class RatingChart extends Vue {
+  @Model({type: Number, default: -1}) readonly value!: number;
   @Prop({type: Array, default: () => []}) readonly ratings!: Rating[];
   @Prop({type: String, default: "primary"}) readonly color!: string;
-  @Ref() readonly canvas!: HTMLCanvasElement;
+  @Ref() readonly chart!: Chart<"line">;
 
-  @Watch("ratings")
-  onDataChanged() {
-    this.redrawData();
-  }
-  @Watch("value")
-  onValueChanged() {
-    this.onHoverPoint();
-  }
-  @Watch("color")
-  onColorChanged() {
-    this.redrawData();
-  }
+  active = false;
+  previousX: number | null = 0;
+  previousY: number | null = 0;
 
-  get options(): ChartOptions {
+  get options(): ChartOptions<"line"> {
     return {
       responsive: true,
-      legend: {
-        display: false
-      },
       scales: {
-        xAxes: [{
-          type: "time",
-          distribution: "series",
-          gridLines: {
+        x: {
+          type: "timeseries",
+          grid: {
             display: false
           },
           ticks: {
             display: false
           }
-        }],
-        yAxes: [{
+        },
+        y: {
+          min: 1,
+          max: 5,
           ticks: {
-            min: 1,
-            max: 5,
             stepSize: 1
           }
-        }]
+        }
       },
-      tooltips: {
-        enabled: false,
-        mode: "index",
-        intersect: false,
-        custom: this.onTooltip
+      plugins: {
+        tooltip: {
+          enabled: false, // there is a weird bug that shows tooltips when tooltip plugin was loaded by a different component
+        },
       },
       hover: {
         mode: "index",
         intersect: false
       },
-      onResize: this.onResize
+      animations: {
+        radius: {
+          duration: 300
+        },
+      },
+      onHover: (event, elements) => {
+        if (elements[0]?.index != this.value && this.active && (event.x != this.previousX || event.y != this.previousY)) {
+          /* as soon as the area between index 0 and to is surfaced, onHover is firing with intermitting index values (like 0, 1, 0, 1, 0, …)
+             for the same x and y event coordinates and won't stop firing. So we need to check the coordinates to throttle events 
+             for performance reasons. The reson is probably caused by having a variable point radius based on hover/active state,
+             so that two points claim intermittingly to be closest to the event coordinates. A fixed point radius solves the problem as well. */
+          this.previousX = event.x;
+          this.previousY = event.y;
+          this.$emit("update:model-value", elements[0].index);
+        }
+      },
     }
   }
-  get datasetOptions(): ChartDataSets {
+  get datasetOptions(): Partial<ChartDataset<"line">> {
     return {
       spanGaps: true,
       cubicInterpolationMode: "monotone",
       pointBackgroundColor: this.colorValue
     }
   }
-  get ratingData(): ChartData {
+  get ratingData(): ChartData<"line"> {
     const ratings = this.ratings.slice();
 
     if (ratings.length == 1) {
@@ -101,11 +116,12 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
         label: this.$t("observedRating").toString(),
         fill: true,
         borderColor: this.colorValue,
-        backgroundColor: this.makeGradient(),
+        backgroundColor: this.makeGradient,
         data: ratings.map(item => item.observation),
-        pointHoverRadius: 0,
-        pointRadius: 0,
-        ...this.datasetOptions
+        pointHoverBackgroundColor: this.colorValue,
+        pointHoverRadius: this.pointRadii,
+        pointRadius: this.pointRadii,
+        ...this.datasetOptions,
       }, {
         label: this.$t("expectedRating").toString(),
         fill: false,
@@ -113,67 +129,35 @@ export default class RatingChart extends Mixins(mixins.reactiveProp, Line) {
         borderColor: this.colorValue,
         backgroundColor: this.colorValue,
         data: ratings.map(item => item.expectation),
-        pointHoverRadius: 0,
-        pointRadius: 0,
+        pointHoverBackgroundColor: this.colorValue,
+        pointHoverRadius: this.pointRadii,
+        pointRadius: this.pointRadii,
         ...this.datasetOptions
       }]
     }
   }
   get colorValue() {
-    return getBrand(this.color) || this.color;
+    return getCssVar(this.color) || this.color;
   }
-  get context() {
-    return this.canvas.getContext("2d");
-  }
-  get chart() {
-    return this.$data._chart as Chart | undefined;
+  get pointRadii() {
+    return Array.from(
+      {length: Math.max(this.ratings.length, 2)}, 
+      (_ , index) => index != this.value ? 0 : 5
+    );
   }
   
-  makeGradient() {
-    const gradient = this.context?.createLinearGradient(0,0,0,this.canvas.offsetHeight);
+  makeGradient(context: ScriptableContext<"line">) {
+    const gradient =  context.chart.ctx?.createLinearGradient(0,0,0, context.chart.canvas.offsetHeight ?? 0);
     const colorObject = textToRgb(this.colorValue);
     colorObject.a = 50;
     gradient?.addColorStop(0, rgbToHex(colorObject));
     gradient?.addColorStop(1, "rgba(255,255,255,0.25)");
     return gradient;
   }
-  onTooltip(tooltip: ChartTooltipModel) {
-    if (tooltip.dataPoints?.length) {
-      this.$emit("input", tooltip.dataPoints[0].index);
-    } else {
-      this.$emit("input", -1);
-    }
-  }
-  onHoverPoint() {
-    const pointRadii = Array.from(
-      {length: Math.max(this.ratings.length, 2)}, 
-      (_ , index) => index != this.value ? 0 : 5
-    );
 
-    this.chart?.data.datasets?.forEach(item => {
-      item.pointRadius = pointRadii;
-      item.pointHoverRadius = pointRadii;
-    });
-    this.chart?.update({duration: 300});
-  }
-  onResize() {
-    const datasets = this.chart?.data.datasets;
-
-    if (datasets && datasets[0]) {
-      datasets[0].backgroundColor = this.makeGradient();
-      this.chart?.update();
-    }
-  }
-  redrawData() {
-    if (this.chart) {
-      this.chart.data = this.ratingData;
-      this.chart.update({duration: 0});
-    }
-  }
-
-  mounted () {
-    this.renderChart(this.ratingData, this.options);
-    this.onResize();
+  onMouseLeave() {
+    this.active = false
+    this.$emit("update:model-value", -1)
   }
 }
 </script>

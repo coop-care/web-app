@@ -60,9 +60,7 @@ export class Reminder extends Base {
     }
     get startDateOfRecurrenceRules() {
         if (this.recurrenceRules) {
-            const lastOccurrence = this.occurrences[
-                this.occurrences.length - 1
-            ];
+            const lastOccurrence = this.occurrences.at(-1);
             return lastOccurrence?.due || this.recurrenceRules.initialStartDate;
         }
     }

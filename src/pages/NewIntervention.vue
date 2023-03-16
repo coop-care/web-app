@@ -5,13 +5,14 @@
     :is-data-available="!!(client && intervention)"
     :paramsToRemoveOnClose="['problemId']"
     :hasPendingChanges="hasPendingChanges"
+    @show="didShow"
   >
       <div v-if="!$route.params.problemId">
         <div class="text-subtitle1 q-mt-sm counter">{{ $t("selectProblem") }}</div>
         <q-select
           v-model="problemId"
           :options="problemOptions"
-          :label="$tc('problem', 1)"
+          :label="$t('problem', 1)"
           color="classification"
           map-options
           emit-value
@@ -22,14 +23,13 @@
           <template v-slot:option="scope">
             <q-item
               v-bind="scope.itemProps"
-              v-on="scope.itemEvents"
               :style="widthStyle"
             >
               <q-item-section side>
                 <q-icon :name="scope.opt.icon" />
               </q-item-section>
               <q-item-section>
-                <q-item-label title="">{{ scope.opt.label }}</q-item-label>
+                <q-item-label>{{ scope.opt.label }}</q-item-label>
                 <q-item-label
                   caption
                   lines="1"
@@ -48,7 +48,7 @@
       >
         <intervention-editor
           v-model="intervention"
-          :problemRecord="record"
+          :problem-code="problemCode"
           isSingleEditor
         />
         <warning
@@ -72,15 +72,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Vue } from "vue-facing-decorator";
 import { QSelect } from "quasar";
-import RecordValidator from "../mixins/RecordValidator";
+import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValidator";
 import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import InterventionEditor from "components/InterventionEditorV3.vue";
 import Warning from "components/Warning.vue";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
+
+interface InterventionPage extends RecordValidatorInterface {};
 
 @Component({
   components: {
@@ -89,14 +91,15 @@ import { Intervention } from "../models/intervention";
     ProblemSummaryContainer,
     Warning,
   },
+  mixins: [RecordValidator]
 })
-export default class InterventionPage extends RecordValidator {
+class InterventionPage extends Vue {
   @Ref() readonly editingSheet!: EditingSheet;
   @Ref() readonly problemSelect!: QSelect;
 
   problemRecordId = "";
   intervention = new Intervention();
-  originalIntervention = this.intervention.toJSON();
+  originalIntervention = this.intervention.toJSONString();
   problemKey = Math.random();
   maxWidth = 300;
 
@@ -104,7 +107,7 @@ export default class InterventionPage extends RecordValidator {
     return this.client?.findProblemRecord(this.problemId);
   }
   get problemId() {
-    return this.$route.params.problemId || this.problemRecordId;
+    return this.$route.params.problemId as string || this.problemRecordId;
   }
   set problemId(value) {
     if (value == "new") {
@@ -119,13 +122,15 @@ export default class InterventionPage extends RecordValidator {
   get title() {
     return [
       this.client?.contact.name,
-      this.$t(this.record?.problem.title ?? ""),
+      this.record?.problem.title
+        ? this.$t(this.record?.problem.title)
+        : "",
       this.$t("newIntervention")
     ].filter(Boolean).join(": ");
   }
   get problemOptions() {
     const options = (this.client?.problems || [])
-      .filter((record) => !record.resolvedAt)
+      .filter((record) => record.isActive)
       .map((problemRecord) => {
         return {
           label: "" + this.$t(problemRecord.problem.title),
@@ -148,9 +153,12 @@ export default class InterventionPage extends RecordValidator {
   get widthStyle() {
     return "max-width: " + this.maxWidth + "px";
   }
+  get problemCode() {
+    return this.record?.problem.code ?? ""
+  }
   
   hasPendingChanges() {
-    return this.intervention.toJSON() != this.originalIntervention;
+    return this.intervention.toJSONString() != this.originalIntervention;
   }
 
   save() {
@@ -161,11 +169,11 @@ export default class InterventionPage extends RecordValidator {
       this.$store.direct.commit.updateObject({
         target: this.record,
         changes: changes,
-        clientId: this.$route.params.clientId,
+        clientId: this.$route.params.clientId as string,
         problemId: this.problemId,
       });
       this.$store.direct.commit.addToClientHistory({
-        clientId: this.$route.params.clientId,
+        clientId: this.$route.params.clientId as string,
         problemId: this.problemId,
         changeType: "InterventionStarted",
         newInstance: this.intervention,
@@ -184,11 +192,15 @@ export default class InterventionPage extends RecordValidator {
     // problemSelect reference is not always yet available when component is mounted
     setTimeout(() => {
       this.maxWidth = (this.problemSelect?.$el?.firstElementChild as HTMLElement)?.offsetWidth;
-      
-      if (!this.problemRecordId) {
-        this.problemSelect?.focus();
-      }
     })
   }
+
+  didShow() {
+    if (!this.problemRecordId) {
+      this.problemSelect?.showPopup();
+    }
+  }
 }
+
+export default InterventionPage;
 </script>

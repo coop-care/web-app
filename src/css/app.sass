@@ -1,9 +1,9 @@
 // app global css in Sass form
 ::selection
-  background: var(--q-color-primary)
+  background: var(--q-primary)
   color: #ffffff
 ::-moz-selection
-  background: var(--q-color-primary)
+  background: var(--q-primary)
   color: #ffffff
 .selectable
   -webkit-user-select: auto
@@ -107,36 +107,36 @@ body
   page-break-inside: avoid // Theoretically FF 20+
   break-inside: avoid-column // IE 11
 .text-classification, .icon-classification .q-icon
-  color: var(--q-color-classification)
+  color: var(--q-classification)
 .bg-classification
-  background-color: var(--q-color-classification)
-  background-image: var(--q-color-classification-gd)
+  background-color: var(--q-classification)
+  background-image: var(--q-classification-gd)
 .bg-classification-light
-  background-color: var(--q-color-classification-bg)
+  background-color: var(--q-classification-bg)
 .border-classification
-  border-color: var(--q-color-classification)
+  border-color: var(--q-classification)
 .text-outcome, .icon-outcome .q-icon
-  color: var(--q-color-outcome)
+  color: var(--q-outcome)
 .bg-outcome
-  background-color: var(--q-color-outcome)
-  background-image: var(--q-color-outcome-gd)
+  background-color: var(--q-outcome)
+  background-image: var(--q-outcome-gd)
 .bg-outcome-light
-  background-color: var(--q-color-outcome-bg)
+  background-color: var(--q-outcome-bg)
 .border-outcome
-  border-color: var(--q-color-outcome)
+  border-color: var(--q-outcome)
 .text-intervention, .icon-intervention .q-icon
-  color: var(--q-color-intervention)
+  color: var(--q-intervention)
 .bg-intervention
-  background-color: var(--q-color-intervention)
-  background-image: var(--q-color-intervention-gd)
+  background-color: var(--q-intervention)
+  background-image: var(--q-intervention-gd)
 .bg-intervention-light
-  background-color: var(--q-color-intervention-bg)
+  background-color: var(--q-intervention-bg)
 .border-intervention
-  border-color: var(--q-color-intervention)
+  border-color: var(--q-intervention)
 .bg-primary
-  background-image: var(--q-color-primary-gd) !important
+  background-image: var(--q-primary-gd) !important
 .border-primary
-  border-color: var(--q-color-primary)
+  border-color: var(--q-primary)
 .border-top-grey
   border-top: 1px solid #cccccc
 .border-bottom-grey
@@ -165,9 +165,9 @@ body
   .q-message-stamp
     right: -58px
 .text-primary-chat
-  color: var(--q-color-primary-chat)
+  color: var(--q-primary-chat)
   &.q-message-text
-    background-image: var(--q-color-primary-chat-bg)
+    background-image: var(--q-primary-chat-bg)
 .radius-xs
   border-radius: 4px
 .radius-sm
@@ -187,7 +187,7 @@ body
 .line-height-15
   line-height: 1.5rem
 body.desktop .hover-primary .q-hoverable:hover > .q-focus-helper
-  background-color: var(--q-color-primary)
+  background-color: var(--q-primary)
 .can-hover:hover, .active-background.q-item--active
   position: relative
   &::before
@@ -310,12 +310,12 @@ body.desktop .hover-primary .q-hoverable:hover > .q-focus-helper
   a, .q-markdown--link
     text-decoration: underline
     border-bottom: 0 none
-    color: var(--q-color-primary)
+    color: var(--q-primary)
   .q-markdown--link-external
     &:after
       content: ''
 a
-  color: var(--q-color-primary)
+  color: var(--q-primary)
 .safe-area-horizontal, .q-page-container, .q-banner
   padding-left: env(safe-area-inset-left)
   padding-right: env(safe-area-inset-right)

@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import { RRuleSet as RuleSet, RRule, Frequency, Options, Weekday } from "rrule";
+import { RRuleSet as RuleSet, RRule, Frequency, Options, Weekday, ByWeekday } from "rrule";
 import { DateTime } from "luxon";
-import { classToClass } from "class-transformer";
+import { instanceToInstance } from "class-transformer";
 
 type GetText = (id: string | number | Weekday) => string;
 interface Language {
@@ -48,6 +48,9 @@ class RRuleSet extends RuleSet {
         }
         if (json.wkst != undefined && json.wkst.weekday != undefined) {
             json.wkst = json.wkst.weekday;
+        }
+        if (Array.isArray(json.byweekday) && typeof json.byweekday[0] == "object") {
+            json.byweekday = json.byweekday.map((item: any) => item.weekday);
         }
         return new RRule(json, true);
     }
@@ -121,9 +124,9 @@ class RRuleSet extends RuleSet {
         const options = overwriteAllValues
             ? {
                   tzid: rule.origOptions.tzid,
-                  wkst: classToClass(rule.origOptions.wkst)
+                  wkst: instanceToInstance(rule.origOptions.wkst)
               }
-            : classToClass(rule.origOptions);
+            : instanceToInstance(rule.origOptions);
         Object.assign(options, changes);
         return new RRule(options, !rule._cache);
     }
@@ -311,7 +314,7 @@ class RRuleSet extends RuleSet {
         const count = rule.origOptions.count;
         const originalTo = to;
         const next = isSingleMove
-            ? RRuleSet.optionalFromUTC(rule.after(RRuleSet.toUTC(from), false))
+            ? RRuleSet.optionalFromUTC(rule.after(RRuleSet.toUTC(from), false) ?? undefined)
             : undefined;
         to = next || to;
 
@@ -373,11 +376,11 @@ class RRuleSet extends RuleSet {
         const rule = rules[ruleIndex] || rules[this.ruleIndexIncludingDate()];
         if (rule) {
             return rule.toText(gettext, language, dateFormatter);
-        } else if (this._rdate.length && language && dateFormatter) {
+        } else if (this._rdate.length > 0 && !!language && !!dateFormatter) {
             const date = this.startDate(-1);
             return dateFormatter(
                 date.getFullYear(),
-                language.monthNames[date.getMonth()] || "",
+                language.monthNames[date.getMonth()] ?? "",
                 date.getDate()
             );
         } else {
@@ -394,11 +397,18 @@ class RRuleSet extends RuleSet {
         return this.toText(
             key => translationDict[key.toString()] || key.toString(),
             language,
-            (year, month, day) =>
-                new Date([day, month, year].join(" ")).toLocaleString(
-                    locale,
-                    DateTime.DATE_MED
-                ),
+            (year, monthName, day) => {
+                const month = language.monthNames.indexOf(monthName);
+
+                if (month == -1) {
+                    return "";
+                } else {
+                    return new Date(year, month, day).toLocaleString(
+                        locale,
+                        DateTime.DATE_MED
+                    )
+                }
+            },
             ruleIndex
         );
     }
@@ -421,12 +431,12 @@ class RRuleSet extends RuleSet {
 
     previous(date: Date, inc?: boolean) {
         return RRuleSet.optionalFromUTC(
-            super.before(RRuleSet.toUTC(date), inc)
+            super.before(RRuleSet.toUTC(date), inc) ?? undefined
         );
     }
 
     next(date: Date, inc?: boolean) {
-        return RRuleSet.optionalFromUTC(super.after(RRuleSet.toUTC(date), inc));
+        return RRuleSet.optionalFromUTC(super.after(RRuleSet.toUTC(date), inc) ?? undefined);
     }
 
     hasNext(date?: Date) {
@@ -442,7 +452,20 @@ class RRuleSet extends RuleSet {
                 options.wkst = weekday;
             }
 
-            return options
+            if (typeof options.bysecond == "number") {
+                options.bysecond = [options.bysecond];
+            }
+
+            if (Array.isArray(options.byweekday) && typeof options.byweekday[0] == "number") {
+                options.byweekday = options.byweekday.map(weekday => ({ weekday })) as ByWeekday[];
+            }
+
+            // trying to preserve a predictable order of keys in stringifyied JSON,
+            // because equality on higher level objects can be defined by equality of their JSON string representations
+            return Object.keys(options).sort().reduce((result, key) => {
+                result[key] = options[key as keyof typeof options];
+                return result;
+            }, {} as Record<string, any>) as typeof options
         };
 
         return {

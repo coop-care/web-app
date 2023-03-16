@@ -98,15 +98,15 @@
 <style lang="sass">
 .problem-classification
   .q-tree > .q-tree__node > .q-tree__node-header
-    background-color: var(--q-color-classification-bg)
+    background-color: var(--q-classification-bg)
   .q-tree__node .q-tree__node .q-tree__node .q-tree__node-header
     padding-top: 0
     padding-bottom: 0
 </style>
 
 <script lang="ts">
-import { Component, Prop, Ref } from "vue-property-decorator";
-import WarningMixin from "../mixins/WarningMixin";
+import { Component, Prop, Ref, Vue, Model } from "vue-facing-decorator";
+import WarningMixin, { WarningMixinInterface } from "../mixins/WarningMixin";
 import {
   HasTitleDescription,
   TerminologyWithMaps,
@@ -117,15 +117,19 @@ import { QInput, QTree } from "quasar";
 import { Problem } from "../models";
 import TextWithHighlights from "./TextWithHighlights.vue";
 
+interface ProblemSelection extends WarningMixinInterface {};
+
 @Component({
   components: {
     TextWithHighlights,
   },
+  mixins: [WarningMixin],
+  emits: ["update:model-value"]
 })
-export default class ProblemSelection extends WarningMixin {
-  @Prop(Object) readonly value!: Problem;
-  @Prop(Boolean) readonly editMode!: boolean;
-  @Prop(Boolean) readonly isChangingProblemAdvisable!: boolean;
+class ProblemSelection extends Vue {
+  @Model({ type: Object }) readonly value!: Problem;
+  @Prop({ type: Boolean }) readonly editMode!: boolean;
+  @Prop({ type: Boolean }) readonly isChangingProblemAdvisable!: boolean;
   @Ref() readonly filter!: QInput;
   @Ref() readonly problemTree!: QTree;
 
@@ -155,8 +159,8 @@ export default class ProblemSelection extends WarningMixin {
       }
       const message = this.$t("problemChangeWarningMessage", {
         consequences: consequences.join("\n"),
-        oldName: this.$t(this.value.title),
-        newName: this.$t("terminology.problemByCode." + value + ".title"),
+        oldName: this.$tm(this.value.title),
+        newName: this.$tm("terminology.problemByCode." + value + ".title"),
       }) as string;
 
       this.showWarning(message).onOk(() => {
@@ -184,7 +188,7 @@ export default class ProblemSelection extends WarningMixin {
   }
 
   get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
     return (
@@ -194,7 +198,7 @@ export default class ProblemSelection extends WarningMixin {
   }
 
   updateProblem(code: string) {
-    this.$emit("input", Object.assign(this.value, {
+    this.$emit("update:model-value", Object.assign(this.value, {
       code,
       signsAndSymptomsCodes: [],
       details: "",
@@ -229,4 +233,6 @@ export default class ProblemSelection extends WarningMixin {
     this.expandDomainForSelectedProblem();
   }
 }
+
+export default ProblemSelection;
 </script>

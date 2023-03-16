@@ -6,14 +6,14 @@
         style="z-index: 1000"
       >
         <q-btn
-          v-if="hasMenuButton($router.currentRoute.name || '')"
+          v-if="hasMenuButton($router.currentRoute.value)"
           flat
           icon="menu"
           aria-label="menu"
-          @click="$root.$emit('toggle-drawer')"
+          @click="$bus.emit('toggle-drawer')"
         />
         <q-btn
-          v-if="hasBackButton($router.currentRoute.name || '')"
+          v-if="hasBackButton($router.currentRoute.value)"
           size="lg"
           dense
           no-caps
@@ -23,7 +23,7 @@
           @click="$router.back()"
         />
         <div 
-          v-if="!hasMenuButton($router.currentRoute.name || '') && !hasBackButton($router.currentRoute.name || '')"
+          v-if="!hasMenuButton($router.currentRoute.value) && !hasBackButton($router.currentRoute.value)"
           style="width: 60px"
         ></div>
 
@@ -39,7 +39,7 @@
 
         <q-btn
           v-else
-          :label="$root.$i18n.locale.split('-')[0]"
+          :label="$i18n.locale.split('-')[0]"
           icon="fas fa-globe"
           stretch
           flat
@@ -55,7 +55,7 @@
       ></div>
     </q-header>
 
-    <navigation-drawer v-if="hasDrawer($router.currentRoute.name || '')" />
+    <navigation-drawer v-if="hasDrawer($router.currentRoute.value)" />
 
     <q-page-container>
       <div class="print-only text-black text-center text-subtitle2 border-bottom-grey">
@@ -64,6 +64,7 @@
       <router-view />
       <component :is="modalSheetComponent" />
       <new-client-sheet/>
+      <user-settings-sheet/>
     </q-page-container>
   </q-layout>
 </template>
@@ -79,13 +80,15 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import UserMenu from "../components/UserMenu.vue";
 import LanguageMenu from "../components/LanguageMenu.vue";
 import Banner from "../components/Banner.vue";
 import NavigationDrawer from "../components/NavigationDrawer.vue";
-import EditingSheet from "../components/EditingSheet.vue";
 import NewClientSheet from "../components/NewClientSheet.vue";
+import UserSettingsSheet from "../components/UserSettingsSheet.vue";
+import { RouteLocation } from "vue-router";
+import { createMetaMixin } from "quasar";
 
 @Component({
   components: {
@@ -93,35 +96,38 @@ import NewClientSheet from "../components/NewClientSheet.vue";
     LanguageMenu,
     Banner,
     NavigationDrawer,
-    EditingSheet,
     NewClientSheet,
+    UserSettingsSheet,
   },
-  meta() {
-    return {
-      title: "CoopCare" + (this.$store.direct.getters.isDemo ? " – " + this.$t("demoAppTitle") : " App" ),
-      meta: {
-        description: { name: "description", content: this.$t("appDescription") },
-        google: { name: "google", content: "notranslate" },
-        contentLanguage: {
-          "http-equiv": "Content-Language",
-          content: this.$root.$i18n.locale
+  mixins: [
+    createMetaMixin(function() {
+      return {
+        title: "CoopCare" + (this.$store.direct.getters.isDemo ? " – " + this.$t("demoAppTitle") : " App" ),
+        meta: {
+          description: { name: "description", content: this.$t("appDescription") },
+          google: { name: "google", content: "notranslate" },
+          contentLanguage: {
+            "http-equiv": "Content-Language",
+            content: this.$i18n.locale
+          }
         }
       }
-    };
-  }
+    })
+  ],
 })
 export default class MainLayout extends Vue {
   get title() {
     const route = this.$route;
+    const routeName = route.name?.toString() ?? "";
 
     if (route.path.startsWith("/client")) {
       if (this.selectedClient) {
         return this.selectedClient.contact.name;
       } else {
-        return this.$tc("client", 2);
+        return this.$t("client", 2);
       }
-    } else if (this.$te(route.name || "")) {
-      return this.$t(route.name || "");
+    } else if (routeName.length > 0 && this.$te(routeName)) {
+      return this.$t(routeName);
     } else {
       return "";
     }
@@ -139,18 +145,18 @@ export default class MainLayout extends Vue {
     return this.backButtonRoutes.concat("login");
   }
   get modalSheetComponent() {
-    const sheet = this.$route.params.sheet;
-    return this.$route.meta?.sheets?.[sheet];
+    const sheet = this.$route.params.sheet as string;
+    return (this.$route.meta.sheets as Record<string, any>)?.[sheet];
   }
 
-  hasDrawer(routeName: string) {
-    return !this.noDrawerRoutes.includes(routeName);
+  hasDrawer(route: RouteLocation) {
+    return !route.meta.noAuth;
   }
-  hasMenuButton(routeName: string) {
-    return this.hasDrawer(routeName) && this.$q.screen.lt.md;
+  hasMenuButton(route: RouteLocation) {
+    return this.hasDrawer(route) && this.$q.screen.lt.md;
   }
-  hasBackButton(routeName: string) {
-    return this.backButtonRoutes.includes(routeName);
+  hasBackButton(route: RouteLocation) {
+    return !!route.meta.noAuth && route.name != "login";
   }
   showOnboardingForDemoVersion() {
     if (
@@ -159,8 +165,7 @@ export default class MainLayout extends Vue {
     ) {
       void import("../components/DemoOnboarding.vue").then(component => {
         this.$q.dialog({
-          component: component.default,
-          parent: this
+          component: component.default
         });
       });
     }

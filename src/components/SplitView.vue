@@ -38,9 +38,11 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
+import { Vue, Component, Prop, Ref } from "vue-facing-decorator";
 
-@Component
+@Component({
+  emits: ["update:is-collapsed", "did-show-before", "did-show-after"]
+})
 export default class SplitViewView extends Vue {
   @Prop({ type: Number, default: 300 }) readonly minSlotWidth!: number;
   @Prop({ type: Number, default: 0 }) readonly scrollOffsetTop!: number;

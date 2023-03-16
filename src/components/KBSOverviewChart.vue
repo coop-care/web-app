@@ -1,6 +1,12 @@
 <template>
   <div class="full-width non-selectable relative-position">
-    <canvas ref="canvas" :height="height"></canvas>
+    <Line 
+      ref="chart" 
+      :data="chartData" 
+      :options="options" 
+      :height="height" 
+      @mouseleave="hoverIndex = -1"
+    />
     <div class="text-subtitle2 text-weight-bold text-center one-line">{{ title }}</div>
     <div :class="[dense ? 'row justify-around' : '']">
       <div
@@ -30,120 +36,80 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Ref, Watch, Vue } from "vue-property-decorator";
-import { Chart, ChartOptions, ChartData, ChartDataSets, ChartTooltipModel } from "chart.js";
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import { Chart, ChartOptions, ChartData, LineElement, PointElement, LineController, TimeSeriesScale, LinearScale, ChartEvent, ActiveElement } from "chart.js";
+import { Line } from "vue-chartjs";
 import { getColor } from "../helper/color";
+import "chartjs-adapter-luxon";
 
-@Component
+Chart.register(LineController, LineElement, PointElement, TimeSeriesScale, LinearScale)
+
+@Component({
+  components: {
+    Line
+  }
+})
 export default class KBSOverviewChart extends Vue {
   @Prop({type: Array, default: () => []}) readonly labels!: string[];
   @Prop({type: Array, default: () => []}) readonly dates!: Date[];
   @Prop({type: Array, default: () => []}) readonly datasets!: number[][];
   @Prop({type: Object, default: () => ({})}) readonly chartOptions!: ChartOptions;
   @Prop({type: String, default: ""}) readonly title!: string;
-  @Prop(Boolean) readonly dense!: boolean;
+  @Prop({ type: Boolean }) readonly dense!: boolean;
   @Prop({type: Number, default: 150}) readonly height!: number;
-  @Ref() readonly canvas!: HTMLCanvasElement;
 
-  _chart: Chart | null = null;
   hoverIndex = -1;
 
-  @Watch("labels")
-  onLabelsChanged() {
-    this.onDatasetsChanged();
-  }
-
-  @Watch("dates")
-  onDatesChanged() {
-    this.onDatasetsChanged();
-  }
-
-  @Watch("datasets")
-  onDatasetsChanged() {
-    if (this.chart) {
-      this.chart.data = this.chartData;
-      this.chart.update();
-    }
-  }
-
-  @Watch("chartOptions")
-  onChartOptionsChanged() {
-    if (this.chart) {
-      this.chart.options = this.options;
-      this.chart.update();
-    }
-  }
-
-  get chart() {
-    if (!this._chart) {
-      this._chart = new Chart(this.canvas, {
-        type: "line",
-        data: this.chartData,
-        options: this.options
-      });
-    }
-    return this._chart;
-  }
-
-  get options(): ChartOptions {
+  get options() {
     return {
       responsive: true,
-      legend: {
-        display: false,
-      },
-      layout: {
-        padding: {
-          right: 6,
-        }
-      },
       scales: {
-        xAxes: [{
-          type: "time",
-          distribution: "series",
-          gridLines: {
+        x: {
+          type: "timeseries",
+          grid: {
             display: false
           },
           ticks: {
             display: false
           }
-        }],
-        yAxes: [{
+        },
+        y: {
+          min: 1,
+          max: 5,
           ticks: {
-            min: 1,
-            max: 5,
             stepSize: 1
           }
-        }]
-      },
-      tooltips: {
-        enabled: false,
-        mode: "index",
-        intersect: false,
-        custom: this.onTooltip
+        }
       },
       hover: {
         mode: "index",
         intersect: false
       },
-      onResize: this.onResize,
+      plugins: {
+        tooltip: {
+          enabled: false // there is a weird bug that shows tooltips when tooltip plugin was loaded by a different component
+        }
+      },
+      onHover: (event: ChartEvent, elements: ActiveElement[]) =>{
+        const element = elements?.[0];
+
+        if (element?.element.active && element?.index != this.hoverIndex) {
+          this.hoverIndex = element.index;
+        }
+      },
       ...this.chartOptions
     }
   }
-  get datasetOptions(): ChartDataSets {
-    return {
-      fill: false,
-      spanGaps: true,
-      cubicInterpolationMode: "monotone",
-      pointHoverRadius: 5,
-      pointRadius: 0,
-    }
-  }
-  get chartData(): ChartData {
+  get chartData(): ChartData<"line"> {
     return {
       labels: this.duplicateSingleDate(this.dates),
       datasets: this.formattedDatasets.map(item => ({
         ...item,
-        ...this.datasetOptions
+        fill: false,
+        spanGaps: true,
+        cubicInterpolationMode: "monotone",
+        pointHoverRadius: 5,
+        pointRadius: 0,
       }))
     }
   }
@@ -174,9 +140,6 @@ export default class KBSOverviewChart extends Vue {
       ? this.$d(this.duplicateSingleDate(this.dates)[this.hoverIndex])
       : " ";
   }
-  get context() {
-    return this.canvas.getContext("2d");
-  }
   get formattedDatasets() {
     return this.labels.map((label, index) => ({
       label,
@@ -195,25 +158,6 @@ export default class KBSOverviewChart extends Vue {
     return list.length == 1 || (list.length == 2 && list[0].getTime() == list[1].getTime()) 
       ? [list[0], new Date(list[0].getTime() + 1)]
       : list;
-  }
-
-  onResize() {
-    const datasets = this.chart?.data.datasets;
-
-    if (datasets && datasets[0]) {
-      this.chart?.update();
-    }
-  }
-  onTooltip(tooltip: ChartTooltipModel) {
-    if (tooltip.dataPoints?.length) {
-      this.hoverIndex = tooltip.dataPoints[0].index || 0;
-    } else {
-      this.hoverIndex = -1;
-    }
-  }
-
-  mounted () {
-    this.onDatasetsChanged();
   }
 }
 </script>

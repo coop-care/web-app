@@ -30,35 +30,39 @@
 </style>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import RecordMixin from "../mixins/RecordMixin";
+import { Component, Vue } from "vue-facing-decorator";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import KBSOverviewChart from "../components/KBSOverviewChart.vue";
 import { Outcome, Rating } from "src/models";
+
+interface ClientInsights extends RecordMixinInterface {}
 
 @Component({
   components: {
     KBSOverviewChart
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientInsights extends RecordMixin {
+class ClientInsights extends Vue {
   get chartOptions() {
-    return {scales: {
-      xAxes: [{
-        type: "time",
-        distribution: "series",
-        gridLines: {
-          display: false
+    return {
+      scales: {
+        x: {
+          type: "timeseries",
+          grid: {
+            display: false
+          },
+          ticks: {
+            display: false
+          }
         },
-        ticks: {
-          display: false
+        y: {
+          ticks: {
+            stepSize: 1
+          }
         }
-      }],
-      yAxes: [{
-        ticks: {
-          stepSize: 1
-        }
-      }]
-    }};
+      }
+    };
   }
   get terminologyRatings() {
     return this.terminology.problemRatingScale.ratings;
@@ -118,4 +122,6 @@ export default class ClientInsights extends RecordMixin {
     this.adjustWidthIfNeeded();
   }
 }
+
+export default ClientInsights;
 </script>

@@ -25,7 +25,7 @@
               v-if="recordings.length"
               class="text-caption inline-block"
             >
-              ({{ $tc("timeTrackingRecordCount", recordings.length) }}, {{ $tc("minuteCount", overallDurationMinutes) }})
+              ({{ $t("timeTrackingRecordCount", recordings.length) }}, {{ $t("minuteCount", overallDurationMinutes) }})
             </div>
           </div>
         </q-item-section>
@@ -38,24 +38,24 @@
         <div class="text-body2">{{ index + 1 }}</div>
         <date-time-input
           :label="$t('startTime')"
-          :value="new Date(recording.start)"
-          @input="changeStart(recording, $event)"
+          :model-value="new Date(recording.start)"
+          @update:model-value="changeStart(recording, $event)"
           :format="$t('timeFormat')"
           required
           class="time-tracking-input"
         />
         <date-time-input
           :label="$t('endTime')"
-          :value="recordingEnd(recording)"
-          @input="changeEnd(recording, $event)"
+          :model-value="recordingEnd(recording)"
+          @update:model-value="changeEnd(recording, $event)"
           :format="$t('timeFormat')"
           :required="recording.duration != undefined"
           class="time-tracking-input"
         />
         <q-input
           :label="$t('duration')"
-          :value="recordingDuration(recording)"
-          @input="changeDuration(recording, $event)"
+          :model-value="recordingDuration(recording)"
+          @update:model-value="changeDuration(recording, $event)"
           :suffix="recording == activeRecording ? seconds : ':00'"
           input-class="text-right"
           mask="#:##"
@@ -65,8 +65,8 @@
         />
         <q-input
           :label="$t('serviceType')"
-          :value="recording.serviceType"
-          @input="changeServiceType(recording, $event)"
+          :model-value="recording.serviceType"
+          @update:model-value="changeServiceType(recording, $event)"
           class="col service-type-input"
         />
         <div>
@@ -110,7 +110,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Prop } from "vue-facing-decorator";
 import DateTimeInput from "components/DateTimeInput.vue";
 
 type TimeRecording = {
@@ -253,7 +253,7 @@ export default class TimeRecordingView extends Vue {
     this.secondsInterval = window.setInterval(this.updateSeconds, 1000);
   }
 
-  beforeDestroy() {
+  unmounted() {
     clearTimeout(this.secondsInterval);
   }
 }

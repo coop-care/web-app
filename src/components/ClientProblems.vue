@@ -9,7 +9,7 @@
         <client-insights v-if="clientProblems.length > 0" />
         <problem-summary
           v-for="problemRecord in clientProblems"
-          v-bind:key="problemRecord.id"
+          :key="problemRecord.id"
           :problemRecord="problemRecord"
           :params="{
             clientId: $route.params.clientId,
@@ -56,19 +56,22 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { ProblemRecord } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ClientInsights from "../components/ClientInsights.vue";
 import ProblemSummary from "../components/ProblemSummary.vue";
+
+interface ClientProblems extends RecordMixinInterface {};
 
 @Component({
   components: {
     ClientInsights,
     ProblemSummary
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientProblems extends RecordMixin {
+class ClientProblems extends Vue {
   get clientProblems() {
     const client = this.client;
     const problems = client ? client.problems : [];
@@ -80,7 +83,7 @@ export default class ClientProblems extends RecordMixin {
   }
 
   get expanded() {
-    return this.$route.params.expandedIds?.split(",") || [];
+    return (this.$route.params.expandedIds as string)?.split(",") || [];
   }
 
   addProblem() {
@@ -108,4 +111,6 @@ export default class ClientProblems extends RecordMixin {
     void this.$router.push({name: "clientReport", params})
   }
 }
+
+export default ClientProblems;
 </script>

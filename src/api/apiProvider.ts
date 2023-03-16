@@ -1,16 +1,9 @@
-import Vue from "vue";
 import CoopCareApiInterface from "./coopCareApiInterface";
 import DemoApi from "./demo";
 import StitchApi from "./stitch";
 import RealmApi from "./realm";
 import store from "../store";
 import { User, TeamMember, Team, Client } from "../models";
-
-declare module "vue/types/vue" {
-    interface Vue {
-        $ccApi: CoopCareApiInterface;
-    }
-}
 
 let ccApi: CoopCareApiInterface;
 
@@ -64,5 +57,6 @@ if (process.env.BACKEND == "realm" && process.env.BACKEND_APP_ID) {
     ccApi = new DemoApi();
 }
 
-export { ccApi };
-Vue.prototype.$ccApi = ccApi;
+const useCoopCareApi = () => ccApi;
+
+export { ccApi, useCoopCareApi };

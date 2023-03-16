@@ -93,16 +93,18 @@
 </style>
 
 <script lang="ts">
-import { Component, Ref, Mixins } from "vue-property-decorator";
+import { Component, Vue, Ref } from "vue-facing-decorator";
 import { ObjectID } from "bson";
 import { Contact, Intervention } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
-import ClientActionMixin from "../mixins/ClientActionMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
+import ClientActionMixin, { ClientActionMixinInterface } from "../mixins/ClientActionMixin";
 import ActionMenu from "../components/ActionMenu.vue";
 import ClientHealthInformation from "../components/ClientHealthInformation.vue";
 import SplitView from "../components/SplitView.vue";
 import NavigationItems from "../components/NavigationItems.vue";
 // import { countryCodes as billingCountries } from "src/components/ClientBillingSettings/index.vue";
+
+interface ClientMasterData extends RecordMixinInterface, ClientActionMixinInterface {};
 
 @Component({
   components: {
@@ -110,9 +112,10 @@ import NavigationItems from "../components/NavigationItems.vue";
     ClientHealthInformation,
     SplitView,
     NavigationItems,
-  }
+  },
+  mixins: [RecordMixin, ClientActionMixin]
 })
-export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMixin) {
+class ClientMasterData extends Vue {
   isCollapsed = false;
   @Ref() readonly splitView!: SplitView;
 
@@ -142,7 +145,7 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
       caption: this.describeInformalContact(contact),
       labelClass: !contact.name ? "text-italic" : "",
       action: () => this.showInformalContact(contact.id),
-      active: this.$route.name == "clientInformalContact" && contact.id.equals(this.$route.params.informalContactId)
+      active: this.$route.name == "clientInformalContact" && contact.id.equals(this.$route.params.informalContactI as string)
     }))
   }
   get formalContactItems() {
@@ -151,7 +154,7 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
       caption: this.describeFormalContact(contact),
       labelClass: !contact.name ? "text-italic" : "",
       action: () => this.showFormalContact(contact.id),
-      active: this.$route.name == "clientFormalContact" && contact.id.equals(this.$route.params.formalContactId)
+      active: this.$route.name == "clientFormalContact" && contact.id.equals(this.$route.params.formalContactId as string)
     }))
   }
   get isDefaultRoute() {
@@ -259,4 +262,6 @@ export default class ClientMasterData extends Mixins(RecordMixin, ClientActionMi
     }
   }
 }
+
+export default ClientMasterData;
 </script>

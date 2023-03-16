@@ -18,14 +18,14 @@
             :key="item"
           >{{ item }}</li>
         </ul>
-        <!-- <i18n path="demoOnboardingBetaProgramMessage" tag="p">
+        <!-- <i18n-t keypath="demoOnboardingBetaProgramMessage" scope="global" tag="p">
           <a :href="'mailto:mail@coopcare.de?subject=' + $t('demoOnboardingBetaProgramEmailSubject') + '&body=' + $t('demoOnboardingBetaProgramEmailMessage')"
             >{{ $t("demoOnboardingBetaProgramTitle") }}</a>
-        </i18n> -->
-        <i18n path="demoOnboardingFeedbackMessage" tag="p">
+        </i18n-t> -->
+        <i18n-t keypath="demoOnboardingFeedbackMessage" scope="global" tag="p">
           <a :href="'mailto:feedback@coopcare.de?subject=' + $t('demoOnboardingFeedbackEmailSubject')"
             >{{ $t("demoOnboardingFeedbackTitle") }}</a>
-        </i18n>
+        </i18n-t>
       </q-card-section>
 
       <q-card-actions vertical>
@@ -42,10 +42,12 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Vue, Component, Ref } from "vue-facing-decorator";
 import { QDialog } from "quasar";
 
-@Component
+@Component({
+  emits: ["ok", "hide"]
+})
 export default class DemoOnboarding extends Vue {
   @Ref() readonly  dialog!: QDialog;
 

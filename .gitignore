@@ -37,8 +37,6 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-.quasar.env.json
-
 *.env
 /stitch
 /stitch/hosting/files
@@ -46,4 +44,3 @@ yarn-error.log*
 /public/favicon.ico
 /license-templates
 deploy.sh
-deploy-stitch.sh

@@ -1,12 +1,12 @@
 import CoopCareApiInterface from "./coopCareApiInterface";
 import { Client, User, Team, BackOffice } from "../models";
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 import { importSamplesV2, sampleClientIds } from "../data/sampleImporter";
 
 export default class DemoApi implements CoopCareApiInterface {
     private user = (() => {
         const user = new User(this.userId, this.userEmail);
-        user._id = new ObjectID("6033c10377b850dbb17c7d20");
+        user._id = new ObjectId("6033c10377b850dbb17c7d20");
         user.firstName = "Demo";
         user.lastName = "Tester";
         user.signature = "DT";
@@ -16,13 +16,13 @@ export default class DemoApi implements CoopCareApiInterface {
     private clients: Client[] = [];
     private teams = (() => {
         const team = new Team("CoopCare", this.userId);
-        team._id = new ObjectID("6033c10377b850dbb17c7d30");
+        team._id = new ObjectId("6033c10377b850dbb17c7d30");
         team.clients = sampleClientIds().map(id => id.toHexString());
         return [team];
     })();
     private backoffices = (() => {
         const backoffice = new BackOffice("Unser Pflegedienst", this.userId);
-        backoffice._id = new ObjectID("6033c10377b850dbb17c7d40");
+        backoffice._id = new ObjectId("6033c10377b850dbb17c7d40");
         return [backoffice];
     })();
     private didImportSampleClients = false;
@@ -76,7 +76,7 @@ export default class DemoApi implements CoopCareApiInterface {
 
     createClient(client: Client) {
         if (client._id == undefined) {
-            client._id = new ObjectID();
+            client._id = new ObjectId();
         }
         this.clients.push(client);
         return Promise.resolve(client);
@@ -91,7 +91,7 @@ export default class DemoApi implements CoopCareApiInterface {
     getClients(clientIds: string[]): Promise<Client[]> {
         if (!this.didImportSampleClients) {
             this.clients = this.clients.concat(importSamplesV2());
-            this.clients.forEach((client, index) => client._id = new ObjectID(clientIds[index]))
+            this.clients.forEach((client, index) => client._id = new ObjectId(clientIds[index]))
             this.didImportSampleClients = true;
         }
         return Promise.resolve(
@@ -115,7 +115,7 @@ export default class DemoApi implements CoopCareApiInterface {
     }
     createTeam(team: Team) {
         if (!team._id) {
-            team._id = new ObjectID();
+            team._id = new ObjectId();
         }
         this.teams.push(team);
         return Promise.resolve(team);
@@ -133,7 +133,7 @@ export default class DemoApi implements CoopCareApiInterface {
     }
     createBackoffice(backoffice: BackOffice) {
         if (!backoffice._id) {
-            backoffice._id = new ObjectID();
+            backoffice._id = new ObjectId();
         }
         this.backoffices.push(backoffice);
         return Promise.resolve(backoffice);

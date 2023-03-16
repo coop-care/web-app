@@ -1,14 +1,15 @@
-import { RouteConfig } from "vue-router";
+import { defineAsyncComponent } from "vue";
+import { RouteRecordRaw } from "vue-router";
 import store from "../store";
 
-const newProblem = () => import("pages/ProblemRecording.vue");
-const editClassification = () => import("pages/Classification.vue");
-const newIntervention = () => import("pages/NewIntervention.vue");
-const editIntervention = () => import("pages/Intervention.vue");
-const newOutcome = () => import("pages/Rating.vue");
+const newProblem = defineAsyncComponent(() => import("pages/ProblemRecording.vue"));
+const editClassification = defineAsyncComponent(() => import("pages/Classification.vue"));
+const newIntervention = defineAsyncComponent(() => import("pages/NewIntervention.vue"));
+const editIntervention = defineAsyncComponent(() => import("pages/Intervention.vue"));
+const newOutcome = defineAsyncComponent(() => import("pages/Rating.vue"));
 
 const isDemo = store.direct.getters.isDemo;
-const routes: RouteConfig[] = [
+const routes: RouteRecordRaw[] = [
   {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
@@ -83,7 +84,7 @@ const routes: RouteConfig[] = [
           },
           {
             name: "clientReport",
-            path: ":expandedIds?/report/:sheet?/:problemId?///:interventionId?///:step?",
+            path: ":expandedIds?/report/:sheet?/:problemId?/-/:interventionId?/-/:step?",
             component: () => import("components/ClientProblems.vue"),
             meta: {
               noScroll: true,
@@ -176,31 +177,6 @@ const routes: RouteConfig[] = [
         meta: { section: "client" }
       },
       {
-        name: "login",
-        path: !isDemo ? "/login" : "",
-        component: () => import("pages/Login.vue")
-      },
-      {
-        name: "register",
-        path: !isDemo ? "/register" : "",
-        component: () => import("pages/Register.vue")
-      },
-      {
-        name: "confirm",
-        path: !isDemo ? "/confirm" : "",
-        component: () => import("pages/Confirm.vue")
-      },
-      {
-        name: "requestPasswordReset",
-        path: !isDemo ? "/requestpasswordreset" : "",
-        component: () => import("pages/RequestPasswordReset.vue")
-      },
-      {
-        name: "resetPassword",
-        path: !isDemo ? "/passwordreset" : "",
-        component: () => import("pages/PasswordReset.vue")
-      },
-      {
         name: "license",
         path: "/license",
         component: () => import("pages/License.vue")
@@ -219,16 +195,46 @@ const routes: RouteConfig[] = [
         name: "privacyPolicy",
         path: "/privacy-policy",
         component: () => import("pages/Markdown.vue")
-      }
-    ]
+      },
+      {
+        name: "login",
+        path: !isDemo ? "/login" : "",
+        component: () => import("pages/Login.vue"),
+        meta: { noAuth: true }
+      },
+      {
+        name: "register",
+        path: !isDemo ? "/register" : "",
+        component: () => import("pages/Register.vue"),
+        meta: { noAuth: true }
+      },
+      {
+        name: "confirm",
+        path: !isDemo ? "/confirm" : "",
+        component: () => import("pages/Confirm.vue"),
+        meta: { noAuth: true }
+      },
+      {
+        name: "requestPasswordReset",
+        path: !isDemo ? "/requestpasswordreset" : "",
+        component: () => import("pages/RequestPasswordReset.vue"),
+        meta: { noAuth: true }
+      },
+      {
+        name: "resetPassword",
+        path: !isDemo ? "/passwordreset" : "",
+        component: () => import("pages/PasswordReset.vue"),
+        meta: { noAuth: true }
+      },
+    ],
   },
 
   // Always leave this as last one,
   // but you can also remove it
   {
-    path: "*",
-    component: () => import("pages/Error404.vue")
-  }
-]
+    path: "/:catchAll(.*)*",
+    component: () => import("pages/ErrorNotFound.vue"),
+  },
+];
 
-export default routes
+export default routes;

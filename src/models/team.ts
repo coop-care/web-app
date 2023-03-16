@@ -1,5 +1,5 @@
 import "reflect-metadata";
-import { plainToClass, Type } from "class-transformer";
+import { plainToInstance, Type } from "class-transformer";
 import { IdentifiableObject, TeamMember } from ".";
 
 export class Team extends IdentifiableObject {
@@ -14,7 +14,7 @@ export class Team extends IdentifiableObject {
   alumni: TeamMember[] = [];
 
   static fromObject(object: any): Team | Team[] {
-    return plainToClass(Team, object);
+    return plainToInstance(Team, object);
   }
 
   constructor(name: string, userId?: string) {

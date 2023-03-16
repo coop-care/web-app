@@ -7,13 +7,13 @@
         :options="rechnungsartOptions"
         no-new-value
         clearable
-        :value="customValue('de.rechnungsart')"
-        @input="saveCustomField('de.rechnungsart', $event)"
+        :model-value="customValue('de.rechnungsart')"
+        @update:model-value="saveCustomField('de.rechnungsart', $event)"
       />
       <q-input
         :label="$t('de.leistungserbringerIK')"
-        :value="customValue('de.leistungserbringerIK')"
-        @input="saveCustomField('de.leistungserbringerIK', $event, false)"
+        :model-value="customValue('de.leistungserbringerIK')"
+        @update:model-value="saveCustomField('de.leistungserbringerIK', $event, false)"
         inputmode="numeric"
         mask="#########"
         hide-bottom-space
@@ -24,8 +24,8 @@
         :options="regionOptions"
         no-new-value
         clearable
-        :value="customValue('de.leistungserbringerRegion')"
-        @input="saveCustomField('de.leistungserbringerRegion', $event)"
+        :model-value="customValue('de.leistungserbringerRegion')"
+        @update:model-value="saveCustomField('de.leistungserbringerRegion', $event)"
       />
       <div class="row items-center q-gutter-x-md">
         <selectable-input
@@ -33,8 +33,8 @@
           :options="abrechnungscodeOptions"
           no-new-value
           clearable
-          :value="customValue('de.abrechnungscodeSgbXI')"
-          @input="saveCustomField('de.abrechnungscodeSgbXI', $event)"
+          :model-value="customValue('de.abrechnungscodeSgbXI')"
+          @update:model-value="saveCustomField('de.abrechnungscodeSgbXI', $event)"
           class="col"
           style="min-width: 280px"
         />
@@ -43,8 +43,8 @@
           :options="tarifbereichOptions"
           no-new-value
           clearable
-          :value="customValue('de.tarifbereichSgbXI')"
-          @input="saveCustomField('de.tarifbereichSgbXI', $event)"
+          :model-value="customValue('de.tarifbereichSgbXI')"
+          @update:model-value="saveCustomField('de.tarifbereichSgbXI', $event)"
           class="col"
           style="min-width: 280px"
         />
@@ -55,8 +55,8 @@
           :options="abrechnungscodeOptions"
           no-new-value
           clearable
-          :value="customValue('de.abrechnungscodeSgbV')"
-          @input="saveCustomField('de.abrechnungscodeSgbV', $event)"
+          :model-value="customValue('de.abrechnungscodeSgbV')"
+          @update:model-value="saveCustomField('de.abrechnungscodeSgbV', $event)"
           class="col"
           style="min-width: 280px"
         />
@@ -65,16 +65,16 @@
           :options="tarifbereichOptions"
           no-new-value
           clearable
-          :value="customValue('de.tarifbereichSgbV')"
-          @input="saveCustomField('de.tarifbereichSgbV', $event)"
+          :model-value="customValue('de.tarifbereichSgbV')"
+          @update:model-value="saveCustomField('de.tarifbereichSgbV', $event)"
           class="col"
           style="min-width: 280px"
         />
       </div>
       <div class="row items-center q-gutter-x-md">
         <q-select
-          :value="customValue('de.umsatzsteuerbefreit') || ''"
-          @input="saveCustomField('de.umsatzsteuerbefreit', $event)"
+          :model-value="customValue('de.umsatzsteuerbefreit') || ''"
+          @update:model-value="saveCustomField('de.umsatzsteuerbefreit', $event)"
           :options="umsatzsteuerBefreiungOptions"
           emit-value
           map-options
@@ -84,16 +84,16 @@
         <q-input
           :label="customValue('de.umsatzsteuerbefreit') ? $t('de.steuernummer') : $t('de.ustIdentifikationsnummer')"
           :placeholder="customValue('de.umsatzsteuerbefreit') ? $t('de.steuernummerPlaceholder') : $t('de.ustIdentifikationsnummerPlaceholder')"
-          :value="customValue('de.umsatzsteuerOrdnungsnummer')"
-          @input="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
+          :model-value="customValue('de.umsatzsteuerOrdnungsnummer')"
+          @update:model-value="saveCustomField('de.umsatzsteuerOrdnungsnummer', $event, false)"
           class="col"
           style="min-width: 280px"
         />
       </div>
       <q-input
         :label="$t('invoiceNumberPrefix')"
-        :value="customValue('de.invoiceNumberPrefix')"
-        @input="saveCustomField('de.invoiceNumberPrefix', $event, false)"
+        :model-value="customValue('de.invoiceNumberPrefix')"
+        @update:model-value="saveCustomField('de.invoiceNumberPrefix', $event, false)"
         maxlength="8"
       />
       <div
@@ -103,14 +103,14 @@
       >
         <q-input
           :label="$t('contactPersonName')"
-          :value="contact.name"
-          @input="updateContact(contact, {name: $event})"
+          :model-value="contact.name"
+          @update:model-value="updateContact(contact, {name: $event})"
           class="col"
         />
         <q-input
           :label="$t('phone')"
-          :value="contact.phone"
-          @input="updateContact(contact, {phone: $event})"
+          :model-value="contact.phone"
+          @update:model-value="updateContact(contact, {phone: $event})"
           inputmode="phone"
           class="col"
         />
@@ -140,8 +140,8 @@
       <div class="text-h6 q-mt-lg">{{ $t("de.abrechnungsstelle") }}</div>
       <q-input
         :label="$t('de.abrechnungsstelleIK')"
-        :value="customValue('de.abrechnungsstelleIK')"
-        @input="saveCustomField('de.abrechnungsstelleIK', $event, false)"
+        :model-value="customValue('de.abrechnungsstelleIK')"
+        @update:model-value="saveCustomField('de.abrechnungsstelleIK', $event, false)"
         inputmode="numeric"
         mask="#########"
         hide-bottom-space
@@ -149,8 +149,8 @@
       />
       <q-input
         :label="$t('de.abrechnungsstelleName')"
-        :value="customValue('de.abrechnungsstelleName')"
-        @input="saveCustomField('de.abrechnungsstelleName', $event, false)"
+        :model-value="customValue('de.abrechnungsstelleName')"
+        @update:model-value="saveCustomField('de.abrechnungsstelleName', $event, false)"
       />
       <div
         v-for="(contact, index) in getContacts('de.abrechnungsstelleAnsprechpartner')"
@@ -159,14 +159,14 @@
       >
         <q-input
           :label="$t('contactPersonName')"
-          :value="contact.name"
-          @input="updateContact(contact, {name: $event})"
+          :model-value="contact.name"
+          @update:model-value="updateContact(contact, {name: $event})"
           class="col"
         />
         <q-input
           :label="$t('phone')"
-          :value="contact.phone"
-          @input="updateContact(contact, {phone: $event})"
+          :model-value="contact.phone"
+          @update:model-value="updateContact(contact, {phone: $event})"
           inputmode="phone"
           class="col"
         />
@@ -195,7 +195,7 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import SelectableInput from "src/components/SelectableInput.vue";
 // import {
 //   rechnungsartSchluessel,
@@ -205,7 +205,7 @@ import SelectableInput from "src/components/SelectableInput.vue";
 //   careProviderLocationSchluessel,
 // } from "paid-care";
 import { mapToOptions, mapToOptionsWithoutValue } from "src/helper/billing/de";
-import BackofficeMixin from "src/mixins/BackofficeMixin";
+import BackofficeMixin, { BackofficeMixinInterface } from "src/mixins/BackofficeMixin";
 const rechnungsartSchluessel =  {
     "1": "Abrechnung von Leistungserbringer und Zahlung an IK Leistungserbringer",
     "2": "Abrechnung über Abrechnungsstelle (ohne Inkassovollmacht) und Zahlung an IK Leistungserbringer",
@@ -230,12 +230,15 @@ const careProviderLocationSchluessel = {
 
 type ContactPerson = {name: string, phone: string};
 
+interface BackOfficeSettings extends BackofficeMixinInterface {};
+
 @Component({
   components: {
     SelectableInput,
   },
+  mixins: [BackofficeMixin]
 })
-export default class BackOfficeSettings extends BackofficeMixin {
+class BackOfficeSettings extends Vue {
   get rechnungsartOptions() {
     return mapToOptions(rechnungsartSchluessel);
   }
@@ -284,8 +287,10 @@ export default class BackOfficeSettings extends BackofficeMixin {
     void this.saveBackofficeDelayed();
   }
 
-  customValue(label: string) {
-    return this.backoffice?.customValue(label);
+  customValue<T>(label: string) {
+    return this.backoffice?.customValue<T>(label);
   }
 }
+
+export default BackOfficeSettings;
 </script>

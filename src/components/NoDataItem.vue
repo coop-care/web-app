@@ -16,13 +16,15 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
-@Component
+@Component({
+  emits: ["click"]
+})
 export default class NoDataItem extends Vue {
   @Prop({ type: String, default: ""}) readonly textLabel!: string;
   @Prop({ type: String, default: ""}) readonly buttonLabel!: string;
   @Prop({ type: String, default: ""}) readonly buttonClasses!: string;
-  @Prop(Boolean) readonly hideButton!: boolean;
+  @Prop({ type: Boolean }) readonly hideButton!: boolean;
 }
 </script>

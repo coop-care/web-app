@@ -45,12 +45,12 @@
         v-if="title"
         :class="[task.isDue ? 'text-negative' : '']"
       >
-        <span :class="[hasDetails ? '': 'text-italic']">{{ title }} </span>
+        <span :class="[hasDetails ? '': 'text-italic']">{{ title }}</span>
         <span
           v-if="timeAgo"
           @click.prevent="navigateToDueDate"
           class="text-caption text-weight-medium link"
-        >({{ timeAgo }})</span>
+        > ({{ timeAgo }})</span>
       </q-item-label>
     </q-item-section>
     <q-item-section
@@ -88,11 +88,11 @@
       self="center middle"
     >
       <date-time-popup
-        :value="task.due"
+        :model-value="task.due"
         :format="$t('datetimeFormat')"
         :min="new Date(new Date().setHours(0, 0, 0, 0))"
         color="primary"
-        @input="onTaskMove"
+        @update:model-value="onTaskMove"
       />
     </q-popup-proxy>
   </q-item>
@@ -107,7 +107,7 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Ref } from "vue-property-decorator";
+import { Component, Prop, Ref, Vue } from "vue-facing-decorator";
 import { date, QPopupProxy } from "quasar";
 import { TranslateResult } from "vue-i18n";
 import {
@@ -117,7 +117,7 @@ import {
   Intervention,
   RatingReminder,
 } from "../models";
-import InterventionMixin from "../mixins/InterventionMixin";
+import InterventionMixin, { InterventionMixinInterface } from "../mixins/InterventionMixin";
 import ActionMenu, { ActionItem } from "components/ActionMenu.vue";
 import DateTimePopup from "components/DateTimePopup.vue";
 import Signature from "../components/Signature.vue";
@@ -126,18 +126,22 @@ const { formatDate, subtractFromDate, isSameDate } = date;
 
 export const UpdateTimeoutMilliseconds = 2000;
 
+interface TaskView extends InterventionMixinInterface {};
+
 @Component({
   components: {
     ActionMenu,
     DateTimePopup,
     Signature
   },
+  mixins: [InterventionMixin],
+  emits: ["update"]
 })
-export default class TaskView extends InterventionMixin {
+class TaskView extends Vue {
   @Prop({ type: Object, required: true}) readonly client!: Client;
   @Prop({ type: Object, required: true}) readonly task!: Task<Reminder>;
   @Prop({ type: Date, required: true}) readonly date!: Date;
-  @Prop(Boolean) readonly hasCheckbox!: boolean;
+  @Prop({ type: Boolean }) readonly hasCheckbox!: boolean;
   @Ref() readonly dateProxy!: QPopupProxy;
 
   moveTaskMode: "single" | "future" | "none" = "none";
@@ -277,7 +281,9 @@ export default class TaskView extends InterventionMixin {
     }
   }
   get problemName() {
-    return this.$t(this.record?.problem.title || "");
+    return this.record?.problem.title
+      ? this.$t(this.record?.problem.title)
+      : "";
   }
   get receiverName() {
     return this.findContactName(this.intervention?.receiver, this.client);
@@ -458,4 +464,6 @@ export default class TaskView extends InterventionMixin {
     });
   }
 }
+
+export default TaskView;
 </script>

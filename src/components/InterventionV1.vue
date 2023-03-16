@@ -14,7 +14,7 @@
             "
         :icon="category.icon"
         v-for="(category, index) in categories"
-        v-bind:key="index"
+        :key="index"
       />
     </q-tabs>
     <q-tab-panels
@@ -24,7 +24,7 @@
       <q-tab-panel
         :name="index"
         v-for="(category, index) in categories"
-        v-bind:key="index"
+        :key="index"
       >
         <div class="text-weight-light q-mb-md">
           {{ category.description }}
@@ -63,7 +63,7 @@
           :no-results-label="$t('noTargetsFound')"
           control-color="intervention"
           tick-strategy="strict"
-          :ticked.sync="interventions"
+          v-model:ticked="interventions"
         >
           <template v-slot:default-header="prop">
             <div>
@@ -78,8 +78,8 @@
           <template v-slot:default-body="prop">
             <q-input
               v-if="interventions.includes(prop.node.id)"
-              :value="details[prop.node.id]"
-              @input="updateDetails(prop.node.id, $event)"
+              :model-value="details[prop.node.id]"
+              @update:model-value="updateDetails(prop.node.id, $event)"
               :label="$t('clientSpecificInterventions')"
               autogrow
               :autofocus="!details[prop.node.id]"
@@ -120,7 +120,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Vue, Component, Ref } from "vue-facing-decorator";
 import {
   HasTitleDescription,
   Terminology,
@@ -210,7 +210,7 @@ export default class InterventionView extends Vue {
   }
 
   get terminology() {
-    return (this.$t("terminology") as unknown) as Terminology;
+    return (this.$tm("terminology") as unknown) as Terminology;
   }
   get record() {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);

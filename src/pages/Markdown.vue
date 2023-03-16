@@ -16,20 +16,20 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-facing-decorator";
 
 const pages = {
   "/legal-notice": {
     // @ts-ignore
-    "de-de": () => import("../markdown/de/impressum.md"),
+    "de-DE": () => import("../markdown/de/impressum.md"),
     // @ts-ignore
-    "en-us": () => import("../markdown/en/legal-notice.md"),
+    "en-US": () => import("../markdown/en/legal-notice.md"),
   },
   "/privacy-policy": {
     // @ts-ignore
-    "de-de": () => import("../markdown/de/datenschutz.md"),
+    "de-DE": () => import("../markdown/de/datenschutz.md"),
     // @ts-ignore
-    "en-us": () => import("../markdown/en/privacy-policy.md"),
+    "en-US": () => import("../markdown/en/privacy-policy.md"),
   },
 };
 
@@ -45,7 +45,7 @@ export default class MarkdownPage extends Vue {
   loadMarkdown() {
     this.markdown = "";
     const path = this.$route.path;
-    const locale = this.$root.$i18n.locale;
+    const locale = this.$i18n.locale;
     const page = (pages as Record<string, Record<string, () => Promise<any>>>)[
       path
     ];
@@ -65,11 +65,11 @@ export default class MarkdownPage extends Vue {
 
   created() {
     this.loadMarkdown();
-    this.$root.$on("did-change-locale", this.loadMarkdown);
+    this.$bus.on("did-change-locale", this.loadMarkdown);
   }
 
-  beforeDestroy() {
-    this.$root.$off("did-change-locale");
+  unmounted() {
+    this.$bus.off("did-change-locale");
   }
 }
 </script>

@@ -77,16 +77,18 @@ table.proof-of-performance
 </style>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { date } from "quasar";
 import { Intervention } from "../models";
-import InterventionMixin from "../mixins/InterventionMixin";
+import InterventionMixin, { InterventionMixinInterface } from "../mixins/InterventionMixin";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
 
 const { isBetweenDates, startOfDate, endOfDate } = date;
+
+interface ProofOfPerformancePage extends InterventionMixinInterface {};
 
 @Component({
   components: {
@@ -95,8 +97,9 @@ const { isBetweenDates, startOfDate, endOfDate } = date;
     DateTimeInput,
     PullToRefresh
   },
+  mixins: [InterventionMixin]
 })
-export default class ProofOfPerformancePage extends InterventionMixin {
+class ProofOfPerformancePage extends Vue {
   startDate = startOfDate(new Date(), "month", false);
   endDate = endOfDate(new Date(), "month", false);
 
@@ -157,4 +160,6 @@ export default class ProofOfPerformancePage extends InterventionMixin {
     return this.$store.direct.getters.getClient(this.$route.params);
   }
 }
+
+export default ProofOfPerformancePage;
 </script>

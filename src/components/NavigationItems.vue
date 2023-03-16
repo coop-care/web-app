@@ -32,11 +32,11 @@
   .fa-angle-right
     color: #bbbbbb
   &.active-hover-background.q-item--active .fa-angle-right
-    color: var(--q-color-primary)
+    color: var(--q-primary)
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
 export type NavigationItem = {
   label: string;
@@ -49,7 +49,9 @@ export type NavigationItem = {
   labelClass?: string;
 }
 
-@Component
+@Component({
+  emits: ["did-route"]
+})
 export default class NavigationItems extends Vue {
   @Prop({type: Array, default: () => []}) readonly items!: NavigationItem[];
   @Prop({type: String, default: "default"}) readonly type!: "splitview" | "default";

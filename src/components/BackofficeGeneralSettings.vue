@@ -12,11 +12,11 @@
       />
       <selectable-input
         :key="localeChangedKey"
-        :value="backofficeCountryCode"
+        :model-value="backofficeCountryCode"
         :label="$t('country')"
         :options="countryOptions"
         clearable
-        @input="saveBackoffice({countryCode: $event})"
+        @update:model-value="saveBackoffice({countryCode: $event})"
       />
     </div>
     <backoffice-country-specific-settings
@@ -36,19 +36,22 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Vue } from "vue-facing-decorator";
 import { QInput } from "quasar";
-import BackofficeMixin from "src/mixins/BackofficeMixin";
+import BackofficeMixin, { BackofficeMixinInterface } from "src/mixins/BackofficeMixin";
 import SelectableInput from "src/components/SelectableInput.vue";
 import BackofficeCountrySpecificSettings from "src/components/BackofficeGeneralSettings/index.vue";
+
+interface BackofficeGeneralSettings extends BackofficeMixinInterface {};
 
 @Component({
   components: {
     SelectableInput,
     BackofficeCountrySpecificSettings,
   },
+  mixins: [BackofficeMixin]
 })
-export default class BackofficeGeneralSettings extends BackofficeMixin {
+class BackofficeGeneralSettings extends Vue {
   @Ref() readonly backofficeNameInput!: QInput;
 
   localeChangedKey = Math.random();
@@ -81,7 +84,7 @@ export default class BackofficeGeneralSettings extends BackofficeMixin {
     ];
   }
   get countryOptions() {
-    return Object.entries(this.$t("countries") as Record<string, any>)
+    return Object.entries(this.$tm("countries"))
       .map(([value, label]) => ({label, value}));
   }
 
@@ -111,4 +114,6 @@ export default class BackofficeGeneralSettings extends BackofficeMixin {
     }
   }
 }
+
+export default BackofficeGeneralSettings;
 </script>

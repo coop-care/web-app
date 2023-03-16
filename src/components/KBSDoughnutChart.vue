@@ -1,16 +1,21 @@
 <template>
-  <div class="full-width non-selectable">
-    <div class="relative-position" @mouseout="onTooltip">
-      <canvas ref="canvas" :height="height"></canvas>
-      <div class="doughnutchart-caption text-body2 column justify-center no-wrap">
-        <div :class="['keyfigure', 'text-' + colors[hoverIndex]]">
-          <span class="">{{ keyFigure }}</span> %
-        </div>
-        <simplified-markdown
-          :text="description"
-        />
-        <div class="text-subtitle1 text-weight-bold text-center">{{ title }}</div>
+  <div class="full-width non-selectable relative-position">
+    <Doughnut 
+      ref="chart"
+      :data="chartData" 
+      :options="options" 
+      :height="200" 
+      @mouseenter="active = true"
+      @mouseleave="onMouseLeave"
+    />
+    <div class="doughnutchart-caption text-body2 column justify-center no-wrap" style="margin-top: -10px">
+      <div :class="['keyfigure', 'text-' + colors[hoverIndex]]">
+        <span>{{ keyFigure }}</span> %
       </div>
+      <simplified-markdown
+        :text="description"
+      />
+      <div class="text-subtitle1 text-weight-bold text-center">{{ title }}</div>
     </div>
   </div>
 </template>
@@ -57,10 +62,13 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Ref, Watch, Vue } from "vue-property-decorator";
-import { Chart, ChartOptions, ChartData, ChartTooltipModel } from "chart.js";
+import { Component, Prop, Vue, Watch } from "vue-facing-decorator";
+import { Doughnut } from "vue-chartjs";
+import { Chart, DoughnutController, ArcElement, ChartOptions, ChartData } from "chart.js";
 import { getColor } from "../helper/color";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
+
+Chart.register(DoughnutController, ArcElement);
 
 export type ClientProgress = {
   ratio: number,
@@ -69,6 +77,7 @@ export type ClientProgress = {
 
 @Component({
   components: {
+    Doughnut,
     SimplifiedMarkdown
   }
 })
@@ -77,59 +86,52 @@ export default class KBSDoughnutChart extends Vue {
   @Prop({type: Object, default: () => ({})}) readonly chartOptions!: ChartOptions;
   @Prop({type: String, required: true}) readonly title!: string;
   @Prop({type: Number, default: 300}) readonly height!: number;
-  @Ref() readonly canvas!: HTMLCanvasElement;
 
-  _chart: Chart | null = null;
+  active = false;
   hoverIndex = this.defaultHoverIndex;
 
   @Watch("dataset")
   onDatasetChanged() {
-    if (this.chart) {
-      this.chart.data = this.chartData;
+    if (!this.active) {
       this.hoverIndex = this.defaultHoverIndex;
-      this.chart.update();
     }
   }
 
-  @Watch("chartOptions")
-  onChartOptionsChanged() {
-    if (this.chart) {
-      this.chart.options = this.options;
-      this.chart.update();
-    }
-  }
-
-  get chart() {
-    if (!this._chart) {
-      this._chart = new Chart(this.canvas, {
-        type: "doughnut",
-        data: this.chartData,
-        options: this.options
-      });
-    }
-    return this._chart;
-  }
-  get options(): ChartOptions {
+  get options(): ChartOptions<"doughnut"> {
     return {
       responsive: true,
-      legend: {
-        display: false
+      maintainAspectRatio: false, // remove this and :height="200" and set .insights-item-sm to max-width: 240px when bug in chart.js 4.x is resolved (https://github.com/chartjs/Chart.js/issues/11005)
+      layout: {},
+      cutout: "80%",
+      spacing: 1,
+      animations: {
+        borderWidth: {
+          duration: 300
+        },
       },
-      tooltips: {
-        enabled: false,
-        custom: this.onTooltip
+      plugins: {
+        tooltip: {
+          enabled: false // there is a weird bug that shows tooltips when tooltip plugin was loaded by a different component
+        }
       },
-      onResize: this.onResize,
-      cutoutPercentage: 80,
+      onHover: (event, elements) =>{
+        const element = elements?.[0];
+
+        if (element?.element.active && element?.index != this.hoverIndex && this.active) {
+          this.hoverIndex = element.index;
+        }
+      },
     }
   }
-  get chartData(): ChartData {
+  get chartData(): ChartData<"doughnut"> {
     return {
       labels: [new Date("2021-05-01"), new Date()],
       datasets: [{
         data: this.dataset.map(item => item.ratio),
         backgroundColor: this.colorValues,
         borderWidth: this.borderWidth,
+        // hoverBackgroundColor: this.colorValues, // prevent color change on hover
+        hoverBorderColor: "#ffffff",
       }]
     }
   }
@@ -156,29 +158,10 @@ export default class KBSDoughnutChart extends Vue {
   get defaultHoverIndex() {
     return Math.max(this.dataset.findIndex(item => item.ratio > 0), 0);
   }
-  
-  onResize() {
-    const datasets = this.chart?.data.datasets;
 
-    if (datasets && datasets[0]) {
-      this.chart?.update();
-    }
-  }
-  onTooltip(tooltip: ChartTooltipModel) {
-    if (tooltip.dataPoints?.length) {
-      this.hoverIndex = tooltip.dataPoints[0].index || 0;
-    } else {
-      this.hoverIndex = this.defaultHoverIndex;
-    }
-
-    if (this.chart.data.datasets) {
-      this.chart.data.datasets[0].borderWidth = this.borderWidth;
-      this.chart?.update({duration: 500});
-    }
-  }
-
-  mounted () {
-    this.onDatasetChanged();
+  onMouseLeave() {
+    this.active = false;
+    this.hoverIndex = this.defaultHoverIndex;
   }
 }
 </script>

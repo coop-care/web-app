@@ -8,7 +8,7 @@
       >
         <q-item class="q-px-sm q-pb-none text-subtitle1 text-weight-bold">
           <q-item-section>
-            <q-item-label class="ellipsis">{{ $tc("invoice", 2) }}</q-item-label>
+            <q-item-label class="ellipsis">{{ $t("invoice", 2) }}</q-item-label>
           </q-item-section>
           <q-item-section side>
             <q-btn
@@ -36,17 +36,21 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import BackofficeMixin from "src/mixins/BackofficeMixin";
+import { Component, Vue } from "vue-facing-decorator";
+import BackofficeMixin, { BackofficeMixinInterface } from "src/mixins/BackofficeMixin";
 import SplitView from "components/SplitView.vue";
 import NavigationItems from "components/NavigationItems.vue";
+
+interface BackofficeInvoiceView extends BackofficeMixinInterface {};
 
 @Component({
   components: {
     SplitView,
     NavigationItems
   },
+  mixins: [BackofficeMixin]
 })
-export default class BackofficeInvoiceView extends BackofficeMixin {
+class BackofficeInvoiceView extends Vue {
 }
+export default BackofficeInvoiceView;
 </script>
