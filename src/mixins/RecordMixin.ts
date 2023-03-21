@@ -52,7 +52,7 @@ export default defineComponent({
             return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
         },
         isDisabled() {
-            return !!this.client?.leftAt;
+            return !!this.client?.leftAt || this.$store.direct.getters.didExpire;
         },
     },
 

@@ -24,6 +24,7 @@ const env = require("dotenv").config({
     )
   }).parsed || {};
 env.QENV = process.env.QENV;
+env.IS_TESTFLIGHT = process.env.IS_TESTFLIGHT;
 
 module.exports = configure(function (ctx) {
   return {
@@ -49,15 +50,13 @@ module.exports = configure(function (ctx) {
     // https://v2.quasar.dev/quasar-cli-webpack/boot-files
     boot: [
       "eventBus",
-      // "fetch",
-      // "database",
+      "fetch",
+      "database",
       "i18n",
       "api",
-      "quasar-lang-pack",
       "fetchData",
-      // "openURL",
-      // "router",
-      // "updater",
+      "openURL",
+      "updater",
     ],
 
     // https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-css
@@ -183,6 +182,7 @@ module.exports = configure(function (ctx) {
           "0BSD",
           "(MIT AND BSD-3-Clause)",
           "MIT or GPL-2.0",
+          "(MIT OR Apache-2.0)"
         ].includes(license);
         const licenseTypeOverrides = {
           "realm-web": "Apache-2.0",
@@ -270,12 +270,11 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
     devServer: {
       server: {
-        type: "http"
-        // type: "https",
-        // options: {
-        //   key: path.join(__dirname, "localhost-key.pem"),
-        //   cert: path.join(__dirname, "localhost.pem"),
-        // },
+        type: "https",
+        options: {
+          key: path.join(__dirname, "localhost-key.pem"),
+          cert: path.join(__dirname, "localhost.pem"),
+        },
       },
       port: 8080,
       open: false // opens browser window automatically

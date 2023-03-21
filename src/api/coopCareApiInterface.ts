@@ -11,7 +11,7 @@ export default interface CoopCareApiInterface {
     teamListener?: CoopCareApiListener<Team>;
     clientListener?: CoopCareApiListener<Client>;
 
-    login(username: string, password: string): Promise<void>;
+    login(username: string, password: string, locale?: string): Promise<void>;
     logout(): Promise<void>;
     registerUser(username: string, password: string): Promise<void>;
     confirmUser(token: string, tokenId: string): Promise<void>;
@@ -22,7 +22,7 @@ export default interface CoopCareApiInterface {
     getUser(): Promise<User | undefined>;
     createUser(user: User): Promise<User>;
     saveUser(user: User): Promise<User>;
-    deleteUser(): Promise<void>;
+    deleteUser(username: string): Promise<void>;
     getTeamMembers(): Promise<TeamMember[]>;
 
     getClients(clientIds: string[]): Promise<Client[]>;

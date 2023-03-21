@@ -4,6 +4,8 @@ import { rootActionContext } from ".";
 import { Client, User, Team, TeamInvitation, BackOffice } from "../models";
 import { ccApi } from "../api/apiProvider";
 import { defaultColors, setColorSet } from "../helper/color";
+import LocalDatabaseApi from "src/api/local";
+import { RouteLocationRaw } from "vue-router";
 
 export default defineActions({
     fetchEssentialDataFromDB(context, defaults: { locale: string, awaitAllResponses?: boolean }): Promise<void> {
@@ -47,7 +49,7 @@ export default defineActions({
         return ccApi
             .getUser()
             .then(user => {
-                if (!user && ccApi.userId && ccApi.userEmail) {
+                if (!user && ccApi.userId) {
                     const user = new User(ccApi.userId, ccApi.userEmail);
                     user.locale = defaults.locale;
                     return ccApi.createUser(user);
@@ -259,11 +261,18 @@ export default defineActions({
         }
     },
 
-    login(context, { email, password, locale }: { email: string; password: string; locale: string }): Promise<void> {
-        const { dispatch } = rootActionContext(context);
-        return ccApi.login(email, password).then(() => {
-            return dispatch.fetchEssentialDataFromDB({ locale: locale });
-        });
+    async login(context, { email, password, locale }: { email: string; password: string; locale: string }): Promise<RouteLocationRaw> {
+        const { dispatch, state, commit } = rootActionContext(context);
+
+        await ccApi.login(email, password, locale)
+        await dispatch.fetchEssentialDataFromDB({ locale });
+
+        const path = state.redirectPath;
+        commit.setRedirectPath("");
+
+        return path
+            || await (ccApi as LocalDatabaseApi).getLocalValue<string>("currentPath")
+            || { name: "clientNoneSelected" };
     },
 
     logout(context): Promise<void> {

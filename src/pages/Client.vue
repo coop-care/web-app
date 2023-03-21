@@ -17,8 +17,9 @@
           no-caps
           color="primary"
           rounded
+          unelevated
           :label="$t('createFirstClient')"
-          class="q-mt-md"
+          class="q-mt-md done-button"
         />
       </div>
     </div>
@@ -115,8 +116,10 @@ class ClientPage extends Vue {
   }
 
   created() {
-    void this.saveClient()
-      .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
+    if (!this.isDisabled) {
+      void this.saveClient()
+        .then(() => this.$store.direct.dispatch.fetchClientsFromDB());
+    }
 
     this.$bus.on("did-delete-client", this.deselectClient);
     this.$bus.on("did-remove-client-from-team", this.deselectClient);

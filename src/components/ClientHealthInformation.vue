@@ -95,6 +95,12 @@
         :label="$t('biographyTitle')"
         autogrow
       />
+      <q-input
+        :model-value="healthInfo.careSetting"
+        @update:model-value="update(healthInfo, {careSetting: $event})"
+        @change="saveClient"
+        :label="$t('careSetting')"
+      />
       <div class="q-mt-md">
         <q-checkbox
           :model-value="healthInfo.existingAdvanceHealthcareDirective"
@@ -208,6 +214,12 @@ class ClientHealthInformationView extends Vue {
       result.push({
         label: this.$t("biographyTitle") as string,
         value: this.healthInfo.biography
+      });
+    }
+    if (this.healthInfo.careSetting) {
+      result.push({
+        label: this.$t("careSetting") as string,
+        value: this.healthInfo.careSetting
       });
     }
     if (this.healthInfo.existingAdvanceHealthcareDirective != null) {

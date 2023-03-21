@@ -326,3 +326,45 @@ a
 .done-button
   width: 100%
   max-width: 280px
+.electron
+  header .q-toolbar, .window-draggable
+    -webkit-app-region: drag
+    button
+      -webkit-app-region: no-drag
+  .navigation-drawer, .q-dialog .q-card
+    -webkit-app-region: no-drag
+  header .q-toolbar
+    min-height: 66px
+    padding-top: 20px
+  .q-drawer--on-top .navigation-drawer
+    padding-top: 20px
+.q-notifications__list--top
+  top: 50px
+  z-index: 1900
+body.q-ios-padding .q-notifications__list--top
+  top: calc(env(safe-area-inset-top) + 50px)
+.save-notification
+  margin-top: 6px
+  min-height: 24px
+  line-height: 1.3
+  .q-notification__message
+    padding: 0
+  .q-notification__actions
+    padding: 0
+  .q-notification__badge
+    border-radius: 32px
+    padding: 4px 6px
+  .q-notification__badge--top-right
+    top: -4px
+.save-notification.text-positive
+  .q-notification__badge--top-right
+    top: 0
+    right: -32px
+.banner-positive
+  background-color: #daf8e1
+  .q-btn
+    background-color: #9cedaf
+.banner-warning
+  background-color: #fcf2d7
+  .q-btn
+    background-color: #f9e09b

@@ -1,5 +1,6 @@
 <template>
   <editing-sheet
+    v-if="!isDisabled"
     ref="editingSheet"
     :title="title"
     :is-data-available="!!(client && editableOutcome)"

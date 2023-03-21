@@ -9,7 +9,8 @@
     ],
     "types": [
       "quasar",
-      "node"
+      "node",
+      "filesystem"
     ]
   },
   "include": [

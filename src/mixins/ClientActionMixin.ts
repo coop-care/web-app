@@ -4,6 +4,7 @@ import { date, DialogChainObject } from "quasar";
 import { Client, Team } from "../models";
 import SelectDialog from "src/components/SelectDialog.vue";
 import TeamMixin, { TeamMixinInterface } from "./TeamMixin";
+import { downloadJSON } from "src/helper/download";
 
 export type ClientAction = {
     name: string;
@@ -78,16 +79,22 @@ export default defineComponent({
           condition: this.isAdmin && isInAdditionalTeam
         },
         {
+          name: this.$t("exportClientData"),
+          icon: "fas fa-file-arrow-down",
+          action: this.exportClientData(client),
+          condition: !this.$store.direct.getters.isDemo,
+        },
+        {
           name: this.$t("clientDischarge"),
           icon: "fas fa-archive",
           action: this.archiveClient(client),
-          condition: !client.leftAt,
+          condition: !client.leftAt && !this.$store.direct.getters.didExpire,
         },
         {
           name: this.$t("clientReadmission"),
           icon: "fas fa-folder-open",
           action: this.unarchiveClient(client),
-          condition: !!client.leftAt,
+          condition: !!client.leftAt && !this.$store.direct.getters.didExpire,
         },
         {
           name: this.$t("deleteClient"),
@@ -221,6 +228,17 @@ export default defineComponent({
             .then(() => this.$bus.emit("did-delete-client"))
         );
       }
+    },
+    exportClientData(client: Client) {
+      return () => downloadJSON(
+        {
+          scheme: 1, 
+          createdAt: Date.now(), 
+          user: this.$store.direct.state.currentUser?.username,
+          client: client.toJSON()
+        }, 
+        client.name.replace(/ /g, "") + ".coopcare"
+      );
     },
 
     makeSelectDialog(clientId: string, message: string, okButtonLabel: string) {

@@ -3,10 +3,10 @@ import { createI18n } from "vue-i18n";
 import { Quasar } from "quasar";
 import { DateTime } from "luxon";
 
-import messages from "src/i18n";
+import messages from "../i18n";
 import { StateInterface } from "src/store";
-import { loadLangPack } from "./quasar-lang-pack";
 import { WritableComputedRef } from "vue";
+import { bus } from "./eventBus";
 
 export type MessageLanguages = keyof typeof messages;
 // Type-define 'en-US' as the master schema for the resource
@@ -26,7 +26,28 @@ declare module "vue-i18n" {
 }
 /* eslint-enable @typescript-eslint/no-empty-interface */
 
-function matchLocale(
+async function loadLangPack(locale: string) {
+    try {
+        await import(
+            /* webpackInclude: /(de|en-US)\.js$/ */
+            "quasar/lang/" + locale
+        ).catch(error => {
+            if (locale.includes("-")) {
+                return import("quasar/lang/" + locale.split("-")[0])
+            } else {
+                throw error
+            }
+        }).then(langPack => {
+            Quasar.lang.set(langPack.default);
+        });
+    } catch (error) {
+        // Requested Quasar Language Pack does not exist,
+        // let's not break the app, so catching error
+        console.error("Quasar Language Pack does not exist", error)
+    }
+};
+
+export function matchLocale(
   locale: string,
   availableLocales: string[],
   fallbackLocale: string
@@ -47,6 +68,31 @@ function matchLocale(
 
   return resultingLocale
 }
+
+export function errorToString(error: any) {
+  return (error as Error)?.message || `${error}`;
+};
+
+export function errorMessage(error: any) {
+  const errorMessage = errorToString(error);
+
+  if (i18n.global.te(errorMessage)) {
+    return i18n.global.t(errorMessage);
+  } else {
+    console.error(error);
+    return i18n.global.t("GenericError");
+  }
+};
+
+export function fileSize(value: number) {
+  const units = ["Byte", "Kilobyte", "Megabyte", "Gigabyte", "Terabyte", "Petabyte"];
+  const magnitude = value == 0
+    ? 0
+    : Math.min(Math.floor(Math.log(value) / Math.log(1024)), units.length - 1);
+  const unit = units[magnitude];
+  value = value / Math.pow(1024, magnitude);
+  return i18n.global.n(value, unit);
+};
 
 const defaultDateTimeFormats: Record<string, Intl.DateTimeFormatOptions> = {
   "DateShort": DateTime.DATE_SHORT, // 11.4.2012
@@ -156,14 +202,34 @@ export default boot(({ app, store }) => {
   // Set i18n instance on app
   app.use(i18n);
 
+  // propagate locale changes
+  bus.on("did-change-locale", (value: string) => {
+    locale.value = value;
+    loadLangPack(value);
+    window.electronAPI?.didChangeLocale(value);
+
+    if (store.direct.state.currentUser && store.direct.state.currentUser.locale != value) {
+      void store.direct.dispatch.saveCurrentUser((user) => {
+        user.locale = value;
+      });
+    }
+  })
+
+  // receive locale change from electron menu
+  window.electronAPI?.addListener("did-change-locale", (value: string) => {
+    if (locale.value != value) {
+      bus.emit("did-change-locale", value)
+    }
+  })
+
+  // get locale from current user's settings
   store.subscribe((mutation, state: StateInterface) => {
     if (mutation.type == "setCurrentUser" || mutation.type == "updateCurrentUser") {
       const userLocaleOrBrowserDefault = state.currentUser?.locale ||
         matchLocale(Quasar.lang.getLocale() || "", availableLocales, fallbackLocale);
 
       if (userLocaleOrBrowserDefault != locale.value) {
-        locale.value = userLocaleOrBrowserDefault;
-        loadLangPack(userLocaleOrBrowserDefault);
+        bus.emit("did-change-locale", userLocaleOrBrowserDefault);
       }
     }
   })
@@ -171,5 +237,4 @@ export default boot(({ app, store }) => {
 
 
 const i18nGlobal = i18n.global;
-(window as any).i18n = i18nGlobal;
 export { locale, i18nGlobal as i18n };

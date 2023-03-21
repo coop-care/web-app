@@ -5,7 +5,7 @@
       leave-active-class="animated fadeOutUp"
     >
       <q-banner
-        v-if="isOffline"
+        v-if="isOffline && !$store.direct.getters.isAlwaysOffline"
         dense
         class="bg-negative text-white text-center q-py-xs"
         style="height: 32px"
@@ -43,6 +43,37 @@
         </template>
       </q-banner>
     </transition>
+
+    <transition
+      enter-active-class="animated fadeInDown"
+      leave-active-class="animated fadeOutUp"
+    >
+      <q-banner
+        v-if="!!updateBanner && showUpdateBanner"
+        dense
+        :class="[updateBanner.classes ?? 'banner-positive text-black', 'default-banner']"
+      >
+        <div class="q-px-sm text-body2 text-center">
+          {{ updateBanner.message() }}
+        </div>
+        <template v-slot:action>
+          <div class="q-px-xs q-mt-xs">
+            <q-btn
+              v-for="(action, index) in updateBanner.actions"
+              :key="'action' + index"
+              flat
+              rounded
+              dense
+              no-caps
+              :label="action.label()"
+              class="q-px-md text-weight-bold"
+              @click="action.action"
+            />
+          </div>
+        </template>
+      </q-banner>
+    </transition>
+
   </div>
 </template>
 
@@ -54,23 +85,43 @@
   .q-banner__content, .q-banner__actions
     max-width: 1000px
     margin: 0 auto
-
 </style>
 
 <script lang="ts">
+import { fileSize } from "src/boot/i18n";
+import { downloadAndInstall, UpdateAvailableInfo, UpdateInfo } from "src/boot/updater";
 import { Vue, Component, Watch } from "vue-facing-decorator";
 import { Team, TeamInvitation, TeamMember } from "../models";
+
+type Banner = {
+  message: () => string;
+  classes?: string;
+  actions: {
+    label: () => string;
+    action: () => void;
+  }[]
+}
 
 @Component
 export default class BannerView extends Vue {
   isOffline = !window.navigator.onLine;
   showBanner = true;
+  showUpdateBanner = true;
+  updateBanner = undefined as Banner | undefined;
 
   @Watch("banner")
   onBannerChanged(newValue: any, oldValue: any) {
     if (!!newValue && !!oldValue && JSON.stringify(newValue) != JSON.stringify(oldValue)) {
       this.showBanner = false;
       setTimeout(() => this.showBanner = true, 300);
+    }
+  }
+
+  @Watch("updateBanner")
+  onUpdateBannerChanged(newValue: Banner | undefined, oldValue: Banner | undefined) {
+    if (!!newValue && !!oldValue && JSON.stringify(newValue) != JSON.stringify(oldValue)) {
+      this.showUpdateBanner = false;
+      setTimeout(() => this.showUpdateBanner = true, 300);
     }
   }
 
@@ -206,6 +257,51 @@ export default class BannerView extends Vue {
   mounted() {
     window.addEventListener("online", this.updateOfflineStatus);
     window.addEventListener("offline", this.updateOfflineStatus);
+
+    this.$bus.on("update-available", (info: UpdateAvailableInfo) => {
+      this.updateBanner = {
+        message: () => this.$t("updateAvailable", {
+          ...info,
+          downloadSize: info.downloadSize
+            ? this.$t("fileSizeUpdate", {fileSize: fileSize(info.downloadSize) })
+            : undefined
+        }),
+        classes: "banner-warning text-black",
+        actions: [{
+          label: () => this.$t("remindLaterButton"),
+          action: () => this.updateBanner = undefined
+        }, {
+          label: () => this.$t("Yes"),
+          action: () => {
+            if (info.storeUrl) {
+              const open = window.cordova?.InAppBrowser?.open ?? window.open;
+              open(info.storeUrl, "_system");
+            } else if (info.downloadUrls && info.downloadUrls.length > 0) {
+              void downloadAndInstall(info.downloadUrls);
+
+              /* Maybe add direct links to app stores:
+                https://f-droid.org/de/packages/${process.env.APP_ID}/
+                https://play.google.com/store/apps/details?id=${process.env.APP_ID}
+                But it makes even more sense to check if the new version has passed review and is available in store:
+                https://f-droid.org/api/v1/packages/${process.env.APP_ID}
+                (google play store has no API)
+              */
+            }
+
+            this.updateBanner = undefined;
+          }
+        }],
+      }
+    });
+    this.$bus.on("update-unavailable", (info: UpdateInfo) => {
+      this.updateBanner = {
+        message: () => this.$t("updateUnavailable", {version: info.installedVersion}),
+        actions: [{
+          label: () => this.$t("OK"),
+          action: () => this.updateBanner = undefined
+        }],
+      }
+    });
   }
 }
 </script>

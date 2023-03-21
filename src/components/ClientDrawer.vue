@@ -18,6 +18,7 @@
         </q-item-section>
         <q-item-section side>
           <q-btn
+            v-if="!disabled"
             icon="add"
             round
             outline
@@ -42,6 +43,11 @@
       >
         <q-item-section>
           <q-item-label class="q-pl-sm">{{ client.name }}</q-item-label>
+          <q-item-label 
+            v-if="client.healthInformation.careSetting"
+            caption
+            class="q-pl-sm"
+          >{{ client.healthInformation.careSetting }}</q-item-label>
         </q-item-section>
         <q-item-section side v-if="client.dueTasksCount">
           <q-item-label
@@ -104,6 +110,9 @@ export default class ClientDrawer extends Vue {
   activeClientsExpansionState = true;
   archivedClientsExpansionState = false;
 
+  get disabled() {
+    return this.$store.direct.getters.didExpire;
+  }
   get selectedClient() {
     const client = this.$store.direct.getters.getClient(this.$route.params);
     
@@ -128,7 +137,7 @@ export default class ClientDrawer extends Vue {
   }
   get teamname() {
     const team = this.$store.direct.getters.currentTeam;
-    return team
+    return team?.name
       ? this.$t("team") + " " + team.name
       : "";
   }

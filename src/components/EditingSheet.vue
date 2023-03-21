@@ -77,7 +77,7 @@
 
 <style lang="sass">
 #modal-presentation > .q-dialog__inner
-  height: calc(100% - 20px)
+  height: calc(100% - 28px)
   .modal-view-section
     @media (max-width: $breakpoint-xs-max)
       padding-left: 8px

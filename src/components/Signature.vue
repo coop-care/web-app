@@ -50,11 +50,13 @@ export default class SignatureView extends Vue {
   @Prop({ type: Boolean}) readonly hasTooltip!: boolean;
 
   get signature() {
-    return this.teamMember?.signature;
+    return !!this.teamMember
+      ? this.teamMember?.signature || "?"
+      : "";
   }
   get tooltip() {
     return [
-      this.teamMember?.username, 
+      this.teamMember?.username || this.$t("unknownUser"), 
       this.date ? this.$d(this.date, "DateTimeShort") : undefined, 
       this.description
     ].filter(Boolean).join(", ");

@@ -20,6 +20,7 @@ export class ClientHealthInformation {
     likes = "";
     dislikes = "";
     biography = "";
+    careSetting = "";
     notes = "";
 };
 

@@ -37,9 +37,9 @@ import UserSettingsView from "../components/UserSettingsView.vue";
 export default class UserSettingsSheet extends Vue {
   @Ref() readonly editingSheet!: EditingSheet;
 
-  @Watch("showYourself")
-  showYourselfChanged(value: boolean) {
-    if (value) {
+  @Watch("$route")
+  onRouteChange() {
+    if (this.$ccApi.isLoggedIn && this.$store.state.currentUser?.signature == "" && !this.$route.meta.noAuth) {
       this.editingSheet.visible = true;
     }
   }
@@ -47,12 +47,9 @@ export default class UserSettingsSheet extends Vue {
   get canClose() {
     return (this.$store.state.currentUser?.signature.trim().length ?? 0) > 1
   }
-  get showYourself() {
-    return this.$ccApi.isLoggedIn && this.$store.state.currentUser?.signature == "" && !this.$route.meta.noAuth;
-  }
 
   mounted() {
-    this.showYourselfChanged(this.showYourself);
+    this.onRouteChange();
   }
 }
 </script>

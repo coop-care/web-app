@@ -27,6 +27,19 @@
             <q-item-label>{{ $t("print") }}</q-item-label>
           </q-item-section>
         </q-item>
+        <q-item
+          v-if="!$store.direct.getters.isDemo"
+          clickable
+          v-close-popup
+          @click="exportBackup"
+        >
+          <q-item-section side>
+            <q-icon name="fas fa-file-arrow-down" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t("exportBackup") }}</q-item-label>
+          </q-item-section>
+        </q-item>
 
         <q-item clickable>
           <q-item-section side>
@@ -95,6 +108,7 @@
 import { Vue, Component } from "vue-facing-decorator";
 import LanguageMenu from "./LanguageMenu.vue";
 import DevMenu from "./DevMenu.vue";
+import { downloadJSON } from "src/helper/download";
 
 @Component({
   components: {
@@ -118,10 +132,17 @@ export default class UserMenu extends Vue {
   openMail() {
     location.href = "mailto:feedback@coopcare.de?subject=Feedback";
   }
-  logout() {
-    // first to login page, then logout to prevent redirectPath being set to current path
-    void this.$router.replace({name: "login"})
-      .then(() => this.$store.direct.dispatch.logout())
+  exportBackup() {
+    const user = this.$store.direct.state.currentUser?.username;
+    return downloadJSON(
+      {
+        scheme: 1, 
+        createdAt: Date.now(), 
+        user,
+        clients: this.$store.direct.state.clients.map(client => client.toJSON())
+      },
+      "Backup_" + (user || "").replace(/ /g, "") + "_" + (new Date()).toISOString().substring(0, 19).replace(/\D/g, "") + ".coopcare"
+    );
   }
 }
 </script>

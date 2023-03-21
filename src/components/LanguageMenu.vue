@@ -11,7 +11,7 @@
         v-for="(locale, index) in $i18n.availableLocales"
         :key="index"
         :active="$i18n.locale === locale"
-        @click="changeLocale(locale)"
+        @click="$bus.emit('did-change-locale', locale)"
       >
         <q-item-section side>
           <q-icon
@@ -35,19 +35,5 @@ export default class LanguageMenu extends Vue {
   @Prop({ type: String, default: "bottom middle"}) readonly anchor!: string;
   @Prop({ type: String, default: "top middle"}) readonly self!: string;
   @Prop({ type: Boolean }) readonly fit!: boolean;
-
-  changeLocale(locale: string) {
-    if (this.$store.direct.state.currentUser) {
-      void this.$store.direct.dispatch.saveCurrentUser((user) => {
-        user.locale = locale;
-      }).then(() => {
-        this.$bus.emit("did-change-locale", locale);
-      })
-    } else {
-      this.$i18n.locale = locale;
-      this.$loadLangPack(locale);
-      this.$bus.emit("did-change-locale", locale);
-    }
-  }
 }
 </script>

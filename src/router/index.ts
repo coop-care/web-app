@@ -8,6 +8,7 @@ import {
 import { StateInterface } from "../store";
 import routes from "./routes";
 import { ccApi } from "../api/apiProvider";
+import LocalDatabaseApi from "src/api/local";
 
 /*
  * If not building with SSR mode, you can
@@ -35,9 +36,9 @@ export default route<StateInterface>(function ({ store }) {
     },
     routes,
 
-    // Leave this as is and make changes in quasar.conf.js instead!
-    // quasar.conf.js -> build -> vueRouterMode
-    // quasar.conf.js -> build -> publicPath
+    // Leave this as is and make changes in quasar.config.js instead!
+    // quasar.config.js -> build -> vueRouterMode
+    // quasar.config.js -> build -> publicPath
     history: createHistory(
       process.env.MODE === "ssr" ? void 0 : process.env.VUE_ROUTER_BASE
     ),
@@ -51,11 +52,10 @@ export default route<StateInterface>(function ({ store }) {
     }
 
     if (ccApi.isLoggedIn) {
-      if (store.state.redirectPath) {
-        const path = store.state.redirectPath;
-        store.direct.commit.setRedirectPath("");
-        next(path);
+      if (to.name == "login") {
+        next({ name: "clientNoneSelected" });
       } else {
+        (ccApi as LocalDatabaseApi).setLocalValue?.("currentPath", to.path);
         next();
       }
     } else {

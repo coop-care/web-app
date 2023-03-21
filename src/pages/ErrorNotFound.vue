@@ -1,5 +1,5 @@
 <template>
-  <div class="fullscreen bg-primary text-white text-center q-pa-md flex flex-center">
+  <div class="fullscreen bg-primary text-white text-center q-pa-md flex flex-center window-draggable">
     <div>
       <q-icon
         name="fas fa-kiwi-bird"

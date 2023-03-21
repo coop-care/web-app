@@ -9,6 +9,8 @@ const editIntervention = defineAsyncComponent(() => import("pages/Intervention.v
 const newOutcome = defineAsyncComponent(() => import("pages/Rating.vue"));
 
 const isDemo = store.direct.getters.isDemo;
+const isLocalAuth = store.direct.getters.isLocalAuth;
+
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
@@ -200,30 +202,32 @@ const routes: RouteRecordRaw[] = [
       {
         name: "login",
         path: !isDemo ? "/login" : "",
-        component: () => import("pages/Login.vue"),
+        component: isLocalAuth
+          ? () => import("pages/LocalAuth.vue")
+          : () => import("pages/Login.vue"),
         meta: { noAuth: true }
       },
       {
         name: "register",
-        path: !isDemo ? "/register" : "",
+        path: !isDemo && !isLocalAuth ? "/register" : "",
         component: () => import("pages/Register.vue"),
         meta: { noAuth: true }
       },
       {
         name: "confirm",
-        path: !isDemo ? "/confirm" : "",
+        path: !isDemo && !isLocalAuth ? "/confirm" : "",
         component: () => import("pages/Confirm.vue"),
         meta: { noAuth: true }
       },
       {
         name: "requestPasswordReset",
-        path: !isDemo ? "/requestpasswordreset" : "",
+        path: !isDemo && !isLocalAuth ? "/requestpasswordreset" : "",
         component: () => import("pages/RequestPasswordReset.vue"),
         meta: { noAuth: true }
       },
       {
         name: "resetPassword",
-        path: !isDemo ? "/passwordreset" : "",
+        path: !isDemo && !isLocalAuth ? "/passwordreset" : "",
         component: () => import("pages/PasswordReset.vue"),
         meta: { noAuth: true }
       },

@@ -148,7 +148,7 @@ class TaskView extends Vue {
   forceUpdateTimeoutHandler = 0;
 
   get disabled() {
-    return !!this.client.leftAt;
+    return !!this.client.leftAt || this.$store.direct.getters.didExpire;
   }
   get isCompleted() {
     return !!this.task.completed;

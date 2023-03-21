@@ -1,5 +1,6 @@
 import CoopCareApiInterface from "./coopCareApiInterface";
 import DemoApi from "./demo";
+import LocalDatabaseApi from "./local";
 import StitchApi from "./stitch";
 import RealmApi from "./realm";
 import store from "../store";
@@ -53,6 +54,8 @@ if (process.env.BACKEND == "realm" && process.env.BACKEND_APP_ID) {
             void store.direct.dispatch.fetchClientsFromDB();
         }
     };
+} else if (process.env.BACKEND == "local" && process.env.VAULTKEY) {
+    ccApi = new LocalDatabaseApi();
 } else {
     ccApi = new DemoApi();
 }

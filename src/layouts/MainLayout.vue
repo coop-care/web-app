@@ -64,7 +64,6 @@
       <router-view />
       <component :is="modalSheetComponent" />
       <new-client-sheet/>
-      <user-settings-sheet/>
     </q-page-container>
   </q-layout>
 </template>
@@ -86,7 +85,6 @@ import LanguageMenu from "../components/LanguageMenu.vue";
 import Banner from "../components/Banner.vue";
 import NavigationDrawer from "../components/NavigationDrawer.vue";
 import NewClientSheet from "../components/NewClientSheet.vue";
-import UserSettingsSheet from "../components/UserSettingsSheet.vue";
 import { RouteLocation } from "vue-router";
 import { createMetaMixin } from "quasar";
 
@@ -97,7 +95,6 @@ import { createMetaMixin } from "quasar";
     Banner,
     NavigationDrawer,
     NewClientSheet,
-    UserSettingsSheet,
   },
   mixins: [
     createMetaMixin(function() {

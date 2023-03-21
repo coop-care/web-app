@@ -15,6 +15,24 @@
       </q-item-section>
     </q-item>
 
+    <q-item v-if="!!$store.direct.getters.expirationDate">
+      <q-item-section side>
+        <q-icon
+          name=""
+        />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label>
+          <simplified-markdown 
+            :text="$t(
+              $store.direct.getters.didExpire ? 'betaAppDidExpire' : 'betaAppWillExpire', 
+              { date: this.$d($store.direct.getters.expirationDate, 'DateMed') }
+            )"
+          />
+        </q-item-label>
+      </q-item-section>
+    </q-item>
+
     <navigation-section :items="userItems" />
 
     <q-separator class="q-my-lg"/>
@@ -93,10 +111,13 @@ export default class MyAccountDrawer extends Vue {
     location.href = "mailto:feedback@coopcare.de?subject=Feedback";
   }
 
-  logout() {
-    // first to login page, then logout to prevent redirectPath being set to current path
-    void this.$router.replace({name: "login"})
-      .then(() => this.$store.direct.dispatch.logout())
+  async logout() {
+    // first logout, then navigate to login page so that the state change in $ccapi.isLoggedIn is detected, 
+    // e.g. in MainLayout for updating the toolbar buttons
+    void await this.$store.direct.dispatch.logout();
+    void await this.$router.replace({name: "login"});
+    // prevent redirectPath being set to the current path before logout
+    this.$store.direct.commit.setRedirectPath("");
   }
 }
 </script>

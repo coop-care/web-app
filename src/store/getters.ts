@@ -5,6 +5,8 @@ import { Client, ProblemRecord, Contact } from "../models";
 import { ccApi } from "src/api/apiProvider";
 import DemoApi from "src/api/demo";
 import { Platform } from "quasar";
+import LocalDatabaseApi from "src/api/local";
+import { didExpire, expirationDate } from "src/helper/expiration";
 
 const currentTeam = (state: StateInterface) => {
     const teamId = state.currentUser?.activeTeam;
@@ -150,5 +152,13 @@ export default defineGetters<StateInterface>()({
 
     isDemo: () => ccApi.constructor == DemoApi,
 
+    isLocalAuth: () => ccApi.constructor == LocalDatabaseApi,
+
+    isAlwaysOffline: () => ccApi.constructor == LocalDatabaseApi,
+
     license: () => !process.env.USE_FALLBACK_LICENSE ? "AGPL" : "",
+
+    expirationDate: () => expirationDate,
+
+    didExpire,
 });

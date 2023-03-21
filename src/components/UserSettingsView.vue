@@ -8,12 +8,14 @@
         :autofocus="firstName.trim().length == 0"
         @change="save"
         class="col-sm-6 col-12"
+        :disable="disabled"
       />
       <q-input
         v-model="lastName"
         :label="$t('lastName')"
         @change="save"
         class="col-sm-6 col-12"
+        :disable="disabled"
       />
       <q-input
         v-model="signature"
@@ -24,6 +26,7 @@
         hide-bottom-space
         maxlength="3"
         class="col-sm-6 col-12"
+        :disable="disabled"
       />
     </div>
     <div class="section-heading">{{ $t("appSettings") }}</div>
@@ -79,6 +82,31 @@
           </q-item>
         </template>
       </q-select>
+      <div
+        v-if="!showOnlyEssentials && ($q.platform.is.cordova || $q.platform.is.electron)"
+        class="q-mt-none row items-center q-gutter-md"
+      >
+        <div>
+          <div>{{ $t("currentVersion") }}: {{ $store.direct.getters.appVersion }}</div>
+        </div>
+        <q-btn
+          :label="$t('CheckForUpdates')"
+          color="primary"
+          rounded
+          outline
+          no-caps
+          @click="checkForUpdates"
+        />
+      </div>
+      <div v-if="!!$store.direct.getters.expirationDate">
+        <simplified-markdown 
+          :text="$t(
+            $store.direct.getters.didExpire ? 'betaAppDidExpire' : 'betaAppWillExpire', 
+            { date: this.$d($store.direct.getters.expirationDate, 'DateMed') }
+          )"
+        />
+        <div>{{ $t("betaAppExpirationDescription") }}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -108,8 +136,14 @@
 import { Vue, Component, Prop, Watch } from "vue-facing-decorator";
 import { User } from "../models";
 import { defaultColors, setColorSet } from "../helper/color";
+import { checkForUpdates } from "src/boot/updater";
+import SimplifiedMarkdown from "src/components/SimplifiedMarkdown.vue";
 
-@Component
+@Component({
+  components: {
+    SimplifiedMarkdown
+  }
+})
 export default class UserSettingsView extends Vue {
   @Prop({ type: Boolean, default: false }) showOnlyEssentials!: boolean;
 
@@ -120,6 +154,9 @@ export default class UserSettingsView extends Vue {
     }
   }
 
+  get disabled() {
+    return this.$store.direct.getters.didExpire;
+  }
   get firstName() {
     return this.user.firstName;
   }
@@ -150,9 +187,7 @@ export default class UserSettingsView extends Vue {
     return this.user.locale;
   }
   set locale(value) {
-    void this.$store.direct.dispatch.saveCurrentUser(user => {
-      user.locale = value;
-    });
+    this.$bus.emit("did-change-locale", value);
   }
   get colorScheme() {
     return this.user?.colorScheme || null;
@@ -202,8 +237,14 @@ export default class UserSettingsView extends Vue {
     ]
   }
 
+  checkForUpdates() {
+      void checkForUpdates();
+  }
+
   save() {
-    void this.$store.direct.dispatch.saveCurrentUser(() => 0);
+    if (!this.disabled) {
+      void this.$store.direct.dispatch.saveCurrentUser(() => 0);
+    }
   }
 
   unmounted() {

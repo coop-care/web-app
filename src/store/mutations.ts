@@ -43,6 +43,7 @@ export default defineMutations<StateInterface>()({
     updateCurrentUser(state, updater: (user: User) => void) {
         if (state.currentUser) {
             updater(state.currentUser)
+            state.teamMembers[state.currentUser.userId] = state.currentUser;
         }
     },
 
