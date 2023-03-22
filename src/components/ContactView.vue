@@ -192,6 +192,7 @@
             :placeholder="$t('phone')"
             dense
             type="phone"
+            inputmode="tel"
           />
         </labeled-value-editor>
         <labeled-value-editor
@@ -211,6 +212,28 @@
             :placeholder="$t('email')"
             dense
             type="email"
+            inputmode="email"
+          />
+        </labeled-value-editor>
+        <labeled-value-editor
+          v-if="!noUrl"
+          :items="contact.urls"
+          :labels="$store.direct.getters.urlLabels.map(makeOption)"
+          :add-button-label="$t('addUrl')"
+          @add="addUrl"
+          @remove="removeUrl($event)"
+          @input:label="saveObject($event.target, {label: $event.value})"
+          class="mb-row-dense"
+          v-slot="{ item }"
+        >
+          <q-input
+            :model-value="item.value"
+            @update:model-value="update(item, {value: $event})"
+            @change="save"
+            :placeholder="$t('url')"
+            dense
+            type="url"
+            inputmode="url"
           />
         </labeled-value-editor>
         <labeled-value-editor
@@ -284,7 +307,6 @@
             @click="deleteContact"
           />
         </div>
-
       </div>
     </div>
   </div>
@@ -329,6 +351,8 @@ class ContactView extends Vue {
   @Prop({ type: Boolean }) readonly noRelationship!: boolean;
   @Prop({ type: Boolean }) readonly noOrganization!: boolean;
   @Prop({ type: Boolean }) readonly noDelete!: boolean;
+  @Prop({ type: Boolean }) readonly noUrl!: boolean;
+  @Prop({ type: String }) readonly preferredLabel?: string;
 
   isEditing = false;
   width = Infinity;
@@ -377,6 +401,14 @@ class ContactView extends Vue {
         classes: this.contactGroupClassIfNeeded(index, list),
         action: () => this.email(item)
       }
+    })).concat(this.contact.urls.map((item, index, list) => {
+      return {
+        label: this.localizeLabel(item.label),
+        value: item.value,
+        icon: "fas fa-up-right-from-square",
+        classes: this.contactGroupClassIfNeeded(index, list),
+        action: () => this.openUrl(item)
+      }
     })).concat(this.contact.postalAddresses.map((item, index, list) => {
       return {
         label: this.localizeLabel(item.label),
@@ -416,6 +448,16 @@ class ContactView extends Vue {
   email(email: LabeledValue<string>) {
     location.href = "mailto:" + email.value;
   }
+  openUrl(url: LabeledValue<string>) {
+    const secureUrl = /^https?:\/\//.test(url.value)
+      ? url.value
+      : "https://" + url.value
+    const win = window.open(secureUrl, "_blank");
+
+    if (win) {
+      win.opener = null;
+    }
+  }
   showMap(address: LabeledValue<PostalAddress>) {
     if (this.$q.platform.is.mac || this.$q.platform.is.ios) {
       location.href = "maps://?address=" + Contact.postalAddressAsSearchString(address.value);
@@ -425,25 +467,32 @@ class ContactView extends Vue {
   }
 
   addPhoneNumber() {
-    const newValue = this.contact.makePhoneNumber();
+    const newValue = this.contact.makePhoneNumber(this.preferredLabel);
     this.saveContact({phoneNumbers: this.contact.phoneNumbers.concat([newValue])});
   }
   removePhoneNumber(index: number) {
     this.saveContact({phoneNumbers: this.removeAtIndex(this.contact.phoneNumbers, index)});
   }
   addEmailAddress() {
-    const newValue = this.contact.makeEmailAddress();
+    const newValue = this.contact.makeEmailAddress(this.preferredLabel);
     this.saveContact({emailAddresses: this.contact.emailAddresses.concat([newValue])});
   }
   removeEmailAddress(index: number) {
     this.saveContact({emailAddresses: this.removeAtIndex(this.contact.emailAddresses, index)});
   }
   addPostalAddress() {
-    const newValue = this.contact.makePostalAddress("");
+    const newValue = this.contact.makePostalAddress("", this.preferredLabel);
     this.saveContact({postalAddresses: this.contact.postalAddresses.concat([newValue])});
   }
   removePostalAddress(index: number) {
     this.saveContact({postalAddresses: this.removeAtIndex(this.contact.postalAddresses, index)});
+  }
+  addUrl() {
+    const newValue = this.contact.makeUrl();
+    this.saveContact({urls: this.contact.urls.concat([newValue])});
+  }
+  removeUrl(index: number) {
+    this.saveContact({urls: this.removeAtIndex(this.contact.urls, index)});
   }
   removeAtIndex<T>(array: T[], index: number) {
     const copy = array.slice();

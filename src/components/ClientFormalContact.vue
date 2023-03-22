@@ -67,6 +67,7 @@
       :contact="contact" 
       no-birthday
       no-relationship
+      preferredLabel="workLabel"
       @save="saveClient"
       @delete="deleteContact"
     />

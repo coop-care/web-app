@@ -5,6 +5,7 @@
       no-birthday
       no-profession
       no-organization
+      no-url
       @save="saveClient"
       @delete="deleteContact"
     />

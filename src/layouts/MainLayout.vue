@@ -61,7 +61,15 @@
       <div class="print-only text-black text-center text-subtitle2 border-bottom-grey">
         {{ title }}
       </div>
-      <router-view />
+      <router-view v-slot="{ Component, route }">
+        <transition
+          :name="route.meta.transition"
+          @enter="isTransitioning = !!route.meta.transition"
+          @leave="isTransitioning = false"
+        >
+          <component :is="Component" />
+        </transition>
+      </router-view>
       <component :is="modalSheetComponent" />
       <new-client-sheet/>
     </q-page-container>
@@ -76,6 +84,13 @@
   line-height: 1.4rem
   &.text-caption
     font-size: 0.8rem
+
+.fade-enter-active,
+.fade-leave-active
+  transition: all 0.3s ease
+.fade-enter-from,
+.fade-leave-to
+  opacity: 0
 </style>
 
 <script lang="ts">
@@ -113,6 +128,8 @@ import { createMetaMixin } from "quasar";
   ],
 })
 export default class MainLayout extends Vue {
+  isTransitioning = false
+
   get title() {
     const route = this.$route;
     const routeName = route.name?.toString() ?? "";
@@ -147,7 +164,7 @@ export default class MainLayout extends Vue {
   }
 
   hasDrawer(route: RouteLocation) {
-    return !route.meta.noAuth;
+    return !route.meta.noAuth || this.isTransitioning;
   }
   hasMenuButton(route: RouteLocation) {
     return this.hasDrawer(route) && this.$q.screen.lt.md;

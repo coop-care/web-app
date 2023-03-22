@@ -6,6 +6,8 @@
         (isExpanded ? 'max-width: calc(100% - 16px)' : 'max-width: 320px')
     "
     v-if="!!record"
+    :flat="inactive"
+    :bordered="inactive"
   >
     <q-card-section
       :class="sectionPadding + (isExpandable ? 'cursor-pointer' : '')"
@@ -286,6 +288,7 @@ class ProblemSummary extends Vue {
   @Prop({type: Object}) readonly problemRecord: ProblemRecord | undefined;
   @Prop({type: Boolean, default: true}) readonly isExpandable!: boolean;
   @Prop({type: Boolean, default: false}) expanded!: boolean;
+  @Prop({type: Boolean, default: false}) inactive!: boolean;
 
   get isExpanded() {
     return this.expanded;
@@ -315,7 +318,7 @@ class ProblemSummary extends Vue {
     return this.outcomes.at(-1);
   }
   get isInteractive() {
-    return this.isExpanded && !this.isDisabled;
+    return this.isExpanded && !this.isDisabled && !this.inactive;
   }
   get sectionPadding() {
     if (this.$q.screen.lt.sm) {
@@ -408,6 +411,7 @@ class ProblemSummary extends Vue {
       const store = this.$store.direct;
       store.commit.dismissProblemRecord(this.params);
       void store.dispatch.saveClient(this.params);
+      this.$emit("update:expanded", false);
     };
     const outcome = this.lastOutcome;
     const didNotAchieveExpectations =

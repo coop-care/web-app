@@ -1,33 +1,36 @@
 <template>
   <div v-if="user">
     <div class="section-heading q-mt-none">{{ $t("personalUserDetails") }}</div>
-    <div class="row q-col-gutter-md">
-      <q-input
-        v-model="firstName"
-        :label="$t('firstName')"
-        :autofocus="firstName.trim().length == 0"
-        @change="save"
-        class="col-sm-6 col-12"
-        :disable="disabled"
-      />
-      <q-input
-        v-model="lastName"
-        :label="$t('lastName')"
-        @change="save"
-        class="col-sm-6 col-12"
-        :disable="disabled"
-      />
-      <q-input
-        v-model="signature"
-        :label="$t('signatureMark')"
-        :error="signature.trim().length < 2"
-        :error-message="$t('signatureMarkHint')"
-        :hint="$t('signatureMarkHint')"
-        hide-bottom-space
-        maxlength="3"
-        class="col-sm-6 col-12"
-        :disable="disabled"
-      />
+    <div>
+      <div class="row q-col-gutter-md">
+        <q-input
+          v-model="firstName"
+          :label="$t('firstName')"
+          :autofocus="firstName.trim().length == 0"
+          @change="save"
+          class="col-sm-6 col-12"
+          :disable="disabled"
+        />
+        <q-input
+          v-model="lastName"
+          :label="$t('lastName')"
+          @change="save"
+          class="col-sm-6 col-12"
+          :disable="disabled"
+        />
+        <q-input
+          v-model="signature"
+          :label="$t('signatureMark')"
+          :error="signature.trim().length < 2"
+          :error-message="$t('signatureMarkHint')"
+          :hint="$t('signatureMarkHint')"
+          hide-bottom-space
+          maxlength="3"
+          class="col-sm-6 col-12"
+          :disable="disabled"
+        />
+      </div>
+      <change-password-view class="q-mt-md"/>
     </div>
     <div class="section-heading">{{ $t("appSettings") }}</div>
     <div class="col q-col-gutter-md">
@@ -138,10 +141,12 @@ import { User } from "../models";
 import { defaultColors, setColorSet } from "../helper/color";
 import { checkForUpdates } from "src/boot/updater";
 import SimplifiedMarkdown from "src/components/SimplifiedMarkdown.vue";
+import ChangePasswordView from "src/components/ChangePassword.vue";
 
 @Component({
   components: {
-    SimplifiedMarkdown
+    SimplifiedMarkdown,
+    ChangePasswordView
   }
 })
 export default class UserSettingsView extends Vue {

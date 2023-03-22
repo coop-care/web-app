@@ -1,101 +1,105 @@
 <template>
-  <q-page class="column items-center justify-center">
-    <q-card style="width: 280px">
-      <q-card-section v-if="hasAccounts && mode == 'login'">
-        <q-form>
-          <q-select
-            v-model="username"
-            :label="$t('selectUser')"
-            :options="accountList"
-            hide-bottom-space
-            :error-message="errorMessageLoginUsername"
-            :error="!!errorMessageLoginUsername"
-          />
-          <q-input
-            v-if="username"
-            v-model="password"
-            :label="$t('password')"
-            type="password"
-            hide-bottom-space
-            :error-message="errorMessageLoginPassword"
-            :error="!!errorMessageLoginPassword.length"
-          />
-          <q-btn
-            :label="$t('login')"
-            :disable="!username || !password"
-            type="submit"
-            no-caps
-            color="primary"
-            class="full-width q-mt-md"
-            @click.prevent="login"
-            :loading="isLoadingLogin"
-          />
-        </q-form>
-        <q-btn
-          v-if="!$store.direct.getters.didExpire"
-          :label="$t('addNewUser')"
-          no-caps
-          flat
-          color="primary"
-          class="full-width q-mt-sm"
-          @click="switchMode('adduser')"
+  <q-card style="width: 280px">
+    <q-card-section v-if="hasAccounts && mode == 'login'">
+      <q-form>
+        <q-select
+          v-model="username"
+          :label="$t('selectUser')"
+          :options="accountList"
+          hide-bottom-space
+          :error-message="errorMessageLoginUsername"
+          :error="!!errorMessageLoginUsername"
         />
-        <q-btn
+        <q-input
           v-if="username"
-          :label="$t('deleteUser', {username})"
+          v-model="password"
+          :label="$t('password')"
+          type="password"
+          hide-bottom-space
+          :error-message="errorMessageLoginPassword"
+          :error="!!errorMessageLoginPassword.length"
+        />
+        <q-btn
+          :label="$t('login')"
+          :disable="!username || !password"
+          type="submit"
           no-caps
+          rounded
+          color="primary"
+          class="full-width q-mt-md"
+          @click.prevent="login"
+          :loading="isLoadingLogin"
+        />
+      </q-form>
+      <q-btn
+        v-if="!$store.direct.getters.didExpire"
+        :label="$t('addNewUser')"
+        no-caps
+        rounded
+        flat
+        color="primary"
+        class="full-width q-mt-sm"
+        @click="switchMode('adduser')"
+      />
+      <q-btn
+        v-if="username"
+        :label="$t('deleteUser', {username})"
+        no-caps
+        rounded
+        flat
+        color="primary"
+        class="full-width q-mt-sm"
+        @click="confirmDeleteAccount"
+      />
+    </q-card-section>
+    <q-card-section v-else>
+      <q-form>
+        <q-input
+          v-model="newUsername"
+          :label="$t('username')"
+          :rules="[val => !!val || $t('UsernameMissing')]"
+        />
+        <q-input
+          v-model="newPassword1"
+          :label="$t('password')"
+          :rules="[val => !!val || $t('PasswordMissing')]"
+        />
+        <q-input
+          v-model="newPassword2"
+          :label="$t('repeatPassword')"
+          :rules="[val => !!val || $t('PasswordMissing')]"
+        />
+        <div v-if="errorMessageAddUser" class="q-mt-md text-negative text-caption">{{ errorMessageAddUser }}</div>
+        <q-btn
+          :label="$t('addUser')"
+          :disabled="!canCreateAccount"
+          type="submit"
+          no-caps
+          rounded
+          color="primary"
+          class="full-width q-mt-md"
+          @click.prevent="createAccount"
+          :loading="isLoadingAddUser"
+        />
+        <q-btn
+          v-if="hasAccounts"
+          :label="$t('cancel')"
+          no-caps
+          rounded
           flat
           color="primary"
           class="full-width q-mt-sm"
-          @click="confirmDeleteAccount"
+          @click="switchMode('login')"
         />
-      </q-card-section>
-      <q-card-section v-else>
-        <q-form>
-          <q-input
-            v-model="newUsername"
-            :label="$t('username')"
-            :rules="[val => !!val || $t('UsernameMissing')]"
-          />
-          <q-input
-            v-model="newPassword1"
-            :label="$t('password')"
-            :rules="[val => !!val || $t('PasswordMissing')]"
-          />
-          <q-input
-            v-model="newPassword2"
-            :label="$t('repeatPassword')"
-            :rules="[val => !!val || $t('PasswordMissing')]"
-          />
-          <div v-if="errorMessageAddUser" class="q-mt-md text-negative text-caption">{{ errorMessageAddUser }}</div>
-          <q-btn
-            :label="$t('addUser')"
-            :disabled="!canCreateAccount"
-            type="submit"
-            no-caps
-            color="primary"
-            class="full-width q-mt-md"
-            @click.prevent="createAccount"
-            :loading="isLoadingAddUser"
-          />
-          <q-btn
-            v-if="hasAccounts"
-            :label="$t('cancel')"
-            no-caps
-            flat
-            color="primary"
-            class="full-width q-mt-sm"
-            @click="switchMode('login')"
-          />
-        </q-form>
-      </q-card-section>
-    </q-card>
-  </q-page>
+      </q-form>
+    </q-card-section>
+  </q-card>
 </template>
 
 <script lang="ts">
 import LocalDatabaseApi from "src/api/local";
 import { errorMessage, errorToString } from "src/boot/i18n";
+import * as AppSettings from "src/database/AppSettings";
 import { defineComponent } from "vue";
 
 type AuthMode = "login" | "adduser";
@@ -137,6 +141,8 @@ export default defineComponent({
 
       if (this.accountList.length == 1) {
         this.username = this.accountList[0];
+      } else {
+        this.username = await AppSettings.get("lastLoginUsername") || "";
       }
     },
 
@@ -146,7 +152,8 @@ export default defineComponent({
       this.isLoadingLogin = true;
 
       await this.$store.direct.dispatch.login({ email: this.username, password: this.password, locale: this.$i18n.locale })
-        .then(location => {
+        .then(async location => {
+          await AppSettings.set("lastLoginUsername", this.username);
           void this.$router.push(location);
         })
         .catch(error => {
@@ -171,6 +178,7 @@ export default defineComponent({
       if (this.canCreateAccount) {
         try {
           await this.$ccApi.registerUser(this.newUsername, this.newPassword1);
+          await AppSettings.set("lastLoginUsername", this.newUsername);
           await this.updateAccountList();
           this.switchMode("login");
         } catch(error) {
@@ -210,6 +218,11 @@ export default defineComponent({
 
       try {
         await this.$ccApi.deleteUser(this.username);
+
+        if ((await AppSettings.get("lastLoginUsername")) == this.username) {
+            await this.updateAccountList();
+            await AppSettings.set("lastLoginUsername", this.accountList[0]);
+        }
       } catch(error) {
         this.errorMessageLoginPassword = errorMessage(error);
       }

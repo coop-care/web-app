@@ -3,7 +3,7 @@
     <div class="text-h6 text-center q-mb-sm print-only">{{ $t("reportTitle") }}</div>
     <div 
       v-if="clientProblems.length"
-      class="q-mb-xl q-pa-xs overflow-auto"
+      class="q-mb-xl q-pa-xs overflow-auto limit-page-width width-sm"
     >
       <div class="flex q-gutter-md justify-center">
         <client-insights v-if="clientProblems.length > 0" />
@@ -18,6 +18,39 @@
           :expanded="expanded.includes(problemRecord.id)"
           @update:expanded="updateExpanded(problemRecord.id)"
         />
+      </div>
+      <div
+        v-if="resolvedProblems.length > 0"
+        class="q-mt-lg"
+      >
+        <div class="flex justify-center q-mb-md">
+          <q-btn
+            :label="!showResolvedProblems ? $t('showResolvedProblems', resolvedProblems.length) : $t('hideResolvedProblems') + ':'"
+            no-caps
+            flat
+            rounded
+            color="classification"
+            @click="showResolvedProblems = !showResolvedProblems; expandedResolvedProblems = []"
+          />
+        </div>
+        <div
+          v-if="showResolvedProblems"
+          class="flex q-gutter-md justify-center"
+        >
+          <problem-summary
+            v-for="problemRecord in resolvedProblems"
+            :key="problemRecord.id"
+            :problemRecord="problemRecord"
+            :params="{
+              clientId: $route.params.clientId,
+              problemId: problemRecord.id
+            }"
+            inactive
+            style="opacity: .7"
+            :expanded="expandedResolvedProblems.includes(problemRecord.id)"
+            @update:expanded="updateExpandedResolvedProblems($event, problemRecord.id)"
+          />
+        </div>
       </div>
     </div>
 
@@ -72,12 +105,25 @@ interface ClientProblems extends RecordMixinInterface {};
   mixins: [RecordMixin]
 })
 class ClientProblems extends Vue {
+  showResolvedProblems = false;
+  expandedResolvedProblems = [] as string[];
+
   get clientProblems() {
     const client = this.client;
     const problems = client ? client.problems : [];
     return problems
       .filter((problem) => {
         return !problem.resolvedAt;
+      })
+      .sort(ProblemRecord.sortByPriorityAndCreatedAt);
+  }
+
+  get resolvedProblems() {
+    const client = this.client;
+    const problems = client ? client.problems : [];
+    return problems
+      .filter((problem) => {
+        return !!problem.resolvedAt;
       })
       .sort(ProblemRecord.sortByPriorityAndCreatedAt);
   }
@@ -109,6 +155,14 @@ class ClientProblems extends Vue {
     }
 
     void this.$router.push({name: "clientReport", params})
+  }
+  
+  updateExpandedResolvedProblems(value: boolean, problemId: string) {
+    if (value) {
+      this.expandedResolvedProblems = this.expandedResolvedProblems.concat(problemId);
+    } else {
+      this.expandedResolvedProblems = this.expandedResolvedProblems.filter(id => id != problemId);
+    }
   }
 }
 

@@ -31,12 +31,14 @@ export class Contact extends Base {
   phoneNumbers: LabeledValue<string>[] = [];
   emailAddresses: LabeledValue<string>[] = [];
   postalAddresses: LabeledValue<PostalAddress>[] = [];
+  urls: LabeledValue<string>[] = [];
   notes = "";
   customFields: CustomField<any>[] = [];
 
   static readonly emailLabels = ["privateLabel", "workLabel", "schoolLabel", "otherLabel"];
   static readonly phoneLabels = ["privateLabel", "mobileLabel", "workLabel", "centralOfficeLabel", "hospitalLabel", "schoolLabel", "faxLabel", "otherLabel"];
   static readonly postalLabels = ["privateLabel", "workLabel", "hospitalLabel", "schoolLabel", "invoiceAddress", "deliveryAddress"];
+  static readonly urlLabels = ["homepageLabel", "privateLabel", "workLabel", "schoolLabel", "otherLabel"];
   static readonly sexTypes = ["femaleSex", "maleSex", "otherSex"];
   static readonly relationshipTypes = ["partner", "child", "parent", "sibling", "friend", "neighbour", "grandchild", "grandparent", "parentInLaw", "childInLaw"]
     .map(value => value + "Relationship");
@@ -46,21 +48,26 @@ export class Contact extends Base {
     Contact.emailLabels
       .concat(Contact.phoneLabels)
       .concat(Contact.postalLabels)
+      .concat(Contact.urlLabels)
       .concat(Contact.relationshipTypes)
       .concat(Contact.professionTypes)
   )]
   static postalAddressAsSearchString(address: PostalAddress) {
     return encodeURI(Object.values(address).filter(Boolean).join(",").replace(" ", "+"));
   }
-  private static makeLabeledValue<T>(newValue: T, existingValues: LabeledValue<T>[] = [], allLabels: string[] = []) {
+  private static makeLabeledValue<T>(newValue: T, existingValues: LabeledValue<T>[] = [], allLabels: string[] = [], preferredLabel?: string) {
     return {
-      label: this.findNewLabel(existingValues, allLabels),
+      label: this.findNewLabel(existingValues, allLabels, preferredLabel),
       value: newValue
     };
   }
-  private static findNewLabel<T>(existingValues: LabeledValue<T>[] = [], allLabels: string[] = []) {
+  private static findNewLabel<T>(existingValues: LabeledValue<T>[] = [], allLabels: string[] = [], preferredLabel?: string) {
     const labels = existingValues.map(value => value.label)
-    return allLabels.find(label => !labels.includes(label)) || allLabels[0];
+    if (!!preferredLabel && !labels.includes(preferredLabel)) {
+      return preferredLabel;
+    } else {
+      return allLabels.find(label => !labels.includes(label)) || allLabels[0];
+    }
   }
 
   get idAsKey() {
@@ -74,19 +81,22 @@ export class Contact extends Base {
     }
   }
 
-  makePhoneNumber() {
-    return Contact.makeLabeledValue("", this.phoneNumbers, Contact.phoneLabels);
+  makePhoneNumber(preferredLabel?: string) {
+    return Contact.makeLabeledValue("", this.phoneNumbers, Contact.phoneLabels, preferredLabel);
   }
-  makeEmailAddress() {
-    return Contact.makeLabeledValue("", this.emailAddresses, Contact.emailLabels);
+  makeEmailAddress(preferredLabel?: string) {
+    return Contact.makeLabeledValue("", this.emailAddresses, Contact.emailLabels, preferredLabel);
   }
-  makePostalAddress(country: string) {
+  makePostalAddress(country: string, preferredLabel?: string) {
     return Contact.makeLabeledValue({
       street1: "",
       postalCode: "",
       city: "",
       region: "",
       country: country
-    }, this.postalAddresses, Contact.postalLabels);
+    }, this.postalAddresses, Contact.postalLabels, preferredLabel);
+  }
+  makeUrl(preferredLabel?: string) {
+    return Contact.makeLabeledValue("", this.urls, Contact.urlLabels, preferredLabel);
   }
 }

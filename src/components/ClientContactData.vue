@@ -4,6 +4,7 @@
     :contact="contact"
     no-relationship
     no-organization
+    no-url
     no-delete
     class="q-mb-lg"
     @save="saveClient"

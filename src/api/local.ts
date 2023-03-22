@@ -309,7 +309,7 @@ export default class LocalDatabaseApi implements CoopCareApiInterface {
         }
 
         this.currentUserId = user.id;
-        this.updateUserOnFirstLogin(user, locale)
+        this.updateUserOnFirstLogin(user, locale);
     }
 
     async logout() {

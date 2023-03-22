@@ -1,18 +1,39 @@
 <template>
-  <q-page class="column items-center justify-evenly">
-    <auth/>
-  </q-page>
+  <div class="fullscreen bg-primary column">
+    <q-toolbar class="fixed text-white self-start window-draggable" style="z-index: 100">
+      <q-space />
+      <q-btn
+        :label="$i18n.locale.split('-')[0]"
+        icon="fas fa-globe"
+        stretch
+        flat
+        class="hide-arrow"
+      >
+        <language-menu />
+      </q-btn>
+    </q-toolbar>
+    <div class="scroll full-width full-height row items-center">
+      <div class="q-pa-md col column items-center">
+        <auth/>
+      </div>
+    </div>
+  </div>
 </template>
+
+<style lang="sass">
+</style>
 
 <script lang="ts">
 import Auth from "src/components/Auth.vue";
+import LanguageMenu from "src/components/LanguageMenu.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "LoginPage",
 
   components: {
-    Auth
+    Auth,
+    LanguageMenu
   }
 });
 </script>

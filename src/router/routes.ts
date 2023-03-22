@@ -199,38 +199,42 @@ const routes: RouteRecordRaw[] = [
         path: "/privacy-policy",
         component: () => import("pages/Markdown.vue")
       },
-      {
+      ...(!isDemo && !isLocalAuth ? [{
         name: "login",
-        path: !isDemo ? "/login" : "",
-        component: isLocalAuth
-          ? () => import("pages/LocalAuth.vue")
-          : () => import("pages/Login.vue"),
+        path: "/login",
+        component: () => import("pages/Login.vue"),
         meta: { noAuth: true }
       },
       {
         name: "register",
-        path: !isDemo && !isLocalAuth ? "/register" : "",
+        path: "/register",
         component: () => import("pages/Register.vue"),
         meta: { noAuth: true }
       },
       {
         name: "confirm",
-        path: !isDemo && !isLocalAuth ? "/confirm" : "",
+        path:  "/confirm",
         component: () => import("pages/Confirm.vue"),
         meta: { noAuth: true }
       },
       {
         name: "requestPasswordReset",
-        path: !isDemo && !isLocalAuth ? "/requestpasswordreset" : "",
+        path: "/requestpasswordreset",
         component: () => import("pages/RequestPasswordReset.vue"),
         meta: { noAuth: true }
       },
       {
         name: "resetPassword",
-        path: !isDemo && !isLocalAuth ? "/passwordreset" : "",
+        path: "/passwordreset",
         component: () => import("pages/PasswordReset.vue"),
         meta: { noAuth: true }
-      },
+      },] : []),
+      ...(isLocalAuth ? [{
+        name: "login",
+        path: "/login",
+        component: () => import("pages/LocalAuth.vue"),
+        meta: { noAuth: true }
+      }] : []),
     ],
   },
 

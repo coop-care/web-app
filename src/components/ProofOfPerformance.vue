@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="limit-page-width width-md">
     <div class="proof-of-performance flex justify-center q-mb-xl">
       <div class="row justify-center">
         <div class="q-mr-md">

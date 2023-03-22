@@ -768,5 +768,10 @@
   "careSetting": "Care setting",
   "exportClientData": "Export client data",
   "exportBackup": "Export backup",
-  "currentVersion": "Current version"
+  "currentVersion": "Current version",
+  "addUrl": "Add URL",
+  "url": "URL",
+  "homepageLabel": "Home page",
+  "showResolvedProblems": "Show {count} resolved problem | Show {count} resolved problems",
+  "hideResolvedProblems": "Hide resolved problems"
 }

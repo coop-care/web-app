@@ -13,7 +13,8 @@ export function downloadJSON(data: any, filename: string, pretty = false) {
             files: [jsonUri]
         });
     } else {
-        const mimeType = "charset=utf-8";
-        return exportFile(exportFilename, json, { mimeType });
+        const mimeType = "application/json;charset=utf-8";
+        const byteOrderMark = "\uFEFF";
+        return exportFile(exportFilename, json, { mimeType, byteOrderMark });
     }
 }

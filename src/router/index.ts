@@ -68,5 +68,13 @@ export default route<StateInterface>(function ({ store }) {
     }
   });
 
+  Router.afterEach((to, from) => {
+    if (to.name == "login") {
+      to.meta.transition = "fade"
+    } else if (from.name == "login") {
+      to.meta.transition = "fade"
+    }
+  })
+
   return Router;
 });

@@ -117,6 +117,18 @@ export default defineGetters<StateInterface>()({
         )];
     },
 
+    urlLabels: state => {
+        return [... new Set(
+            Contact.urlLabels.concat(state.clients
+                .flatMap(client => client.informalContacts)
+                .flatMap(contact => contact.urls)
+                .flatMap(item =>
+                    item.label ? [item.label] : []
+                )
+            )
+        )];
+    },
+
     referenceCountForFormalContact: state => (contactId: ObjectId) =>
         state.clients.flatMap(client => client.formalContacts.filter(
             contact => contact.id.equals(contactId)
