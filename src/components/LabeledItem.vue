@@ -70,7 +70,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
 export type LabeledItemType = {
   label: string; 
@@ -83,7 +83,7 @@ export type LabeledItemType = {
 @Component
 export default class LabeledItem extends Vue {
   @Prop({ type: Object, required: true}) readonly item!: LabeledItemType;
-  @Prop(Boolean) readonly compactLayout!: boolean;
+  @Prop({ type: Boolean }) readonly compactLayout!: boolean;
 
   mouseDownEvent: MouseEvent | null = null;
 

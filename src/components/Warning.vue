@@ -20,26 +20,28 @@
 
 <style lang="sass">
 .warning
-  background-color: var(--q-color-negative-bg)
-  border: 2px dotted var(--q-color-negative)
+  background-color: var(--q-negative-bg)
+  border: 2px dotted var(--q-negative)
 
   p
     margin: 0
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop, Watch } from "vue-property-decorator";
+import { Vue, Component, Prop, Watch, Model } from "vue-facing-decorator";
 
-@Component
+@Component({
+  emits: ["update:model-value"]
+})
 export default class Warning extends Vue {
-  @Prop(Boolean) readonly value!: boolean;
+  @Model({ type: Boolean }) readonly value!: boolean;
   @Prop({ type: String, default: ""}) readonly messages!: string;
   @Prop({ type: String, default: "q-mt-lg"}) readonly margin!: string;
 
   @Watch("messages")
   onMessagesChanged(value: string) {
     if (!value) {
-      this.$emit("input", false);
+      this.$emit("update:model-value", false);
     }
   }
 }

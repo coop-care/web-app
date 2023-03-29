@@ -14,8 +14,8 @@
       :max-width="maxWidth"
       :anchor="($q.platform.is.mobile ? 'top' : 'bottom') + ' middle'"
       :self="($q.platform.is.mobile ? 'bottom' : 'top') + ' middle'"
-      content-class="text-center"
-      content-style="font-size: 0.8rem"
+      class="text-center"
+      style="font-size: 0.8rem"
     >
       <simplified-markdown :text="tooltip" />
     </q-tooltip>
@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import SimplifiedMarkdown from "./SimplifiedMarkdown.vue";
 
 @Component({

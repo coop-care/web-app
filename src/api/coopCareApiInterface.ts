@@ -1,4 +1,4 @@
-import { Client, User, Team, TeamMember } from "../models";
+import { Client, User, Team, TeamMember, BackOffice } from "../models";
 
 export type CoopCareApiListener<T> = (changeType: string, data: T | undefined) => void;
 
@@ -36,4 +36,9 @@ export default interface CoopCareApiInterface {
     createTeam(team: Team): Promise<Team>;
     saveTeam(team: Team): Promise<Team>;
     deleteTeam(team: Team): Promise<void>;
+
+    getMyBackoffices(): Promise<BackOffice[]>;
+    createBackoffice(backoffice: BackOffice): Promise<BackOffice>;
+    saveBackoffice(backoffice: BackOffice): Promise<BackOffice>;
+    deleteBackoffice(backoffice: BackOffice): Promise<void>;
 }

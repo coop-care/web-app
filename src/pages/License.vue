@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 
 @Component
 export default class LicensePage extends Vue {
@@ -33,21 +33,21 @@ export default class LicensePage extends Vue {
     this.licenseText = (await import("../../LICENSE.md")).default;
 
     const localeMap: Record<string, string> = {
-      "de-de": "de",
-      "en-us": "en"
+      "de-DE": "de",
+      "en-US": "en"
     };
-    const locale = localeMap[this.$root.$i18n.locale] || "en";
+    const locale = localeMap[this.$i18n.locale] || "en";
     // @ts-ignore
     this.licenseSummary = (await import(`../markdown/${locale}/agpl-summary.md`)).default;
   }
 
   created() {
     void this.loadMarkdown();
-    this.$root.$on("did-change-locale", this.loadMarkdown);
+    this.$bus.on("did-change-locale", this.loadMarkdown);
   }
 
-  beforeDestroy() {
-    this.$root.$off("did-change-locale");
+  unmounted() {
+    this.$bus.off("did-change-locale");
   }
 }
 </script>

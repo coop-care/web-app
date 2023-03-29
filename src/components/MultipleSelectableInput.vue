@@ -1,6 +1,6 @@
 <template>
   <q-select
-    :value="value"
+    :model-value="value"
     :label="label"
     :options="filteredOptions"
     map-options
@@ -12,7 +12,7 @@
     use-input
     input-debounce="0"
     :hide-dropdown-icon="hideDropdownIcon"
-    @input="onInput"
+    @update:model-value="onInput"
     @new-value="createValue"
     @input-value="inputValue = $event;"
     @keydown.tab="selectInputValue(); lastTabKeyDownTimestamp = Date.now();"
@@ -24,17 +24,19 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
+import { Vue, Component, Prop, Ref, Model } from "vue-facing-decorator";
 import { QSelect } from "quasar";
 import { LabeledValue } from "../models";
 
-@Component
+@Component({
+  emits: ["update:model-value"]
+})
 export default class MultipleSelectableInput extends Vue {
-  @Prop({ type: Array, default: () => [] }) readonly value!: string[];
+  @Model({ type: Array, default: () => [] }) readonly value!: string[];
   @Prop({ type: String, default: "" }) readonly label!: string;
   @Prop({ type: Array, default: () => [] }) readonly options!: LabeledValue<string>[];
-  @Prop(Boolean) readonly dense!: boolean;
-  @Prop(Boolean) readonly hideDropdownIcon!: boolean;
+  @Prop({ type: Boolean }) readonly dense!: boolean;
+  @Prop({ type: Boolean }) readonly hideDropdownIcon!: boolean;
   @Ref() readonly select!: QSelect;
 
   filteredOptions: LabeledValue<string>[] = this.options;
@@ -72,7 +74,7 @@ export default class MultipleSelectableInput extends Vue {
         value[value.length - 1] = normalizedValue;
       }
     }
-    this.$emit("input", value);
+    this.$emit("update:model-value", value);
     this.select.updateInputValue("");
   }
   createValue(value: string, done: (value: string, mode: string) => void) {

@@ -6,14 +6,14 @@
         style="z-index: 1000"
       >
         <q-btn
-          v-if="hasMenuButton($router.currentRoute.name || '')"
+          v-if="hasMenuButton($router.currentRoute.value)"
           flat
           icon="menu"
           aria-label="menu"
-          @click="$root.$emit('toggle-client-drawer')"
+          @click="$bus.emit('toggle-drawer')"
         />
         <q-btn
-          v-if="hasBackButton($router.currentRoute.name || '')"
+          v-if="hasBackButton($router.currentRoute.value)"
           size="lg"
           dense
           no-caps
@@ -23,25 +23,23 @@
           @click="$router.back()"
         />
         <div 
-          v-if="!hasMenuButton($router.currentRoute.name || '') && !hasBackButton($router.currentRoute.name || '')"
+          v-if="!hasMenuButton($router.currentRoute.value) && !hasBackButton($router.currentRoute.value)"
           style="width: 60px"
         ></div>
 
         <q-toolbar-title class="text-center">
           <div
-            :class="'ellipsis title-text ' + (subtitle ? 'has-subtitle' : '')"
+            class="ellipsis title-text"
           >
             {{ title }}
           </div>
-          <div class="ellipsis text-caption title-text">{{ subtitle }}</div>
         </q-toolbar-title>
 
         <user-menu v-if="$ccApi.isLoggedIn" />
-        <dev-menu v-if="$ccApi.isLoggedIn" />
 
         <q-btn
           v-else
-          :label="$root.$i18n.locale.split('-')[0]"
+          :label="$i18n.locale.split('-')[0]"
           icon="fas fa-globe"
           stretch
           flat
@@ -57,11 +55,16 @@
       ></div>
     </q-header>
 
-    <q-page-container class="bg-white">
+    <navigation-drawer v-if="hasDrawer($router.currentRoute.value)" />
+
+    <q-page-container>
       <div class="print-only text-black text-center text-subtitle2 border-bottom-grey">
-        {{ [title, subtitle].filter(Boolean).join(" – ") }}
+        {{ title }}
       </div>
       <router-view />
+      <component :is="modalSheetComponent" />
+      <new-client-sheet/>
+      <user-settings-sheet/>
     </q-page-container>
   </q-layout>
 </template>
@@ -72,74 +75,59 @@
     display: none
 .title-text
   line-height: 1.4rem
-  &.has-subtitle
-    font-size: 1.25rem
   &.text-caption
     font-size: 0.8rem
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import UserMenu from "../components/UserMenu.vue";
 import LanguageMenu from "../components/LanguageMenu.vue";
-import DevMenu from "../components/DevMenu.vue";
 import Banner from "../components/Banner.vue";
+import NavigationDrawer from "../components/NavigationDrawer.vue";
+import NewClientSheet from "../components/NewClientSheet.vue";
+import UserSettingsSheet from "../components/UserSettingsSheet.vue";
+import { RouteLocation } from "vue-router";
+import { createMetaMixin } from "quasar";
 
 @Component({
   components: {
     UserMenu,
     LanguageMenu,
-    DevMenu,
-    Banner
+    Banner,
+    NavigationDrawer,
+    NewClientSheet,
+    UserSettingsSheet,
   },
-  meta() {
-    return {
-      title: "CoopCare" + (this.$store.direct.getters.isDemo ? " – " + this.$t("demoAppTitle") : " App" ),
-      meta: {
-        description: { name: "description", content: this.$t("appDescription") },
-        google: { name: "google", content: "notranslate" },
-        contentLanguage: {
-          "http-equiv": "Content-Language",
-          content: this.$root.$i18n.locale
+  mixins: [
+    createMetaMixin(function() {
+      return {
+        title: "CoopCare" + (this.$store.direct.getters.isDemo ? " – " + this.$t("demoAppTitle") : " App" ),
+        meta: {
+          description: { name: "description", content: this.$t("appDescription") },
+          google: { name: "google", content: "notranslate" },
+          contentLanguage: {
+            "http-equiv": "Content-Language",
+            content: this.$i18n.locale
+          }
         }
       }
-    };
-  }
+    })
+  ],
 })
 export default class MainLayout extends Vue {
   get title() {
     const route = this.$route;
+    const routeName = route.name?.toString() ?? "";
 
     if (route.path.startsWith("/client")) {
       if (this.selectedClient) {
         return this.selectedClient.contact.name;
-      } else if (route.params.clientId == "new") {
-        return this.$t("newClient");
       } else {
-        return this.$tc("client", 2);
+        return this.$t("client", 2);
       }
-    } else if (this.$te(route.name || "")) {
-      return this.$t(route.name || "");
-    } else {
-      return "";
-    }
-  }
-  get subtitle() {
-    const route = this.$route;
-
-    if (
-      this.record &&
-      [
-        "problem",
-        "classification",
-        "outcome",
-        "intervention",
-        "interventions"
-      ].includes(route.name || "")
-    ) {
-      return this.$t(this.record.problem.title);
-    } else if (route.name == "problemsByDiagnosis") {
-      return this.$t("problemAdmissionByDiagnosis");
+    } else if (routeName.length > 0 && this.$te(routeName)) {
+      return this.$t(routeName);
     } else {
       return "";
     }
@@ -150,12 +138,25 @@ export default class MainLayout extends Vue {
   get record() {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
-
-  hasMenuButton(routeName: string) {
-    return routeName.startsWith("client") && this.$q.screen.lt.md;
+  get backButtonRoutes() {
+    return ["register", "confirm", "requestPasswordReset", "resetPassword"];
   }
-  hasBackButton(routeName: string) {
-    return !routeName.startsWith("client") && (routeName != "login");
+  get noDrawerRoutes() {
+    return this.backButtonRoutes.concat("login");
+  }
+  get modalSheetComponent() {
+    const sheet = this.$route.params.sheet as string;
+    return (this.$route.meta.sheets as Record<string, any>)?.[sheet];
+  }
+
+  hasDrawer(route: RouteLocation) {
+    return !route.meta.noAuth;
+  }
+  hasMenuButton(route: RouteLocation) {
+    return this.hasDrawer(route) && this.$q.screen.lt.md;
+  }
+  hasBackButton(route: RouteLocation) {
+    return !!route.meta.noAuth && route.name != "login";
   }
   showOnboardingForDemoVersion() {
     if (
@@ -164,8 +165,7 @@ export default class MainLayout extends Vue {
     ) {
       void import("../components/DemoOnboarding.vue").then(component => {
         this.$q.dialog({
-          component: component.default,
-          parent: this
+          component: component.default
         });
       });
     }

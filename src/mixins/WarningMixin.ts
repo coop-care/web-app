@@ -1,26 +1,31 @@
+import { defineComponent } from "vue";
+import { sanitizeHTML } from "src/helper/utils";
+import { DialogChainObject } from "quasar";
 
-import { Vue, Component } from "vue-property-decorator";
+export interface WarningMixinInterface {
+  showWarning(message: string, title?: string): DialogChainObject;
+};
 
-@Component
-export default class WarningMixin extends Vue {
-    showWarning(message: string) {
-        return this.$q.dialog({
-            title: this.$t("warningTitle") as string,
-            message: message.replace(/\n/g, "<br>"),
-            html: true,
-            ok: {
-                label: this.$t("yes"),
-                rounded: true,
-                color: "transparent",
-                textColor: "primary"
-            },
-            cancel: {
-                label: this.$t("no"),
-                rounded: true,
-                color: "transparent",
-                textColor: "primary"
-            },
-            persistent: true
-        });
+export default defineComponent({
+    methods: {
+        showWarning(message: string, title?: string) {
+            return this.$q.dialog({
+                title: title ?? this.$t("warningTitle") as string,
+                message: sanitizeHTML(message).replace(/\n/g, "<br>"),
+                html: true,
+                class: "warning-dialog",
+                ok: {
+                    label: this.$t("yes"),
+                    rounded: true,
+                    outline: true,
+                },
+                cancel: {
+                    label: this.$t("no"),
+                    rounded: true,
+                    outline: true,
+                },
+                persistent: true
+            });
+        }
     }
-}
+});

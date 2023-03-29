@@ -23,8 +23,18 @@ export class Occurrence {
 
 export class Reminder extends Base {
     id = this.generateId();
-    @Transform(({ value }) => (value as RRuleSet)?.toJSON(), { toPlainOnly: true })
-    @Transform(({ value }) => RRuleSet.fromJSON(value), { toClassOnly: true })
+    @Transform(({ value }) => 
+        (value as RRuleSet)?.toJSON(), 
+        { toPlainOnly: true }
+    )
+    @Transform(({ value }) => 
+        RRuleSet.fromJSON(
+            value?.constructor?.name == "RRuleSet" 
+                ? value.toJSON() 
+                : value
+        ), 
+        { toClassOnly: true }
+    )
     recurrenceRules?: RRuleSet = undefined;
     @Type(() => Occurrence)
     occurrences: Occurrence[] = [];
@@ -50,9 +60,7 @@ export class Reminder extends Base {
     }
     get startDateOfRecurrenceRules() {
         if (this.recurrenceRules) {
-            const lastOccurrence = this.occurrences[
-                this.occurrences.length - 1
-            ];
+            const lastOccurrence = this.occurrences.at(-1);
             return lastOccurrence?.due || this.recurrenceRules.initialStartDate;
         }
     }
@@ -60,7 +68,7 @@ export class Reminder extends Base {
         return this.startDateOfRecurrenceRules || this.createdAt;
     }
 
-    calculateOccurrences(isInactive: boolean) {
+    calculateOccurrences() {
         const start = this.startDateOfRecurrenceRules;
 
         if (start && this.recurrenceRules) {
@@ -73,7 +81,7 @@ export class Reminder extends Base {
             this.occurrences = this.occurrences.concat(due);
         }
 
-        if (isInactive || this.isFinished) {
+        if (this.isFinished) {
             const completedOccurrences = this.completedOccurrences;
             if (completedOccurrences.length < this.occurrences.length) {
                 this.occurrences = completedOccurrences;
@@ -90,7 +98,7 @@ export class Reminder extends Base {
             );
 
             if (pastOccurrences.length == this.occurrences.length) {
-                return this.calculateOccurrences(false);
+                return this.calculateOccurrences();
             }
 
             const completedSinceStartOccurrences = this.occurrences.filter(
@@ -99,7 +107,7 @@ export class Reminder extends Base {
 
             if (!completedSinceStartOccurrences.length) {
                 this.occurrences = pastOccurrences;
-                return this.calculateOccurrences(false);
+                return this.calculateOccurrences();
             }
 
             const dueSinceStartOccurrences = this.recurrenceRules
@@ -121,7 +129,7 @@ export class Reminder extends Base {
         }
     }
 
-    clone() {
+    duplicate() {
         const reminder = super.clone();
         reminder.id = this.generateId();
         reminder.createdAt = new Date();

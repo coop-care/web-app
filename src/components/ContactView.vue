@@ -1,8 +1,5 @@
 <template>
-  <div
-    v-if="contact"
-    :class="[$q.screen.gt.xs ? 'q-px-md' : 'q-px-xs']"
-  >
+  <div v-if="contact">
     <q-resize-observer @resize="onResize" />
 
     <div v-if="!isEditing || isDisabled" >
@@ -106,8 +103,8 @@
         <div class="mb-row-dense">
           <q-toggle 
             v-if="!noOrganization"
-            :value="contact.isOrganization" 
-            @input="saveContact({isOrganization: $event})"
+            :model-value="contact.isOrganization" 
+            @update:model-value="saveContact({isOrganization: $event})"
             :label="$t('contactIsAnOrganization') + ':'"
             left-label
           />
@@ -118,63 +115,63 @@
             button-class="q-py-sm"
           >
             <q-input
-              :value="contact.degree"
-              @input="updateContact({degree: $event})"
+              :model-value="contact.degree"
+              @update:model-value="updateContact({degree: $event})"
               @change="save"
               :label="$t('degree')"
             />
           </reveal-button>
           <q-input
             v-if="!contact.isOrganization"
-            :value="contact.firstName"
-            @input="updateContact({firstName: $event})"
+            :model-value="contact.firstName"
+            @update:model-value="updateContact({firstName: $event})"
             @change="save"
             :label="$t('firstName')"
           />
           <q-input
             v-if="!contact.isOrganization"
-            :value="contact.lastName"
-            @input="updateContact({lastName: $event})"
+            :model-value="contact.lastName"
+            @update:model-value="updateContact({lastName: $event})"
             @change="save"
             :label="$t('lastName')"
           />
           <date-time-input
             v-if="!noBirthday && !contact.isOrganization"
-            :value="contact.birthday"
-            @input="saveContact({birthday: $event})"
+            :model-value="contact.birthday"
+            @update:model-value="saveContact({birthday: $event})"
             :label="$t('birthday') + ' (' + $t('dateFormatPlaceholder') + ')'"
             :format="$t('dateFormat')"
           />
           <selectable-input
             v-if="!noRelationship && !contact.isOrganization"
-            :value="contact.relationship"
+            :model-value="contact.relationship"
             :label="$t('relationshipToClient')"
             :options="$store.direct.getters.relationshipLabels.map(makeOption)"
             clearable
-            @input="saveContact({relationship: $event})"
+            @update:model-value="saveContact({relationship: $event})"
           />
           <selectable-input
             v-if="!noProfession && !contact.isOrganization"
-            :value="contact.profession"
+            :model-value="contact.profession"
             :label="$t('profession')"
             :options="professionLabels"
             clearable
-            @input="saveContact({profession: $event})"
+            @update:model-value="saveContact({profession: $event})"
           />
           <q-input
             v-if="!noOrganization"
-            :value="contact.organization"
-            @input="updateContact({organization: $event})"
+            :model-value="contact.organization"
+            @update:model-value="updateContact({organization: $event})"
             @change="save"
             :label="$t('organizationName')"
           />
           <selectable-input
             v-if="!noProfession && contact.isOrganization"
-            :value="contact.profession"
+            :model-value="contact.profession"
             :label="$t('profession')"
             :options="professionLabels"
             clearable
-            @input="saveContact({profession: $event})"
+            @update:model-value="saveContact({profession: $event})"
           />
         </div>
 
@@ -189,8 +186,8 @@
           v-slot="{ item }"
         >
           <q-input
-            :value="item.value"
-            @input="update(item, {value: $event})"
+            :model-value="item.value"
+            @update:model-value="update(item, {value: $event})"
             @change="save"
             :placeholder="$t('phone')"
             dense
@@ -208,8 +205,8 @@
           v-slot="{ item }"
         >
           <q-input
-            :value="item.value"
-            @input="update(item, {value: $event})"
+            :model-value="item.value"
+            @update:model-value="update(item, {value: $event})"
             @change="save"
             :placeholder="$t('email')"
             dense
@@ -228,8 +225,8 @@
         >
           <div class="column">
             <q-input
-              :value="item.value.street1"
-              @input="update(item.value, {street1: $event})"
+              :model-value="item.value.street1"
+              @update:model-value="update(item.value, {street1: $event})"
               @change="save"
               :placeholder="$t('street')"
               dense
@@ -237,16 +234,16 @@
             />
             <div class="row">
               <q-input
-                :value="item.value.postalCode"
-                @input="update(item.value, {postalCode: $event})"
+                :model-value="item.value.postalCode"
+                @update:model-value="update(item.value, {postalCode: $event})"
                 @change="save"
                 :placeholder="$t('postalCode')"
                 dense
                 class="col"
               />
               <q-input
-                :value="item.value.city"
-                @input="update(item.value, {city: $event})"
+                :model-value="item.value.city"
+                @update:model-value="update(item.value, {city: $event})"
                 @change="save"
                 :placeholder="$t('city')"
                 dense
@@ -254,8 +251,8 @@
               />
             </div>
             <q-input
-              :value="item.value.country"
-              @input="update(item.value, {country: $event})"
+              :model-value="item.value.country"
+              @update:model-value="update(item.value, {country: $event})"
               @change="save"
               :placeholder="$t('country')"
               dense
@@ -264,8 +261,8 @@
         </labeled-value-editor>
 
         <q-input
-          :value="contact.notes"
-          @input="updateContact({notes: $event})"
+          :model-value="contact.notes"
+          @update:model-value="updateContact({notes: $event})"
           @change="save"
           autogrow
           :label="$t('contactNotes')"
@@ -300,9 +297,8 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop, Watch } from "vue-property-decorator";
-import { DateTime } from "luxon";
-import RecordMixin from "../mixins/RecordMixin";
+import { Component, Prop, Watch, Vue } from "vue-facing-decorator";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import { Contact, LabeledValue, PostalAddress, Client } from "../models";
 import NoDataItem from "../components/NoDataItem.vue";
 import LabeledItem, { LabeledItemType } from "../components/LabeledItem.vue";
@@ -310,6 +306,8 @@ import RevealButton from "../components/RevealButton.vue";
 import SelectableInput from "../components/SelectableInput.vue";
 import LabeledValueEditor from "../components/LabeledValueEditor.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
+
+interface ContactView extends RecordMixinInterface {};
 
 @Component({
   components: {
@@ -319,16 +317,18 @@ import DateTimeInput from "../components/DateTimeInput.vue";
     SelectableInput,
     LabeledValueEditor,
     DateTimeInput
-  }
+  },
+  mixins: [RecordMixin],
+  emits: ["delete", "save"]
 })
-export default class ContactView extends RecordMixin {
-  @Prop(Object) readonly contact!: Contact;
-  @Prop(Boolean) readonly noDegree!: boolean;
-  @Prop(Boolean) readonly noBirthday!: boolean; 
-  @Prop(Boolean) readonly noProfession!: boolean;
-  @Prop(Boolean) readonly noRelationship!: boolean;
-  @Prop(Boolean) readonly noOrganization!: boolean;
-  @Prop(Boolean) readonly noDelete!: boolean;
+class ContactView extends Vue {
+  @Prop({ type: Object }) readonly contact!: Contact;
+  @Prop({ type: Boolean }) readonly noDegree!: boolean;
+  @Prop({ type: Boolean }) readonly noBirthday!: boolean; 
+  @Prop({ type: Boolean }) readonly noProfession!: boolean;
+  @Prop({ type: Boolean }) readonly noRelationship!: boolean;
+  @Prop({ type: Boolean }) readonly noOrganization!: boolean;
+  @Prop({ type: Boolean }) readonly noDelete!: boolean;
 
   isEditing = false;
   width = Infinity;
@@ -360,7 +360,6 @@ export default class ContactView extends RecordMixin {
   }
   get contactDetails() {
     const result: LabeledItemType[] = [];
-    const locale = this.$root.$i18n.locale;
 
     return result.concat(this.contact.phoneNumbers.map((item, index, list) => {
       return {
@@ -389,7 +388,7 @@ export default class ContactView extends RecordMixin {
     })).concat(this.contact.birthday ? [
       {
         label: this.$t("birthday") as string,
-        value: this.contact.birthday.toLocaleString(locale, DateTime.DATE_FULL)
+        value: this.$d(this.contact.birthday, "DateFull")
       }
     ] : []).concat(this.contact.notes ? [
       {
@@ -513,4 +512,6 @@ export default class ContactView extends RecordMixin {
     this.onContactChanged();
   }
 }
+
+export default ContactView;
 </script>

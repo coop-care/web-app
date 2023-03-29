@@ -3,7 +3,7 @@
     :color="color"
     :options="filteredOptions"
     :label="$t('selectInterventionTarget')"
-    :value="value"
+    :model-value="value"
     :hint="hint"
     :virtual-scroll-slice-size="targetOptions.length"
     option-value="code"
@@ -18,7 +18,7 @@
     input-debounce="0"
     ref="select"
     class="intervention-target-select"
-    @input="$emit('input', $event)"
+    @update:model-value="$emit('update:model-value', $event || '')"
     @filter="filterOptions"
   >
     <q-resize-observer @resize="onResize" />
@@ -26,7 +26,6 @@
       <q-item
         v-if="!scope.opt.isHeader"
         v-bind="scope.itemProps"
-        v-on="scope.itemEvents"
         class="intervention-target-option"
         :style="widthStyle"
       >
@@ -90,7 +89,7 @@ body.desktop .intervention-target-option.q-manual-focusable--focused > .q-focus-
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
+import { Vue, Component, Prop, Ref, Model } from "vue-facing-decorator";
 import { QSelect } from "quasar";
 import { TerminologyWithMaps, UsersGuide, sortByTitle } from "../helper/terminology";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
@@ -107,14 +106,15 @@ export type InterventionTargetOption = {
   components: {
     SimplifiedMarkdown,
     TextWithHighlights
-  }
+  },
+  emits: ["update:model-value"]
 })
 export default class InterventionTargetSelect extends Vue {
-  @Prop({ type: String, default: ""}) readonly value!: string;
+  @Model({ type: String, default: ""}) readonly value!: string;
   @Prop({ type: String, default: ""}) readonly problemCode!: string;
   @Prop({ type: String, default: ""}) readonly categoryCode!: string;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
-  @Ref() readonly  select!: QSelect;
+  @Ref() readonly select!: QSelect;
 
   filterRegExp: RegExp | undefined = undefined;
   filteredOptions: InterventionTargetOption[] = [];
@@ -163,21 +163,21 @@ export default class InterventionTargetSelect extends Vue {
   }
   get hint() {
     return this.value
-      ? this.$t("terminology.targetByCode[" + this.value + "].description")
+      ? this.$tm("terminology.targetByCode." + this.value + ".description")
       : "";
   }
   get widthStyle() {
     return "max-width: " + this.maxWidth + "px";
   }
   get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
   get usersGuideForProblem() {
-    return ((this.$t("usersGuide") as unknown) as UsersGuide)[this.problemCode];
+    return ((this.$tm("usersGuide") as unknown) as UsersGuide)[this.problemCode];
   }
   get problemTitle() {
     return this.problemCode 
-      ? this.$t("terminology.problemByCode[" + this.problemCode + "].title")
+      ? this.$tm("terminology.problemByCode." + this.problemCode + ".title")
       : "";
   }
 

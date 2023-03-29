@@ -9,7 +9,7 @@
     >
       <client-history-entry
         v-for="(changeRecord, index) in changeRecords"
-        v-bind:key="index"
+        :key="index"
         :change-record="changeRecord"
       />
     </q-timeline>
@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import ClientHistoryEntry from "../components/ClientHistoryEntry.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
 import Loading from "components/Loading.vue";

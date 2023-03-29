@@ -17,9 +17,9 @@
           @click="$emit('remove', index)"
         />
         <selectable-input
-          :value="item.label"
+          :model-value="item.label"
           :options="labels"
-          @input="$emit('input:label', {target: item, value: $event})"
+          @update:model-value="$emit('input:label', {target: item, value: $event})"
           dense
           class="unlabeled-selectable-input col q-pl-md q-pr-xs no-text-size-adjust"
         />
@@ -56,14 +56,15 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { LabeledValue } from "../models";
 import SelectableInput from "../components/SelectableInput.vue";
 
 @Component({
   components: {
     SelectableInput
-  }
+  },
+  emits: ["remove", "add", "input:label"]
 })
 export default class ContactView extends Vue {
   @Prop({ type: Array, default: () => [] }) readonly items!: LabeledValue<any>[];

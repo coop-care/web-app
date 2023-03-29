@@ -28,7 +28,7 @@
     <div :class="$q.screen.gt.xs ? 'flex justify-center' : ''">
       <table
         v-if="tasks.length"
-        class="proof-of-performance text-left hyphen"
+        class="proof-of-performance text-left hyphen block scroll-x"
       >
         <thead>
           <tr>
@@ -77,16 +77,18 @@ table.proof-of-performance
 </style>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { date } from "quasar";
 import { Intervention } from "../models";
-import InterventionMixin from "../mixins/InterventionMixin";
+import InterventionMixin, { InterventionMixinInterface } from "../mixins/InterventionMixin";
 import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
 
 const { isBetweenDates, startOfDate, endOfDate } = date;
+
+interface ProofOfPerformancePage extends InterventionMixinInterface {};
 
 @Component({
   components: {
@@ -95,8 +97,9 @@ const { isBetweenDates, startOfDate, endOfDate } = date;
     DateTimeInput,
     PullToRefresh
   },
+  mixins: [InterventionMixin]
 })
-export default class ProofOfPerformancePage extends InterventionMixin {
+class ProofOfPerformancePage extends Vue {
   startDate = startOfDate(new Date(), "month", false);
   endDate = endOfDate(new Date(), "month", false);
 
@@ -108,15 +111,13 @@ export default class ProofOfPerformancePage extends InterventionMixin {
       count: number;
       dates: string[];
     }[] = [];
-    const locale = this.$root.$i18n.locale;
     const options = { inclusiveFrom: true, inclusiveTo: true, onlyDate: true };
     const teamMembers = this.$store.direct.state.teamMembers;
 
     this.client?.forAllReminders((reminder) => {
-      const completed = reminder.occurrences.filter(
-        (item) =>
-          !!item.completed &&
-          isBetweenDates(item.completed, this.startDate, this.endDate, options)
+      const completed = reminder.occurrences.filter((item) =>
+        !!item.completed &&
+        isBetweenDates(item.completed, this.startDate, this.endDate, options)
       );
 
       if (reminder instanceof Intervention && completed.length > 0) {
@@ -138,16 +139,9 @@ export default class ProofOfPerformancePage extends InterventionMixin {
         const dates = completed.map(
           (item) => {
             const signature = teamMembers[item.user || ""]?.signature;
-            return item.completed?.toLocaleString(locale, {
-              day: "numeric",
-              month: "short",
-            }) +
-            " " +
-            item.completed?.toLocaleString(locale, {
-              hour: "numeric",
-              minute: "numeric",
-            }) +
-            (signature ? " (" + signature + ")" : "");
+            return this.$d(item.completed || 0, "DayMonthShort") + " " +
+              this.$d(item.completed || 0, "TimeSimple") +
+              (signature ? " (" + signature + ")" : "");
         });
 
         tasks.push({
@@ -166,4 +160,6 @@ export default class ProofOfPerformancePage extends InterventionMixin {
     return this.$store.direct.getters.getClient(this.$route.params);
   }
 }
+
+export default ProofOfPerformancePage;
 </script>

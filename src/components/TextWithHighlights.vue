@@ -3,19 +3,19 @@
   <span v-else>
     <span
       v-for="(part, index) in separatedText"
-      v-bind:key="index"
+      :key="index"
       :class="classesForPart(part)"
     >{{ part }}</span>
   </span>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 
 @Component
 export default class TextWithHighlights extends Vue {
   @Prop({ type: String, default: ""}) readonly text!: string;
-  @Prop(RegExp) readonly regex: RegExp | undefined;
+  @Prop({ type: RegExp }) readonly regex: RegExp | undefined;
   @Prop({ type: String, default: ""}) readonly classesForMatches!: string;
 
   get separatedText() {

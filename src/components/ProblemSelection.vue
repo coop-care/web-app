@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="value"
     class="problem-classification"
     style="max-width: 800px"
   >
@@ -97,15 +98,15 @@
 <style lang="sass">
 .problem-classification
   .q-tree > .q-tree__node > .q-tree__node-header
-    background-color: var(--q-color-classification-bg)
+    background-color: var(--q-classification-bg)
   .q-tree__node .q-tree__node .q-tree__node .q-tree__node-header
     padding-top: 0
     padding-bottom: 0
 </style>
 
 <script lang="ts">
-import { Component, Prop, Ref } from "vue-property-decorator";
-import WarningMixin from "../mixins/WarningMixin";
+import { Component, Prop, Ref, Vue, Model } from "vue-facing-decorator";
+import WarningMixin, { WarningMixinInterface } from "../mixins/WarningMixin";
 import {
   HasTitleDescription,
   TerminologyWithMaps,
@@ -113,51 +114,53 @@ import {
   filterTerminology,
 } from "../helper/terminology";
 import { QInput, QTree } from "quasar";
-import { ProblemRecord, Problem } from "../models";
+import { Problem } from "../models";
 import TextWithHighlights from "./TextWithHighlights.vue";
+
+interface ProblemSelection extends WarningMixinInterface {};
 
 @Component({
   components: {
     TextWithHighlights,
   },
+  mixins: [WarningMixin],
+  emits: ["update:model-value"]
 })
-export default class ProblemSelection extends WarningMixin {
-  @Prop(Object) readonly value: ProblemRecord | undefined;
-  @Prop(Boolean) readonly editMode!: boolean;
+class ProblemSelection extends Vue {
+  @Model({ type: Object }) readonly value!: Problem;
+  @Prop({ type: Boolean }) readonly editMode!: boolean;
+  @Prop({ type: Boolean }) readonly isChangingProblemAdvisable!: boolean;
   @Ref() readonly filter!: QInput;
   @Ref() readonly problemTree!: QTree;
 
   problemsFilter = "";
 
   get selectedProblem() {
-    return this.problem?.code || "";
+    return this.value.code || "";
   }
   set selectedProblem(value: string) {
-    const hasOutcomesOrInterventions =
-      this.record?.outcomes.length || this.record?.interventions.length || false;
-
     if (
       this.editMode &&
       !!this.selectedProblem &&
-      !!this.problem &&
-      (this.problem.signsAndSymptoms.length ||
+      !!this.value &&
+      (this.value.signsAndSymptoms.length ||
         this.problems.details ||
-        hasOutcomesOrInterventions)
+        !this.isChangingProblemAdvisable)
     ) {
       const consequences = [];
-      if (this.problem.signsAndSymptoms.length) {
+      if (this.value.signsAndSymptoms.length) {
         consequences.push(this.$t("existingSignsAndSymptomsWarning"));
       }
-      if (this.problem.details) {
+      if (this.value.details) {
         consequences.push(this.$t("existingProblemDetailsWarning"));
       }
-      if (hasOutcomesOrInterventions) {
+      if (!this.isChangingProblemAdvisable) {
         consequences.push(this.$t("existingOutcomesOrInterventionsWarning"));
       }
       const message = this.$t("problemChangeWarningMessage", {
         consequences: consequences.join("\n"),
-        oldName: this.$t(this.problem.title),
-        newName: this.$t("terminology.problemByCode." + value + ".title"),
+        oldName: this.$tm(this.value.title),
+        newName: this.$tm("terminology.problemByCode." + value + ".title"),
       }) as string;
 
       this.showWarning(message).onOk(() => {
@@ -185,7 +188,7 @@ export default class ProblemSelection extends WarningMixin {
   }
 
   get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
   get record() {
     return (
@@ -193,25 +196,13 @@ export default class ProblemSelection extends WarningMixin {
       this.$store.direct.getters.getProblemRecordById(this.$route.params)
     );
   }
-  get problem() {
-    return this.record?.problem;
-  }
 
   updateProblem(code: string) {
-    const changes: Partial<Problem> = {
-      code: code,
+    this.$emit("update:model-value", Object.assign(this.value, {
+      code,
       signsAndSymptomsCodes: [],
       details: "",
-    };
-
-    this.$store.direct.commit.updateObject({
-      target: this.problem,
-      changes: changes,
-      clientId: this.$route.params.clientId,
-      problemId: this.record?.id,
-    });
-
-    this.$emit("input", this.record);
+    }));
   }
 
   resetProblemsFilter() {
@@ -242,4 +233,6 @@ export default class ProblemSelection extends WarningMixin {
     this.expandDomainForSelectedProblem();
   }
 }
+
+export default ProblemSelection;
 </script>

@@ -23,22 +23,25 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-facing-decorator";
 import { Task, Intervention } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ContactView from "../components/ContactView.vue";
 import ContactInterventionList from "../components/ContactInterventionList.vue";
+
+interface ClientInformalContactView extends RecordMixinInterface {};
 
 @Component({
   components: {
     ContactView,
     ContactInterventionList
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientInformalContactView extends RecordMixin {
+class ClientInformalContactView extends Vue {
 
   get contact() {
-    const contactId = this.$route.params.informalContactId;
+    const contactId = this.$route.params.informalContactId as string;
 
     if (contactId) {
       return this.client?.informalContacts.find(contact => contact.id.equals(contactId));
@@ -72,4 +75,6 @@ export default class ClientInformalContactView extends RecordMixin {
     }
   }
 }
+
+export default ClientInformalContactView;
 </script>

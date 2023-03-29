@@ -14,9 +14,10 @@ import {
     User,
     Team,
     TeamMember,
-    TeamInvitation
+    TeamInvitation,
+    BackOffice
 } from "../models";
-import { classToPlain, ClassTransformOptions } from "class-transformer";
+import { instanceToPlain, ClassTransformOptions } from "class-transformer";
 
 type Updatable<T> = {
     target: T;
@@ -74,6 +75,20 @@ export default defineMutations<StateInterface>()({
         if (id) {
             state.teamMembers[id] = teamMember;
         }
+    },
+
+    setBackoffices(state, backoffices: BackOffice[]) {
+        state.backoffices = backoffices;
+    },
+
+    setBackoffice(state, updatedBackoffice: BackOffice) {
+        state.backoffices = state.backoffices.map(backoffice => {
+            if (backoffice.equals(updatedBackoffice)) {
+                return updatedBackoffice;
+            } else {
+                return backoffice;
+            }
+        });
     },
 
     setClients(state, clients: Client[]) {
@@ -201,8 +216,8 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 changeType,
                 problemId,
-                classToPlain(newInstance, excludeForChangeRecord),
-                classToPlain(oldInstance, excludeForChangeRecord)
+                instanceToPlain(newInstance, excludeForChangeRecord),
+                instanceToPlain(oldInstance, excludeForChangeRecord)
             )
         );
     },
@@ -302,7 +317,7 @@ export default defineMutations<StateInterface>()({
                     store.getters.userId,
                     type,
                     problemId || "",
-                    classToPlain(reminder, excludeForChangeRecord),
+                    instanceToPlain(reminder, excludeForChangeRecord),
                     undefined,
                     reminder.finishedAt
                 )
@@ -338,7 +353,7 @@ export default defineMutations<StateInterface>()({
             return;
         }
 
-        const newProblemRecord = problemRecord.prioritizedClone();
+        const newProblemRecord = problemRecord.prioritizedDuplicate();
         client.problems.push(newProblemRecord);
         problemRecord.resolvedAt = new Date();
 
@@ -347,7 +362,7 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 "ProblemResolved",
                 problemRecord.id,
-                classToPlain(problemRecord.problem)
+                instanceToPlain(problemRecord.problem)
             )
         );
     },
@@ -365,7 +380,7 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 "ProblemResolved",
                 problemRecord.id,
-                classToPlain(problemRecord.problem)
+                instanceToPlain(problemRecord.problem)
             )
         );
 
@@ -379,7 +394,21 @@ export default defineMutations<StateInterface>()({
             return;
         }
 
-        let target: Outcome | Rating = problemRecord.editableOutcome;
+        let lastOutcome = problemRecord.outcomes.at(-1);
+
+        if (!lastOutcome || lastOutcome.createdAt) {
+            const newOutcome = new Outcome();
+
+            if (lastOutcome) {
+                newOutcome.knowledge = lastOutcome.knowledge.clone();
+                newOutcome.behaviour = lastOutcome.behaviour.clone();
+                newOutcome.status = lastOutcome.status.clone();
+            }
+            problemRecord.outcomes.push(newOutcome);
+            lastOutcome = newOutcome;
+        }
+
+        let target: Outcome | Rating = lastOutcome;
 
         if (payload.ratingType) {
             target = (target as any)[payload.ratingType];
@@ -395,7 +424,7 @@ export default defineMutations<StateInterface>()({
                         store.getters.userId,
                         "OutcomeRated",
                         problemRecord.id,
-                        classToPlain(target),
+                        instanceToPlain(target),
                         undefined,
                         payload.changes.createdAt
                     )
@@ -417,7 +446,7 @@ export default defineMutations<StateInterface>()({
                 store.getters.userId,
                 "ProblemCreated",
                 problemRecord.id,
-                classToPlain(problemRecord.problem),
+                instanceToPlain(problemRecord.problem),
                 undefined,
                 now
             )
@@ -432,7 +461,7 @@ export default defineMutations<StateInterface>()({
                     store.getters.userId,
                     "OutcomeRated",
                     problemRecord.id,
-                    classToPlain(outcome),
+                    instanceToPlain(outcome),
                     undefined,
                     now
                 )
@@ -446,7 +475,7 @@ export default defineMutations<StateInterface>()({
                     store.getters.userId,
                     "InterventionStarted",
                     problemRecord.id,
-                    classToPlain(intervention, excludeForChangeRecord),
+                    instanceToPlain(intervention, excludeForChangeRecord),
                     undefined,
                     now
                 )

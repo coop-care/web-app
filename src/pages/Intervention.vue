@@ -1,81 +1,106 @@
 <template>
-  <editing-page-container
-    :title="$t('editIntervention')"
-    :is-data-available="!!(client && intervention)"
-    hide-default-footer
+  <editing-sheet
+    ref="editingSheet"
+    :title="title"
+    :is-data-available="!!(client && editableIntervention)"
+    :paramsToRemoveOnClose="['problemId', 'interventionId']"
+    :hasPendingChanges="hasPendingChanges"
   >
-    <problem-summary-container>
       <intervention-editor
-        :value="intervention"
+        :model-value="editableIntervention"
+        :problem-code="problemCode"
         isSingleEditor
         editMode
+        class="q-mt-lg"
       />
       <warning
         v-model="showWarning"
-        :messages="customWarnings"
+        :messages="interventionWarnings(editableIntervention)"
       />
-      <q-btn
-        @click="validate(customWarnings, save)"
-        color="primary"
-        rounded
-        no-caps
-        :outline="!!customWarnings"
-        icon-right="fas fa-caret-right"
-        :label="doneButtonLabel"
-        class="q-mt-lg"
-      />
-    </problem-summary-container>
-  </editing-page-container>
+      <div class="q-mt-lg row justify-center">
+        <q-btn
+          @click="validate(interventionWarnings(editableIntervention), save)"
+          color="primary"
+          rounded
+          unelevated
+          no-caps
+          :outline="!!interventionWarnings(editableIntervention)"
+          :label="doneButtonLabel"
+          class="done-button"
+        />
+      </div>
+  </editing-sheet>
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import RecordValidator from "../mixins/RecordValidator";
-import { Reminder, Intervention } from "../models";
-import EditingPageContainer from "components/EditingPageContainer.vue";
+import { Component, Ref, Vue } from "vue-facing-decorator";
+import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValidator";
+import { Intervention } from "../models";
+import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import InterventionEditor from "components/InterventionEditorV3.vue";
 import Warning from "components/Warning.vue";
 
-let oldIntervention: Reminder | undefined;
+interface InterventionPage extends RecordValidatorInterface {};
 
 @Component({
   components: {
     InterventionEditor,
-    EditingPageContainer,
+    EditingSheet,
     ProblemSummaryContainer,
     Warning,
   },
+  mixins: [RecordValidator]
 })
-export default class InterventionPage extends RecordValidator {
-  get intervention() {
-    return this.client?.findReminder(this.$route.params.interventionId);
+class InterventionPage extends Vue {
+  @Ref() readonly editingSheet!: EditingSheet;
+  editableIntervention: Intervention | null = null;
+
+  get title() {
+    return [
+      this.client?.contact.name,
+      this.record?.problem.title
+        ? this.$t(this.record?.problem.title)
+        : "",
+      this.$t("editIntervention")
+    ].filter(Boolean).join(": ");
   }
-  get customWarnings() {
-    if (this.intervention) {
-      return this.warningsForIntervention(this.intervention as Intervention)
-    } else {
-      return ""
-    }
+  get intervention() {
+    return this.client?.findReminder(this.$route.params.interventionId as string);
+  }
+  get problemCode() {
+    return this.record?.problem.code ?? ""
+  }
+
+  hasPendingChanges() {
+    return !!this.editableIntervention && !!this.intervention 
+      && !this.editableIntervention.equals(this.intervention);
   }
 
   save() {
-    if (this.intervention) {
+    if (this.editableIntervention && this.hasPendingChanges()) {
       this.$store.direct.commit.addToClientHistory({
-        clientId: this.$route.params.clientId,
-        problemId: this.$route.params.problemId,
+        clientId: this.$route.params.clientId as string,
+        problemId: this.$route.params.problemId as string,
         changeType: "InterventionModified",
-        newInstance: this.intervention,
-        oldInstance: oldIntervention,
+        newInstance: this.editableIntervention,
+        oldInstance: this.intervention,
+      });
+      this.$store.direct.commit.updateObject({
+        target: this.intervention,
+        changes: this.editableIntervention,
       });
     }
+
     void this.$store.direct.dispatch
       .saveClient(this.$route.params)
-      .then(() => this.$router.back());
+      .then(() => this.editingSheet.confirm());
   }
 
-  mounted() {
-    oldIntervention = this.intervention?.clone();
+  created() {
+    this.editableIntervention = (this.intervention?.clone() as Intervention) ?? null;
   }
 }
+
+export default InterventionPage;
 </script>

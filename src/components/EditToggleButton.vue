@@ -7,7 +7,7 @@
       outline
       color="primary"
       size="10.5px"
-      @click="$emit('input', true)"
+      @click="$emit('update:model-value', true)"
       :title="$t('edit')"
       class="shadow-1"
     />
@@ -18,17 +18,19 @@
       no-caps
       dense
       color="primary"
-      @click="$emit('input', false)"
+      @click="$emit('update:model-value', false)"
       class="q-px-sm"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue, Model } from "vue-facing-decorator";
 
-@Component
+@Component({
+  emits: ["update:model-value"]
+})
 export default class EditToggleButton extends Vue {
-  @Prop(Boolean) readonly value!: boolean;
+  @Model({ type: Boolean }) readonly value!: boolean;
 }
 </script>

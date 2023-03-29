@@ -69,7 +69,7 @@
 .q-timeline--comfortable .change-record
   .q-timeline__title table
     margin-left: 40px
-.change-record .q-timeline__subtitle div:nth-of-type(2)
+.change-record .q-timeline__subtitle div
   text-transform: none
 .q-timeline--dense .change-record
   margin-left: 8px
@@ -82,25 +82,27 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
-import { DateTime } from "luxon";
-import InterventionMixin from "../mixins/InterventionMixin";
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import InterventionMixin, { InterventionMixinInterface } from "../mixins/InterventionMixin";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import { Intervention, ChangeRecord, Problem } from "../models";
+
+interface ClientHistoryEntry extends InterventionMixinInterface {};
 
 @Component({
   components: {
     SimplifiedMarkdown,
   },
+  mixins: [InterventionMixin]
 })
-export default class ClientHistoryEntry extends InterventionMixin {
+class ClientHistoryEntry extends Vue {
   @Prop({ type: Object, required: true }) readonly changeRecord!: ChangeRecord;
 
   isExpanded = false;
 
   get title() {
     const type = this.changeRecord.type;
-    const problemTitle = this.record
+    const problemTitle = this.record?.problem.title
       ? this.$t(this.record?.problem.title)
       : this.$t("unspecifiedProblem");
     const interventionId: string = type.startsWith("Intervention")
@@ -115,11 +117,7 @@ export default class ClientHistoryEntry extends InterventionMixin {
     });
   }
   get date() {
-    const locale = this.$root.$i18n.locale;
-    return this.changeRecord.createdAt.toLocaleString(
-      locale,
-      DateTime.DATETIME_MED
-    );
+    return this.$d(this.changeRecord.createdAt, "DateTimeMed");
   }
   get username() {
     return this.$store.direct.state.teamMembers[this.changeRecord.user]?.username;
@@ -178,9 +176,9 @@ export default class ClientHistoryEntry extends InterventionMixin {
       isHighPriority: this.$t("highPriority.title") as string,
       "problem.details": this.$t("notice") as string,
       priorityDetails: this.$t("lowPriorityReasonLabel") as string,
-      knowledge: this.$t("terminology.problemRatingScale.ratings[0].title") as string,
-      behaviour: this.$t("terminology.problemRatingScale.ratings[1].title") as string,
-      status: this.$t("terminology.problemRatingScale.ratings[2].title") as string,
+      knowledge: this.$tm("terminology.problemRatingScale.ratings[0].title") as string,
+      behaviour: this.$tm("terminology.problemRatingScale.ratings[1].title") as string,
+      status: this.$tm("terminology.problemRatingScale.ratings[2].title") as string,
       personRatedInPlaceOfOwner: this.$t("personRatedInPlaceOfOwnerTitle") as string,
       recurrenceRules: this.$t("reminderTitle") as string,
       categoryCode: this.$t("category") as string,
@@ -241,7 +239,7 @@ export default class ClientHistoryEntry extends InterventionMixin {
           texts.push(this.$t("quotedText", { quote: value.comment }) as string);
         }
         if (value.observation) {
-          const rating = this.$t(
+          const rating = this.$tm(
             "terminology.problemRatingScale.ratings[" +
               indexForKey[key] +
               "].scale[" +
@@ -251,7 +249,7 @@ export default class ClientHistoryEntry extends InterventionMixin {
           texts.push((this.$t("observedRating") as string) + ": " + rating);
         }
         if (value.expectation) {
-          const rating = this.$t(
+          const rating = this.$tm(
             "terminology.problemRatingScale.ratings[" +
               indexForKey[key] +
               "].scale[" +
@@ -283,4 +281,6 @@ export default class ClientHistoryEntry extends InterventionMixin {
     }
   }
 }
+
+export default ClientHistoryEntry;
 </script>

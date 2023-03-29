@@ -1,7 +1,6 @@
 <template>
   <q-page
-    padding
-    class="limit-page-width width-sm"
+    class="limit-page-width width-sm page-padding"
   >
     <pull-to-refresh @refresh="updateClientsInAdditionalTeams">
       <div
@@ -49,12 +48,44 @@
           >
             <div>
               <q-input
-                :value="teamName"
+                :model-value="teamName"
                 :label="$t('teamName')"
                 ref="teamNameInput"
-                @change="teamName = $event.target.value"
+                @change="teamName = $event"
                 style="max-width: 500px"
               />
+              <!-- <div class="row items-center q-gutter-y-sm">
+                <q-select
+                  :model-value="team.backoffice"
+                  @update:model-value="saveTeam({backoffice: $event || ''})"
+                  :options="backofficeOptions"
+                  :label="$t('backoffice')"
+                  emit-value
+                  map-options
+                  dense-options
+                  clearable
+                  class="col"
+                  style="max-width: 500px; min-width: 240px"
+                >
+                  <template v-slot:no-option>
+                    <q-item>
+                      <q-item-section class="text-italic text-grey">
+                        {{ $t("noExistingBackOffices") }}
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+                <q-btn
+                  :label="$t('goToBackofficeSettings')"
+                  icon-right="fas fa-caret-right"
+                  flat
+                  rounded
+                  no-caps
+                  size="13px"
+                  color="primary"
+                  @click="$router.push({name: 'backofficeSettings'})"
+                />
+              </div> -->
               <q-btn
                 v-if="!$store.direct.getters.isDemo"
                 :label="$t('downloadBackup')"
@@ -123,8 +154,8 @@
                           </q-item-section>
                           <q-item-section side>
                             <q-toggle 
-                              :value="hasAdminRole(member)" 
-                              @input="toggleAdminRole(member)"
+                              :model-value="hasAdminRole(member)" 
+                              @update:model-value="toggleAdminRole(member)"
                               :disable="!isAdmin"
                             />
                           </q-item-section>
@@ -170,8 +201,8 @@
                           </q-item-section>
                           <q-item-section side>
                             <q-toggle 
-                              :value="invitation.assignAdminRole" 
-                              @input="toggleInvitationAdminRole(invitation)"
+                              :model-value="invitation.assignAdminRole" 
+                              @update:model-value="toggleInvitationAdminRole(invitation)"
                               :disable="!isAdmin"
                             />
                           </q-item-section>
@@ -197,7 +228,7 @@
           
           <q-expansion-item
             v-model="expandedClients"
-            :label="$tc('client', 2) + ' (' + clients.length + ')'"
+            :label="$t('client', 2) + ' (' + clients.length + ')'"
             header-class="section-heading q-mt-md q-mb-sm q-px-none dense-avatar"
             switch-toggle-side
           >
@@ -232,32 +263,36 @@
 </template>
 
 <script lang="ts">
-import { Component, Ref } from "vue-property-decorator";
+import { Component, Ref, Vue } from "vue-facing-decorator";
 import { QInput } from "quasar";
 import VueI18n from "vue-i18n";
 import { TeamMember, Team, TeamInvitation, Client } from "../models";
+import ClientActionMixin, { ClientActionMixinInterface } from "../mixins/ClientActionMixin";
 import Signature from "../components/Signature.vue";
 import ActionMenu from "../components/ActionMenu.vue";
 import TextWithTooltip from "../components/TextWithTooltip.vue";
 import PullToRefresh from "../components/PullToRefresh.vue";
 import TeamInvitationDialog from "../components/TeamInvitationDialog.vue";
-import ClientActionMixin from "../mixins/ClientActionMixin";
 import { downloadJSON } from "src/helper/download";
+
+interface TeamSettingsPage extends ClientActionMixinInterface {};
 
 @Component({
   components: {
     Signature,
     ActionMenu,
     TextWithTooltip,
-    PullToRefresh
+    PullToRefresh,
   },
+  mixins: [ClientActionMixin]
 })
-export default class TeamSettingsPage extends ClientActionMixin {
+class TeamSettingsPage extends Vue {
   @Ref() readonly teamNameInput?: QInput;
 
-  expandedSettings = false;
+  expandedSettings = true;
   expandedMembers = true;
   expandedClients = true;
+  localeChangedKey = Math.random();
 
   get teamId() {
     return this.currentUser?.activeTeam || "";
@@ -320,6 +355,14 @@ export default class TeamSettingsPage extends ClientActionMixin {
         rounded: true
       }
     }
+  }
+  get backofficeOptions() {
+    return this.$store.direct.state.backoffices.map(item => {
+      return {
+        label: item.name,
+        value: item.id
+      }
+    });
   }
 
   isCurrentUser(member: TeamMember) {
@@ -438,7 +481,6 @@ export default class TeamSettingsPage extends ClientActionMixin {
   inviteTeamMember() {
     this.$q.dialog({
       component: TeamInvitationDialog,
-      parent: this
     }).onOk((email: string) => {
       const currentUserId = this.currentUser?.userId;
       const invitee = email.toLowerCase();
@@ -452,7 +494,7 @@ export default class TeamSettingsPage extends ClientActionMixin {
           this.$t("teamMemberAlreadyExistsErrorMessage", { name: inviteeAsMember.username })
         );
       } else if (currentUserId && invitee) {
-        const invitation = new TeamInvitation(invitee, currentUserId, this.$root.$i18n.locale);
+        const invitation = new TeamInvitation(invitee, currentUserId, this.$i18n.locale);
         this.sendInvitation(invitation);
       } else {
         this.presentInvitationError();
@@ -556,10 +598,18 @@ export default class TeamSettingsPage extends ClientActionMixin {
     }
   }
 
+  created() {
+    this.$bus.on("did-change-locale", () => this.localeChangedKey = Math.random());
+  }
   mounted() {
     if (this.team) {
       this.updateClientsInAdditionalTeams();
     }
   }
+  unmounted() {
+    this.$bus.off("did-change-locale");
+  }
 }
+
+export default TeamSettingsPage;
 </script>

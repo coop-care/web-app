@@ -1,4 +1,4 @@
-import { classToClass } from "class-transformer";
+import { ClassConstructor, instanceToPlain, plainToInstance } from "class-transformer";
 import { Reminder, Occurrence } from "../models";
 
 export class Task<T extends Reminder> {
@@ -43,7 +43,7 @@ export class Task<T extends Reminder> {
     }
 
     clone() {
-        return classToClass(this);
+        return plainToInstance(this.constructor as ClassConstructor<this>, instanceToPlain(this));
     }
 }
 export class TaskGroup {
@@ -67,7 +67,7 @@ export class TaskGroup {
     }
 }
 
-type GroupedTask = {
+export type GroupedTask = {
     title: string;
     task?: Task<Reminder>;
 }

@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { Type, Transform } from "class-transformer";
 import { Base, LabeledValue, CustomField } from ".";
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 
 export type PostalAddress = {
   street1: string;
@@ -12,9 +12,9 @@ export type PostalAddress = {
 };
 
 export class Contact extends Base {
-  @Transform(({ value, obj, key }) => (value as ObjectID)?.toHexString(), { toPlainOnly: true })
-  @Transform(({ value }) => new ObjectID((value as string).padStart(12)), { toClassOnly: true })
-  id = new ObjectID();
+  @Transform(({ value }) => (value as ObjectId)?.toHexString(), { toPlainOnly: true })
+  @Transform(({ value }) => new ObjectId((value as string).padStart(12)), { toClassOnly: true })
+  id = new ObjectId();
   userId?: string = undefined;
   externalSourceURL?: string = undefined;
 
@@ -78,7 +78,7 @@ export class Contact extends Base {
     return Contact.makeLabeledValue("", this.phoneNumbers, Contact.phoneLabels);
   }
   makeEmailAddress() {
-    return Contact.makeLabeledValue("", this.emailAddresses, Contact.phoneLabels);
+    return Contact.makeLabeledValue("", this.emailAddresses, Contact.emailLabels);
   }
   makePostalAddress(country: string) {
     return Contact.makeLabeledValue({

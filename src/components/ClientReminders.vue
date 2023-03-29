@@ -1,6 +1,5 @@
 <template>
   <div
-    v-touch-swipe.mouse.horizontal="swipeTasks"
     class="client-reminders min-height column items-center"
   >
     <div class="row">
@@ -27,10 +26,11 @@
             ref="dateProxy"
             transition-show="scale"
             transition-hide="scale"
+            self="center middle"
           >
             <q-date
               v-model="selectedDateString"
-              @input="dateProxy.hide()"
+              @update:model-value="dateProxy.hide()"
               :events="[]"
               color="primary"
               event-color="primary"
@@ -42,18 +42,18 @@
       </div>
       <div class="q-mr-sm selected-date print-hide">
         <div class="text-h6 ellipsis">
-          {{ formattedDate({ weekday: "long" }) }}
+          {{ $d(selectedDate, "WeekdayLong") }}
           {{ isToday ? $t("isTodayHint") : "" }}
         </div>
         <div class="text-body2">
           {{
-            formattedDate({ year: "numeric", month: "long", day: "numeric" })
+            $d(selectedDate, "DateMed")
           }}
         </div>
       </div>
       <div class="text-h6 print-only">
         {{ $t("tasksForDay") }}
-        {{ formattedDate({ weekday: "long",  year: "numeric", month: "long", day: "numeric" }) }}
+        {{ $d(selectedDate, "DateHuge") }}
       </div>
       <div class="q-mt-xs">
         <q-btn
@@ -69,8 +69,13 @@
       <q-space />
     </div>
 
-    <q-list 
-      v-if="tasks.length"
+    <!-- <time-recording
+      v-if="canComplete"
+      :date="selectedDate"
+      class="q-mt-sm"
+    /> -->
+
+    <q-list
       class="q-mb-xl full-width"
       dense
     >
@@ -101,32 +106,40 @@
             {{ taskOrTitle.title }}
           </div>
         </div>
+
+        <div
+          v-if="!tasks.length"
+          key="noTasks"
+          class="text-center text-body2 q-mt-xl"
+        >
+          <div class="text-italic">{{$t("noTasksPlanned")}}</div>
+          <div
+            v-if="!hasActiveProblems"
+            class="q-mt-lg"
+          >
+            <div class="text-italic">{{ $t("noProblemForNewIntervention") }}</div>
+            <q-btn
+              v-if="!isDisabled"
+              :label="$t('problemAdmission')"
+              flat
+              no-caps
+              rounded
+              size="md"
+              color="classification"
+              class="q-mt-xs text-normal"
+              @click="addProblem"
+            />
+          </div>
+        </div>
+
+        <shift-notes-day-view
+          key="shiftnotes"
+          :date="selectedDate"
+          :canAddNote="isToday"
+          :class="['q-pb-xl', $q.screen.gt.xs ? 'q-px-md' : '']"
+        />
       </transition-group>
     </q-list>
-
-    <div
-      v-else
-      class="text-center text-body2 q-mt-xl"
-    >
-      <div class="text-italic">{{$t("noTasksPlanned")}}</div>
-      <div
-        v-if="!hasActiveProblems"
-        class="q-mt-lg"
-      >
-        <div class="text-italic">{{ $t("noProblemForNewIntervention") }}</div>
-        <q-btn
-          v-if="!isDisabled"
-          :label="$t('problemAdmission')"
-          flat
-          no-caps
-          rounded
-          size="md"
-          color="classification"
-          class="q-mt-xs text-normal"
-          @click="addProblem"
-        />
-      </div>
-    </div>
 
     <q-page-sticky
       v-if="!isDisabled && hasActiveProblems"
@@ -147,7 +160,7 @@
 <style lang="sass">
 .client-reminders
   &> *
-    max-width: 560px
+    max-width: 600px
   .thin-button
     width: 32px
   .selected-date
@@ -155,7 +168,7 @@
     div:first-of-type
       margin-bottom: -5px
 body.desktop .task-list .q-hoverable:hover > .q-focus-helper
-  background-color: var(--q-color-primary)
+  background-color: var(--q-primary)
 .task-list
   position: relative
 .task-list-item
@@ -166,14 +179,20 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
   opacity: 0
 .task-list-move
   transition: opacity 1s ease-in-out, transform .3s ease-in-out .7s
+.shift-notes
+  margin-top: 64px
 </style>
 
 <script lang="ts">
-import { Component, Ref, Watch } from "vue-property-decorator";
+import { Component, Ref, Watch, Vue } from "vue-facing-decorator";
 import { date, QPopupProxy } from "quasar";
-import { Task, TaskGroup, Reminder } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import { Task, TaskGroup, Reminder, GroupedTask } from "../models";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
+import ShiftNotesDayView from "components/ShiftNotesDayView.vue";
+import TimeRecording from "components/TimeRecording.vue";
+
+interface ClientReminders extends RecordMixinInterface {};
 
 const {
   isSameDate,
@@ -192,11 +211,14 @@ const allInclusive = {
 @Component({
   components: {
     TaskView,
+    ShiftNotesDayView,
+    TimeRecording
   },
+  mixins: [RecordMixin]
 })
-export default class ClientReminders extends RecordMixin {
+class ClientReminders extends Vue {
   @Ref() readonly dateProxy!: QPopupProxy;
-  tasks = this.tasksForDay(this.selectedDate);
+  tasks: GroupedTask[] = [];
   isToday = true;
   startOfTodayTimer = 0;
   endOfTodayTimer = 0;
@@ -208,13 +230,15 @@ export default class ClientReminders extends RecordMixin {
   }
 
   get selectedDate() {
-    return new Date(parseInt(this.$root.$route.params.day) || Date.now());
+    return new Date(parseInt(this.$route.params.day as string) || Date.now());
   }
   set selectedDate(value) {
-    this.$route.params.day = "" + value.getTime();
     void this.$router.push({
       name: this.$route.name || undefined,
-      params: this.$route.params,
+      params: { 
+        ...this.$route.params, 
+        day: "" + value.getTime()
+      },
     });
     this.updateTasks();
     this.updatedIsToday();
@@ -236,32 +260,19 @@ export default class ClientReminders extends RecordMixin {
       allInclusive
     );
   }
-  get timeFormatter() {
-    return new Intl.DateTimeFormat(this.$root.$i18n.locale, {
-      hour: "numeric",
-      minute: "numeric",
-    });
-  }
   get hasActiveProblems() {
-    return this.client && this.client.activeProblemCount > 0
+    return this.client && this.client.activeProblems.length > 0
   }
   get taskListTransitionGroupKey() {
     return [
       "task.list", 
       this.client?._id?.toHexString() || "no-client-id", 
-      this.$root.$route.params.day || "today"
+      this.$route.params.day || "today"
     ].join(".");
   }
 
   updatedIsToday() {
     return this.isToday = isSameDate(this.selectedDate, Date.now(), "day");
-  }
-
-  formattedDate(options: Intl.DateTimeFormatOptions) {
-    return this.selectedDate.toLocaleDateString(
-      this.$root.$i18n.locale,
-      options
-    );
   }
 
   swipeTasks({ direction }: any) {
@@ -370,7 +381,7 @@ export default class ClientReminders extends RecordMixin {
     scheduledTasks
       .sort(Task.sortByDueDate)
       .forEach((task) => {
-        const title = this.timeFormatter.format(task.due);
+        const title = task.due ? this.$d(task.due, "TimeSimple") : "";
         const group = groupedTasks.find((group) => group.title == title);
 
         if (group) {
@@ -390,14 +401,14 @@ export default class ClientReminders extends RecordMixin {
 
   addIntervention() {
     void this.$router.push({
-      name: "newIntervention",
+      params: { sheet: "newIntervention" },
     });
   }
 
   addProblem() {
     void this.$router.push({
-      name: "problem",
-      params: { problemId: "new" },
+      name: "clientReport", 
+      params: { sheet: "newProblem" }
     });
   }
 
@@ -433,15 +444,18 @@ export default class ClientReminders extends RecordMixin {
   }
 
   created() {
+    this.tasks = this.tasksForDay(this.selectedDate);
     window.addEventListener("visibilitychange", this.visibilityDidChange);
     this.updateTasks();
     this.updatedIsToday();
     this.setTodayTimers();
   }
 
-  beforeDestroy() {
+  unmounted() {
     window.removeEventListener("visibilitychange", this.visibilityDidChange);
     this.clearTodayTimers();
   }
 }
+
+export default ClientReminders;
 </script>

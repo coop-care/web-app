@@ -2,13 +2,15 @@ import "reflect-metadata";
 import { Type, Transform, TransformFnParams } from "class-transformer";
 import { Reminder } from ".";
 import { Term } from "./term";
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 
-const fromObjectID = ({ value, obj, key }: TransformFnParams) =>
-    (value as ObjectID)?.toHexString();
+const fromObjectID = ({ value }: TransformFnParams) => 
+    (value as ObjectId)?.toHexString();
 
 const toObjectID = ({ value }: TransformFnParams) =>
-    value != undefined ? new ObjectID((value as string).padStart(12)) : undefined;
+    value != undefined 
+        ? new ObjectId((value as string).padStart(12)) 
+        : undefined;
 
 export class Intervention extends Reminder {
     categoryCode = "";
@@ -18,10 +20,10 @@ export class Intervention extends Reminder {
     comment?: string = undefined;
     @Transform(fromObjectID, { toPlainOnly: true })
     @Transform(toObjectID, { toClassOnly: true })
-    assignee?: ObjectID = undefined;
+    assignee?: ObjectId = undefined;
     @Transform(fromObjectID, { toPlainOnly: true })
     @Transform(toObjectID, { toClassOnly: true })
-    receiver?: ObjectID = undefined;
+    receiver?: ObjectId = undefined;
     @Type(() => Intervention)
     arrangedIntervention?: Intervention = undefined;
 
@@ -57,7 +59,7 @@ export class Intervention extends Reminder {
             return new Term("");
         }
     }
-    get intervention() {
+    get intervention(): Intervention {
         return this.arrangedIntervention || this;
     }
 }

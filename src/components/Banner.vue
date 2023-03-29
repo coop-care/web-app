@@ -58,7 +58,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Watch } from "vue-property-decorator";
+import { Vue, Component, Watch } from "vue-facing-decorator";
 import { Team, TeamInvitation, TeamMember } from "../models";
 
 @Component
@@ -190,8 +190,8 @@ export default class BannerView extends Vue {
     void this.$store.direct.dispatch.saveTeam({
       target: team,
       changes: changes
-    }).then(_ => 
-      this.$store.direct.dispatch.fetchEssentialDataFromDB({locale: this.$root.$i18n.locale})
+    }).then(() => 
+      this.$store.direct.dispatch.fetchEssentialDataFromDB({locale: this.$i18n.locale})
     );
   }
   deleteInvitation(team: Team, invitation: TeamInvitation) {

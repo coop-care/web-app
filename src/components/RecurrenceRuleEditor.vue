@@ -44,6 +44,7 @@
           <q-toggle
             v-if="frequency != -1"
             v-model="hasOwnRecurrencePattern"
+            @update:model-value="frequency = frequency"
             :label="$t('ownRecurrencePatternTitle')"
             :color="color"
             switch-toggle-side
@@ -54,13 +55,16 @@
           <div v-if="hasOwnRecurrencePattern">
             <div v-if="frequency != -1">
               <q-input
-                :color="color"
-                v-model.number="interval"
-                type="number"
+                :model-value="interval"
+                @update:model-value="onUpdateNumeric3Digits($event, () => interval = $event)"
+                @change="interval = $event"
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]"
                 dense
-                step="1"
                 :prefix="intervalLabels[0]"
                 :suffix="intervalLabels[1]"
+                :color="color"
                 input-class="text-center"
                 class="q-pb-md"
                 :key="intervalKey"
@@ -71,7 +75,7 @@
               <date-time-input
                 v-for="(time, index) in timesOfTheDay"
                 :key="index"
-                :value="time"
+                :model-value="time"
                 :format="$t('timeFormat')"
                 :placeholder="
                   $t('addTimePlaceholder', {
@@ -79,9 +83,8 @@
                   })
                 "
                 :color="color"
-                class=""
                 dense
-                @input="timesOfTheDayInput($event, index)"
+                @update:model-value="timesOfTheDayInput($event, index)"
               />
             </div>
 
@@ -99,7 +102,8 @@
             <div v-if="frequency == Frequency.MONTHLY">
               <div>
                 <q-radio
-                  v-model="monthlyMode"
+                  :model-value="monthlyMode"
+                  @update:model-value="emitRecurrenceRule(updatingMonthlyMode($event, value))"
                   val="DayOfMonth"
                   :label="$t('onDayOfMonthTitle')"
                   :color="color"
@@ -119,7 +123,8 @@
               />
               <div class="q-my-sm">
                 <q-radio
-                  v-model="monthlyMode"
+                  :model-value="monthlyMode"
+                  @update:model-value="emitRecurrenceRule(updatingMonthlyMode($event, value))"
                   val="DayOfWeek"
                   :label="$t('onDayOfWeekTitle')"
                   :color="color"
@@ -168,7 +173,8 @@
               />
               <div class="q-mt-md q-mb-sm">
                 <q-toggle
-                  v-model="showYearlyDayOfWeek"
+                  :model-value="showYearlyDayOfWeek"
+                  @update:model-value="emitRecurrenceRule(updatingYearlyDayOfWeek($event, value))"
                   :label="$t('onDayOfWeekTitle')"
                   :color="color"
                   dense
@@ -207,7 +213,7 @@
         </div>
 
         <div
-          v-if="(frequency != -1) && !hideEnd"
+          v-if="(frequency != -1) && !hideEnd"
           :class="[!hideFrequency ? 'col-md-6' : '', 'col-12']"
         >
           <q-select
@@ -237,11 +243,14 @@
           <div v-if="recurrenceEndMode == 'NumberOfOccurrences'">
             <q-input
               :color="color"
-              v-model.number="endCount"
-              type="number"
+              :model-value="endCount"
+              @update:model-value="onUpdateNumeric3Digits($event, () => endCount = $event)"
+              @change="endCount = $event"
+              type="text"
+              inputmode="numeric"
+              pattern="[0-9]"
               class="q-my-sm"
               dense
-              step="1"
               input-class="text-center"
               :key="occurrenceCountKey"
             >
@@ -269,11 +278,11 @@
 </style>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Vue, Model } from "vue-facing-decorator";
 import { TranslateResult } from "vue-i18n";
 import { date } from "quasar";
 import { RRuleSet, RRule, Frequency, Options } from "../models/rrule";
-import InterventionMixin from "../mixins/InterventionMixin";
+import InterventionMixin, { InterventionMixinInterface } from "../mixins/InterventionMixin";
 import SearchableOptionList from "./SearchableOptionList.vue";
 import ToggleButtonGroup from "./ToggleButtonGroup.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
@@ -287,21 +296,25 @@ const toArray = (value: number | undefined | null | number[]) =>
 type MonthlyMode = "DayOfMonth" | "DayOfWeek";
 type RecurrenceEndMode = "Never" | "EndDate" | "NumberOfOccurrences";
 
+interface RecurrenceRuleEditor extends InterventionMixinInterface {};
+
 @Component({
   components: {
     SearchableOptionList,
     ToggleButtonGroup,
     DateTimeInput
-  }
+  },
+  mixins: [InterventionMixin],
+  emits: ["update:model-value"]
 })
-export default class RecurrenceRuleEditor extends InterventionMixin {
-  @Prop(Object) readonly value: RRuleSet | undefined;
+class RecurrenceRuleEditor extends Vue {
+  @Model({ type: Object }) readonly value: RRuleSet | undefined;
   @Prop({ type: Number, required: true}) readonly ruleIndex!: number;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
   @Prop({ type: String, default: "Never"}) readonly noFrequencyKey!: string;
-  @Prop(Boolean) readonly hideStart!: boolean;
-  @Prop(Boolean) readonly hideFrequency!: boolean;
-  @Prop(Boolean) readonly hideEnd!: boolean;
+  @Prop({ type: Boolean }) readonly hideStart!: boolean;
+  @Prop({ type: Boolean }) readonly hideFrequency!: boolean;
+  @Prop({ type: Boolean }) readonly hideEnd!: boolean;
 
   hasOwnRecurrencePattern = false;
   monthlyMode: MonthlyMode = "DayOfMonth";
@@ -319,15 +332,12 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
     const recurrenceRules = this.value || RRuleSet.make();
 
     if (value) {
-      this.$emit(
-        "input",
-        recurrenceRules.updatingStartDate(this.ruleIndex, value)
-      );
+      this.emitRecurrenceRule(recurrenceRules.updatingStartDate(this.ruleIndex, value));
     } else {
       if (this.hasMultipleActiveRules) {
-        this.$emit("input", recurrenceRules.deletingRule(this.ruleIndex));
+        this.emitRecurrenceRule(recurrenceRules.deletingRule(this.ruleIndex));
       } else {
-        this.$emit("input", undefined);
+        this.emitRecurrenceRule(undefined);
       }
     }
   }
@@ -376,19 +386,19 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
       }
     }
 
-    this.$emit("input", rules);
-    this.showYearlyDayOfWeek = false;
-    this.monthlyMode = "DayOfMonth";
+    rules = this.updatingYearlyDayOfWeek(false, rules);
+    rules = this.updatingMonthlyMode("DayOfMonth", rules);
+    this.emitRecurrenceRule(rules);
   }
   get interval() {
-    return this.rule?.interval || 0;
+    return "" + (this.rule?.interval ?? 0);
   }
   set interval(value) {
-    if (!/^\d{1,3}$/.test("" + value) || value < 1) {
-      value = 1;
+    if (!this.isNumeric3Digits(value)) {
+      value = this.interval;
       this.intervalKey = Math.random();
     }
-    this.updateRecurrenceRule({ interval: value });
+    this.updateRecurrenceRule({ interval: parseInt(value) });
   }
   get timesOfTheDay(): Array<Date | null> {
     if (
@@ -435,7 +445,7 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
   get recurrenceEndMode(): RecurrenceEndMode {
     if (this.endDate) {
       return "EndDate";
-    } else if (this.endCount) {
+    } else if (parseInt(this.endCount)) {
       return "NumberOfOccurrences";
     } else {
       return "Never";
@@ -464,14 +474,14 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
     this.updateRecurrenceRule({ until: value });
   }
   get endCount() {
-    return this.rule?.count || 0;
+    return "" + (this.rule?.count ?? 0);
   }
   set endCount(value) {
-    if (this.endCount && (!/^\d{1,3}$/.test("" + value) || value < 1)) {
-      value = 1;
+    if (this.endCount && !this.isNumeric3Digits(value)) {
+      value = this.endCount;
       this.occurrenceCountKey = Math.random();
     }
-    this.updateRecurrenceRule({ count: value });
+    this.updateRecurrenceRule({ count: parseInt(value) });
   }
   get hasMultipleActiveRules() {
     return this.value && this.value.indicesOfActiveRules.length > 1;
@@ -501,21 +511,19 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
     }
   }
   get startDateOptions() {
-    const today = adjustDate(new Date(), { hours: 8, minutes: 0, seconds: 0 });
-    const tomorrow = addToDate(today, { days: 1 });
-    const nextWeek = addToDate(today, { days: 7 });
+    const startTime = { hours: 8, minutes: 0, seconds: 0 };
     return [
       {
         label: this.$t("today"),
-        value: today
+        value: () => adjustDate(new Date(), startTime)
       },
       {
         label: this.$t("tomorrow"),
-        value: tomorrow
+        value: () => addToDate(adjustDate(new Date(), startTime), { days: 1 })
       },
       {
         label: this.$t("inOneWeek"),
-        value: nextWeek
+        value: () => addToDate(adjustDate(new Date(), startTime), { days: 7 })
       }
     ];
   }
@@ -541,7 +549,7 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
   get singleDayOfTheWeekOptions() {
     return this.$q.lang.date.days
       .concat([
-        "" + this.$tc("day", 1),
+        "" + this.$t("day", 1),
         "" + this.$t("weekday"),
         "" + this.$t("weekendDay")
       ])
@@ -588,13 +596,13 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
     ];
   }
   get endAfterOccurrenceCountLabels() {
-    return this.$tc("endAfterOccurrenceCountLabel", this.endCount).split(
+    return this.$t("endAfterOccurrenceCountLabel", parseInt(this.endCount)).split(
       " " + this.endCount + " "
     );
   }
   get intervalLabels() {
-    const frequency = ["Year", "Month", "Week", "Day"][this.frequency];
-    return this.$tc("every" + frequency, 5).split(" 5 ");
+    const frequency = "every" + ["Year", "Month", "Week", "Day"][this.frequency];
+    return this.$t(frequency, 5).split(" 5 ");
   }
   get Frequency() {
     return Frequency;
@@ -625,35 +633,52 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
       bysetpos: byhour.map((hour, index) => index * (byhour.length + 1) + 1)
     });
   }
-  resetOwnRecurrencePattern() {
-    this.frequency = this.rule ? this.rule.freq : -1;
-  }
-  resetMonthlyMode() {
-    if (this.monthlyMode == "DayOfMonth") {
-      this.updateRecurrenceRule({
-        bymonthday: undefined,
-        byweekday: undefined,
-        bysetpos: undefined
-      });
+  updatingMonthlyMode(value: MonthlyMode, rules?: RRuleSet) {
+    if (this.monthlyMode == value) {
+      return rules;
     } else {
-      this.updateRecurrenceRule({
-        bymonthday: undefined,
-        byweekday: [this.daysOfTheWeekOptions[0].value],
-        bysetpos: this.positionOptions[0].value
-      });
+      this.monthlyMode = value;
+
+      if (value == "DayOfMonth") {
+        return rules?.updatingRule(this.ruleIndex, {
+          bymonthday: undefined,
+          byweekday: undefined,
+          bysetpos: undefined
+        });
+      } else {
+        return rules?.updatingRule(this.ruleIndex, {
+          bymonthday: undefined,
+          byweekday: [this.daysOfTheWeekOptions[0].value],
+          bysetpos: this.positionOptions[0].value
+        });
+      }
     }
   }
-  resetYearlyDayOfWeek() {
-    if (this.showYearlyDayOfWeek) {
-      this.updateRecurrenceRule({
-        byweekday: [this.daysOfTheWeekOptions[0].value],
-        bysetpos: this.positionOptions[0].value
-      });
+  updatingYearlyDayOfWeek(value: boolean, rules?: RRuleSet) {
+    if (this.showYearlyDayOfWeek == value) {
+      return rules;
     } else {
-      this.updateRecurrenceRule({
-        byweekday: undefined,
-        bysetpos: undefined
-      });
+      this.showYearlyDayOfWeek = value;
+
+      if (value) {
+        return rules?.updatingRule(this.ruleIndex, {
+          byweekday: [this.daysOfTheWeekOptions[0].value],
+          bysetpos: this.positionOptions[0].value
+        });
+      } else {
+        return rules?.updatingRule(this.ruleIndex, {
+          byweekday: undefined,
+          bysetpos: undefined
+        });
+      }
+    }
+  }
+  isNumeric3Digits(value: string) {
+    return /^\d{1,3}$/.test("" + value) && parseInt(value) > 0;
+  }
+  onUpdateNumeric3Digits(value: string, next: () => void) {
+    if (this.isNumeric3Digits(value)) {
+      next();
     }
   }
   setupFromRecurrenceRule(rule: Partial<Options> | undefined) {
@@ -687,16 +712,18 @@ export default class RecurrenceRuleEditor extends InterventionMixin {
     }
   }
   updateRecurrenceRule(changes: Partial<Options>) {
-    this.$emit("input", this.value?.updatingRule(this.ruleIndex, changes));
+    this.emitRecurrenceRule(this.value?.updatingRule(this.ruleIndex, changes));
+  }
+  emitRecurrenceRule(rules?: RRuleSet) {
+    this.$emit("update:model-value", rules);
   }
 
   created() {
     this.setupFromRecurrenceRule(
       this.value?.rrules()[this.ruleIndex]?.origOptions
     );
-    this.$watch("hasOwnRecurrencePattern", this.resetOwnRecurrencePattern);
-    this.$watch("monthlyMode", this.resetMonthlyMode);
-    this.$watch("showYearlyDayOfWeek", this.resetYearlyDayOfWeek);
   }
 }
+
+export default RecurrenceRuleEditor;
 </script>

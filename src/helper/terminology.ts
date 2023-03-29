@@ -139,7 +139,7 @@ export function arraysToObjects(terminology: Terminology): { result: any, order:
             return object;
         }, {});
     };
-    const result = JSON.parse(JSON.stringify(terminology));
+    const result = structuredClone(terminology);
     const classification = result.problemClassificationScheme;
     const modifiers = classification.modifiers;
     const intervention = result.interventionScheme;
@@ -212,7 +212,7 @@ export function objectsToArrays(json: any): Terminology {
             return item;
         });
     };
-    const result = JSON.parse(JSON.stringify(json));
+    const result = structuredClone(json);
     const classification = result.problemClassificationScheme;
     const modifiers = classification.modifiers;
     const intervention = result.interventionScheme;

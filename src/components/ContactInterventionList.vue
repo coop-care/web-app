@@ -39,7 +39,6 @@
         v-for="task in tasks.giving"
         :key="task.id"
         :task="task"
-        ref="givingTaskView"
       />
 
       <q-item class="q-pl-none q-pr-xs q-pt-lg q-pb-sm">
@@ -77,20 +76,21 @@
         v-for="task in tasks.receiving"
         :key="task.id"
         :task="task"
-        ref="receivingTaskView"
       />
     </q-list>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Prop, Ref } from "vue-property-decorator";
-import RecordMixin from "../mixins/RecordMixin";
+import { Component, Prop, Vue } from "vue-facing-decorator";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import { Contact, Task, Intervention } from "../models";
 import NoDataItem from "../components/NoDataItem.vue";
 import ContactTaskView from "../components/ContactTaskView.vue";
 import TextWithTooltip from "../components/TextWithTooltip.vue";
 import RecurrenceRuleEditor from "../components/RecurrenceRuleEditor.vue";
+
+interface ContactInterventionList extends RecordMixinInterface {};
 
 @Component({
   components: {
@@ -98,12 +98,11 @@ import RecurrenceRuleEditor from "../components/RecurrenceRuleEditor.vue";
     ContactTaskView,
     TextWithTooltip,
     RecurrenceRuleEditor
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ContactInterventionList extends RecordMixin {
-  @Prop(Object) readonly contact!: Contact;
-  @Ref() readonly givingTaskView!: ContactTaskView[];
-  @Ref() readonly receivingTaskView!: ContactTaskView[];
+class ContactInterventionList extends Vue {
+  @Prop({ type: Object }) readonly contact!: Contact;
   
   get tasks() {
     const givingTasks: Task<Intervention>[] = [];
@@ -148,4 +147,6 @@ export default class ContactInterventionList extends RecordMixin {
     void this.saveClient();
   }
 }
+
+export default ContactInterventionList;
 </script>

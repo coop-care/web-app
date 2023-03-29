@@ -10,14 +10,14 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-facing-decorator";
 
 @Component
 export default class ContactView extends Vue {
   @Prop({ type: String, default: ""}) readonly label!: string;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
   @Prop({ type: String, default: "primary"}) readonly buttonClass!: string;
-  @Prop(Boolean) readonly revealImmediately!: boolean;
+  @Prop({ type: Boolean }) readonly revealImmediately!: boolean;
 
   isRevealed = false;
 }

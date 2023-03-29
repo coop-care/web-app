@@ -2,7 +2,7 @@
   <div class="rating-chart-group row q-col-gutter-md">
     <div
       v-for="(ratings, index) in ratingsList"
-      :key=""
+      :key="index"
       class="col-12 col-sm-4"
     >
       <div
@@ -16,7 +16,6 @@
       </div>
       <rating-chart
         :ratings="ratings"
-        :height="200"
         v-model="outcomeIndex"
         color="outcome"
         class="full-width non-selectable"
@@ -41,7 +40,6 @@
       </div>
     </div>
   </div>
-</div>
 </template>
 
 <style lang="sass">
@@ -57,7 +55,7 @@
     :nth-child(2)
       font-size: 1.2rem
   .rating-caption
-    height: 6rem
+    min-height: 6rem
     overflow: hidden
     line-height: 1.2rem
     :nth-child(1)
@@ -70,8 +68,8 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { format } from "timeago.js";
+import { Vue, Component, Prop } from "vue-facing-decorator";
+import { format } from "src/helper/timeago";
 import { Outcome, TeamMember } from "src/models";
 import { Rating as RatingTerminology } from "src/helper/terminology";
 import RatingChart, { Rating } from "../components/RatingChart.vue";
@@ -114,12 +112,12 @@ export default class RatingChartGroup extends Vue {
     ].filter(ratings => ratings.find(rating => rating.observation || rating.expectation)) as Rating[][];
   }
   get ratingTerminology() {
-    return this.$t("terminology.problemRatingScale.ratings") as unknown as RatingTerminology[];
+    return this.$tm("terminology.problemRatingScale.ratings") as unknown as RatingTerminology[];
   }
 
   rating(index: number) {
     const ratings = this.ratingsList[index] || [];
-    return ratings[this.outcomeIndex] || ratings[ratings.length - 1];
+    return ratings[this.outcomeIndex] ?? ratings.at(-1);
   }
   observation(index: number) {
     return this.rating(index).observation || 0;
@@ -133,7 +131,7 @@ export default class RatingChartGroup extends Vue {
     const observationText = ratingTexts[rating.observation - 1]?.title || "";
     const expectationText = ratingTexts[rating.expectation - 1]?.title || "";
     const username = this.teamMembers[rating.user]?.signature;
-    const locale = this.$root.$i18n.locale;
+    const locale = this.$i18n.locale;
 
     return [
       format(rating.createdAt, locale) + " (" + username + "):",

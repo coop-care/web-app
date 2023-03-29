@@ -1,7 +1,5 @@
 <template>
-  <div
-    :class="[$q.screen.gt.xs ? 'q-px-md' : 'q-px-xs']"
-  >
+  <div>
     <q-resize-observer @resize="onResize" />
     <div class="row justify-end">
       <edit-toggle-button
@@ -34,52 +32,52 @@
     </div>
     <div v-else>
       <date-time-input
-        :value="agreements.initialInterview"
-        @input="updateAndSave(agreements, {initialInterview: $event})"
+        :model-value="agreements.initialInterview"
+        @update:model-value="updateAndSave(agreements, {initialInterview: $event})"
         :label="$t('initialInterviewDate')"
         :format="$t('datetimeFormat')"
       />
       <date-time-input
-        :value="agreements.initialCare"
-        @input="updateAndSave(agreements, {initialCare: $event})"
+        :model-value="agreements.initialCare"
+        @update:model-value="updateAndSave(agreements, {initialCare: $event})"
         :label="$t('initialCareDate')"
         :format="$t('datetimeFormat')"
       />
       <date-time-input
-        :value="agreements.contractHandover"
-        @input="updateAndSave(agreements, {contractHandover: $event})"
+        :model-value="agreements.contractHandover"
+        @update:model-value="updateAndSave(agreements, {contractHandover: $event})"
         :label="$t('contractHandoverDate')"
         :format="$t('dateFormat')"
       />
       <date-time-input
-        :value="agreements.costEstimateHandover"
-        @input="updateAndSave(agreements, {costEstimateHandover: $event})"
+        :model-value="agreements.costEstimateHandover"
+        @update:model-value="updateAndSave(agreements, {costEstimateHandover: $event})"
         :label="$t('costEstimateHandoverDate')"
         :format="$t('dateFormat')"
       />
       <date-time-input
-        :value="agreements.documentationCreated"
-        @input="updateAndSave(agreements, {documentationCreated: $event})"
+        :model-value="agreements.documentationCreated"
+        @update:model-value="updateAndSave(agreements, {documentationCreated: $event})"
         :label="$t('documentationCreatedDate')"
         :format="$t('dateFormat')"
       />
       <date-time-input
-        :value="agreements.carePlanCreated"
-        @input="updateAndSave(agreements, {carePlanCreated: $event})"
+        :model-value="agreements.carePlanCreated"
+        @update:model-value="updateAndSave(agreements, {carePlanCreated: $event})"
         :label="$t('carePlanCreatedDate')"
         :format="$t('dateFormat')"
       />
       <div class="q-mt-md">
         <q-checkbox
-          :value="agreements.existingInitialPrescription"
-          @input="updateAndSave(agreements, {existingInitialPrescription: $event})"
+          :model-value="agreements.existingInitialPrescription"
+          @update:model-value="updateAndSave(agreements, {existingInitialPrescription: $event})"
           :label="$t('existingInitialPrescription') + '?'"
         />
       </div>
       <div class="q-mb-lg">
         <q-checkbox
-          :value="agreements.keyHandoverRequired"
-          @input="updateAndSave(agreements, {keyHandoverRequired: $event})"
+          :model-value="agreements.keyHandoverRequired"
+          @update:model-value="updateAndSave(agreements, {keyHandoverRequired: $event})"
           :label="$t('keyHandoverRequired') + '?'"
         />
       </div>
@@ -91,14 +89,15 @@
 </style>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import { DateTime } from "luxon";
+import { Component, Vue } from "vue-facing-decorator";
 import { Client } from "../models";
-import RecordMixin from "../mixins/RecordMixin";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import EditToggleButton from "../components/EditToggleButton.vue";
 import NoDataItem from "../components/NoDataItem.vue";
 import LabeledItem, { LabeledItemType } from "../components/LabeledItem.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
+
+interface ClientHealthInformation extends RecordMixinInterface {};
 
 @Component({
   components: {
@@ -106,9 +105,10 @@ import DateTimeInput from "../components/DateTimeInput.vue";
     NoDataItem,
     LabeledItem,
     DateTimeInput
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientHealthInformation extends RecordMixin {
+class ClientHealthInformation extends Vue {
   isEditing = false;
   compactLayout = false;
 
@@ -119,48 +119,47 @@ export default class ClientHealthInformation extends RecordMixin {
 
   get items() {
     const result: LabeledItemType[] = [];
-    const locale = this.$root.$i18n.locale;
 
     if (this.client?.createdAt) {
       result.push({
         label: this.$t("clientCreatedAt") as string,
-        value: this.client?.createdAt.toLocaleString(locale, DateTime.DATETIME_MED)
+        value: this.$d(this.client?.createdAt, "DateTimeMed")
       });
     }
     if (this.agreements.initialInterview) {
       result.push({
         label: this.$t("initialInterviewDate") as string,
-        value: this.agreements.initialInterview.toLocaleString(locale, DateTime.DATETIME_MED)
+        value: this.$d(this.agreements.initialInterview, "DateTimeMed")
       });
     }
     if (this.agreements.initialCare) {
       result.push({
         label: this.$t("initialCareDate") as string,
-        value: this.agreements.initialCare.toLocaleString(locale, DateTime.DATETIME_MED)
+        value: this.$d(this.agreements.initialCare, "DateTimeMed")
       });
     }
     if (this.agreements.contractHandover) {
       result.push({
         label: this.$t("contractHandoverDate") as string,
-        value: this.agreements.contractHandover.toLocaleString(locale, DateTime.DATE_MED)
+        value: this.$d(this.agreements.contractHandover, "DateMed")
       });
     }
     if (this.agreements.costEstimateHandover) {
       result.push({
         label: this.$t("costEstimateHandoverDate") as string,
-        value: this.agreements.costEstimateHandover.toLocaleString(locale, DateTime.DATE_MED)
+        value: this.$d(this.agreements.costEstimateHandover, "DateMed")
       });
     }
     if (this.agreements.documentationCreated) {
       result.push({
         label: this.$t("documentationCreatedDate") as string,
-        value: this.agreements.documentationCreated.toLocaleString(locale, DateTime.DATE_MED)
+        value: this.$d(this.agreements.documentationCreated, "DateMed")
       });
     }
     if (this.agreements.carePlanCreated) {
       result.push({
         label: this.$t("carePlanCreatedDate") as string,
-        value: this.agreements.carePlanCreated.toLocaleString(locale, DateTime.DATE_MED)
+        value: this.$d(this.agreements.carePlanCreated, "DateMed")
       });
     }
     if (this.agreements.existingInitialPrescription != null) {
@@ -178,7 +177,7 @@ export default class ClientHealthInformation extends RecordMixin {
     if (this.client?.leftAt) {
       result.push({
         label: this.$t("clientLeftAt") as string,
-        value: this.client?.leftAt.toLocaleString(locale, DateTime.DATETIME_MED)
+        value: this.$d(this.client?.leftAt, "DateTimeMed")
       });
     }
     
@@ -192,4 +191,6 @@ export default class ClientHealthInformation extends RecordMixin {
     return (value ? this.$t("yes") : this.$t("no")) as string
   }
 }
+
+export default ClientHealthInformation;
 </script>

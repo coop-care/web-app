@@ -1,6 +1,8 @@
-import { colors } from "quasar";
+import { colors, getCssVar, setCssVar } from "quasar";
 
-const { getBrand, setBrand, lighten } = colors;
+const { lighten } = colors;
+const getBrand = (key: string) => getCssVar(key)
+const setBrand = (key: string, value: string) => setCssVar(key, value)
 
 export function getColor(name: string) {
     return getBrand(name);
@@ -17,6 +19,11 @@ export function setColor(name: string, value: string) {
         ")"
     );
     setBrand(name + "-bg", lighten(value, 97));
+
+    if (name == "primary") {
+        setBrand(name + "-chat", lighten(value, 86));
+        setBrand(name + "-chat-bg", `linear-gradient(${lighten(value, 96)}, ${lighten(value, 86)})`);
+    }
 }
 
 export function setColorSet(colors: string[]) {

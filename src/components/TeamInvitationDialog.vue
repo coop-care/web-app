@@ -18,15 +18,15 @@
           clearable
           ref="emailInput"
           :hint="usernameForEmail"
-          @keydown.up.down.enter.prevent="menu.navigateMenu"
-          @keydown="menu.show()"
+          @keydown.up.down.enter.prevent="navigateMenu"
+          @keydown="showMenu"
           @clear="email = ''"
         >
           <filterable-menu
             v-model="email"
             ref="menu"
             :items="users"
-            @input="emailInput.focus()"
+            @update:model-value="emailInput.focus()"
           />
         </q-input>
       </q-card-section>
@@ -54,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Vue, Component, Ref } from "vue-facing-decorator";
 import { QDialog, QInput } from "quasar";
 import FilterableMenu from "../components/FilterableMenu.vue";
 
@@ -62,6 +62,7 @@ import FilterableMenu from "../components/FilterableMenu.vue";
   components: {
     FilterableMenu
   },
+  emits: ["ok", "hide"]
 })
 export default class TeamInvitationDialog extends Vue {
   @Ref() readonly dialog!: QDialog;
@@ -101,6 +102,12 @@ export default class TeamInvitationDialog extends Vue {
     return this.$store.direct.state.currentUser;
   }
 
+  navigateMenu(event: KeyboardEvent) {
+    this.menu.navigateMenu(event);
+  }
+  showMenu() {
+    this.menu.show();
+  }
   show () {
     this.dialog.show();
   }

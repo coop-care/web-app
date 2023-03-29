@@ -1,7 +1,8 @@
 export { IdentifiableObject } from "./identifiableObject";
 export { User, TeamMember } from "./user";
 export { Team, TeamInvitation } from "./team";
-export { Client, ClientHealthInformation, ClientAgreements } from "./client";
+export { BackOffice } from "./backoffice";
+export { Client, ClientHealthInformation, ClientAgreements, ShiftNote } from "./client";
 export { Base } from "./base";
 export { ProblemRecord } from "./problemRecord";
 export { Problem } from "./problem";
@@ -14,6 +15,7 @@ export type { CustomField, LabeledValue } from "./types";
 export { Contact } from "./contact";
 export type { PostalAddress } from "./contact";
 export { Task, TaskGroup } from "./task";
+export type { GroupedTask } from "./task";
 export { ChangeRecord } from "./changeRecord";
 export type { ChangeRecordType } from "./changeRecord";
 export { RRuleSet, RRule, Frequency } from "./rrule";

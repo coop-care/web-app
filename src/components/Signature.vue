@@ -11,7 +11,7 @@
       transition-show="jump-up"
       transition-hide="jump-down"
       :offset="$q.platform.is.mobile ? [0,14] : [0,4]"
-      content-class="signature-tooltip"
+      class="signature-tooltip"
     >
       {{ tooltip }}
     </q-tooltip>
@@ -29,16 +29,15 @@
   font-weight: 500
   font-style: italic
   border: 1px solid
-.cursor-help
-  cursor: help
 .signature-tooltip
   font-size: .8rem
   padding: 2px 6px
+.cursor-help
+  cursor: help
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
-import { DateTime } from "luxon";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { TeamMember } from "../models";
 
 @Component
@@ -56,7 +55,7 @@ export default class SignatureView extends Vue {
   get tooltip() {
     return [
       this.teamMember?.username, 
-      this.date?.toLocaleString(this.$root.$i18n.locale, DateTime.DATETIME_SHORT), 
+      this.date ? this.$d(this.date, "DateTimeShort") : undefined, 
       this.description
     ].filter(Boolean).join(", ");
   }

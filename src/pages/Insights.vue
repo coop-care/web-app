@@ -1,7 +1,6 @@
 <template>
   <q-page
-    padding
-    class="limit-page-width width-sm insights-page"
+    class="limit-page-width width-md page-padding insights-page"
   >
     <pull-to-refresh refresh="refresh">
       <loading v-if="$store.direct.state.isLoadingClientList && !teams.length" />
@@ -21,12 +20,12 @@
           </q-item>
           <q-select
             v-model="period"
+            @update:model-value="updateDates"
             :options="periodOptions"
             map-options
             emit-value
             dense
             class="q-mr-sm"
-            @input="updateDates"
           />
           <div
             v-if="period == 0"
@@ -39,7 +38,7 @@
               required
               dense
               class="date-input q-mr-sm"
-              @input="randomRenwewalKey = Math.random()"
+              @update:model-value="randomRenwewalKey = Math.random()"
             />
             <date-time-input
               v-model="endDate"
@@ -48,7 +47,7 @@
               required
               dense
               class="date-input"
-              @input="randomRenwewalKey = Math.random()"
+              @update:model-value="randomRenwewalKey = Math.random()"
             />
           </div>
           <div
@@ -56,9 +55,9 @@
             class="text-body2"
           >
             {{ $t("from") }} 
-            <span class="text-body1 text-weight-bold">{{ formatDate(startDate) }}</span>
+            <span class="text-body1 text-weight-bold">{{ $d(startDate) }}</span>
             {{ $t("until") }} 
-            <span class="text-body1 text-weight-bold">{{ formatDate(endDate) }}</span>
+            <span class="text-body1 text-weight-bold">{{ $d(endDate) }}</span>
           </div>
         </div>
         <div 
@@ -74,15 +73,15 @@
         </div>
         <q-expansion-item
           v-for="section in sections"
-          :key="section.id + '-' + randomRenwewalKey"
-          :value="true"
+          :key="section.id"
+          :model-value="true"
           :label="section.name"
-          :caption="section.clients.length + ' ' + $tc('client', section.clients.length)"
+          :caption="section.clients.length + ' ' + $t('client', section.clients.length)"
           header-class="section-heading horizontal-caption q-mt-md q-mb-sm q-px-none dense-avatar"
           switch-toggle-side
         >
           <div class="row q-col-gutter-md">
-            <div class="col-12 col-sm-6 col-md-3">
+            <div class="col-12 col-sm-6 col-md-3 insights-item">
               <k-b-s-overview-chart
                 :labels="terminologyRatings.map(item => item.title)"
                 :dates="dates"
@@ -90,22 +89,25 @@
                 :title="$t('evaluationOfAllClients')"
               />
             </div>
-            <div class="col-12 col-sm-6 col-md-3">
+            <div class="col-12 col-sm-6 col-md-3 insights-item column items-center justify-center">
               <k-b-s-doughnut-chart
                 :dataset="section.knowledgeDataset"
                 :title="terminologyRatings[0].title"
+                class="insights-item-sm"
               />
             </div>
-            <div class="col-12 col-sm-6 col-md-3">
+            <div class="col-12 col-sm-6 col-md-3 insights-item column items-center justify-center">
               <k-b-s-doughnut-chart
                 :dataset="section.behaviourDataset"
                 :title="terminologyRatings[1].title"
+                class="insights-item-sm"
               />
             </div>
-            <div class="col-12 col-sm-6 col-md-3">
+            <div class="col-12 col-sm-6 col-md-3 insights-item column items-center justify-center">
               <k-b-s-doughnut-chart
                 :dataset="section.statusDataset"
                 :title="terminologyRatings[2].title"
+                class="insights-item-sm"
               />
             </div>
           </div>
@@ -126,6 +128,10 @@
 .insights-page
   .date-input
     max-width: 140px
+.insights-item
+  max-width: 400px !important
+.insights-item-sm
+  max-width: 200px
 @media print
   .insights-page
     padding: 0
@@ -135,7 +141,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import { date } from "quasar";
 import PullToRefresh from "../components/PullToRefresh.vue";
 import Loading from "../components/Loading.vue";
@@ -159,16 +165,34 @@ const { startOfDate, endOfDate, subtractFromDate } = date;
   },
 })
 export default class InsightsPage extends Vue {
-  period = this.periodOptions[1].value;
-  startDate = subtractFromDate(startOfDate(new Date(), "day", false), {month: this.period});
-  endDate = endOfDate(new Date(), "day", false);
-  clients = this.$store.direct.state.clients.slice();
-  randomRenwewalKey = Math.random();
+  period!: number;
+  startDate!: Date;
+  endDate!: Date;
+  clients!: Client[];
+  randomRenwewalKey = 0;
+
+  async created() {
+    this.period = this.periodOptions[1].value;
+    this.updateDates(this.period);
+    this.clients = this.$store.direct.state.clients.slice();
+    const clientIds = this.clients.map(client => client.id);
+
+    await this.teams.forEach(async team =>  {
+      const additionalClientIds = team.clients.filter(clientId => !clientIds.includes(clientId));
+      const clients = await this.$ccApi.getClients(additionalClientIds);
+      this.clients = this.clients.concat(clients);
+    });
+    this.randomRenwewalKey = Math.random();
+  }
 
   get dates() {
     return [this.startDate, this.endDate];
   }
+
   get sections() {
+    // workaround to trigger reactive recalculation of sections, because changes to startDate and endDate are not detected
+    this.randomRenwewalKey + 1;
+
     const teams = this.teams.map(team => ({
       name: this.$t("team") + " " + team.name,
       id: team.id,
@@ -224,9 +248,10 @@ export default class InsightsPage extends Vue {
       ],
       knowledgeDataset: this.groupRatingsByProgress(section.clients.map(client => client.knowledge)),
       behaviourDataset: this.groupRatingsByProgress(section.clients.map(client => client.behaviour)),
-      statusDataset: this.groupRatingsByProgress(section.clients.map(client => client.status)),
+      statusDataset: this.groupRatingsByProgress(section.clients.map(client => client.status)), // debug with random data: this.randomRatings()
     }))
   }
+
   getLineChartDataset(clientValues: number[][]) {
     return this.dates
       .map((_, index) => 
@@ -242,7 +267,7 @@ export default class InsightsPage extends Vue {
   }
   get periodOptions() {
     return [1, 3, 6, 12].map(value => ({
-      label: value + " " + this.$tc("month", value),
+      label: value + " " + this.$t("month", value),
       value
     })).concat({
       label: this.$t("customInterval") as string,
@@ -250,7 +275,7 @@ export default class InsightsPage extends Vue {
     });
   }
   get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
   get terminologyRatings() {
     return this.terminology.problemRatingScale.ratings;
@@ -284,22 +309,29 @@ export default class InsightsPage extends Vue {
         : 0
     }))
   }
-  updateDates(value: number) {
-    if (value) {
-      this.startDate = subtractFromDate(startOfDate(new Date(), "day", false), {month: value});
-      this.endDate = endOfDate(new Date(), "day", false);
-      this.randomRenwewalKey = Math.random();
-    }
+  randomRatings() {
+    const ratio1 = Math.random();
+    const ratio2 = (1 - ratio1) * Math.random();
+    const ratio3 = 1 - ratio1 - ratio2;
+
+    return [ratio1, ratio2, ratio3].map(ratio => ({
+      ratio,
+      change: Math.random()
+    }))
   }
-  formatDate(date: Date) {
-    const locale = this.$root.$i18n.locale;
-    return date.toLocaleDateString(locale)
+  updateDates(value: number) {
+    if (value > 0) {
+      this.startDate = subtractFromDate(startOfDate(new Date(), "day", false), {months: value});
+      this.endDate = endOfDate(new Date(), "day", false);
+    }
+
+    this.randomRenwewalKey = Math.random();
   }
   async refresh() {
     this.clients = await this.$store.direct.dispatch.fetchClientsOfAllTeamsFromDB();
   }
   mounted() {
-    this.refresh();
+    void this.refresh();
   }
 }
 </script>

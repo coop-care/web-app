@@ -32,7 +32,7 @@
       <q-item
         tag="label"
         v-for="(option, index) in filteredOptions"
-        v-bind:key="index"
+        :key="index"
         :dense="!option.description"
       >
         <q-item-section
@@ -41,16 +41,16 @@
         >
           <q-checkbox
             v-if="allowMultipleSelection"
-            :value="value"
-            @input="$emit('input', $event)"
+            :model-value="value"
+            @update:model-value="$emit('update:model-value', $event)"
             :val="option.code"
             :color="color"
             keep-color
           />
           <q-radio
             v-else
-            :value="value"
-            @input="$emit('input', $event)"
+            :model-value="value"
+            @update:model-value="$emit('update:model-value', $event)"
             :val="option.code"
             :color="color"
             keep-color
@@ -87,7 +87,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
+import { Vue, Component, Prop, Ref, Model } from "vue-facing-decorator";
 import { QInput } from "quasar";
 import { Category } from "../helper/terminology";
 import TextWithHighlights from "./TextWithHighlights.vue";
@@ -96,15 +96,16 @@ import TextWithHighlights from "./TextWithHighlights.vue";
   components: {
     TextWithHighlights,
   },
+  emits: ["update:model-value"]
 })
 export default class SearchableOptionList extends Vue {
-  @Prop(String) readonly searchInputLabel: string | undefined;
-  @Prop(String) readonly color: string | undefined;
+  @Prop({ type: String }) readonly searchInputLabel: string | undefined;
+  @Prop({ type: String }) readonly color: string | undefined;
   @Prop({ type: Array, default: () => []}) readonly options!: Category[];
-  @Prop([String, Array]) readonly value!: string | string[];
-  @Prop(Boolean) readonly allowMultipleSelection!: boolean;
-  @Prop(Boolean) readonly dense!: boolean;
-  @Prop(String) readonly optionListClass: string | undefined;
+  @Model({ type: [String, Array] }) readonly value!: string | string[];
+  @Prop({ type: Boolean }) readonly allowMultipleSelection!: boolean;
+  @Prop({ type: Boolean }) readonly dense!: boolean;
+  @Prop({ type: String }) readonly optionListClass: string | undefined;
   @Ref() readonly filterInput!: QInput;
 
   filter = "";

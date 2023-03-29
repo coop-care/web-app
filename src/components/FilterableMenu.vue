@@ -14,7 +14,7 @@
         v-for="(item, index) in filteredItems"
         :key="item.value"
         clickable
-        @click="$emit('input', item.value)"
+        @click="$emit('update:model-value', item.value)"
         :active="value == item.value"
         :active-class="'text-' + color"
         :manual-focus="selectedItem >= 0"
@@ -49,7 +49,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Ref, Watch } from "vue-property-decorator";
+import { Vue, Component, Prop, Ref, Watch, Model } from "vue-facing-decorator";
 import { QMenu } from "quasar";
 import TextWithHighlights from "../components/TextWithHighlights.vue";
 
@@ -62,10 +62,12 @@ type ItemType = {
 @Component({
   components: {
     TextWithHighlights
-  }
+  },
+  emits: ["update:model-value"],
+  expose: ["navigateMenu", "show"]
 })
 export default class FilterableMenu extends Vue {
-  @Prop({ type: String, required: true}) readonly value!: string;
+  @Model({ type: String, required: true}) readonly value!: string;
   @Prop({ type: Array, default: () => []}) readonly items!: string[] | ItemType[];
   @Prop({ type: String, default: "primary"}) readonly color!: string;
   @Ref() readonly  menu: QMenu | undefined;
@@ -129,7 +131,7 @@ export default class FilterableMenu extends Vue {
     }
 
     if (this.selectedItem < 0) {
-      const element = this.menu?.$children[0]?.$el || document;
+      const element = this.menu?.contentEl || document;
       const hoveredItem = element.querySelector(".q-item:hover");
       const siblings = hoveredItem?.parentElement?.children || [];
 
@@ -150,7 +152,7 @@ export default class FilterableMenu extends Vue {
       this.selectedItem >= 0 &&
       this.selectedItem < this.filteredItems.length
     ) {
-      this.$emit("input", this.filteredItems[this.selectedItem]?.value);
+      this.$emit("update:model-value", this.filteredItems[this.selectedItem]?.value);
     }
   }
 

@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.6.0 (2023-03-15)
+
+- shift notes: new feature for writing briefly about special incidents in daily nursing care
+- improved app navigation
+- updating dependencies, migration to Vue 3 and Quasar 2
+- attribution to the open source components in use and showing their licenses
+- updated German translation of Omaha System terms and definitions with improvements
+
+## 0.5.0 (2021-09-05)
+
+- added insights page with charts visualizing the outcomes of care interventions for every team and all teams
+- added a chart to client problems page summarizing the average outcomes of care interventions for this client
+- added covid-19 guidelines for demo version and a guideline parser
+- redirect to original URL after login
+- added outcome expectation comment
+
 ## 0.4.0 (2021-04-09)
 
 - community care: collect contact information from the client’s informal and formal network

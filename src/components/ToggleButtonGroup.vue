@@ -22,31 +22,33 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Model } from "vue-facing-decorator";
 
 interface Option {
   label: string;
   value: string;
 }
 
-@Component
+@Component({
+  emits: ["update:model-value"]
+})
 export default class ToggleButtonGroup extends Vue {
   @Prop({ type: Array, default: () => []}) readonly options!: Option[];
-  @Prop(String) readonly color: string | undefined;
-  @Prop(String) readonly textColor: string | undefined;
-  @Prop(String) readonly toggleColor: string | undefined;
-  @Prop(String) readonly toggleTextColor: string | undefined;
-  @Prop({ type: Array, default: () => []}) readonly value!: string[];
+  @Prop({ type: String }) readonly color: string | undefined;
+  @Prop({ type: String }) readonly textColor: string | undefined;
+  @Prop({ type: String }) readonly toggleColor: string | undefined;
+  @Prop({ type: String }) readonly toggleTextColor: string | undefined;
+  @Model({ type: Array, default: () => []}) readonly value!: string[];
   @Prop({ type: String, default: "md"}) readonly size!: string;
 
   toggle(value: any) {
     if (this.value.includes(value)) {
       this.$emit(
-        "input",
+        "update:model-value",
         this.value.filter((val: any) => val != value)
       );
     } else {
-      this.$emit("input", this.value.concat([value]));
+      this.$emit("update:model-value", this.value.concat([value]));
     }
   }
 }

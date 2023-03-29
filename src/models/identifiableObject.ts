@@ -1,12 +1,12 @@
 import "reflect-metadata";
-import { ClassConstructor, classToPlain, plainToClass, Transform } from "class-transformer";
-import { ObjectID } from "bson";
+import { ClassConstructor, instanceToPlain, plainToInstance, Transform } from "class-transformer";
+import { ObjectId } from "bson";
 
 export class IdentifiableObject {
   // optional properties need an initial value because Vue does not detect the addition or removal of a property
-  @Transform(({ value, obj, key }) => (value as ObjectID)?.toHexString(), { toPlainOnly: true })
-  @Transform(({ value }) => new ObjectID(value), { toClassOnly: true })
-  _id?: ObjectID = undefined;
+  @Transform(({ value }) => (value as ObjectId)?.toHexString(), { toPlainOnly: true })
+  @Transform(({ value }) => value != undefined ? new ObjectId(value) : undefined, { toClassOnly: true })
+  _id?: ObjectId = undefined;
 
   get id() {
     return this._id?.toHexString() || "";
@@ -17,11 +17,11 @@ export class IdentifiableObject {
   }
 
   toJSON() {
-    return classToPlain(this);
+    return instanceToPlain(this);
   }
 
   clone() {
-    return plainToClass(this.constructor as ClassConstructor<this>, classToPlain(this));
+    return plainToInstance(this.constructor as ClassConstructor<this>, instanceToPlain(this));
   }
 
 }

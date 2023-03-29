@@ -30,7 +30,7 @@
       <q-tab-panel
         :name="category.code"
         v-for="(category, index) in categories"
-        v-bind:key="index"
+        :key="index"
       >
         <div class="q-gutter-md">
           <div class="text-subtitle1 text-center category-header">
@@ -51,7 +51,8 @@
           <intervention-editor
             v-for="intervention in interventionsInSelectedCategory"
             :key="intervention.id"
-            :value="intervention"
+            :model-value="intervention"
+            :problem-code="problemCode"
             @delete="deleteIntervention(intervention.id)"
             @duplicate="duplicateIntervention(intervention.id)"
             class="editable-intervention q-px-md q-pt-sm q-pb-xs bg-intervention-light radius-md shadow-2"
@@ -90,18 +91,17 @@
     .text-bold
       white-space: nowrap
       &:nth-of-type(2)
-        color: var(--q-color-intervention)
+        color: var(--q-intervention)
         font-size: 110%
         @media (max-width: $breakpoint-xs-max)
           font-size: 125%
       &:nth-of-type(4)
-        color: var(--q-color-classification)
+        color: var(--q-classification)
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop, Model } from "vue-facing-decorator";
 import { TerminologyWithMaps } from "../helper/terminology";
-import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 import InterventionEditor from "./InterventionEditorV3.vue";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
@@ -110,22 +110,20 @@ import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
   components: {
     InterventionEditor,
     SimplifiedMarkdown
-  }
+  },
+  emits: ["update:model-value"]
 })
 export default class InterventionView extends Vue {
+  @Model({ type: Array, default: () => [] }) readonly value!: Intervention[];
+  @Prop({ type: String, default: "" }) readonly problemCode!: string;
+  @Prop({ type: String }) readonly problemTitle?: string;
   selectedCategory = "01";
 
   get interventions() {
-    return this.record?.interventions || [];
+    return this.value;
   }
   set interventions(interventions) {
-    const changes: any = {};
-    const key: keyof ProblemRecord = "interventions";
-    changes[key] = interventions;
-    this.$store.direct.commit.updateObject({
-      target: this.record,
-      changes: changes
-    });
+    this.$emit("update:model-value", interventions);
   }
   get categories() {
     return this.terminology.interventionScheme.categories;
@@ -134,21 +132,14 @@ export default class InterventionView extends Vue {
     return this.interventionsInCategory(this.selectedCategory);
   }
   get terminology() {
-    return (this.$t("terminology") as unknown) as TerminologyWithMaps;
-  }
-  get record() {
-    return this.$store.direct.getters.getProblemRecordById(this.$route.params);
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
 
   titleForCategory(categoryTitle: string) {
-    if (this.record) {
       return this.$t("interventionsForCategoryTitle", {
           category: categoryTitle,
-          problem: this.$t(this.record.problem.title)
+          problem: this.problemTitle
         }) as string + ":";
-    } else {
-      return ""
-    }
   }
   interventionsInCategory(categoryCode: string) {
     return this.interventions.filter(
@@ -172,7 +163,7 @@ export default class InterventionView extends Vue {
   }
   duplicateIntervention(id: string) {
     const index = this.interventions.findIndex(item => item.id == id);
-    const intervention = this.interventions[index]?.clone();
+    const intervention = this.interventions[index]?.duplicate();
     if (intervention) {
       const interventions = this.interventions.slice();
       interventions.splice(index + 1, 0, intervention);

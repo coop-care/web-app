@@ -3,26 +3,27 @@
     <recurrence-rule-editor
       v-for="index in indicesOfActiveRules"
       :key="indicesOfActiveRules.length + '-' + index"
-      :value="value"
+      :model-value="value"
       :rule-index="index"
       :color="color"
-      @input="$emit('input', $event)"
+      @update:model-value="$emit('update:model-value', $event)"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop, Model } from "vue-facing-decorator";
 import { RRuleSet } from "../models";
 import RecurrenceRuleEditor from "./RecurrenceRuleEditor.vue";
 
 @Component({
   components: {
     RecurrenceRuleEditor
-  }
+  },
+  emits: ["update:model-value"]
 })
 export default class ReminderEditor extends Vue {
-  @Prop(Object) readonly value: RRuleSet | undefined;
+  @Model({ type: Object }) readonly value: RRuleSet | undefined;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
 
   get indicesOfActiveRules() {

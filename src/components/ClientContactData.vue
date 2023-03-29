@@ -11,18 +11,23 @@
 </template>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import RecordMixin from "../mixins/RecordMixin";
+import { Component, Vue } from "vue-facing-decorator";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ContactView from "../components/ContactView.vue";
+
+interface ClientContactDataView extends RecordMixinInterface {};
 
 @Component({
   components: {
     ContactView
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientContactDataView extends RecordMixin {
+class ClientContactDataView extends Vue {
   get contact() {
     return this.client?.contact;
   }
 }
+
+export default ClientContactDataView;
 </script>

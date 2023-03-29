@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import ProblemSummary from "../components/ProblemSummary.vue";
 import { ProblemRecord } from "../models/problemRecord";
 
@@ -25,12 +25,12 @@ import { ProblemRecord } from "../models/problemRecord";
   },
 })
 export default class ProblemSummaryContainer extends Vue {
-  @Prop(Object) readonly problemRecord: ProblemRecord | undefined;
+  @Prop({ type: Object }) readonly problemRecord: ProblemRecord | undefined;
 
   get style() {
     const style = "transition: .3s all ease; ";
     if (this.$q.screen.gt.sm) {
-      const step = parseInt(this.$route.params.step || "1");
+      const step = parseInt(this.$route.params.step as string || "1");
       const margin = (step - 1) * 48;
       return style + "margin-top: " + margin + "px";
     } else {

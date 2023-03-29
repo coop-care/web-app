@@ -2,36 +2,63 @@
 
 We relieve nurses in documentation and planning by using the Omaha System and support care teams in cooperation and in strengthening their clients.
 
-## Install the dependencies
+## Developing and building 
+
+### Install the dependencies
 ```bash
 npm install
+```
+Generate all required icons and splash screens:
+
+```bash
+npm run icons
 ```
 
 ### Start the app in development mode
 
 Including hot-code reloading, error reporting, etc.
 
+Developing and testing in a browser:
+
 ```bash
-quasar dev
+npm run dev:web
 ```
+Developing and testing the demo version in a browser:
 
-Note: the app can currently only be launched as demo version, because we are undergoing a major rebuild of CoopCare's foundation to provide offline capability and end-to-end encryption in data synchronization.
-
-When building the app, type errors might occur stating "Subsequent property declarations must have the same type" (TS2717) that can be safely ignored as the build of the app will succeed anyway.
-
-### Lint the files
 ```bash
-npm run lint
+npm run dev:demo
+```
+Developing and testing the app installed on a device or simulator, depending on the desired platform:
+
+```bash
+npm run dev:ios
+
+npm run dev:android
+
+npm run dev:electron
 ```
 
 ### Build the app for production
+
+Build the browser-based demo version:
+
 ```bash
-quasar build
+npm run build:demo
+```
+
+Build the app for a specific platform:
+
+```bash
+npm run build:ios
+
+npm run build:android
+
+npm run build:electron
 ```
 
 ### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
+See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js).
 
-## Contribute
+## Contributing
 
 Please read our [Contributing Guide](CONTRIBUTING.md).

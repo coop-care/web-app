@@ -1,12 +1,9 @@
 <template>
-  <q-btn
-    icon="fas fa-wrench"
-    flat
-    stretch
-    style="max-width:44px"
-    v-if="isVisible"
-  >
-    <q-menu max-height="calc(96vh - 50px)">
+    <q-menu
+      max-height="calc(96vh - 50px)"
+      :anchor="anchor"
+      :self="self"
+    >
       <q-list
         class="text-body2"
         style="width: 240px"
@@ -46,8 +43,8 @@
                 >
                   <q-color
                     :key="colorMenuKey"
-                    :value="getColor(color)"
-                    @input="setColor(color, $event)"
+                    :model-value="getColor(color)"
+                    @update:model-value="setColor(color, $event)"
                   />
                 </q-menu>
               </q-item>
@@ -57,7 +54,6 @@
 
         <q-separator />
 
-        <!-- <q-item-label header>{{ $t("databaseTestSettings") }}</q-item-label> -->
         <q-item
           clickable
           v-close-popup
@@ -73,16 +69,29 @@
         >
           <q-item-section>{{ $t("databaseClearAll") }}</q-item-section>
         </q-item>
+
+        <q-separator />
+
+        <q-item class="text-grey-5">
+          <q-item-section>
+            <q-item-label>Version {{ $store.getters.appVersion }}</q-item-label>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $store.getters.appPlatform || "browser" }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
       </q-list>
     </q-menu>
-  </q-btn>
 </template>
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { getColor, setColor } from "../helper/color";
 
 @Component
 export default class DevMenu extends Vue {
+  @Prop({ type: String, default: "bottom middle"}) readonly anchor!: string;
+  @Prop({ type: String, default: "top middle"}) readonly self!: string;
   colorMenuKey = Math.random();
 
   get colors() {
@@ -111,8 +120,7 @@ export default class DevMenu extends Vue {
   clearDB() {
     this.$q
       .dialog({
-        title:
-          "Möchtest du wirklich die Daten <strong>aller</strong> Klienten löschen?",
+        title: "Möchtest du wirklich die Daten aller Klienten löschen?",
         message: "Diese Aktion kann nicht rückgängig gemacht werden.",
         ok: {
           label: this.$t("databaseClearAll"),
@@ -121,7 +129,6 @@ export default class DevMenu extends Vue {
         },
         cancel: true,
         persistent: true,
-        html: true,
       })
       .onOk(() => {
         void this.$store.direct.dispatch.clearDB();

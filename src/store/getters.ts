@@ -1,9 +1,24 @@
-import { ObjectID } from "bson";
+import { ObjectId } from "bson";
 import { defineGetters } from "direct-vuex";
 import { store, StateInterface } from ".";
 import { Client, ProblemRecord, Contact } from "../models";
 import { ccApi } from "src/api/apiProvider";
 import DemoApi from "src/api/demo";
+import { Platform } from "quasar";
+
+const currentTeam = (state: StateInterface) => {
+    const teamId = state.currentUser?.activeTeam;
+    return state.teams.find(team => teamId && team._id?.equals(teamId));
+};
+
+const currentBackoffice = (state: StateInterface) => {
+    const backofficeId = currentTeam(state)?.backoffice;
+    return state.backoffices.find(item => backofficeId && item.id == backofficeId);
+};
+
+const countryCode = (state: StateInterface) => {
+    return currentBackoffice(state)?.countryCode.toLowerCase() || "";
+};
 
 export default defineGetters<StateInterface>()({
     getClient: state => (payload: any): Client | undefined => {
@@ -30,7 +45,7 @@ export default defineGetters<StateInterface>()({
 
         return {
             clientId: client._id?.toHexString() || "",
-            problemId: client.problems[client.problems.length - 1].id
+            problemId: client.problems.at(-1)?.id
         };
     },
 
@@ -38,10 +53,9 @@ export default defineGetters<StateInterface>()({
         return state.currentUser?.userId || "";
     },
 
-    currentTeam: state => {
-        const teamId = state.currentUser?.activeTeam;
-        return state.teams.find(team => teamId && team._id?.equals(teamId));
-    },
+    currentTeam,
+    currentBackoffice,
+    countryCode,
 
     relationshipLabels: state => {
         return [... new Set(
@@ -101,7 +115,7 @@ export default defineGetters<StateInterface>()({
         )];
     },
 
-    referenceCountForFormalContact: state => (contactId: ObjectID) =>
+    referenceCountForFormalContact: state => (contactId: ObjectId) =>
         state.clients.flatMap(client => client.formalContacts.filter(
             contact => contact.id.equals(contactId)
         )).length,
@@ -119,6 +133,20 @@ export default defineGetters<StateInterface>()({
     appVersion: () => process.env.APP_VERSION || "0",
 
     appBuild: () => process.env.APP_BUILD || "0",
+
+    appPlatform: () => {
+        if (Platform.is.cordova) {
+            if (Platform.is.ios) {
+                return "ios";
+            } else if (Platform.is.android) {
+                return "android";
+            }
+        } else if (Platform.is.electron) {
+            return Platform.is.platform; // e.g. "mac", "win", "linux"
+        }
+
+        return "";
+    },
 
     isDemo: () => ccApi.constructor == DemoApi,
 

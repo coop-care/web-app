@@ -4,7 +4,7 @@
       <editable-intervention
         v-for="(intervention, index) in interventions"
         :key="intervention.id"
-        :value="intervention"
+        :model-value="intervention"
         :isExpanded="index == editedIntervention"
         @did-expand="didExpand(index)"
         @did-collapse="didCollapse"
@@ -31,14 +31,14 @@
   </problem-summary-container>
 </template>
 <script lang="ts">
-import { Vue, Component, Ref } from "vue-property-decorator";
+import { Vue, Component, Ref } from "vue-facing-decorator";
 import { scroll } from "quasar";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 import EditableIntervention from "./EditableInterventionV2.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 
-const { setScrollPosition } = scroll;
+const { setVerticalScrollPosition } = scroll;
 
 @Component({
   components: {
@@ -111,7 +111,7 @@ export default class InterventionView extends Vue {
     const headerHeight = firstItemHeader?.offsetHeight || 0;
     const offset = offsetTop + headerHeight * this.editedIntervention;
     const duration = 250;
-    setScrollPosition(window, offset, duration);
+    setVerticalScrollPosition(window, offset, duration);
   }
 }
 </script>

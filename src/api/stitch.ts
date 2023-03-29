@@ -9,8 +9,8 @@ import {
 } from "mongodb-stitch-browser-sdk";
 import { ChangeEvent } from "mongodb-stitch-core-services-mongodb-remote"
 import CoopCareApiInterface, { CoopCareApiListener } from "./coopCareApiInterface";
-import { Client, User, Team, TeamMember } from "../models";
-import { ObjectID } from "bson";
+import { Client, User, Team, TeamMember, BackOffice } from "../models";
+import { ObjectId } from "bson";
 
 export default class StitchApi implements CoopCareApiInterface {
     private stitch: StitchAppClient;
@@ -18,10 +18,12 @@ export default class StitchApi implements CoopCareApiInterface {
     private clients: RemoteMongoCollection<Client>;
     private teams: RemoteMongoCollection<Team>;
     private users: RemoteMongoCollection<TeamMember>;
+    private backoffices: RemoteMongoCollection<BackOffice>;
     private watchers: Stream<ChangeEvent<any>>[] = [];
     authListener?: CoopCareApiListener<void>;
     userListener?: CoopCareApiListener<TeamMember>;
     teamListener?: CoopCareApiListener<Team>;
+    backofficeListener?: CoopCareApiListener<Team>;
     clientListener?: CoopCareApiListener<Client>;
 
     constructor(stitchApp: string, databaseName: string) {
@@ -34,6 +36,7 @@ export default class StitchApi implements CoopCareApiInterface {
         this.clients = database.collection("clients");
         this.teams = database.collection("teams");
         this.users = database.collection("userData");
+        this.backoffices = database.collection("backoffices");
 
         if (this.isLoggedIn) {
             this.addWatchers();
@@ -134,7 +137,7 @@ export default class StitchApi implements CoopCareApiInterface {
         }
 
         return this.users.insertOne(user).then(result => {
-            user._id = new ObjectID(result.insertedId);
+            user._id = new ObjectId(result.insertedId);
             return user;
         });
     }
@@ -170,7 +173,7 @@ export default class StitchApi implements CoopCareApiInterface {
     createClient(client: Client) {
         const data: any = client.toJSON();
         return this.clients.insertOne(data).then(result => {
-            client._id = new ObjectID(result.insertedId);
+            client._id = new ObjectId(result.insertedId);
             return client;
         })
     }
@@ -189,7 +192,7 @@ export default class StitchApi implements CoopCareApiInterface {
                 // where details of selected client cannot be displayed in client view
                 .find({
                     _id: {
-                        $in: clientIds.map(id => new ObjectID(id))
+                        $in: clientIds.map(id => new ObjectId(id))
                     }
                 }, {})
                 .toArray()
@@ -210,7 +213,7 @@ export default class StitchApi implements CoopCareApiInterface {
                 })
         );
     }
-    getClient(id: ObjectID) {
+    getClient(id: ObjectId) {
         return this.clients
             .find({ _id: id }, {})
             .first()
@@ -236,7 +239,7 @@ export default class StitchApi implements CoopCareApiInterface {
 
     createTeam(team: Team) {
         return this.teams.insertOne(team).then(result => {
-            team._id = new ObjectID(result.insertedId);
+            team._id = new ObjectId(result.insertedId);
             return team;
         })
     }
@@ -263,6 +266,38 @@ export default class StitchApi implements CoopCareApiInterface {
     deleteTeam(team: Team) {
         return this.teams
             .deleteOne({ _id: team._id })
+            .then(() => undefined);
+    }
+
+    getMyBackoffices() {
+        return (
+            this.backoffices
+                .find({}, {})
+                .toArray()
+                .then(data => {
+                    // @ts-ignore
+                    data.forEach(item => item._id = item._id?.toHexString())
+                    const result = BackOffice.fromObject(data) as BackOffice[];
+                    return result;
+                })
+        );
+    }
+    createBackoffice(backoffice: BackOffice) {
+        return this.backoffices.insertOne(backoffice).then(result => {
+            backoffice._id = new ObjectId(result.insertedId);
+            return backoffice;
+        })
+    }
+    saveBackoffice(backoffice: BackOffice) {
+        const data: any = backoffice.toJSON();
+        data._id = backoffice._id;
+        return this.backoffices
+            .findOneAndReplace({ _id: backoffice._id }, data)
+            .then(() => backoffice);
+    }
+    deleteBackoffice(backoffice: BackOffice) {
+        return this.backoffices
+            .deleteOne({ _id: backoffice._id })
             .then(() => undefined);
     }
 }

@@ -4,8 +4,8 @@
     class="radius-md bg-white text-body2 collapsed"
     style="transition: all 0s; width: 100%; max-width: 320px"
   >
-    <q-card-section>
-      <div class="row">
+    <q-card-section class="q-px-sm">
+      <div class="row q-px-sm">
         <div class="text-classification text-h6">
           {{ $t("summary") }}
         </div>
@@ -30,35 +30,39 @@
 </style>
 
 <script lang="ts">
-import { Component } from "vue-property-decorator";
-import RecordMixin from "../mixins/RecordMixin";
+import { Component, Vue } from "vue-facing-decorator";
+import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import KBSOverviewChart from "../components/KBSOverviewChart.vue";
 import { Outcome, Rating } from "src/models";
+
+interface ClientInsights extends RecordMixinInterface {}
 
 @Component({
   components: {
     KBSOverviewChart
-  }
+  },
+  mixins: [RecordMixin]
 })
-export default class ClientInsights extends RecordMixin {
+class ClientInsights extends Vue {
   get chartOptions() {
-    return {scales: {
-      xAxes: [{
-        type: "time",
-        distribution: "series",
-        gridLines: {
-          display: false
+    return {
+      scales: {
+        x: {
+          type: "timeseries",
+          grid: {
+            display: false
+          },
+          ticks: {
+            display: false
+          }
         },
-        ticks: {
-          display: false
+        y: {
+          ticks: {
+            stepSize: 1
+          }
         }
-      }],
-      yAxes: [{
-        ticks: {
-          stepSize: 1
-        }
-      }]
-    }};
+      }
+    };
   }
   get terminologyRatings() {
     return this.terminology.problemRatingScale.ratings;
@@ -97,5 +101,27 @@ export default class ClientInsights extends RecordMixin {
       )
     ).filter(value => !isNaN(value));
   }
+  /* when the available width is smaller than the maxWidth of 320px, 
+     the canvas width needs to be reduced accordingly */
+  adjustWidthIfNeeded() {
+    const margin = 16;
+    const negativeHorizontalOffsetByGutter = 2 * margin;
+    const maxWidth = 320 - margin;
+    const requiredWidth = Math.min(
+      (this.$el.parentElement?.clientWidth ?? 200) - negativeHorizontalOffsetByGutter, 
+      maxWidth
+    );
+    const canvas = this.$el.querySelector("canvas");
+
+    if (canvas) {
+      canvas.style.width = requiredWidth + "px";
+    }
+  }
+
+  mounted() {
+    this.adjustWidthIfNeeded();
+  }
 }
+
+export default ClientInsights;
 </script>

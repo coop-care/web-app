@@ -1,19 +1,21 @@
 <template>
   <q-input
     v-model="dateString"
+    @blur="onBlurInput()"
+    :key="dateKey"
     :mask="dateMaskForInput"
     fill-mask
     :label="label"
     :placeholder="placeholder"
     :color="color"
     :dense="dense"
-    :key="dateKey"
     :hint="hint"
-    @blur="dateKey = Math.random()"
     ref="dateInput"
     inputmode="numeric"
+    class="date-time-input"
   >
     <q-menu
+      ref="menu"
       v-if="mappedOptions"
       v-model="showOptions"
       auto-close
@@ -26,10 +28,11 @@
       <q-list dense>
         <q-item
           v-for="option in mappedOptions"
-          :key="option.value"
+          :key="option.value()"
           clickable
-          @click="dateString = option.value"
-          :active="dateString == option.value"
+          @focus="onBlurInput(() => selectOption(option))"
+          @click="selectOption(option)"
+          :active="dateString == option.value()"
           :active-class="'text-' + color"
         >
           <q-item-section>{{ option.label }}</q-item-section>
@@ -42,18 +45,19 @@
         name="event"
         class="cursor-pointer"
         :color="color"
-        @click.stop.prevent="showOptions = false"
+        @click.stop.prevent="showDateProxy"
       >
         <q-popup-proxy
           ref="dateProxy"
           transition-show="scale"
           transition-hide="scale"
+          self="center middle"
         >
           <q-date
             v-model="dateString"
             :mask="format"
             :color="color"
-            @input="onInputDate"
+            @update:model-value="onInputDate"
             today-btn
             :options="dateOptions"
           />
@@ -64,19 +68,30 @@
         name="access_time"
         class="cursor-pointer"
         :color="color"
-        @click.stop.prevent="showOptions = false"
+        @click.stop.prevent="showTimeProxy"
       >
         <q-popup-proxy
           ref="timeProxy"
           transition-show="scale"
           transition-hide="scale"
+          self="center middle"
         >
           <q-time
             v-model="dateString"
             :mask="format"
             :color="color"
-            @input="timeProxy.hide()"
-          />
+          >
+            <div class="row items-center justify-end">
+              <q-btn
+                v-close-popup
+                :label="$t('done')"
+                :color="color"
+                flat
+                rounded
+                no-caps
+              />
+            </div>
+          </q-time>
         </q-popup-proxy>
       </q-icon>
     </template>
@@ -85,7 +100,7 @@
       <q-icon
         v-if="!required && dateString"
         name="cancel"
-        @click.stop="clear"
+        @click.stop.prevent="clear"
         class="cursor-pointer"
       />
       <q-icon
@@ -93,53 +108,73 @@
         name="access_time"
         class="cursor-pointer"
         :color="color"
-        @click.stop.prevent="showOptions = false"
+        @click.stop.prevent="showTimeProxy"
       >
         <q-popup-proxy
           ref="timeProxy"
           transition-show="scale"
           transition-hide="scale"
+          self="center middle"
         >
           <q-time
             v-model="dateString"
             :mask="format"
             :color="color"
-            @input="timeProxy.hide()"
-          />
+          >
+            <div class="row items-center justify-end">
+              <q-btn
+                v-close-popup
+                :label="$t('done')"
+                :color="color"
+                flat
+                rounded
+                no-caps
+              />
+            </div>
+          </q-time>
         </q-popup-proxy>
       </q-icon>
     </template>
   </q-input>
 </template>
 
-<script lang="ts">
-import { Vue, Component, Prop, Ref } from "vue-property-decorator";
-import { date, QInput, QPopupProxy } from "quasar";
+<style lang="sass">
+.date-time-input
+  .q-field__before, .q-field__after
+    border-bottom: 1px solid rgba(0, 0, 0, 0.24)
+</style>
 
-const emptyDate = new Date(0, 0, 0, 0, 0, 0, 0).getTime();
+<script lang="ts">
+import { Vue, Component, Prop, Ref, Model } from "vue-facing-decorator";
+import { date, QInput, QMenu, QPopupProxy } from "quasar";
+
+const emptyDate = new Date(0, 0, 1, 0, 0, 0, 0).getTime();
 const { formatDate, extractDate, isBetweenDates } = date;
 
 interface DateSelectionOption {
   label: string;
-  value: Date;
+  value: () => Date;
 }
 
-@Component
+@Component({
+  emits: ["update:model-value"]
+})
 export default class DateTimeInput extends Vue {
-  @Prop(Date) readonly value: Date | undefined;
+  @Model({ type: Date }) readonly value: Date | undefined;
   @Prop({ type: String, default: "YYYY-MM-DD HH:mm"}) readonly format!: string;
-  @Prop(Date) readonly min: Date | undefined;
-  @Prop(String) readonly label: string | undefined;
-  @Prop(String) readonly placeholder: string | undefined;
-  @Prop(String) readonly defaultTime: string | undefined;
+  @Prop({ type: Date }) readonly min: Date | undefined;
+  @Prop({ type: String }) readonly label: string | undefined;
+  @Prop({ type: String }) readonly placeholder: string | undefined;
+  @Prop({ type: String }) readonly defaultTime: string | undefined;
   @Prop({ type: String, default: "primary"}) readonly color!: string;
-  @Prop(Boolean) readonly required!: boolean;
-  @Prop(Boolean) readonly dense!: boolean;
+  @Prop({ type: Boolean }) readonly required!: boolean;
+  @Prop({ type: Boolean }) readonly dense!: boolean;
   @Prop({ type: Array, default: () => []}) readonly options!: DateSelectionOption[];
-  @Prop(String) readonly hint: string | undefined;
+  @Prop({ type: String }) readonly hint: string | undefined;
   @Ref() readonly dateInput!: QInput;
   @Ref() readonly dateProxy!: QPopupProxy;
   @Ref() readonly timeProxy!: QPopupProxy;
+  @Ref() readonly menu!: QMenu;
 
   dateKey = Math.random();
   showOptions = false;
@@ -150,7 +185,7 @@ export default class DateTimeInput extends Vue {
   set dateString(value: string) {
     const result = extractDate(value, this.format);
 
-    if (!isNaN(result.getTime()) && result.getTime() != emptyDate) {
+    if (!!value && !value.includes("_") && !isNaN(result.getTime()) && result.getTime() != emptyDate) {
       if (
         !this.min ||
         isBetweenDates(result, this.min, result, {
@@ -159,10 +194,10 @@ export default class DateTimeInput extends Vue {
           onlyDate: true
         })
       ) {
-        this.$emit("input", result);
+        this.$emit("update:model-value", result);
       } else {
         this.$emit(
-          "input",
+          "update:model-value",
           new Date(
             new Date(this.min).setHours(
               result.getHours(),
@@ -173,6 +208,12 @@ export default class DateTimeInput extends Vue {
           )
         );
       }
+    } else {
+      if (value == this.dateMaskAsValue && !this.required) {
+        this.$emit("update:model-value", undefined)
+      } else {
+        // do nothing because the input is having an inconsistent string value which is currently edited
+      }
     }
   }
   get dateMaskForInput() {
@@ -180,6 +221,9 @@ export default class DateTimeInput extends Vue {
       .toString()
       .replace(/[dDMYHhm]/g, "#")
       .replace(/A/g, "AA");
+  }
+  get dateMaskAsValue() {
+    return this.dateMaskForInput.replace(/[#A]/g, "_")
   }
   get showDatePicker() {
     return /[YMDd]/.test(this.format);
@@ -189,11 +233,11 @@ export default class DateTimeInput extends Vue {
   }
   get mappedOptions() {
     return this.options
-      ?.sort((a: any, b: any) => a.value.getTime() - b.value.getTime())
+      ?.sort((a: any, b: any) => a.value().getTime() - b.value().getTime())
       .map((option: any) => {
         return {
           label: option.label,
-          value: formatDate(option.value, this.format)
+          value: () => formatDate(option.value(), this.format)
         };
       });
   }
@@ -201,16 +245,76 @@ export default class DateTimeInput extends Vue {
   dateOptions(value: string) {
     return !this.min || value >= formatDate(this.min, "YYYY/MM/DD");
   }
+
   onInputDate(value: string) {
     if (!this.dateString && this.defaultTime) {
       this.dateString = value.replace("00:00", this.defaultTime);
     }
     this.dateProxy.hide();
   }
+
   clear(event: Event) {
-    this.$emit("input", null);
+    this.$emit("update:model-value", undefined);
     this.dateInput.$emit("blur", event);
     this.showOptions = false;
+  }
+
+  onBlurInput(next?: (() => void)) {
+    if (this.dateInput?.nativeEl.value != this.dateString) {
+      this.autocompleteTimeIfNeeded();
+      this.dateKey = Math.random();
+      next?.()
+    }
+  }
+
+  /**
+   * Supports only `HH:mm` time format and is not applied to others (e.g. AM/PM time format: `hh:mm AA`).
+   */
+  autocompleteTimeIfNeeded() {
+      if (this.value == undefined && this.format == "HH:mm") {
+        let numbers = this.dateInput?.nativeEl.value.replace(/\D/g, "");
+
+        if (numbers.length == 1) {
+          numbers = "0" + numbers + "00"
+        } else if (numbers.length == 2) {
+          numbers = numbers + "00"
+        } else if (numbers.length == 3) {
+          numbers = "0" + numbers
+        } else {
+          return;
+        }
+
+        const hours = numbers.substring(0, 2)
+        const minutes = numbers.substring(2, 4)
+
+        if (parseInt(hours) < 24 && parseInt(minutes) < 60) {
+          this.dateString = hours + ":" + minutes;
+        }
+      }
+  }
+
+  selectOption(option: {value: () => string}) {
+    this.dateString = option.value();
+    this.showOptions = false;
+    setTimeout(() => this.dateInput.focus());
+  }
+
+  showDateProxy() {
+    this.showOptions = false;
+    this.onBlurInput(() => setTimeout(() => this.dateProxy.show()));
+  }
+
+  showTimeProxy() {
+    this.showOptions = false;
+    this.onBlurInput(() => setTimeout(() => this.timeProxy.show()));
+  }
+
+  created() {
+    this.$bus.on("did-change-locale", () => this.dateKey = Math.random());
+  }
+
+  unmounted() {
+    this.$bus.off("did-change-locale");
   }
 }
 </script>

@@ -7,9 +7,13 @@
   "settings": {
     "editor.tabSize": 2,
     "editor.formatOnPaste": true,
-    "editor.codeActionsOnSave": {
-      "source.fixAll": true
-    },
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": [
+      "source.fixAll.eslint"
+    ],
     "prettier.tabWidth": 2,
     "prettier.printWidth": 80,
     "vetur.validation.template": false,
@@ -35,10 +39,12 @@
       "typescript",
       "vue"
     ],
-    "i18n-ally.localesPaths": "src/i18n",
+    "i18n-ally.localesPaths": [
+      "src/i18n"
+    ],
     "i18n-ally.pathMatcher": "{locale}/index.json",
-    "i18n-ally.sourceLanguage": "de-de",
-    "i18n-ally.displayLanguage": "de-de",
+    "i18n-ally.sourceLanguage": "de-DE",
+    "i18n-ally.displayLanguage": "de-DE",
     "i18n-ally.keystyle": "nested"
   }
 }

@@ -7,16 +7,16 @@
 
     <div class="q-mb-lg row q-col-gutter-x-xl q-col-gutter-y-lg">
       <div class="col-12 col-sm-6"> 
-        <div class="rating-header column justify-center text-center q-mb-xs">
+        <div class="rating-header column no-wrap justify-center text-center q-mb-xs">
           <text-with-tooltip
             :text="$t('observedRating') + ':'"
             :tooltip="$t(type + 'ObservationHint')"
-            class="text-subtitle2"
+            class="text-subtitle2 ellipsis"
           />
           <text-with-tooltip
             :text="observationScale"
             :tooltip="observationExample"
-            class="text-weight-light"
+            class="text-weight-light ellipsis"
           />
         </div>
         <div class="row">
@@ -40,7 +40,7 @@
             <template v-slot:1>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 0"
                 @before-hide="observationMouseover = -1"
               />
@@ -48,7 +48,7 @@
             <template v-slot:2>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 1"
                 @before-hide="observationMouseover = -1"
               />
@@ -56,7 +56,7 @@
             <template v-slot:3>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 2"
                 @before-hide="observationMouseover = -1"
               />
@@ -64,7 +64,7 @@
             <template v-slot:4>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 3"
                 @before-hide="observationMouseover = -1"
               />
@@ -72,7 +72,7 @@
             <template v-slot:5>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="observationMouseover = 4"
                 @before-hide="observationMouseover = -1"
               />
@@ -92,7 +92,9 @@
           button-class="q-mt-sm q-mb-md text-center"
         >
           <q-input
-            v-model="observationComment"
+            :model-value="observationComment"
+            @change="observationComment = $event"
+            @clear="observationComment = ''"
             :label="$t('ratingCommentLabel')"
             autogrow
             :autofocus="!observationComment"
@@ -104,16 +106,16 @@
       </div>
 
       <div class="col-12 col-sm-6" style="opacity: 0.7"> 
-        <div class="rating-header column justify-center text-center q-mb-xs">
+        <div class="rating-header column no-wrap justify-center text-center q-mb-xs">
           <text-with-tooltip
             :text="$t('expectedRating') + ':'"
             :tooltip="$t(type + 'ExpectationHint')"
-            class="text-subtitle2"
+            class="text-subtitle2 ellipsis"
           />
           <text-with-tooltip
             :text="expectationScale"
             :tooltip="expectationExample"
-            class="text-weight-light"
+            class="text-weight-light ellipsis"
           />
         </div>
         <div class="row">
@@ -137,7 +139,7 @@
             <template v-slot:1>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 0"
                 @before-hide="expectationMouseover = -1"
               />
@@ -145,7 +147,7 @@
             <template v-slot:2>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 1"
                 @before-hide="expectationMouseover = -1"
               />
@@ -153,7 +155,7 @@
             <template v-slot:3>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 2"
                 @before-hide="expectationMouseover = -1"
               />
@@ -161,7 +163,7 @@
             <template v-slot:4>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 3"
                 @before-hide="expectationMouseover = -1"
               />
@@ -169,7 +171,7 @@
             <template v-slot:5>
               <q-tooltip
                 v-if="$q.platform.is.desktop"
-                content-class="hidden"
+                class="hidden"
                 @before-show="expectationMouseover = 4"
                 @before-hide="expectationMouseover = -1"
               />
@@ -189,7 +191,9 @@
           button-class="q-my-sm text-center"
         >
           <q-input
-            v-model="expectationComment"
+            :model-value="expectationComment"
+            @change="expectationComment = $event"
+            @clear="expectationComment = ''"
             :label="$t('ratingCommentLabel')"
             autogrow
             :autofocus="!expectationComment"
@@ -209,7 +213,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component, Prop } from "vue-property-decorator";
+import { Vue, Component, Prop } from "vue-facing-decorator";
 import { Rating } from "../models";
 import TextWithTooltip from "./TextWithTooltip.vue";
 import RevealButton from "./RevealButton.vue";
@@ -218,14 +222,15 @@ import RevealButton from "./RevealButton.vue";
   components: {
     TextWithTooltip,
     RevealButton
-  }
+  },
+  emits: ["update:model-value"]
 })
 export default class RatingView extends Vue {
   @Prop({ type: String, required: true}) readonly title!: string;
   @Prop({ type: String, required: true}) readonly description!: string;
   @Prop({ type: String, required: true}) readonly type!: string;
   @Prop({ type: Array, required: true}) readonly scale!: string[];
-  @Prop(Object) readonly rating: Rating | undefined;
+  @Prop({ type: Object }) readonly rating: Rating | undefined;
   @Prop({ type: Array, default: () => []}) readonly examples!: string[];
 
   observationMouseover = -1;
@@ -235,25 +240,25 @@ export default class RatingView extends Vue {
     return this.rating?.observation || 0;
   }
   set observation(value: number) {
-    this.updateNewOutcome({ observation: value });
+    this.updateNewOutcome({ observation: value ?? 0 });
   }
   get expectation() {
     return this.rating?.expectation || 0;
   }
   set expectation(value: number) {
-    this.updateNewOutcome({ expectation: value });
+    this.updateNewOutcome({ expectation: value ?? 0 });
   }
   get observationComment() {
     return this.rating?.comment || "";
   }
   set observationComment(value: string) {
-    this.updateNewOutcome({ comment: value });
+    this.updateNewOutcome({ comment: value ?? "" });
   }
   get expectationComment() {
     return this.rating?.expectationComment || "";
   }
   set expectationComment(value: string) {
-    this.updateNewOutcome({ expectationComment: value });
+    this.updateNewOutcome({ expectationComment: value ?? "" });
   }
 
   get options() {
@@ -303,11 +308,7 @@ export default class RatingView extends Vue {
   }
 
   updateNewOutcome(changes: Partial<Rating>) {
-    this.$store.direct.commit.updateNewOutcome({
-      ratingType: this.type,
-      changes: changes,
-      ...this.$route.params
-    });
+    this.$emit("update:model-value", changes);
   }
 }
 </script>

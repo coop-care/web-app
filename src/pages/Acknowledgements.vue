@@ -51,7 +51,6 @@
               :href="item.repository"
               target="_blank"
               rel="noopener noreferrer nofollow"
-              type="a"
               @click.stop
             />
           </q-item-section>
@@ -74,7 +73,6 @@
                 :href="item.homepage"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                type="a"
                 @click.stop
               />
               <span v-else class="text-weight-medium line-height-10">{{ item.name }}</span>
@@ -99,7 +97,6 @@
                 :title="$t('mailtoHint', {address: item.author.email})"
                 :href="'mailto:' + item.author.email"
                 rel="noopener noreferrer nofollow"
-                type="a"
                 @click.stop
               />
               <q-btn
@@ -118,7 +115,6 @@
                 :href="item.author.url"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                type="a"
                 @click.stop
               />
             </q-item-label>
@@ -144,7 +140,7 @@
 </style>
 
 <script lang="ts">
-import { Vue, Component } from "vue-property-decorator";
+import { Vue, Component } from "vue-facing-decorator";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
 
 type OSSDependency = {
@@ -169,10 +165,10 @@ export default class AcknowledgementsPage extends Vue {
   ossLicenses: OSSDependency[] = [];
 
   get hasDiagnosisNames() {
-    return Object.keys(this.$t("diagnosisNames")).length > 0;
+    return Object.keys(this.$tm("diagnosisNames")).length > 0;
   }
   get hasUsersGuide() {
-    const keys = Object.keys(this.$t("usersGuide"));
+    const keys = Object.keys(this.$tm("usersGuide"));
     return keys.length > 1 || keys[0] != "50";
   }
 
