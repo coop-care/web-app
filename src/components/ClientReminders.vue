@@ -87,24 +87,55 @@
         @before-leave="beforeLeaveTaskList"
       >
         <div
-          v-for="taskOrTitle in tasks"
-          :key="taskOrTitle.title"
+          v-for="taskItem in tasks"
+          :key="taskItem.id"
           class="task-list-item no-padding-xs full-width"
         >
+
           <task-view
-            v-if="taskOrTitle.task"
+            v-if="taskItem.task"
             :client="client"
-            :task="taskOrTitle.task"
+            :task="taskItem.task"
             :date="selectedDate"
             :hasCheckbox="canComplete"
             @update="updateTasks"
           />
+
           <div
-            v-else
-            class="text-subtitle1 text-weight-bold q-pt-lg"
+            v-else-if="taskItem.remainingTasksCount != undefined"
+            class="q-mt-sm full-width flex justify-center items-center task-item"
           >
-            {{ taskOrTitle.title }}
+            <div class="text-caption">{{ $t('remainingTasksCount', taskItem.remainingTasksCount) }}</div>
+            <q-btn
+              :label="$t('showAll')"
+              flat
+              rounded
+              no-caps
+              dense
+              color="primary"
+              class="q-px-sm q-ml-sm"
+              @click="showRemainingTasksPerGroup($event.target, taskItem.id, taskItem.remainingTasksCount)"
+            />
           </div>
+
+          <div
+            v-else-if="taskItem.title != undefined"
+            class="text-subtitle1 text-weight-bold q-pt-lg row items-center"
+          >
+            <div style="width: 106px">{{ $te(taskItem.title) ? $t(taskItem.title) : $d(new Date(taskItem.title), "TimeSimple") }}</div>
+            <q-btn
+              v-if="taskItem.allTasksCount == undefined && taskItem.allTasksCount != undefined && taskItem.allTasksCount > 1"
+              :label="$t('allTasksDone', taskItem.allTasksCount)"
+              flat
+              rounded
+              no-caps
+              dense
+              color="primary"
+              class="q-px-sm"
+              @click="markTaskGroupAsDone(taskItem.id)"
+            />
+          </div>
+
         </div>
 
         <div
@@ -207,6 +238,7 @@ const allInclusive = {
   inclusiveTo: true,
   onlyDate: true,
 };
+const limitTasksPerGroup = 20;
 
 @Component({
   components: {
@@ -222,6 +254,7 @@ class ClientReminders extends Vue {
   isToday = true;
   startOfTodayTimer = 0;
   endOfTodayTimer = 0;
+  visibleTasksPerGroup = {} as Record<string, number>;
 
   @Watch("$route")
   onRouteChange() {
@@ -368,20 +401,20 @@ class ClientReminders extends Vue {
     if (pastDueTasks.length) {
       pastDueTasks.sort(Task.sortByDueDate);
       groupedTasks.push(
-        new TaskGroup("" + this.$t("pastDueTitle"), pastDueTasks)
+        new TaskGroup("pastDueTitle", pastDueTasks, this.getVisibleTasksCount("pastDueTitle"))
       );
     }
 
     if (anytimeTasks.length) {
       groupedTasks.push(
-        new TaskGroup("" + this.$t("anytimeTitle"), anytimeTasks)
+        new TaskGroup("anytimeTitle", anytimeTasks)
       );
     }
 
     scheduledTasks
       .sort(Task.sortByDueDate)
       .forEach((task) => {
-        const title = task.due ? this.$d(task.due, "TimeSimple") : "";
+        const title = task.due?.toISOString() || "";
         const group = groupedTasks.find((group) => group.title == title);
 
         if (group) {
@@ -441,6 +474,25 @@ class ClientReminders extends Vue {
     
     window.clearTimeout(this.endOfTodayTimer);
     this.endOfTodayTimer = 0;
+  }
+
+  getVisibleTasksCount(groupId: string,) {
+    return this.visibleTasksPerGroup[groupId] ?? limitTasksPerGroup;
+  }
+
+  showRemainingTasksPerGroup(element: HTMLElement, groupId: string, revealTaskCount = 0) {
+    this.visibleTasksPerGroup[groupId] = this.getVisibleTasksCount(groupId) + revealTaskCount;
+    const parent = element.closest(".task-item") as HTMLElement | undefined;
+
+    if (parent) {
+      parent.style.visibility = "hidden";
+    }
+
+    this.updateTasks();
+  }
+
+  markTaskGroupAsDone(groupId: string) {
+    console.log(groupId)
   }
 
   created() {

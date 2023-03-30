@@ -49,25 +49,48 @@ export class Task<T extends Reminder> {
 export class TaskGroup {
     title: string;
     tasks: Task<Reminder>[];
+    limit?: number;
 
-    constructor(title: string, tasks: Task<Reminder>[]) {
+    constructor(title: string, tasks: Task<Reminder>[], limit?: number) {
         this.title = title;
         this.tasks = tasks;
+        this.limit = limit;
     }
 
     get titleAndTasks(): GroupedTask[] {
+        let limit = this.limit ?? this.tasks.length;
+        limit = this.tasks.length - limit != 1 ? limit : limit + 1; // the difference between limit and tasks.length should be at least 2
+        const title = this.title;
+        const tasks = this.tasks.slice(0, limit);
+        const allTasksCount = this.tasks.length;
+        const remainingTasksCount = allTasksCount - tasks.length;
+
         return [{
-            title: this.title
-        }].concat(this.tasks.map(task => {
+            id: title,
+            title,
+            allTasksCount,
+        } as GroupedTask].concat(tasks.map(task => {
             return {
-                title: task.id,
-                task: task
+                id: task.id,
+                task,
+                allTasksCount,
             }
-        }));
+        })).concat(
+            remainingTasksCount > 0
+                ? [{
+                    id: title,
+                    allTasksCount,
+                    remainingTasksCount,
+                }] 
+                : []
+        );
     }
 }
 
 export type GroupedTask = {
-    title: string;
+    id: string;
+    title?: string;
     task?: Task<Reminder>;
+    allTasksCount: number;
+    remainingTasksCount?: number;
 }

@@ -773,5 +773,8 @@
   "url": "URL",
   "homepageLabel": "Home page",
   "showResolvedProblems": "Show {count} resolved problem | Show {count} resolved problems",
-  "hideResolvedProblems": "Hide resolved problems"
+  "hideResolvedProblems": "Hide resolved problems",
+  "allTasksDone": "Completed all {count} tasks",
+  "remainingTasksCount": "… and {count} more tasks",
+  "showAll": "Show all"
 }
