@@ -202,7 +202,6 @@ export default defineComponent({
           color: "negative",
         },
         cancel: {
-          label: this.$t("cancel"),
           rounded: true,
           flat: true,
           noCaps: true,

@@ -326,14 +326,14 @@ a
 .done-button
   width: 100%
   max-width: 280px
-.electron
+.electron.platform-mac
   header .q-toolbar, .window-draggable
     -webkit-app-region: drag
     button
       -webkit-app-region: no-drag
   .navigation-drawer, .q-dialog .q-card
     -webkit-app-region: no-drag
-  header .q-toolbar
+  header .q-toolbar, .fullscreen > .q-toolbar
     min-height: 66px
     padding-top: 20px
   .q-drawer--on-top .navigation-drawer

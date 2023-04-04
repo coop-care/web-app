@@ -221,16 +221,30 @@
             :key="index"
             class="no-column-break"
           >
-            <div>
-              {{
-                [intervention.category.title, intervention.target.title]
-                  .filter(title => title)
-                  .map(title => $t(title))
-                  .join(": ") || ""
-              }}
-            </div>
-            <div class="text-weight-bold">
-              {{ intervention.details || $t("newIntervention") }}
+            <div class="row items-center">
+              <div>
+                <div>
+                  {{
+                    [intervention.category.title, intervention.target.title]
+                      .filter(title => title)
+                      .map(title => $t(title))
+                      .join(": ") || ""
+                  }}
+                </div>
+                <div class="text-weight-bold">
+                  {{ intervention.details || $t("newIntervention") }}
+                </div>
+              </div>
+              <div class="q-ml-sm">
+                <q-btn
+                  :title="$t('editIntervention')"
+                  icon="edit"
+                  color="intervention"
+                  round
+                  flat
+                  @click="$router.push({params: {...this.$route.params, ...params, interventionId: intervention.id, sheet: 'editIntervention'}})"
+                />
+              </div>
             </div>
           </li>
         </ul>

@@ -217,13 +217,6 @@ if (Platform.is.cordova) {
         window.estimateCustomStorage = () => estimateCustomStorage(cordova.file.applicationStorageDirectory + "databases");
         window.isStoragePersisted = () => true;
 
-        // ToDo: remove when no longer needed for experiments
-        if (process.env.DEV) {
-            const global = window as any;
-            global.deleteDatabase = deleteDatabase;
-            global.escapeDatabaseName = escapeDatabaseName;
-        }
-
     } else if (Platform.is.ios) {
         const versionNumber = parseInt(window.navigator.userAgent.match(/OS (\d+)_(\d+)_?(\d+)?/)?.[1] ?? "0");
 

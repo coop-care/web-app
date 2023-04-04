@@ -244,7 +244,7 @@ class ClientHealthInformationView extends Vue {
     return result;
   }
   get assistiveTechnologyItems() {
-    return ClientHealthInformation.asstiveTechnologyTypes
+    return ClientHealthInformation.assistiveTechnologyTypes
       .map(this.makeOption)
       .sort(Client.sortByLabel) || [];
   }

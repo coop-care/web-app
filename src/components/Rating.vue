@@ -19,11 +19,11 @@
             class="text-weight-light ellipsis"
           />
         </div>
-        <div class="row">
+        <div class="row items-center">
           <q-icon
             name="sentiment_very_dissatisfied"
             color="negative"
-            size="lg"
+            size="md"
           />
           <q-btn-toggle
             v-model="observation"
@@ -81,7 +81,7 @@
           <q-icon
             name="sentiment_very_satisfied"
             color="positive"
-            size="lg"
+            size="md"
           />
         </div>
         <reveal-button
@@ -118,11 +118,11 @@
             class="text-weight-light ellipsis"
           />
         </div>
-        <div class="row">
+        <div class="row items-center">
           <q-icon
             name="sentiment_very_dissatisfied"
             color="negative"
-            size="lg"
+            size="md"
           />
           <q-btn-toggle
             v-model="expectation"
@@ -180,7 +180,7 @@
           <q-icon
             name="sentiment_very_satisfied"
             color="positive"
-            size="lg"
+            size="md"
           />
         </div>
         <reveal-button

@@ -20,6 +20,7 @@ declare global {
         shimIndexedDB?: any;
         estimateCustomStorage?: () => Promise<StorageEstimate>;
         isStoragePersisted?: () => boolean;
+        handleOpenURL?: (url: string) => void;
         ApkUpdater?: {
             download: (url: string, options: Record<string, any>) => Promise<void>;
             install: () => Promise<void>;

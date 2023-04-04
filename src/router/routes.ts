@@ -90,7 +90,7 @@ const routes: RouteRecordRaw[] = [
             component: () => import("components/ClientProblems.vue"),
             meta: {
               noScroll: true,
-              sheets: { newProblem, editClassification, newIntervention, newOutcome }
+              sheets: { newProblem, editClassification, newIntervention, editIntervention, newOutcome }
             },
           },
           {

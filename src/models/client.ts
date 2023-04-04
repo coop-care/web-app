@@ -6,8 +6,8 @@ import { ObjectId } from "bson";
 import { DateTime } from "luxon";
 
 export class ClientHealthInformation {
-    static readonly asstiveTechnologyTypes = ["nursingCareBedType", "toiletChairType", "raisedToiletSeatType", "rollatorType", "mobilityAidsType", "hearingAidsType", "glassesType", "upperDentureType", "lowerDentureType"];
-    static readonly predefinedTypes = [...new Set(ClientHealthInformation.asstiveTechnologyTypes)];
+    static readonly assistiveTechnologyTypes = ["nursingCareBedType", "toiletChairType", "raisedToiletSeatType", "rollatorType", "wheelchairType", "mobilityAidsType", "hearingAidsType", "glassesType", "upperDentureType", "lowerDentureType"];
+    static readonly predefinedTypes = [...new Set(ClientHealthInformation.assistiveTechnologyTypes)];
 
     diagnoses: string[] = [];
     diabetes = "";

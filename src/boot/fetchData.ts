@@ -2,9 +2,10 @@ import { boot } from "quasar/wrappers";
 import { downloadJSON } from "../helper/download";
 import { setColorSet, defaultColors } from "../helper/color";
 import { ccApi } from "../api/apiProvider";
-import { Team } from "../models";
 import { ObjectId } from "bson";
 import { locale } from "src/boot/i18n";
+import { Platform } from "quasar";
+import { i18n } from "src/boot/i18n";
 
 export default boot(({ store }) => {
     void store.direct.dispatch.fetchEssentialDataFromDB({ locale: locale.value }).catch(() => 0);
@@ -27,8 +28,10 @@ export default boot(({ store }) => {
         global.$ccApi = ccApi
         global.$store = store;
         global.ObjectId = ObjectId;
-        global.Team = Team;
+        global.terminology = i18n.tm("terminology");
     }
 
     setColorSet(store?.state.currentUser?.colorScheme || defaultColors);
+
+    document.body.classList.add("platform-" + Platform.is.platform);
 })
