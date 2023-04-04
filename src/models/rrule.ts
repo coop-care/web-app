@@ -94,7 +94,7 @@ class RRuleSet extends RuleSet {
         }
         return DateTime.fromJSDate(date, { zone: timezone || undefined })
             .toUTC()
-            .setZone(RRuleSet.localTimezone, { keepLocalTime: true })
+            .setZone(RRuleSet.localTimezone ?? undefined, { keepLocalTime: true })
             .toJSDate();
     }
 

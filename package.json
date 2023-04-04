@@ -43,7 +43,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.16.2",
     "argon2-browser": "^1.18.0",
     "bson": "^4.7.2",
     "chart.js": "^4.2.1",
@@ -60,7 +60,7 @@
     "localized-countries": "^2.0.0",
     "luxon": "^3.2.1",
     "mongodb-stitch-browser-sdk": "^4.8.0",
-    "quasar": "^2.11.8",
+    "quasar": "^2.11.10",
     "realm-web": "1.7",
     "reflect-metadata": "^0.1.13",
     "rrule": "^2.7.2",
@@ -82,7 +82,7 @@
     "apk-update": "^1.0.3",
     "base64-loader": "^1.0.0",
     "dotenv": "^16.0.3",
-    "electron": "^23.1.4",
+    "electron": "^24.0.0",
     "electron-builder": "^22.14.13",
     "electron-notarize": "^1.2.2",
     "electron-updater": "^5.3.0",
