@@ -79,7 +79,7 @@
       @keydown.up.down.enter.prevent="navigateDetailsMenu"
     >
       <filterable-menu
-        v-model="details"
+        v-model="detailsCode"
         ref="detailsMenu"
         :items="suggestedDetails"
         color="intervention"
@@ -147,10 +147,28 @@ class InterventionEditor extends Vue {
   set targetCode(value) {
     this.updateIntervention({ targetCode: value });
   }
+  get detailsCode() {
+    return this.value.detailsCode;
+  }
+  set detailsCode(value) {
+    const details = this.suggestedDetails.find(item => item.value == value)?.label ?? "";
+    this.updateIntervention({
+      detailsCode: value ?? "",
+      details
+    });
+  }
   get details() {
     return this.value.details;
   }
   set details(value) {
+    if (!!this.value.detailsCode) {
+      const suggestion = this.suggestedDetails.find(item => item.value == this.value.detailsCode);
+
+      if (suggestion?.label != value) {
+        this.updateIntervention({ detailsCode: "" });
+      }
+    }
+
     this.updateIntervention({ details: value ?? "" });
   }
   get recurrenceRules() {
@@ -163,9 +181,9 @@ class InterventionEditor extends Vue {
     if (this.categoryCode && this.targetCode && this.usersGuideForProblem) {
       const intervention = this.usersGuideForProblem.interventionSuggestions;
       const category = intervention[this.categoryCode] || {};
-      const details = category[this.targetCode] || [];
+      const details = category[this.targetCode] || {};
 
-      return details.filter(Boolean);
+      return Object.entries(details).flatMap(([value, label]) => !!label ? [{label, value}] : []);
     } else {
       return [];
     }

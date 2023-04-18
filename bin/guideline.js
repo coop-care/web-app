@@ -1,3 +1,10 @@
+#!/usr/bin/env node
+
+/**
+ * Parse Omaha System Covid-19 response guideline from CSV file and write the result
+ * in JSON format to stdout.
+ */
+
 const { readFile } = require("fs").promises;
 const { existsSync } = require("fs");
 
@@ -6,7 +13,7 @@ const target = 1;
 const terminologyfile = "src/i18n/en-us/terminology.json";
 
 const filepath = process.argv[2];
-const details = parseInt(process.argv[3]) || 2;
+const detailsColumn = parseInt(process.argv[3]) || 2;
 
 if (!filepath) {
   console.error("🚫 missing argument 1: path to CSV file")
@@ -46,8 +53,10 @@ if (!existsSync(terminologyfile)) {
         const categoryCode = categoryCodes[row[category].trim().replace(/  +/g, " ")] || row[category];
         const targetCode = targetCodes[row[target].trim().replace(/  +/g, " ")] || row[target];
         result[categoryCode] = result[categoryCode] || {};
-        result[categoryCode][targetCode] = (result[categoryCode][targetCode] || [])
-          .concat(row[details] || "");
+        result[categoryCode][targetCode] = result[categoryCode][targetCode] || {};
+        const count = Object.keys(result[categoryCode][targetCode]).length;
+        const detailsCode = (count + 1).toString().padStart(2, "0");
+        result[categoryCode][targetCode][detailsCode] = row[detailsColumn];
         return result;
       }, {});
 

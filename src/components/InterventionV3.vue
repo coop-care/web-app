@@ -21,7 +21,7 @@
           color="white"
           floating
           :label="interventionsInCategory(category.code).length"
-          v-if="true && interventionsInCategory(category.code).length"
+          v-if="interventionsInCategory(category.code).length"
           class="radius-lg text-intervention text-weight-medium"
         />
       </q-tab>

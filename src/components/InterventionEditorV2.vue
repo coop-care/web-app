@@ -192,7 +192,7 @@ export default class InterventionEditor extends Vue {
       const intervention = this.usersGuideForProblem.interventionSuggestions;
       const category = intervention[this.categoryCode] || {};
       const details = category[this.targetCode] || [];
-      return details.filter(text => text);
+      return Object.values(details).filter(Boolean);
     } else {
       return [];
     }

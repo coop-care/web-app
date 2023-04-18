@@ -63,7 +63,9 @@ export interface UsersGuide {
     [key: string]: {
         interventionSuggestions: {
             [key: string]: {
-                [key: string]: string[];
+                [key: string]: {
+                    [key: string]: string;
+                };
             };
         };
         problemRatingScaleExamples: {
@@ -75,6 +77,30 @@ export interface UsersGuide {
         };
         severityModifierExamples: string[];
     };
+}
+
+export interface UsersGuideFromDB {
+    id: string;
+    version: number;
+    locale: string;
+    title: string;
+    description: string;
+    problemCode: string;
+    interventionSuggestions: {
+        [key: string]: {
+            [key: string]: {
+                [key: string]: string;
+            };
+        };
+    };
+    problemRatingScaleExamples: {
+        ratings: {
+            scale: {
+                title: string;
+            }[];
+        }[];
+    };
+    severityModifierExamples: string[];
 }
 
 export function treeifyTerminology(
