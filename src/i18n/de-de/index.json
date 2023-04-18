@@ -440,6 +440,8 @@
   "hospitalProfession": "Krankenhaus",
   "curatorProfession": "Rechtlicher Betreuer",
   "midwifeProfession": "Hebamme",
+  "mealsOnWheelsProfession": "Essen auf Rädern",
+  "dayCareCenterProfession": "Tagespflegeeinrichtung",
   "nursingCareBedType": "Pflegebett",
   "toiletChairType": "Toilettenstuhl",
   "raisedToiletSeatType": "Toilettensitzerhöhung",

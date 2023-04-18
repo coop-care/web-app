@@ -440,6 +440,8 @@
   "hospitalProfession": "Hospital",
   "curatorProfession": "Curator",
   "midwifeProfession": "Midwife",
+  "mealsOnWheelsProfession": "Meals on wheels",
+  "dayCareCenterProfession": "Day care center",
   "nursingCareBedType": "Nursing care bed",
   "toiletChairType": "Toilet Chair",
   "raisedToiletSeatType": "Raised toilet seat",
