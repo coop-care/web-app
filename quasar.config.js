@@ -23,6 +23,7 @@ const env = require("dotenv").config({
       (process.env.QENV?.replace(/^production$/, "") || "") + ".env"
     )
   }).parsed || {};
+env.UPDATE_URL = process.env.UPDATE_URL || env.UPDATE_URL;
 env.QENV = process.env.QENV;
 env.IS_TESTFLIGHT = process.env.IS_TESTFLIGHT;
 
@@ -107,6 +108,17 @@ module.exports = configure(function (ctx) {
       // chainWebpack (/* chain */) {}
 
       env: {
+        BACKEND: "demo",
+        BACKEND_APP_ID: "",
+        WEBAPI_URL: "",
+        WEBAPI_FROM: "",
+        CSP_URLS: "",
+        USE_FALLBACK_LICENSE: "",
+        VAULTKEY: "",
+        BETA_EXPIRATION: "",
+        APP_ID: "",
+        UPDATE_URL: "",
+        APPLE_APP_ID: "",
         ...env,        
         APP_VERSION: JSON.parse(readFileSync("./package.json")).version || 0,
         APP_BUILD: (new Date()).toISOString().replace(/\D/g, ""),
@@ -413,7 +425,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "de.coopcare.app",
+        appId: env.APP_ID,
         productName: "CoopCare",
         copyright: "Copyright © Michael Kamphausen",
         mac: {

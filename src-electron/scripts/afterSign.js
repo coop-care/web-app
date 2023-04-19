@@ -4,7 +4,7 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 // require('dotenv').config();
-const { notarize } = require("electron-notarize");
+const { notarize } = require("@electron/notarize");
 
 exports.default = async function afterSign(context) {
     await notarizing(context);
@@ -21,9 +21,10 @@ async function notarizing(context) {
     const appName = context.packager.appInfo.productFilename;
 
     return await notarize({
-        appBundleId: process.env.APP_ID,
+        tool: "notarytool",
         appPath: `${appOutDir}/${appName}.app`,
         appleId: process.env.APPLEID,
         appleIdPassword: process.env.APPLEIDPASS,
+        teamId: process.env.APPLE_TEAMID
     });
 };

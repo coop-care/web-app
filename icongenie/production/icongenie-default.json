@@ -1,0 +1,17 @@
+{
+  "params": {
+    "skipTrim": true,
+    "splashscreenIconRatio": "0",
+    "svgColor": "960372",
+    "icon": "src/icons/app-icon.png",
+    "padding": [
+      0,
+      0
+    ],
+    "include": [
+      "spa",
+      "electron"
+    ]
+  },
+  "assets": []
+}

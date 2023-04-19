@@ -1,0 +1,17 @@
+{
+  "params": {
+    "skipTrim": true,
+    "splashscreenIconRatio": "0",
+    "svgColor": "960372",
+    "icon": "src/icons/dev-icon-cordova.png",
+    "background": "src/icons/app-splashscreen.png",
+    "padding": [
+      0,
+      0
+    ],
+    "include": [
+      "cordova"
+    ]
+  },
+  "assets": []
+}

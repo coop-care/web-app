@@ -144,6 +144,8 @@ export default defineGetters<StateInterface>()({
             }, {} as Record<string, Contact>)
         ),
 
+    appId: () => process.env.APP_ID || "",
+
     appVersion: () => process.env.APP_VERSION || "0",
 
     appBuild: () => process.env.APP_BUILD || "0",

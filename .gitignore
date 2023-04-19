@@ -21,6 +21,9 @@ node_modules
 /src-capacitor/www
 /src-capacitor/node_modules
 
+# Electron related directories and files
+/src-electron/icons
+
 # BEX related directories and files
 /src-bex/www
 /src-bex/js/core
@@ -43,5 +46,4 @@ yarn-error.log*
 /public/icons
 /public/favicon.ico
 /license-templates
-deploy.sh
 *.pem

@@ -3,7 +3,7 @@
 ## macOS
 
 Tested on macOS Catalina.  
-[Start with reading this guide](https://v1.quasar.dev/quasar-cli/developing-cordova-apps/preparation) and with running `npm install -g cordova`.  
+[Start with reading this guide](https://quasar.dev/quasar-cli-webpack/developing-cordova-apps/preparation) and with running `npm install -g cordova`.  
 
 ### Android
 

@@ -1,0 +1,17 @@
+{
+  "params": {
+    "skipTrim": true,
+    "filter": "icns",
+    "splashscreenIconRatio": "0",
+    "svgColor": "960372",
+    "icon": "src/icons/app-icon-mac.png",
+    "padding": [
+      0,
+      0
+    ],
+    "include": [
+      "electron"
+    ]
+  },
+  "assets": []
+}

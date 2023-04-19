@@ -2,18 +2,17 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 
 const path = require("path");
-const { execSync } = require("child_process");
 const { writeFileSync } = require("fs");
+const { exitOnError, runCommand } = require("./utils/utils");
 
-const directory = path.join(__dirname, "../src-cordova/platforms/android/app/build/outputs/apk/release/")
+exitOnError(() => {
+    const directory = path.join(__dirname, "../src-cordova/platforms/android/app/build/outputs/apk/release/")
+    
+    runCommand(`../node_modules/apk-update/apk-update.js ${directory}app-release.apk ${directory}`);
 
-try {
-    execSync(`apk-update ${directory}app-release.apk ${directory}`, { stdio: "inherit" });
-} catch (error) {
-    console.error(error);
-}
+    const json = require(directory + "app-release.json");
+    json.releaseDate = (new Date()).toISOString();
 
-const json = require(directory + "app-release.json");
-json.releaseDate = (new Date()).toISOString();
+    writeFileSync(directory + "app-release.json", JSON.stringify(json));
+})
 
-writeFileSync(directory + "app-release.json", JSON.stringify(json));
