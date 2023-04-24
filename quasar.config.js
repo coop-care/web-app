@@ -282,7 +282,7 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-webpack/quasar-config-js#Property%3A-devServer
     devServer: {
       server: {
-        type: "https",
+        type: process.env.USE_HTTP != "true" ? "https" : "http",
         options: {
           key: path.join(__dirname, "localhost-key.pem"),
           cert: path.join(__dirname, "localhost.pem"),

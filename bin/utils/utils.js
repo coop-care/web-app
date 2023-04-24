@@ -154,6 +154,10 @@ function quasarCommands(mode, product, environment, extraVariables) {
   if (["ios", "android"].includes(product)) {
     command = `${extraVariables[product] ?? ""} ${command} -m ${product}`;
 
+    if (mode == "dev") {
+      command = "USE_HTTP=true " + command;
+    }
+
     if (mode == "device") {
       if (product == "ios") {
         command += " --debug --skip-pkg";
