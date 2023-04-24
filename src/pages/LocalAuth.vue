@@ -34,6 +34,14 @@ export default defineComponent({
   components: {
     Auth,
     LanguageMenu
+  },
+
+  mounted() {
+    document.body.classList.add("bg-primary");
+  },
+
+  unmounted() {
+    document.body.classList.remove("bg-primary");
   }
 });
 </script>
