@@ -26,8 +26,7 @@ export type VaultSecretResult = {
 
 
 export default class Vault {
-    private static service = (process.env.APP_ID || "de.coopcare.any") +
-        (process.env.DEV ? ".dev" : "");
+    private static service = (process.env.APP_ID || "de.coopcare.any");
     private static vaultName = "vault";
 
     private static get electron() {

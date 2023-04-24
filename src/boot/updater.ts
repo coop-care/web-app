@@ -3,6 +3,7 @@ import { boot } from "quasar/wrappers";
 import * as AppSettings from "src/database/AppSettings";
 import { bus } from "./eventBus";
 import { i18n, locale } from "src/boot/i18n";
+import { notifyError } from "src/helper/notify";
 
 export type UpdateInfo = {
     installedVersion: string;
@@ -48,9 +49,7 @@ export async function checkForUpdates(isInitiatedByUser = true) {
         }
     } catch (error) {
         console.error(error);
-        bus.emit("error-notification", {
-            message: i18n.t("CheckForUpdatesError")
-        });
+        notifyError(i18n.t("CheckForUpdatesError"));
     }
 
     await AppSettings.set("lastUpdated", Date.now());
@@ -174,9 +173,9 @@ export async function downloadAndInstall(urls: string[]) {
         await ApkUpdater.install();
     } catch (error) {
         console.error(error);
-        bus.emit("error-notification", { 
-            message: i18n.t("DownloadUpdateError"), 
-            caption: i18n.t("OperationWasCanceled")
-        });
+        notifyError(
+            i18n.t("DownloadUpdateError"), 
+            i18n.t("OperationWasCanceled")
+        );
     }
 }

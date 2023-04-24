@@ -39,6 +39,7 @@ if (Platform.is.cordova) {
         modificationTime?: Date;
     };
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const listDirectory = (path: string) => new Promise<ExtendedEntry[]>((resolve, reject) =>
         window.resolveLocalFileSystemURL(path, directory =>
             resolve(
@@ -225,23 +226,6 @@ if (Platform.is.cordova) {
         } else {
             window.estimateCustomStorage = () => estimateCustomStorage(cordova.file.applicationStorageDirectory + "/Library/WebKit/WebsiteData/IndexedDB/v1");
         }
-    }
-
-    // ToDo: remove when no longer needed for experiments
-    if (process.env.DEV) {
-        const global = window as any;
-        global.listDirectory = listDirectory;
-        global.recursivelyListFilesInDirectory = recursivelyListFilesInDirectory;
-        global.getUsage = getUsage;
-        global.getQuota = getQuota;
-
-        /* Usage:
-            await Dexie.getDatabaseNames();
-            await listDirectory(cordova.file.dataDirectory);
-            await listDirectory(cordova.file.applicationStorageDirectory + "databases");
-            await estimateCustomStorage();
-            await deleteDatabase("D_test2.sqlite");
-        */
     }
 }
 
