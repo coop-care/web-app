@@ -91,7 +91,6 @@ class BackofficeCompensationAgreement extends Vue {
     if (!this.vereinbarung || !this.backoffice) {
       return;
     }
-    console.log(this.vereinbarung, changes);
 
     void this.$store.direct.commit.updateObject({
       target: this.vereinbarung,

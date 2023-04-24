@@ -186,6 +186,15 @@ export default class MainLayout extends Vue {
   }
 
   mounted() {
+    const $el = this.$el as HTMLElement;
+    const availableHeight = window.screen.availHeight + "px";
+
+    // fixes a bug on iOS devices where a 20px gap (status bar height) 
+    // appears at the bottom on initial app render
+    if ($el.style.minHeight != availableHeight) {
+      $el.style.minHeight = availableHeight;
+    }
+
     this.showOnboardingForDemoVersion();
   }
 }
