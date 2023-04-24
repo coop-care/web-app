@@ -40,6 +40,7 @@ import ProblemRating from "components/ProblemRating.vue";
 import Warning from "components/Warning.vue";
 import { Outcome, RatingReminder } from "src/models";
 import EditingSheet from "../components/EditingSheet.vue";
+import { notifySaveStatus } from "src/helper/notify";
 
 interface Rating extends RecordValidatorInterface {};
 
@@ -107,9 +108,14 @@ class Rating extends Vue {
       target: this.ratingReminder,
       changes: this.ratingReminderChanges
     });
-    void this.$store.direct.dispatch
-      .saveClient(this.$route.params)
-      .then(() => this.editingSheet.confirm());
+
+    notifySaveStatus(() => 
+      this.$store.direct.dispatch
+        .saveClient(this.$route.params)
+        .then(() => this.editingSheet.confirm()),
+      this.$t("rating"),
+      true
+    );
   }
 
   created() {

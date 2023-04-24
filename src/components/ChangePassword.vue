@@ -56,6 +56,7 @@
 import LocalDatabaseApi from "src/api/local";
 import { errorMessage } from "src/boot/i18n";
 import { defineComponent } from "vue";
+import { notifySuccess } from "src/helper/notify";
 
 export default defineComponent({
   name: "ChangePasswordView",
@@ -82,12 +83,7 @@ export default defineComponent({
         try {
           await (this.$ccApi as LocalDatabaseApi).changePassword(this.oldPassword, this.newPassword1);
           this.endChangePasswordMode();
-          this.$q.notify({
-            type: "positive",
-            message: this.$t("passwordChangeSuccessMessage"),
-            progress: true,
-            timeout: 2000
-          });
+          notifySuccess(this.$t("passwordChangeSuccessMessage"));
         } catch(error) {
           this.errorMessagePassword = errorMessage(error);
         }

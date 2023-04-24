@@ -230,6 +230,7 @@ import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
 import InterventionView from "components/InterventionV3.vue";
 import Warning from "components/Warning.vue";
+import { notifySaveStatus } from "src/helper/notify";
 
 interface ProblemRecording extends RecordValidatorInterface {};
 
@@ -434,9 +435,14 @@ class ProblemRecording extends Vue {
       target: this.editableRecord.ratingReminder,
       changes: this.ratingReminderChanges
     });
-    void this.$store.direct.dispatch
-      .saveClient(this.$route.params)
-      .then(() => this.editingSheet.confirm());
+    
+    notifySaveStatus(() => 
+      this.$store.direct.dispatch
+        .saveClient(this.$route.params)
+        .then(() => this.editingSheet.confirm()),
+      this.$t("problem"),
+      true
+    );
   }
 
   created() {

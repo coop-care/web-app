@@ -104,6 +104,7 @@ import ProblemSelection from "components/ProblemSelection.vue";
 import ProblemClassification from "components/ProblemClassification.vue";
 import Warning from "components/Warning.vue";
 import { Problem } from "src/models";
+import { notifySaveStatus } from "src/helper/notify";
 
 interface ClassificationPage extends RecordValidatorInterface {};
 
@@ -177,10 +178,14 @@ class ClassificationPage extends Vue {
         problemId: this.record.id,
       });
     }
-
-    void this.$store.direct.dispatch
-      .saveClient(this.$route.params)
-      .then(() => this.editingSheet.confirm());
+    
+    notifySaveStatus(() => 
+      this.$store.direct.dispatch
+        .saveClient(this.$route.params)
+        .then(() => this.editingSheet.confirm()),
+      this.$t("problem"),
+      true
+    );
   }
 
   created() {

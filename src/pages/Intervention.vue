@@ -41,6 +41,7 @@ import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import InterventionEditor from "components/InterventionEditorV3.vue";
 import Warning from "components/Warning.vue";
+import { notifySaveStatus } from "src/helper/notify";
 
 interface InterventionPage extends RecordValidatorInterface {};
 
@@ -93,9 +94,13 @@ class InterventionPage extends Vue {
       });
     }
 
-    void this.$store.direct.dispatch
-      .saveClient(this.$route.params)
-      .then(() => this.editingSheet.confirm());
+    notifySaveStatus(() => 
+      this.$store.direct.dispatch
+        .saveClient(this.$route.params)
+        .then(() => this.editingSheet.confirm()),
+      this.$t("intervention"),
+      true
+    );
   }
 
   created() {

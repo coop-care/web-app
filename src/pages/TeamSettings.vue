@@ -265,7 +265,7 @@
 <script lang="ts">
 import { Component, Ref, Vue } from "vue-facing-decorator";
 import { QInput } from "quasar";
-import VueI18n from "vue-i18n";
+import { TranslateResult } from "vue-i18n";
 import { TeamMember, Team, TeamInvitation, Client } from "../models";
 import ClientActionMixin, { ClientActionMixinInterface } from "../mixins/ClientActionMixin";
 import Signature from "../components/Signature.vue";
@@ -422,7 +422,7 @@ class TeamSettingsPage extends Vue {
     return this.clientActions(client);
   }
   captionForClient(client: Client) {
-    const fragments: VueI18n.TranslateResult[] = [];
+    const fragments: TranslateResult[] = [];
 
     if (!!client.leftAt) {
       fragments.push(this.$t("isArchived"));
