@@ -52,7 +52,7 @@
   "noExistingClient": "There is no client data yet.",
   "noSelectedClient": "Select a client from the client list.",
   "createFirstClient": "Create your first client record",
-  "showCommentInput": "Add a comment?",
+  "showCommentInput": "Add details?",
   "ratingCommentLabel": "Rationale or comment on the rating",
   "showPersonRatedInPlaceOfOwnerInput": "Does any of the ratings relate to a person other than the owner of the problem?",
   "personRatedInPlaceOfOwnerLabel": "To whom does the evaluation for knowledge or behavior refer?",
@@ -481,7 +481,7 @@
   "formalContacts": "Formal network",
   "diabetes": "Diabetes",
   "birthday": "Birthday",
-  "diagnosesTitle": "Diagnoses or treatments",
+  "diagnosesTitle": "Diagnoses",
   "anticoagulantTitle": "Blood thinners (e.g. Marcumar)",
   "painTitle": "Pain",
   "additionalNotes": "Notes",
@@ -786,5 +786,6 @@
   "hideResolvedProblems": "Hide resolved problems",
   "allTasksDone": "Completed all {count} tasks",
   "remainingTasksCount": "… and {count} more tasks",
-  "showAll": "Show all"
+  "showAll": "Show all",
+  "treatmentsTitle": "Treatments"
 }

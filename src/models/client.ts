@@ -10,6 +10,7 @@ export class ClientHealthInformation {
     static readonly predefinedTypes = [...new Set(ClientHealthInformation.assistiveTechnologyTypes)];
 
     diagnoses: string[] = [];
+    treatments: string[] = [];
     diabetes = "";
     anticoagulant = "";
     pain = "";

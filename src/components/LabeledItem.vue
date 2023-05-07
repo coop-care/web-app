@@ -4,21 +4,36 @@
       'labeled-item items-center non-selectable', 
       item.action ? 'can-hover cursor-pointer' : '', 
       compactLayout ? 'compact-layout' : '', 
-      item.classes || ''
+      item.classes || ''
     ]"
     dense
     @mousedown="mousedown"
     @mouseup="mouseup"
   >
-    <div :class="['col text-black', layoutClasses]">
+    <div :class="['labeled-item-container col text-black', compactLayout ? 'column' : 'row']">
       <q-item-label 
         caption 
         class="col-4 ellipsis"
       >{{ item.label }}</q-item-label>
       <div class="col-8 row no-wrap items-center">
         <q-item-label 
-          :class="['col pre-wrap selectable', item.action ? 'text-primary' : '']"
-        >{{ item.value }}</q-item-label>
+          :class="[
+            'col pre-wrap', 
+            item.action ? 'text-primary' : '',
+            !$q.platform.is.mobile && !item.action ? 'selectable' : '',
+          ]"
+        >
+          <ul 
+            v-if="Array.isArray(item.value)"
+            class="no-bullet"
+          >
+            <li
+              v-for="(line, index) in item.value"
+              :key="index"
+            >{{ line.trim() }}{{ index < item.value.length - 1 ? "," : ""}}</li>
+          </ul>
+          <span v-else>{{ item.value }}</span>
+        </q-item-label>
         <div 
           v-if="item.action"
           class="show-on-hover"
@@ -46,13 +61,14 @@
   &.compact-layout
     padding-left: 0
     padding-right: 0
-  :first-child.row
+  .labeled-item-container.row
     .q-item__label
       margin-top: 0
     .q-item__label--caption
       text-align: right
       padding-right: 8px
-  :first-child.column
+      padding-top: 2px
+  .labeled-item-container.column
     .q-item__label--caption
       padding-bottom: 2px
     .show-on-hover button
@@ -74,7 +90,7 @@ import { Vue, Component, Prop } from "vue-facing-decorator";
 
 export type LabeledItemType = {
   label: string; 
-  value: string; 
+  value: string | string[]; 
   icon?: string; 
   classes?: string; 
   action?: () => void;
@@ -87,13 +103,6 @@ export default class LabeledItem extends Vue {
 
   mouseDownEvent: MouseEvent | null = null;
 
-  get layoutClasses() {
-    if (this.compactLayout) {
-      return "column"
-    } else {
-      return "row items-center"
-    }
-  }
   mousedown(event: MouseEvent) {
     this.mouseDownEvent = event;
   }

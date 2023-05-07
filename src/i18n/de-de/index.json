@@ -52,7 +52,7 @@
   "noExistingClient": "Es existieren noch keine Klientendaten.",
   "noSelectedClient": "Wähle einen Klienten aus der Klientenliste aus.",
   "createFirstClient": "Lege den ersten Klienten an",
-  "showCommentInput": "Kommentar hinzufügen?",
+  "showCommentInput": "Details hinzufügen?",
   "ratingCommentLabel": "Begründung oder Anmerkung zur Bewertung",
   "showPersonRatedInPlaceOfOwnerInput": "Bezieht sich eine der Bewertungen auf eine andere Person als den Besitzer des Problems?",
   "personRatedInPlaceOfOwnerLabel": "Auf wen bezieht sich die Bewertung für Wissen oder Verhalten?",
@@ -481,7 +481,7 @@
   "formalContacts": "Formelles Netzwerk",
   "diabetes": "Diabetes",
   "birthday": "Geburtstag",
-  "diagnosesTitle": "Diagnosen oder Behandlungen",
+  "diagnosesTitle": "Diagnosen",
   "anticoagulantTitle": "Blutverdünner (z.B. Marcumar)",
   "painTitle": "Schmerzen",
   "additionalNotes": "Notizen",
@@ -786,5 +786,6 @@
   "hideResolvedProblems": "Abgeschlossene Probleme verbergen",
   "allTasksDone": "Alle {count} Aufgaben erledigt",
   "remainingTasksCount": "… und {count} weitere Aufgaben",
-  "showAll": "Alle anzeigen"
+  "showAll": "Alle anzeigen",
+  "treatmentsTitle": "Behandlungen"
 }

@@ -38,6 +38,13 @@
         :label="$t('diagnosesTitle')"
         hide-dropdown-icon
       />
+      <multiple-selectable-input
+        :model-value="healthInfo.treatments"
+        @update:model-value="updateAndSave(healthInfo, {treatments: $event})"
+        :options="[]"
+        :label="$t('treatmentsTitle')"
+        hide-dropdown-icon
+      />
       <selectable-input
         :model-value="healthInfo.diabetes"
         :label="$t('diabetes')"
@@ -163,80 +170,86 @@ class ClientHealthInformationView extends Vue {
 
     if (this.healthInfo.diagnoses.length) {
       result.push({
-        label: this.$t("diagnosesTitle") as string,
-        value: this.healthInfo.diagnoses.join(", ")
+        label: this.$t("diagnosesTitle"),
+        value: this.healthInfo.diagnoses
+      });
+    }
+    if (this.healthInfo.treatments.length) {
+      result.push({
+        label: this.$t("treatmentsTitle"),
+        value: this.healthInfo.treatments
       });
     }
     if (this.healthInfo.diabetes) {
       result.push({
-        label: this.$t("diabetes") as string,
+        label: this.$t("diabetes"),
         value: this.healthInfo.diabetes
       });
     }
     if (this.healthInfo.anticoagulant) {
       result.push({
-        label: this.$t("anticoagulantTitle") as string,
+        label: this.$t("anticoagulantTitle"),
         value: this.healthInfo.anticoagulant
       });
     }
     if (this.healthInfo.pain) {
       result.push({
-        label: this.$t("painTitle") as string,
+        label: this.$t("painTitle"),
         value: this.healthInfo.pain
       });
     }
     if (this.healthInfo.allergies.length) {
       result.push({
-        label: this.$t("allergiesTitle") as string,
-        value: this.healthInfo.allergies.join(", ")
+        label: this.$t("allergiesTitle"),
+        value: this.healthInfo.allergies
       });
     }
     if (this.healthInfo.assistiveTechnology.length) {
       result.push({
-        label: this.$t("assistiveTechnologiesTitle") as string,
+        label: this.$t("assistiveTechnologiesTitle"),
         value: this.healthInfo.assistiveTechnology
-          .map(value => this.localizeLabel(value)).join(", ")
+          .map(value => this.localizeLabel(value))
       });
     }
     if (this.healthInfo.likes) {
       result.push({
-        label: this.$t("likesTaste") as string,
+        label: this.$t("likesTaste"),
         value: this.healthInfo.likes
       });
     }
     if (this.healthInfo.dislikes) {
       result.push({
-        label: this.$t("dislikesDistaste") as string,
+        label: this.$t("dislikesDistaste"),
         value: this.healthInfo.dislikes
       });
     }
     if (this.healthInfo.biography) {
       result.push({
-        label: this.$t("biographyTitle") as string,
+        label: this.$t("biographyTitle"),
         value: this.healthInfo.biography
       });
     }
     if (this.healthInfo.careSetting) {
       result.push({
-        label: this.$t("careSetting") as string,
+        label: this.$t("careSetting"),
         value: this.healthInfo.careSetting
       });
     }
     if (this.healthInfo.existingAdvanceHealthcareDirective != null) {
       result.push({
-        label: this.$t("existingAdvanceHealthcareDirective") as string,
+        label: this.$t("existingAdvanceHealthcareDirective"),
         value: this.booleanAsText(this.healthInfo.existingAdvanceHealthcareDirective)
       });
     }
     if (this.healthInfo.existingHealthcareProxy != null) {
       result.push({
-        label: this.$t("existingHealthcareProxy") as string,
+        label: this.$t("existingHealthcareProxy"),
         value: this.booleanAsText(this.healthInfo.existingHealthcareProxy)
       });
     }
     if (this.healthInfo.notes) {
       result.push({
-        label: this.$t("additionalNotes") as string,
+        label: this.$t("additionalNotes"),
         value: this.healthInfo.notes
       });
     }
@@ -259,11 +272,11 @@ class ClientHealthInformationView extends Vue {
 
   localizeLabel(label: string) {
     return ClientHealthInformation.predefinedTypes.includes(label) ? 
-      this.$t(label) as string : 
+      this.$t(label) : 
       label;
   }
   booleanAsText(value: boolean) {
-    return (value ? this.$t("yes") : this.$t("no")) as string
+    return (value ? this.$t("yes") : this.$t("no"))
   }
   makeOption(label: string) {
     return {
