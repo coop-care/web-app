@@ -215,6 +215,9 @@ export default boot(({ app, store }) => {
     }
   })
 
+  // initialize locale propagation
+  bus.emit("did-change-locale", locale.value);
+
   // receive locale change from electron menu
   window.electronAPI?.addListener("did-change-locale", (value: string) => {
     if (locale.value != value) {
