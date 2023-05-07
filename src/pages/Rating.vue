@@ -4,7 +4,7 @@
     ref="editingSheet"
     :title="title"
     :is-data-available="!!(client && editableOutcome)"
-    :paramsToRemoveOnClose="['problemId']"
+    :paramsToRemoveOnClose="['problemId', 'interventionId']"
     :hasPendingChanges="hasPendingChanges"
   >
     <problem-rating

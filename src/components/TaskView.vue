@@ -45,7 +45,19 @@
         v-if="title"
         :class="[task.isDue ? 'text-negative' : '']"
       >
-        <span :class="[hasDetails ? '': 'text-italic']">{{ title }}</span>
+        <span 
+          :class="[
+            hasDetails ? '': 'text-italic',
+            titleAction ? 'cursor-pointer text-primary' : ''
+          ]"
+          @click.prevent="titleAction"
+        >{{ title }}
+          <q-icon
+            v-if="titleAction"
+            name="fas fa-circle-right"
+            class="q-ml-xs"
+          />
+        </span>
         <span
           v-if="timeAgo"
           @click.prevent="navigateToDueDate"
@@ -234,6 +246,13 @@ class TaskView extends Vue {
       return this.$t("notSpecified");
     }
   }
+  get titleAction() {
+    if (this.reminder instanceof RatingReminder) {
+      return () => this.$router.push({params: {...this.params, sheet: "newOutcome"}});
+    } else {
+      return undefined;
+    }
+  }
   get description() {
     if (this.reminder instanceof Intervention) {
       return this.interventionDescription(this.reminder);
@@ -294,6 +313,12 @@ class TaskView extends Vue {
   get extraButtons() {
     return [] as ActionItem[];
   }
+  get params() {
+    const clientId = this.client._id?.toHexString() || "";
+    const problemId = this.task.problemId || "0";
+    const interventionId = this.reminder.id;
+    return { clientId, problemId, interventionId };
+  }
   get reminderActionItems() {
     const isIntervention = this.reminder instanceof Intervention;
     const isRatingReminder = this.reminder instanceof RatingReminder;
@@ -301,10 +326,7 @@ class TaskView extends Vue {
     const isTaskUncompleted = !this.task.completed;
     const isUncompleted = isReminderUnfinished && isTaskUncompleted;
     let endInterventionLabel: TranslateResult;
-    const clientId = this.client._id?.toHexString() || "";
-    const problemId = this.task.problemId || "0";
-    const interventionId = this.reminder.id;
-    const params = { clientId, problemId, interventionId };
+    const { clientId, problemId } = this.params;
 
     if (!!this.intervention?.receiver) {
       endInterventionLabel = this.$t("cancelRequest");
@@ -322,7 +344,7 @@ class TaskView extends Vue {
       {
         name: this.$t("newRating") + " …",
         icon: "far fa-comment-dots",
-        action: () => this.$router.push({params: {...params, sheet: "newOutcome"}}),
+        action: () => this.$router.push({params: {...this.params, sheet: "newOutcome"}}),
         condition: isRatingReminder && isTaskUncompleted,
       },
       {
@@ -354,7 +376,7 @@ class TaskView extends Vue {
       {
         name: this.$t("editIntervention") + " …",
         icon: "fas fa-pen",
-        action: () => this.$router.push({params: {...params, sheet: "editIntervention"}}),
+        action: () => this.$router.push({params: {...this.params, sheet: "editIntervention"}}),
         condition: isIntervention && isReminderUnfinished,
       },
       {
