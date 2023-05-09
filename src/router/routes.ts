@@ -44,6 +44,12 @@ const routes: RouteRecordRaw[] = [
                 component: () => import("components/ClientHealthInformation.vue"),
                 meta: { noScroll: true },
               },
+              {
+                name: "clientBiography",
+                path: "biography",
+                component: () => import("components/ClientBiography.vue"),
+                meta: { noScroll: true },
+              },
               // {
               //   name: "clientBillingInformation",
               //   path: "billing",

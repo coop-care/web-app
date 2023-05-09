@@ -74,7 +74,7 @@ export default class MultipleSelectableInput extends Vue {
         value[value.length - 1] = normalizedValue;
       }
     }
-    this.$emit("update:model-value", value);
+    this.$emit("update:model-value", value.map(item => item.trim()));
     this.select.updateInputValue("");
   }
   createValue(value: string, done: (value: string, mode: string) => void) {

@@ -38,6 +38,7 @@ export class ClientAgreements {
     documentationCreated?: Date = undefined;
     @Type(() => Date)
     carePlanCreated?: Date = undefined;
+    notes = "";
     existingInitialPrescription: boolean | null = null;
     keyHandoverRequired: boolean | null = null;
 };

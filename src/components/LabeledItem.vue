@@ -22,18 +22,7 @@
             item.action ? 'text-primary' : '',
             !$q.platform.is.mobile && !item.action ? 'selectable' : '',
           ]"
-        >
-          <ul 
-            v-if="Array.isArray(item.value)"
-            class="no-bullet"
-          >
-            <li
-              v-for="(line, index) in item.value"
-              :key="index"
-            >{{ line.trim() }}{{ index < item.value.length - 1 ? "," : ""}}</li>
-          </ul>
-          <span v-else>{{ item.value }}</span>
-        </q-item-label>
+        >{{ item.value }}</q-item-label>
         <div 
           v-if="item.action"
           class="show-on-hover"
@@ -90,7 +79,7 @@ import { Vue, Component, Prop } from "vue-facing-decorator";
 
 export type LabeledItemType = {
   label: string; 
-  value: string | string[]; 
+  value: string; 
   icon?: string; 
   classes?: string; 
   action?: () => void;

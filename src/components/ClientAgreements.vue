@@ -67,6 +67,15 @@
         :label="$t('carePlanCreatedDate')"
         :format="$t('dateFormat')"
       />
+      <q-input
+        :model-value="agreements.notes"
+        @update:model-value="update(agreements, {notes: $event})"
+        @change="saveClient"
+        :label="$t('additionalAgreements')"
+        :placeholder="$t('additionalAgreementsPlaceholder')"
+        autogrow
+        class="q-mb-lg"
+      />
       <div class="q-mt-md">
         <q-checkbox
           :model-value="agreements.existingInitialPrescription"
@@ -160,6 +169,12 @@ class ClientHealthInformation extends Vue {
       result.push({
         label: this.$t("carePlanCreatedDate") as string,
         value: this.$d(this.agreements.carePlanCreated, "DateMed")
+      });
+    }
+    if (this.agreements.notes) {
+      result.push({
+        label: this.$t("additionalAgreements") as string,
+        value: this.agreements.notes
       });
     }
     if (this.agreements.existingInitialPrescription != null) {

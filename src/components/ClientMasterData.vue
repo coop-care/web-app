@@ -124,6 +124,10 @@ class ClientMasterData extends Vue {
       label: this.$t("healthInformation").toString(),
       action: () => this.showRoute("clientHealthInformation"),
       active: this.$route.name == "clientHealthInformation" || (!this.isCollapsed && this.isDefaultRoute),
+    }, {
+      label: this.$t("biographyTitle").toString(),
+      action: () => this.showRoute("clientBiography"),
+      route: "clientBiography",
     // }, {
     //   label: this.$t("billingData").toString(),
     //   action: () => this.showRoute("clientBillingInformation"),

@@ -787,5 +787,7 @@
   "allTasksDone": "Completed all {count} tasks",
   "remainingTasksCount": "… and {count} more tasks",
   "showAll": "Show all",
-  "treatmentsTitle": "Treatments"
+  "treatmentsTitle": "Treatments",
+  "additionalAgreements": "Further agreements",
+  "additionalAgreementsPlaceholder": "e.g. “no appointments before 9 a.m.”"
 }

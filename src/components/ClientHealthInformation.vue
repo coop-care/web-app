@@ -79,28 +79,6 @@
         :options="assistiveTechnologyItems"
         :label="$t('assistiveTechnologiesTitle')"
         hide-dropdown-icon
-        class="mb-row-dense"
-      />
-      <q-input
-        :model-value="healthInfo.likes"
-        @update:model-value="update(healthInfo, {likes: $event})"
-        @change="saveClient"
-        :label="$t('likesTaste')"
-        autogrow
-      />
-      <q-input
-        :model-value="healthInfo.dislikes"
-        @update:model-value="update(healthInfo, {dislikes: $event})"
-        @change="saveClient"
-        :label="$t('dislikesDistaste')"
-        autogrow
-      />
-      <q-input
-        :model-value="healthInfo.biography"
-        @update:model-value="update(healthInfo, {biography: $event})"
-        @change="saveClient"
-        :label="$t('biographyTitle')"
-        autogrow
       />
       <q-input
         :model-value="healthInfo.careSetting"
@@ -134,11 +112,6 @@
   </div>
 </template>
 
-<style lang="sass">
-.button-placeholder
-  width: 30px
-</style>
-
 <script lang="ts">
 import { Component, Vue } from "vue-facing-decorator";
 import { Client, ClientHealthInformation } from "../models";
@@ -171,13 +144,13 @@ class ClientHealthInformationView extends Vue {
     if (this.healthInfo.diagnoses.length) {
       result.push({
         label: this.$t("diagnosesTitle"),
-        value: this.healthInfo.diagnoses
+        value: this.healthInfo.diagnoses.join(",\n")
       });
     }
     if (this.healthInfo.treatments.length) {
       result.push({
         label: this.$t("treatmentsTitle"),
-        value: this.healthInfo.treatments
+        value: this.healthInfo.treatments.join(",\n")
       });
     }
     if (this.healthInfo.diabetes) {
@@ -201,7 +174,7 @@ class ClientHealthInformationView extends Vue {
     if (this.healthInfo.allergies.length) {
       result.push({
         label: this.$t("allergiesTitle"),
-        value: this.healthInfo.allergies
+        value: this.healthInfo.allergies.join(",\n")
       });
     }
     if (this.healthInfo.assistiveTechnology.length) {
@@ -209,24 +182,7 @@ class ClientHealthInformationView extends Vue {
         label: this.$t("assistiveTechnologiesTitle"),
         value: this.healthInfo.assistiveTechnology
           .map(value => this.localizeLabel(value))
-      });
-    }
-    if (this.healthInfo.likes) {
-      result.push({
-        label: this.$t("likesTaste"),
-        value: this.healthInfo.likes
-      });
-    }
-    if (this.healthInfo.dislikes) {
-      result.push({
-        label: this.$t("dislikesDistaste"),
-        value: this.healthInfo.dislikes
-      });
-    }
-    if (this.healthInfo.biography) {
-      result.push({
-        label: this.$t("biographyTitle"),
-        value: this.healthInfo.biography
+          .join(",\n")
       });
     }
     if (this.healthInfo.careSetting) {
