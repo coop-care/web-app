@@ -74,7 +74,9 @@ app.on("web-contents-created", (event, contents) => {
 function isAppUrlOrigin(url: string) {
     const parsedUrl = new URL(url);
     const appUrl = new URL(process.env.APP_URL || "");
-    return parsedUrl.origin == appUrl.origin;
+    return parsedUrl.protocol == appUrl.protocol  /* "file:" in production */
+        && parsedUrl.origin == appUrl.origin /* null in production */
+        && parsedUrl.pathname == appUrl.pathname;  /* path to index.html in production */
 }
 
 function isAllowedScheme(url: string) {

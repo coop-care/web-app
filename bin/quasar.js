@@ -65,7 +65,12 @@ exitOnError(() => {
     }
   }
 
-  console.log(`Using environment "${env.QENV}"\n`);
+  if (mode == "device" && product == "android") {
+    env.APP_ID = env.APP_ID.replace(/\.dev$/, ".debug");
+    additionalVariables["android"] = `APP_ID=${env.APP_ID}`;
+  }
+
+  console.log(`Using environment "${env.QENV}" and app id "${env.APP_ID}"\n`);
 
   // == validate arguments ==
 
@@ -200,7 +205,7 @@ exitOnError(() => {
     if (product == "ios") {
       runCommand("pushd src-cordova; cordova run ios --debug --device --buildConfig=build.json; popd");
     } else if (product == "android") {
-      runCommand("adb install dist/cordova/android/apk/release/app-release.apk");
+      runCommand("adb install dist/cordova/android/apk/debug/app-debug.apk");
     }
   }
 

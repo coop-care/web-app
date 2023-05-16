@@ -1,4 +1,8 @@
 
+export function promise<T>(method: (...args: any[]) => void, ...args: any[]): Promise<T> {
+    return new Promise((resolve, reject) => method.apply(window, args.concat([resolve, reject])));
+}
+
 export const incrementalName = (name: string, existingNames: string[] = []) => {
     let incrementedName = name;
     let index = 1;

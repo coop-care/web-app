@@ -24,6 +24,7 @@ const env = require("dotenv").config({
     )
   }).parsed || {};
 env.UPDATE_URL = process.env.UPDATE_URL || env.UPDATE_URL;
+env.APP_ID = process.env.APP_ID || env.APP_ID;
 env.QENV = process.env.QENV;
 env.IS_TESTFLIGHT = process.env.IS_TESTFLIGHT;
 

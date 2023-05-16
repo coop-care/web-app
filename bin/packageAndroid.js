@@ -5,6 +5,10 @@ const path = require("path");
 const { writeFileSync } = require("fs");
 const { exitOnError, runCommand } = require("./utils/utils");
 
+if (process.env.npm_lifecycle_event == "device") {
+    return;
+}
+
 exitOnError(() => {
     const directory = path.join(__dirname, "../src-cordova/platforms/android/app/build/outputs/apk/release/")
     

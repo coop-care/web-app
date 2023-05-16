@@ -787,6 +787,7 @@
   "allTasksDone": "Alle {count} Aufgaben erledigt",
   "remainingTasksCount": "… und {count} weitere Aufgaben",
   "showAll": "Alle anzeigen",
+  "copied": "Kopiert",
   "treatmentsTitle": "Behandlungen",
   "additionalAgreements": "Weitere Vereinbarungen",
   "additionalAgreementsPlaceholder": "z.B. „keine Termine vor 9 Uhr”"

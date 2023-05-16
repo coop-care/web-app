@@ -42,16 +42,17 @@
         {{ description }}
       </q-item-label>
       <q-item-label
-        v-if="title"
         :class="[task.isDue ? 'text-negative' : '']"
       >
         <span 
           :class="[
             hasDetails ? '': 'text-italic',
-            titleAction ? 'cursor-pointer text-primary' : ''
+            titleAction ? 'cursor-pointer' : '',
+            titleAction && !task.isDue ? 'text-primary' : '',
+            timeAgo ? 'q-pr-xs' : ''
           ]"
           @click.prevent="titleAction"
-        >{{ title }}
+        >{{ title || ("(" + $t("notSpecified") + ")") }}
           <q-icon
             v-if="titleAction"
             name="fas fa-circle-right"
@@ -62,7 +63,7 @@
           v-if="timeAgo"
           @click.prevent="navigateToDueDate"
           class="text-caption text-weight-medium link"
-        > ({{ timeAgo }})</span>
+        >({{ timeAgo }})</span>
       </q-item-label>
     </q-item-section>
     <q-item-section

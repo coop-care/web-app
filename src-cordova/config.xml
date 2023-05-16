@@ -19,16 +19,16 @@
         <preference name="android-targetSdkVersion" value="32" />
         <preference name="StatusBarOverlaysWebView" value="false" />
         <preference name="AndroidPersistentFileLocation" value="Internal" />
+        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/xxxhdpi.png" />
+        <preference name="AndroidWindowSplashScreenBackground" value="#FFFFFF" />
+        <preference name="AndroidBlacklistSecureSocketProtocols" value="SSLv3,TLSv1" />
+        <hook src="../bin/packageAndroid.js" type="after_build" />
         <icon density="ldpi" src="res/android/ldpi.png" />
         <icon density="mdpi" src="res/android/mdpi.png" />
         <icon density="hdpi" src="res/android/hdpi.png" />
         <icon density="xhdpi" src="res/android/xhdpi.png" />
         <icon density="xxhdpi" src="res/android/xxhdpi.png" />
         <icon density="xxxhdpi" src="res/android/xxxhdpi.png" />
-        <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/xxxhdpi.png" />
-        <preference name="AndroidWindowSplashScreenBackground" value="#FFFFFF" />
-        <hook src="../bin/packageAndroid.js" type="after_build" />
-        <preference name="AndroidBlacklistSecureSocketProtocols" value="SSLv3,TLSv1" />
         <splash density="land-ldpi" src="res/screen/android/splash-land-ldpi.png" />
         <splash density="port-ldpi" src="res/screen/android/splash-port-ldpi.png" />
         <splash density="land-mdpi" src="res/screen/android/splash-land-mdpi.png" />

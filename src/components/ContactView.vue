@@ -407,7 +407,7 @@ class ContactView extends Vue {
         value: item.value,
         icon: "fas fa-up-right-from-square",
         classes: this.contactGroupClassIfNeeded(index, list),
-        action: () => this.openUrl(item)
+        action: () => this.openHttpsUrl(item)
       }
     })).concat(this.contact.postalAddresses.map((item, index, list) => {
       return {
@@ -437,32 +437,42 @@ class ContactView extends Vue {
   get compactLayout() {
     return this.width <= 400
   }
+  get windowTarget() {
+    return this.$q.platform.is.electron || this.$q.platform.is.cordova
+      ? "_blank"
+      : "_self";
+  }
 
   private onResize() {
     this.width = (this.$el as HTMLElement).offsetWidth;
   }
 
   call(phoneNumber: LabeledValue<string>) {
-    location.href = "tel:" + phoneNumber.value;
+    this.openWindow("tel:" + phoneNumber.value);
   }
   email(email: LabeledValue<string>) {
-    location.href = "mailto:" + email.value;
+    this.openWindow("mailto:" + email.value);
   }
-  openUrl(url: LabeledValue<string>) {
+  openHttpsUrl(url: LabeledValue<string>) {
     const secureUrl = /^https?:\/\//.test(url.value)
       ? url.value
       : "https://" + url.value
-    const win = window.open(secureUrl, "_blank");
+    this.openWindow(secureUrl, "_blank");
+  }
+  showMap(address: LabeledValue<PostalAddress>) {
+    const encodedAddress = Contact.postalAddressAsSearchString(address.value);
+
+    if (this.$q.platform.is.mac || this.$q.platform.is.ios) {
+      this.openWindow("https://maps.apple.com/?address=" + encodedAddress);
+    } else {
+      this.openWindow("geo:0,0?q=" + encodedAddress);
+    }
+  }
+  openWindow(url: string, target = this.windowTarget) {
+    const win = window.open(url, target);
 
     if (win) {
       win.opener = null;
-    }
-  }
-  showMap(address: LabeledValue<PostalAddress>) {
-    if (this.$q.platform.is.mac || this.$q.platform.is.ios) {
-      location.href = "maps://?address=" + Contact.postalAddressAsSearchString(address.value);
-    } else {
-      location.href = "geo:0,0?q=" + Contact.postalAddressAsSearchString(address.value);
     }
   }
 
