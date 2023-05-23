@@ -370,7 +370,7 @@ class TaskView extends Vue {
         name: this.$t("showProblem", {
             problem: this.problemName,
           }) + " …",
-        icon: "far fa-arrow-right",
+        icon: "fas fa-arrow-right",
         action: () => this.$router.push({name: "clientReport", params: {clientId, expandedIds: problemId}}),
         condition: isIntervention && !!this.record && !this.record.resolvedAt,
       },

@@ -12,6 +12,8 @@ declare global {
 export async function copyText(text: string) {
     let promise: Promise<void>;
 
+    /* Copying to clipboard from android webview (cordova) failed due to missing permissions.
+       I tried a lot with permissions, but couldn't make this work, so we're using a plugin. */
     if (window.cordova?.plugins?.clipboard?.copy) {
         promise = promisify(window.cordova?.plugins?.clipboard?.copy, text);
     } else {
