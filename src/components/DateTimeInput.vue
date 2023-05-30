@@ -309,12 +309,16 @@ export default class DateTimeInput extends Vue {
     this.onBlurInput(() => setTimeout(() => this.timeProxy.show()));
   }
 
+  onDidChangeLocale() {
+    this.dateKey = Math.random();
+  }
+
   created() {
-    this.$bus.on("did-change-locale", () => this.dateKey = Math.random());
+    this.$bus.on("did-change-locale", this.onDidChangeLocale);
   }
 
   unmounted() {
-    this.$bus.off("did-change-locale");
+    this.$bus.off("did-change-locale", this.onDidChangeLocale);
   }
 }
 </script>

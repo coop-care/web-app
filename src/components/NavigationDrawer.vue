@@ -128,17 +128,25 @@ export default class NavigationDrawer extends Vue {
     }
   }
 
+  toggleDrawer() {
+    this.isVisible = !this.isVisible;
+  }
+
+  openDrawer() {
+    this.isVisible = true;
+  }
+
   created() {
     this.selectedTab = this.initialTab;
     this.isVisible = this.$q.screen.gt.sm;
-    this.$bus.on("toggle-drawer", () => this.isVisible = !this.isVisible);
-    this.$bus.on("open-drawer", () => this.isVisible = true);
+    this.$bus.on("toggle-drawer", this.toggleDrawer);
+    this.$bus.on("open-drawer", this.openDrawer);
     this.$bus.on("close-drawer", this.closeDrawer);
   }
   unmounted() {
-    this.$bus.off("toggle-drawer");
-    this.$bus.off("open-drawer");
-    this.$bus.off("close-drawer");
+    this.$bus.off("toggle-drawer", this.toggleDrawer);
+    this.$bus.off("open-drawer", this.openDrawer);
+    this.$bus.off("close-drawer", this.closeDrawer);
   }
 }
 </script>

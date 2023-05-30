@@ -44,12 +44,16 @@ export default class NewClientSheet extends Vue {
       .catch(console.error);
   }
 
+  onNewClient() {
+    this.editingSheet.visible = true;
+  }
+
   created() {
-    this.$bus.on("new-client", () => this.editingSheet.visible = true);
+    this.$bus.on("new-client", this.onNewClient);
   }
 
   unmounted() {
-    this.$bus.off("new-client")
+    this.$bus.off("new-client", this.onNewClient)
   }
 }
 </script>

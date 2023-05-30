@@ -597,9 +597,12 @@ class TeamSettingsPage extends Vue {
       }, filename);
     }
   }
+  onDidChangeLocale() {
+    this.localeChangedKey = Math.random();
+  }
 
   created() {
-    this.$bus.on("did-change-locale", () => this.localeChangedKey = Math.random());
+    this.$bus.on("did-change-locale", this.onDidChangeLocale);
   }
   mounted() {
     if (this.team) {
@@ -607,7 +610,7 @@ class TeamSettingsPage extends Vue {
     }
   }
   unmounted() {
-    this.$bus.off("did-change-locale");
+    this.$bus.off("did-change-locale", this.onDidChangeLocale);
   }
 }
 

@@ -69,7 +69,7 @@ export default class MarkdownPage extends Vue {
   }
 
   unmounted() {
-    this.$bus.off("did-change-locale");
+    this.$bus.off("did-change-locale", this.loadMarkdown);
   }
 }
 </script>

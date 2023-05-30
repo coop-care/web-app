@@ -127,9 +127,9 @@ class ClientPage extends Vue {
   }
 
   unmounted() {
-    this.$bus.off("did-delete-client");
-    this.$bus.off("did-remove-client-from-team");
-    this.$bus.off("did-move-client-to-team");
+    this.$bus.off("did-delete-client", this.deselectClient);
+    this.$bus.off("did-remove-client-from-team", this.deselectClient);
+    this.$bus.off("did-move-client-to-team", this.deselectClient);
   }
 
   deselectClient() {

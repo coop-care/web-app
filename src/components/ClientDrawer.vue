@@ -173,17 +173,20 @@ export default class ClientDrawer extends Vue {
     void this.$store.direct.dispatch.fetchClientsFromDB();
   }
 
+  onDidArchiveClient() {
+    this.archivedClientsExpansionState = true;
+  }
+  onDidUnarchiveClient() {
+    this.activeClientsExpansionState = true;
+  }
+
   created() {
-    this.$bus.on("did-archive-client", () => 
-      this.archivedClientsExpansionState = true
-    );
-    this.$bus.on("did-unarchive-client", () => 
-      this.activeClientsExpansionState = true
-    );
+    this.$bus.on("did-archive-client", this.onDidArchiveClient);
+    this.$bus.on("did-unarchive-client", this.onDidUnarchiveClient);
   }
   unmounted() {
-    this.$bus.off("did-archive-client");
-    this.$bus.off("did-unarchive-client");
+    this.$bus.off("did-archive-client", this.onDidArchiveClient);
+    this.$bus.off("did-unarchive-client", this.onDidUnarchiveClient);
   }
 }
 </script>
