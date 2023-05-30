@@ -89,7 +89,8 @@
 
 <script lang="ts">
 import { fileSize } from "src/boot/i18n";
-import { downloadAndInstall, UpdateAvailableInfo, UpdateInfo } from "src/boot/updater";
+import { downloadAndInstall } from "src/boot/updater";
+import { UpdateAvailableInfo, UpdateInfo } from "src/boot/eventBus";
 import { Vue, Component, Watch } from "vue-facing-decorator";
 import { Team, TeamInvitation, TeamMember } from "../models";
 

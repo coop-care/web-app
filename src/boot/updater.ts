@@ -1,19 +1,9 @@
 import { Platform } from "quasar";
 import { boot } from "quasar/wrappers";
 import * as AppSettings from "src/database/AppSettings";
-import { bus } from "./eventBus";
+import { UpdateAvailableInfo, bus } from "./eventBus";
 import { i18n, locale } from "src/boot/i18n";
 import { notifyError } from "src/helper/notify";
-
-export type UpdateInfo = {
-    installedVersion: string;
-}
-export type UpdateAvailableInfo = UpdateInfo & {
-    availableVersion: string;
-    downloadSize?: number;
-    storeUrl?: string;
-    downloadUrls?: string[];
-}
 
 const updateCheckInterval = 24 * 60 * 60 * 1000;
 
