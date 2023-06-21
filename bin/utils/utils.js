@@ -33,7 +33,18 @@ function changeCordovaAppId(appId) {
     throw new Error("missing app id");
   }
 
-  return replaceFileContent("src-cordova/config.xml", /(<widget .*id=\")([A-Za-z.]*)(\")/, appId);
+  const previousId = replaceFileContent("src-cordova/config.xml", /(<widget .*id=\")([A-Za-z.]*)(\")/, appId);
+
+  if (appId != previousId) {
+    const sourceDir = "src-cordova/platforms/android/app/src/main/java/" + previousId.replace(/\./g, "/");
+    const targetDir = "src-cordova/platforms/android/app/src/main/java/" + appId.replace(/\./g, "/");
+    const previousIdRegExp = previousId.replace(/\./g, "\\\.");
+    runCommand(`mkdir -p ${targetDir}; mv ${sourceDir}/MainActivity.java ${targetDir}/MainActivity.java`);
+    replaceFileContent(targetDir + "/MainActivity.java", new RegExp("( )(" + previousIdRegExp + ")(;)", "g"), appId);
+    replaceFileContent("src-cordova/platforms/android/android.json", new RegExp("(\")(" + previousIdRegExp + ")(\")", "g"), appId);
+  }
+
+  return previousId;
 }
 
 /**

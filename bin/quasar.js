@@ -65,7 +65,7 @@ exitOnError(() => {
     }
   }
 
-  if (mode == "device" && product == "android") {
+  if (product == "android" && (mode == "device" || mode == "dev")) {
     env.APP_ID = env.APP_ID.replace(/\.dev$/, ".debug");
     additionalVariables["android"] = `APP_ID=${env.APP_ID}`;
   }
