@@ -4,6 +4,7 @@
     :contact="contact"
     no-relationship
     no-organization
+    no-care-profession
     no-url
     no-delete
     class="q-mb-lg"

@@ -154,7 +154,7 @@
             v-if="!noProfession && !contact.isOrganization"
             :model-value="contact.profession"
             :label="$t('profession')"
-            :options="professionLabels"
+            :options="!noCareProfession ? careProfessionLabels : []"
             clearable
             @update:model-value="saveContact({profession: $event})"
           />
@@ -169,7 +169,7 @@
             v-if="!noProfession && contact.isOrganization"
             :model-value="contact.profession"
             :label="$t('profession')"
-            :options="professionLabels"
+            :options="!noCareProfession ? careProfessionLabels : []"
             clearable
             @update:model-value="saveContact({profession: $event})"
           />
@@ -346,8 +346,9 @@ interface ContactView extends RecordMixinInterface {};
 class ContactView extends Vue {
   @Prop({ type: Object }) readonly contact!: Contact;
   @Prop({ type: Boolean }) readonly noDegree!: boolean;
-  @Prop({ type: Boolean }) readonly noBirthday!: boolean; 
+  @Prop({ type: Boolean }) readonly noBirthday!: boolean;
   @Prop({ type: Boolean }) readonly noProfession!: boolean;
+  @Prop({ type: Boolean }) readonly noCareProfession!: boolean;
   @Prop({ type: Boolean }) readonly noRelationship!: boolean;
   @Prop({ type: Boolean }) readonly noOrganization!: boolean;
   @Prop({ type: Boolean }) readonly noDelete!: boolean;
@@ -429,7 +430,7 @@ class ContactView extends Vue {
       }
     ] : []);
   }
-  get professionLabels() {
+  get careProfessionLabels() {
     return this.$store.direct.getters.professionLabels
       .map(this.makeOption)
       .sort(Client.sortByLabel)
