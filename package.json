@@ -38,7 +38,7 @@
     "dexie": "^3.2.3",
     "dexie-encrypted": "^2.0.0",
     "direct-vuex": "^1.0.0-rc3",
-    "fs-extra": "^11.1.0",
+    "fs-extra": "^11.1.1",
     "indexeddbshim": "^10.1.0",
     "js-base64": "^3.7.5",
     "keytar": "^7.9.0",
