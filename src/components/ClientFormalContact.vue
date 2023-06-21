@@ -15,7 +15,9 @@
         clearable
         map-options
         emit-value
+        :behavior="behavior"
         use-input
+        type="text"
         hide-selected
         fill-input
         input-debounce="0"
@@ -87,6 +89,7 @@ import { Task, Intervention, Contact, LabeledValue } from "../models";
 import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ContactView from "../components/ContactView.vue";
 import { ObjectID } from "bson";
+import { selectBehavior } from "src/helper/utils";
 
 interface ClientFormalContactView extends RecordMixinInterface {};
 
@@ -134,6 +137,9 @@ class ClientFormalContactView extends Vue {
   }
   get knownContact() {
     return this.knownContacts.find(contact => contact.id.equals(this.knownContactId))
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   localizeProfession(profession: string) {

@@ -6,6 +6,7 @@
         :label="$t('de.leistungsbereich')"
         :model-value="vereinbarung.leistungsbereich"
         @update:model-value="saveVereinbarung({leistungsbereich: $event})"
+        :behavior="behavior"
         class="col"
         style="min-width: 200px"
       />
@@ -13,6 +14,7 @@
         :label="$t('de.bundesland')"
         :model-value="vereinbarung.bundesland"
         @update:model-value="saveVereinbarung({bundesland: $event})"
+        :behavior="behavior"
         class="col"
         style="min-width: 200px"
       />
@@ -21,6 +23,7 @@
       :label="$t('de.kassenverband', 2)"
       :model-value="vereinbarung.kassenverband"
       @update:model-value="saveVereinbarung({kassenverband: $event})"
+      :behavior="behavior"
     />
     <div class="row items-center q-gutter-x-md">
       <q-input
@@ -34,6 +37,7 @@
         :label="$t('de.verguetungsart')"
         :model-value="vereinbarung.verguetungsart"
         @update:model-value="saveVereinbarung({verguetungsart: $event})"
+        :behavior="behavior"
         class="col"
         style="min-width: 200px"
       />
@@ -67,6 +71,7 @@
 
 <script lang="ts">
 import { plainToInstance } from "class-transformer";
+import { selectBehavior } from "src/helper/utils";
 import { Verguetungsvereinbarung } from "src/models/localized/de";
 import { Component, Vue } from "vue-facing-decorator";
 import BackofficeMixin, { BackofficeMixinInterface } from "../../mixins/BackofficeMixin";
@@ -85,6 +90,9 @@ class BackofficeCompensationAgreement extends Vue {
     return plainToInstance(Verguetungsvereinbarung,
       this.vereinbarungen.find((item: { id: string; }) => item.id == this.$route.params.agreementId)
     );
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   saveVereinbarung(changes: Partial<Verguetungsvereinbarung>, immediately = true) {

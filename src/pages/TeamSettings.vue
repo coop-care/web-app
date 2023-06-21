@@ -23,6 +23,7 @@
           :options="teamOptions"
           emit-value
           map-options
+          :behavior="behavior"
           class="text-h5"
         >
           <template v-slot:before>
@@ -62,6 +63,7 @@
                   :label="$t('backoffice')"
                   emit-value
                   map-options
+                  :behavior="behavior"
                   dense-options
                   clearable
                   class="col"
@@ -274,6 +276,7 @@ import TextWithTooltip from "../components/TextWithTooltip.vue";
 import PullToRefresh from "../components/PullToRefresh.vue";
 import TeamInvitationDialog from "../components/TeamInvitationDialog.vue";
 import { downloadJSON } from "src/helper/download";
+import { selectBehavior } from "src/helper/utils";
 
 interface TeamSettingsPage extends ClientActionMixinInterface {};
 
@@ -363,6 +366,9 @@ class TeamSettingsPage extends Vue {
         value: item.id
       }
     });
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   isCurrentUser(member: TeamMember) {

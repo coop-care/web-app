@@ -9,9 +9,11 @@
     option-value="code"
     option-label="title"
     emit-value
+    :behavior="behavior"
     map-options
     hide-bottom-space
     use-input
+    type="text"
     hide-selected
     fill-input
     clearable
@@ -94,6 +96,7 @@ import { QSelect } from "quasar";
 import { TerminologyWithMaps, UsersGuide, sortByTitle } from "../helper/terminology";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import TextWithHighlights from "../components/TextWithHighlights.vue";
+import { selectBehavior } from "src/helper/utils";
 
 export type InterventionTargetOption = {
   title: string;
@@ -179,6 +182,9 @@ export default class InterventionTargetSelect extends Vue {
     return this.problemCode 
       ? this.$tm("terminology.problemByCode." + this.problemCode + ".title")
       : "";
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   filterOptions(inputValue: string, doneFn: (callbackFn: () => void) => void) {

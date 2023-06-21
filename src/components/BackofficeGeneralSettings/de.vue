@@ -78,6 +78,7 @@
           :options="umsatzsteuerBefreiungOptions"
           emit-value
           map-options
+          :behavior="behavior"
           class="col"
           style="min-width: 280px"
         />
@@ -206,6 +207,7 @@ import SelectableInput from "src/components/SelectableInput.vue";
 // } from "paid-care";
 import { mapToOptions, mapToOptionsWithoutValue } from "src/helper/billing/de";
 import BackofficeMixin, { BackofficeMixinInterface } from "src/mixins/BackofficeMixin";
+import { selectBehavior } from "src/helper/utils";
 const rechnungsartSchluessel =  {
     "1": "Abrechnung von Leistungserbringer und Zahlung an IK Leistungserbringer",
     "2": "Abrechnung über Abrechnungsstelle (ohne Inkassovollmacht) und Zahlung an IK Leistungserbringer",
@@ -259,6 +261,9 @@ class BackOfficeSettings extends Vue {
   }
   get saveCustomField() {
     return this.saveBackofficeCustomField;
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   getContacts(label: string): ContactPerson[] {

@@ -17,6 +17,7 @@
           color="classification"
           map-options
           emit-value
+          :behavior="behavior"
           item-aligned
           ref="problemSelect"
         >
@@ -83,6 +84,7 @@ import Warning from "components/Warning.vue";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 import { notifySaveStatus } from "src/helper/notify";
+import { selectBehavior } from "src/helper/utils";
 
 interface InterventionPage extends RecordValidatorInterface {};
 
@@ -157,6 +159,9 @@ class InterventionPage extends Vue {
   }
   get problemCode() {
     return this.record?.problem.code ?? ""
+  }
+  get behavior() {
+    return selectBehavior();
   }
   
   hasPendingChanges() {

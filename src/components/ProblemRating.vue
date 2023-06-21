@@ -57,6 +57,7 @@
                 options-cover
                 map-options
                 emit-value
+                :behavior="behavior"
                 class="col-7 q-pl-xs"
                 popup-content-class="text-center"
               >
@@ -92,6 +93,7 @@ import { Frequency, RatingReminder, Outcome, Rating } from "../models";
 import RatingView from "components/Rating.vue";
 import RevealButton from "components/RevealButton.vue";
 import { Terminology, UsersGuide } from "../helper/terminology";
+import { selectBehavior } from "src/helper/utils";
 
 const { formatDate } = date;
 const ratingTypes = ["knowledge", "behaviour", "status"] as const;
@@ -183,6 +185,9 @@ export default class ProblemRating extends Vue {
       { label: this.$t("month", 2), value: Frequency.MONTHLY },
       { label: this.$t("year", 2), value: Frequency.YEARLY }
     ];
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   isNumeric3Digits(value: string) {

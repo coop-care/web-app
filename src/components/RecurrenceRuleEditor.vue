@@ -38,6 +38,7 @@
             options-cover
             map-options
             emit-value
+            :behavior="behavior"
             :hint="recurrenceDescription"
           />
 
@@ -144,6 +145,7 @@
                   options-cover
                   map-options
                   emit-value
+                  :behavior="behavior"
                   :prefix="$t('everyDayPrefix')"
                   class="col dayofweek-select"
                 />
@@ -156,6 +158,7 @@
                   options-cover
                   map-options
                   emit-value
+                  :behavior="behavior"
                   class="col dayofweek-select"
                 />
               </div>
@@ -193,6 +196,7 @@
                   options-cover
                   map-options
                   emit-value
+                  :behavior="behavior"
                   :prefix="$t('everyDayPrefix')"
                   class="col dayofweek-select"
                 />
@@ -205,6 +209,7 @@
                   options-cover
                   map-options
                   emit-value
+                  :behavior="behavior"
                   class="col dayofweek-select"
                 />
               </div>
@@ -225,6 +230,7 @@
             options-cover
             map-options
             emit-value
+            :behavior="behavior"
           />
 
           <div v-if="recurrenceEndMode == 'EndDate'">
@@ -286,6 +292,7 @@ import InterventionMixin, { InterventionMixinInterface } from "../mixins/Interve
 import SearchableOptionList from "./SearchableOptionList.vue";
 import ToggleButtonGroup from "./ToggleButtonGroup.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
+import { selectBehavior } from "src/helper/utils";
 
 const { addToDate, adjustDate } = date;
 const isEmpty = (value: any) =>
@@ -609,6 +616,9 @@ class RecurrenceRuleEditor extends Vue {
   }
   get recurrenceDescription() {
     return this.localizeRecurrenceRule(this.value, this.ruleIndex);
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   toOption(name: string | TranslateResult, index: number) {

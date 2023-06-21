@@ -39,6 +39,7 @@
         :label="$t('appLanguageSetting')"
         :options="localeOptions"
         emit-value
+        :behavior="behavior"
         map-options
       />
       <q-select
@@ -48,6 +49,7 @@
         :options="colorOptions"
         emit-value
         map-options
+        :behavior="behavior"
       >
         <template v-slot:option="scope">
           <q-item
@@ -142,6 +144,7 @@ import { defaultColors, setColorSet } from "../helper/color";
 import { checkForUpdates } from "src/boot/updater";
 import SimplifiedMarkdown from "src/components/SimplifiedMarkdown.vue";
 import ChangePasswordView from "src/components/ChangePassword.vue";
+import { selectBehavior } from "src/helper/utils";
 
 @Component({
   components: {
@@ -240,6 +243,9 @@ export default class UserSettingsView extends Vue {
         value: ["#C64EA9", "#F30062", "#3A85D5", "#7D49C3", defaultColors[4], defaultColors[5]],
       },
     ]
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   checkForUpdates() {

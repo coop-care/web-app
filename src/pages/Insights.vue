@@ -24,6 +24,7 @@
             :options="periodOptions"
             map-options
             emit-value
+            :behavior="behavior"
             dense
             class="q-mr-sm"
           />
@@ -151,6 +152,7 @@ import KBSOverviewChart from "../components/KBSOverviewChart.vue";
 import KBSDoughnutChart from "../components/KBSDoughnutChart.vue";
 import { TerminologyWithMaps } from "src/helper/terminology";
 import { Client, Outcome, Rating } from "src/models";
+import { selectBehavior } from "src/helper/utils";
 
 const { startOfDate, endOfDate, subtractFromDate } = date;
 
@@ -250,6 +252,10 @@ export default class InsightsPage extends Vue {
       behaviourDataset: this.groupRatingsByProgress(section.clients.map(client => client.behaviour)),
       statusDataset: this.groupRatingsByProgress(section.clients.map(client => client.status)), // debug with random data: this.randomRatings()
     }))
+  }
+  
+  get behavior() {
+    return selectBehavior();
   }
 
   getLineChartDataset(clientValues: number[][]) {

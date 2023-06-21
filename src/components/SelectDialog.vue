@@ -15,6 +15,7 @@
           :label="label"
           :options="selectOptions"
           emit-value
+          :behavior="behavior"
           map-options
         />
       </q-card-section>
@@ -44,6 +45,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Ref } from "vue-facing-decorator";
 import { QDialog } from "quasar";
+import { selectBehavior } from "src/helper/utils";
 
 @Component({
   emits: ["ok", "hide"]
@@ -57,6 +59,10 @@ export default class SelectDialog extends Vue {
   @Ref() readonly dialog!: QDialog;
 
   selection = this.selectOptions[0]?.value || "";
+
+  get behavior() {
+    return selectBehavior();
+  }
 
   show () {
     this.dialog.show();

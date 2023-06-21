@@ -6,6 +6,7 @@
           v-model="username"
           :label="$t('selectUser')"
           :options="accountList"
+          :behavior="behavior"
           hide-bottom-space
           :error-message="errorMessageLoginUsername"
           :error="!!errorMessageLoginUsername"
@@ -100,6 +101,7 @@
 import LocalDatabaseApi from "src/api/local";
 import { errorMessage, errorToString } from "src/boot/i18n";
 import * as AppSettings from "src/database/AppSettings";
+import { selectBehavior } from "src/helper/utils";
 import { defineComponent } from "vue";
 
 type AuthMode = "login" | "adduser";
@@ -130,6 +132,9 @@ export default defineComponent({
     },
     canCreateAccount(): boolean {
       return !!this.newUsername && !!this.newPassword1 && this.newPassword1 == this.newPassword2;
+    },
+    behavior() {
+      return selectBehavior();
     },
   },
 

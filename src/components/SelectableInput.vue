@@ -5,9 +5,11 @@
     :options="filteredOptions"
     map-options
     emit-value
+    :behavior="behavior"
     :dense="dense"
     :options-dense="optionsDense"
     use-input
+    type="text"
     hide-selected
     fill-input
     input-debounce="0"
@@ -18,6 +20,7 @@
     @input-value="inputValue = $event;"
     @keydown.enter.tab="selectInputValue"
     @keydown.tab="lastTabKeyDownTimestamp = Date.now()"
+    @focus="onFocus"
     @blur="onBlur"
     @filter="filter"
     @popup-show="select.reset()"
@@ -42,6 +45,7 @@
 <script lang="ts">
 import { Vue, Component, Prop, Ref, Model } from "vue-facing-decorator";
 import { QSelect } from "quasar";
+import { selectBehavior } from "src/helper/utils";
 
 type SelectableInputOptions = {
   label: string;
@@ -68,6 +72,13 @@ export default class SelectableInput extends Vue {
   lastTabKeyDownTimestamp = 0;
   inputValue = "";
 
+  get behavior() {
+    return selectBehavior();
+  }
+
+  onFocus() {
+    window.getSelection()?.collapseToEnd()
+  }
   onBlur() {
     if (this.lastTabKeyDownTimestamp + 100 < Date.now()) {
       this.selectInputValue();

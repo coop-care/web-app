@@ -26,6 +26,7 @@
         :label="$t('backoffice')"
         emit-value
         map-options
+        :behavior="behavior"
         class="text-h6 q-mb-lg"
       />
       <central-message
@@ -62,7 +63,7 @@ import TeamMixin, { TeamMixinInterface } from "../mixins/TeamMixin";
 import { BackOffice, Client } from "../models";
 import CentralMessage from "components/CentralMessage.vue";
 import TabView from "../components/TabView.vue";
-import { incrementalName } from "src/helper/utils";
+import { incrementalName, selectBehavior } from "src/helper/utils";
 import { countryCodes as referralCountryCodes } from "components/BackofficeReferral/index.vue";
 
 interface BackofficePage extends BackofficeMixinInterface, TeamMixinInterface {};
@@ -112,6 +113,9 @@ class BackofficePage extends Vue {
       route: "backofficeSettings",
       icon: "fas fa-file-signature",
     }].filter(Boolean);
+  }
+  get behavior() {
+    return selectBehavior();
   }
 
   setBackofficeId(value: string) {
