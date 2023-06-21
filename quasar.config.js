@@ -186,6 +186,7 @@ module.exports = configure(function (ctx) {
         const unacceptableLicenseTest = (license) => ![
           "MIT",
           "Apache-2.0",
+          "Apache 2.0",
           "ISC",
           "LGPL",
           "Unlicense",

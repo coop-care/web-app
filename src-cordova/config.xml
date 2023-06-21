@@ -16,7 +16,7 @@
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="android-minSdkVersion" value="29" />
-        <preference name="android-targetSdkVersion" value="32" />
+        <preference name="android-targetSdkVersion" value="33" />
         <preference name="StatusBarOverlaysWebView" value="false" />
         <preference name="AndroidPersistentFileLocation" value="Internal" />
         <preference name="AndroidWindowSplashScreenAnimatedIcon" value="res/android/xxxhdpi.png" />
@@ -93,5 +93,8 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="StatusBarStyle" value="lightcontent" />
     <preference name="StatusBarDefaultScrollToTop" value="true" />
-    <preference name="KeyboardShrinksView" value="true" />
+    <preference name="KeyboardResize" value="true" />
+    <preference name="KeyboardResizeMode" value="native" />
+    <preference name="HideKeyboardFormAccessoryBar" value="false" />
+    <preference name="ScrollEnabled" value="true" />
 </widget>
