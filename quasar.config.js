@@ -433,7 +433,7 @@ module.exports = configure(function (ctx) {
         mac: {
           target: [{
             target: "zip",
-            arch: ["arm64", "x64", "universal"]
+            arch: [/*"arm64", "x64",*/ "universal"]
           }],
           category: "public.app-category.medical",
           icon: "src-electron/icons/icon.icns",
