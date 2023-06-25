@@ -215,8 +215,8 @@ class ClientHistoryEntry extends Vue {
           ? ": " + problem.otherSignAndSymptom
           : "";
         return (
-          problem.signsAndSymptoms
-            .map((item) => this.$t(item.title).toString())
+          problem.symptomsList
+            .map((item) => "terminology.symptomByCode." + problem.code + "_" + item.code + ".title")
             .join(", ") + otherSignAndSymptom
         );
       } else {
@@ -228,7 +228,7 @@ class ClientHistoryEntry extends Vue {
       const problem = new Problem();
       problem.severityCode = values.severityCode;
       problem.details = value;
-      return problem.severityDetails;
+      return problem.details;
     } else if (key == "priorityDetails") {
       return value;
     } else if (key == "knowledge" || key == "behaviour" || key == "status") {

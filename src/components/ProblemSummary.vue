@@ -79,7 +79,7 @@
       </div>
       <div v-if="isExpanded">
         <div
-          v-if="problem.priorityDetails"
+          v-if="!problem.isHighPriority && problem.priorityDetails"
           :class="sectionPadding"
         >
           <p class="q-pl-lg q-my-none">
@@ -87,44 +87,86 @@
             <span class="text-italic">{{ problem.priorityDetails }}</span>
           </p>
         </div>
-        <div v-if="problem.severityCode < 2 && problem.details">
-          <div class="text-subtitle1 text-weight-bold text-classification">
-            {{
-              $t(
-                problem.severityCode == 0
-                  ? "clientRequestForHealthPromotionTitle"
-                  : "potentialRiskFactorsTitle"
-              )
-            }}
-          </div>
-          <p class="q-pl-lg q-my-none text-italic">
-            {{ problem.details }}
-          </p>
-        </div>
 
-        <div v-if="
-            problem.severityCode == 2 && problem.signsAndSymptomsCodes.length
-          ">
-          <div class="text-subtitle1 text-weight-bold text-classification">
-            {{ $t("actualSignsAndSymptomsTitle") }}
+        <div class="row q-col-gutter-lg">
+          <div :class="[problem.removedSymptoms().length ? 'col-sm-6' : '']">
+            <div v-if="problem.severityCode == 0 && problem.healthPromotionDetails">
+              <div class="text-subtitle1 text-weight-bold text-classification">
+                {{ $t("clientRequestForHealthPromotionTitle") }}
+              </div>
+              <p class="q-pl-lg q-my-none text-italic">
+                {{ problem.healthPromotionDetails }}
+              </p>
+            </div>
+            <div v-else-if="problem.severityCode == 1 && problem.potentialRiskDetails">
+              <div class="text-subtitle1 text-weight-bold text-classification">
+                {{ $t("potentialRiskFactorsTitle") }}
+              </div>
+              <p class="q-pl-lg q-my-none text-italic">
+                {{ problem.potentialRiskDetails }}
+              </p>
+            </div>
+            <div v-else-if="problem.severityCode == 2 && problem.symptomsList.length">
+              <div class="text-subtitle1 text-weight-bold text-classification">
+                {{ $t("actualSignsAndSymptomsTitle") }}
+              </div>
+              <ul class="q-ma-none">
+                <li
+                  v-for="(symptom, index) in problem.currentSymptoms()"
+                  :key="index"
+                >
+                  {{ $t("terminology.symptomByCode." + problem.code + "_" + symptom.code + ".title")
+                  }}<span v-if="symptom.other">:
+                    <span class="text-italic">{{
+                      symptom.other
+                    }}</span>
+                  </span>
+                  <span 
+                    v-if="symptom.addedDate"
+                    class="text-caption"
+                  >
+                    ({{ $t("sinceDate", {date: $d(symptom.addedDate, "DateShort")}) }})
+                  </span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <ul class="q-ma-none column-2">
-            <li
-              v-for="(symptom, index) in problem.signsAndSymptoms"
-              :key="index"
-              class="no-column-break"
-            >
-              {{ $t(symptom.title)
-              }}<span v-if="
-                  index == problem.signsAndSymptomsCodes.length - 1 &&
-                    problem.otherSignAndSymptom
-                ">:
-                <span class="text-italic">{{
-                  problem.otherSignAndSymptom
-                }}</span>
-              </span>
-            </li>
-          </ul>
+
+          <reveal-button
+            v-if="problem.removedSymptoms().length"
+            :label="$t('showFormerSymptomsButton', problem.removedSymptoms().length)"
+            color="classification"
+            class="col-sm-6"
+            button-class="symptoms-header"
+          >
+            <div class="text-subtitle2 text-classification symptoms-header">
+              {{ $t("formerSymptomsTitle") }}:
+            </div>
+            <ul class="q-ma-none">
+              <li
+                v-for="(symptom, index) in problem.removedSymptoms()"
+                :key="index"
+              >
+                {{ $t("terminology.symptomByCode." + problem.code + "_" + symptom.code + ".title")
+                }}<span v-if="symptom.other">:
+                  <span class="text-italic">{{
+                    symptom.other
+                  }}</span>
+                </span>
+                <span 
+                  v-if="symptom.addedDate || symptom.removedDate"
+                  class="text-caption"
+                >
+                  (<span v-if="symptom.addedDate">
+                    {{ $t("sinceDate", {date: $d(symptom.addedDate, "DateShort")}) }}
+                  </span>
+                  <span v-if="symptom.removedDate">
+                    {{ (symptom.addedDate ? " " : "") + $t("untilDate", {date: $d(symptom.removedDate, "DateShort")}) }}
+                  </span>)
+                </span>
+              </li>
+            </ul>
+          </reveal-button>
         </div>
       </div>
     </q-card-section>
@@ -275,6 +317,8 @@
   width: .5rem
   height: .5rem
   border-radius: .25rem
+.symptoms-header
+  line-height: 1.75rem
 </style>
 
 <script lang="ts">
@@ -284,6 +328,7 @@ import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import ActionMenu from "../components/ActionMenu.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import RatingChartGroup from "../components/RatingChartGroup.vue";
+import RevealButton from "../components/RevealButton.vue";
 import { ProblemRecord, Problem } from "../models";
 
 interface ProblemSummary extends RecordMixinInterface, WarningMixinInterface {};
@@ -292,7 +337,8 @@ interface ProblemSummary extends RecordMixinInterface, WarningMixinInterface {};
   components: {
     ActionMenu,
     SimplifiedMarkdown,
-    RatingChartGroup
+    RatingChartGroup,
+    RevealButton
   },
   mixins: [RecordMixin, WarningMixin],
   emits: ["update:expanded"]

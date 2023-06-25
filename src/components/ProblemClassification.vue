@@ -57,21 +57,29 @@
       keep-color
     />
     <q-input
-      v-if="showSymptomsSection && isOtherSymptomSelected"
-      v-model="details"
+      v-if="showSymptomsSection && !!otherSymptom"
+      v-model="otherSymptomDetails"
       color="classification"
       autogrow
-      :autofocus="!details"
+      :autofocus="!otherSymptomDetails"
       :label="$t('otherSignsAndSymptoms')"
       class="q-ml-xl"
     />
 
     <q-input
-      v-if="severity < 2"
-      v-model="details"
-      :label="severity == 0 ? $t('clientRequestLabel') : $t('riskFactorLabel')"
+      v-if="severity == 1"
+      v-model="potentialRiskDetails"
+      :label="$t('riskFactorLabel')"
       autogrow
-      :autofocus="!details"
+      :autofocus="!potentialRiskDetails"
+      color="classification"
+    />
+    <q-input
+      v-else-if="severity == 0"
+      v-model="healthPromotionDetails"
+      :label="$t('clientRequestLabel')"
+      autogrow
+      :autofocus="!healthPromotionDetails"
       color="classification"
     />
 
@@ -119,7 +127,7 @@ import {
   treeifyTerminology,
   UsersGuide,
 } from "../helper/terminology";
-import { Problem } from "../models/problem";
+import { Problem, Symptom } from "../models/problem";
 import TextWithTooltip from "./TextWithTooltip.vue";
 
 interface ProblemClassification extends WarningMixinInterface {};
@@ -136,18 +144,55 @@ class ProblemClassification extends Vue {
   @Prop({ type: Boolean }) readonly activeInterventionsAvailable!: boolean;
   @Prop({ type: Boolean }) readonly editMode!: boolean;
 
+  componentCreationDate = new Date();
+
   get selectedProblem() {
     return this.problem.code;
   }
+  get otherSymptom() {
+    return this.problem.currentSymptoms()
+      .find(symptom => symptom.code == this.otherSymptomCode);
+  }
   get selectedSymptoms() {
-    return this.problem.signsAndSymptomsCodes;
+    return this.problem.currentSymptoms().map(symptom => symptom.code);
   }
   set selectedSymptoms(values: string[]) {
-    // preserving order of symptoms is super important because of "other" symptom
-    const codes = this.symptomsForSelectedProblem
-      .filter((symptom) => values.includes(symptom.value))
-      .map((symptom) => symptom.value);
-    this.updateProblem({ signsAndSymptomsCodes: codes });
+    const insertionCode = values.filter(code => !this.selectedSymptoms.includes(code)).at(0);
+    const deletionCode = this.selectedSymptoms.filter(code => !values.includes(code)).at(0);
+
+    if (insertionCode) {
+      const removedSymptom = this.problem.symptomsList.find(symptom => 
+        symptom.code == insertionCode 
+          && symptom.removedDate && this.componentCreationDate < symptom.removedDate
+      );
+
+      if (removedSymptom) {
+        removedSymptom.removedDate = undefined;
+      } else {
+        const newSymptom = new Symptom();
+        newSymptom.code = insertionCode;
+
+        if (this.editMode) {
+          newSymptom.addedDate = new Date();
+        }
+
+        this.problem.symptomsList.push(newSymptom);
+      }
+    } else if (deletionCode) {
+      const currentSymptoms = this.problem.currentSymptoms();
+      const symptomIndex = currentSymptoms.findIndex(symptom => symptom.code == deletionCode);
+      const symptom = symptomIndex >= 0 ? currentSymptoms[symptomIndex] : undefined;
+      
+      if (symptom) {
+        if (!this.editMode || (symptom.addedDate && this.componentCreationDate < symptom.addedDate)) {
+          this.problem.symptomsList.splice(symptomIndex, 1);
+        } else {
+          symptom.removedDate = new Date();
+        }
+      }
+    }
+
+    this.$emit("update:model-value", this.problem);
   }
   get scope() {
     return this.problem.scopeCode;
@@ -159,18 +204,7 @@ class ProblemClassification extends Vue {
     return this.problem.severityCode;
   }
   set severity(value: number) {
-    if (
-      this.editMode &&
-      (this.problem.signsAndSymptoms.length || this.problem.details)
-    ) {
-      this.showWarning(
-        this.$t("changingSeverityWarningMessage") as string
-      ).onOk(() => {
-        this.updateProblem({ severityCode: value });
-      });
-    } else {
-      this.updateProblem({ severityCode: value });
-    }
+    this.updateProblem({ severityCode: value });
   }
   get priority() {
     return this.problem.isHighPriority;
@@ -186,11 +220,26 @@ class ProblemClassification extends Vue {
       this.updateProblem({ isHighPriority: value });
     }
   }
-  get details() {
-    return this.problem.details;
+  get otherSymptomDetails() {
+    return this.otherSymptom?.other || "";
   }
-  set details(value: string) {
-    this.updateProblem({ details: value ?? "" });
+  set otherSymptomDetails(value: string) {
+    if (this.otherSymptom) {
+      this.otherSymptom.other = value;
+      this.$emit("update:model-value", this.problem);
+    }
+  }
+  get potentialRiskDetails() {
+    return this.problem.potentialRiskDetails;
+  }
+  set potentialRiskDetails(value: string) {
+    this.updateProblem({ potentialRiskDetails: value ?? "" });
+  }
+  get healthPromotionDetails() {
+    return this.problem.healthPromotionDetails;
+  }
+  set healthPromotionDetails(value: string) {
+    this.updateProblem({ healthPromotionDetails: value ?? "" });
   }
   get priorityDetails() {
     return this.problem.priorityDetails;
@@ -209,13 +258,11 @@ class ProblemClassification extends Vue {
       return { label: symptom.title, value: symptom.code };
     });
   }
+  get otherSymptomCode() {
+    return this.symptomsForSelectedProblem.at(-1)?.value || "";
+  }
   get showSymptomsSection() {
     return this.selectedProblem && this.severity == 2;
-  }
-  get isOtherSymptomSelected() {
-    const symptoms = this.symptomsForSelectedProblem;
-    const otherSymptom = symptoms[symptoms.length - 1];
-    return this.selectedSymptoms.includes(otherSymptom.value);
   }
   get priorityOptions() {
     return [
@@ -246,11 +293,33 @@ class ProblemClassification extends Vue {
   }
 
   updateProblem(changes: Partial<Problem>) {
-    if (changes.severityCode != undefined) {
-      changes.signsAndSymptomsCodes = [];
-      changes.details = "";
-    } else if (changes.isHighPriority) {
-      changes.priorityDetails = "";
+    if (!this.editMode) {
+      // if the problem has not been stored yet, symptoms are better reset when severityCode has changed
+      if (changes.severityCode != undefined) {
+        changes.symptomsList = [];
+      }
+    } else {
+      if (changes.severityCode != undefined) {
+        if (changes.severityCode < 2 && this.problem.severityCode == 2) {
+          // stop signs and symptoms
+          changes.symptomsList = this.problem.symptomsList.map(symptom => {
+            if (!symptom.removedDate) {
+              symptom.removedDate = new Date();
+            }
+
+            return symptom;
+          });
+        } else if (changes.severityCode == 2 && this.problem.severityCode < 2) {
+          // reactivate signs and symptoms
+          changes.symptomsList = this.problem.symptomsList.map(symptom => {
+            if (!!symptom.removedDate && this.componentCreationDate < symptom.removedDate) {
+              symptom.removedDate = undefined;
+            }
+
+            return symptom;
+          });
+        }
+      }
     }
 
     this.$emit("update:model-value", Object.assign(this.problem, changes));

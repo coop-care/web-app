@@ -69,12 +69,12 @@ export default defineComponent({
                 problem &&
                 problem.code &&
                 problem.severityCode == 2 &&
-                problem.signsAndSymptomsCodes.length == 0
+                problem.currentSymptoms().length == 0
             ) {
                 warnings.push(this.$t("noSymptomsWarning"));
-            } else if (problem && problem.severityCode == 1 && !problem.details) {
+            } else if (problem && problem.severityCode == 1 && !problem.potentialRiskDetails) {
                 warnings.push(this.$t("noPotentialRiskFactorsWarning"));
-            } else if (problem && problem.severityCode == 0 && !problem.details) {
+            } else if (problem && problem.severityCode == 0 && !problem.healthPromotionDetails) {
                 warnings.push(this.$t("noClientWishForHealthPromotionWarning"));
             }
 

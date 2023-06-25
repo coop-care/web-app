@@ -1,14 +1,26 @@
 import { Term } from "./term";
 import { TerminologyWithMaps } from "../helper/terminology";
 import { Base } from "./base";
+import { Type } from "class-transformer";
+
+export class Symptom {
+    code = "";
+    other?: string = undefined;
+    @Type(() => Date)
+    addedDate?: Date = undefined;
+    @Type(() => Date)
+    removedDate?: Date = undefined;
+}
 
 export class Problem extends Base {
     code = "";
     scopeCode = 0;
     severityCode = 2;
-    signsAndSymptomsCodes: string[] = [];
-    details = "";
+    @Type(() => Symptom)
+    symptomsList: Symptom[] = [];
     isHighPriority = true;
+    potentialRiskDetails = "";
+    healthPromotionDetails = "";
     priorityDetails = "";
 
     get title() {
@@ -52,20 +64,79 @@ export class Problem extends Base {
     get priority() {
         return new Term(this.isHighPriority ? "highPriority" : "lowPriority");
     }
-    get signsAndSymptoms() {
-        return this.signsAndSymptomsCodes.map(code => {
-            return new Term(
-                "terminology.symptomByCode." + this.code + "_" + code
-            );
-        });
-    }
+    /**
+     * @deprecated only for ClientHistoryEntry
+     */
     get otherSignAndSymptom() {
-        return this.severityCode == 2 ? this.details : "";
+        return this.severityCode == 2 ? this.currentSymptoms().filter(item => !!item.other).join(", ") : "";
     }
-    get severityDetails() {
-        return this.severityCode < 2 ? this.details : "";
+    /**
+     * @deprecated only for ClientHistoryEntry
+     */
+    get signsAndSymptomsCodes() {
+        return this.currentSymptoms().map(item => item.code);
+    }
+    /**
+     * @deprecated only for data migration from old data model
+     */
+    set signsAndSymptomsCodes(values: string[]) {
+        this.symptomsList = values.map(code => {
+            const item = new Symptom();
+            item.code = code;
+            return item;
+        })
+    }
+    /**
+     * @deprecated only for data migration from old data model
+     */
+    set signsAndSymptomsList(values: Symptom[]) {
+        this.symptomsList = values;
+    }
+    /**
+     * @deprecated only for ClientHistoryEntry
+     */
+    get details() {
+        if (this.severityCode == 2) {
+            return this.symptomsList.filter(item => !!item.other).join(", ");
+        } else if (this.severityCode == 1) {
+            return this.potentialRiskDetails;
+        } else if (this.severityCode == 0) {
+            return this.healthPromotionDetails;
+        } else {
+            return "";
+        }
+    }
+    /**
+     * @deprecated only for data migration from old data model
+     */
+    set details(value: string) {
+        if (!!value) {
+            if (this.severityCode == 2) {
+                const item = new Symptom();
+                item.other = value;
+                this.symptomsList.push(item);
+            } else if (this.severityCode == 1) {
+                this.potentialRiskDetails = value;
+            } else if (this.severityCode == 0) {
+                this.healthPromotionDetails = value;
+            }
+        }
     }
 
+    currentSymptoms() {
+        const now = new Date();
+
+        return this.symptomsList.filter(symptom => 
+            !symptom.removedDate || now < symptom.removedDate
+        );
+    }
+    removedSymptoms() {
+        const now = new Date();
+
+        return this.symptomsList.filter(symptom => 
+            symptom.removedDate && now >= symptom.removedDate
+        );
+    }
     scopeIcon(terminology: TerminologyWithMaps) {
         return terminology.icons.scope[this.scopeCode];
     }

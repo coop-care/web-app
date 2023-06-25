@@ -318,10 +318,10 @@ class ProblemRecording extends Vue {
       const problem = this.editableRecord.problem;
       let title = this.$t(problem.severityLongTitle);
 
-      if (problem.severityCode < 2 && !problem.details) {
+      if (problem.severityCode < 2 && (!problem.potentialRiskDetails || !problem.healthPromotionDetails)) {
         title += ": " + this.$t("noDescription");
       } else if (problem.severityCode == 2) {
-        const symptomCount = problem.signsAndSymptoms.length;
+        const symptomCount = problem.currentSymptoms.length;
         title += ": " + this.$t("selectedSymptomsCount", symptomCount);
       }
 

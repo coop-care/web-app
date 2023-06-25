@@ -143,15 +143,16 @@ class ProblemSelection extends Vue {
       this.editMode &&
       !!this.selectedProblem &&
       !!this.value &&
-      (this.value.signsAndSymptoms.length ||
-        this.problems.details ||
+      (this.value.symptomsList.length ||
+        this.value.potentialRiskDetails ||
+        this.value.healthPromotionDetails ||
         !this.isChangingProblemAdvisable)
     ) {
       const consequences = [];
-      if (this.value.signsAndSymptoms.length) {
+      if (this.value.symptomsList.length) {
         consequences.push(this.$t("existingSignsAndSymptomsWarning"));
       }
-      if (this.value.details) {
+      if (!!this.value.potentialRiskDetails || !!this.value.healthPromotionDetails) {
         consequences.push(this.$t("existingProblemDetailsWarning"));
       }
       if (!this.isChangingProblemAdvisable) {
@@ -198,11 +199,9 @@ class ProblemSelection extends Vue {
   }
 
   updateProblem(code: string) {
-    this.$emit("update:model-value", Object.assign(this.value, {
-      code,
-      signsAndSymptomsCodes: [],
-      details: "",
-    }));
+    const newProblem = new Problem();
+    newProblem.code = code;
+    this.$emit("update:model-value", Object.assign(this.value, newProblem));
   }
 
   resetProblemsFilter() {
