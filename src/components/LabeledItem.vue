@@ -127,7 +127,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from "vue-facing-decorator";
-import { onLongPress } from "@vueuse/core";
+import { onLongPress } from "src/helper/utils";
 import { notifySuccess } from "src/helper/notify";
 import { copyText } from "src/helper/clipboard";
 
@@ -150,6 +150,7 @@ export default class LabeledItem extends Vue {
   showCopyCalloutButton = false;
   lastPointerDownTimestamp = 0;
   isCopiedTimeout: null | number = null;
+  cleanupLongPress?: () => void;
 
   get isCopySupported() {
     return true;
@@ -224,13 +225,15 @@ export default class LabeledItem extends Vue {
   */
   mounted() {
     if (this.$q.platform.is.mobile) {
-      onLongPress(this.$el, () => this.showCopyCalloutButton = true);
+      this.cleanupLongPress = onLongPress(this.$el, () => this.showCopyCalloutButton = true);
       document.addEventListener("pointerdown", this.onDocumentPointerDown, false)
     }
   }
 
   unmounted() {
     document.removeEventListener("pointerdown", this.onDocumentPointerDown, false);
+    this.cleanupLongPress?.();
   }
 }
+
 </script>

@@ -67,3 +67,43 @@ export function selectBehavior() {
         ? "menu"
         : "default"
 }
+
+/**
+ * detect a long press gesture that did not occur by scrolling
+ * @return method for cleaning up event handlers on target
+ */
+export function onLongPress(
+  target: HTMLElement,
+  handler: (event: PointerEvent) => void,
+  delay = 500,
+) {
+  let timeout: ReturnType<typeof setTimeout> | undefined;
+
+  function clear() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = undefined;
+    }
+  }
+
+  function onPointerDown(event: PointerEvent) {
+    clear();
+
+    timeout = setTimeout(
+      () => handler(event),
+      delay,
+    );
+  }
+
+  target.addEventListener("pointerdown", onPointerDown)
+  target.addEventListener("pointerup", clear)
+  target.addEventListener("pointermove", clear) // potential improvement: add tolerance of 5px compared to pointerdown coordinates
+  target.addEventListener("pointerleave", clear)
+
+  return () => {
+    target.removeEventListener("pointerdown", onPointerDown)
+    target.removeEventListener("pointerup", clear)
+    target.removeEventListener("pointermove", clear)
+    target.removeEventListener("pointerleave", clear)
+  }
+}

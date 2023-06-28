@@ -55,6 +55,7 @@
       color="classification"
       type="checkbox"
       keep-color
+      class="non-selectable"
     />
     <q-input
       v-if="showSymptomsSection && !!otherSymptom"

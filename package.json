@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
-    "@vueuse/core": "^10.1.0",
     "argon2-browser": "^1.18.0",
     "bson": "^4.7.2",
     "chart.js": "^4.2.1",
