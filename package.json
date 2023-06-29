@@ -44,7 +44,7 @@
     "localized-countries": "^2.0.0",
     "luxon": "^3.2.1",
     "mongodb-stitch-browser-sdk": "^4.8.0",
-    "quasar": "^2.12.0",
+    "quasar": "^2.12.1",
     "realm-web": "1.7",
     "reflect-metadata": "^0.1.13",
     "rrule": "^2.7.2",
@@ -56,7 +56,7 @@
     "vuex": "^4.0.1"
   },
   "devDependencies": {
-    "@electron/notarize": "^1.2.3",
+    "@electron/notarize": "^2.0.0",
     "@quasar/app-webpack": "^3.9.2",
     "@quasar/quasar-app-extension-qmarkdown": "^2.0.0-beta.10",
     "@types/argon2-browser": "^1.18.1",
