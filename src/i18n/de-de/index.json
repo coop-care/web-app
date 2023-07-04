@@ -171,7 +171,7 @@
   "interimRating": "Zwischen­bewertung",
   "skipTask": "Einzelne Aufgabe überspringen",
   "moveSingleTask": "Einzelne Aufgabe verschieben",
-  "moveFutureTasks": "Diese und folgende Aufgaben verschieben",
+  "moveFutureTasks": "Diese Aufgabe und ihre zukünftigen Vorkommen verschieben",
   "stopRatingReminder": "Erinnerungen stoppen",
   "deleteInterventionOnDate": "Pflegeintervention beenden am {date}",
   "showProblem": "Problem „{problem}\" anzeigen",
@@ -783,14 +783,18 @@
   "homepageLabel": "Homepage",
   "showResolvedProblems": "{count} abgeschlossenes Problem anzeigen | {count} abgeschlossene Probleme anzeigen",
   "hideResolvedProblems": "Abgeschlossene Probleme verbergen",
-  "allTasksDone": "Alle {count} Aufgaben erledigt",
   "remainingTasksCount": "… und {count} weitere Aufgaben",
   "showAll": "Alle anzeigen",
   "copied": "Kopiert",
+  "allUncompletedTasks": "{count} unerledigte Aufgaben",
   "treatmentsTitle": "Behandlungen",
   "additionalAgreements": "Weitere Vereinbarungen",
   "additionalAgreementsPlaceholder": "z.B. „keine Termine vor 9 Uhr”"
   "formerSymptomsTitle": "Frühere Symptome",
   "showFormerSymptomsButton": "{count} früheres Symptom anzeigen | {count} frühere Symptome anzeigen",
-  "untilDate": "bis {date}"
+  "untilDate": "bis {date}",
+  "markTaskAsCompleted": "{taskName} als erledigt markieren",
+  "skip": "{taskName} überspringen",
+  "moveTaskGroup": "{taskName} verschieben",
+  "moveTaskGroupIncludingFutureReccurrences": "{taskName} und ihre zukünftigen Vorkommen verschieben"
 }

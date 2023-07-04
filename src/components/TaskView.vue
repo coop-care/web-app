@@ -176,7 +176,7 @@ class TaskView extends Vue {
     void this.$store.direct.dispatch.saveClient({ client: this.client });
 
     if (this.isPastDue) {
-      window.clearTimeout(this.forceUpdateTimeoutHandler || undefined);
+      window.clearTimeout(this.forceUpdateTimeoutHandler || undefined);
       this.forceUpdateTimeoutHandler = window.setTimeout(
         () => this.$emit("update", true),
         UpdateTimeoutMilliseconds
@@ -450,7 +450,7 @@ class TaskView extends Vue {
       date,
       this.moveTaskMode == "single"
     );
-    this.updateReminder({ recurrenceRules: recurrenceRules });
+    this.updateReminder({ recurrenceRules });
     this.save();
     this.moveTaskMode = "none";
   }

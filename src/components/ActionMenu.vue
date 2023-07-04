@@ -2,11 +2,14 @@
   <q-btn-dropdown
     v-if="items.filter(item => item.condition !== false).length"
     :color="color"
+    :label="showTitle ? title : undefined"
     rounded
-    outline
+    :outline="!flat"
+    :flat="flat"
     size="14px"
+    no-caps
     dense
-    class="more-button shadow-1 bg-white"
+    :class="['more-button bg-white', !flat ? 'shadow-1' : '']"
     auto-close
     :content-class="'radius-md shadow-5 text-' + color"
     :title="title || $t('moreActions')"
@@ -64,6 +67,8 @@ export default class ActionMenu extends Vue {
   @Prop({ type: String, default: ""}) readonly title!: string;
   @Prop({ type: Array, default: () => [] }) readonly items!: ActionItem[];
   @Prop({ type: String, default: "primary" }) readonly color!: string;
+  @Prop({ type: Boolean }) readonly showTitle!: boolean;
+  @Prop({ type: Boolean }) readonly flat!: boolean;
 
   get sortedItems() {
     return this.items

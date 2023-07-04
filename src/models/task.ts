@@ -72,6 +72,7 @@ export class TaskGroup {
         } as GroupedTask].concat(tasks.map(task => {
             return {
                 id: task.id,
+                title,
                 task,
                 allTasksCount,
             }
@@ -79,6 +80,7 @@ export class TaskGroup {
             remainingTasksCount > 0
                 ? [{
                     id: title,
+                    title,
                     allTasksCount,
                     remainingTasksCount,
                 }] 
@@ -89,8 +91,9 @@ export class TaskGroup {
 
 export type GroupedTask = {
     id: string;
-    title?: string;
+    title: string;
     task?: Task<Reminder>;
     allTasksCount: number;
+    /** number of tasks that are hidden because their number exceeds the limit */
     remainingTasksCount?: number;
 }

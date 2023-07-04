@@ -170,8 +170,8 @@
   "forProblem": "for problem \"{problem}\"",
   "interimRating": "Interim rating",
   "skipTask": "Skip single task",
-  "moveSingleTask": "Shift single task",
-  "moveFutureTasks": "Shift this and following tasks",
+  "moveSingleTask": "Postpone single task",
+  "moveFutureTasks": "Postpone this task and its following occurences",
   "stopRatingReminder": "Stop reminders",
   "deleteInterventionOnDate": "End intervention on {date}",
   "showProblem": "Show problem \"{problem}\"",
@@ -783,14 +783,18 @@
   "homepageLabel": "Home page",
   "showResolvedProblems": "Show {count} resolved problem | Show {count} resolved problems",
   "hideResolvedProblems": "Hide resolved problems",
-  "allTasksDone": "Completed all {count} tasks",
   "remainingTasksCount": "… and {count} more tasks",
   "showAll": "Show all",
   "copied": "Copied",
+  "allUncompletedTasks": "{count} uncompleted tasks",
   "treatmentsTitle": "Treatments",
   "additionalAgreements": "Further agreements",
   "additionalAgreementsPlaceholder": "e.g. “no appointments before 9 a.m.”"
   "formerSymptomsTitle": "Former Signs and Symptoms",
   "showFormerSymptomsButton": "Show {count} former sign and symptom | Show {count} former signs and symptoms",
-  "untilDate": "until {date}"
+  "untilDate": "until {date}",
+  "markTaskAsCompleted": "Mark {taskName} as completed",
+  "skip": "Skip {taskName}",
+  "moveTaskGroup": "Postpone {taskName}",
+  "moveTaskGroupIncludingFutureReccurrences": "Postpone {taskName} and their future occurrences"
 }

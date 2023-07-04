@@ -26,7 +26,6 @@
             ref="dateProxy"
             transition-show="scale"
             transition-hide="scale"
-            self="center middle"
           >
             <q-date
               v-model="selectedDateString"
@@ -119,20 +118,17 @@
           </div>
 
           <div
-            v-else-if="taskItem.title != undefined"
-            class="text-subtitle1 text-weight-bold q-pt-lg row items-center"
+            v-else-if="taskItem.title == taskItem.id"
+            class="text-subtitle1 text-weight-bold q-pt-lg row items-center justify-between"
           >
-            <div style="width: 106px">{{ $te(taskItem.title) ? $t(taskItem.title) : $d(new Date(taskItem.title), "TimeSimple") }}</div>
-            <q-btn
-              v-if="taskItem.allTasksCount == undefined && taskItem.allTasksCount != undefined && taskItem.allTasksCount > 1"
-              :label="$t('allTasksDone', taskItem.allTasksCount)"
+            <div class="task-group-title">{{ $te(taskItem.title) ? $t(taskItem.title) : $d(new Date(taskItem.title), "TimeSimple") }}</div>
+            <action-menu
+              v-if="uncompletedInTaskGroup(taskItem.title).length > 1 && taskItem.title != 'anytimeTitle'"
+              :title="titleForTaskGroup(taskItem.title) + ':'"
+              :items="taskGroupMenuItems(taskItem.title)"
+              show-title
               flat
-              rounded
-              no-caps
-              dense
-              color="primary"
-              class="q-px-sm"
-              @click="markTaskGroupAsDone(taskItem.id)"
+              class="q-pl-md"
             />
           </div>
 
@@ -185,6 +181,22 @@
         @click="addIntervention"
       />
     </q-page-sticky>
+
+    <q-popup-proxy
+      no-parent-event
+      ref="moveTaskGroupDateProxy"
+      max-height="99vh"
+      anchor="center middle"
+      self="center middle"
+    >
+      <date-time-popup
+        :model-value="moveTaskGroupDate"
+        :format="$t('datetimeFormat')"
+        :min="new Date(new Date().setHours(0, 0, 0, 0))"
+        color="primary"
+        @update:model-value="moveTaskGroup"
+      />
+    </q-popup-proxy>
   </div>
 </template>
 
@@ -210,6 +222,9 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
   opacity: 0
 .task-list-move
   transition: opacity 1s ease-in-out, transform .3s ease-in-out .7s
+.task-group-title
+  width: 106px
+  line-height: 32px
 .shift-notes
   margin-top: 64px
 </style>
@@ -217,9 +232,11 @@ body.desktop .task-list .q-hoverable:hover > .q-focus-helper
 <script lang="ts">
 import { Component, Ref, Watch, Vue } from "vue-facing-decorator";
 import { date, QPopupProxy } from "quasar";
-import { Task, TaskGroup, Reminder, GroupedTask } from "../models";
+import { Task, TaskGroup, Reminder, GroupedTask, Client, RatingReminder } from "../models";
 import RecordMixin, { RecordMixinInterface } from "../mixins/RecordMixin";
 import TaskView, { UpdateTimeoutMilliseconds } from "components/TaskView.vue";
+import ActionMenu from "components/ActionMenu.vue";
+import DateTimePopup from "components/DateTimePopup.vue";
 import ShiftNotesDayView from "components/ShiftNotesDayView.vue";
 import TimeRecording from "components/TimeRecording.vue";
 
@@ -243,6 +260,8 @@ const limitTasksPerGroup = 20;
 @Component({
   components: {
     TaskView,
+    ActionMenu,
+    DateTimePopup,
     ShiftNotesDayView,
     TimeRecording
   },
@@ -250,11 +269,15 @@ const limitTasksPerGroup = 20;
 })
 class ClientReminders extends Vue {
   @Ref() readonly dateProxy!: QPopupProxy;
+  @Ref() readonly moveTaskGroupDateProxy!: QPopupProxy;
   tasks: GroupedTask[] = [];
   isToday = true;
   startOfTodayTimer = 0;
   endOfTodayTimer = 0;
   visibleTasksPerGroup = {} as Record<string, number>;
+  moveTaskGroupTitle = "";
+  moveTaskGroupDate = new Date();
+  moveTaskGroupMode: "single" | "future" = "single";
 
   @Watch("$route")
   onRouteChange() {
@@ -491,8 +514,120 @@ class ClientReminders extends Vue {
     this.updateTasks();
   }
 
-  markTaskGroupAsDone(groupId: string) {
-    console.log(groupId)
+  uncompletedInTaskGroup(groupTitle: string) {
+    return this.tasks.filter(item => 
+      item.title == groupTitle  // task is part of the desired group
+        && item.task && item.task.due // task is scheduled
+        && !item.task.reminder.isFinished && !item.task.completed // task is uncompleted
+    ).map(item => item.task as Task<Reminder>);
+  }
+
+  titleForTaskGroup(groupTitle: string) {
+    return this.$t("allUncompletedTasks", this.uncompletedInTaskGroup(groupTitle).length)
+  }
+
+  taskGroupMenuItems(groupTitle: string) {
+    const taskName = this.titleForTaskGroup(groupTitle);
+
+    return [
+      {
+        name: this.$t("markTaskAsCompleted", {taskName}),
+        icon: "far fa-square-check",
+        action: () => this.completeTaskGroup(groupTitle),
+        condition: this.canComplete,
+      },
+      {
+        name: this.$t("skip", {taskName}),
+        icon: "redo",
+        action: () => this.skipTaskGroup(groupTitle),
+      },
+      {
+        name: this.$t("moveTaskGroup", {taskName}) + " …",
+        icon: "fas fa-step-forward",
+        action: () => this.showDatePickerForTaskGroup(groupTitle, "single"),
+      },
+      {
+        name: this.$t("moveTaskGroupIncludingFutureReccurrences", {taskName}) + " …",
+        icon: "fas fa-fast-forward",
+        action: () => this.showDatePickerForTaskGroup(groupTitle, "future"),
+        condition: groupTitle != "pastDueTitle",
+      },
+    ]
+  }
+
+  modifyTasksInTaskGroupAndSave(groupTitle: string, method: (task: Task<Reminder>, client: Client) => void) {
+    const client = this.client;
+
+    if (client) {
+      this.uncompletedInTaskGroup(groupTitle).forEach(task => method(task, client));
+      void this.$store.direct.dispatch.saveClient({ client });
+      this.updateTasks();
+    }
+  }
+
+  completeTaskGroup(groupTitle: string) {
+    this.modifyTasksInTaskGroupAndSave(groupTitle, (task, client) => 
+      this.$store.direct.commit.toggleTaskCompletion({task, isCompleted: true, client})
+    );
+  }
+
+  skipTaskGroup(groupTitle: string) {
+    this.modifyTasksInTaskGroupAndSave(groupTitle, (task, client) => {
+      const recurrenceRules = task.reminder.recurrenceRules;
+      const next = task.due ? recurrenceRules?.next(task.due, false) : undefined;
+
+      if (task.due && next) {
+        this.$store.direct.commit.updateReminder({
+          target: task.reminder,
+          changes: {
+            recurrenceRules: recurrenceRules?.movingRules(task.due, next),
+          },
+          updateFrom: task.due,
+        });
+      } else {
+        if (task.reminder instanceof RatingReminder) {
+          this.$store.direct.commit.updateReminder({
+            target: task.reminder,
+            changes: {
+              interval: 0
+            } as Partial<RatingReminder>,
+            updateFrom: task.due,
+          });
+        } else {
+          this.$store.direct.commit.endReminder({ task, client });
+        }
+      }
+    });
+  }
+
+  showDatePickerForTaskGroup(groupTitle: string, mode: typeof this.moveTaskGroupMode) {
+    this.moveTaskGroupTitle = groupTitle;
+    this.moveTaskGroupDate = groupTitle == "pastDueTitle"
+      ? this.selectedDate
+      : this.uncompletedInTaskGroup(groupTitle).at(0)?.due || this.selectedDate
+    this.moveTaskGroupMode = mode;
+    this.moveTaskGroupDateProxy.show();
+  }
+
+  moveTaskGroup(date: Date) {
+    if (!this.moveTaskGroupTitle || !this.moveTaskGroupMode) {
+      return;
+    }
+
+    this.modifyTasksInTaskGroupAndSave(this.moveTaskGroupTitle, task => {
+      if (task.due) {
+        const recurrenceRules = task.reminder.recurrenceRules?.movingRules(
+          task.due,
+          date,
+          this.moveTaskGroupMode == "single"
+        );
+        this.$store.direct.commit.updateReminder({
+          target: task.reminder,
+          changes: { recurrenceRules },
+          updateFrom: task.due,
+        });
+      }
+    })
   }
 
   created() {
