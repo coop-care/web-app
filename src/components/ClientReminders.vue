@@ -30,7 +30,7 @@
             <q-date
               v-model="selectedDateString"
               @update:model-value="dateProxy.hide()"
-              :events="[]"
+              :events="datePickerEvents"
               color="primary"
               event-color="primary"
               mask="YYYY-MM-DD"
@@ -325,6 +325,34 @@ class ClientReminders extends Vue {
       this.client?._id?.toHexString() || "no-client-id", 
       this.$route.params.day || "today"
     ].join(".");
+  }
+  get daysWithOccurrences() {
+    const events = new Set<string>();
+    // performance is typically fast (< 1 ms), but could be slow for many occurrences
+    this.client?.forAllReminders(reminder => 
+      reminder.occurrences.forEach(occurence => 
+        events.add(occurence.due.toISOString().slice(0, 10).replace(/-/g, "/"))
+      )
+    );
+    return events;
+  }
+  // one year in advance starting tomorrow
+  get futureEvents() {
+    // ToDo: test and improve performance – typically slow (> 1s), when there is a substantial number of rules and recurrences
+    // ideas: 1. precalculate events in worker initially and when reminders and recurrence rules change
+    //        2. cache results and update cache when reminders or current date changes
+    //        2. optimize calculation? calculate recurrences by using WebAssembly?
+    const start = endOfDate(new Date(), "day", false);
+    const end = addToDate(start, { years: 1 });
+    const events = new Set<string>();
+    this.client?.forActiveReminders(reminder => {
+      reminder.recurrenceRules?.between(start, end, true)
+        .forEach(date => events.add(date.toISOString().slice(0, 10).replace(/-/g, "/")))
+    });
+    return events;
+  }
+  get datePickerEvents() {
+    return [...this.daysWithOccurrences, ...this.futureEvents];
   }
 
   updatedIsToday() {
