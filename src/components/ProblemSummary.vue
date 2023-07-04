@@ -254,47 +254,46 @@
             class="on-right shadow-1 bg-white"
           />
         </div>
-        <ul
-          v-if="interventions.length"
-          class="q-ma-none"
-        >
-          <li
+        <q-list v-if="interventions.length">
+          <q-item
             v-for="(intervention, index) in interventions"
             :key="index"
-            class="no-column-break"
+            class="q-px-none q-pt-none q-pb-xs dense-avatar auto-height"
           >
-            <div class="row items-center">
-              <div>
-                <div>
-                  <q-icon 
-                    v-if="intervention.category.icon"
-                    :name="$t(intervention.category.icon)"
-                    style="margin-right: .4rem"
-                    color="grey-7"
-                  />{{
-                    [intervention.category.title, intervention.target.title]
-                      .filter(title => title)
-                      .map(title => $t(title))
-                      .join(": ") || ""
-                  }}
-                </div>
-                <div class="text-weight-bold">
-                  {{ intervention.details || $t("newIntervention") }}
-                </div>
-              </div>
-              <div class="q-ml-sm">
-                <q-btn
-                  :title="$t('editIntervention')"
-                  icon="edit"
-                  color="intervention"
-                  round
-                  flat
-                  @click="$router.push({params: {...this.$route.params, ...params, interventionId: intervention.id, sheet: 'editIntervention'}})"
-                />
-              </div>
-            </div>
-          </li>
-        </ul>
+            <q-item-section 
+              avatar 
+              class="q-pr-xs"
+              style="justify-content: flex-start"
+            >
+              <q-btn
+                :title="$t('editIntervention')"
+                icon="edit"
+                color="intervention"
+                round
+                flat
+                @click="$router.push({params: {...this.$route.params, ...params, interventionId: intervention.id, sheet: 'editIntervention'}})"
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-caption">
+                <q-icon 
+                  v-if="intervention.category.icon"
+                  :name="$t(intervention.category.icon)"
+                  style="margin-right: .4rem"
+                  color="grey-7"
+                />{{
+                  [intervention.category.title, intervention.target.title]
+                    .filter(title => title)
+                    .map(title => $t(title))
+                    .join(": ") || ""
+                }}
+              </q-item-label>
+              <q-item-label class="text-weight-bold">
+                {{ intervention.details || $t("newIntervention") }}
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
         <div
           v-else
           class="text-italic"
