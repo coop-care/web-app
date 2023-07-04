@@ -24,8 +24,8 @@
         >
           <q-popup-proxy
             ref="dateProxy"
-            transition-show="scale"
-            transition-hide="scale"
+            transition-show="jump-down"
+            transition-hide="jump-up"
           >
             <q-date
               v-model="selectedDateString"
@@ -336,14 +336,15 @@ class ClientReminders extends Vue {
     );
     return events;
   }
-  // one year in advance starting tomorrow
+  // two months in advance starting tomorrow
   get futureEvents() {
     // ToDo: test and improve performance – typically slow (> 1s), when there is a substantial number of rules and recurrences
     // ideas: 1. precalculate events in worker initially and when reminders and recurrence rules change
     //        2. cache results and update cache when reminders or current date changes
-    //        2. optimize calculation? calculate recurrences by using WebAssembly?
+    //        3. optimize calculation? calculate recurrences by using WebAssembly?
+    //        4. extend calculation in advance when some of these techniques where successfully implemented
     const start = endOfDate(new Date(), "day", false);
-    const end = addToDate(start, { years: 1 });
+    const end = addToDate(start, { months: 2 });
     const events = new Set<string>();
     this.client?.forActiveReminders(reminder => {
       reminder.recurrenceRules?.between(start, end, true)
@@ -551,7 +552,13 @@ class ClientReminders extends Vue {
   }
 
   titleForTaskGroup(groupTitle: string) {
-    return this.$t("allUncompletedTasks", this.uncompletedInTaskGroup(groupTitle).length)
+    const numberOfTasksInGroup = this.tasks.filter(item => 
+      item.title == groupTitle  // task is part of the desired group
+        && item.task && item.task.due // task is scheduled
+    ).length;
+    const numberOfUncompletedTasksInGroup = this.uncompletedInTaskGroup(groupTitle).length;
+    const hasCompletedTasks = numberOfUncompletedTasksInGroup < numberOfTasksInGroup;
+    return this.$t(hasCompletedTasks ? "allUncompletedTasks" : "allTasks", numberOfUncompletedTasksInGroup)
   }
 
   taskGroupMenuItems(groupTitle: string) {
