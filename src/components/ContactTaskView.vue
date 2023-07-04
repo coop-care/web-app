@@ -25,7 +25,13 @@
         />
       </div>
       <div class="col">
-        <q-item-label caption>{{ description }}</q-item-label>
+        <q-item-label caption>
+          <q-icon 
+            v-if="!intervention.arrangedIntervention && intervention.category.icon"
+            :name="$t(intervention.category.icon)"
+            class="q-mr-xs"
+          />{{ description }}
+        </q-item-label>
         <q-item-label :class="[title ? '' : 'text-italic']">{{ title || $t("notSpecified") }}</q-item-label>
       </div>
       <div

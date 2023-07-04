@@ -45,7 +45,14 @@
             class="vertical-top"
           >
             <td class="text-right">{{ task.count }}</td>
-            <td>{{ task.description }}</td>
+            <td>
+              <q-icon 
+                v-if="task.categoryIcon"
+                :name="task.categoryIcon"
+                class="q-mr-xs"
+                color="grey-9"
+              />{{ task.description }}
+            </td>
             <td>{{ task.title }}</td>
             <td>
               <ol class="no-bullet column-2-sm">
@@ -107,6 +114,7 @@ class ProofOfPerformancePage extends Vue {
     const tasks: {
       id: string;
       title: string;
+      categoryIcon: string;
       description: string;
       count: number;
       dates: string[];
@@ -143,13 +151,17 @@ class ProofOfPerformancePage extends Vue {
               this.$d(item.completed || 0, "TimeSimple") +
               (signature ? " (" + signature + ")" : "");
         });
+        const categoryIcon = reminder instanceof Intervention && reminder.category?.icon
+          ? this.$t(reminder.category.icon)
+          : "";
 
         tasks.push({
           id: reminder.id,
-          title: title,
+          title,
+          categoryIcon,
           description: this.interventionDescription(reminder),
           count: completed.length || 1,
-          dates: dates,
+          dates,
         });
       }
     });

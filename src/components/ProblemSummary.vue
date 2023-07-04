@@ -266,7 +266,12 @@
             <div class="row items-center">
               <div>
                 <div>
-                  {{
+                  <q-icon 
+                    v-if="intervention.category.icon"
+                    :name="$t(intervention.category.icon)"
+                    style="margin-right: .4rem"
+                    color="grey-7"
+                  />{{
                     [intervention.category.title, intervention.target.title]
                       .filter(title => title)
                       .map(title => $t(title))

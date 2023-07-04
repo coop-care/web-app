@@ -27,19 +27,20 @@
         class="task-signature"
       />
     </q-item-section>
-    <q-item-section
-      side
-      class="q-pr-sm"
-    >
-      <div :class="'task-type bg-' + color"></div>
-    </q-item-section>
     <q-item-section>
       <q-item-label
         caption
-        v-if="description"
         lines="1"
+        class="row items-center"
+        style="overflow: initial"
       >
-        {{ description }}
+        <q-icon 
+          v-if="descriptionIcon"
+          :name="descriptionIcon"
+          class="q-mr-xs"
+          :color="color"
+        />
+        <div class="col one-line">{{ description }}</div>
       </q-item-label>
       <q-item-label
         :class="[task.isDue ? 'text-negative' : '']"
@@ -84,9 +85,7 @@
     </q-item-section>
     <q-item-section
       side
-      v-if="
-        !disabled && reminderActionItems.filter(item => item.condition).length
-      "
+      v-if="!disabled && reminderActionItems.filter(item => item.condition).length"
     >
       <action-menu
         :items="reminderActionItems"
@@ -241,8 +240,7 @@ class TaskView extends Vue {
         return [prefix, details + suffix].filter(Boolean).join(": ");
       }
     } else if (this.reminder instanceof RatingReminder) {
-      return this.$t("interimRating") + " " + 
-        this.$t("forProblem", {problem: this.problemName});
+      return this.$t("interimRating");
     } else {
       return this.$t("notSpecified");
     }
@@ -254,9 +252,18 @@ class TaskView extends Vue {
       return undefined;
     }
   }
+  get descriptionIcon() {
+    if (this.reminder instanceof Intervention && this.reminder.category.icon) {
+      return this.$t(this.reminder.category.icon);
+    } else {
+      return "fas fa-circle"
+    }
+  }
   get description() {
     if (this.reminder instanceof Intervention) {
       return this.interventionDescription(this.reminder);
+    } else if (this.reminder instanceof RatingReminder) {
+      return this.$t("selectedProblem", {problem: this.problemName});
     } else {
       return "";
     }
