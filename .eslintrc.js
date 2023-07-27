@@ -98,6 +98,8 @@ module.exports = {
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-unsafe-declaration-merging": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
     "vue/no-use-v-if-with-v-for": "off",
 
     // allow debugger during development only

@@ -27,7 +27,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.4",
+    "@quasar/extras": "^1.16.5",
     "argon2-browser": "^1.18.0",
     "bson": "^4.7.2",
     "chart.js": "^4.2.1",
@@ -44,7 +44,7 @@
     "localized-countries": "^2.0.0",
     "luxon": "^3.2.1",
     "mongodb-stitch-browser-sdk": "^4.8.0",
-    "quasar": "^2.12.1",
+    "quasar": "^2.12.3",
     "realm-web": "1.7",
     "reflect-metadata": "^0.1.13",
     "rrule": "^2.7.2",
@@ -62,8 +62,8 @@
     "@types/argon2-browser": "^1.18.1",
     "@types/luxon": "^3.2.0",
     "@types/node": "^20.1.0",
-    "@typescript-eslint/eslint-plugin": "^5.10.0",
-    "@typescript-eslint/parser": "^5.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.1.0",
+    "@typescript-eslint/parser": "^6.1.0",
     "apk-update": "^1.0.3",
     "base64-loader": "^1.0.0",
     "dotenv": "^16.0.3",
@@ -74,7 +74,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",
     "license-webpack-plugin": "^4.0.2",
-    "prettier": "^2.5.1"
+    "prettier": "^3.0.0"
   },
   "browserslist": [
     "last 10 Chrome versions",
