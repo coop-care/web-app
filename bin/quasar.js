@@ -236,7 +236,7 @@ exitOnError(() => {
     }
 
     if (isWeb) {
-      runCommand("rm dist/spa/*.sln");
+      runCommand("rm dist/spa/*.jsonc");
     }
 
     if (product == "all" && !!env.CLEAR_DOWNLOAD_DIRECTORY) {

@@ -790,7 +790,7 @@
   "allTasks": "{count} tasks",
   "treatmentsTitle": "Treatments",
   "additionalAgreements": "Further agreements",
-  "additionalAgreementsPlaceholder": "e.g. “no appointments before 9 a.m.”"
+  "additionalAgreementsPlaceholder": "e.g. “no appointments before 9 a.m.”",
   "formerSymptomsTitle": "Former Signs and Symptoms",
   "showFormerSymptomsButton": "Show {count} former sign and symptom | Show {count} former signs and symptoms",
   "untilDate": "until {date}",

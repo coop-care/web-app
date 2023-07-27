@@ -45,5 +45,6 @@ yarn-error.log*
 /stitch/hosting/files
 /public/icons
 /public/favicon.ico
+/public/*.jsonc
 /license-templates
 *.pem
