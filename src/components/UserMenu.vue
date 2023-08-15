@@ -73,6 +73,24 @@
 
         <div v-if="isDev">
           <q-separator />
+          <q-item
+            clickable
+            v-close-popup
+            tag="label"
+          >
+            <q-item-section side>
+              <q-icon name="fas fa-file-arrow-up" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label>{{ "Import Backup" }}</q-item-label>
+            </q-item-section>
+            <input
+              type="file" 
+              accept=".coopcare"
+              class="hidden"
+              @change="importBackup"
+            />
+          </q-item>
           <q-item clickable>
             <q-item-section side>
               <q-icon name="fas fa-tools" />
@@ -109,6 +127,8 @@ import { Vue, Component } from "vue-facing-decorator";
 import LanguageMenu from "./LanguageMenu.vue";
 import DevMenu from "./DevMenu.vue";
 import { downloadJSON } from "src/helper/download";
+import { plainToInstance } from "class-transformer";
+import { Client } from "src/models";
 
 @Component({
   components: {
@@ -143,6 +163,16 @@ export default class UserMenu extends Vue {
       },
       "Backup_" + (user || "").replace(/ /g, "") + "_" + (new Date()).toISOString().substring(0, 19).replace(/\D/g, "") + ".coopcare"
     );
+  }
+  async importBackup(event: Event) {
+    const file = (event.target as HTMLInputElement)?.files?.[0];
+
+    if (file) {
+      const fileContent = await file.text();
+      const json = JSON.parse(fileContent);
+      const clients = plainToInstance<Client, Client[]>(Client, json.clients);
+      clients.forEach(client => this.$store.direct.dispatch.addClient(client));
+    }
   }
 }
 </script>
