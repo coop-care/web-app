@@ -20,9 +20,6 @@
   </div>
 </template>
 
-<style lang="sass">
-</style>
-
 <script lang="ts">
 import Auth from "src/components/Auth.vue";
 import LanguageMenu from "src/components/LanguageMenu.vue";

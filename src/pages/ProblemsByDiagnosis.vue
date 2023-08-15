@@ -84,9 +84,6 @@
         </q-stepper-navigation>
       </template>
     </q-stepper>
-    <div class="text-caption text-center q-px-lg q-pb-md">
-      {{ $t("omahaSystemBookCopyrightNotice") }} <q-markdown :src="$t('omahaSystemBookReference')" />
-    </div>
   </q-page>
 </template>
 

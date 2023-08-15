@@ -126,10 +126,10 @@ import {
   HasTitleDescription,
   TerminologyWithMaps,
   treeifyTerminology,
-  UsersGuide,
 } from "../helper/terminology";
 import { Problem, Symptom } from "../models/problem";
 import TextWithTooltip from "./TextWithTooltip.vue";
+import { severityModifierExamples } from "src/models/guideline";
 
 interface ProblemClassification extends WarningMixinInterface {};
 
@@ -280,9 +280,7 @@ class ProblemClassification extends Vue {
     ];
   }
   get severityModifierExample() {
-    const usersGuide = (this.$tm("usersGuide") as unknown) as UsersGuide;
-    const usersGuideForProblem = usersGuide[this.problem.code || ""];
-    const examples = usersGuideForProblem?.severityModifierExamples || [];
+    const examples = severityModifierExamples(this.$store.direct.state.guidelines, this.problem.code);
     return examples[this.severity];
   }
 

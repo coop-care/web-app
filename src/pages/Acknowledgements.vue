@@ -15,120 +15,25 @@
         class="q-mb-md" 
         :src="$t('acknowledgementsOmahaSystemReference') + ' ' + $t('omahaSystemBookReference')"
       />
-      <div v-if="hasDiagnosisNames || hasUsersGuide">
-        <div>{{ $t("acknowledgementsOmahaSystemCopyrights") }}</div>
-        <ul class="q-my-xs">
-          <li v-if="hasUsersGuide">{{ $t("acknowledgementsOmahaSystemUsersGuide") }}</li>
-          <li v-if="hasDiagnosisNames">{{ $t("acknowledgementsOmahaSystemDiagnoses") }}</li>
-        </ul>
-        <q-markdown :src="$t('omahaSystemBookCopyrightNotice') + ' ' + $t('omahaSystemBookReference')" />
-      </div>
+      <div v-if="guidelineItems.length > 0">{{ $t("acknowledgementsOmahaSystemDependencies") }}</div>
+      <acknowledgement-dependency
+        v-for="(item, index) in guidelineItems"
+        :key="index"
+        group="omahasystemguidelines"
+        :item="item"
+      />
     </div>
     <div class="text-body2">
       <div class="text-h5 text-weight-medium q-mb-sm">{{ $t("ossComponents") }}</div>
       <div class="q-mb-md">{{ $t("acknowledgementsOpenSourceIntro", {count: ossLicenses.length}) }}</div>
     </div>
     <div class="q-mb-xl">
-      <q-expansion-item
-        v-for="(item, index) in ossLicenses"
+      <acknowledgement-dependency
+        v-for="(item, index) in ossItems"
         :key="index"
-        :label="item.name"
-        :caption="typeof item.author == 'string' ? item.author : JSON.stringify(item.author)"
         group="oss-licenses"
-        class="oss-component"
-        header-class="q-px-xs"
-        expand-icon-class="text-primary"
-        ref="expansionItems"
-      >
-        <template v-slot:header>
-          <q-item-section avatar class="q-pr-xs" style="min-width: inherit">
-            <q-btn
-              icon="fab fa-github"
-              round
-              flat
-              color="primary"
-              :title="$t('externalRepositoryHint', {url: item.repository})"
-              :href="item.repository"
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              @click.stop
-            />
-          </q-item-section>
-          <q-item-section class="items-start">
-            <q-item-label
-              lines="1"
-            >
-              <q-btn
-                v-if="item.homepage"
-                :label="item.name"
-                flat
-                no-caps
-                no-wrap
-                dense
-                rounded
-                color="primary"
-                padding="2px 8px 2px 0"
-                class="line-height-10"
-                :title="$t('externalWebsiteHint', {url: item.homepage})"
-                :href="item.homepage"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                @click.stop
-              />
-              <span v-else class="text-weight-medium line-height-10">{{ item.name }}</span>
-            </q-item-label>
-            <q-item-label
-              caption
-              lines="1"
-            >
-              {{ item.author.name }}
-              <q-btn
-                v-if="item.author.email"
-                :label="$t('email')"
-                rounded
-                flat
-                no-caps
-                no-wrap
-                dense
-                size="0.75rem"
-                color="primary"
-                padding="2px 6px"
-                class="line-height-10"
-                :title="$t('mailtoHint', {address: item.author.email})"
-                :href="'mailto:' + item.author.email"
-                rel="noopener noreferrer nofollow"
-                @click.stop
-              />
-              <q-btn
-                v-if="item.author.url"
-                :label="$t('websiteShortTitle')"
-                rounded
-                flat
-                no-caps
-                no-wrap
-                dense
-                size="0.75rem"
-                color="primary"
-                padding="2px 6px"
-                class="line-height-10"
-                :title="$t('externalWebsiteHint', {url: item.author.url})"
-                :href="item.author.url"
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                @click.stop
-              />
-            </q-item-label>
-          </q-item-section>
-          <q-item-section side style="max-width: 35%">
-            <q-item-label lines="1">{{ item.license }}</q-item-label>
-            <q-item-label
-              caption
-              lines="1"
-            >{{ $t("license") }}</q-item-label>
-          </q-item-section>
-        </template>
-        <div class="text-body2 q-px-md q-pt-xs q-pb-xl" style="white-space: pre-wrap">{{ item.licenseText }}</div>
-      </q-expansion-item>
+        :item="item"
+      />
     </div>
   </q-page>
 </template>
@@ -137,11 +42,17 @@
 .readable-line-length
   max-width: 800px
   margin: 0 auto
+.no-margin
+  margin: 0 !important
 </style>
 
 <script lang="ts">
 import { Vue, Component } from "vue-facing-decorator";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
+import AcknowledgementDependency, { FormattedDependency } from "components/AcknowledgementDependency.vue";
+import { Guideline } from "src/models/guideline";
+import { TerminologyWithMaps } from "src/helper/terminology";
+import { locale } from "src/boot/i18n";
 
 type OSSDependency = {
   author: {
@@ -158,18 +69,169 @@ type OSSDependency = {
 
 @Component({
   components: {
-    SimplifiedMarkdown
+    SimplifiedMarkdown,
+    AcknowledgementDependency
   }
 })
 export default class AcknowledgementsPage extends Vue {
   ossLicenses: OSSDependency[] = [];
 
-  get hasDiagnosisNames() {
-    return Object.keys(this.$tm("diagnosisNames")).length > 0;
+  get guidelines() {
+    return Object.values(this.$store.direct.state.guidelines)
+      .concat(this.diagnosisDependency);
   }
-  get hasUsersGuide() {
-    const keys = Object.keys(this.$tm("usersGuide"));
-    return keys.length > 1 || keys[0] != "50";
+  get diagnosisDependency() {
+    if (Object.keys(this.$tm("diagnosisNames")).length > 0) {
+      if (locale.value == "de-DE" ) {
+        return {
+          "schema": 1,
+          "id": "",
+          "locale": "",
+          "versionDate": new Date(),
+          "title": "Probleme der Klienten, die häufig mit ausgewählten Erkrankungen, medizinischen Diagnosen und Behandlungen einhergehen (Appendix C)",
+          "description": "",
+          "copyright": "Kein Teil dieser Veröffentlichung darf ohne schriftliche Genehmigung des Herausgebers Health Connection Press in irgendeiner Form oder mit irgendwelchen Mitteln, elektronisch oder mechanisch, einschließlich Fotokopien, Aufzeichnungen oder Informationsspeicher- und -abrufsystemen, vervielfältigt oder übertragen werden.",
+          "url": "http://www.healthconnectionspress.com",
+          "population": "",
+          "diseasesOrCondition": "",
+          "practiceSetting": "",
+          "levelsOfPractice": "",
+          "revisionDate": undefined,
+          "encodedDate": undefined,
+          "encodedBy": "Karen S. Martin",
+          "translatedBy": "Michael Kamphausen",
+          "contributors": "",
+          "organizations": "",
+          "sources": "Mit Genehmigung reproduziert und übersetzt: \n    Martin KS. (2005). \n    The Omaha System: A Key to Practice, Documentation, and Information Management (Reprinted 2nd ed.). \n    Omaha, NE: Health Connections Press.",
+          "problems": {}
+        };
+      } else {
+        return {
+          "schema": 1,
+          "id": "",
+          "locale": "",
+          "versionDate": new Date(),
+          "title": "Client Problems Frequently Associated with Selected Conditions, Medical Diagnoses, and Treatments (Appendix C)",
+          "description": "",
+          "copyright": "No part of this publication may be reproduced or transmitted in any form or by any means, electronic or mechanical, including photocopying, recording, or any information storage and retrieval system, without permission in writing from the publisher, Health Connection Press.",
+          "url": "http://www.healthconnectionspress.com",
+          "population": "",
+          "diseasesOrCondition": "",
+          "practiceSetting": "",
+          "levelsOfPractice": "",
+          "revisionDate": undefined,
+          "encodedDate": undefined,
+          "encodedBy": "Karen S. Martin",
+          "translatedBy": "",
+          "contributors": "",
+          "organizations": "",
+          "sources": "Reprinted and translated with permission: \n    Martin KS. (2005). \n    The Omaha System: A Key to Practice, Documentation, and Information Management (Reprinted 2nd ed.). \n    Omaha, NE: Health Connections Press.",
+          "problems": {}
+        };
+      }
+    } else {
+      return [];
+    }
+  }
+  get guidelineItems(): FormattedDependency[] {
+    return this.guidelines.map(guideline => ({
+      label: guideline.title,
+      caption: guideline.encodedBy,
+      url: guideline.url,
+      license: guideline.copyright
+        ? this.$t("protectedByCopyright")
+        : guideline.license || this.$t("unknownLicense"),
+      licenseCaption: guideline.copyright || !guideline.license
+        ? undefined
+        : this.$t("license"),
+      content: [{
+          label: this.$t("description"),
+          value: guideline.description
+        },{
+          label: this.$t("OmahaSystemProblems"),
+          value: this.affectedProblems(guideline)
+        },{
+          label: this.$t("population"),
+          value: guideline.population
+        },{
+          label: this.$t("diseasesOrCondition"),
+          value: guideline.diseasesOrCondition
+        },{
+          label: this.$t("practiceSetting"),
+          value: guideline.practiceSetting
+        },{
+          label: this.$t("levelsOfPractice"),
+          value: guideline.levelsOfPractice
+        },{
+          label: this.$t("guidelineRevisionDate"),
+          value: guideline.revisionDate?.constructor.name == "Date"
+            ? this.$d(guideline.revisionDate, "DateShort")
+            : undefined
+        },{
+          label: this.$t("encodedBy"),
+          value: guideline.encodedBy
+        },{
+          label: this.$t("encodedDate"),
+          value: guideline.encodedDate?.constructor.name == "Date"
+            ? this.$d(guideline.encodedDate, "DateShort")
+            : undefined
+        },{
+          label: this.$t("contributors"),
+          value: guideline.contributors?.replace(/\n/g, "")
+        },{
+          label: this.$t("organizations"),
+          value: guideline.organizations
+        },{
+          label: this.$t("sources"),
+          value: guideline.sources
+        },{
+          label: this.$t("translation"),
+          value: guideline.translatedBy
+        },{
+          label: this.$t("translationDate"),
+          value: guideline.translationDate?.constructor.name == "Date" 
+            ? this.$d(guideline.translationDate, "DateShort")
+            : undefined
+        },{
+          label: this.$t("copyright"),
+          value: guideline.copyright
+        },{
+          label: this.$t("license"),
+          value: guideline.licenseText
+        }]
+        .filter(item => !!item.value)
+    }))
+  }
+  get ossItems() {
+    return this.ossLicenses.map(item => ({
+      label: item.name,
+      caption: item.author.name,
+      url: item.homepage,
+      repository: item.repository,
+      captionEmail: item.author.email,
+      captionUrl: item.author.url,
+      license: item.license,
+      licenseCaption: this.$t("license"),
+      content: [{
+        label: this.$t("license"),
+        value: item.licenseText
+      }],
+    }))
+  }
+  get terminology() {
+    return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
+  }
+
+  affectedProblems(guideline: Guideline) {
+    const problemCodes = Object.keys(guideline.problems);
+
+    if (problemCodes.length < 42) {
+      return problemCodes
+        .map(code => this.terminology.problemByCode[code]?.title)
+        .join(", ");
+    } else {
+      return this.$t("all");
+    }
   }
 
   async fetchLicenses() {

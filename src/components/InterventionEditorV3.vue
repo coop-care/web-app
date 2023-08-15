@@ -100,12 +100,12 @@
 import { Component, Prop, Ref, Vue, Model } from "vue-facing-decorator";
 import WarningMixin, { WarningMixinInterface } from "../mixins/WarningMixin";
 import { QInput } from "quasar";
-import { UsersGuide } from "../helper/terminology";
 import { Intervention } from "../models";
 import InterventionCategorySelect from "../components/InterventionCategorySelect.vue";
 import InterventionTargetSelect from "../components/InterventionTargetSelect.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
 import FilterableMenu from "../components/FilterableMenu.vue";
+import { interventionSuggestions } from "src/models/guideline";
 
 interface InterventionEditor extends WarningMixinInterface {};
 
@@ -178,9 +178,8 @@ class InterventionEditor extends Vue {
     this.updateIntervention({ recurrenceRules: value });
   }
   get suggestedDetails() {
-    if (this.categoryCode && this.targetCode && this.usersGuideForProblem) {
-      const intervention = this.usersGuideForProblem.interventionSuggestions;
-      const category = intervention[this.categoryCode] || {};
+    if (this.categoryCode && this.targetCode) {
+      const category = this.interventionSuggestions?.[this.categoryCode] || {};
       const details = category[this.targetCode] || {};
 
       return Object.entries(details).flatMap(([value, label]) => !!label ? [{label, value}] : []);
@@ -188,8 +187,8 @@ class InterventionEditor extends Vue {
       return [];
     }
   }
-  get usersGuideForProblem() {
-    return ((this.$tm("usersGuide") as unknown) as UsersGuide)[this.problemCode || ""];
+  get interventionSuggestions() {
+    return interventionSuggestions(this.$store.direct.state.guidelines, this.problemCode);
   }
 
   navigateDetailsMenu(event: KeyboardEvent) {

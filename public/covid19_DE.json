@@ -1,254 +1,277 @@
 {
-  "50": {
-    "interventionSuggestions": {
-      "01": {
-        "11": {
-          "01": "Ängste in der Nachbarschaft ansprechen",
-          "02": "Strategien zur Bewältigung von Trauer und Verlust",
-          "03": "Psychische Gesundheit des Patienten und psychosoziale Unterstützung"
-        },
-        "16": {
-          "01": "Kontinuität der Bildung gewährleisten"
-        },
-        "25": {
-          "01": "Schutz der Kinder und Unterstützung eines sicheren Schulbetriebs"
-        },
-        "28": {
-          "01": "Stigmatisierung und Diskriminierung entgegenwirken"
-        },
-        "32": {
-          "01": "Verordnete/empfohlene/freiverkäufliche Medikamente",
-          "02": "Impfungen"
-        },
-        "41": {
-          "01": "Hände regelmäßig und gründlich mit Wasser und Seife oder einem Handdesinfektionsmittel auf 60%iger Alkoholbasis waschen"
-        },
-        "46": {
-          "01": "Reaktion der Arbeitgeber"
-        },
-        "48": {
-          "01": "Umgang mit Patienten mit COVID-19 in der Nachbarschaft",
-          "02": "Auf einen Anstieg der Patientenzahlen vorbereiten",
-          "03": "Schulung von Gesundheitspersonal oder Meldestellen",
-          "04": "Kranken Haushaltsmitgliedern ein eigenes Zimmer geben und sie von nur einem Mitglied betreuen lassen",
-          "05": "Persönliche Reaktion von erkrankten Mitbürgern"
-        },
-        "50": {
-          "01": "Fieber, Husten und Kurzatmigkeit",
-          "02": "wann und wie Anbieter zu benachrichtigen sind"
-        },
-        "54": {
-          "01": "Spiritueller Trost"
-        },
-        "56": {
-          "01": "Werben für gesundheitsfördernde Aktivitäten"
-        },
-        "59": {
-          "01": "Trauer- oder Krisenberatung und unterstützende Hotlines/Dienste"
-        },
-        "60": {
-          "01": "Aufbau formeller und informeller Unterstützungssysteme in der Nachbarschaft"
-        },
-        "62": {
-          "01": "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken"
-        },
-        "66": {
-          "01": "Gefährdete Personen identifizieren und schützen"
-        },
-        "67": {
-          "01": "Wie man Lebensmittel spendet oder bekommt"
-        },
-        "68": {
-          "01": "Symptomlinderung/Palliativmedizin"
-        },
-        "71": {
-          "01": "Verbreitung von Nachrichten in der Öffentlichkeit, Bekämpfung von Fehlinformationen",
-          "02": "Großveranstaltungen anpassen, verschieben oder absagen",
-          "03": "Persönliche Einsatzbereitschaft",
-          "04": "Empfehlungen zur physischen Distanzierung einhalten",
-          "05": "Quarantäne-Richtlinien zur Verhinderung der Ausbreitung",
-          "06": "Übertragungswege und -quellen",
-          "07": "Medizinische Masken",
-          "08": "Verfahren zur Reinigung, Wiederverwendung und Verlängerung der Lebensdauer von medizinischem Material und Geräten",
-          "09": "Rituelle Beerdigung oder Einäscherung"
-        },
-        "81": {
-          "01": "Bauchlagerung"
-        },
-        "02": {
-          "01": "in die Armbeuge husten, Berührung des Gesichts vermeiden"
-        }
-      },
-      "02": {
-        "18": {
-          "01": "Oberflächen reinigen und desinfizieren"
-        },
-        "27": {
-          "01": "Grundlegende Dienstleistungen (Unterkunft)"
-        },
-        "31": {
-          "01": "Flüssigkeitshaushalt",
-          "02": "Zusätzliche Sauerstoffzufuhr und Beatmungsunterstützung"
-        },
-        "33": {
-          "01": "Impfungen"
-        },
-        "40": {
-          "01": "Grundlegende Dienstleistungen (Nachschub an Infektionsschutz)"
-        },
-        "41": {
-          "01": "Hände regelmäßig und gründlich mit Wasser und Seife oder einem Handdesinfektionsmittel auf 60%iger Alkoholbasis waschen"
-        },
-        "48": {
-          "01": "Kranken Haushaltsmitgliedern ein eigenes Zimmer geben und sie von nur einem Mitglied betreuen lassen",
-          "02": "Persönliche Reaktion von erkrankten Mitbürgern",
-          "03": "Auf einen Anstieg der Patientenzahlen vorbereiten"
-        },
-        "54": {
-          "01": "Spiritueller Trost"
-        },
-        "58": {
-          "01": "Quarantäne vorbereiten"
-        },
-        "62": {
-          "01": "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken"
-        },
-        "67": {
-          "01": "Grundlegende Dienstleistungen (Ernährung)"
-        },
-        "68": {
-          "01": "Symptomlinderung/Palliativmedizin",
-          "02": "Palliativversorgung gewährleisten "
-        },
-        "71": {
-          "01": "Empfehlungen zur physischen Distanzierung einhalten",
-          "02": "Bei Erkrankung zu Hause bleiben",
-          "03": "Medizinische Masken",
-          "04": "Verfahren zur Reinigung, Wiederverwendung und Verlängerung der Lebensdauer von medizinischem Material und Geräten",
-          "05": "Aerosolerzeugende Verfahren vermeiden",
-          "06": "Unterbringung von Personen in Behandlung",
-          "07": "Transport von Patienten innerhalb von Gesundheitseinrichtungen",
-          "08": "Infektionsschutzmaßnahmen",
-          "09": "Vorsichtsmaßnahmen beim Einsatz von Aerosol-erzeugenden Verfahren treffen "
-        },
-        "73": {
-          "01": "Grundlegende Dienstleistungen (Medikamente)"
-        },
-        "81": {
-          "01": "Bauchlagerung"
+  "schema": 1,
+  "id": "GLCOV",
+  "locale": "de",
+  "versionDate": "2023-07-23T18:00:00.000Z",
+  "title": "COVID-19 Reaktion",
+  "description": "Evidenzbasierte Maßnahmen, die von der Weltgesundheitsorganisation und den United States Centers for Disease Control and Prevention zur Bekämpfung der Covid-19-Pandemie empfohlen werden.",
+  "license": "",
+  "licenseText": "",
+  "url": "https://sites.google.com/view/omahasystemguidelines/covid-19-response",
+  "population": "Alle",
+  "diseasesOrCondition": "Pandemie",
+  "practiceSetting": "Alle",
+  "levelsOfPractice": "Alle",
+  "revisionDate": "2020-11-18T12:00:00.000Z",
+  "encodedDate": "2020-03-12T12:00:00.000Z",
+  "encodedBy": "Karen A. Monsen, PhD, RN, FAMIA, FAAN, Marsha Cole, MSN, RN, LHIT-HP, Ellen Dyer, MN, RN-BC, PHN, Debra Eardley, DNP, RN, APHN-BC, Kristin Erickson, MSN, APHN-BC, RN, R. Clarence Jones, MEd, BA, Tara McLane, BS, Theresa Noonan, BSN, RN, RNC-OB, Emily Robb, RN, PHN, SANE, Norah Savard, BSN, Kate Wood",
+  "translationDate": "2023-07-31T12:00:00.000Z",
+  "translatedBy": "Michael Kamphausen",
+  "contributors": "Aenne Werner, \nAisha Mix, \nAlda Orihuela Castro, \nAlexis Martinson, \nAlicia Ugarte-Delrio, \nAllen Small, \nAllison Railsback, \nAllison Slipka, \nAmanda Bendett, \nAna Machado, \nAngela Kramer, \nAngela Rhum, \nAngelica Alvarez, \nAnita Collins, \nAnita Reger, \nAnnaLisa Aranda, \nAnne Lara, \nAnne Marie Berthe Leveille-Tulce, \nAnthony Weis, \nApril Sommerville, \nAshley Hansen, \nAustin Robin, \nAyşe Dağıstan Akgöz, \nAyşegül Ilgaz, \nAysun Ardic, \nBecca Grieger, \nBecky Tollers, \nBen Kao, \nBeth Wood, \nBethany Thrasher, \nBetsy Jeppesen, \nBetsy Miller, BSN, RN-BC, \nBeverly Dandridge, \nBeverly Larson, \nBostjan Zvanut, \nBrenda Hoffman, \nBrenda Peterson, \nBrene Belew-LaDue, \nBrittany Becker, \nBruce Beauverd, \nCammie Marti, \nCandy Hanson, \nCaren Gaytko, \nCarol Flaten, \nCarol Reynolds, \nCaroline Doolittle, \nCasey Johnson, \nCassie Shaker, \nCatharine Karow, \nCatherine Birr, \nCatherine Vanderboom, \nCathy Schwartz, \nChanda McNeal, \nCharla Smith, \nCharlotte Rardon, \nChee Lien Poh, \nChelcee Schleuger, \nChoo Yian Tay, \nChris Tauer, \nChristie Martin, \nChristina Beach, \nChristine Gadbois, \nCindy Firme, \nCindy Opp, \nClarence Jones, \nClaudia Mitchell, \nColleen Roylance, \nConni DeBlieck, \nConnie Harmsen, \nConnie Johnson, \nCourtney Howatt, \nCrystal Maertens, \nCynthia Becker, \nCynthia Fiester, \nCynthia Wu, \nDaniel Casey, \nDanielle Gratton, \nDarcy DuBois, \nDarcy Ravndal, \nDaryl Canham, \nDavid Hamlar, \nDavid Machles, \nDavis Austria, \nDawnya Mohs, \nDebbie Scott, \nDebby Layne, \nDeborah Washington, \nDebra Eardley, \nDebra Larson, \nDeena Smaniotto, \nDenice Hanson, \nDenise Nelson, \nDerek Moore, \nDesiree LaGrappe, \nDiana Hayungs, \nDiana Noack, \nDiane Adams, \nDiane Forberg, \nDiane Holland, \nDiane Van Os, \nDorcas Kunkel, \nDr. Sandi King, \nEDER ELIAS MALDONADO PALOMINO, \nEdward Mensah, \nEdwina Vinton, \nEileen Weber, \nElfie Gosline, \nElham Ali, \nElizabeth Hainke, \nElizabeth Johnson, \nEllen Dyer, \nEmily Joramo, \nEmily Rebro, \nEmily Robb, \nEmine Aktas, \nErika Lozada Perezmitre, \nErin Greniger, \nFrances Ashe-Goins, \nGary Preston, \nGinny Langham, \nGloria E. Barrera, \nGrace Gao, \nGrainne Smith, \nHaiming Li, \nHarold Neumeier, \nHatice Gegin, \nHeather Kimmel, \nHeather Puente, \nHeidi Nelson, \nHelen Baker, \nHiba Abbas, \nISABEL PINO ARANA, \nIsabelle Bichindaritz, \nJackie Sengthao, \nJacques Boyde Paragas, \nJames Reidy, \nJamie Downs, \nJamie Kimbrell, \nJanelle Jones, \nJanessa Hoban, \nJanet Morrissette, \nJared Shoultz, \nJean Pierce, \nJeana Holt, \nJeanette Miller, \nJeanne Siegel, \nJeanne Siegel APRN, \nJeffrey Lucero, \nJenetta Thomas, \nJeremiah Loh, \nJessica Duffy, \nJessica Fehlen, \nJessica Lechuga, \nJethrone Role, \nJeya Periasamy, \nJie Zhuang, \nJill Hult, \nJodi Lewis, \nJody Lien, \nJohn Burch, \nJoneil Tess, \nJosine Breukink, \nJuell Homco, \nKali Nichols, \nKaren Dunn Lopez, \nKaren Johnson, \nKaren Martin, \nKaren Monsen, \nKari Guida, \nKari Miller, \nKarmen Stephens, \nKate Wood, \nKatherine Goldade, \nKathie Nichols, \nKathryn Frie, \nKathy Burski, \nKathy Klimpel, \nKathy Rumsey, \nKatie Frie, \nKatie Lepak, \nKatie McElroy, \nKay Poulsen, \nKayla Jore, \nKellie Kopischke, \nKelly Adams, \nKelly Krumwiede, \nKelly Robinson, \nKelsey Andrews, \nKelsey Carter, \nKelsey Cordova, \nKimberly Lim, \nKrista Winter, \nKristin Erickson, \nKristine McCoy, \nLachelle Brinks, \nLaura Esbenshade, \nLauren Nunally, \nLauren Schofield, \nLetha Granberry, \nLinda Fleisher, \nLinda Frazier, \nLinda Garner, \nLindsay Rohlik, \nLisa Gilmore, \nLisa Klotzbach, \nLisa Moose, \nLiz Zeno, \nLois Walters-Threat, \nLori Saiki, \nLorie Kmetz, \nLuis Ortega, \nLuzviminda Ronquillo, \nMaggie Wiertzema, \nMakbule Tokur Kesgin, \nManuel Co Jr., \nManuel Montano, \nMarcy Gallagher, \nMargie Washnok, \nmarieke Goris, \nMarilyn Vierthaler, \nMarin Jaszewski, \nMark Lewis, \nMark Webb, \nMarsha Cole, \nMarta McMillion, \nMartha Eastman, \nMartin Michalowski, \nMary Bezdicek, \nMary Doran, \nMary Elaine Southard, \nMary Gannon, \nMary McMahon Bullis, \nMaryelaine Southard, \nMatt Myers, \nMatthew Rodriguez, \nMaureen Spike, \nMelinda Hanson, \nMelissa Saftner, \nMeredith Rush, \nMerve Altiner Yas, \nMerve Yas, \nMeryem Basibuyuk, \nMiad alaskar, \nMichael Kamphausen, \nMichele Burrow, \nMichelle Brown, \nMichelle Ebbers, \nMichelle Janowiec, \nMichelle Spencer, \nMichelle Tellez, \nMilanda Koopman-Houtkamp, \nMin Min Loo, \nMin Zhu, \nMitchell A. Blount, \nModupe Adewuyi, \nMolly Snuggerud, \nMoonju Lee, \nMorgan Skala, \nNancy Acosta, \nNancy Gilbert, \nNancy Pontes, \nNancyruth Leibold, \nNaomi Ervin, \nNatalie Bentzlin, \nnatalie claus, \nNatalie Roy, \nNicole McLain, \nNicole Sowers, \nNishant Jain, \nNkem Chukwueme, \nNorah Savard, \nNoreen Kleinfehn-Wald, \nNorlizza Armas, \nNur Sema Kaynar, \nNurcan Kolaç, \nNurdiansyah Mulyadi, \nNursel Gülyenli, \nOdette Breton, \nOndrej Haba, \nOrange Koh, \nPam Aipperspach, \nPamela Guthman, \nParvin Ali, \nPatricia Huerta, \nPatti Kasper, \nPatti Martin, \nPatty Ludwig, \nPatty Malecek, \nPaula Ptomey, \nPenny Kessler, \nPesha Rubinstein, \nPhyllis Tan, \nPuja Upreti, \nRachel LaFrinier, \nRaeann LeBlanc, \nRandee Greenwald, \nRebecca Burns, \nRebecca Willette, \nRenae Henderson, \nRenee Kinstler, \nRhonda Simmons, \nRivka Atadja, \nRobert Hance, \nROBERT HUACHO, \nRobin Austin, \nRoger Laaksonen, \nRonika Alexander-Parrish, \nRosalia Rosalia, \nRose Schneider, \nRoxann Seepersad, \nRuth ALiaga Sanchez, \nRuth DePalma, \nRuth Ellen Luehr, \nRuth Grubesic, \nSaldi Yusuf, \nSamantha Williams, \nSandra Vélez Ortiz, \nSandy Worrell, \nSarah Bilyj, \nSarah Cooper, \nSarah Lehrke, \nSarah Shuffelton, \nSayda Major, \nScott Randall, \nSebastiana del Rosario Gargantúa Aguila, \nSeda Guney, \nSelda Seçginli, \nŞenay Pehlivan, \nSerebe Abay, \nSerebe Gebrie, \nSerena Bumpus, \nShannon Houser, \nShannon Staton-Growcock, \nShaoling Wang, \nShareen Iqbal, \nSharon Penna, \nShatara Sherwood, \nShelly Mulvaine, \nSheng-Chieh Lu, \nShenita Freeman, \nShirley Brilleaux, \nShirley Schoening Scheuler, \nSierra Cotter, \nSifia Jevne, \nSilvy Leus, \nSonda Oppewal, \nStacy Galles, \nSteph Hoelscher, \nStephanie Sprafka, \nSteve Beekman, \nŞura Kaya, \nSusan Hull, \nSusan Strobel, \nSusan Van Norman, \nSyakinah Rabu, \nTamara Kincaid, \nTamiko Foster, \nTammy Hatch, \nTammy Seifert, \nTanya Friese, \nTara Lott Stephens, \nTara Mclane, \nTari Fitzgerald, \nTawna Mcgregor, \nTaylor Anderson, \nTeresa Garrett-Hill, \nTeresa Messler, \nTeri Nitschke, \nTerra Wiens, \nTheresa Noonan, \nTheresa Remsik Traczek, \nTheresa Schmidt, \nTia Medley, \nTiffany Knight, \nTracy Hall, \nTravis Irvan, \nTrish Wilhite, \nTucker Annis, \nTyler Roenicke, \nValescia John, \nVang Thao, \nVeronica Palustra, \nVictoria Kesler, \nVIVIANA ELIDA MORENO CABELLO, \nWarren Herbert, \nWedad Jendi, \nWei Wei Ong, \nYOUJEONG KANG, \nZachary Page III, \nZhu Xiaojia",
+  "organizations": "Hue-MAN Partnership, \nChamp Software, \nUniversity of Minnesota School of Nursing - Center for Nursing Informatics, \nUniversity of Minnesota Clinical and Translational Science Institute, \nAmerican Medical Informatics Association (AMIA) Nursing Informatics - Work Group, \nAmerican Medical Informatics Association (AMIA) Public Health Informatics -Work Group, \nAmerican Public Health Association (APHA) Public Health Nursing Section, \nAmerican Public Health Association (APHA) HIIT Section, \nAmerican Nursing Informatics Association (ANIA), \nAmerican Nursing Informatics (ANI) Collaboration, \nUniversity of Iowa Center for Nursing Classification and Clinical Effectiveness, \nBlack Nurses Rock, \nTricom, \nUniversity of Minnesota School of Nursing, \nUniversity of Minnesota Institute for Health Informatics, \nMinnesota Barber Board ",
+  "sources": "World Health Organization, United States Centers for Disease Control and Prevention, FEMA\n\nLink zu Quellenangaben (einschließlich Links auf Spanisch): https://docs.google.com/spreadsheets/d/13ryk-ya1KwmQr9sf2baSwwg1msOGRTpbxoJv85NxNu4/edit?usp=sharing",
+  "problems": {
+    "50": {
+      "interventionSuggestions": {
+        "01": {
+          "11": {
+            "01": "Ängste in der Nachbarschaft ansprechen",
+            "02": "Strategien zur Bewältigung von Trauer und Verlust",
+            "03": "Psychische Gesundheit des Patienten und psychosoziale Unterstützung"
+          },
+          "16": {
+            "01": "Kontinuität der Bildung gewährleisten"
+          },
+          "25": {
+            "01": "Schutz der Kinder und Unterstützung eines sicheren Schulbetriebs"
+          },
+          "28": {
+            "01": "Stigmatisierung und Diskriminierung entgegenwirken"
+          },
+          "32": {
+            "01": "Verordnete/empfohlene/freiverkäufliche Medikamente",
+            "02": "Impfungen"
+          },
+          "41": {
+            "01": "Hände regelmäßig und gründlich mit Wasser und Seife oder einem Handdesinfektionsmittel auf 60%iger Alkoholbasis waschen"
+          },
+          "46": {
+            "01": "Reaktion der Arbeitgeber"
+          },
+          "48": {
+            "01": "Umgang mit Patienten mit COVID-19 in der Nachbarschaft",
+            "02": "Auf einen Anstieg der Patientenzahlen vorbereiten",
+            "03": "Schulung von Gesundheitspersonal oder Meldestellen",
+            "04": "Kranken Haushaltsmitgliedern ein eigenes Zimmer geben und sie von nur einem Mitglied betreuen lassen",
+            "05": "Persönliche Reaktion von erkrankten Mitbürgern"
+          },
+          "50": {
+            "01": "Fieber, Husten und Kurzatmigkeit",
+            "02": "wann und wie Anbieter zu benachrichtigen sind"
+          },
+          "54": {
+            "01": "Spiritueller Trost"
+          },
+          "56": {
+            "01": "Werben für gesundheitsfördernde Aktivitäten"
+          },
+          "59": {
+            "01": "Trauer- oder Krisenberatung und unterstützende Hotlines/Dienste"
+          },
+          "60": {
+            "01": "Aufbau formeller und informeller Unterstützungssysteme in der Nachbarschaft"
+          },
+          "62": {
+            "01": "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken"
+          },
+          "66": {
+            "01": "Gefährdete Personen identifizieren und schützen"
+          },
+          "67": {
+            "01": "Wie man Lebensmittel spendet oder bekommt"
+          },
+          "68": {
+            "01": "Symptomlinderung/Palliativmedizin"
+          },
+          "71": {
+            "01": "Verbreitung von Nachrichten in der Öffentlichkeit, Bekämpfung von Fehlinformationen",
+            "02": "Großveranstaltungen anpassen, verschieben oder absagen",
+            "03": "Persönliche Einsatzbereitschaft",
+            "04": "Empfehlungen zur physischen Distanzierung einhalten",
+            "05": "Quarantäne-Richtlinien zur Verhinderung der Ausbreitung",
+            "06": "Übertragungswege und -quellen",
+            "07": "Medizinische Masken",
+            "08": "Verfahren zur Reinigung, Wiederverwendung und Verlängerung der Lebensdauer von medizinischem Material und Geräten",
+            "09": "Rituelle Beerdigung oder Einäscherung"
+          },
+          "81": {
+            "01": "Bauchlagerung"
+          },
+          "02": {
+            "01": "in die Armbeuge husten, Berührung des Gesichts vermeiden"
+          }
         },
         "02": {
-          "01": "in die Armbeuge husten, Berührung des Gesichts vermeiden"
+          "18": {
+            "01": "Oberflächen reinigen und desinfizieren"
+          },
+          "27": {
+            "01": "Grundlegende Dienstleistungen (Unterkunft)"
+          },
+          "31": {
+            "01": "Flüssigkeitshaushalt",
+            "02": "Zusätzliche Sauerstoffzufuhr und Beatmungsunterstützung"
+          },
+          "33": {
+            "01": "Impfungen"
+          },
+          "40": {
+            "01": "Grundlegende Dienstleistungen (Nachschub an Infektionsschutz)"
+          },
+          "41": {
+            "01": "Hände regelmäßig und gründlich mit Wasser und Seife oder einem Handdesinfektionsmittel auf 60%iger Alkoholbasis waschen"
+          },
+          "48": {
+            "01": "Kranken Haushaltsmitgliedern ein eigenes Zimmer geben und sie von nur einem Mitglied betreuen lassen",
+            "02": "Persönliche Reaktion von erkrankten Mitbürgern",
+            "03": "Auf einen Anstieg der Patientenzahlen vorbereiten"
+          },
+          "54": {
+            "01": "Spiritueller Trost"
+          },
+          "58": {
+            "01": "Quarantäne vorbereiten"
+          },
+          "62": {
+            "01": "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken"
+          },
+          "67": {
+            "01": "Grundlegende Dienstleistungen (Ernährung)"
+          },
+          "68": {
+            "01": "Symptomlinderung/Palliativmedizin",
+            "02": "Palliativversorgung gewährleisten "
+          },
+          "71": {
+            "01": "Empfehlungen zur physischen Distanzierung einhalten",
+            "02": "Bei Erkrankung zu Hause bleiben",
+            "03": "Medizinische Masken",
+            "04": "Verfahren zur Reinigung, Wiederverwendung und Verlängerung der Lebensdauer von medizinischem Material und Geräten",
+            "05": "Aerosolerzeugende Verfahren vermeiden",
+            "06": "Unterbringung von Personen in Behandlung",
+            "07": "Transport von Patienten innerhalb von Gesundheitseinrichtungen",
+            "08": "Infektionsschutzmaßnahmen",
+            "09": "Vorsichtsmaßnahmen beim Einsatz von Aerosol-erzeugenden Verfahren treffen "
+          },
+          "73": {
+            "01": "Grundlegende Dienstleistungen (Medikamente)"
+          },
+          "81": {
+            "01": "Bauchlagerung"
+          },
+          "02": {
+            "01": "in die Armbeuge husten, Berührung des Gesichts vermeiden"
+          }
+        },
+        "03": {
+          "10": {
+            "01": "Koordinierung klarer, präziser und rechtzeitiger Mitteilungen"
+          },
+          "16": {
+            "01": "Kontinuität der Bildung gewährleisten"
+          },
+          "27": {
+            "01": "Isolationsplan für obdachlose Einzelpersonen/Familien, die eine Unterkunft benötigen"
+          },
+          "30": {
+            "01": "Plan für den Umgang mit erkrankten Reisenden",
+            "02": "Senkung der Haftanstaltbelegung (z. B. Entlassung von infrage kommenden Gefangenen)"
+          },
+          "31": {
+            "01": "Was bei Krankheit zu tun ist; wann medizinische Hilfe zu suchen ist",
+            "02": "Absage oder Aufschub nicht notwendiger medizinischer Behandlungen",
+            "03": "Standardisierte Pflegeprotokolle"
+          },
+          "40": {
+            "01": "Kleidung, medizinische Maske, Internet, Telefon"
+          },
+          "46": {
+            "01": "Einen Sicherheitsplan für den Haushalt haben",
+            "02": "Beschäftigte in kritischen Infrastrukturen",
+            "03": "Notfallbetriebsplan"
+          },
+          "48": {
+            "01": "Ausnahmeregelung für Besucher in der Akutversorgung zur Begleitung von Personen mit Ausweis"
+          },
+          "50": {
+            "01": "Triage, Verlegung und Entlassung von Patienten"
+          },
+          "53": {
+            "01": "Testzentren"
+          },
+          "54": {
+            "01": "Spiritueller Trost"
+          },
+          "58": {
+            "01": "Ethische Entscheidungsfindung bei der Zuweisung von Ressourcen und Hilfsmitteln"
+          },
+          "67": {
+            "01": "Verteilung von Lebensmitteln"
+          },
+          "68": {
+            "01": "Symptomlinderung/Palliativmedizin"
+          },
+          "71": {
+            "01": "Virtuelle Aktivitäten fördern, z. B. Telemedizin, Teleunterricht, Telefon, Mail, Video",
+            "02": "Großveranstaltungen anpassen, verschieben oder absagen",
+            "03": "Quarantäne vorbereiten",
+            "04": "Medizinische Masken",
+            "05": "Infektionsschutzmaßnahmen beenden",
+            "06": "Patienten entlassen"
+          },
+          "73": {
+            "01": "ACE-Hemmer/AT1-Antagonisten* bei Hochrisikopatienten (*: ACE-Hemmer: Angiotensin-Converting-Enzyme-Hemmer, AT1-Antagonisten: Angiotensin 1-Rezeptorblocker)",
+            "02": "Medikamente",
+            "03": "Antikoagulationstherapie",
+            "04": "Angemessene Verschreibung und Verwendung antimikrobieller Wirkstoffe",
+            "05": "Potenzielle Arzneimittel in der Testphase",
+            "06": "Einnahme bestimmter Medikamente",
+            "07": "Impfungen"
+          }
+        },
+        "04": {
+          "11": {
+            "01": "Bedürfnisse von isolierten und unter Quarantäne stehenden Personen",
+            "02": "Sorge oder Angst vor Quarantäne oder Krankheit"
+          },
+          "27": {
+            "01": "Bedarf an grundlegenden Dienstleistungen (Unterkunft)"
+          },
+          "29": {
+            "01": "Testergebnisse melden",
+            "02": "Berichterstattung über Fälle"
+          },
+          "40": {
+            "01": "Bedarf an grundlegenden Dienstleistungen (Nachschub an Infektionsschutz)"
+          },
+          "41": {
+            "01": "Händewaschen"
+          },
+          "50": {
+            "01": "Fieber, Husten und Kurzatmigkeit "
+          },
+          "62": {
+            "01": "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken",
+            "02": "Gesundheitszustand nach Impfung"
+          },
+          "67": {
+            "01": "Bedarf an grundlegenden Dienstleistungen (Ernährung)"
+          },
+          "71": {
+            "01": "Kontakte von erkrankten Personen ermitteln",
+            "02": "Empfehlungen zur physischen Distanzierung einhalten",
+            "03": "Test auf Erkrankung"
+          },
+          "73": {
+            "01": "Verordnete/empfohlene/freiverkäufliche Medikamente",
+            "02": "Bedarf an grundlegenden Dienstleistungen (Medikamente)"
+          },
+          "02": {
+            "01": "in die Armbeuge husten, Berührung des Gesichts vermeiden"
+          }
         }
       },
-      "03": {
-        "10": {
-          "01": "Koordinierung klarer, präziser und rechtzeitiger Mitteilungen"
-        },
-        "16": {
-          "01": "Kontinuität der Bildung gewährleisten"
-        },
-        "27": {
-          "01": "Isolationsplan für obdachlose Einzelpersonen/Familien, die eine Unterkunft benötigen"
-        },
-        "30": {
-          "01": "Plan für den Umgang mit erkrankten Reisenden",
-          "02": "Senkung der Haftanstaltbelegung (z. B. Entlassung von infrage kommenden Gefangenen)"
-        },
-        "31": {
-          "01": "Was bei Krankheit zu tun ist; wann medizinische Hilfe zu suchen ist",
-          "02": "Absage oder Aufschub nicht notwendiger medizinischer Behandlungen",
-          "03": "Standardisierte Pflegeprotokolle"
-        },
-        "40": {
-          "01": "Kleidung, medizinische Maske, Internet, Telefon"
-        },
-        "46": {
-          "01": "Einen Sicherheitsplan für den Haushalt haben",
-          "02": "Beschäftigte in kritischen Infrastrukturen",
-          "03": "Notfallbetriebsplan"
-        },
-        "48": {
-          "01": "Ausnahmeregelung für Besucher in der Akutversorgung zur Begleitung von Personen mit Ausweis"
-        },
-        "50": {
-          "01": "Triage, Verlegung und Entlassung von Patienten"
-        },
-        "53": {
-          "01": "Testzentren"
-        },
-        "54": {
-          "01": "Spiritueller Trost"
-        },
-        "58": {
-          "01": "Ethische Entscheidungsfindung bei der Zuweisung von Ressourcen und Hilfsmitteln"
-        },
-        "67": {
-          "01": "Verteilung von Lebensmitteln"
-        },
-        "68": {
-          "01": "Symptomlinderung/Palliativmedizin"
-        },
-        "71": {
-          "01": "Virtuelle Aktivitäten fördern, z. B. Telemedizin, Teleunterricht, Telefon, Mail, Video",
-          "02": "Großveranstaltungen anpassen, verschieben oder absagen",
-          "03": "Quarantäne vorbereiten",
-          "04": "Medizinische Masken",
-          "05": "Infektionsschutzmaßnahmen beenden",
-          "06": "Patienten entlassen"
-        },
-        "73": {
-          "01": "ACE-Hemmer/AT1-Antagonisten* bei Hochrisikopatienten (*: ACE-Hemmer: Angiotensin-Converting-Enzyme-Hemmer, AT1-Antagonisten: Angiotensin 1-Rezeptorblocker)",
-          "02": "Medikamente",
-          "03": "Antikoagulationstherapie",
-          "04": "Angemessene Verschreibung und Verwendung antimikrobieller Wirkstoffe",
-          "05": "Potenzielle Arzneimittel in der Testphase",
-          "06": "Einnahme bestimmter Medikamente",
-          "07": "Impfungen"
-        }
-      },
-      "04": {
-        "11": {
-          "01": "Bedürfnisse von isolierten und unter Quarantäne stehenden Personen",
-          "02": "Sorge oder Angst vor Quarantäne oder Krankheit"
-        },
-        "27": {
-          "01": "Bedarf an grundlegenden Dienstleistungen (Unterkunft)"
-        },
-        "29": {
-          "01": "Testergebnisse melden",
-          "02": "Berichterstattung über Fälle"
-        },
-        "40": {
-          "01": "Bedarf an grundlegenden Dienstleistungen (Nachschub an Infektionsschutz)"
-        },
-        "41": {
-          "01": "Händewaschen"
-        },
-        "50": {
-          "01": "Fieber, Husten und Kurzatmigkeit "
-        },
-        "62": {
-          "01": "Zwischenmenschliche Unterstützung; Flüssigkeitszufuhr, Ernährung, Bewegung, Schlaf; Medien einschränken, Substanzkonsum einschränken",
-          "02": "Gesundheitszustand nach Impfung"
-        },
-        "67": {
-          "01": "Bedarf an grundlegenden Dienstleistungen (Ernährung)"
-        },
-        "71": {
-          "01": "Kontakte von erkrankten Personen ermitteln",
-          "02": "Empfehlungen zur physischen Distanzierung einhalten",
-          "03": "Test auf Erkrankung"
-        },
-        "73": {
-          "01": "Verordnete/empfohlene/freiverkäufliche Medikamente",
-          "02": "Bedarf an grundlegenden Dienstleistungen (Medikamente)"
-        },
-        "02": {
-          "01": "in die Armbeuge husten, Berührung des Gesichts vermeiden"
-        }
-      }
-    },
-    "problemRatingScaleExamples": {}
+      "problemRatingScaleExamples": {}
+    }
   }
 }

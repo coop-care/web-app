@@ -107,3 +107,36 @@ export function onLongPress(
     target.removeEventListener("pointerleave", clear)
   }
 }
+
+export function isObject(item: any) {
+  return (item && typeof item === "object" && !Array.isArray(item));
+}
+
+/**
+ * Deep merge two objects.
+ * Mutates the arguments and will lead to infinite recursion on circular references.
+ * Source: https://stackoverflow.com/a/34749873
+ * @param target
+ * @param ...sources
+ * @return object merged from arguments
+ */
+export function mergeDeep<T>(target: any = {}, ...sources: T[]): T {
+  if (!sources.length) {
+    return target;
+  }
+
+  const source = sources.shift();
+
+  if (isObject(target) && isObject(source)) {
+    for (const key in source) {
+      if (isObject(source[key])) {
+        if (!target[key]) Object.assign(target, { [key]: {} });
+        mergeDeep(target[key], source[key]);
+      } else {
+        Object.assign(target, { [key]: source[key] });
+      }
+    }
+  }
+
+  return mergeDeep(target, ...sources);
+}

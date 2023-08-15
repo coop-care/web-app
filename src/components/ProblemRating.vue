@@ -92,8 +92,9 @@ import { date } from "quasar";
 import { Frequency, RatingReminder, Outcome, Rating } from "../models";
 import RatingView from "components/Rating.vue";
 import RevealButton from "components/RevealButton.vue";
-import { Terminology, UsersGuide } from "../helper/terminology";
+import { Terminology } from "../helper/terminology";
 import { selectBehavior } from "src/helper/utils";
+import { problemRatingScaleExamples } from "src/models/guideline";
 
 const { formatDate } = date;
 const ratingTypes = ["knowledge", "behaviour", "status"] as const;
@@ -165,9 +166,7 @@ export default class ProblemRating extends Vue {
     return this.$store.direct.getters.getProblemRecordById(this.$route.params);
   }
   get ratings() {
-    const usersGuide = (this.$tm("usersGuide") as unknown) as UsersGuide;
-    const guideForProblem = usersGuide[this.problemCode || ""];
-    const examples = guideForProblem?.problemRatingScaleExamples.ratings || [];
+    const examples = problemRatingScaleExamples(this.$store.direct.state.guidelines, this.problemCode);
     return this.terminology.problemRatingScale.ratings.map((rating, index) => {
       return {
         title: rating.title,

@@ -8,6 +8,9 @@ Key | Value
 BACKEND | *storage: e.g. `demo` to build app in demo mode with example data and without persistent storage or (default) `local` for local database*
 CSP_URLS | *URLs that need to be exempt from Content-Security-Policy, e.g. to check availability of app updates: `https://*.coopcare.de https://itunes.apple.com/lookup`* 
 VAULTKEY | *string with 32 bytes secret to encrypt local vault*
+TAXONOMY_DB_KEY | *string with 32 bytes secret to encrypt local taxonomy database*
+TAXONOMY_URL | *URL that points to a file that contains URLS of taxonomy files*
+TAXONOMY_DOWNLOAD_KEY | *string with 32 bytes secret to decrypt remote taxonomy files*
 BETA_EXPIRATION | *expiration date in the format `YYYY-MM-DD HH:mm:ss`*
 APP_ID | *app identifier in reverse domain name notation*
 UPDATE_URL | *URL that points to a directory that contains files with update information*

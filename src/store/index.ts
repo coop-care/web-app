@@ -11,6 +11,7 @@ import { Client, User, Team, TeamMember, BackOffice } from "../models";
 import getters from "./getters";
 import mutations from "./mutations";
 import actions from "./actions";
+import { Guideline } from "src/models/guideline";
 
 // import example from './module-example'
 // import { ExampleStateInterface } from './module-example/state';
@@ -34,6 +35,7 @@ export interface StateInterface {
     // ephemeral state:
     isLoadingClientList: boolean;
     redirectPath: string;
+    guidelines: Record< string, Guideline>;
 }
 
 // provide typings for `this.$store`
@@ -66,6 +68,7 @@ const { store, rootActionContext, moduleActionContext } = createDirectStore({
         // ephemeral state:
         isLoadingClientList: false,
         redirectPath: "",
+        guidelines: {},
     } as StateInterface,
     getters,
     mutations,

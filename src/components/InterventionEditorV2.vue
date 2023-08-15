@@ -12,7 +12,7 @@
     <div class="text-subtitle1 counter">
       {{ $t("selectInterventionTarget") }}
     </div>
-    <div v-if="usersGuideForProblem">
+    <div v-if="hasInterventionSuggestions">
       <i18n-t
         keypath="frequentInterventionTargetsForProblem"
         scope="global"
@@ -101,13 +101,13 @@
 import { Vue, Component, Prop, Model } from "vue-facing-decorator";
 import {
   TerminologyWithMaps,
-  UsersGuide,
   sortByTitle
 } from "../helper/terminology";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";
 import SearchableOptionList from "../components/SearchableOptionList.vue";
 import ReminderEditor from "../components/ReminderEditor.vue";
+import { interventionSuggestions } from "src/models/guideline";
 
 @Component({
   components: {
@@ -145,7 +145,7 @@ export default class InterventionEditor extends Vue {
     this.updateIntervention({ recurrenceRules: value });
   }
   get suggestedTargetCodes() {
-    const suggestions = this.usersGuideForProblem?.interventionSuggestions;
+    const suggestions = this.interventionSuggestions;
     const codes: string[] = [];
 
     if (!suggestions) {
@@ -188,19 +188,19 @@ export default class InterventionEditor extends Vue {
       .sort(sortByTitle);
   }
   get suggestedDetails() {
-    if (this.categoryCode && this.targetCode && this.usersGuideForProblem) {
-      const intervention = this.usersGuideForProblem.interventionSuggestions;
-      const category = intervention[this.categoryCode] || {};
+    if (this.categoryCode && this.targetCode) {
+      const category = this.interventionSuggestions?.[this.categoryCode] || {};
       const details = category[this.targetCode] || [];
       return Object.values(details).filter(Boolean);
     } else {
       return [];
     }
   }
-  get usersGuideForProblem() {
-    return ((this.$tm("usersGuide") as unknown) as UsersGuide)[
-      this.record?.problem.code || ""
-    ];
+  get interventionSuggestions() {
+    return interventionSuggestions(this.$store.direct.state.guidelines, this.record?.problem.code);
+  }
+  get hasInterventionSuggestions() {
+    return this.interventionSuggestions != undefined;
   }
   get terminology() {
     return (this.$tm("terminology") as unknown) as TerminologyWithMaps;

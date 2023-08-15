@@ -8,9 +8,6 @@
       :model-value="value"
       @update:model-value="$emit('update:model-value', $event)"
     />
-    <div class="text-caption text-center q-px-lg q-py-md text-grey-6">
-      {{ $t("omahaSystemBookCopyrightNotice") }} <q-markdown :src="$t('omahaSystemBookReference')" />
-    </div>
   </div>
 </template>
 

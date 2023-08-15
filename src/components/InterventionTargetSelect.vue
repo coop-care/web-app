@@ -93,10 +93,11 @@ body.desktop .intervention-target-option.q-manual-focusable--focused > .q-focus-
 <script lang="ts">
 import { Vue, Component, Prop, Ref, Model } from "vue-facing-decorator";
 import { QSelect } from "quasar";
-import { TerminologyWithMaps, UsersGuide, sortByTitle } from "../helper/terminology";
+import { TerminologyWithMaps, sortByTitle } from "../helper/terminology";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import TextWithHighlights from "../components/TextWithHighlights.vue";
 import { selectBehavior } from "src/helper/utils";
+import { interventionSuggestions } from "src/models/guideline";
 
 export type InterventionTargetOption = {
   title: string;
@@ -124,13 +125,9 @@ export default class InterventionTargetSelect extends Vue {
   maxWidth = 300;
 
   get targetOptions() {
-    const suggestions = this.usersGuideForProblem?.interventionSuggestions;
-
-    if (suggestions && this.categoryCode && this.problemTitle) {
+    if (this.interventionSuggestions && this.categoryCode && this.problemTitle) {
       const targetByCode = this.terminology.targetByCode;
-      const suggestedTargetCodes = Object.keys(
-        suggestions[this.categoryCode] || {}
-      );
+      const suggestedTargetCodes = Object.keys(this.interventionSuggestions[this.categoryCode] || {});
       const suggestedTargets: InterventionTargetOption[] = suggestedTargetCodes
         .map((code) => targetByCode[code])
         .sort(sortByTitle)
@@ -164,6 +161,12 @@ export default class InterventionTargetSelect extends Vue {
       return targets as InterventionTargetOption[];
     }
   }
+  get targetOptionsByCode() {
+    return this.targetOptions.reduce((result, current) => {
+      result[current.code || ""] = current;
+      return result;
+    }, {} as Record<string, InterventionTargetOption>)
+  }
   get hint() {
     return this.value
       ? this.$tm("terminology.targetByCode." + this.value + ".description")
@@ -175,8 +178,8 @@ export default class InterventionTargetSelect extends Vue {
   get terminology() {
     return (this.$tm("terminology") as unknown) as TerminologyWithMaps;
   }
-  get usersGuideForProblem() {
-    return ((this.$tm("usersGuide") as unknown) as UsersGuide)[this.problemCode];
+  get interventionSuggestions() {
+    return interventionSuggestions(this.$store.direct.state.guidelines, this.problemCode);
   }
   get problemTitle() {
     return this.problemCode 
@@ -219,9 +222,27 @@ export default class InterventionTargetSelect extends Vue {
     this.maxWidth = (this.select.$el as HTMLElement).offsetWidth
   }
 
+  onDidChangeLocale() {
+    this.filteredOptions = this.filteredOptions.map(item => 
+      this.targetOptionsByCode[item.code || ""]
+    );
+
+    if (this.value && this.targetOptionsByCode[this.value]) {
+      this.select.updateInputValue(this.targetOptionsByCode[this.value].title, true);
+    }
+  }
+
+  created() {
+    this.$bus.on("did-change-locale", this.onDidChangeLocale);
+  }
+
   mounted() {
     this.filteredOptions = this.targetOptions;
     this.maxWidth = (this.select.$el as HTMLElement).offsetWidth;
+  }
+
+  unmounted() {
+    this.$bus.off("did-change-locale", this.onDidChangeLocale);
   }
 }
 </script>

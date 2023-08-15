@@ -59,50 +59,6 @@ export interface TerminologyWithMaps extends Terminology {
     };
 }
 
-export interface UsersGuide {
-    [key: string]: {
-        interventionSuggestions: {
-            [key: string]: {
-                [key: string]: {
-                    [key: string]: string;
-                };
-            };
-        };
-        problemRatingScaleExamples: {
-            ratings: {
-                scale: {
-                    title: string;
-                }[];
-            }[];
-        };
-        severityModifierExamples: string[];
-    };
-}
-
-export interface UsersGuideFromDB {
-    id: string;
-    version: number;
-    locale: string;
-    title: string;
-    description: string;
-    problemCode: string;
-    interventionSuggestions: {
-        [key: string]: {
-            [key: string]: {
-                [key: string]: string;
-            };
-        };
-    };
-    problemRatingScaleExamples: {
-        ratings: {
-            scale: {
-                title: string;
-            }[];
-        }[];
-    };
-    severityModifierExamples: string[];
-}
-
 export function treeifyTerminology(
     list: HasTitleDescriptionCode[],
     key: string

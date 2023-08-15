@@ -18,6 +18,7 @@ import {
     BackOffice
 } from "../models";
 import { instanceToPlain, ClassTransformOptions } from "class-transformer";
+import { Guideline } from "src/models/guideline";
 
 type Updatable<T> = {
     target: T;
@@ -482,5 +483,9 @@ export default defineMutations<StateInterface>()({
                 )
             );
         });
-    }
+    },
+
+    setGuidelines(state, guidelines: Record<string, Guideline>) {
+        state.guidelines = guidelines;
+    },
 });

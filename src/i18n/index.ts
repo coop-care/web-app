@@ -16,7 +16,7 @@ import terminologyDE from "./de-de/terminology.json";
 import countriesDE_DE from "localized-countries/data/de_DE.json";
 (deDE as Record<string, any>).countries = countriesDE_DE;
 
-if (false) {
+if (false && process.env.DEV) {
     const responseHandler = (response: Response) => {
         if (response.ok) {
             return response
@@ -26,43 +26,13 @@ if (false) {
             throw new Error("no data");
         }
     };
-    void fetch("diagnoses.sln")
+    void fetch("diagnoses.jsonc")
         .then(responseHandler)
         .then(data => {
             enUS.diagnosisNames = data.diagnoses["en-us"];
             enUS.problemCodesByDiagnosis = data.problemCodesByDiagnosis;
             deDE.diagnosisNames = data.diagnoses["de-de"];
             deDE.problemCodesByDiagnosis = data.problemCodesByDiagnosis;
-        });
-    void fetch("usersguide_EN.sln")
-        .then(responseHandler)
-        .then(data => {
-            enUS.usersGuide = data;
-        });
-    void fetch("usersguide_DE.sln")
-        .then(responseHandler)
-        .then(data => {
-            deDE.usersGuide = data;
-        });
-} else {
-    const responseHandler = (response: Response) => {
-        if (response.ok) {
-            return response
-                .text()
-                .then(text => JSON.parse(text.replace(/\/\*[\s\S]*?\*\//, ""))); // strip leading comment
-        } else {
-            throw new Error("no data");
-        }
-    };
-    void fetch("covid19_EN.json")
-        .then(responseHandler)
-        .then(data => {
-            enUS.usersGuide = data;
-        });
-    void fetch("covid19_DE.json")
-        .then(responseHandler)
-        .then(data => {
-            deDE.usersGuide = data;
         });
 }
 

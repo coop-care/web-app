@@ -1,11 +1,11 @@
 import { boot } from "quasar/wrappers";
+import { Platform } from "quasar";
+import { ObjectId } from "bson";
 import { downloadJSON } from "../helper/download";
 import { setColorSet, defaultColors } from "../helper/color";
 import { ccApi } from "../api/apiProvider";
-import { ObjectId } from "bson";
-import { locale } from "src/boot/i18n";
-import { Platform } from "quasar";
-import { i18n } from "src/boot/i18n";
+import { i18n, locale } from "src/boot/i18n";
+import { bus } from "src/boot/eventBus";
 
 export default boot(({ store }) => {
     void store.direct.dispatch.fetchEssentialDataFromDB({ locale: locale.value }).catch(() => 0);
@@ -27,6 +27,7 @@ export default boot(({ store }) => {
         global.download = () => downloadJSON(store.direct.state.clients.map(client => client.toJSON()), "sample1.json", true);
         global.$ccApi = ccApi
         global.$store = store;
+        global.$bus = bus;
         global.ObjectId = ObjectId;
         global.terminology = i18n.tm("terminology");
     }
