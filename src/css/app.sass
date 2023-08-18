@@ -104,6 +104,8 @@ body
   column-gap: 2em
   @media screen and (max-width: $breakpoint-xs-max)
     column-count: 1
+.column-break
+  break-after: column
 .no-column-break
   -webkit-column-break-inside: avoid // Chrome, Safari
   page-break-inside: avoid // Theoretically FF 20+
@@ -372,3 +374,6 @@ body.q-ios-padding .q-notifications__list--top
   background-color: #fcf2d7
   .q-btn
     background-color: #f9e09b
+.first-letter-capitalize:first-letter
+  text-transform: capitalize
+

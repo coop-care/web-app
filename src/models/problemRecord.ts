@@ -2,6 +2,7 @@ import "reflect-metadata";
 import { Type } from "class-transformer";
 import { Base } from "./base";
 import { Problem, Reminder, Outcome, Intervention, RatingReminder } from ".";
+import { Guideline, interventionSuggestions } from "./guideline";
 
 export class ProblemRecord extends Base {
     id = this.generateId();
@@ -57,3 +58,29 @@ export class ProblemRecord extends Base {
         return duplicate;
     }
 }
+
+export function updateInterventionsForChangedProblemCode(
+        record: ProblemRecord,
+        problemCode: string, 
+        guidelines: Record<string, Guideline>
+    ) {
+        if (problemCode == record.problem.code) {
+            return;
+        }
+        
+        const suggestions = interventionSuggestions(guidelines, problemCode);
+
+        record.interventions.forEach(intervention => {
+            const details = intervention.details;
+
+            if (!!details) {
+                const suggestedDetails = suggestions?.[intervention.categoryCode]?.[intervention.targetCode] || {}
+                const [guideIdAndDetailsCode] = Object.entries(suggestedDetails)
+                .find(([,label]) => label.toLowerCase() == details.toLowerCase()) || [".", ""];
+                const [guideId, detailsCode] = guideIdAndDetailsCode.split(".");
+
+                intervention.guideId = guideId;
+                intervention.detailsCode = detailsCode;
+            }
+        })
+    }

@@ -140,7 +140,7 @@
           },
           "68": {
             "01": "Symptom relief/palliative care",
-            "02": "Provide palliative care "
+            "02": "Provide palliative care"
           },
           "71": {
             "01": "Adhere to physical distancing recommendations",
@@ -151,7 +151,7 @@
             "06": "Placement of persons receiving treatment",
             "07": "Transporting patients within healthcare facilities",
             "08": "Standard and transmission-based precautions",
-            "09": "Take precautions when performing aerosol-generating procedures "
+            "09": "Take precautions when performing aerosol-generating procedures"
           },
           "73": {
             "01": "Essential services (medications)"
@@ -248,7 +248,7 @@
             "01": "Hand washing"
           },
           "50": {
-            "01": "Fever, cough, and shortness of breath "
+            "01": "Fever, cough, and shortness of breath"
           },
           "62": {
             "01": "Interpersonal support; hydration, nourishment, exercise, sleep; limit media, limit substance use",

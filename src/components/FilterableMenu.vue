@@ -70,7 +70,7 @@ export default class FilterableMenu extends Vue {
   @Model({ type: String, required: true}) readonly value!: string;
   @Prop({ type: Array, default: () => []}) readonly items!: string[] | ItemType[];
   @Prop({ type: String, default: "primary"}) readonly color!: string;
-  @Ref() readonly  menu: QMenu | undefined;
+  @Ref() readonly menu: QMenu | undefined;
 
   isVisible = false;
   selectedItem = -1;
@@ -83,9 +83,13 @@ export default class FilterableMenu extends Vue {
   }
 
   @Watch("filteredItems")
-  onFilteredItemsChanged(values: string[]) {
-    if (values.length == 0) {
+  onFilteredItemsChanged(newValues: string[], oldValues: string[]) {
+    if (newValues.length == 0) {
       this.selectedItem = -1;
+    }
+
+    if (newValues.length != oldValues.length) {
+      setTimeout(() => this.menu?.updatePosition())
     }
   }
 
@@ -156,8 +160,10 @@ export default class FilterableMenu extends Vue {
     }
   }
 
-  show() {
-    this.menu?.show();
+  show(event?: KeyboardEvent) {
+    if (event?.key != "Escape") {
+      this.menu?.show();
+    }
   }
 }
 </script>

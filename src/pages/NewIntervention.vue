@@ -79,7 +79,7 @@ import { QSelect } from "quasar";
 import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValidator";
 import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
-import InterventionEditor from "components/InterventionEditorV3.vue";
+import InterventionEditor from "components/InterventionEditorV4.vue";
 import Warning from "components/Warning.vue";
 import { ProblemRecord } from "../models/problemRecord";
 import { Intervention } from "../models/intervention";

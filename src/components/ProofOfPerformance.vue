@@ -92,6 +92,7 @@ import Loading from "components/Loading.vue";
 import CentralMessage from "components/CentralMessage.vue";
 import DateTimeInput from "../components/DateTimeInput.vue";
 import PullToRefresh from "components/PullToRefresh.vue";
+import { detailsText } from "src/models/intervention";
 
 const { isBetweenDates, startOfDate, endOfDate } = date;
 
@@ -122,7 +123,7 @@ class ProofOfPerformancePage extends Vue {
     const options = { inclusiveFrom: true, inclusiveTo: true, onlyDate: true };
     const teamMembers = this.$store.direct.state.teamMembers;
 
-    this.client?.forAllReminders((reminder) => {
+    this.client?.forAllReminders((reminder, record) => {
       const completed = reminder.occurrences.filter((item) =>
         !!item.completed &&
         isBetweenDates(item.completed, this.startDate, this.endDate, options)
@@ -143,7 +144,12 @@ class ProofOfPerformancePage extends Vue {
           }
         }
 
-        const title = [prefix, reminder.intervention.details].filter(Boolean).join(": ");
+        const details = detailsText(
+          this.$store.direct.state.guidelines, 
+          reminder.intervention, 
+          record?.problem.code
+        )
+        const title = [prefix, details].filter(Boolean).join(": ");
         const dates = completed.map(
           (item) => {
             const signature = teamMembers[item.user || ""]?.signature;

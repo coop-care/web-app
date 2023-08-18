@@ -17,13 +17,13 @@
         vertical
         class="q-pa-none"
         header-class="text-subtitle1 text-primary"
-        @before-transition="showWarning = false"
+        @before-transition="showWarning = false; scrollToTop()"
       >
         <q-step
           :name="1"
           v-if="hasDiagnosisNames"
           :title="diagnosisTitle"
-          :caption="$t('optionalStep', {step: firstStepPrefix + 0, stepCount: stepCount})"
+          :caption="$t('optionalStep', {step: firstStepPrefix + 0, stepCount})"
           :prefix="firstStepPrefix + 0"
           :done="step > 1"
           :header-nav="step > 1"
@@ -50,7 +50,7 @@
         <q-step
           :name="2"
           :title="problemSelectionTitle"
-          :caption="$t('requiredStep', {step: firstStepPrefix + 1, stepCount: stepCount})"
+          :caption="$t('requiredStep', {step: firstStepPrefix + 1, stepCount})"
           :prefix="firstStepPrefix + 1"
           :done="step > 2"
           :error="!!selectionWarnings && ((step > 2) || (step == 2 && showWarning ))"
@@ -59,7 +59,7 @@
         >
           <problem-selection
             v-model="editableRecord.problem"
-            @update:model-value="validate(selectionWarnings, nextStep)"
+            @update:model-value="onProblemChanged($event); validate(selectionWarnings, nextStep)"
             class="q-mt-xs"
           />
           <warning
@@ -84,7 +84,7 @@
         <q-step
           :name="3"
           :title="problemClassificationTitle"
-          :caption="$t('requiredStep', {step: firstStepPrefix + 2, stepCount: stepCount})"
+          :caption="$t('requiredStep', {step: firstStepPrefix + 2, stepCount})"
           :prefix="firstStepPrefix + 2"
           :done="step > 3"
           :error="!!classificationWarnings && ((step > 3) || (step == 3 && showWarning ))"
@@ -132,7 +132,7 @@
           :name="4"
           v-if="isHighPriority"
           :title="ratingTitle"
-          :caption="$t('recommendedStep', {step: firstStepPrefix + 3, stepCount: stepCount})"
+          :caption="$t('recommendedStep', {step: firstStepPrefix + 3, stepCount})"
           :prefix="firstStepPrefix + 3"
           :done="step > 4"
           :error="!!ratingWarnings(editableOutcome) && ((step > 4) || (step == 4 && showWarning ))"
@@ -167,10 +167,31 @@
 
         <q-step
           :name="5"
-          v-if="isHighPriority"
-          :title="$t('planInterveneStep')"
-          :caption="$t('recommendedStep', {step: firstStepPrefix + 4, stepCount: stepCount})"
+          v-if="isHighPriority && hasInterventionSuggestions"
+          :title="interventionSuggestionTitle"
+          :caption="$t('optionalStep', {step: firstStepPrefix + 4, stepCount})"
           :prefix="firstStepPrefix + 4"
+          :done="step > 5"
+          icon="add_comment"
+          :header-nav="step > 5 || !interventionListWarnings(editableRecord.interventions)"
+          active-color="intervention"
+        >
+          <intervention-guide
+            :model-value="editableRecord.interventions"
+            :problemCode="editableRecord.problem.code"
+            @update:model-value="editableRecord.interventions = $event"
+            @done="nextStep"
+            :problemTitle="$t(editableRecord.problem.title)"
+            class="q-mt-xs"
+          />
+        </q-step>
+
+        <q-step
+          :name="6"
+          v-if="isHighPriority"
+          :title="interventionPlanningTitle"
+          :caption="$t('recommendedStep', {step: firstStepPrefix + (hasInterventionSuggestions ? 5 : 4), stepCount})"
+          :prefix="firstStepPrefix + (hasInterventionSuggestions ? 5 : 4)"
           icon="add_comment"
           :header-nav="step > 5 || !interventionListWarnings(editableRecord.interventions)"
           active-color="intervention"
@@ -194,7 +215,7 @@
               unelevated
               no-caps
               :outline="!!interventionListWarnings(editableRecord.interventions)"
-              :label="isNewProblem ? addButtonLabel : doneButtonLabel"
+              :label="saveButtonLabel"
               class="done-button"
             />
           </div>
@@ -221,16 +242,19 @@
 import { Component, Watch, Ref, Vue } from "vue-facing-decorator";
 import { QStepper } from "quasar";
 import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValidator";
-import { Outcome, ProblemRecord, RatingReminder } from "../models";
+import { Outcome, Problem, ProblemRecord, RatingReminder } from "../models";
 import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
 import DiagnosisSelection from "components/DiagnosisSelection.vue";
 import ProblemSelection from "components/ProblemSelection.vue";
 import ProblemClassification from "components/ProblemClassification.vue";
 import ProblemRating from "components/ProblemRating.vue";
-import InterventionView from "components/InterventionV3.vue";
+import InterventionView from "components/InterventionV4.vue";
+import InterventionGuide from "components/InterventionGuide.vue";
 import Warning from "components/Warning.vue";
 import { notifySaveStatus } from "src/helper/notify";
+import { hasInterventionSuggestions } from "src/models/guideline";
+import { updateInterventionsForChangedProblemCode } from "src/models/problemRecord";
 
 interface ProblemRecording extends RecordValidatorInterface {};
 
@@ -243,6 +267,7 @@ interface ProblemRecording extends RecordValidatorInterface {};
     ProblemClassification,
     ProblemRating,
     InterventionView,
+    InterventionGuide,
     Warning,
   },
   mixins: [RecordValidator]
@@ -293,7 +318,11 @@ class ProblemRecording extends Vue {
     return this.hasDiagnosisNames ? 1 : 0;
   }
   get stepCount() {
-    return this.firstStepPrefix + (this.isHighPriority ? 4 : 2);
+    return this.firstStepPrefix + (this.isHighPriority 
+      ? this.hasInterventionSuggestions 
+        ? 5 
+        : 4
+      : 2);
   }
   get diagnosisTitle() {
     if (this.step < 2) {
@@ -358,6 +387,22 @@ class ProblemRecording extends Vue {
       }
     }
   }
+  get interventionSuggestionTitle() {
+    if (this.step < 6) {
+      return this.$t("selectInterventionSuggestionStep");
+    } else {
+      return this.$t("interventionSuggestionStep");
+    }
+  }
+  get interventionPlanningTitle() {
+    if (this.step == 6 || !this.hasActiveInterventions) {
+      return this.$t("planInterveneStep");
+    } else {
+      const activeInterventionCount = this.editableRecord.interventions
+        .filter(intervention => !intervention.finishedAt).length;
+      return this.$t("numberOfInterventions", activeInterventionCount).replace(/\*\*/g, "");
+    }
+  }
   get problemSelectionButtonLabel() {
     if (this.isNewProblem && !this.showWarning) {
       return this.$t("problemAdmission");
@@ -389,6 +434,13 @@ class ProblemRecording extends Vue {
   set editableOutcome(outcome: Outcome) {
     this.editableRecord.outcomes[this.editableRecord.outcomes.length - 1] = outcome;
   }
+  get hasInterventionSuggestions() {
+    return hasInterventionSuggestions(this.$store.direct.state.guidelines, this.editableRecord.problem.code);
+  }
+
+  scrollToTop() {
+    (this.stepper.$el?.closest(".scroll") as HTMLElement)?.scrollTo({top: 0, behavior: "smooth"});
+  }
 
   nextStep() {
     this.stepper.next();
@@ -396,6 +448,14 @@ class ProblemRecording extends Vue {
 
   hasPendingChanges() {
     return this.editableRecord.toJSONString() != this.originalRecord;
+  }
+
+  onProblemChanged(value: Problem) {
+    updateInterventionsForChangedProblemCode(
+      this.editableRecord, 
+      value.code, 
+      this.$store.direct.state.guidelines
+    );
   }
   
   updateRatingReminder(changes: Partial<RatingReminder>) {

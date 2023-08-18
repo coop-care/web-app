@@ -39,7 +39,7 @@ import RecordValidator, { RecordValidatorInterface } from "../mixins/RecordValid
 import { Intervention } from "../models";
 import EditingSheet from "../components/EditingSheet.vue";
 import ProblemSummaryContainer from "components/ProblemSummaryContainer.vue";
-import InterventionEditor from "components/InterventionEditorV3.vue";
+import InterventionEditor from "components/InterventionEditorV4.vue";
 import Warning from "components/Warning.vue";
 import { notifySaveStatus } from "src/helper/notify";
 

@@ -1,6 +1,6 @@
 <template>
   <div :class="tooltip ? 'cursor-help' : ''">
-    {{ text }}
+    <simplified-markdown :text="text" />
     <q-icon
       v-if="tooltip"
       name="fas fa-info-circle"
@@ -12,13 +12,14 @@
       :offset="$q.platform.is.mobile ? [0,10] : [0,4]"
       v-if="tooltip"
       :max-width="maxWidth"
-      :anchor="($q.platform.is.mobile ? 'top' : 'bottom') + ' middle'"
-      :self="($q.platform.is.mobile ? 'bottom' : 'top') + ' middle'"
+      :anchor="(top || $q.platform.is.mobile ? 'top' : 'bottom') + ' middle'"
+      :self="(top || $q.platform.is.mobile ? 'bottom' : 'top') + ' middle'"
       class="text-center"
       style="font-size: 0.8rem"
     >
       <simplified-markdown :text="tooltip" />
     </q-tooltip>
+    <slot/>
     <q-resize-observer @resize="parentWidth = $event.width + 'px'" />
   </div>
 </template>
@@ -37,6 +38,7 @@ export default class TextWithTooltip extends Vue {
   @Prop({ type: String, default: ""}) readonly tooltip!: string;
   @Prop({ type: String, default: ""}) readonly width!: string;
   @Prop({ type: String, default: ""}) readonly iconClass!: string;
+  @Prop({ type: Boolean }) readonly top!: boolean;
 
   parentWidth = "100%";
 

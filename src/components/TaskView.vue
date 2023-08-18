@@ -133,6 +133,7 @@ import InterventionMixin, { InterventionMixinInterface } from "../mixins/Interve
 import ActionMenu, { ActionItem } from "components/ActionMenu.vue";
 import DateTimePopup from "components/DateTimePopup.vue";
 import Signature from "../components/Signature.vue";
+import { detailsText } from "src/models/intervention";
 
 const { formatDate, subtractFromDate, isSameDate } = date;
 
@@ -212,7 +213,11 @@ class TaskView extends Vue {
   }
   get title() {
     if (this.reminder instanceof Intervention) {
-      const details = this.reminder.intervention.details || this.$t("notSpecified");
+      const details = detailsText(
+        this.$store.direct.state.guidelines, 
+        this.reminder.intervention, 
+        this.record?.problem.code
+      ) || this.$t("notSpecified");
 
       if (!this.receiverName) {
         return details;

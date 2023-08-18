@@ -18,12 +18,12 @@
       v-if="categoryCode"
       :text="$t('category') + ': ' + $tm('terminology.categoryByCode.' + categoryCode + '.title')"
       :tooltip="$tm('terminology.categoryByCode.' + categoryCode + '.description')"
-      :icon-class="'text-' + color"
-      :class="['q-mx-md text-center text-body2 text-weight-medium', 'text-' + color]"
+      :class="['q-mx-md text-center text-caption text-italic']"
+      icon-class="text-grey-7"
     />
     <div
       v-else
-      :class="['text-center text-body2 text-weight-medium', 'text-' + color]"
+      :class="['text-center text-caption text-italic']"
     >{{ $t("noCategorySelected") }}</div>
   </div>
 </template>

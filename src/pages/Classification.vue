@@ -177,6 +177,11 @@ class ClassificationPage extends Vue {
         clientId: this.$route.params.clientId as string,
         problemId: this.record.id,
       });
+
+      this.$store.direct.commit.updateInterventionsForChangedProblemCode({
+        record: this.record,
+        problemCode: this.editableProblem.code
+      })
     }
     
     notifySaveStatus(() => 

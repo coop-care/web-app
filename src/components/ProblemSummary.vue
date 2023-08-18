@@ -289,7 +289,7 @@
                 }}
               </q-item-label>
               <q-item-label class="text-weight-bold">
-                {{ intervention.details || $t("newIntervention") }}
+                {{ detailsForIntervention(intervention) }}
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -333,7 +333,8 @@ import ActionMenu from "../components/ActionMenu.vue";
 import SimplifiedMarkdown from "../components/SimplifiedMarkdown.vue";
 import RatingChartGroup from "../components/RatingChartGroup.vue";
 import RevealButton from "../components/RevealButton.vue";
-import { ProblemRecord, Problem } from "../models";
+import { ProblemRecord, Problem, Intervention } from "../models";
+import { detailsText } from "src/models/intervention";
 
 interface ProblemSummary extends RecordMixinInterface, WarningMixinInterface {};
 
@@ -450,6 +451,14 @@ class ProblemSummary extends Vue {
   }
   get outcomes() {
     return this.record?.outcomes.filter(outcome => outcome.createdAt) || [];
+  }
+
+  detailsForIntervention(intervention: Intervention) {
+    return detailsText(
+      this.$store.direct.state.guidelines, 
+      intervention, 
+      this.record?.problem.code
+    ) || this.$t("newIntervention");
   }
 
   toggleExpansion() {

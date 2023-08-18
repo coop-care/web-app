@@ -9,6 +9,7 @@ export interface RecordValidatorInterface extends RecordMixinInterface {
     continueButtonLabel: string;
     doneButtonLabel: string;
     addButtonLabel: string;
+    saveButtonLabel: string;
     problemSelectionWarnings(problem: Problem | null, id?: string, client?: Client): string;
     problemClassificationWarnings(problem: Problem | null): string;
     ratingWarnings(outcome: Outcome): string;
@@ -38,6 +39,9 @@ export default defineComponent({
         },
         addButtonLabel() {
             return !this.showWarning ? this.$t("add") : this.$t("addAnyway");
+        },
+        saveButtonLabel() {
+            return !this.showWarning ? this.$t("save") : this.$t("saveAnyway");
         },
     },
 

@@ -19,6 +19,7 @@ import {
 } from "../models";
 import { instanceToPlain, ClassTransformOptions } from "class-transformer";
 import { Guideline } from "src/models/guideline";
+import { updateInterventionsForChangedProblemCode } from "src/models/problemRecord";
 
 type Updatable<T> = {
     target: T;
@@ -483,6 +484,13 @@ export default defineMutations<StateInterface>()({
                 )
             );
         });
+    },
+
+    updateInterventionsForChangedProblemCode(
+        state, 
+        {record, problemCode}: { record: ProblemRecord, problemCode: string }
+    ) {
+        updateInterventionsForChangedProblemCode(record, problemCode, state.guidelines);
     },
 
     setGuidelines(state, guidelines: Record<string, Guideline>) {

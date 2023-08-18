@@ -105,8 +105,8 @@ export default class TeamInvitationDialog extends Vue {
   navigateMenu(event: KeyboardEvent) {
     this.menu.navigateMenu(event);
   }
-  showMenu() {
-    this.menu.show();
+  showMenu(event?: KeyboardEvent) {
+    this.menu.show(event);
   }
   show () {
     this.dialog.show();

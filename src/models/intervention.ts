@@ -15,6 +15,7 @@ const toObjectID = ({ value }: TransformFnParams) =>
 export class Intervention extends Reminder {
     categoryCode = "";
     targetCode = "";
+    guideId = "";
     detailsCode = "";
     details = "";
     comment?: string = undefined;
@@ -62,4 +63,18 @@ export class Intervention extends Reminder {
     get intervention(): Intervention {
         return this.arrangedIntervention || this;
     }
+}
+
+import { Guideline } from "./guideline";
+
+export function detailsText(guidelines: Record<string, Guideline>, intervention: Intervention, problemCode = "") {
+  const {categoryCode, targetCode, guideId, detailsCode, details} = intervention;
+  
+  return guidelines[guideId]?.
+    problems[problemCode]?.
+    interventionSuggestions?.
+    [categoryCode]?.
+    [targetCode]?.
+    [detailsCode] 
+    || details;
 }
