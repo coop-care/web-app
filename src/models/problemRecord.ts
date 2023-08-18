@@ -76,7 +76,7 @@ export function updateInterventionsForChangedProblemCode(
             if (!!details) {
                 const suggestedDetails = suggestions?.[intervention.categoryCode]?.[intervention.targetCode] || {}
                 const [guideIdAndDetailsCode] = Object.entries(suggestedDetails)
-                .find(([,label]) => label.toLowerCase() == details.toLowerCase()) || [".", ""];
+                    .find(([,label]) => label.toLowerCase() == details.toLowerCase()) || [".", ""];
                 const [guideId, detailsCode] = guideIdAndDetailsCode.split(".");
 
                 intervention.guideId = guideId;

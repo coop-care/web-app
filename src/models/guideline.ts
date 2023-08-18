@@ -68,7 +68,8 @@ export function hasInterventionSuggestions(guidelines: Record<string, Guideline>
 export function interventionSuggestions(guidelines: Record<string, Guideline>, problemCode: string) {
   const interventionSuggestionsList = Object.values(guidelines).map(guideline => {
     const problem = toRaw(guideline.problems[problemCode || ""]);
-    const interventionSuggestions = structuredClone(problem?.interventionSuggestions) || {};
+    const interventionSuggestions: Record<string, Record<string, Record<string, string>>> = 
+      structuredClone(problem?.interventionSuggestions) || {};
 
     Object.values(interventionSuggestions).forEach(category => {
       Object.entries(category).forEach(([targetCode, target]) => {
