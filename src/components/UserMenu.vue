@@ -171,7 +171,10 @@ export default class UserMenu extends Vue {
       const fileContent = await file.text();
       const json = JSON.parse(fileContent);
       const clients = plainToInstance<Client, Client[]>(Client, json.clients);
-      clients.forEach(client => this.$store.direct.dispatch.addClient(client));
+      clients.reduce(
+        (promise, client) => promise.then(() => this.$store.direct.dispatch.addClient(client)).then(() => undefined),
+        Promise.resolve()
+      );
     }
   }
 }

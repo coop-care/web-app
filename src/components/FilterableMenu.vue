@@ -59,6 +59,12 @@ type ItemType = {
   description?: string;
 };
 
+/**
+ * FIlterableMenu can be embedded as a child component of a QInput.
+ * The model of the parent QInput and FIlterableMenu need to be identical
+ * for the FIlterableMenu to function properly.
+ */
+
 @Component({
   components: {
     TextWithHighlights
