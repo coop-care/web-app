@@ -42,6 +42,13 @@ Tested on macOS Catalina.
 * `npm install -g ios-deploy`
 * no need to switch to WKWebView using a plugin as it has become the default from cordova-ios version 6!
 
+#### Hint when updating to cordova-ios@7 and above:
+* First, remove localization plugin version 5.0.x with `cordova plugin rm cordova-plugin-localization-strings`,
+* then update cordova ios platform using command `cordova platform remove ios; cordova platform add ios@7`,
+* and finally readd the plugin with `cordova plugin add cordova-plugin-localization-strings`.
+* Otherwise the installation of cordova ios will fail with "Error: Cannot find module … projectFile.js"!
+
 ### … finally
 
 Run `cordova requirements` in `src-cordova` to check if everything is installed correctly.
+

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget defaultlocale="en" id="de.coopcare.app" version="0.7.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget defaultlocale="en" id="de.coopcare.app" version="0.7.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>CoopCare</name>
     <description>We relieve nurses in documentation and planning by using the Omaha System and support care teams in cooperation and in strengthening their clients.</description>
     <author email="hello@coopcare.de" href="https://www.coopcare.de">
@@ -55,6 +55,27 @@
         <preference name="hostname" value="coopcare" />
         <config-file parent="ITSAppUsesNonExemptEncryption" target="*-Info.plist">
             <false />
+        </config-file>
+        <config-file parent="UTExportedTypeDeclarations" target="*-Info.plist">
+            <array>
+                <dict>
+                    <key>UTTypeConformsTo</key>
+                    <array>
+                        <string>public.data</string>
+                    </array>
+                    <key>UTTypeDescription</key>
+                    <string>WebAssembly</string>
+                    <key>UTTypeIdentifier</key>
+                    <string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+                    <key>UTTypeTagSpecification</key>
+                    <dict>
+                        <key>public.filename-extension</key>
+                        <string>wasm</string>
+                        <key>public.mime-type</key>
+                        <string>application/wasm</string>
+                    </dict>
+                </dict>
+            </array>
         </config-file>
         <icon height="57" src="res/ios/icon.png" width="57" />
         <icon height="114" src="res/ios/icon@2x.png" width="114" />
