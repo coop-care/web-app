@@ -126,38 +126,11 @@ robots_nofollow: true
   werden, ist auch Art. 6 Abs. 1 lit. d) DSGVO Rechtsgrundlage dieser Verarbeitung.</p>
 <p>Die verarbeiteten Patientiendaten können Sie in der App CoopCare jederzeit einsehen, berichtigen und wenn die Verarbeitung nicht mehr erforderlich ist, löschen.</p>
 
-<h4>MongoDB Stitch</h4>
-<p>Für die Speicherung der in der App CoopCare über die Registrierungsfunktion eingegebenen Daten, als auch der von
-  Ihnen eingegebenen Patientendaten zur Pflegedokumentation- und Planung, verwenden wir den Internetdienst Stitch der
-  Firma MongoDB Inc.. Es handelt sich hierbei um einen Internetdienst, der eine Datenbank mit Registrierungsfunktion und
-  Zugriffsrechteverwaltung bereitstellt. Der Standort des von uns genutzten Servers dieses Dienstleisters befindet sich
-  in Deutschland. Rechtsgrundlage für die Nutzung von MongoDB Stitch zur Speicherung der Daten ist Art. 6 Abs. 1 lit. b)
-  DSGVO. Weitere Datenschutzinformationen bietet MongoDB unter <a href="https://www.mongodb.com/legal/privacy-policy"
-    target="_blank" rel="noopener noreferrer nofollow">https://www.mongodb.com/legal/privacy-policy</a>.</p>
-
 <h4>Verschlüsselte Datenübertragung</h4>
-<p>Sowohl die Kommunikation zwischen Ihrem Browser und unserem Webserver, von der Sie die CoopCare-App abrufen, als auch
-  zwischen der CoopCare-App in Ihrem Browser und der Datenbank des MongoDB Stitch Dienstes, erfolgt verschlüsselt über
-  eine SSL- bzw. TLS-Verschlüsselung, so dass die übertragenen Daten nicht von Dritten mitgelesen werden können.</p>
+<p>Die Kommunikation zwischen den installierten CoopCare-Apps auf Ihren Geräten und denen der anderen App-Nutzer:innen Ihrer Organisation erfolgt verschlüsselt über eine SSL- bzw. TLS-Verschlüsselung, so dass die übertragenen Daten nicht von Dritten mitgelesen werden können.</p>
 
-<h4>Cookies, Local Storage und Session Storage</h4>
-<p>Wir verwenden in der CoopCare App den sogenannten Local Storage. Das ist eine
-  Speichertechnologie, durch die Textinformationen in den von Ihnen eingesetzten Internet-Browser auf Ihrem Endgerät
-  ablegt und gespeichert werden. Durch diese Textinformationen wird ihr Login-Status und ihr Handzeichen verarbeitet und
-  gespeichert, wodurch unsere App benutzerfreundlicher, effektiver und sicherer wird.</p>
-<p>Rechtsgrundlage dieser Verarbeitung ist Art. 6 Abs. 1 lit b) DSGVO, sofern diese Daten zur Vertragsanbahnung
-  oder Vertragsabwicklung verarbeitet werden.</p>
-<p>Falls die Verarbeitung nicht der Vertragsanbahnung oder Vertragsabwicklung dient, liegt unser berechtigtes Interesse
-  in der Verbesserung der Funktionalität unserer App. Rechtsgrundlage ist in dann Art. 6 Abs. 1 lit. f)
-  DSGVO.</p>
-<p>Sie können die Installation von Cookies, Local- oder Session-Storage durch eine Einstellung Ihres Internet-Browsers
-  verhindern oder einschränken.
-  Ebenfalls können Sie bereits gespeicherte Daten jederzeit löschen. Die hierfür erforderlichen Schritte und Maßnahmen
-  hängen jedoch von Ihrem konkret genutzten Internet-Browser ab. Bei Fragen benutzen Sie daher bitte die Hilfefunktion
-  oder Dokumentation Ihres Internet-Browsers oder wenden sich an dessen Hersteller bzw. Support.</p>
-<p>Sollten Sie die Installation von Cookies, Local- oder Session-Storage verhindern oder einschränken, kann dies
-  allerdings dazu führen, dass nicht
-  sämtliche Funktionen unserer App vollumfänglich nutzbar sind.</p>
+<h4>Cookies</h4>
+<p>Cookies sind eine Speichertechnologie, durch die Textinformationen in den von Ihnen eingesetzten Internet-Browser auf Ihrem Endgerät ablegt und gespeichert werden. Wir speichern und verarbeiten keine Cookies. </p>
 
 <h3>YouTube</h3>
 <p>In unserem Internetauftritt setzen wir YouTube ein. Hierbei handelt es sich um ein Videoportal der YouTube LLC., 901 Cherry Ave., 94066 San Bruno, CA, USA, nachfolgend nur „YouTube“ genannt.</p>
@@ -196,24 +169,22 @@ robots_nofollow: true
   widerrufen. Hierzu müssen Sie uns lediglich über Ihren Widerruf in Kenntnis setzen oder den in jedem Newsletter
   enthaltenen Abmeldelink betätigen.</p>
 
-<h3>Sendinblue</h3>
+<h3>Brevo</h3>
 <p>Wir bieten Ihnen die Möglichkeit an, sich bei uns über unseren Internetauftritt für unsere kostenlosen Newsletter
   anmelden zu können.</p>
-<p>Zum Newsletterversand setzen wir Sendinblue ein. Bei Sendinblue handelt es sich um einen Dienst der Firma Sendinblue
-  GmbH, Köpenicker Str. 126, 10179 Berlin, nachfolgend nur „Sendinblue“ genannt.<br>Falls Sie sich zu unserem
+<p>Zum Newsletterversand setzen wir Brevo ein. Bei Brevo handelt es sich um einen Dienst der Firma Sendinblue
+  GmbH, Köpenicker Str. 126, 10179 Berlin, nachfolgend nur „Brevo“ genannt.<br>Falls Sie sich zu unserem
   Newsletter-Versand anmelden, werden die während des Anmeldevorgangs abgefragten Daten (Ihre E-Mail-Adresse) durch
-  Sendinblue verarbeitet. Zudem werden Ihre IP-Adresse sowie das Datum Ihrer Anmeldung nebst Uhrzeit gespeichert. Im
+  Brevo verarbeitet. Zudem werden Ihre IP-Adresse sowie das Datum Ihrer Anmeldung nebst Uhrzeit gespeichert. Im
   Rahmen des weiteren Anmeldevorgangs wird Ihre Einwilligung in die Übersendung des Newsletters eingeholt, der Inhalt
   konkret beschreiben und auf diese Datenschutzerklärung verwiesen.</p>
-<p>Zudem bietet Sendinblue unter</p>
-<p><a href="https://www.newsletter2go.de/datenschutz/" target="_blank"
-  rel="noopener noreferrer nofollow">https://www.newsletter2go.de/datenschutz/</a><br>
-<a href="https://de.sendinblue.com/legal/privacypolicy/" target="_blank"
-  rel="noopener noreferrer nofollow">https://de.sendinblue.com/legal/privacypolicy/</a><br>
-<a href="https://de.sendinblue.com/informationen-newsletter-empfaenger/?rtype=n2go" target="_blank"
-  rel="noopener noreferrer nofollow">https://de.sendinblue.com/informationen-newsletter-empfaenger/</a></p>
+<p>Zudem bietet Brevo unter</p>
+<p><a href="https://www.brevo.com/de/legal/privacypolicy/" target="_blank"
+  rel="noopener noreferrer nofollow">https://www.brevo.com/de/legal/privacypolicy/</a><br>
+<a href="https://www.brevo.com/de/informationen-newsletter-empfaenger/" target="_blank"
+  rel="noopener noreferrer nofollow">https://www.brevo.com/de/informationen-newsletter-empfaenger/</a></p>
 <p>weitergehende Datenschutzinformationen an.</p>
-<p>Die von Sendinblue versandten Newsletter enthalten Technologien anhand derer wir in den Analysen erkennen können, ob
+<p>Die von Brevo versandten Newsletter enthalten Technologien anhand derer wir in den Analysen erkennen können, ob
   und wann eine E-Mail geöffnet sowie ob und welchen in dem Newsletter etwaig enthaltenen Links gefolgt worden ist.
   Diese Daten speichern wir neben den technischen Daten (Systemdaten und IP-Adresse), damit der jeweilige Newsletter
   optimal auf Ihre Wünsche und Interessen ausgerichtet werden kann. Die somit erhobenen Daten werden also genutzt, um
@@ -230,7 +201,7 @@ robots_nofollow: true
   veröffentlichten Kontaktdaten zum Zweck der Zusendung von nicht angeforderter Werbung und
   Informationsmaterialien, zum Beispiel Spam-E-Mails, ausdrücklich widersprochen.</p>
 
-<h3>Stand: 31.08.2020</h3>
+<h3>Stand: 12.09.2023</h3>
 
 <p>
   <a target="_blank" rel="noopener"
@@ -239,6 +210,4 @@ robots_nofollow: true
     href="https://www.ratgeberrecht.eu/datenschutz/datenschutzerklaerung-generator-dsgvo.html">Anwaltskanzlei Weiß &amp;
     Partner</a></p>
 
-<p>Vom Websiteinhaber angepasst in den Abschnitten Serverdaten, CoopCare-App (Nutzerkonto / Registrierungsfunktion,
-  Patientendaten, MongoDB Stitch, Verschlüsselte Datenübertragung, Cookies, Local- und Session-Storage),
-  Newsletter-Anbieter und Allgemeine Hinweise.</p>
+<p>Vom Websiteinhaber angepasst in den Abschnitten Serverdaten, CoopCare-App (Nutzerkonto / Registrierungsfunktion, Patientendaten, Verschlüsselte Datenübertragung, Cookies), Newsletter-Anbieter und Allgemeine Hinweise.</p>

@@ -1,5 +1,5 @@
 CoopCare is licensed under the GNU Affero General Public License (AGPL), Version 3.  
-Copyright © 2019-2022 – Michael Kamphausen
+Copyright © 2019-2023 – Michael Kamphausen
 [Source code of the CoopCare app](https://github.com/coop-care/web-app)
 
 An overview of the major terms and conditions of the license is provided in this legally non-binding summary:

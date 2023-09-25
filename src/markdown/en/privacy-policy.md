@@ -61,19 +61,11 @@ robots_nofollow: true
 <p>If the vital interests of the patients concerned are protected by the nursing documentation and planning, Art. 6 Para. 1 lit. d) GDPR is also the legal basis for this processing.</p>
 <p>The processed patient data can be viewed, corrected and, if processing is no longer required, deleted at any time in the app CoopCare.</p>
 
-<h4>MongoDB Stitch</h4>
-<p>For the storage of the data entered in the app CoopCare via the registration function, as well as the patient data entered by you for care documentation and planning, we use the internet service Stitch from MongoDB Inc.. This is an internet service that provides a database with registration function and access rights management. The service provider's server used by us is located in Germany. The legal basis for the use of MongoDB Stitch to store data is Art. 6 Para. 1 lit. b) GDPR. MongoDB offers further privacy information at <a href="https://www.mongodb.com/legal/privacy-policy"
-    target="_blank" rel="noopener noreferrer nofollow">https://www.mongodb.com/legal/privacy-policy</a>.</p>
-
 <h4>Encrypted data transmission</h4>
-<p>Both the communication between your browser and our web server from which you retrieve the CoopCare app and between the CoopCare app in your browser and the database of the MongoDB Stitch service are encrypted using SSL or TLS encryption, so that the transmitted data cannot be read by third parties.</p>
+<p>The communication between the installed CoopCare apps on your devices and those of other users in your organization is encrypted using SSL or TLS encryption, so that the transmitted data cannot be read by third parties.</p>
 
-<h4>Cookies, Local Storage and Session Storage</h4>
-<p>We use the so-called Local Storage in the CoopCare app. This is a storage technology by which text information is stored in the Internet browser you use on your device. This text information is used to process and store your login status and your signature mark, making our app more user-friendly, effective and secure.</p>
-<p>The legal basis for such processing is Art. 6 Para. 1 lit. b) GDPR, insofar as this data is used to initiate or process contractual relationships.</p>
-<p>If the processing does not serve to initiate or process a contract, our legitimate interest lies in improving the functionality of our app. The legal basis is then Art. 6 Para. 1 lit. f) GDPR.</p>
-<p>You can refuse the use of cookies, local or session storage by changing the settings of your browser. Likewise, you can use the browser to delete data that has already been stored. However, the steps and measures required vary, depending on the browser you use. If you have any questions, please use the help function or consult the documentation for your browser or contact its maker for support.</p>
-<p>If you prevent or restrict the installation of cookies, local or session storage, not all of the functions on our app may be fully usable.</p>
+<h4>Cookies</h4>
+<p>Cookies are a storage technology by which text information is stored in the Internet browser you use on your device. We do not store or process cookies.</p>
 
 <h3>YouTube</h3>
 <p>We use YouTube on our website. This is a video portal operated by YouTube LLC, 901 Cherry Ave, 94066 San Bruno, CA, USA, hereinafter referred to as "YouTube".</p>
@@ -99,17 +91,17 @@ robots_nofollow: true
 <p>The legal basis for this is Art. 6 Para. 1 lit. a) GDPR.</p>
 <p>You may revoke your prior consent to receive this newsletter under Art. 7 Para. 3 GDPR with future effect. All you have to do is inform us that you are revoking your consent or click on the unsubscribe link contained in each newsletter.</p>
 
-<h3>Sendinblue</h3>
+<h3>Brevo</h3>
 <p>We offer you the opportunity to register for our free newsletter on our website.</p>
-<p>We use Sendinblue to send newsletters. Sendinblue is a service provided by the company Sendinblue GmbH, Köpenicker Str. 126, 10179 Berlin, hereinafter referred to as "Sendinblue".</p>
-<p>If you sign up to receive our newsletter, the data requested during the registration process (your email address) will be processed by Sendinblue. For this your IP address and the date of your registration will be saved along with the time. As a further part of the registration process, your consent to the sending of the newsletter will be obtained, the content will be described in concrete terms and reference made to this data protection declaration.</p>
-<p>Sendinblue offers further data protection information at</p>
-<p><a href="https://www.sendinblue.com/legal/privacypolicy/" target="_blank" 
-  rel="noopener noreferrer nofollow">https://www.sendinblue.com/legal/privacypolicy/</a><br>
-<a href="https://www.sendinblue.com/information-for-email-recipients/" target="_blank" 
-  rel="noopener noreferrer nofollow">https://www.sendinblue.com/information-for-email-recipients/</a>
+<p>We use Brevo to send newsletters. Brevo is a service provided by the company Sendinblue GmbH, Köpenicker Str. 126, 10179 Berlin, hereinafter referred to as "Brevo".</p>
+<p>If you sign up to receive our newsletter, the data requested during the registration process (your email address) will be processed by Brevo. For this your IP address and the date of your registration will be saved along with the time. As a further part of the registration process, your consent to the sending of the newsletter will be obtained, the content will be described in concrete terms and reference made to this data protection declaration.</p>
+<p>Brevo offers further data protection information at</p>
+<p><a href="https://www.brevo.com/legal/privacypolicy/" target="_blank" 
+  rel="noopener noreferrer nofollow">https://www.brevo.com/legal/privacypolicy/</a><br>
+<a href="https://www.brevo.com/information-for-email-recipients/" target="_blank" 
+  rel="noopener noreferrer nofollow">https://www.brevo.com/information-for-email-recipients/</a>
 .</p>
-<p>The newsletters sent by Sendinblue contain technologies by which we can analyse whether and when an email was opened and whether and which links contained in the newsletter were followed. We save this data in addition to the technical data (system data and IP address) so that the respective newsletter can be best tailored to your wishes and interests. The data thus collected is used to continuously improve the quality of our newsletters.</p>
+<p>The newsletters sent by Brevo contain technologies by which we can analyse whether and when an email was opened and whether and which links contained in the newsletter were followed. We save this data in addition to the technical data (system data and IP address) so that the respective newsletter can be best tailored to your wishes and interests. The data thus collected is used to continuously improve the quality of our newsletters.</p>
 <p>The legal basis for sending the newsletter and the analysis is Art. 6 Para. 1 lit. a.) EU General Data Protection Regulation (GDPR).</p>
 <p>Consent to the newsletter being sent can be revoked at any time with future effect in accordance with Art. 7 Para. 3 GDPR. To do this, you only have to inform us of your revocation or click the unsubscribe link contained in each newsletter.</p>
 
@@ -118,7 +110,7 @@ robots_nofollow: true
 <h3>Objection to advertising mails</h3>
 <p>We hereby expressly object to the use of the contact data published on the basis of the legal obligations regarding privacy policy and legal notes and for the purpose of sending unsolicited advertising and information material, for example spam e-mails.</p>
 
-<h3>Date: 08/31/2020</h3>
+<h3>Date: 09/12/2023</h3>
 
 <p>
   <a href="https://www.ratgeberrecht.eu/leistungen/muster-datenschutzerklaerung.html" 
@@ -126,4 +118,4 @@ robots_nofollow: true
   <a href="https://www.ratgeberrecht.eu/" 
     target="_blank" rel="noopener">Anwaltskanzlei Weiß &amp; Partner</a></p>
 
-<p>Customized by the website owner in the sections Server data, CoopCare App (User account / registration, Patient data, MongoDB Stitch, Encrypted data transmission, Cookies, Local and Session Storage), Newsletter Provider and General notes.</p>
+<p>Customized by the website owner in the sections Server data, CoopCare App (User account / registration, Patient data, Encrypted data transmission, Cookies), Newsletter Provider and General notes.</p>
