@@ -12,7 +12,8 @@ const {
   revertLater, 
   revertFinally,
   quasarCommands,
-  changeProductName
+  changeProductName,
+  getProductName
 } = require("./utils/utils");
 
 const revertActionList = [];
@@ -52,13 +53,13 @@ exitOnError(() => {
       : undefined;
 
   const env = readEnv(defaultEnvironment);
+  const productionAppId = readEnv().APP_ID;
   const additionalVariables = {};
 
   if (isTestFlight) {
     if (env.QENV == "development") {
-      const productionEnv = readEnv();
       env.QENV = "production";
-      env.APP_ID = productionEnv.APP_ID;
+      env.APP_ID = productionAppId;
       additionalVariables["ios"] = `IS_TESTFLIGHT=true UPDATE_URL=${env.UPDATE_URL}`;
     } else {
       additionalVariables["ios"] = "IS_TESTFLIGHT=true";
@@ -136,12 +137,12 @@ exitOnError(() => {
 
   if (["ios", "android", "cordova", "app"].includes(product)) {
     console.log(`Using app id ${env.APP_ID} for cordova`);
-    const previousAppId = changeCordovaAppId(env.APP_ID);
+    changeCordovaAppId(env.APP_ID);
 
-    if (!!previousAppId) {
+    if (!!productionAppId) {
       revertLater(
         "cordova app id in src-cordova/config.xml", 
-        () => changeCordovaAppId(previousAppId), 
+        () => changeCordovaAppId(productionAppId), 
         revertActionList
       );
     }
@@ -150,7 +151,7 @@ exitOnError(() => {
   // == electron and development.env only: adjust product name to ==
 
   if (env.QENV == "development" && ["mac", "windows", "linux", "system", "electron", "app"].includes(product)) {
-    const productName = "CoopCare (Dev)";
+    const productName = getProductName() + " (Dev)";
     console.log(`Using product name "${productName}" for electron`);
     const previousProductName = changeProductName(productName);
 
@@ -255,7 +256,8 @@ exitOnError(() => {
     }
 
     if (["ios", "cordova", "app"].includes(product) && !!env.APPLEID && !!env.APPLEIDPASS) {
-      runCommand(`xcrun altool --upload-app -f src-cordova/platforms/ios/build/device/*.ipa -t ios -u ${env.APPLEID} -p ${env.APPLEIDPASS}`);
+      const buildDirectory = "src-cordova/platforms/ios/build/Release-iphoneos";
+      runCommand(`xcrun altool --upload-app -f ${buildDirectory}/*.ipa -t ios -u ${env.APPLEID} -p ${env.APPLEIDPASS}`);
     }
   }
 

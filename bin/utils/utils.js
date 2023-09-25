@@ -79,6 +79,16 @@ function changeProductName(productName) {
 }
 
 /**
+ * Reads the property `productName` from `package.json`.
+ * @returns the productName
+ */
+function getProductName() {
+  const { readFileSync } = require("fs");
+  const packageJSON = readFileSync("package.json", "utf8");
+  return /(\"productName\": \")(.*)(\")/.exec(packageJSON)[2];
+}
+
+/**
  * Read the env variables from the .env file matching the environment name defined by env variable QENV, 
  * e.g. `QENV=development` matches development.env. `QENV=production` or when QENV variable is not set,
  * the variables from .env file are loaded.
@@ -265,6 +275,7 @@ module.exports = {
   changeCordovaAppId, 
   changeCordovaVersion, 
   changeProductName,
+  getProductName,
   readEnv,
   runCommand,
   exitOnError,
