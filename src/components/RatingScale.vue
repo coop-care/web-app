@@ -95,12 +95,12 @@ import TextWithTooltip from "./TextWithTooltip.vue";
   },
   emits: ["update:model-value"]
 })
-export default class RatingView extends Vue {
-  @Model({ type: Number, default: 0 }) readonly value!: number;
+export default class RatingScale extends Vue {
+  @Model({ type: Number, required: true }) readonly value!: number;
   @Prop({ type: Array, required: true}) readonly scale!: string[];
-  @Prop({ type: Array, default: () => []}) readonly examples!: string[];
   @Prop({ type: String, required: true}) readonly titleText!: string;
-  @Prop({ type: String, required: true}) readonly titleTooltip!: string;
+  @Prop({ type: String, default: ""}) readonly titleTooltip!: string;
+  @Prop({ type: Array, default: () => []}) readonly examples!: string[];
   @Prop({ type: String, default: "primary"}) readonly color!: string;
   @Prop({ type: String, default: ""}) readonly buttonStyle!: string;
   @Prop({ type: Boolean}) readonly clearable!: boolean;
