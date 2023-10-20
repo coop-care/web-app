@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@automerge/automerge": "^2.0.3",
-    "@quasar/extras": "^1.16.6",
+    "@quasar/extras": "^1.16.7",
     "argon2-browser": "^1.18.0",
     "bson": "^4.7.2",
     "chart.js": "^4.2.1",
@@ -52,13 +52,13 @@
     "vue": "3.3",
     "vue-chartjs": "^5.2.0",
     "vue-facing-decorator": "^2.1.13",
-    "vue-i18n": "^9.3.0-beta.17",
+    "vue-i18n": "^9.4.1",
     "vue-router": "^4.0.0",
     "vuex": "^4.0.1"
   },
   "devDependencies": {
     "@electron/notarize": "^2.0.0",
-    "@quasar/app-webpack": "^3.11.2",
+    "@quasar/app-webpack": "3.9.4",
     "@quasar/quasar-app-extension-qmarkdown": "^2.0.0-beta.10",
     "@types/argon2-browser": "^1.18.1",
     "@types/luxon": "^3.2.0",
@@ -69,7 +69,7 @@
     "apk-update": "^1.0.3",
     "base64-loader": "^1.0.0",
     "dotenv": "^16.0.3",
-    "electron": "^26.0.0",
+    "electron": "^26.2.2",
     "electron-builder": "^24.6.4",
     "electron-updater": "^6.1.1",
     "eslint": "^8.40.0",
