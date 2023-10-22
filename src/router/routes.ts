@@ -188,7 +188,7 @@ const routes: RouteRecordRaw[] = [
       {
         name: "license",
         path: "/license",
-        component: () => import("pages/License.vue")
+        component: () => import("pages/LicensePage.vue")
       },
       {
         name: "acknowledgements",
@@ -198,12 +198,12 @@ const routes: RouteRecordRaw[] = [
       {
         name: "legalNotice",
         path: "/legal-notice",
-        component: () => import("pages/Markdown.vue")
+        component: () => import("pages/MarkdownPage.vue")
       },
       {
         name: "privacyPolicy",
         path: "/privacy-policy",
-        component: () => import("pages/Markdown.vue")
+        component: () => import("pages/MarkdownPage.vue")
       },
       ...(!isDemo && !isLocalAuth ? [{
         name: "login",

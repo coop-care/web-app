@@ -38,14 +38,6 @@
   </q-page>
 </template>
 
-<style lang="sass">
-.readable-line-length
-  max-width: 800px
-  margin: 0 auto
-.no-margin
-  margin: 0 !important
-</style>
-
 <script lang="ts">
 import { Vue, Component } from "vue-facing-decorator";
 import SimplifiedMarkdown from "components/SimplifiedMarkdown.vue";
