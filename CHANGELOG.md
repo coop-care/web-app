@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.7.8 (2023-10-22)
+
+- using local database for storing account encryption key instead of system keychains
+- bugfix where IndexedDB shim setup for Android failed because of race condition
+
+## 0.7.7 (2023-09-27)
+
+- rating: clarified wording on optional rating details
+- updated privacy policy
+- added support loading WebAssembly
+
 ## 0.7.6 (2023-08-21)
 
 - new problem: added step for adding multiple interventions by selecting from guidelines
