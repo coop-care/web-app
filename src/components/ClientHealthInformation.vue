@@ -71,6 +71,7 @@
         @update:model-value="updateAndSave(healthInfo, {allergies: $event})"
         :options="[]"
         :label="$t('allergiesTitle')"
+        :placeholder="healthInfo.allergies.length == 0 ? $t('allergiesDescription') : ''"
         hide-dropdown-icon
       />
       <multiple-selectable-input
