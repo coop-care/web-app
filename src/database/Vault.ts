@@ -91,8 +91,47 @@ export default class Vault {
     }
 
     static async get(key: string) {
-        if (this.external) {
-            return this.parse(
+        await this.migrateExternalToVaultIfNeeded(key);
+        
+        return await this.vaultGet(key);
+    }
+
+    static async set(key: string, value: VaultSecretParameters) {
+        await this.vaultSet(key, value);
+    }
+
+    static async delete(key: string) {
+        await this.vaultDelete(key);
+    }
+
+    private static async vaultGet(key: string) {
+        if (await this.vaultExists()) {
+            return await this.run(async vault => {
+                return this.parse((await vault.local.get(key))?.value as string | undefined);
+            });
+        }
+    }
+
+    private static async vaultSet(key: string, value: VaultSecretParameters) {
+        await this.run(async vault => {
+            await vault.local.put({
+                id: key,
+                value: this.stringify(value)
+            }, key);
+        });
+    }
+
+    private static async vaultDelete(key: string) {
+        if (await this.vaultExists()) {
+            await this.run(async vault => {
+                await vault.local.delete(key);
+            })
+        }
+    }
+
+    private static async migrateExternalToVaultIfNeeded(key: string) {
+        if (this.external && !(await this.vaultExists())) {
+            const value = this.parse(
                 await this.external.get(this.service, key)
                     .catch(error => {
                         if (error.message.startsWith("Error invoking remote method 'get-password'")) {
@@ -102,55 +141,22 @@ export default class Vault {
                             throw new Error("GenericError");
                         }
                     })
-                ) || await this.fallbackGet(key);
-        } else {
-            return await this.fallbackGet(key);
-        }
-    }
+                )
 
-    private static async fallbackGet(key: string) {
-        if (await this.vaultExists()) {
-            return await this.run(async vault => {
-                return this.parse((await vault.local.get(key))?.value as string | undefined);
-            });
-        }
-    }
-
-    static async set(key: string, value: VaultSecretParameters) {
-        if (this.external) {
-            try {
-                await this.external.set(this.service, key, this.stringify(value));
-            } catch (error) {
-                console.error(error);
-                await this.fallbackSet(key, value);
-            }
-        } else {
-            await this.fallbackSet(key, value);
-        }
-    }
-
-    private static async fallbackSet(key: string, value: VaultSecretParameters) {
-        await this.run(async vault => {
-            await vault.local.put({
-                id: key,
-                value: this.stringify(value)
-            }, key);
-        });
-    }
-
-    static async delete(key: string) {
-        if (this.external) {
-            await this.external.remove(this.service, key)
-                .catch(error => {
-                    console.error(error);
-                    throw new Error("GenericError");
+            if (!!value && !!value.message && !!value.salt && !!value.nonce) {
+                await this.vaultSet(key, {
+                    salt: this.uint8ArrayToString(value.salt),
+                    nonce: value.nonce,
+                    message: value.message,
                 });
-        }
-
-        if (await this.vaultExists()) {
-            await this.run(async vault => {
-                await vault.local.delete(key);
-            })
+                await this.external.remove(this.service, key)
+                    .catch(error => {
+                        console.error(error);
+                        throw new Error("GenericError");
+                    });
+            } else {
+                throw new Error("VaultMigrationError");
+            }
         }
     }
 };

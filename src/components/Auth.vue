@@ -1,5 +1,8 @@
 <template>
-  <q-card style="width: 280px">
+  <q-card
+    v-if="isDataLoaded"
+    style="width: 280px"
+  >
     <q-card-section v-if="hasAccounts && mode == 'login'">
       <q-form>
         <q-select
@@ -64,11 +67,13 @@
           v-model="newPassword1"
           :label="$t('password')"
           :rules="[val => !!val || $t('PasswordMissing')]"
+          autocapitalize="off"
         />
         <q-input
           v-model="newPassword2"
           :label="$t('repeatPassword')"
           :rules="[val => !!val || $t('PasswordMissing')]"
+          autocapitalize="off"
         />
         <div v-if="errorMessageAddUser" class="q-mt-md text-negative text-caption">{{ errorMessageAddUser }}</div>
         <q-btn
@@ -111,6 +116,7 @@ export default defineComponent({
 
   data() {
     return {
+      isDataLoaded: false,
       mode: "login" as AuthMode,
       username: "",
       password: "",
@@ -143,6 +149,8 @@ export default defineComponent({
       if (this.$ccApi instanceof LocalDatabaseApi) {
         this.accountList = await this.$ccApi.allAccounts();
       }
+      
+      this.isDataLoaded = true;
 
       if (this.accountList.length == 1) {
         this.username = this.accountList[0];

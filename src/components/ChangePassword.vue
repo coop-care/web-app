@@ -15,16 +15,19 @@
           v-model="oldPassword"
           :label="$t('currentPassword')"
           class="col-12"
+          autocapitalize="off"
         />
         <q-input
           v-model="newPassword1"
           :label="$t('newPassword')"
           class="col-sm-6 col-12"
+          autocapitalize="off"
         />
         <q-input
           v-model="newPassword2"
           :label="$t('repeatNewPassword')"
           class="col-sm-6 col-12"
+          autocapitalize="off"
         />
       </div>
       <div v-if="errorMessagePassword" class="q-mt-md text-negative">{{ errorMessagePassword }}</div>
