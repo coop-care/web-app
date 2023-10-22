@@ -57,7 +57,8 @@ function loadMarkdown() {
 
 watch(
   () => route,
-  () => loadMarkdown()
+  () => loadMarkdown(),
+  {deep: true}
 )
 
 loadMarkdown();
