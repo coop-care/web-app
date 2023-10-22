@@ -7,6 +7,7 @@ export interface TeamMixinInterface {
   team?: Team;
   isAdmin: boolean;
   isTeamAdmin: boolean;
+  saveTeam(changes?: Partial<Team>, team?: Team): Promise<void>;
 };
 
 export default defineComponent({
@@ -25,5 +26,18 @@ export default defineComponent({
     isTeamAdmin() {
       return this.isAdmin;
     },
+  },
+
+  methods: {
+    saveTeam(changes: Partial<Team> = {}, team?: Team) {
+      team = team ?? this.team;
+
+      if (team) {
+        return this.$store.direct.dispatch.saveTeam({ target: team, changes: changes })
+          .then(() => undefined);
+      } else {
+        return Promise.resolve();
+      }
+    }
   }
 });

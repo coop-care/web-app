@@ -139,4 +139,14 @@ export function mergeDeep<T>(target: any = {}, ...sources: T[]): T {
   }
 
   return mergeDeep(target, ...sources);
+};
+
+export function jsonDateReviver(key: any, value: any) {
+  if (typeof value == "string" && dateRegexp.test(value)) {
+    return new Date(value);
+  } else {
+    return value;
+  }
 }
+
+const dateRegexp = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/;

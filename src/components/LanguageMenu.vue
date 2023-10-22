@@ -27,13 +27,21 @@
     </q-list>
   </q-menu>
 </template>
-<script lang="ts">
-import { Vue, Component, Prop } from "vue-facing-decorator";
 
-@Component
-export default class LanguageMenu extends Vue {
-  @Prop({ type: String, default: "bottom middle"}) readonly anchor!: string;
-  @Prop({ type: String, default: "top middle"}) readonly self!: string;
-  @Prop({ type: Boolean }) readonly fit!: boolean;
-}
+<script setup lang="ts">
+
+defineProps({
+  anchor: {
+    type: String,
+    default: "bottom middle",
+  },
+  self: {
+    type: String,
+    default: "top middle",
+  },
+  fit: {
+    type: Boolean
+  },
+});
+
 </script>

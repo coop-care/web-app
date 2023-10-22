@@ -107,7 +107,7 @@
         <simplified-markdown 
           :text="$t(
             $store.direct.getters.didExpire ? 'betaAppDidExpire' : 'betaAppWillExpire', 
-            { date: this.$d($store.direct.getters.expirationDate, 'DateMed') }
+            { date: $d($store.direct.getters.expirationDate, 'DateMed') }
           )"
         />
         <div>{{ $t("betaAppExpirationDescription") }}</div>

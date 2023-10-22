@@ -55,7 +55,7 @@
         <q-input
           :label="$t('duration')"
           :model-value="recordingDuration(recording)"
-          @update:model-value="changeDuration(recording, $event)"
+          @update:model-value="changeDuration(recording, $event?.toString() || '')"
           :suffix="recording == activeRecording ? seconds : ':00'"
           input-class="text-right"
           mask="#:##"
@@ -66,7 +66,7 @@
         <q-input
           :label="$t('serviceType')"
           :model-value="recording.serviceType"
-          @update:model-value="changeServiceType(recording, $event)"
+          @update:model-value="changeServiceType(recording, $event?.toString() || '')"
           class="col service-type-input"
         />
         <div>

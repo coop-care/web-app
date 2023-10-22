@@ -3,17 +3,10 @@ import { bus } from "./eventBus";
 import { Guideline } from "src/models/guideline";
 import { TaxonomyDatabase } from "src/database/TaxonomyDatabase";
 import { locale } from "./i18n";
+import { jsonDateReviver } from "src/helper/utils";
 
 export default boot(async ({ store }) => {
     const database = new TaxonomyDatabase();
-    const dateRegexp = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/;
-    const dateReviver = (key: any, value: any) => {
-        if (typeof value == "string" && dateRegexp.test(value)) {
-            return new Date(value);
-        } else {
-            return value;
-        }
-    }
 
     // load and store data
     const downloadPromises = [
@@ -35,7 +28,7 @@ export default boot(async ({ store }) => {
 
         let text = await response.text();
         text = text.replace(/\/\*[\s\S]*?\*\//, ""); // strip leading comment
-        const guideline = JSON.parse(text, dateReviver) as Guideline;
+        const guideline = JSON.parse(text, jsonDateReviver) as Guideline;
         await database.guidelines.put(guideline);
     });
     await Promise.all(downloadPromises);

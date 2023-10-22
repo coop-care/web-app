@@ -13,7 +13,7 @@ if (Platform.is.cordova && Platform.is.ios) {
             modifiedResponse.headers.append("Content-Type", "application/wasm");
             return Promise.resolve(modifiedResponse);
         } else {
-            return originalFetch(resource, options);
+            return originalFetch(resource as RequestInfo | URL, options);
         }
     }
 }

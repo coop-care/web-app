@@ -27,7 +27,6 @@ export interface ClientActionMixinInterface extends TeamMixinInterface {
   makeSelectDialog(clientId: string, message: string, okButtonLabel: string): DialogChainObject;
   confirmIfClientIsInAdditionalTeam(client: Client, confirmedAction: () => void): void;
   updateClientsInAdditionalTeams(): void;
-  saveTeam(changes?: Partial<Team>, team?: Team): Promise<void>;
 };
 
 const { addToDate } = date;
@@ -287,17 +286,6 @@ export default defineComponent({
       void this.$store.direct.dispatch.getClientsInAdditionalTeams(this.team?.clients || [])
         .then(clientIds => this.clientsInAdditionalTeams = clientIds);
     },
-
-    saveTeam(changes: Partial<Team> = {}, team?: Team) {
-      team = team ?? this.team;
-
-      if (team) {
-        return this.$store.direct.dispatch.saveTeam({ target: team, changes: changes })
-          .then(() => undefined);
-      } else {
-        return Promise.resolve();
-      }
-    }
   }
 
 });
