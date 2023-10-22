@@ -63,7 +63,7 @@
       </div>
       <router-view v-slot="{ Component, route }">
         <transition
-          :name="route.meta.transition"
+          :name="(route.meta.transition as string)"
           @enter="isTransitioning = !!route.meta.transition"
           @leave="isTransitioning = false"
         >
@@ -132,7 +132,7 @@ export default class MainLayout extends Vue {
 
   get title() {
     const route = this.$route;
-    const routeName = route.name?.toString() ?? "";
+    const name = route.name?.toString() ?? "";
 
     if (route.path.startsWith("/client")) {
       if (this.selectedClient) {
@@ -140,8 +140,8 @@ export default class MainLayout extends Vue {
       } else {
         return this.$t("client", 2);
       }
-    } else if (routeName.length > 0 && this.$te(routeName)) {
-      return this.$t(routeName);
+    } else if (name.length > 0 && name != "login" && this.$te(name)) {
+      return this.$t(name);
     } else {
       return "";
     }
