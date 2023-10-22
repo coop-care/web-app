@@ -31,7 +31,7 @@
           @click="item.action"
           :class="item.isDestructive ? 'text-negative' : ''"
         >
-          <q-item-section side>
+          <q-item-section v-if="!hideIcons" side>
             <q-icon
               :name="item.icon"
               :color="item.isDestructive ? 'negative': color"
@@ -69,6 +69,7 @@ export default class ActionMenu extends Vue {
   @Prop({ type: String, default: "primary" }) readonly color!: string;
   @Prop({ type: Boolean }) readonly showTitle!: boolean;
   @Prop({ type: Boolean }) readonly flat!: boolean;
+  @Prop({ type: Boolean }) readonly hideIcons!: boolean;
 
   get sortedItems() {
     return this.items
