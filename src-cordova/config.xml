@@ -56,7 +56,7 @@
         <config-file parent="ITSAppUsesNonExemptEncryption" target="*-Info.plist">
             <false />
         </config-file>
-        <config-file parent="UTExportedTypeDeclarations" target="*-Info.plist">
+        <config-file parent="UTImportedTypeDeclarations" target="*-Info.plist">
             <array>
                 <dict>
                     <key>UTTypeConformsTo</key>
