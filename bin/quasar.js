@@ -99,7 +99,7 @@ exitOnError(() => {
     throw new Error(`Missing required env variable DOWNLOAD_DIRECTORY for publishing product "${product}".`);
   }
 
-  if (!!publish && !env.CLEAR_DOWNLOAD_DIRECTORY && product == "all") {
+  if (!!publish && !env.CLEAR_DOWNLOAD_DIRECTORY && product == "app") {
       throw new Error(`Missing required env variable CLEAR_DOWNLOAD_DIRECTORY for publishing product "${product}".`);
   }
 
@@ -240,7 +240,7 @@ exitOnError(() => {
       runCommand("rm dist/spa/*.jsonc");
     }
 
-    if (product == "all" && !!env.CLEAR_DOWNLOAD_DIRECTORY) {
+    if (product == "app" && !!env.CLEAR_DOWNLOAD_DIRECTORY) {
       runCommand(env.CLEAR_DOWNLOAD_DIRECTORY);
     }
 
