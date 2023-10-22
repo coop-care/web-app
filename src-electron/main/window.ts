@@ -8,6 +8,8 @@ export function createWindow() {
         icon: path.resolve(__dirname, "icons/icon.png"), // tray icon
         width: 1024,
         height: 768,
+        minWidth: 320,
+        minHeight: 480,
         useContentSize: true,
         webPreferences: {
             contextIsolation: true,
