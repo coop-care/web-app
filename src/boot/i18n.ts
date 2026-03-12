@@ -7,6 +7,7 @@ import messages from "src/i18n";
 import { StateInterface } from "src/store";
 import { loadLangPack } from "./quasar-lang-pack";
 import { WritableComputedRef } from "vue";
+import { makeTerminologyWithMaps } from "../helper/terminology";
 
 export type MessageLanguages = keyof typeof messages;
 // Type-define 'en-US' as the master schema for the resource
@@ -152,7 +153,27 @@ const i18n = createI18n<{ message: MessageSchema }, MessageLanguages>({
 
 const locale = i18n.global.locale as unknown as WritableComputedRef<string>;
 
-export default boot(({ app, store }) => {
+export default boot(async ({ app, store }) => {  // load terminology
+  await Promise.all([
+      ["en-US", "terminology_EN.json"], 
+      ["de-DE", "terminology_DE.json"],
+    ].map(async ([locale, filename]) => {
+      if (!locale || !filename) {
+        throw new Error("locale or filename undefined");
+      }
+
+      const response = await fetch(filename);
+
+      if (response.ok) {
+        const text = await response.text();
+        const terminology = JSON.parse(text);
+        (i18n.global.messages as any).value[locale].terminology = makeTerminologyWithMaps(terminology);
+      } else {
+        console.warn(filename + " not found");
+      }
+    })
+  );
+
   // Set i18n instance on app
   app.use(i18n);
 
