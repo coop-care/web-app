@@ -15,6 +15,7 @@
 const { configure } = require("quasar/wrappers");
 const { readFileSync } = require("fs");
 const path = require("path");
+const { ProvidePlugin } = require("webpack");
 const { LicenseWebpackPlugin } = require("license-webpack-plugin");
 
 const env = require("dotenv").config({
@@ -195,6 +196,9 @@ module.exports = configure(function (ctx) {
         }
 
         config.plugins = (config.plugins || []).concat([
+          new ProvidePlugin({
+            process: "process/browser",
+          }),
           new LicenseWebpackPlugin({
             outputFilename: "oss-licenses.json",
             perChunkOutput: false,
