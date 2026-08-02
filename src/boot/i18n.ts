@@ -162,14 +162,24 @@ export default boot(async ({ app, store }) => {  // load terminology
         throw new Error("locale or filename undefined");
       }
 
-      const response = await fetch(filename);
+      /* Anything thrown in here aborts the whole boot chain, and Quasar then
+      never mounts the app — one unreadable terminology file would take the
+      entire UI down instead of degrading a single language. Checking
+      response.ok is not enough on its own either: a server that answers
+      missing files with an SPA fallback replies 200 with an HTML body, which
+      then fails inside JSON.parse. */
+      try {
+        const response = await fetch(filename);
 
-      if (response.ok) {
-        const text = await response.text();
-        const terminology = JSON.parse(text);
+        if (!response.ok) {
+          console.warn(filename + " not found");
+          return;
+        }
+
+        const terminology = JSON.parse(await response.text());
         (i18n.global.messages as any).value[locale].terminology = makeTerminologyWithMaps(terminology);
-      } else {
-        console.warn(filename + " not found");
+      } catch (error) {
+        console.error("could not load terminology from " + filename, error);
       }
     })
   );

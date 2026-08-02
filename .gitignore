@@ -43,5 +43,9 @@ yarn-error.log*
 /public/icons
 /public/favicon.ico
 /public/*.json
+# ...except the terminology, which boot/i18n.ts fetches at startup. Without it
+# the app cannot start, so it has to be part of a checkout.
+!/public/terminology_EN.json
+!/public/terminology_DE.json
 /license-templates
 deploy.sh
